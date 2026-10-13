@@ -1,6 +1,6 @@
 ---
 name: selectelsdk
-description: Use the repository Go selectelsdk to inspect or manage Selectel resources, billing, telemetry and secrets. Discover supported operations, establish explicit access and scope, execute typed service methods, and handle pagination, receipts and waits. Use for Selectel SDK cloud operations; Terraform state changes remain in the infrastructure workflow.
+description: Set up and use the repository Go selectelsdk to inspect or manage Selectel resources, billing, telemetry and secrets. Discover supported operations, establish explicit access and scope, execute typed service methods, and handle pagination, receipts and waits. Use for Selectel SDK setup and cloud operations; Terraform state changes remain in the infrastructure workflow.
 ---
 
 # Selectel SDK
@@ -9,7 +9,20 @@ Use the Go module in [this repository](../../../README.md).
 Read its current README and the selected service method before building a call.
 The SDK is a library: run a small Go program from that module directory, with
 the temporary source file outside the repository. A CLI or MCP is not required.
-Read [usage.md](references/usage.md) for the runnable discovery/auth/read pattern.
+
+## Prepare the SDK
+
+For a new workstation or Go application, follow
+[installation](references/usage.md#install-and-locate-the-sdk). Keep the SDK
+checkout available for this skill's README, contracts and capability sources;
+installing the Go dependency alone does not install the agent skill.
+
+Setup is complete when imports resolve, offline catalog discovery runs, and the
+credential source and account are explicitly selected. Use the
+[bounded read example](references/usage.md#explicit-credentials-and-bounded-reads)
+for the first cloud check; choose the
+[named profile variant](references/usage.md#use-a-named-profile) when a profile
+is already saved. Successful installation does not establish cloud access.
 
 ## Discover the operation
 
