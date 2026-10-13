@@ -195,3 +195,11 @@ python3 scripts/verify_catalog.py
 `verify_catalog.py` запускает проверки и сохраняет только hashes/статусы
 проверки в catalog/verification.json. Изменение implementation, contract или
 evidence файлов сбрасывает устаревшую verification в none при генерации.
+
+Dependabot проверяет Go-зависимости, включая косвенные, и GitHub Actions по
+понедельникам в 09:00 по Москве и создаёт PR с обновлениями. Слияние требует
+проверки совместимости и успешного CI. Для PR с изменением `go.mod` или `go.sum`
+нужно выполнить `go generate .` и `python3 scripts/verify_catalog.py` в ветке PR,
+затем закоммитить обновлённые `catalog/manifest.json` и
+`catalog/verification.json`: версии зависимостей входят в контрольные суммы
+реализации. PR с обновлениями Actions обычно не меняют каталог.
