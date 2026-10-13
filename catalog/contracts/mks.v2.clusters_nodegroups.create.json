@@ -1,0 +1,177 @@
+{
+  "operation_id": "mks.v2.clusters_nodegroups.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v2",
+    "pool": "exact requested pool; published URL aliases retained; no v1 fallback",
+    "override_key": [
+      "mks",
+      "v2",
+      "exact scope"
+    ],
+    "base_includes": "/v2",
+    "redirects": "reject"
+  },
+  "request": {
+    "source_schema": "sources/managed-kubernetes.json#/paths/~1v2~1clusters~1{cluster_id}~1nodegroups/post",
+    "source_operation": {
+      "summary": "Create nodegroups",
+      "description": "Starts nodegroups creation process.",
+      "operationId": "createNodegroupsV2",
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/cluster_id"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NodegroupsCreateBody"
+            }
+          }
+        },
+        "required": true
+      },
+      "tags": [
+        "Nodegroups"
+      ],
+      "responses": {
+        "204": {
+          "description": "Node groups creation has started successfully."
+        },
+        "400": {
+          "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/generic_error"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Cluster has not been found.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/generic_error"
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "Cluster or one of nodegroups has invalid status.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/generic_error"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/generic_error"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "mks/nodegroups.go",
+    "private_serializer": "mks/wire.go requestBody; protected inputs revealed only to resource request, safe formatting stays redacted",
+    "dto_source": "mks/types_generated.go",
+    "scope": "immutable account/project/region/pool; create pool must equal scope.pool",
+    "path": "wire path after /v2; all IDs escaped as one segment; parent refs required for nodegroups/nodes/tasks",
+    "fields": "all schema properties preserve optional absence, explicit false/zero/empty arrays/maps; no provider default inserted",
+    "user_data": "caller-provided base64 text in ProtectedValue; validated and forwarded unchanged, never encoded a second time",
+    "additional_software": "ProtectedJSON source object; explicitly supplied even though deprecated/required by source schema",
+    "validation": "required/nested fields before credential I/O; cluster name and declared cluster_type; taint effect and dedicated currency enums"
+  },
+  "response": {
+    "successful_statuses": [
+      204
+    ],
+    "source_schema": "sources/managed-kubernetes.json#/paths/~1v2~1clusters~1{cluster_id}~1nodegroups/post/responses",
+    "dto_source": "mks/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "mapping": "all response fields, exact Integer/Number, UTC known timestamps; schemaless data and payload strings protected; provider ref ignored",
+    "sensitive_fields": [],
+    "identity": "response id/project/pool/parent conflicts rejected before receipt ref retention; exact request identity preserved; trustworthy known ID retained on other accepted decode failure",
+    "nodegroup_create": "204 returns no new nodegroup IDs or task IDs. Only known parent cluster ref retained; no list diff/adoption",
+    "hierarchy": "nodegroup.parent=cluster; node.parent=nodegroup; task.parent=cluster; response parent IDs verified; nested node refs retained"
+  },
+  "errors": {
+    "rejected_statuses": [
+      401,
+      403,
+      400,
+      404,
+      409
+    ],
+    "5xx_or_lost_mutation_response": "unknown_outcome; single attempt",
+    "read_404": "not_found; 403 never treated as absent",
+    "malformed_successful_mutation": "accepted receipt + protocol_error with trustworthy refs",
+    "foreign_identity": "scope_mismatch, no foreign refs",
+    "message": "safe SDK errors; provider error text not diagnostics"
+  },
+  "retry": "bounded safe reads; mutation never replayed",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "cluster_states": [
+      "ACTIVE",
+      "PENDING_CREATE",
+      "PENDING_UPDATE",
+      "PENDING_UPGRADE",
+      "PENDING_ROTATE_CERTS",
+      "PENDING_DELETE",
+      "PENDING_RESIZE",
+      "PENDING_NODE_REINSTALL",
+      "PENDING_UPGRADE_PATCH_VERSION",
+      "PENDING_UPGRADE_MINOR_VERSION",
+      "PENDING_UPDATE_NODEGROUP",
+      "PENDING_UPGRADE_MASTERS_CONFIGURATION",
+      "PENDING_REINSTALL_MASTERS",
+      "PENDING_UPGRADE_CLUSTER_CONFIGURATION",
+      "MAINTENANCE",
+      "ERROR",
+      "PENDING_NODES_UNSHELVE",
+      "PENDING_UPDATE_REGISTRIES_INTEGRATION"
+    ],
+    "nodegroup_states": [
+      "ACTIVE",
+      "PENDING_CREATE",
+      "PENDING_UPDATE",
+      "PENDING_DELETE",
+      "PENDING_SCALE_UP",
+      "PENDING_SCALE_DOWN",
+      "PENDING_NODE_REINSTALL",
+      "PENDING_NODES_UNSHELVE",
+      "ERROR"
+    ],
+    "task_states": [
+      "IN_PROGRESS",
+      "IN_QUEUE",
+      "DONE",
+      "ERROR",
+      "CANCELED"
+    ],
+    "active": "ACTIVE succeeds; ERROR fails; other documented cluster/nodegroup states pending; new states state_unknown",
+    "task_done": "DONE succeeds; ERROR/CANCELED fail; IN_QUEUE/IN_PROGRESS pending",
+    "deleted": "exact Get 404; unavailable endpoint or 403 cannot confirm deletion",
+    "node_deleted": "Node has no status property. Existing Get is pending with empty ProviderState; 404 confirms requested node absent",
+    "receipt_restriction": "receipt-bound Wait allows only these declared goals; parent readiness is not completion of groups created without IDs"
+  },
+  "recovery": {
+    "kind": "resource observation for a known exact ref; indeterminate, never authorship proof; no selecting latest task or newly appeared resource",
+    "correlation": "provider_operation_ref absent unless documented causal ID returned; this API source does not return such task IDs in mutations"
+  },
+  "timeout": "CallTimeout/CollectionTimeout/WaitTimeout with one deadline each"
+}

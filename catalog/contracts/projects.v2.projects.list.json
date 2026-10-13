@@ -1,0 +1,83 @@
+{
+  "operation_id": "projects.v2.projects.list",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "https://api.selectel.ru/vpc/resell/v2/projects",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v2",
+    "override_key": [
+      "projects",
+      "v2",
+      "exact scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "account",
+    "method": "GET",
+    "source_schema": "sources/cloud-projects-and-resources.json#/paths/~1v2~1projects/get",
+    "mapping_source": "projects/client.go",
+    "source_operation": {
+      "operationId": "listProjects",
+      "parameters": [
+        {
+          "description": "Return all projects (requires iam.admin role)",
+          "in": "query",
+          "name": "all",
+          "required": false,
+          "type": "boolean"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/ListProjectsResponse"
+          }
+        },
+        "401": {
+          "description": "Unauthorized"
+        }
+      },
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "summary": "Get list of all account's projects",
+      "tags": [
+        "Projects"
+      ]
+    },
+    "absence": "nil optional fields omitted; explicit false/empty preserved",
+    "identity": "account/project/location from immutable view"
+  },
+  "response": {
+    "dto_source": "projects/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all declared response item properties, optional fields preserve absence; provider cannot inject SDK ref",
+    "sensitive_fields": [],
+    "pagination_metadata": "ProviderMetadata retains totalCount/prev_cursor/count when documented",
+    "scope_checks": "provider project/pool/account fields, when declared; mismatches rejected",
+    "timestamps": "RFC3339 fields parsed; DB naive time retained as raw string",
+    "numbers": "integer decimal bytes retained without float64"
+  },
+  "errors": {
+    "403": "permission_denied; never a successful empty collection",
+    "malformed_body": "protocol_error",
+    "foreign_scope": "scope_mismatch",
+    "limit": "incomplete with bounded typed prefix and cursor"
+  },
+  "retry": "bounded safe read, including audit POST",
+  "pagination": {
+    "shape": "single response",
+    "limits": "MaxItems/MaxPages; one CollectionTimeout shared across all calls",
+    "continuation": "bound to scope, generation, endpoint ID, semantic filters and contract revision",
+    "single_response": "replay original page plus skip when locally truncated",
+    "empty_page": "continuation governs completion"
+  },
+  "inventory": "metadata only; protected config/payload excluded; failed branch preserved and other branches continue"
+}

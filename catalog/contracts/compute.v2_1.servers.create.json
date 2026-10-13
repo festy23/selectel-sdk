@@ -1,0 +1,80 @@
+{
+  "operation_id": "compute.v2_1.servers.create",
+  "endpoint": {
+    "source": "exact project-scoped IAM compute catalog public endpoint for region/pool",
+    "generation": "v2_1",
+    "microversion": "2.1",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/servers",
+    "schema": "pinned Gophercloud v2.13.0 native DTO plus ProtectedValue replacements",
+    "scope": "explicit project/location",
+    "covered_fields": "compute/servers.go",
+    "excluded_variants": [
+      "Additional Nova microversions and API variants outside the initial v2.1 contract",
+      "Unknown extension fields not represented by native servers.Server",
+      "Multi-create",
+      "Implicit network selection and auto/none networks",
+      "Personality payloads",
+      "Newer microversion Tags, Hostname, HypervisorHostname, network tags, volume type/tags"
+    ]
+  },
+  "response": {
+    "status": 202,
+    "mapping": "native DTO, adminPass/userdata moved into ProtectedValue; ID and project verified",
+    "sensitive_fields": [
+      "adminPass",
+      "OS-EXT-SRV-ATTR:user_data"
+    ]
+  },
+  "errors": {
+    "400": "rejected validation",
+    "401": "rejected unauthenticated",
+    "403": "rejected permission_denied",
+    "404": "rejected not_found",
+    "malformed_success": "accepted receipt plus protocol_error for mutation",
+    "other_mutation_failure": "unknown"
+  },
+  "retry": "reads bounded; create/delete single attempt",
+  "pagination": null,
+  "wait": {
+    "server.active": {
+      "success": [
+        "ACTIVE"
+      ],
+      "failure": [
+        "ERROR",
+        "DELETED",
+        "SOFT_DELETED"
+      ],
+      "pending": [
+        "BUILD",
+        "HARD_REBOOT",
+        "MIGRATING",
+        "PASSWORD",
+        "REBOOT",
+        "REBUILD",
+        "RESCUE",
+        "RESIZE",
+        "REVERT_RESIZE",
+        "SHUTOFF",
+        "SUSPENDED",
+        "VERIFY_RESIZE"
+      ]
+    },
+    "server.deleted": {
+      "success": "404 exact ref",
+      "failure": [
+        "ERROR"
+      ],
+      "pending": "all documented existing states except ERROR"
+    }
+  },
+  "recovery": {
+    "known_outcome": "conclusive receipt, no IO",
+    "unknown_without_ID": "recovery_unavailable",
+    "unknown_with_exact_resource": "indeterminate observation; outcome remains unknown, no replay"
+  }
+}

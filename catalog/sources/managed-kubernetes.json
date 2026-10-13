@@ -1,0 +1,3249 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Managed Kubernetes API",
+    "description": "Managing clusters, node groups, and nodes: creating a cluster, automating cluster maintenance, and more",
+    "version": "v2.0.0"
+  },
+  "security": [
+    {
+      "iam_token_project_scoped": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Clusters",
+      "description": "Managing Kubernetes clusters: create, update, and delete clusters, automate cluster maintenance, and more"
+    },
+    {
+      "name": "Nodegroups",
+      "description": "Managing node groups in clusters: create, update, delete, resize, automate scaling, and more"
+    },
+    {
+      "name": "Nodes",
+      "description": "Managing nodes in node groups: delete, reinstall, and more"
+    },
+    {
+      "name": "Tasks",
+      "description": "Managing clusters tasks"
+    },
+    {
+      "name": "Admission Controllers",
+      "description": "Managing supported admission controllers"
+    },
+    {
+      "name": "Feature Gates",
+      "description": "Managing supported feature gates"
+    },
+    {
+      "name": "Kubernetes versions",
+      "description": "Managing supported Kubernetes versions"
+    },
+    {
+      "name": "Registries",
+      "description": "Managing registry integrations"
+    }
+  ],
+  "paths": {
+    "/v2/clusters": {
+      "get": {
+        "summary": "List clusters",
+        "description": "Returns a list of clusters.",
+        "operationId": "listClustersV2",
+        "tags": [
+          "Clusters"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of clusters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterList"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create cluster",
+        "description": "Starts creating a cluster.",
+        "operationId": "createClusterV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClusterCreateBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Clusters"
+        ],
+        "responses": {
+          "201": {
+            "description": "Cluster creation has started successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}": {
+      "get": {
+        "summary": "Get cluster information",
+        "description": "Returns information about a cluster by provided cluster_id.",
+        "operationId": "getClusterV2",
+        "tags": [
+          "Clusters"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information about the cluster has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update cluster",
+        "description": "Updates cluster parameters.",
+        "operationId": "updateClusterV2",
+        "tags": [
+          "Clusters"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClusterUpdateBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Cluster updating has started successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Partially update cluster",
+        "description": "Partially update cluster parameters.",
+        "operationId": "patchClusterV2",
+        "tags": [
+          "Clusters"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClusterUpdateBody"
+              }
+            }
+          },
+          "description": "Cluster partial update request body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Cluster updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or path parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cluster or node group has invalid status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete cluster",
+        "description": "Deletes a cluster by provided cluster_id.",
+        "operationId": "deleteClusterV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "tags": [
+          "Clusters"
+        ],
+        "responses": {
+          "204": {
+            "description": "Cluster has been successfully deleted."
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/kubeconfig": {
+      "get": {
+        "summary": "Get cluster kubeconfig",
+        "description": "Returns a kubeconfig in YAML for the requested cluster.",
+        "operationId": "getClusterKubeconfigV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "tags": [
+          "Clusters"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cluster kubeconfig."
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/rotate-certs": {
+      "post": {
+        "summary": "Rotate cluster certificates",
+        "description": "Starts certificates rotation.",
+        "operationId": "rotateClusterCertsV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "tags": [
+          "Clusters"
+        ],
+        "responses": {
+          "204": {
+            "description": "Certificates rotation has started successfully."
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/upgrade-patch-version": {
+      "post": {
+        "summary": "Upgrade cluster patch version",
+        "description": "Starts upgrading a Kubernetes patch version.",
+        "operationId": "upgradePatchVersionV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "tags": [
+          "Clusters"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cluster upgrading process has started successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/upgrade-minor-version": {
+      "post": {
+        "summary": "Upgrade cluster minor version",
+        "description": "Starts upgrading a minor version.",
+        "operationId": "upgradeMinorVersionV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "tags": [
+          "Clusters"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cluster upgrading process has started successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/tasks": {
+      "get": {
+        "summary": "List cluster tasks",
+        "description": "Returns a list of cluster tasks.",
+        "operationId": "listTasksV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/with_error_details"
+          }
+        ],
+        "tags": [
+          "Tasks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cluster's task list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskList"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/tasks/{task_id}": {
+      "get": {
+        "summary": "Get cluster task",
+        "description": "Returns the cluster task.",
+        "operationId": "getTaskV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/task_id"
+          },
+          {
+            "$ref": "#/components/parameters/with_error_details"
+          }
+        ],
+        "tags": [
+          "Tasks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Task information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster or task has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/nodegroups": {
+      "get": {
+        "summary": "List nodegroups",
+        "description": "Returns a list of node groups of the cluster.",
+        "operationId": "listNodegroupsV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "tags": [
+          "Nodegroups"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of node groups.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodegroupList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid path parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster or node group not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create nodegroups",
+        "description": "Starts nodegroups creation process.",
+        "operationId": "createNodegroupsV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NodegroupsCreateBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Nodegroups"
+        ],
+        "responses": {
+          "204": {
+            "description": "Node groups creation has started successfully."
+          },
+          "400": {
+            "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cluster or one of nodegroups has invalid status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/nodegroups/{nodegroup_id}": {
+      "get": {
+        "summary": "Get node group information",
+        "description": "Returns a single node group by provided cluster_id and nodegroup_id.",
+        "operationId": "getNodegroupV2",
+        "tags": [
+          "Nodegroups"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/nodegroup_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Node group information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodegroupResp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid path parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster or node group not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_not_found_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update nodegroup",
+        "description": "Updates node group by provided cluster_id and nodegroup_id.",
+        "operationId": "updateNodegroupV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/nodegroup_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NodegroupUpdateBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Nodegroups"
+        ],
+        "responses": {
+          "204": {
+            "description": "Node group update process started successfully."
+          },
+          "400": {
+            "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster or node group not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cluster or one of nodegroups has invalid status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete nodegroup",
+        "description": "Deletes node group by provided cluster_id and nodegroup_id.",
+        "operationId": "deleteNodegroupV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/nodegroup_id"
+          }
+        ],
+        "tags": [
+          "Nodegroups"
+        ],
+        "responses": {
+          "204": {
+            "description": "Node group deletion started successfully."
+          },
+          "400": {
+            "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster or node group not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cluster or one of nodegroups has invalid status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/nodegroups/{nodegroup_id}/resize": {
+      "post": {
+        "summary": "Resize nodegroup",
+        "description": "Resizes node group by provided cluster_id and nodegroup_id.",
+        "operationId": "resizeNodegroupV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/nodegroup_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NodegroupResizeBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Nodegroups"
+        ],
+        "responses": {
+          "204": {
+            "description": "Node group resize process started successfully."
+          },
+          "400": {
+            "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster or node group not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cluster or one of nodegroups has invalid status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/nodegroups/{nodegroup_id}/nodes/{node_id}": {
+      "get": {
+        "summary": "Get node information",
+        "description": "Returns single node by provided cluster_id, nodegroup_id and node_id.",
+        "operationId": "getNodeV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/nodegroup_id"
+          },
+          {
+            "$ref": "#/components/parameters/node_id"
+          }
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "responses": {
+          "200": {
+            "description": "Node information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster, node group or node not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete node",
+        "description": "Deletes node by provided cluster_id, nodegroup_id and node_id.",
+        "operationId": "deleteNodeV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/nodegroup_id"
+          },
+          {
+            "$ref": "#/components/parameters/node_id"
+          }
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "responses": {
+          "204": {
+            "description": "Node deletion started successfully."
+          },
+          "400": {
+            "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster, node group or node not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cluster or one of nodegroups has invalid status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/nodegroups/{nodegroup_id}/nodes/{node_id}/reinstall": {
+      "post": {
+        "summary": "Reinstall node",
+        "description": "Reinstalls node by provided cluster_id, nodegroup_id and node_id.",
+        "operationId": "reinstallNodeV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/nodegroup_id"
+          },
+          {
+            "$ref": "#/components/parameters/node_id"
+          }
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "responses": {
+          "204": {
+            "description": "Node reinstall process started successfully."
+          },
+          "400": {
+            "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster, node group or node not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cluster or one of nodegroups has invalid status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/registries": {
+      "post": {
+        "summary": "Create registries integration",
+        "description": "Create new registries integration in provided cluster",
+        "operationId": "createRegistriesV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistriesIntegrationCreateBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Registries"
+        ],
+        "responses": {
+          "201": {
+            "description": "Integrations creation process started successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistriesIntegration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List integrated registries",
+        "description": "Get registries integrated with provided cluster",
+        "operationId": "getRegistriesV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "tags": [
+          "Registries"
+        ],
+        "responses": {
+          "200": {
+            "description": "Registries integration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistriesIntegration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request path parameters. Fix the parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update registry integrations",
+        "description": "Update registry integration in the provided cluster",
+        "operationId": "updateRegistriesV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistriesIntegrationUpdateBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Registries"
+        ],
+        "responses": {
+          "200": {
+            "description": "Integrations updating has started successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistriesIntegration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or path parameters. Fix the request body and path parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete all registry integrations",
+        "description": "Deletes all registry integrations in the provided cluster.",
+        "operationId": "deleteRegistriesV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          }
+        ],
+        "tags": [
+          "Registries"
+        ],
+        "responses": {
+          "204": {
+            "description": "Integrations deletion has started successfully."
+          },
+          "400": {
+            "description": "Invalid request path parameters. Fix the parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/clusters/{cluster_id}/registries/{registry_id}": {
+      "delete": {
+        "summary": "Delete registry integration",
+        "description": "Deletes the provided registry integration in the provided cluster.",
+        "operationId": "deleteRegistryV2",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/cluster_id"
+          },
+          {
+            "$ref": "#/components/parameters/registry_id"
+          }
+        ],
+        "tags": [
+          "Registries"
+        ],
+        "responses": {
+          "204": {
+            "description": "Integration deletion process has started successfully."
+          },
+          "400": {
+            "description": "Invalid request path parameters. Fix the parameters and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster or registry integration has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/admission-controllers": {
+      "get": {
+        "summary": "Get supported admission controllers",
+        "description": "Returns a list of supported admission controllers.",
+        "operationId": "listAdmissionControllersV2",
+        "tags": [
+          "Admission Controllers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Admission controllers list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdmissionControllersList"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/kubeversions": {
+      "get": {
+        "summary": "Get supported Kubernetes versions",
+        "description": "Returns a list of supported Kubernetes versions.",
+        "operationId": "listKubeVersionsV2",
+        "tags": [
+          "Kubernetes versions"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Kubernetes versions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KubeVersionsList"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/feature-gates": {
+      "get": {
+        "summary": "Get supported feature gates",
+        "description": "Returns a list of supported feature gates.",
+        "operationId": "listFeatureGatesV2",
+        "tags": [
+          "Feature Gates"
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature gates list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeatureGatesList"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/generic_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "iam_token_project_scoped": {
+        "in": "header",
+        "name": "X-Auth-Token",
+        "description": "IAM token for project",
+        "type": "apiKey"
+      }
+    },
+    "schemas": {
+      "AuditLogs": {
+        "type": "object",
+        "required": [
+          "enabled",
+          "secret_name"
+        ],
+        "properties": {
+          "enabled": {
+            "description": "If `true`, Kubernetes audit logs are collected.\nand pushed into the SIEM system (e.g. logstash).\nFalse by default.",
+            "type": "boolean",
+            "example": true
+          },
+          "secret_name": {
+            "description": "Contains the name of the Kubernetes secret in namespace kube-system with credentials of the SIEM system where logs should be pushed. Fields of the secret: host, port, username (optional), password (optional), ca.crt (optional). This field is optional. By default, used mks-audit-logs is used. Secret name should be as a DNS subdomain name as defined in RFC 1123. [More Information.](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names)",
+            "type": "string"
+          }
+        }
+      },
+      "OIDC": {
+        "description": "OIDC represents parameters to connect client's OIDC provider with Kubernetes.",
+        "required": [
+          "client_id",
+          "enabled",
+          "groups_claim",
+          "issuer_url",
+          "provider_name",
+          "username_claim",
+          "ca_certs"
+        ],
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "description": "Required client id that all tokens must be issued for. Will be placed in `--oidc-client-id` flag. It is required when enabled = true.",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "If `enabled` OIDC should be turned on in the cluster.\nFalse by default.",
+            "type": "boolean"
+          },
+          "groups_claim": {
+            "description": "Optional JWT claim to use as the user's group. By default, `groups`. Will be placed in `--oidc-groups-claim` flag.",
+            "type": "string"
+          },
+          "issuer_url": {
+            "description": "URL of the provider that allows the API server to discover public signing keys. Will be placed in `--oidc-issuer-url` flag. It is required when enabled = true.",
+            "type": "string"
+          },
+          "provider_name": {
+            "description": "Custom user defined name of the provider. It is not used in the cluster directly. It is required when enabled = true.",
+            "type": "string"
+          },
+          "username_claim": {
+            "description": "Optional JWT claim to use as the username. By default, `sub`. Will be placed in `--oidc-username-claim` flag.",
+            "type": "string"
+          },
+          "ca_certs": {
+            "description": "CACerts represent optional custom CA certs chain in X509 PEM format of provider's SSL certificate.\nWill be written to file on masters which will be passed in `--oidc-ca-file` kube-apiserver flag.",
+            "x-omitempty": true,
+            "type": "string"
+          },
+          "ca_certs_expiration": {
+            "description": "CACertsExpiration represents date and time when the first of provided CA certificates will be expired.",
+            "format": "date-time",
+            "x-omitempty": true,
+            "type": "string"
+          }
+        }
+      },
+      "KubernetesOptions": {
+        "type": "object",
+        "required": [
+          "admission_controllers",
+          "audit_logs",
+          "feature_gates",
+          "oidc",
+          "x509_ca_certificates"
+        ],
+        "description": "Additional k8s options such as pod security policy,\nfeature gates, etc.",
+        "properties": {
+          "admission_controllers": {
+            "description": "Turned on admission controllers for the cluster.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audit_logs": {
+            "$ref": "#/components/schemas/AuditLogs"
+          },
+          "feature_gates": {
+            "description": "Turned on feature gates",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "oidc": {
+            "$ref": "#/components/schemas/OIDC"
+          },
+          "x509_ca_certificates": {
+            "description": "Represent custom X509 CA certificates which can be used for cluster components. Certificates should be encoded to base64 format. Note 💡 ``` X509CaCertificates can be disabled for some pools. ```",
+            "x-omitempty": true,
+            "type": "string"
+          }
+        }
+      },
+      "Cluster": {
+        "description": "Provides information about cluster.",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "name",
+          "project_id",
+          "status",
+          "basic",
+          "enable_autorepair",
+          "enable_patch_version_auto_upgrade",
+          "private_kube_api",
+          "kube_api_ip",
+          "subnet_id",
+          "kube_version",
+          "network_id",
+          "network_type",
+          "pool",
+          "kubernetes_options",
+          "cni_type",
+          "cluster_type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the cluster.",
+            "type": "string",
+            "format": "uuid4",
+            "example": "5C2B9606-F7FA-4468-AD98-E389D5334CBA"
+          },
+          "created_at": {
+            "description": "Timestamp in UTC timezone of when the cluster has been created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "updated_at": {
+            "description": "Timestamp in UTC timezone of when the cluster has been updated.",
+            "format": "date-time",
+            "type": "string",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "name": {
+            "description": "The name of the cluster.",
+            "type": "string",
+            "example": "super-mks-cluster"
+          },
+          "project_id": {
+            "description": "Contains reference to the project of the cluster.",
+            "type": "string",
+            "example": "8D226B33-3897-4223-AAAF-A83D49C5399E"
+          },
+          "status": {
+            "description": "Current status of the cluster.",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "ERROR",
+              "DELETED",
+              "CREATING"
+            ],
+            "example": "ACTIVE"
+          },
+          "basic": {
+            "description": "Specifies that cluster has only a single master and that control plane is not in highly available mode.",
+            "type": "boolean",
+            "example": true
+          },
+          "enable_autorepair": {
+            "description": "Reflects whether worker nodes are allowed to be reinstalled automatically in case of their unavailability or unhealthiness.",
+            "type": "boolean",
+            "example": true
+          },
+          "enable_patch_version_auto_upgrade": {
+            "description": "Specifies whether the Kubernetes version of the cluster is allowed to be upgraded automatically.",
+            "type": "boolean",
+            "example": true
+          },
+          "private_kube_api": {
+            "description": "Whether kube API is available from the Internet or not.",
+            "type": "boolean",
+            "example": true
+          },
+          "kube_api_ip": {
+            "description": "The IP of the Kubernetes API.",
+            "type": "string",
+            "example": "10.10.1.1"
+          },
+          "subnet_id": {
+            "description": "Contains reference to the subnet of the cluster.",
+            "format": "uuid4",
+            "type": "string",
+            "example": "0FAB540C-1099-4A4A-AD6C-C1498BE74E0A"
+          },
+          "kube_version": {
+            "description": "The current Kubernetes version of the cluster.",
+            "type": "string",
+            "example": 1.32
+          },
+          "network_id": {
+            "description": "Contains reference to the network of the cluster.",
+            "format": "uuid4",
+            "type": "string",
+            "example": "EE102156-A9A8-423A-811D-F8E3C56891B7"
+          },
+          "network_type": {
+            "description": "Type of network l3vpn or default.",
+            "type": "string",
+            "enum": [
+              "STANDARD",
+              "L3VPN"
+            ]
+          },
+          "pool": {
+            "description": "Pool represents the pool where the cluster master nodes are located.",
+            "type": "string",
+            "example": "ru-9"
+          },
+          "kubernetes_options": {
+            "$ref": "#/components/schemas/KubernetesOptions"
+          },
+          "cni_type": {
+            "description": "CNI type represents type of CNI which is used in cluster.",
+            "type": "string",
+            "enum": [
+              "CALICO",
+              "CILIUM"
+            ]
+          },
+          "cluster_type": {
+            "description": "The type of the cluster.",
+            "type": "string",
+            "enum": [
+              "BASIC",
+              "HIGH_AVAILABILITY",
+              "HIGH_AVAILABILITY_MULTI_AZ"
+            ]
+          }
+        }
+      },
+      "ClusterList": {
+        "description": "List of clusters.",
+        "type": "object",
+        "properties": {
+          "clusters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Cluster"
+            }
+          }
+        }
+      },
+      "generic_error": {
+        "description": "Generic Error.",
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "description": "Error Message.",
+                "type": "string",
+                "example": "Some error occurred"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "CNICiliumSettings": {
+        "type": "object",
+        "description": "Settings for Cilium CNI if this CNI was chosen as \"cni_type\".\nOtherwise settings will be ignored.",
+        "properties": {
+          "hubble_relay": {
+            "description": "Enables hubble relay for Cilium CNI.",
+            "type": "boolean",
+            "default": true
+          },
+          "envoy_daemonset": {
+            "description": "Enables Envoy DaemonSet for Cilium CNI.",
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "ClusterCreateStruct": {
+        "properties": {
+          "additional_software": {
+            "additionalProperties": {},
+            "description": "AdditionalSoftware represents information about additional software installed in the cluster.\nDeprecated: do not use.",
+            "type": "object"
+          },
+          "basic": {
+            "description": "Basic specifies that only a single zonal master will be created.\nIt is needed if a highly available control plane is not required.\nFalse by default.",
+            "type": "boolean"
+          },
+          "cloud_subnet_cidr": {
+            "x-omitempty": true,
+            "type": "string"
+          },
+          "enable_patch_version_auto_upgrade": {
+            "description": "EnablePatchVersionAutoUpgrade specifies whether the Kubernetes version of the cluster is allowed to be upgraded\nautomatically.\nEnabled by default for regional clusters and disabled for zonal clusters.",
+            "type": "boolean"
+          },
+          "enable_autorepair": {
+            "description": "EnableAutorepair reflects whether worker nodes are allowed to be reinstalled  automatically in case of their unavailability or unhealthiness.",
+            "type": "boolean",
+            "default": true
+          },
+          "kube_version": {
+            "description": "KubeVersion represents the needed Kubernetes version of the cluster.\nIt should be in x.y.z format.",
+            "type": "string"
+          },
+          "kubernetes_options": {
+            "$ref": "#/components/schemas/KubernetesOptions"
+          },
+          "maintenance_window_start": {
+            "description": "MaintenanceWindowStart represents UTC time of when the cluster will start its maintenance tasks.\nIt should be in hh:mm:ss format if provided.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name represents the desired name of the cluster.\nIt must not exceed 32 characters and can contain Latin letters,\nwith digits and hyphens. Must start with a letter or a digit.",
+            "type": "string"
+          },
+          "network_id": {
+            "description": "NetworkID contains a reference to the network of the cluster.\nIt can be set in cases where the network is pre-created.",
+            "format": "uuid4",
+            "type": "string"
+          },
+          "network_type": {
+            "description": "NetworkType indicates which network will be used for master-node\nconnection.",
+            "type": "string"
+          },
+          "pool": {
+            "description": "Pool is the pool of where the cluster master nodes are located.",
+            "type": "string"
+          },
+          "private_kube_api": {
+            "description": "PrivateKubeAPI specifies whether kube API should be available from the Internet or not.\nFalse by default.",
+            "type": "boolean"
+          },
+          "subnet_id": {
+            "description": "SubnetID contains a reference to the subnet of the cluster.\nIt can be set in cases where the subnet is pre-created.",
+            "format": "uuid4",
+            "type": "string"
+          },
+          "cni_type": {
+            "description": "CNI type represents type of CNI which will be used in cluster.\nSupported CNI types are CALICO and CILIUM. CALICO by default.",
+            "type": "string"
+          },
+          "cluster_type": {
+            "description": "The type of the cluster. If not specified,\ndefaults based on the 'basic' field: basic=true → BASIC,\nbasic=false → HIGH_AVAILABILITY. For HIGH_AVAILABILITY_MULTI_AZ\nclusters this field is required.",
+            "type": "string",
+            "enum": [
+              "BASIC",
+              "HIGH_AVAILABILITY",
+              "HIGH_AVAILABILITY_MULTI_AZ"
+            ]
+          },
+          "cni_cilium_settings": {
+            "$ref": "#/components/schemas/CNICiliumSettings"
+          }
+        },
+        "required": [
+          "name",
+          "network_id",
+          "subnet_id",
+          "kube_version",
+          "private_kube_api",
+          "pool",
+          "network_type",
+          "maintenance_window_start",
+          "cloud_subnet_cidr",
+          "basic",
+          "additional_software"
+        ],
+        "type": "object"
+      },
+      "ClusterCreateBody": {
+        "description": "ClusterCreateBody\nrepresents body content.",
+        "properties": {
+          "cluster": {
+            "$ref": "#/components/schemas/ClusterCreateStruct"
+          }
+        }
+      },
+      "ClusterDetailed": {
+        "description": "Provides detailed information about cluster.",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "name",
+          "project_id",
+          "status",
+          "basic",
+          "enable_autorepair",
+          "enable_patch_version_auto_upgrade",
+          "private_kube_api",
+          "kube_api_ip",
+          "subnet_id",
+          "kube_version",
+          "network_id",
+          "network_type",
+          "pool",
+          "kubernetes_options",
+          "additional_software",
+          "maintenance_last_start",
+          "maintenance_window_end",
+          "maintenance_window_start",
+          "pki_tree_updated_at",
+          "cni_type",
+          "cluster_type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the cluster.",
+            "type": "string",
+            "format": "uuid4",
+            "example": "5C2B9606-F7FA-4468-AD98-E389D5334CBA"
+          },
+          "created_at": {
+            "description": "Timestamp in UTC timezone of when the cluster has been created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "updated_at": {
+            "description": "Timestamp in UTC timezone of when the cluster has been updated.",
+            "format": "date-time",
+            "type": "string",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "name": {
+            "description": "The name of the cluster.",
+            "type": "string",
+            "example": "super-mks-cluster"
+          },
+          "project_id": {
+            "description": "Contains reference to the project of the cluster.",
+            "type": "string",
+            "example": "8D226B33-3897-4223-AAAF-A83D49C5399E"
+          },
+          "status": {
+            "description": "Current status of the cluster.",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PENDING_CREATE",
+              "PENDING_UPDATE",
+              "PENDING_UPGRADE",
+              "PENDING_ROTATE_CERTS",
+              "PENDING_DELETE",
+              "PENDING_RESIZE",
+              "PENDING_NODE_REINSTALL",
+              "PENDING_UPGRADE_PATCH_VERSION",
+              "PENDING_UPGRADE_MINOR_VERSION",
+              "PENDING_UPDATE_NODEGROUP",
+              "PENDING_UPGRADE_MASTERS_CONFIGURATION",
+              "PENDING_REINSTALL_MASTERS",
+              "PENDING_UPGRADE_CLUSTER_CONFIGURATION",
+              "MAINTENANCE",
+              "ERROR",
+              "PENDING_NODES_UNSHELVE",
+              "PENDING_UPDATE_REGISTRIES_INTEGRATION"
+            ],
+            "example": "ACTIVE"
+          },
+          "basic": {
+            "description": "Specifies that cluster has only a single master and that control plane is not in highly available mode.",
+            "type": "boolean",
+            "example": true
+          },
+          "enable_autorepair": {
+            "description": "Reflects whether worker nodes are allowed to be reinstalled automatically in case of their unavailability or unhealthiness.",
+            "type": "boolean",
+            "example": true
+          },
+          "enable_patch_version_auto_upgrade": {
+            "description": "Specifies whether Kubernetes version of the cluster is allowed to be upgraded automatically.",
+            "type": "boolean",
+            "example": true
+          },
+          "private_kube_api": {
+            "description": "Whether kube API is available from the Internet or not.",
+            "type": "boolean",
+            "example": true
+          },
+          "kube_api_ip": {
+            "description": "The IP of the Kubernetes API.",
+            "type": "string",
+            "example": "10.10.1.1"
+          },
+          "subnet_id": {
+            "description": "Contains reference to the subnet of the cluster.",
+            "format": "uuid4",
+            "type": "string",
+            "example": "0FAB540C-1099-4A4A-AD6C-C1498BE74E0A"
+          },
+          "kube_version": {
+            "description": "The current Kubernetes version of the cluster.",
+            "type": "string",
+            "example": 1.32
+          },
+          "network_id": {
+            "description": "Contains reference to the network of the cluster.",
+            "format": "uuid4",
+            "type": "string",
+            "example": "EE102156-A9A8-423A-811D-F8E3C56891B7"
+          },
+          "network_type": {
+            "description": "Type of network l3vpn or standard.",
+            "type": "string",
+            "enum": [
+              "STANDARD",
+              "L3VPN"
+            ]
+          },
+          "pool": {
+            "description": "The pool of where the cluster master nodes are located.",
+            "type": "string",
+            "example": "ru-9"
+          },
+          "kubernetes_options": {
+            "$ref": "#/components/schemas/KubernetesOptions"
+          },
+          "additional_software": {
+            "additionalProperties": {},
+            "description": "AdditionalSoftware represents information about additional software installed in the cluster.",
+            "type": "object"
+          },
+          "maintenance_last_start": {
+            "description": "MaintenanceLastStart is the timestamp in UTC timezone of the last cluster maintenance start.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "maintenance_window_end": {
+            "description": "MaintenanceWindowEnd represents the UTC time in the \"hh:mm:ss\"  format indicating when the cluster maintenance window ends.",
+            "type": "string"
+          },
+          "maintenance_window_start": {
+            "description": "MaintenanceWindowStart represents the UTC time in the \"hh:mm:ss\"  format indicating when the cluster maintenance window starts.",
+            "type": "string"
+          },
+          "pki_tree_updated_at": {
+            "description": "PKITreeUpdatedAt represents the timestamp in UTC timezone of when the PKI-tree of the cluster was updated.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "cni_type": {
+            "description": "CNI type represents type of CNI which is used in cluster.",
+            "type": "string",
+            "enum": [
+              "CALICO",
+              "CILIUM"
+            ]
+          },
+          "cluster_type": {
+            "description": "The type of the cluster.",
+            "type": "string",
+            "enum": [
+              "BASIC",
+              "HIGH_AVAILABILITY",
+              "HIGH_AVAILABILITY_MULTI_AZ"
+            ]
+          },
+          "cni_cilium_settings": {
+            "$ref": "#/components/schemas/CNICiliumSettings"
+          }
+        }
+      },
+      "ClusterResp": {
+        "description": "Cluster response.",
+        "type": "object",
+        "properties": {
+          "cluster": {
+            "$ref": "#/components/schemas/ClusterDetailed"
+          }
+        }
+      },
+      "generic_not_found_error": {
+        "description": "Generic message about not found error for any object.",
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "Object ID.",
+                "format": "uuid4",
+                "type": "string",
+                "example": "885D8D82-9D41-446B-84EA-BC3058E3F2C5"
+              },
+              "message": {
+                "description": "Message of the error.",
+                "type": "string",
+                "example": "Unable find object by provided uuid"
+              }
+            },
+            "required": [
+              "id",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "ClusterUpdateStruct": {
+        "properties": {
+          "enable_patch_version_auto_upgrade": {
+            "description": "EnablePatchVersionAutoUpgrade specifies if Kubernetes version of the cluster is allowed to be upgraded\nautomatically.\nEnabled by default for regional clusters and disabled for zonal clusters.",
+            "type": "boolean"
+          },
+          "enable_autorepair": {
+            "description": "EnableAutorepair reflects whether worker nodes are allowed to be reinstalled  automatically in case of their unavailability or unhealthiness.",
+            "type": "boolean",
+            "default": true
+          },
+          "kubernetes_options": {
+            "$ref": "#/components/schemas/KubernetesOptions"
+          },
+          "maintenance_window_start": {
+            "description": "MaintenanceWindowStart represents UTC time of when the cluster will start its maintenance tasks.\nIt should be in hh:mm:ss format if provided.",
+            "type": "string"
+          },
+          "cni_cilium_settings": {
+            "$ref": "#/components/schemas/CNICiliumSettings"
+          }
+        },
+        "type": "object"
+      },
+      "ClusterUpdateBody": {
+        "description": "ClusterUpdateBody\nrepresents body content.",
+        "properties": {
+          "cluster": {
+            "$ref": "#/components/schemas/ClusterUpdateStruct"
+          }
+        }
+      },
+      "TaskErrorDetails": {
+        "title": "Task error details view.",
+        "type": "object",
+        "description": "Provides information about error details of the task. Disabled by default, to enable use query parameter 'withErrorDetails=true'.",
+        "required": [
+          "code",
+          "name"
+        ],
+        "properties": {
+          "code": {
+            "description": "Task's error code.",
+            "format": "int64",
+            "type": "integer",
+            "example": 105
+          },
+          "details": {
+            "description": "Contains task's error helpful information.",
+            "type": "string",
+            "example": "some of the servers in the node group have not been created or set up due to internal error"
+          },
+          "name": {
+            "description": "Task's error short description.",
+            "type": "string",
+            "example": "PARTIAL_NODE_SETUP_FAILURE"
+          }
+        }
+      },
+      "Task": {
+        "description": "Provides information about task.",
+        "type": "object",
+        "required": [
+          "id",
+          "cluster_id",
+          "started_at",
+          "status",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "description": "The identifier of the task.",
+            "format": "uuid4",
+            "type": "string",
+            "example": "506E0300-736A-11F0-B558-0800200C9A66"
+          },
+          "cluster_id": {
+            "description": "Contains cluster identifier.",
+            "format": "uuid4",
+            "type": "string",
+            "example": "03C71900-736B-11F0-B558-0800200C9A66"
+          },
+          "nodegroup_id": {
+            "description": "Contains node group identifier.",
+            "format": "uuid4",
+            "type": "string",
+            "example": "09E3E2F0-736B-11F0-B558-0800200C9A66"
+          },
+          "started_at": {
+            "description": "The timestamp in UTC timezone of when the task has been started.",
+            "format": "date-time",
+            "type": "string",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "updated_at": {
+            "description": "The timestamp in UTC timezone of when the task has been updated.",
+            "format": "date-time",
+            "type": "string",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "status": {
+            "description": "Current status of the task.",
+            "type": "string",
+            "enum": [
+              "IN_PROGRESS",
+              "IN_QUEUE",
+              "DONE",
+              "ERROR",
+              "CANCELED"
+            ],
+            "example": "IN_PROGRESS"
+          },
+          "type": {
+            "description": "Task's type.",
+            "type": "string",
+            "example": "CREATE_CLUSTER"
+          },
+          "error_details": {
+            "$ref": "#/components/schemas/TaskErrorDetails"
+          }
+        }
+      },
+      "TaskList": {
+        "description": "Provides information about tasks of the cluster.",
+        "type": "object",
+        "required": [
+          "count",
+          "tasks"
+        ],
+        "properties": {
+          "count": {
+            "description": "Count of all tasks of the cluster.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            }
+          }
+        }
+      },
+      "TaskResp": {
+        "description": "Provides information about task of the cluster.",
+        "type": "object",
+        "required": [
+          "task"
+        ],
+        "properties": {
+          "task": {
+            "$ref": "#/components/schemas/Task"
+          }
+        }
+      },
+      "NodegroupTaint": {
+        "description": "K8s node group taint that applies for every node in the group.",
+        "required": [
+          "effect",
+          "value",
+          "key"
+        ],
+        "properties": {
+          "effect": {
+            "description": "Effect for taint.",
+            "type": "string",
+            "enum": [
+              "NoSchedule",
+              "PreferNoSchedule",
+              "NoExecute"
+            ],
+            "example": "NoSchedule"
+          },
+          "key": {
+            "description": "Key for taint.",
+            "type": "string",
+            "example": "example_key"
+          },
+          "value": {
+            "description": "Value for taint.",
+            "type": "string",
+            "example": "example_value"
+          }
+        },
+        "type": "object"
+      },
+      "CloudNodegroupConfig": {
+        "description": "Configuration for cloud based nodegroups.",
+        "properties": {
+          "affinity_policy": {
+            "description": "An optional parameter to tune nodes affinity.",
+            "type": "string",
+            "x-go-type-skip-optional-pointer": true
+          },
+          "cpus": {
+            "description": "CPU count for each node.\nIt can be omitted only in cases when flavor_id is set.",
+            "format": "int64",
+            "type": "integer",
+            "example": 5,
+            "x-go-type-skip-optional-pointer": true
+          },
+          "flavor_id": {
+            "description": "Contains reference to a pre-created flavor. It can be omitted in most cases.",
+            "type": "string",
+            "example": 3031,
+            "x-go-type-skip-optional-pointer": true
+          },
+          "keypair_name": {
+            "description": "Contains name of the SSH key that will be added to all nodes.",
+            "type": "string",
+            "x-go-type-skip-optional-pointer": true
+          },
+          "local_volume": {
+            "description": "Whether nodes will use local volume.",
+            "type": "boolean",
+            "x-go-type-skip-optional-pointer": true
+          },
+          "ram_mb": {
+            "description": "RAM count in MB for each node.\nIt can be omitted only in cases when flavor_id is set.",
+            "format": "int64",
+            "type": "integer",
+            "example": 8128,
+            "x-go-type-skip-optional-pointer": true
+          },
+          "volume_gb": {
+            "description": "Volume size in GB for each node.\nIt can be omitted only in cases when flavor_id is set and volume is local.",
+            "format": "int64",
+            "type": "integer",
+            "example": 128,
+            "x-go-type-skip-optional-pointer": true
+          },
+          "volume_type": {
+            "description": "Block storage volume type for each node.\nIt can be omitted only in cases when flavor_id is set and volume is local.",
+            "type": "string",
+            "example": "universal.ru-9a",
+            "x-go-type-skip-optional-pointer": true
+          }
+        },
+        "type": "object"
+      },
+      "DedicatedNodegroupConfig": {
+        "description": "Configuration for dedicated based nodegroups.",
+        "required": [
+          "price_plan_uuid",
+          "service_uuid"
+        ],
+        "properties": {
+          "create_storage_partition": {
+            "default": true,
+            "description": "Determines is storage partition should be created on fastest disk.",
+            "type": "boolean"
+          },
+          "currency": {
+            "description": "Which balance will be used to order new servers.\n## Note 💡\n```\nmain - to use main balance. This option will be used as default.\nbonus - to use bonus balance.\n```",
+            "default": "main",
+            "enum": [
+              "main",
+              "bonus"
+            ],
+            "example": "main",
+            "type": "string"
+          },
+          "price_plan_uuid": {
+            "type": "string",
+            "format": "uuid4",
+            "example": "3E060EE6-D55A-46C7-89D0-83F8E0839AB9"
+          },
+          "root_size_gb": {
+            "default": 100,
+            "description": "RootSizeGB represents size of \"/\" partition on dedicated nodes.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "service_uuid": {
+            "type": "string",
+            "format": "uuid4",
+            "example": "72053A3B-3AF3-45DB-9313-5DB7B57923C2"
+          }
+        },
+        "type": "object"
+      },
+      "Node": {
+        "description": "Provides information about node.",
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "hostname",
+          "ip",
+          "nodegroup_id",
+          "provider_server_id"
+        ],
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the node.",
+            "type": "string",
+            "format": "uuid4",
+            "example": "75A8CD59-2E4B-4C8B-ABF0-379DDC50CCE3"
+          },
+          "created_at": {
+            "description": "Timestamp in UTC timezone of when the node has been created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "updated_at": {
+            "description": "Timestamp in UTC timezone of when the node has been updated.",
+            "format": "date-time",
+            "type": "string",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "hostname": {
+            "description": "A hostname of the node.",
+            "type": "string",
+            "example": "super-mks-cluster-k8s-node-asdfg"
+          },
+          "ip": {
+            "description": "IP address of the node.",
+            "type": "string",
+            "example": "10.40.0.153"
+          },
+          "nodegroup_id": {
+            "description": "Contains node group identifier.",
+            "format": "uuid4",
+            "example": "7FEE2971-8A83-4487-A427-3867D1F88335",
+            "type": "string"
+          },
+          "provider_server_id": {
+            "description": "Contains server identifier in external provider (OpenStack, dedicated resource).",
+            "format": "uuid4",
+            "type": "string",
+            "example": "1620AC2D-7667-42F0-9F6D-A3A0ECA6E654"
+          }
+        }
+      },
+      "Nodegroup": {
+        "description": "Provides information about nodegroup.",
+        "type": "object",
+        "required": [
+          "id",
+          "cluster_id",
+          "created_at",
+          "status",
+          "nodegroup_type",
+          "enable_autoscale",
+          "install_nvidia_device_plugin",
+          "preemptible",
+          "labels",
+          "taints",
+          "segment",
+          "nodes"
+        ],
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the nodegroup.",
+            "type": "string",
+            "format": "uuid4",
+            "example": "7FEE2971-8A83-4487-A427-3867D1F88335"
+          },
+          "cluster_id": {
+            "description": "Unique identifier of the cluster.",
+            "type": "string",
+            "format": "uuid4",
+            "example": "E3EF1AD7-DF11-49C3-BD16-8725902325BC"
+          },
+          "created_at": {
+            "description": "Timestamp in UTC timezone of when the node group has been created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "updated_at": {
+            "description": "Timestamp in UTC timezone of when the node group has been updated.",
+            "format": "date-time",
+            "type": "string",
+            "example": "2019-11-04T10:21:11.943917Z"
+          },
+          "status": {
+            "description": "Current status of the nodegroup.",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PENDING_CREATE",
+              "PENDING_UPDATE",
+              "PENDING_DELETE",
+              "PENDING_SCALE_UP",
+              "PENDING_SCALE_DOWN",
+              "PENDING_NODE_REINSTALL",
+              "PENDING_NODES_UNSHELVE",
+              "ERROR"
+            ],
+            "example": "ACTIVE"
+          },
+          "nodegroup_type": {
+            "description": "Type of nodes in nodegroup. ## Note 💡 ` STANDARD      -- for all nodes from configs: standard line, cpu line, memory line; GPU           -- for nodes from gpu line; DEDICATED     -- for dedicated nodes; DEDICATED_GPU -- for dedicated nodes from gpu line; `",
+            "type": "string",
+            "enum": [
+              "STANDARD",
+              "GPU",
+              "DEDICATED",
+              "DEDICATED_GPU"
+            ]
+          },
+          "enable_autoscale": {
+            "description": "Reflects if the node group is allowed to be scaled automatically.",
+            "type": "boolean"
+          },
+          "autoscale_max_nodes": {
+            "description": "Maximum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer",
+            "example": 10
+          },
+          "autoscale_min_nodes": {
+            "description": "Minimum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer",
+            "example": 0
+          },
+          "segment": {
+            "description": "Segment for all nodes in the nodegroup.",
+            "type": "string",
+            "example": "ru-9a"
+          },
+          "install_nvidia_device_plugin": {
+            "description": "Indicates whether NVIDIA device plugin installation was requested. Applicable only for nodegroups with GPU nodes.",
+            "type": "boolean"
+          },
+          "preemptible": {
+            "description": "Whether nodes in the node group are preemptible.",
+            "type": "boolean"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "An object containing a set of Kubernetes labels that will be applied for each node in the group. The keys must be user-defined.",
+            "type": "object",
+            "example": {
+              "myFirstKey": "myFirstValue",
+              "mySecondKey": "mySecondValue"
+            }
+          },
+          "taints": {
+            "description": "A list of node group taints.",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupTaint"
+            },
+            "type": "array"
+          },
+          "cidr": {
+            "description": "A CIDR for node group specified by client.",
+            "type": "string",
+            "example": "10.0.1.0/24",
+            "x-skip-optional-pointer": true
+          },
+          "cloud_nodegroup_config": {
+            "$ref": "#/components/schemas/CloudNodegroupConfig"
+          },
+          "dedicated_nodegroup_config": {
+            "$ref": "#/components/schemas/DedicatedNodegroupConfig"
+          },
+          "nodes": {
+            "description": "Contains a list of all nodes in the nodegroup.",
+            "items": {
+              "$ref": "#/components/schemas/Node"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "NodegroupAdditionalInfo": {
+        "description": "Provides additional information about node group like userdata, etc.",
+        "type": "object",
+        "properties": {
+          "user_data": {
+            "description": "True when node group has user_data field filled.",
+            "type": "boolean",
+            "readOnly": true,
+            "x-omitempty": false,
+            "x-go-type-skip-optional-pointer": true
+          }
+        }
+      },
+      "NodegroupListItem": {
+        "description": "Provides information about node group for list response.",
+        "type": "object",
+        "required": [
+          "id",
+          "cluster_id",
+          "created_at",
+          "status",
+          "nodegroup_type",
+          "enable_autoscale",
+          "install_nvidia_device_plugin",
+          "preemptible",
+          "labels",
+          "taints",
+          "segment",
+          "nodes",
+          "available_additional_info"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Nodegroup"
+          },
+          {
+            "type": "object",
+            "required": [
+              "available_additional_info"
+            ],
+            "properties": {
+              "available_additional_info": {
+                "$ref": "#/components/schemas/NodegroupAdditionalInfo"
+              }
+            }
+          }
+        ]
+      },
+      "NodegroupList": {
+        "description": "List of nodegroups of the cluster.",
+        "type": "object",
+        "required": [
+          "nodegroups"
+        ],
+        "properties": {
+          "nodegroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupListItem"
+            }
+          }
+        }
+      },
+      "NodegroupCreateStruct": {
+        "required": [
+          "segment",
+          "count"
+        ],
+        "properties": {
+          "segment": {
+            "description": "Should contain the valid segment name where node group nodes will be created.",
+            "type": "string",
+            "example": "SPB-5"
+          },
+          "count": {
+            "description": "Count represents nodes count for this nodegroup.",
+            "format": "int64",
+            "type": "integer",
+            "example": 3
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "An object containing a set of Kubernetes labels that will be applied for each node in the group. The keys must be user-defined.",
+            "type": "object",
+            "example": {
+              "myFirstKey": "myFirstValue",
+              "mySecondKey": "mySecondValue"
+            }
+          },
+          "taints": {
+            "description": "List of node group taints.",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupTaint"
+            },
+            "type": "array"
+          },
+          "dedicated_nodegroup_config": {
+            "$ref": "#/components/schemas/DedicatedNodegroupConfig"
+          },
+          "cloud_nodegroup_config": {
+            "$ref": "#/components/schemas/CloudNodegroupConfig"
+          },
+          "cidr": {
+            "description": "CIDR for node group specified by client.",
+            "type": "string",
+            "example": "10.0.1.0/24",
+            "x-go-type-skip-optional-pointer": true
+          },
+          "enable_autoscale": {
+            "description": "Reflects if the node group is allowed to be scaled automatically.",
+            "type": "boolean"
+          },
+          "autoscale_max_nodes": {
+            "description": "Maximum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "autoscale_min_nodes": {
+            "description": "Minimum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "user_data": {
+            "description": "Base64 data which is used to pass a script that worker nodes run on boot.",
+            "type": "string",
+            "x-go-type-skip-optional-pointer": true
+          },
+          "install_nvidia_device_plugin": {
+            "description": "Indicates whether NVIDIA device plugin installation was requested. Applicable only for nodegroups with GPU nodes.",
+            "type": "boolean"
+          },
+          "preemptible": {
+            "description": "Whether nodes in the node group are preemptible.",
+            "type": "boolean",
+            "x-go-type-skip-optional-pointer": true
+          }
+        }
+      },
+      "NodegroupsCreateBody": {
+        "description": "Body content for creating multiple nodegroups.",
+        "required": [
+          "nodegroups"
+        ],
+        "properties": {
+          "nodegroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupCreateStruct"
+            }
+          }
+        }
+      },
+      "NodegroupDetailed": {
+        "description": "Provides detailed information about nodegroup.",
+        "type": "object",
+        "required": [
+          "id",
+          "cluster_id",
+          "created_at",
+          "status",
+          "nodegroup_type",
+          "enable_autoscale",
+          "install_nvidia_device_plugin",
+          "preemptible",
+          "labels",
+          "taints",
+          "segment",
+          "nodes"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Nodegroup"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "user_data": {
+                "description": "Base64 data which is used to pass a script that worker nodes run on boot.",
+                "type": "string",
+                "readOnly": true,
+                "x-go-type-skip-optional-pointer": true
+              }
+            }
+          }
+        ]
+      },
+      "NodegroupResp": {
+        "description": "Node group response.",
+        "type": "object",
+        "required": [
+          "nodegroup"
+        ],
+        "properties": {
+          "nodegroup": {
+            "$ref": "#/components/schemas/NodegroupDetailed"
+          }
+        }
+      },
+      "NodegroupUpdateStruct": {
+        "properties": {
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "An object containing a set of Kubernetes labels that will be applied for each node in the group. The keys must be user-defined.",
+            "type": "object",
+            "example": {
+              "myFirstKey": "myFirstValue",
+              "mySecondKey": "mySecondValue"
+            }
+          },
+          "taints": {
+            "description": "List of node group taints.",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupTaint"
+            },
+            "type": "array"
+          },
+          "enable_autoscale": {
+            "description": "Whether the cloud node group is allowed to be scaled automatically.",
+            "type": "boolean"
+          },
+          "autoscale_min_nodes": {
+            "description": "Minimum possible number of worker nodes in the cloud nodegroup.",
+            "format": "int",
+            "type": "integer"
+          },
+          "autoscale_max_nodes": {
+            "description": "Maximum possible number of worker nodes in the cloud nodegroup.",
+            "format": "int",
+            "type": "integer"
+          }
+        }
+      },
+      "NodegroupUpdateBody": {
+        "description": "Body content.",
+        "required": [
+          "nodegroup"
+        ],
+        "properties": {
+          "nodegroup": {
+            "$ref": "#/components/schemas/NodegroupUpdateStruct"
+          }
+        }
+      },
+      "NodegroupResizeStruct": {
+        "required": [
+          "desired"
+        ],
+        "properties": {
+          "desired": {
+            "description": "Desired amount of nodes for this nodegroup.",
+            "format": "int64",
+            "type": "integer",
+            "example": 3
+          }
+        }
+      },
+      "NodegroupResizeBody": {
+        "description": "Body content.",
+        "required": [
+          "nodegroup"
+        ],
+        "properties": {
+          "nodegroup": {
+            "$ref": "#/components/schemas/NodegroupResizeStruct"
+          }
+        }
+      },
+      "NodeResp": {
+        "description": "Node response.",
+        "type": "object",
+        "required": [
+          "node"
+        ],
+        "properties": {
+          "node": {
+            "$ref": "#/components/schemas/Node"
+          }
+        }
+      },
+      "RegistryWithMeta": {
+        "description": "Registry integration with metadata.",
+        "title": "Registry with meta.",
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the registry.",
+            "example": "C0523FA7-0BE5-4B9C-9EEA-78EC4CC7204B",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the registry.",
+            "example": "my-registry",
+            "type": "string"
+          }
+        }
+      },
+      "RegistriesIntegration": {
+        "description": "Registries integration of the cluster.",
+        "type": "object",
+        "required": [
+          "status",
+          "registries"
+        ],
+        "properties": {
+          "registries": {
+            "items": {
+              "$ref": "#/components/schemas/RegistryWithMeta"
+            },
+            "type": "array"
+          },
+          "status": {
+            "description": "Status represents status of the registries' integration.",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "ERROR",
+              "PENDING_CREATE",
+              "PENDING_UPDATE",
+              "PENDING_DELETE",
+              "DELETED",
+              "UNKNOWN"
+            ]
+          }
+        }
+      },
+      "RegistriesIntegrationUpdateStruct": {
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the registry.",
+            "example": "C0523FA7-0BE5-4B9C-9EEA-78EC4CC7204B",
+            "type": "string"
+          }
+        }
+      },
+      "RegistriesIntegrationUpdateBody": {
+        "description": "Body content.",
+        "required": [
+          "registries"
+        ],
+        "properties": {
+          "registries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegistriesIntegrationUpdateStruct"
+            }
+          }
+        }
+      },
+      "RegistriesIntegrationCreateStruct": {
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the registry.",
+            "example": "C0523FA7-0BE5-4B9C-9EEA-78EC4CC7204B",
+            "type": "string"
+          }
+        }
+      },
+      "RegistriesIntegrationCreateBody": {
+        "description": "Body content.",
+        "required": [
+          "registries"
+        ],
+        "properties": {
+          "registries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegistriesIntegrationCreateStruct"
+            }
+          }
+        }
+      },
+      "OptionNamesAC": {
+        "description": "List of available admission controllers.",
+        "type": "array",
+        "example": [
+          "AlwaysPullImages",
+          "CertificateApproval",
+          "CertificateSigning"
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "AvailableAdmissionControllers": {
+        "description": "Detailed info about available admission controllers\nfor every k8s minor version.",
+        "type": "object",
+        "properties": {
+          "kube_version_minor": {
+            "description": "Kubernetes minor version.",
+            "type": "string",
+            "example": "1.32"
+          },
+          "names": {
+            "$ref": "#/components/schemas/OptionNamesAC"
+          }
+        }
+      },
+      "AdmissionControllersList": {
+        "description": "List of available admission controllers.",
+        "type": "object",
+        "properties": {
+          "admission_controllers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailableAdmissionControllers"
+            }
+          }
+        }
+      },
+      "KubeVersion": {
+        "description": "Kubernetes version information.",
+        "title": "Version view.",
+        "type": "object",
+        "properties": {
+          "version": {
+            "description": "Supported Kubernetes version in format: \"X.Y.Z\"",
+            "readOnly": true,
+            "type": "string",
+            "x-order": 1
+          },
+          "is_default": {
+            "description": "Flag indicates whether the Kubernetes version is default.",
+            "readOnly": true,
+            "type": "boolean",
+            "x-order": 2
+          }
+        }
+      },
+      "KubeVersionsList": {
+        "description": "List of supported Kubernetes versions.",
+        "type": "object",
+        "properties": {
+          "kube_versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KubeVersion"
+            }
+          }
+        }
+      },
+      "OptionNamesFG": {
+        "description": "List of available feature gate names.",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "AvailableFeatureGates": {
+        "description": "Detailed info about available feature gates\nfor every k8s minor version.",
+        "type": "object",
+        "properties": {
+          "kube_version_minor": {
+            "description": "Kubernetes minor version.",
+            "type": "string"
+          },
+          "names": {
+            "$ref": "#/components/schemas/OptionNamesFG"
+          }
+        }
+      },
+      "FeatureGatesList": {
+        "description": "List of available feature gates.",
+        "type": "object",
+        "properties": {
+          "feature_gates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailableFeatureGates"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "cluster_id": {
+        "description": "Unique cluster identifier.",
+        "in": "path",
+        "name": "cluster_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "526338B6-1100-4FB3-AD09-5CD268E5E674"
+      },
+      "limit": {
+        "description": "Limit of elements in response.",
+        "in": "query",
+        "name": "limit",
+        "schema": {
+          "type": "integer",
+          "format": "uint64"
+        }
+      },
+      "offset": {
+        "description": "Number of elements to skip.",
+        "in": "query",
+        "name": "offset",
+        "schema": {
+          "type": "integer",
+          "format": "uint64",
+          "default": 0
+        }
+      },
+      "with_error_details": {
+        "description": "Flag to show error details at task view.",
+        "in": "query",
+        "name": "with_error_details",
+        "schema": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "task_id": {
+        "description": "Unique task identifier.",
+        "in": "path",
+        "name": "task_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "526338B6-1100-4FB3-AD09-5CD268E5E674"
+      },
+      "nodegroup_id": {
+        "description": "Unique node group identifier.",
+        "in": "path",
+        "name": "nodegroup_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "B36D6C34-318D-4EC1-833D-384197F24385"
+      },
+      "node_id": {
+        "description": "Unique node identifier.",
+        "in": "path",
+        "name": "node_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "75A8CD59-2E4B-4C8B-ABF0-379DDC50CCE3"
+      },
+      "registry_id": {
+        "description": "Unique registry identifier.",
+        "in": "path",
+        "name": "registry_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "C0523FA7-0BE5-4B9C-9EEA-78EC4CC7204B"
+      }
+    }
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Billing API",
+    "description": "Viewing the remaining balance and estimating the time of service operation for which the available funds will be sufficient",
+    "version": "v1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "iam_token_account_scoped": {
+        "in": "header",
+        "name": "X-Auth-Token",
+        "type": "apiKey",
+        "description": "IAM token for account"
+      },
+      "static_token": {
+        "in": "header",
+        "name": "X-Token",
+        "type": "apiKey",
+        "description": "Static token"
+      }
+    }
+  },
+  "paths": {
+    "/v2/billing/prediction": {
+      "get": {
+        "tags": [
+          "Get billing prediction"
+        ],
+        "summary": "Get billing prediction",
+        "description": "Returns the estimated time that the remaining balance will last in hours..",
+        "security": [
+          {
+            "static_token": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "primary": {
+                          "type": "integer",
+                          "example": 100
+                        },
+                        "storage": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vmware": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vpc": {
+                          "type": "integer",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/balances": {
+      "get": {
+        "tags": [
+          "Get account balances"
+        ],
+        "summary": "Get account balances",
+        "description": "Returns account balances and billing information.",
+        "security": [
+          {
+            "static_token": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "settings": {
+                          "type": "object",
+                          "properties": {
+                            "mode": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            },
+                            "avaliable_billings": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "avaliable_balances": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "billings": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "billing_type": {
+                                "type": "string"
+                              },
+                              "balances_values_sum": {
+                                "type": "integer"
+                              },
+                              "debt": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "service_id": {
+                                      "type": "integer"
+                                    },
+                                    "service_type": {
+                                      "type": "string"
+                                    },
+                                    "debt_value": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                }
+                              },
+                              "final_sum": {
+                                "type": "integer"
+                              },
+                              "debt_sum": {
+                                "type": "integer"
+                              },
+                              "balances": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "balance_id": {
+                                      "type": "integer"
+                                    },
+                                    "balance_type": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "debt_status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

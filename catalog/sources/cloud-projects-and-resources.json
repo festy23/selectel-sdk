@@ -1,0 +1,2157 @@
+{
+  "basePath": "/vpc/resell",
+  "definitions": {
+    "Account": {
+      "properties": {
+        "enabled": {
+          "description": "Is account enabled",
+          "type": "boolean"
+        },
+        "locked": {
+          "description": "Is account locked",
+          "type": "boolean"
+        },
+        "locks": {
+          "description": "List of locks",
+          "items": {
+            "$ref": "#/definitions/Lock"
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "Account name",
+          "type": "string"
+        },
+        "onboarding": {
+          "description": "Is account in onboarding",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled",
+        "locked",
+        "name",
+        "onboarding"
+      ],
+      "type": "object"
+    },
+    "AccountResponse": {
+      "properties": {
+        "account": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Account"
+            }
+          ],
+          "description": "Nested fields for account info"
+        }
+      },
+      "type": "object"
+    },
+    "CreateFloatingIPsRequestJson": {
+      "properties": {
+        "floatingips": {
+          "description": "Nested fields for floating IPs",
+          "items": {
+            "$ref": "#/definitions/_CreateFloatingIPRequest"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "floatingips"
+      ],
+      "type": "object"
+    },
+    "CreateKeypairRequestJson": {
+      "properties": {
+        "keypair": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_CreateKeypairRequest"
+            }
+          ],
+          "description": "Nested fields for keypair"
+        }
+      },
+      "required": [
+        "keypair"
+      ],
+      "type": "object"
+    },
+    "CreateKeypairResponse": {
+      "properties": {
+        "keypair": {
+          "description": "Nested fields for keypairs",
+          "items": {
+            "$ref": "#/definitions/_CreateKeypairResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CreateLicenseRequestJson": {
+      "properties": {
+        "licenses": {
+          "description": "Nested fields for licenses",
+          "items": {
+            "$ref": "#/definitions/_CreateLicenseRequest"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "licenses"
+      ],
+      "type": "object"
+    },
+    "CreateLicenseResponse": {
+      "properties": {
+        "licenses": {
+          "description": "Nested fields for licenses",
+          "items": {
+            "$ref": "#/definitions/_CreateLicenseResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CreateProjectRequestJson": {
+      "properties": {
+        "project": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_CreateProjectRequest"
+            }
+          ],
+          "description": "Nested fields for project"
+        }
+      },
+      "required": [
+        "project"
+      ],
+      "type": "object"
+    },
+    "CreateProjectResponse": {
+      "properties": {
+        "project": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_CreateProjectResponse"
+            }
+          ],
+          "description": "Nested fields for project"
+        }
+      },
+      "type": "object"
+    },
+    "CreateSubnetRequestJson": {
+      "properties": {
+        "subnets": {
+          "description": "Nested fields for subnets",
+          "items": {
+            "$ref": "#/definitions/_CreateSubnetRequest"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "subnets"
+      ],
+      "type": "object"
+    },
+    "CreateSubnetResponse": {
+      "properties": {
+        "subnet": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_CreateSubnetResponse"
+            }
+          ],
+          "description": "Nested fields for subnet"
+        }
+      },
+      "type": "object"
+    },
+    "DNSResponse": {
+      "properties": {
+        "result": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Result"
+            }
+          ],
+          "description": "Nested fields for DNS info"
+        }
+      },
+      "type": "object"
+    },
+    "GetFloatingIPResponse": {
+      "properties": {
+        "floatingip": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_GetFloatingIPResponse"
+            }
+          ],
+          "description": "Nested fields for floating IPs"
+        }
+      },
+      "type": "object"
+    },
+    "GetLicenseResponse": {
+      "properties": {
+        "license": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/License"
+            }
+          ],
+          "description": "Nested fields for license"
+        }
+      },
+      "type": "object"
+    },
+    "GetProjectResponse": {
+      "properties": {
+        "project": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_GetProjectResponse"
+            }
+          ],
+          "description": "Nested fields for project"
+        }
+      },
+      "type": "object"
+    },
+    "GetSubnetResponse": {
+      "properties": {
+        "subnet": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Subnet"
+            }
+          ],
+          "description": "Nested fields for subnet"
+        }
+      },
+      "type": "object"
+    },
+    "License": {
+      "properties": {
+        "id": {
+          "description": "License unique identifier",
+          "format": "int32",
+          "type": "integer"
+        },
+        "network_id": {
+          "description": "Network identifier where licenses server is available",
+          "type": "string"
+        },
+        "port_id": {
+          "description": "Port identifier where licenses server is available",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "Project unique identifier",
+          "type": "string"
+        },
+        "region": {
+          "description": "Region name where licenses is available",
+          "type": "string"
+        },
+        "servers": {
+          "description": "Server list which use license",
+          "items": {
+            "$ref": "#/definitions/Server"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Status for Windows license",
+          "type": "string"
+        },
+        "subnet_id": {
+          "description": "Subnet identifier where licenses server is available",
+          "type": "string"
+        },
+        "type": {
+          "description": "License type",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ListFloatingIPsResponse": {
+      "properties": {
+        "floatingips": {
+          "description": "Nested fields for floating IPs",
+          "items": {
+            "$ref": "#/definitions/_ListFloatingIPsResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ListKeypairsResponse": {
+      "properties": {
+        "keypairs": {
+          "description": "Nested fields for keypairs",
+          "items": {
+            "$ref": "#/definitions/_ListKeypairsResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ListLicensesResponse": {
+      "properties": {
+        "licenses": {
+          "description": "Nested fields for licenses",
+          "items": {
+            "$ref": "#/definitions/License"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ListProjectsResponse": {
+      "properties": {
+        "projects": {
+          "description": "Nested fields for projects",
+          "items": {
+            "$ref": "#/definitions/_ListProjectsResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ListSubnetsResponse": {
+      "properties": {
+        "subnets": {
+          "description": "Nested fields for subnets",
+          "items": {
+            "$ref": "#/definitions/Subnet"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "LoadBalancer": {
+      "properties": {
+        "id": {
+          "description": "Load balancer unique identifier",
+          "type": "string"
+        },
+        "name": {
+          "description": "Load balancer name",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Lock": {
+      "properties": {
+        "created_at": {
+          "description": "Lock date",
+          "type": "string"
+        },
+        "reason": {
+          "description": "Lock reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_at",
+        "reason"
+      ],
+      "type": "object"
+    },
+    "ProjectUpdateResponse": {
+      "properties": {
+        "project": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_UpdateProjectResponse"
+            }
+          ],
+          "description": "Nested fields for project"
+        }
+      },
+      "type": "object"
+    },
+    "Result": {
+      "properties": {
+        "content": {
+          "description": "Content info",
+          "type": "string"
+        },
+        "delegated": {
+          "description": "Is delegated or not",
+          "type": "boolean"
+        },
+        "ns_servers": {
+          "description": "DNS servers",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Server": {
+      "properties": {
+        "id": {
+          "description": "Server unique identifier",
+          "type": "string"
+        },
+        "name": {
+          "description": "Server name",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status for server",
+          "type": "string"
+        },
+        "updated": {
+          "description": "Last state update time in format: YYYY-MM-DDTHH:MM:SSZ",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Subnet": {
+      "properties": {
+        "cidr": {
+          "description": "CIDR prefix of subnet",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "Create time in format: YYYY-MM-DDTHH:MM:SSZ",
+          "type": "string"
+        },
+        "gateway_ip": {
+          "description": "Gateway IP address",
+          "type": "string"
+        },
+        "id": {
+          "description": "Subnet unique identifier",
+          "format": "int32",
+          "type": "integer"
+        },
+        "ip_version": {
+          "description": "Version of IP protocol",
+          "format": "int32",
+          "type": "integer"
+        },
+        "name": {
+          "description": "Subnet name",
+          "type": "string"
+        },
+        "network_id": {
+          "description": "Network unique identifier for subnet",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "Subnet project unique identifier",
+          "type": "string"
+        },
+        "region": {
+          "description": "Subnet region name",
+          "type": "string"
+        },
+        "servers": {
+          "description": "Servers which are connected to subnet",
+          "items": {
+            "$ref": "#/definitions/Server"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Subnet status",
+          "type": "string"
+        },
+        "subnet_id": {
+          "description": "Uuid for subnet",
+          "type": "string"
+        },
+        "updated_at": {
+          "description": "Last update time in format: YYYY-MM-DDTHH:MM:SSZ",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TrafficResponse": {
+      "properties": {
+        "traffic": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_Traffic"
+            }
+          ],
+          "description": "Nested fields for traffic"
+        }
+      },
+      "type": "object"
+    },
+    "UpdateProjectRequestJson": {
+      "properties": {
+        "project": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_UpdateProjectRequest"
+            }
+          ],
+          "description": "Nested fields for project"
+        }
+      },
+      "required": [
+        "project"
+      ],
+      "type": "object"
+    },
+    "_CreateFloatingIPRequest": {
+      "properties": {
+        "ips": {
+          "description": "IP address for floating IP",
+          "type": "string"
+        },
+        "quantity": {
+          "description": "Quantity of floating IPs",
+          "format": "int32",
+          "type": "integer"
+        },
+        "region": {
+          "description": "Region name for floating IP",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quantity",
+        "region"
+      ],
+      "type": "object"
+    },
+    "_CreateKeypairRequest": {
+      "properties": {
+        "name": {
+          "description": "Keypair name",
+          "type": "string"
+        },
+        "public_key": {
+          "description": "Public key of keypair",
+          "type": "string"
+        },
+        "regions": {
+          "description": "Regions where keypair is available",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_id": {
+          "description": "Keypair's user unique identifier",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "public_key",
+        "user_id"
+      ],
+      "type": "object"
+    },
+    "_CreateKeypairResponse": {
+      "properties": {
+        "name": {
+          "description": "Keypair name",
+          "type": "string"
+        },
+        "public_key": {
+          "description": "Public key of keypair",
+          "type": "string"
+        },
+        "region": {
+          "description": "Region where keypair is available",
+          "type": "string"
+        },
+        "user_id": {
+          "description": "Keypair's user unique identifier",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_CreateLicenseRequest": {
+      "properties": {
+        "quantity": {
+          "description": "Quantity of Windows licenses",
+          "format": "int32",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "region": {
+          "description": "Region name where license is available",
+          "type": "string"
+        },
+        "type": {
+          "description": "License type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quantity",
+        "region",
+        "type"
+      ],
+      "type": "object"
+    },
+    "_CreateLicenseResponse": {
+      "properties": {
+        "id": {
+          "description": "License unique identifier",
+          "format": "int32",
+          "type": "integer"
+        },
+        "network_id": {
+          "description": "Network identifier where licenses server is available",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "Project unique identifier",
+          "type": "string"
+        },
+        "region": {
+          "description": "Region name where licenses is available",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status for Windows license",
+          "type": "string"
+        },
+        "subnet_id": {
+          "description": "Subnet identifier where licenses server is available",
+          "type": "string"
+        },
+        "type": {
+          "description": "License type",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_CreateProjectRequest": {
+      "properties": {
+        "description": {
+          "description": "Project description",
+          "maxLength": 255,
+          "minLength": 0,
+          "type": "string"
+        },
+        "name": {
+          "description": "Project name",
+          "maxLength": 64,
+          "minLength": 1,
+          "type": "string"
+        },
+        "skip_quotas_init": {
+          "description": "Skip quotas initialization",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "_CreateProjectResponse": {
+      "properties": {
+        "description": {
+          "description": "Project description",
+          "type": "string"
+        },
+        "id": {
+          "description": "Project unique identifier",
+          "type": "string"
+        },
+        "name": {
+          "description": "Project name",
+          "type": "string"
+        },
+        "url": {
+          "description": "Url for project",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_CreateSubnetRequest": {
+      "properties": {
+        "cidrs": {
+          "description": "CIDR prefixes of subnet",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "prefix_length": {
+          "description": "Subnet prefix length",
+          "format": "int32",
+          "type": "integer"
+        },
+        "quantity": {
+          "description": "Quantity of subnets",
+          "format": "int32",
+          "type": "integer"
+        },
+        "region": {
+          "description": "Subnet region name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Subnet type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "prefix_length",
+        "quantity",
+        "region",
+        "type"
+      ],
+      "type": "object"
+    },
+    "_CreateSubnetResponse": {
+      "properties": {
+        "cidr": {
+          "description": "CIDR prefix of subnet",
+          "type": "string"
+        },
+        "id": {
+          "description": "Subnet unique identifier",
+          "format": "int32",
+          "type": "integer"
+        },
+        "network_id": {
+          "description": "Network unique identifier for subnet",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "Subnet project unique identifier",
+          "type": "string"
+        },
+        "region": {
+          "description": "Subnet region name",
+          "type": "string"
+        },
+        "status": {
+          "description": "Subnet status",
+          "type": "string"
+        },
+        "subnet_id": {
+          "description": "Uuid for subnet",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_CreateThemeRequest": {
+      "properties": {
+        "brand_color": {
+          "description": "Color for control panel",
+          "type": "string",
+          "x-nullable": true
+        },
+        "color": {
+          "description": "Color code for top panel",
+          "type": "string",
+          "x-nullable": true
+        },
+        "logo": {
+          "description": "Link to logo for panel",
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "type": "object"
+    },
+    "_Domain": {
+      "properties": {
+        "paid": {
+          "$ref": "#/definitions/_TrafficDetail"
+        },
+        "prepared": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_TrafficDetail"
+            }
+          ],
+          "description": "Free traffic value"
+        },
+        "used": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_TrafficDetail"
+            }
+          ],
+          "description": "Traffic value used"
+        }
+      },
+      "type": "object"
+    },
+    "_GetFloatingIPResponse": {
+      "properties": {
+        "fixed_ip_address": {
+          "description": "Fixed ip address for floating IP, usually equal None",
+          "type": "string",
+          "x-nullable": true
+        },
+        "floating_ip_address": {
+          "description": "Floating IP address",
+          "type": "string"
+        },
+        "id": {
+          "description": "Floating IP unique identifier",
+          "type": "string"
+        },
+        "loadbalancer": {
+          "$ref": "#/definitions/LoadBalancer"
+        },
+        "port_id": {
+          "description": "Unique identifier of port for floating IP is attached",
+          "type": "string",
+          "x-nullable": true
+        },
+        "project_id": {
+          "description": "Project unique identifier",
+          "type": "string"
+        },
+        "region": {
+          "description": "Region name for floating IP",
+          "type": "string"
+        },
+        "servers": {
+          "description": "Servers which connected to floating IP",
+          "items": {
+            "$ref": "#/definitions/Server"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Status for floating IP",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_GetProjectResponse": {
+      "properties": {
+        "custom_url": {
+          "description": "Custom url for project",
+          "type": "string"
+        },
+        "description": {
+          "description": "Project description",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Project is enabled or not",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Project unique identifier",
+          "type": "string"
+        },
+        "name": {
+          "description": "Project name",
+          "type": "string"
+        },
+        "quotas": {
+          "additionalProperties": {
+            "description": "Nested fields for quotas",
+            "items": {
+              "$ref": "#/definitions/_QuotaResponse"
+            },
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "theme": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_ThemeResponse"
+            }
+          ],
+          "description": "Nested fields for theme"
+        },
+        "url": {
+          "description": "Url for project",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_ListFloatingIPsResponse": {
+      "properties": {
+        "floating_ip_address": {
+          "description": "Floating IP address",
+          "type": "string"
+        },
+        "id": {
+          "description": "Floating IP unique identifier",
+          "type": "string"
+        },
+        "loadbalancer": {
+          "$ref": "#/definitions/LoadBalancer"
+        },
+        "project_id": {
+          "description": "Project unique identifier",
+          "type": "string"
+        },
+        "region": {
+          "description": "Region name for floating IP",
+          "type": "string"
+        },
+        "servers": {
+          "description": "Servers which connected to floating IP",
+          "items": {
+            "$ref": "#/definitions/Server"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Status for floating IP",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_ListKeypairsResponse": {
+      "properties": {
+        "name": {
+          "description": "Keypair name",
+          "type": "string"
+        },
+        "public_key": {
+          "description": "Public key of keypair",
+          "type": "string"
+        },
+        "regions": {
+          "description": "Regions where keypair is available",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_id": {
+          "description": "Keypair's user unique identifier",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_ListProjectsResponse": {
+      "properties": {
+        "custom_url": {
+          "description": "Custom url for project",
+          "type": "string"
+        },
+        "description": {
+          "description": "Project description",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Project is enabled or not",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Project unique identifier",
+          "type": "string"
+        },
+        "name": {
+          "description": "Project name",
+          "type": "string"
+        },
+        "url": {
+          "description": "Url for project",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_QuotaResponse": {
+      "properties": {
+        "region": {
+          "description": "Region for quota",
+          "type": "string",
+          "x-nullable": true
+        },
+        "used": {
+          "description": "Quotas already usage value",
+          "format": "int32",
+          "type": "integer"
+        },
+        "value": {
+          "description": "Value of quota",
+          "format": "int32",
+          "type": "integer"
+        },
+        "zone": {
+          "description": "Zone for quota",
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "type": "object"
+    },
+    "_ThemeResponse": {
+      "properties": {
+        "brand_color": {
+          "description": "Color for control panel",
+          "type": "string"
+        },
+        "color": {
+          "description": "Color code for top panel",
+          "type": "string"
+        },
+        "logo": {
+          "description": "Link to logo for panel",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "_Traffic": {
+      "properties": {
+        "domain": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_Domain"
+            }
+          ],
+          "description": "Account name"
+        }
+      },
+      "type": "object"
+    },
+    "_TrafficDetail": {
+      "properties": {
+        "start": {
+          "description": "Start time for traffic period",
+          "format": "date-time",
+          "type": "string"
+        },
+        "stop": {
+          "description": "End time for traffic period",
+          "format": "date-time",
+          "type": "string"
+        },
+        "unit": {
+          "description": "Unit type",
+          "type": "string"
+        },
+        "value": {
+          "description": "Value of traffic in bytes",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "_UpdateProjectRequest": {
+      "properties": {
+        "custom_url": {
+          "description": "Custom url for project",
+          "type": "string",
+          "x-nullable": true
+        },
+        "description": {
+          "description": "Project description",
+          "maxLength": 255,
+          "minLength": 0,
+          "type": "string"
+        },
+        "name": {
+          "description": "Project name",
+          "maxLength": 64,
+          "minLength": 1,
+          "type": "string"
+        },
+        "theme": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_CreateThemeRequest"
+            }
+          ],
+          "description": "Nested fields for theme"
+        }
+      },
+      "type": "object"
+    },
+    "_UpdateProjectResponse": {
+      "properties": {
+        "custom_url": {
+          "description": "Custom url for project",
+          "type": "string"
+        },
+        "description": {
+          "description": "Project description",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Project is enabled or not",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Project unique identifier",
+          "type": "string"
+        },
+        "name": {
+          "description": "Project name",
+          "type": "string"
+        },
+        "theme": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/_ThemeResponse"
+            }
+          ],
+          "description": "Nested fields for theme"
+        },
+        "url": {
+          "description": "Url for project",
+          "format": "url",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "info": {
+    "description": "Managing cloud platform resources: projects, project users, public IPs, SSH keys, and more. It does not allow you to create cloud platform resources. To do this, you can use the OpenStack API",
+    "title": "Cloud Platform Projects and Resources API",
+    "version": "v2.0.0"
+  },
+  "paths": {
+    "/v2/accounts": {
+      "get": {
+        "operationId": "getAccountStatus",
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AccountResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get info about account",
+        "tags": [
+          "Accounts"
+        ]
+      }
+    },
+    "/v2/dnscheck/{hostname}": {
+      "get": {
+        "operationId": "getDNSInfo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hostname",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DNSResponse"
+            }
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get info about DNS at hostname",
+        "tags": [
+          "DNS"
+        ]
+      }
+    },
+    "/v2/floatingips": {
+      "get": {
+        "operationId": "listFloatingIPs",
+        "parameters": [
+          {
+            "description": "Need extended info or not",
+            "in": "query",
+            "name": "detailed",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ListFloatingIPsResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get list of floating IPs",
+        "tags": [
+          "Floating IPs"
+        ]
+      }
+    },
+    "/v2/floatingips/{floatingip_id}": {
+      "delete": {
+        "operationId": "deleteFloatingIP",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "floatingip_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete floating IP from project",
+        "tags": [
+          "Floating IPs"
+        ]
+      },
+      "get": {
+        "operationId": "getFloatingIP",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "floatingip_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GetFloatingIPResponse"
+            }
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get floating IP by unique identifier",
+        "tags": [
+          "Floating IPs"
+        ]
+      }
+    },
+    "/v2/floatingips/projects/{project_id}": {
+      "post": {
+        "operationId": "addFloatingIP",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CreateFloatingIPsRequestJson"
+            }
+          },
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GetFloatingIPResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Add floating IP to project",
+        "tags": [
+          "Floating IPs"
+        ]
+      }
+    },
+    "/v2/keypairs": {
+      "get": {
+        "deprecated": true,
+        "description": "To manage keypairs (SSH keys), use the Nova API. This endpoint will be removed in 2025.",
+        "operationId": "listKeypairs",
+        "parameters": [
+          {
+            "description": "Keypair's user unique identifier",
+            "in": "query",
+            "name": "user_id",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ListKeypairsResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get list of all keypairs",
+        "tags": [
+          "Keypairs"
+        ]
+      },
+      "post": {
+        "deprecated": true,
+        "description": "To manage keypairs (SSH keys), use the Nova API. This endpoint will be removed in 2025.",
+        "operationId": "addKeypair",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CreateKeypairRequestJson"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CreateKeypairResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Add keypair",
+        "tags": [
+          "Keypairs"
+        ]
+      }
+    },
+    "/v2/keypairs/{name}/users/{user_id}": {
+      "delete": {
+        "deprecated": true,
+        "description": "To manage keypairs (SSH keys), use the Nova API. This endpoint will be removed in 2025.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Remove keypair",
+        "tags": [
+          "Keypairs"
+        ]
+      }
+    },
+    "/v2/licenses": {
+      "get": {
+        "deprecated": true,
+        "description": "License management will be removed in 2025.",
+        "operationId": "listLicenses",
+        "parameters": [
+          {
+            "description": "Need extended info or not",
+            "in": "query",
+            "name": "detailed",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ListLicensesResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get list of added Windows licenses",
+        "tags": [
+          "Licenses"
+        ]
+      }
+    },
+    "/v2/licenses/{license_id}": {
+      "delete": {
+        "deprecated": true,
+        "description": "License management will be removed in 2025.",
+        "operationId": "deleteLicense",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "license_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete Windows license",
+        "tags": [
+          "Licenses"
+        ]
+      },
+      "get": {
+        "deprecated": true,
+        "description": "License management will be removed in 2025.",
+        "operationId": "getLicense",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "license_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GetLicenseResponse"
+            }
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get info about Windows license",
+        "tags": [
+          "Licenses"
+        ]
+      }
+    },
+    "/v2/licenses/projects/{project_id}": {
+      "post": {
+        "deprecated": true,
+        "description": "License management will be removed in 2025.",
+        "operationId": "addLicense",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CreateLicenseRequestJson"
+            }
+          },
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CreateLicenseResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Add Windows license to project",
+        "tags": [
+          "Licenses"
+        ]
+      }
+    },
+    "/v2/projects": {
+      "get": {
+        "operationId": "listProjects",
+        "parameters": [
+          {
+            "description": "Return all projects (requires iam.admin role)",
+            "in": "query",
+            "name": "all",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ListProjectsResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get list of all account's projects",
+        "tags": [
+          "Projects"
+        ]
+      },
+      "post": {
+        "operationId": "addProject",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CreateProjectRequestJson"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CreateProjectResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Add project to account",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/v2/projects/{project_id}": {
+      "delete": {
+        "operationId": "deleteProject",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Delete project from account",
+        "tags": [
+          "Projects"
+        ]
+      },
+      "get": {
+        "operationId": "getProject",
+        "parameters": [
+          {
+            "default": false,
+            "description": "Exclude project quotas from response.",
+            "in": "query",
+            "name": "exclude_quotas",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GetProjectResponse"
+            }
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get info about project",
+        "tags": [
+          "Projects"
+        ]
+      },
+      "patch": {
+        "operationId": "updateProject",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UpdateProjectRequestJson"
+            }
+          },
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/ProjectUpdateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Update project info",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/v2/subnets": {
+      "get": {
+        "operationId": "listSubnets",
+        "parameters": [
+          {
+            "description": "Need extended info or not",
+            "in": "query",
+            "name": "detailed",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ListSubnetsResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get list of subnets",
+        "tags": [
+          "Subnets"
+        ]
+      }
+    },
+    "/v2/subnets/{subnet_id}": {
+      "delete": {
+        "operationId": "deleteSubnet",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subnet_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete subnet from project",
+        "tags": [
+          "Subnets"
+        ]
+      },
+      "get": {
+        "operationId": "getSubnet",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subnet_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GetSubnetResponse"
+            }
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get info about subnet",
+        "tags": [
+          "Subnets"
+        ]
+      }
+    },
+    "/v2/subnets/projects/{project_id}": {
+      "post": {
+        "operationId": "addSubnet",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CreateSubnetRequestJson"
+            }
+          },
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CreateSubnetResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": [],
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Add subnet for project",
+        "tags": [
+          "Subnets"
+        ]
+      }
+    },
+    "/v2/traffic": {
+      "get": {
+        "operationId": "getTraffic",
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TrafficResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get current account traffic usage",
+        "tags": [
+          "Traffic"
+        ]
+      }
+    },
+    "/v2/traffic/report": {
+      "get": {
+        "operationId": "getTrafficReport",
+        "parameters": [
+          {
+            "description": "Start date of report",
+            "format": "date",
+            "in": "query",
+            "name": "start_date",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "End date of report",
+            "format": "date",
+            "in": "query",
+            "name": "end_date",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "text/csv"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Missing or incorrect start_date or end_date"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get account traffic report",
+        "tags": [
+          "Traffic"
+        ]
+      }
+    },
+    "/v2/swagger/doc.json": {
+      "get": {
+        "operationId": "getSwaggerSpec",
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get swagger specification in JSON",
+        "tags": [
+          "Spec"
+        ]
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "security": [
+    {
+      "iam_token_account_scoped": [],
+      "iam_token_project_scoped": []
+    }
+  ],
+  "securityDefinitions": {
+    "iam_token_account_scoped": {
+      "description": "IAM token for account",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    },
+    "iam_token_project_scoped": {
+      "description": "IAM token for project",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0"
+}

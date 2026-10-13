@@ -1,0 +1,110 @@
+{
+  "operation_id": "projects.v2.projects.create",
+  "effect": "mutation",
+  "endpoint": {
+    "generation": "v2",
+    "override_key": [
+      "projects",
+      "v2",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "url": "https://api.selectel.ru/vpc/resell",
+    "identity": "selectel-resell"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/v2/projects",
+    "source_schema": "sources/cloud-projects-and-resources.json#/paths/~1v2~1projects/post",
+    "source_operation": {
+      "operationId": "addProject",
+      "parameters": [
+        {
+          "in": "body",
+          "name": "body",
+          "required": false,
+          "schema": {
+            "$ref": "#/definitions/CreateProjectRequestJson"
+          }
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/CreateProjectResponse"
+          }
+        },
+        "400": {
+          "description": "Bad request"
+        },
+        "401": {
+          "description": "Unauthorized"
+        },
+        "409": {
+          "description": "Conflict"
+        }
+      },
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "summary": "Add project to account",
+      "tags": [
+        "Projects"
+      ]
+    },
+    "mapping_source": "projects/resources.go",
+    "scope": "account IAM",
+    "identity": "scope from immutable view; existing resource addressed by exact scoped ResourceRef; no name lookup",
+    "path_fields": {},
+    "optional_fields": "nil omitted; explicit false/empty preserved; nullable project fields distinguish omitted/null/value",
+    "body": {
+      "envelope": "project",
+      "mapping": "Create: name, description, skip_quotas_init. Update: name, description, custom_url, theme.brand_color/color/logo. Ref never serialized. Nullable fields use types.Null/Value."
+    },
+    "query": {},
+    "validation": "name length 1..64 Unicode codepoints; description 0..255 when present; valid UTF-8; documented nullable fields accept explicit null; no hidden defaults"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/cloud-projects-and-resources.json#/paths/~1v2~1projects/post/responses",
+    "dto_source": "projects/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All properties in the operation response schema; optional values preserve absence; arbitrary-precision Integer/Number; known RFC3339 timestamps normalized to UTC; provider ref field discarded",
+    "resource_ref": "Create requires nonempty provider ID. Exact Get/Update use request ref when optional response ID is absent; a present response ID must match. List refs only for returned IDs. Scope, endpoint and generation from the call.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for safe reads; mutation rejection only when documented",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible mutation transmission; exact request refs preserved",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy provider IDs already extracted",
+    "foreign_response_id": "scope_mismatch; never replace expected ref",
+    "message": "fixed SDK message; raw provider messages discarded",
+    "400": "not_found for get/delete; otherwise provider_error",
+    "mutation_rejected_statuses": [
+      400,
+      401,
+      409
+    ]
+  },
+  "retry": "bounded safe reads; mutation single attempt, never replay",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; provider CRUD binding does not imply a wait contract"
+  },
+  "recovery": {
+    "availability": "unavailable for root handle; exact Get is observational and does not prove authorship of unknown mutation"
+  },
+  "timeout": "CallTimeout; CollectionTimeout shared across list pages"
+}

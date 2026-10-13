@@ -1,0 +1,52 @@
+{
+  "operation_id": "compute.v2_1.servers.list",
+  "endpoint": {
+    "source": "exact project-scoped IAM compute catalog public endpoint for region/pool",
+    "generation": "v2_1",
+    "microversion": "2.1",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/servers/detail",
+    "schema": "pinned Gophercloud v2.13.0 native DTO plus ProtectedValue replacements",
+    "scope": "explicit project/location",
+    "covered_fields": "compute/servers.go",
+    "excluded_variants": [
+      "Additional Nova microversions and API variants outside the initial v2.1 contract",
+      "Unknown extension fields not represented by native servers.Server",
+      "Cross-tenant administration",
+      "Tag/user_id/IPv6 filters requiring newer microversions",
+      "Caller-supplied marker/limit outside SDK pagination"
+    ]
+  },
+  "response": {
+    "status": 200,
+    "mapping": "native DTO, adminPass/userdata moved into ProtectedValue; ID and project verified",
+    "sensitive_fields": [
+      "adminPass",
+      "OS-EXT-SRV-ATTR:user_data"
+    ]
+  },
+  "errors": {
+    "400": "rejected validation",
+    "401": "rejected unauthenticated",
+    "403": "rejected permission_denied",
+    "404": "rejected not_found",
+    "malformed_success": "accepted receipt plus protocol_error for mutation",
+    "other_mutation_failure": "unknown"
+  },
+  "retry": "reads bounded; create/delete single attempt",
+  "pagination": {
+    "shape": "limit/marker/servers_links.next",
+    "next_link": "same selected scheme/host/path; only marker extracted",
+    "limits": "bounded MaxItems/MaxPages, typed partial prefix",
+    "endpoint": "freeze selected endpoint ID"
+  },
+  "wait": null,
+  "recovery": {
+    "known_outcome": "conclusive receipt, no IO",
+    "unknown_without_ID": "recovery_unavailable",
+    "unknown_with_exact_resource": "indeterminate observation; outcome remains unknown, no replay"
+  }
+}

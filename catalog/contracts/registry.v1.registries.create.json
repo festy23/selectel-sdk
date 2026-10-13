@@ -1,0 +1,143 @@
+{
+  "operation_id": "registry.v1.registries.create",
+  "effect": "mutation",
+  "endpoint": {
+    "generation": "v1",
+    "override_key": [
+      "registry",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "https://cr.selcloud.ru/api for Russia or exact published servercore address selected by explicit scope; no generation fallback",
+    "recipe_source": "internal/endpoints/locations.go"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/v1/registries",
+    "source_schema": "sources/craas.json#/paths/~1v1~1registries/post",
+    "source_operation": {
+      "description": "Creates a new container registry with the specified parameters.",
+      "operationId": "createRegistry",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/registry.CreateReq"
+            }
+          }
+        },
+        "required": true
+      },
+      "responses": {
+        "201": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registry.Registry"
+              }
+            }
+          },
+          "description": "New registry has been created."
+        },
+        "400": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "ErrInvalidRegistryName": {
+                  "$ref": "#/components/examples/ErrInvalidRegistryName"
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/registry.commonBadRequest"
+              }
+            }
+          },
+          "description": "Bad request. Fix the request and try again."
+        },
+        "409": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "ErrProjectLocked": {
+                  "$ref": "#/components/examples/ErrProjectLocked"
+                },
+                "ErrProjectQuotaExceed": {
+                  "$ref": "#/components/examples/ErrProjectQuotaExceed"
+                },
+                "ErrRegistryNameDuplicate": {
+                  "$ref": "#/components/examples/ErrRegistryNameDuplicate"
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/registry.commonBadRequest"
+              }
+            }
+          },
+          "description": "Registry with this name already exists or quota has been exceeded."
+        },
+        "500": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registry.commonServerError"
+              }
+            }
+          },
+          "description": "Server is not responding. Please try again later."
+        }
+      },
+      "summary": "Create registry",
+      "tags": [
+        "Registries"
+      ]
+    },
+    "mapping_source": "registry/v1.go",
+    "scope": "project IAM",
+    "identity": "scope from immutable view; existing resource addressed by exact scoped ResourceRef; no name lookup",
+    "path_fields": {},
+    "optional_fields": "nil omitted; explicit false/empty preserved; nullable project fields distinguish omitted/null/value",
+    "body": {
+      "name": "request.Name, required nonempty UTF-8 string"
+    },
+    "query": {}
+  },
+  "response": {
+    "successful_statuses": [
+      201
+    ],
+    "schema_ref": "sources/craas.json#/paths/~1v1~1registries/post/responses",
+    "dto_source": "registry/v1_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All properties in the operation response schema; optional values preserve absence; arbitrary-precision Integer/Number; known RFC3339 timestamps normalized to UTC; provider ref field discarded",
+    "resource_ref": "Create requires nonempty provider ID. Exact Get/Update use request ref when optional response ID is absent; a present response ID must match. List refs only for returned IDs. Scope, endpoint and generation from the call.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for safe reads; mutation rejection only when documented",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible mutation transmission; exact request refs preserved",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy provider IDs already extracted",
+    "foreign_response_id": "scope_mismatch; never replace expected ref",
+    "message": "fixed SDK message; raw provider messages discarded",
+    "mutation_rejected_statuses": [
+      400,
+      401,
+      403,
+      409
+    ]
+  },
+  "retry": "bounded safe reads; mutation single attempt, never replay",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; provider CRUD binding does not imply a wait contract"
+  },
+  "recovery": {
+    "availability": "unavailable for root handle; exact Get is observational and does not prove authorship of unknown mutation"
+  },
+  "timeout": "CallTimeout; CollectionTimeout shared across list pages"
+}

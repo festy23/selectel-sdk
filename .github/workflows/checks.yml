@@ -1,0 +1,24 @@
+name: SDK checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Generate models and catalog
+        run: go generate .
+      - name: Verify SDK and catalog evidence
+        run: python3 scripts/verify_catalog.py
+      - name: Check generated artifacts
+        run: git diff --exit-code

@@ -1,0 +1,19 @@
+# Local access and operation data
+.env
+.env.*
+!.env.example
+credentials*.json
+profiles*.json
+receipts/
+kubeconfig*
+*.key
+
+# Build, test and editor output
+bin/
+coverage.out
+*.test
+__pycache__/
+*.pyc
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,171 @@
+{
+  "operation_id": "databases.v1.datastores.list",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "documented DB v1 URL map; exact pool",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v1",
+    "override_key": [
+      "databases",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "project/location",
+    "method": "GET",
+    "source_schema": "sources/managed-databases.json#/paths/~1datastores/get",
+    "mapping_source": "databases/client.go",
+    "source_operation": {
+      "description": "Returns list of clusters.",
+      "operationId": "getDatastores",
+      "parameters": [
+        {
+          "description": "Filter the list result by the `id`.",
+          "in": "query",
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `project_id`.",
+          "in": "query",
+          "name": "project_id",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `name`.",
+          "in": "query",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `status`.",
+          "in": "query",
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `enabled`.",
+          "in": "query",
+          "name": "enabled",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `type_id`.",
+          "in": "query",
+          "name": "type_id",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `flavor_id`.",
+          "in": "query",
+          "name": "flavor_id",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `subnet_id`.",
+          "in": "query",
+          "name": "subnet_id",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `allow_restore`.",
+          "in": "query",
+          "name": "allow_restore",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `is_maintenance`.",
+          "in": "query",
+          "name": "is_maintenance",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `is_protected`.",
+          "in": "query",
+          "name": "is_protected",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `deleted`.",
+          "in": "query",
+          "name": "deleted",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of clusters.",
+          "schema": {
+            "$ref": "#/definitions/datastoreList"
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_400"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Bad or expired token. You can reissue the token and try again.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_401"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Access is forbidden. Make sure you have the required rights.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_403"
+              }
+            }
+          }
+        }
+      },
+      "summary": "List clusters",
+      "tags": [
+        "Clusters"
+      ]
+    },
+    "absence": "nil optional fields omitted; explicit false/empty preserved",
+    "identity": "account/project/location from immutable view"
+  },
+  "response": {
+    "dto_source": "databases/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all declared response item properties, optional fields preserve absence; provider cannot inject SDK ref",
+    "sensitive_fields": [
+      "config",
+      "connection"
+    ],
+    "pagination_metadata": "ProviderMetadata retains totalCount/prev_cursor/count when documented",
+    "scope_checks": "provider project/pool/account fields, when declared; mismatches rejected",
+    "timestamps": "RFC3339 fields parsed; DB naive time retained as raw string",
+    "numbers": "integer decimal bytes retained without float64"
+  },
+  "errors": {
+    "403": "permission_denied; never a successful empty collection",
+    "malformed_body": "protocol_error",
+    "foreign_scope": "scope_mismatch",
+    "limit": "incomplete with bounded typed prefix and cursor"
+  },
+  "retry": "bounded safe read, including audit POST",
+  "pagination": {
+    "shape": "single response",
+    "limits": "MaxItems/MaxPages; one CollectionTimeout shared across all calls",
+    "continuation": "bound to scope, generation, endpoint ID, semantic filters and contract revision",
+    "single_response": "replay original page plus skip when locally truncated",
+    "empty_page": "continuation governs completion"
+  },
+  "inventory": "metadata only; protected config/payload excluded; failed branch preserved and other branches continue"
+}

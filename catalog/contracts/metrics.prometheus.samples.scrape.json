@@ -1,0 +1,40 @@
+{
+  "operation_id": "metrics.prometheus.samples.scrape",
+  "endpoint": {
+    "source": "https://docs.selectel.ru/api/urls/",
+    "recipe": "internal/endpoints/locations.go",
+    "scope": "exact account/project/region/pool",
+    "generation": "prometheus",
+    "redirects": "reject"
+  },
+  "request": {
+    "binding_source": "metrics/scrape.go",
+    "wire_selector": "GET /prometheus/metrics",
+    "auth": "Basic user ID/password, no default chain",
+    "mapping": "typed request fields; absent optional fields omitted; values retained explicitly",
+    "period": "explicit Start/End; logs after millisecond conversion; range step exact decimal seconds",
+    "excluded_variants": [
+      "OpenMetrics exemplars and UTF8 metric/label identifier syntax outside legacy text 0.0.4"
+    ]
+  },
+  "response": {
+    "mapping_source": "metrics/scrape.go",
+    "numeric_precision": "integer/decimal literals and sample strings retained without float64",
+    "sensitive_fields": [
+      "warnings",
+      "infos",
+      "HELP annotations"
+    ],
+    "completeness": "bounded partial collection/prefix, never a successful full result on limit",
+    "provider_metadata": "resultType, typed scalar/string/series/histograms plus original sample timestamps"
+  },
+  "errors": {
+    "403": "permission_denied",
+    "cloudwatch_400_ResourceNotFoundException": null,
+    "raw_provider_messages": "not retained or logged",
+    "body_limit": "response_limit, no structured data",
+    "sample_limit": "response_limit, typed bounded prefix, complete false"
+  },
+  "retry": "bounded safe reads; each retry receives new signature when applicable",
+  "pagination": null
+}

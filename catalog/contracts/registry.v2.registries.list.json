@@ -1,0 +1,122 @@
+{
+  "operation_id": "registry.v2.registries.list",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "documented Container Registry URL map including /api",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v2",
+    "override_key": [
+      "registry",
+      "v2",
+      "exact scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "project",
+    "method": "GET",
+    "source_schema": "sources/craas.json#/paths/~1v2~1registries/get",
+    "mapping_source": "registry/client.go",
+    "source_operation": {
+      "description": "Returns a list of available container registries.",
+      "operationId": "listRegistriesV2",
+      "parameters": [
+        {
+          "description": "Number of items per page.",
+          "in": "query",
+          "name": "limit",
+          "schema": {
+            "default": 10,
+            "type": "integer"
+          }
+        },
+        {
+          "description": "Page offset for pagination.",
+          "in": "query",
+          "name": "offset",
+          "schema": {
+            "default": 0,
+            "type": "integer"
+          }
+        },
+        {
+          "description": "Search query for filtering registries by name.",
+          "in": "query",
+          "name": "search",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "description": "Field to sort by.",
+          "in": "query",
+          "name": "sort_field",
+          "schema": {
+            "$ref": "#/components/schemas/SortRegistriesField"
+          }
+        },
+        {
+          "description": "Sort order type.",
+          "in": "query",
+          "name": "sort_type",
+          "schema": {
+            "$ref": "#/components/schemas/SortType"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistryList"
+              }
+            }
+          },
+          "description": "List of registries."
+        },
+        "500": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registry.commonServerError"
+              }
+            }
+          },
+          "description": "Server is not responding. Please try again later."
+        }
+      },
+      "summary": "List registries",
+      "tags": [
+        "Registries v2"
+      ]
+    },
+    "absence": "nil optional fields omitted; explicit false/empty preserved",
+    "identity": "account/project/location from immutable view"
+  },
+  "response": {
+    "dto_source": "registry/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all declared response item properties, optional fields preserve absence; provider cannot inject SDK ref",
+    "sensitive_fields": [],
+    "pagination_metadata": "ProviderMetadata retains totalCount/prev_cursor/count when documented",
+    "scope_checks": "provider project/pool/account fields, when declared; mismatches rejected",
+    "timestamps": "RFC3339 fields parsed; DB naive time retained as raw string",
+    "numbers": "integer decimal bytes retained without float64"
+  },
+  "errors": {
+    "403": "permission_denied; never a successful empty collection",
+    "malformed_body": "protocol_error",
+    "foreign_scope": "scope_mismatch",
+    "limit": "incomplete with bounded typed prefix and cursor"
+  },
+  "retry": "bounded safe read, including audit POST",
+  "pagination": {
+    "shape": "offset/limit/totalCount",
+    "limits": "MaxItems/MaxPages; one CollectionTimeout shared across all calls",
+    "continuation": "bound to scope, generation, endpoint ID, semantic filters and contract revision",
+    "single_response": "replay original page plus skip when locally truncated",
+    "empty_page": "continuation governs completion"
+  },
+  "inventory": "metadata only; protected config/payload excluded; failed branch preserved and other branches continue"
+}

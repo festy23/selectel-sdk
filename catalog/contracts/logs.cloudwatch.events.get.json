@@ -1,0 +1,50 @@
+{
+  "operation_id": "logs.cloudwatch.events.get",
+  "endpoint": {
+    "source": "https://docs.selectel.ru/api/urls/",
+    "recipe": "internal/endpoints/locations.go",
+    "scope": "exact account/project/region/pool",
+    "generation": "cloudwatch",
+    "redirects": "reject"
+  },
+  "request": {
+    "binding_source": "logs/client.go",
+    "wire_selector": "GetLogEvents",
+    "auth": "SigV4 using explicit S3 material, service logs and exact pool",
+    "mapping": "typed request fields; absent optional fields omitted; values retained explicitly",
+    "period": "explicit Start/End; logs after millisecond conversion; range step exact decimal seconds",
+    "excluded_variants": [
+      "Backward traversal",
+      "AWS ARN/unmask variants",
+      "Unbounded intervals",
+      "PageSize above SDK limit 1000"
+    ]
+  },
+  "response": {
+    "mapping_source": "logs/client.go",
+    "numeric_precision": "integer/decimal literals and sample strings retained without float64",
+    "sensitive_fields": [
+      "message",
+      "uploadSequenceToken",
+      "nextToken",
+      "nextForwardToken",
+      "nextBackwardToken"
+    ],
+    "completeness": "bounded partial collection/prefix, never a successful full result on limit",
+    "provider_metadata": "all mapped CloudWatch token/search metadata retained in ProviderPages"
+  },
+  "errors": {
+    "403": "permission_denied",
+    "cloudwatch_400_ResourceNotFoundException": "not_found",
+    "raw_provider_messages": "not retained or logged",
+    "body_limit": "response_limit, no structured data",
+    "sample_limit": "response_limit, typed bounded prefix, complete false"
+  },
+  "retry": "bounded safe reads; each retry receives new signature when applicable",
+  "pagination": {
+    "Groups/Streams/Filter": "end only when nextToken absent/empty",
+    "Events": "end only when nextForwardToken equals incoming token; empty pages continue",
+    "cursor": "protected, bound to scope/endpoint/filter/contract",
+    "limits": "MaxItems/MaxPages/CollectionTimeout"
+  }
+}

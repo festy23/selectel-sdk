@@ -1,0 +1,2983 @@
+{
+  "components": {
+    "examples": {
+      "ErrInvalidCreateTokenTTL": {
+        "description": "Returned when an invalid TTL value is provided for token creation",
+        "summary": "Invalid token TTL error",
+        "value": {
+          "error": "Invalid token TTL has been specified."
+        }
+      },
+      "ErrInvalidRegistryName": {
+        "description": "Returned when the registry name doesn't meet the required format or naming conventions",
+        "summary": "Invalid registry name error",
+        "value": {
+          "error": "Invalid registry name format."
+        }
+      },
+      "ErrInvalidToken": {
+        "description": "Returned when the provided authentication token is invalid, malformed, or corrupted",
+        "summary": "Invalid token error",
+        "value": {
+          "error": "Invalid or malformed token."
+        }
+      },
+      "ErrProjectLocked": {
+        "description": "Returned when attempting to perform operations on a project that has been locked or suspended",
+        "summary": "Project locked error",
+        "value": {
+          "error": "Project is locked."
+        }
+      },
+      "ErrProjectQuotaExceed": {
+        "description": "Returned when the operation would cause the project to exceed its allocated resource quotas",
+        "summary": "Project quota exceeded error",
+        "value": {
+          "error": "Project quota has been exceeded."
+        }
+      },
+      "ErrRegistryNameDuplicate": {
+        "description": "Returned when attempting to create a registry with a name that already exists in the project",
+        "summary": "Duplicate registry name error",
+        "value": {
+          "error": "Registry with this name already exists in the project."
+        }
+      },
+      "ErrRegistryNotFound": {
+        "description": "Returned when the specified registry cannot be found or doesn't exist",
+        "summary": "Registry not found error",
+        "value": {
+          "error": "Registry not found."
+        }
+      },
+      "ErrRepositoryNotFound": {
+        "description": "Returned when the specified repository cannot be found within the registry",
+        "summary": "Repository not found error",
+        "value": {
+          "error": "Repository not found."
+        }
+      },
+      "ErrTokenNotFound": {
+        "description": "Returned when the specified token cannot be found in the system",
+        "summary": "Token not found error",
+        "value": {
+          "error": "Token not found."
+        }
+      }
+    },
+    "schemas": {
+      "ClusterIntegration": {
+        "example": {
+          "id": "5d8504c1-bb11-43d2-88a8-bb07303422b3",
+          "name": "cluster-1",
+          "pool": "ru-9"
+        },
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the cluster.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the cluster.",
+            "type": "string"
+          },
+          "pool": {
+            "description": "Cluster pool (region).",
+            "type": "string"
+          }
+        },
+        "required": ["id", "name", "pool"],
+        "type": "object"
+      },
+      "ClustersIntegrationList": {
+        "example": {
+          "clusters": [
+            {
+              "id": "5d8504c1-bb11-43d2-88a8-bb07303422b3",
+              "name": "cluster-1",
+              "pool": "ru-9"
+            }
+          ],
+          "totalCount": 1
+        },
+        "properties": {
+          "clusters": {
+            "description": "List of cluster integrations.",
+            "items": {
+              "$ref": "#/components/schemas/ClusterIntegration"
+            },
+            "type": "array"
+          },
+          "totalCount": {
+            "description": "Total number of cluster integrations.",
+            "type": "integer"
+          }
+        },
+        "required": ["clusters", "totalCount"],
+        "type": "object"
+      },
+      "GenericError": {
+        "example": {
+          "error": "An error occurred"
+        },
+        "properties": {
+          "error": {
+            "description": "Error message.",
+            "type": "string"
+          }
+        },
+        "required": ["error"],
+        "type": "object"
+      },
+      "Image": {
+        "properties": {
+          "architecture": {
+            "description": "Architecture of the image.",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Image creation timestamp (UTC).",
+            "format": "date-time",
+            "type": "string"
+          },
+          "digest": {
+            "description": "SHA256 digest of the image.",
+            "example": "sha256:def456...",
+            "type": "string"
+          },
+          "layers": {
+            "$ref": "#/components/schemas/LayersList"
+          },
+          "mediaType": {
+            "description": "Media type of the image.",
+            "type": "string"
+          },
+          "os": {
+            "description": "Operating system of the image.",
+            "type": "string"
+          },
+          "size": {
+            "description": "Size of the image in bytes.",
+            "type": "integer"
+          },
+          "tags": {
+            "description": "List of tags associated with the image.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "ImageList": {
+        "properties": {
+          "filteredCount": {
+            "description": "Number of images after filtering.",
+            "type": "integer"
+          },
+          "images": {
+            "description": "List of images.",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            },
+            "type": "array"
+          },
+          "totalCount": {
+            "description": "Total number of images.",
+            "type": "integer"
+          }
+        },
+        "required": ["images", "totalCount", "filteredCount"],
+        "type": "object"
+      },
+      "Layer": {
+        "properties": {
+          "digest": {
+            "description": "SHA256 digest of the layer.",
+            "example": "sha256:abc123...",
+            "type": "string"
+          },
+          "size": {
+            "description": "Size of the layer in bytes.",
+            "type": "integer"
+          }
+        }
+      },
+      "LayersList": {
+        "items": {
+          "$ref": "#/components/schemas/Layer"
+        },
+        "type": "array"
+      },
+      "Registry": {
+        "properties": {
+          "createdAt": {
+            "description": "Registry creation timestamp.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique identifier of the registry.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the registry.",
+            "type": "string"
+          },
+          "size": {
+            "description": "Current size of the registry in bytes.",
+            "example": 5368709120,
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RegistryStatus"
+          }
+        },
+        "required": ["id", "name", "createdAt", "status", "size"]
+      },
+      "RegistryList": {
+        "properties": {
+          "registries": {
+            "description": "List of registries.",
+            "items": {
+              "$ref": "#/components/schemas/Registry"
+            },
+            "type": "array"
+          },
+          "totalCount": {
+            "description": "Total number of registries.",
+            "type": "integer"
+          }
+        },
+        "required": ["registries", "totalCount"],
+        "type": "object"
+      },
+      "RegistryStatus": {
+        "description": "Current status of the registry.",
+        "enum": ["CREATING", "ACTIVE", "ERROR", "GARBAGE_COLLECTION", "DELETING"],
+        "type": "string"
+      },
+      "Repository": {
+        "properties": {
+          "name": {
+            "description": "Name of the repository.",
+            "type": "string"
+          },
+          "size": {
+            "description": "Size of the repository in bytes.",
+            "type": "integer"
+          },
+          "type": {
+            "description": "Type of the repository.",
+            "enum": ["helm_chart", "image", "mixed"],
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "Last update timestamp (UTC).",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          }
+        }
+      },
+      "RepositoryList": {
+        "properties": {
+          "filteredCount": {
+            "description": "Number of repositories after filtering.",
+            "type": "integer"
+          },
+          "repositories": {
+            "description": "List of repositories.",
+            "items": {
+              "$ref": "#/components/schemas/Repository"
+            },
+            "type": "array"
+          },
+          "totalCount": {
+            "description": "Total number of repositories.",
+            "type": "integer"
+          }
+        },
+        "required": ["repositories", "totalCount", "filteredCount"],
+        "type": "object"
+      },
+      "SortRegistriesField": {
+        "default": "name",
+        "enum": ["name", "createdAt", "size"],
+        "type": "string"
+      },
+      "SortReposField": {
+        "default": "name",
+        "enum": ["name", "updatedAt", "size"],
+        "type": "string"
+      },
+      "SortTokensField": {
+        "default": "createdAt",
+        "enum": ["name", "createdAt", "lastUsedAt", "expiresAt"],
+        "type": "string"
+      },
+      "SortType": {
+        "default": "asc",
+        "enum": ["asc", "desc"],
+        "type": "string"
+      },
+      "Token": {
+        "properties": {
+          "createdAt": {
+            "description": "Token creation timestamp.",
+            "example": "2023-02-13T15:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "expiration": {
+            "$ref": "#/components/schemas/TokenExpiration"
+          },
+          "id": {
+            "description": "Unique identifier of the token.",
+            "example": "c29e3f63-0711-4772-a415-ad79973bdaef",
+            "type": "string"
+          },
+          "lastUsedAt": {
+            "description": "Timestamp of last token usage.",
+            "example": "2023-02-14T15:25:10Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the token.",
+            "example": "my-token",
+            "type": "string"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/TokenScope"
+          },
+          "status": {
+            "description": "Current status of the token.",
+            "enum": ["active", "expired", "deleted"],
+            "example": "active",
+            "type": "string"
+          },
+          "token": {
+            "description": "Token value (only returned on creation).",
+            "example": "cr_example_token",
+            "type": "string"
+          }
+        },
+        "required": ["id", "name", "createdAt", "expiration", "scope", "status"],
+        "type": "object"
+      },
+      "TokenCreateRequest": {
+        "properties": {
+          "expiration": {
+            "$ref": "#/components/schemas/TokenExpiration"
+          },
+          "name": {
+            "description": "Name of the token.",
+            "example": "my-token",
+            "type": "string"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/TokenScope"
+          }
+        },
+        "required": ["scope", "expiration"],
+        "type": "object"
+      },
+      "TokenExpiration": {
+        "properties": {
+          "expiresAt": {
+            "example": "2030-01-01T00:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "isSet": {
+            "example": true,
+            "type": "boolean"
+          }
+        },
+        "required": ["isSet"],
+        "type": "object"
+      },
+      "TokenList": {
+        "properties": {
+          "tokens": {
+            "example": [
+              {
+                "createdAt": "2023-02-13T15:00:00Z",
+                "expiration": {
+                  "expiresAt": "2030-01-01T00:00:00Z",
+                  "isSet": true
+                },
+                "id": "c29e3f63-0711-4772-a415-ad79973bdaef",
+                "lastUsedAt": "2023-02-14T15:25:10Z",
+                "name": "my-token",
+                "scope": {
+                  "allRegistries": false,
+                  "modeRW": false,
+                  "registryIds": ["888af692-c646-4b76-a234-81ca9b5bcafe", "6303699d-c2cd-40b1-8428-9dcd6cc3d00d"]
+                },
+                "status": "active"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Token"
+            },
+            "type": "array"
+          },
+          "totalCount": {
+            "example": 1,
+            "type": "integer"
+          }
+        },
+        "required": ["tokens", "totalCount"],
+        "type": "object"
+      },
+      "TokenRefreshRequest": {
+        "properties": {
+          "expiration": {
+            "$ref": "#/components/schemas/TokenExpiration"
+          }
+        },
+        "required": ["expiration"],
+        "type": "object"
+      },
+      "TokenRegenerateRequest": {
+        "properties": {
+          "expiration": {
+            "$ref": "#/components/schemas/TokenExpiration"
+          }
+        },
+        "required": ["expiration"],
+        "type": "object"
+      },
+      "TokenScope": {
+        "properties": {
+          "allRegistries": {
+            "description": "Indicates whether the token provides access to all registries.",
+            "example": true,
+            "type": "boolean"
+          },
+          "modeRW": {
+            "description": "Indicates whether the token provides read-write or read-only access. If `true`, the token provides read-write access.",
+            "example": true,
+            "type": "boolean"
+          },
+          "registryIds": {
+            "description": "List of registry IDs to which the token has access.",
+            "example": ["888af692-c646-4b76-a234-81ca9b5bcafe", "6303699d-c2cd-40b1-8428-9dcd6cc3d00d"],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["modeRW", "allRegistries"],
+        "type": "object"
+      },
+      "TokenUpdateRequest": {
+        "properties": {
+          "expiration": {
+            "$ref": "#/components/schemas/TokenExpiration"
+          },
+          "name": {
+            "example": "my-updated-token",
+            "type": "string"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/TokenScope"
+          }
+        },
+        "type": "object"
+      },
+      "registry.CreateReq": {
+        "properties": {
+          "name": {
+            "example": "my-registry",
+            "type": "string"
+          }
+        },
+        "required": ["name"]
+      },
+      "registry.GCInfo": {
+        "properties": {
+          "sizeNonReferenced": {
+            "description": "Size of non-referenced blobs in bytes.",
+            "example": 56723502,
+            "type": "integer"
+          },
+          "sizeSummary": {
+            "description": "Total size that can be freed by garbage collection in bytes.",
+            "example": 87639320,
+            "type": "integer"
+          },
+          "sizeUntagged": {
+            "description": "Size of blobs referenced to untagged images only in bytes.",
+            "example": 30915818,
+            "type": "integer"
+          }
+        },
+        "required": ["sizeNonReferenced", "sizeUntagged", "sizeSummary"]
+      },
+      "registry.Registry": {
+        "properties": {
+          "createdAt": {
+            "description": "Registry creation timestamp (UTC).",
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique identifier of the registry.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the registry.",
+            "type": "string"
+          },
+          "size": {
+            "description": "Current size of the registry in bytes.",
+            "example": 5368709120,
+            "type": "integer"
+          },
+          "sizeLimit": {
+            "description": "Maximum allowed size of the registry in bytes.",
+            "example": 21474836480,
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/registry.Status"
+          },
+          "used": {
+            "description": "Percentage of storage quota used.",
+            "example": 25,
+            "format": "double",
+            "type": "number"
+          }
+        }
+      },
+      "registry.Status": {
+        "description": "Current status of the registry.",
+        "enum": ["CREATING", "ACTIVE", "ERROR", "GARBAGE_COLLECTION", "DELETING"],
+        "type": "string"
+      },
+      "registry.commonBadRequest": {
+        "properties": {
+          "message": {
+            "description": "Error message describing the bad request.",
+            "example": "Invalid request parameters",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "registry.commonNotFoundError": {
+        "properties": {
+          "message": {
+            "description": "Error message for resource not found.",
+            "example": "The resource has not been found",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "registry.commonServerError": {
+        "properties": {
+          "message": {
+            "description": "Error message for internal server errors.",
+            "example": "Server is not responding. Please try again later.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "repository.CleanupReq": {
+        "example": {
+          "digests": ["sha256:abc123..."],
+          "disable_gc": false,
+          "tags": ["v1.0", "latest"]
+        },
+        "properties": {
+          "digests": {
+            "description": "List of image digests to remove.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "disable_gc": {
+            "default": false,
+            "description": "Indicates whether garbage collection is disabled after cleanup.",
+            "type": "boolean"
+          },
+          "tags": {
+            "description": "List of tags to remove.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "repository.CleanupResp": {
+        "example": {
+          "deleted": [
+            {
+              "digest": "sha256:abc123...",
+              "tags": ["v1.0", "latest"]
+            }
+          ],
+          "failed": [
+            {
+              "digest": "sha256:def456...",
+              "error": "Image is referenced by another manifest",
+              "tags": ["tag1", "tag2"]
+            }
+          ]
+        },
+        "properties": {
+          "deleted": {
+            "description": "List of successfully deleted references.",
+            "items": {
+              "$ref": "#/components/schemas/repository.reference"
+            },
+            "type": "array"
+          },
+          "failed": {
+            "description": "List of references that failed to delete.",
+            "items": {
+              "$ref": "#/components/schemas/repository.referenceWithError"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["deleted", "failed"],
+        "type": "object"
+      },
+      "repository.Image": {
+        "properties": {
+          "architecture": {
+            "description": "Architecture of the image.",
+            "type": "string"
+          },
+          "createdAt": {
+            "description": "Image creation timestamp.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "digest": {
+            "description": "SHA256 digest of the image.",
+            "example": "sha256:def456...",
+            "type": "string"
+          },
+          "layers": {
+            "$ref": "#/components/schemas/repository.LayersList"
+          },
+          "mediaType": {
+            "description": "Media type of the image.",
+            "type": "string"
+          },
+          "os": {
+            "description": "Operating system of the image.",
+            "type": "string"
+          },
+          "size": {
+            "description": "Size of the image in bytes.",
+            "type": "integer"
+          },
+          "tags": {
+            "description": "List of tags associated with the image.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "repository.Layer": {
+        "properties": {
+          "digest": {
+            "description": "SHA256 digest of the layer.",
+            "example": "sha256:abc123...",
+            "type": "string"
+          },
+          "size": {
+            "description": "Size of the layer in bytes.",
+            "type": "integer"
+          }
+        }
+      },
+      "repository.LayersList": {
+        "items": {
+          "$ref": "#/components/schemas/repository.Layer"
+        },
+        "type": "array"
+      },
+      "repository.Repository": {
+        "properties": {
+          "name": {
+            "description": "Name of the repository.",
+            "type": "string"
+          },
+          "size": {
+            "description": "Size of the repository in bytes.",
+            "type": "integer"
+          },
+          "type": {
+            "description": "Type of the repository.",
+            "enum": ["helm_chart", "image", "mixed"],
+            "type": "string"
+          },
+          "updatedAt": {
+            "description": "Last update timestamp (UTC).",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          }
+        }
+      },
+      "repository.reference": {
+        "example": {
+          "digest": "sha256:abc123...",
+          "tags": ["v1.0", "latest"]
+        },
+        "properties": {
+          "digest": {
+            "description": "SHA256 digest of the reference.",
+            "type": "string"
+          },
+          "tags": {
+            "description": "List of tags associated with the reference.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["digest"],
+        "type": "object"
+      },
+      "repository.referenceWithError": {
+        "example": {
+          "digest": "sha256:def456...",
+          "error": "Image is referenced by another manifest",
+          "tags": ["broken"]
+        },
+        "properties": {
+          "digest": {
+            "description": "SHA256 digest of the reference.",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message explaining why deletion failed.",
+            "type": "string"
+          },
+          "tags": {
+            "description": "List of tags associated with the reference.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["digest", "error"],
+        "type": "object"
+      },
+      "stringList": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "token": {
+        "properties": {
+          "expireAt": {
+            "description": "Token expiration time, in the UNIX timestamp format.",
+            "example": 1609459200,
+            "type": "integer"
+          },
+          "expireIn": {
+            "description": "Time remained until token expires in seconds.",
+            "example": 43200,
+            "type": "integer"
+          },
+          "token": {
+            "description": "Authentication token value.",
+            "example": "44d570a1-21a7-404f-bbda-3a99872e2776",
+            "type": "string"
+          }
+        }
+      },
+      "tokenMeta": {
+        "properties": {
+          "expireAt": {
+            "description": "Token expiration time, in the UNIX timestamp format.",
+            "example": 1609459200,
+            "type": "integer"
+          },
+          "expireIn": {
+            "description": "Time remained until token expires in seconds.",
+            "example": 43200,
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "iam_token_project_scoped": {
+        "description": "IAM token for project",
+        "in": "header",
+        "name": "X-Auth-Token",
+        "type": "apiKey"
+      }
+    }
+  },
+  "info": {
+    "description": "Managing container registries and repositories: creating and configuring registries, obtaining information about repositories, managing access tokens, garbage collection, repository cleanup, and more.",
+    "title": "Container Registry API",
+    "version": "v2.2"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/registries": {
+      "get": {
+        "description": "Returns a list of available container registries.",
+        "operationId": "listRegistries",
+        "parameters": [
+          {
+            "description": "limit",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Page offset for pagination.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Search query for filtering registries by name.",
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Field to sort by.",
+            "in": "query",
+            "name": "sort_field",
+            "schema": {
+              "$ref": "#/components/schemas/SortRegistriesField"
+            }
+          },
+          {
+            "description": "Sort order type.",
+            "in": "query",
+            "name": "sort_type",
+            "schema": {
+              "$ref": "#/components/schemas/SortType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/registry.Registry"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "List of registries."
+          },
+          "204": {
+            "description": "No registries have been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List registries",
+        "tags": ["Registries"]
+      },
+      "post": {
+        "description": "Creates a new container registry with the specified parameters.",
+        "operationId": "createRegistry",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registry.CreateReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.Registry"
+                }
+              }
+            },
+            "description": "New registry has been created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrInvalidRegistryName": {
+                    "$ref": "#/components/examples/ErrInvalidRegistryName"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonBadRequest"
+                }
+              }
+            },
+            "description": "Bad request. Fix the request and try again."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrProjectLocked": {
+                    "$ref": "#/components/examples/ErrProjectLocked"
+                  },
+                  "ErrProjectQuotaExceed": {
+                    "$ref": "#/components/examples/ErrProjectQuotaExceed"
+                  },
+                  "ErrRegistryNameDuplicate": {
+                    "$ref": "#/components/examples/ErrRegistryNameDuplicate"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonBadRequest"
+                }
+              }
+            },
+            "description": "Registry with this name already exists or quota has been exceeded."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Create registry",
+        "tags": ["Registries"]
+      }
+    },
+    "/v1/registries/{id}": {
+      "delete": {
+        "description": "Deletes the specified container registry.",
+        "operationId": "deleteRegistry",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Registry has been deleted successfully."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Delete registry",
+        "tags": ["Registries"]
+      },
+      "get": {
+        "description": "Returns information about the specified registry.",
+        "operationId": "getRegistryInformation",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.Registry"
+                }
+              }
+            },
+            "description": "Registry information has been returned."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Registry has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Get registry information",
+        "tags": ["Registries"]
+      }
+    },
+    "/v1/registries/{id}/clusters": {
+      "get": {
+        "description": "List clusters integrated with registry",
+        "operationId": "listClusters",
+        "parameters": [
+          {
+            "description": "Container Registry ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClustersIntegrationList"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Registry has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List integrated clusters",
+        "tags": ["Clusters integration"]
+      }
+    },
+    "/v1/registries/{id}/garbage-collection": {
+      "post": {
+        "description": "Initiate garbage collection process for the specified registry.",
+        "operationId": "initiateGarbageCollection",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Delete untagged images.",
+            "in": "query",
+            "name": "delete-untagged",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Registry garbage collection initiated."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Registry has not been found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Garbage collection is already running"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonBadRequest"
+                }
+              }
+            },
+            "description": "Garbage collection is already in progress."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Initiate garbage collection",
+        "tags": ["Garbage collection"]
+      }
+    },
+    "/v1/registries/{id}/garbage-collection/size": {
+      "get": {
+        "description": "Returns information about potential space savings from garbage collection.",
+        "operationId": "getGarbageCollectionSize",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.GCInfo"
+                }
+              }
+            },
+            "description": "Garbage collection size information has been returned."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Registry has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Get garbage collection size",
+        "tags": ["Garbage collection"]
+      }
+    },
+    "/v1/registries/{id}/repositories": {
+      "get": {
+        "description": "Returns a list of repositories in the specified registry.",
+        "operationId": "listRepositories",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Number of items per page.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Number of repositories to skip.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Search query for filtering repositories by name.",
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Field to sort by.",
+            "in": "query",
+            "name": "sort_field",
+            "schema": {
+              "$ref": "#/components/schemas/SortReposField"
+            }
+          },
+          {
+            "description": "Sort order type.",
+            "in": "query",
+            "name": "sort_type",
+            "schema": {
+              "$ref": "#/components/schemas/SortType"
+            }
+          },
+          {
+            "description": "Short output, return only repository names.\n\nWhen short output is enabled, sorting can only be done by name.\n",
+            "in": "query",
+            "name": "short",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/repository.Repository"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "List of repositories."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Registry has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List repositories",
+        "tags": ["Repositories"]
+      }
+    },
+    "/v1/registries/{id}/repositories/{name}": {
+      "delete": {
+        "description": "Deletes the specified repository.",
+        "operationId": "deleteRepository",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the repository.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Repository deleted"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  },
+                  "ErrRepositoryNotFound": {
+                    "$ref": "#/components/examples/ErrRepositoryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Repository has not been found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "garbage collection is in progress, please retry later"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonBadRequest"
+                }
+              }
+            },
+            "description": "Garbage collection is already in progress."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Delete repository",
+        "tags": ["Repositories"]
+      },
+      "get": {
+        "description": "Returns information about the specified repository.",
+        "operationId": "getRepositoryInformation",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the repository.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/repository.Repository"
+                }
+              }
+            },
+            "description": "Repository information has been returned."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  },
+                  "ErrRepositoryNotFound": {
+                    "$ref": "#/components/examples/ErrRepositoryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Repository has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Get repository information",
+        "tags": ["Repositories"]
+      }
+    },
+    "/v1/registries/{id}/repositories/{name}/cleanup": {
+      "post": {
+        "description": "Removes specified tags and images from the repository.",
+        "operationId": "cleanUpRepository",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the repository.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/repository.CleanupReq"
+              }
+            }
+          },
+          "description": "Cleanup request specifying what to remove.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/repository.CleanupResp"
+                }
+              }
+            },
+            "description": "Cleanup has been completed successfully."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  },
+                  "ErrRepositoryNotFound": {
+                    "$ref": "#/components/examples/ErrRepositoryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Repository has not been found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Garbage cleanup is forbidden. Garbage collection is in progress. Try again later."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
+              }
+            },
+            "description": "Garbage collection is already in progress."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Clean up repository",
+        "tags": ["Repositories"]
+      }
+    },
+    "/v1/registries/{id}/repositories/{name}/images": {
+      "get": {
+        "description": "Returns a list of images in the specified repository.",
+        "operationId": "listImages",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the repository.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/repository.Image"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "List of images."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  },
+                  "ErrRepositoryNotFound": {
+                    "$ref": "#/components/examples/ErrRepositoryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Repository has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List images",
+        "tags": ["Repositories"]
+      }
+    },
+    "/v1/registries/{id}/repositories/{name}/tags": {
+      "get": {
+        "description": "Returns a list of tags in the specified repository.",
+        "operationId": "listTags",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the repository.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/stringList"
+                }
+              }
+            },
+            "description": "List of tags."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  },
+                  "ErrRepositoryNotFound": {
+                    "$ref": "#/components/examples/ErrRepositoryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Repository has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List tags",
+        "tags": ["Repositories"]
+      }
+    },
+    "/v1/registries/{id}/repositories/{name}/{reference}": {
+      "delete": {
+        "description": "Delete image by manifest digest",
+        "operationId": "deleteManifest",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the repository.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "SHA256 digest of the image.",
+            "in": "path",
+            "name": "reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Layer has been deleted."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  },
+                  "ErrRepositoryNotFound": {
+                    "$ref": "#/components/examples/ErrRepositoryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Repository has not been found."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Garbage collection is in progress, please retry later"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
+              }
+            },
+            "description": "Garbage collection is already in progress."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Delete manifest",
+        "tags": ["Repositories"]
+      },
+      "get": {
+        "description": "Returns a list of image layers.",
+        "operationId": "listLayers",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the repository.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Image digest or tag name.",
+            "in": "path",
+            "name": "reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/repository.Image"
+                }
+              }
+            },
+            "description": "List of image layers has been returned."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Image or tag has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List layers.",
+        "tags": ["Repositories"]
+      }
+    },
+    "/v1/token": {
+      "post": {
+        "description": "Creates a new authentication token with the specified parameters.",
+        "operationId": "createAuthenticationToken",
+        "parameters": [
+          {
+            "description": "Token time-to-live (TTL):\n * `12h` — Token expires in 12 hours.\n * `1y` — Token expires in 1 year.\n",
+            "in": "query",
+            "name": "ttl",
+            "schema": {
+              "default": "12h",
+              "enum": ["12h", "1y"],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Returns the token as a Docker configuration in JSON format.",
+            "in": "query",
+            "name": "docker-config",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/token"
+                }
+              }
+            },
+            "description": "Token has been created successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrInvalidCreateTokenTTL": {
+                    "$ref": "#/components/examples/ErrInvalidCreateTokenTTL"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonBadRequest"
+                }
+              }
+            },
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Create authentication token",
+        "tags": ["Tokens"]
+      }
+    },
+    "/v1/token/{token}": {
+      "delete": {
+        "description": "Revoke the specified authentication token.",
+        "operationId": "revokeToken",
+        "parameters": [
+          {
+            "description": "Unique identifier of the authentication token.",
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Token is revoked or does not exist."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrInvalidRegistryName": {
+                    "$ref": "#/components/examples/ErrInvalidToken"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonBadRequest"
+                }
+              }
+            },
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Revoke token",
+        "tags": ["Tokens"]
+      },
+      "get": {
+        "description": "Returns information about the specified token.",
+        "operationId": "getTokenInformation",
+        "parameters": [
+          {
+            "description": "Unique identifier of the authentication token.",
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenMeta"
+                }
+              }
+            },
+            "description": "Token information has been returned."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrInvalidToken": {
+                    "$ref": "#/components/examples/ErrInvalidToken"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonBadRequest"
+                }
+              }
+            },
+            "description": "Bad request. Fix the request and try again."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrTokenNotFound": {
+                    "$ref": "#/components/examples/ErrTokenNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Token has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Get token information",
+        "tags": ["Tokens"]
+      }
+    },
+    "/v1/token/{token}/refresh": {
+      "post": {
+        "description": "Refreshes the specified authentication token.",
+        "operationId": "refreshToken",
+        "parameters": [
+          {
+            "description": "Unique identifier of the authentication token.",
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/token"
+                }
+              }
+            },
+            "description": "Token has been refreshed."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrInvalidToken": {
+                    "$ref": "#/components/examples/ErrInvalidToken"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonBadRequest"
+                }
+              }
+            },
+            "description": "Bad request. Fix the request and try again."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrTokenNotFound": {
+                    "$ref": "#/components/examples/ErrTokenNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Token has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Refresh token",
+        "tags": ["Tokens"]
+      }
+    },
+    "/v2/registries": {
+      "get": {
+        "description": "Returns a list of available container registries.",
+        "operationId": "listRegistriesV2",
+        "parameters": [
+          {
+            "description": "Number of items per page.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Page offset for pagination.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Search query for filtering registries by name.",
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Field to sort by.",
+            "in": "query",
+            "name": "sort_field",
+            "schema": {
+              "$ref": "#/components/schemas/SortRegistriesField"
+            }
+          },
+          {
+            "description": "Sort order type.",
+            "in": "query",
+            "name": "sort_type",
+            "schema": {
+              "$ref": "#/components/schemas/SortType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistryList"
+                }
+              }
+            },
+            "description": "List of registries."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List registries",
+        "tags": ["Registries v2"]
+      }
+    },
+    "/v2/registries/{id}/repositories": {
+      "get": {
+        "description": "Returns a list of repositories in the specified registry.",
+        "operationId": "listRepositoriesV2",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Number of items per page.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Page offset for pagination.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Search query for filtering repositories by name.",
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Field to sort by.",
+            "in": "query",
+            "name": "sort_field",
+            "schema": {
+              "$ref": "#/components/schemas/SortReposField"
+            }
+          },
+          {
+            "description": "Sort order type.",
+            "in": "query",
+            "name": "sort_type",
+            "schema": {
+              "$ref": "#/components/schemas/SortType"
+            }
+          },
+          {
+            "description": "Short output, return only repository names.\n\nWhen short output is enabled, sorting can only be done by name.",
+            "in": "query",
+            "name": "short",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepositoryList"
+                }
+              }
+            },
+            "description": "List of repositories."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Registry has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List repositories",
+        "tags": ["Repositories v2"]
+      }
+    },
+    "/v2/registries/{id}/repositories/{name}/images": {
+      "get": {
+        "description": "Returns a list of images in the specified repository.",
+        "operationId": "listImagesV2",
+        "parameters": [
+          {
+            "description": "Unique identifier of the registry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the repository.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Number of items per page.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Page offset for pagination.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Search query for filtering images.",
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageList"
+                }
+              }
+            },
+            "description": "List of images."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrRegistryNotFound": {
+                    "$ref": "#/components/examples/ErrRegistryNotFound"
+                  },
+                  "ErrRepositoryNotFound": {
+                    "$ref": "#/components/examples/ErrRepositoryNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Registry has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List images",
+        "tags": ["Repositories v2"]
+      }
+    },
+    "/v2/tokens": {
+      "get": {
+        "description": "Returns a list of authentication tokens.",
+        "operationId": "listTokens",
+        "parameters": [
+          {
+            "description": "Number of items per page.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Page offset for pagination.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Field to sort by.",
+            "in": "query",
+            "name": "sort_field",
+            "schema": {
+              "$ref": "#/components/schemas/SortTokensField"
+            }
+          },
+          {
+            "description": "Sort order type.",
+            "in": "query",
+            "name": "sort_type",
+            "schema": {
+              "$ref": "#/components/schemas/SortType"
+            }
+          },
+          {
+            "description": "Filter tokens by name.",
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter tokens by their scope of access",
+            "in": "query",
+            "name": "scope_mode",
+            "schema": {
+              "enum": ["ro", "rw"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenList"
+                }
+              }
+            },
+            "description": "Returns a list of tokens."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List tokens",
+        "tags": ["Tokens v2"]
+      },
+      "post": {
+        "description": "Creates a new authentication token with specified parameters.",
+        "operationId": "createAuthenticationTokenV2",
+        "parameters": [
+          {
+            "description": "Returns the token as a Docker configuration in JSON format.",
+            "in": "query",
+            "name": "docker-config",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "createdAt": "2023-02-13T15:00:00Z",
+                  "expiration": {
+                    "expiresAt": "2030-01-01T00:00:00Z",
+                    "isSet": true
+                  },
+                  "id": "c29e3f63-0711-4772-a415-ad79973bdaef",
+                  "name": "my-token",
+                  "scope": {
+                    "allRegistries": false,
+                    "modeRW": true,
+                    "registryIds": ["888af692-c646-4b76-a234-81ca9b5bcafe", "6303699d-c2cd-40b1-8428-9dcd6cc3d00d"]
+                  },
+                  "status": "active",
+                  "token": "\u003ctoken\u003e"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            },
+            "description": "Token has been created successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
+              }
+            },
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Create token",
+        "tags": ["Tokens v2"]
+      }
+    },
+    "/v2/tokens/{id}": {
+      "delete": {
+        "description": "Deletes the specified authentication token.",
+        "operationId": "deleteToken",
+        "responses": {
+          "204": {
+            "description": "Token has been deleted successfully."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Delete token",
+        "tags": ["Tokens v2"]
+      },
+      "get": {
+        "description": "Returns information about the specified token.",
+        "operationId": "getTokenInformationV2",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "createdAt": "2023-02-13T15:00:00Z",
+                  "expiration": {
+                    "expiresAt": "2030-01-01T00:00:00Z",
+                    "isSet": true
+                  },
+                  "id": "c29e3f63-0711-4772-a415-ad79973bdaef",
+                  "lastUsedAt": "2023-02-14T15:25:10Z",
+                  "name": "my-token",
+                  "scope": {
+                    "allRegistries": false,
+                    "modeRW": true,
+                    "registryIds": ["888af692-c646-4b76-a234-81ca9b5bcafe", "6303699d-c2cd-40b1-8428-9dcd6cc3d00d"]
+                  },
+                  "status": "active"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            },
+            "description": "Token information has been returned."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrTokenNotFound": {
+                    "$ref": "#/components/examples/ErrTokenNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Token has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Get token information",
+        "tags": ["Tokens v2"]
+      },
+      "parameters": [
+        {
+          "description": "Unique identifier of the authentication token.",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "patch": {
+        "description": "Updates the specified authentication token.",
+        "operationId": "updateTokenV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "my-new-token",
+                "scope": {
+                  "allRegistries": false,
+                  "modeRW": true,
+                  "registryIds": ["888af692-c646-4b76-a234-81ca9b5bcafe"]
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/TokenUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "createdAt": "2023-02-13T15:00:00Z",
+                  "expiration": {
+                    "expiresAt": "2030-01-01T00:00:00Z",
+                    "isSet": true
+                  },
+                  "id": "c29e3f63-0711-4772-a415-ad79973bdaef",
+                  "lastUsedAt": "2023-02-14T15:25:10Z",
+                  "name": "my-new-token",
+                  "scope": {
+                    "allRegistries": false,
+                    "modeRW": true,
+                    "registryIds": ["888af692-c646-4b76-a234-81ca9b5bcafe"]
+                  },
+                  "status": "active"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            },
+            "description": "Token has been updated successfully."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrTokenNotFound": {
+                    "$ref": "#/components/examples/ErrTokenNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Token has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonServerError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Update token",
+        "tags": ["Tokens v2"]
+      }
+    },
+    "/v2/tokens/{id}/refresh": {
+      "parameters": [
+        {
+          "description": "Unique identifier of the authentication token.",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "description": "Refreshes the specified authentication token.",
+        "operationId": "refreshTokenV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "expiration": {
+                  "expiresAt": "2029-03-20T00:00:00Z",
+                  "isSet": true
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/TokenRefreshRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "createdAt": "2023-02-13T15:00:00Z",
+                  "expiration": {
+                    "expiresAt": "2029-03-20T00:00:00Z",
+                    "isSet": true
+                  },
+                  "id": "c29e3f63-0711-4772-a415-ad79973bdaef",
+                  "lastUsedAt": "2023-02-14T15:25:10Z",
+                  "name": "my-token",
+                  "scope": {
+                    "allRegistries": false,
+                    "modeRW": true,
+                    "registryIds": ["888af692-c646-4b76-a234-81ca9b5bcafe", "6303699d-c2cd-40b1-8428-9dcd6cc3d00d"]
+                  },
+                  "status": "active"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            },
+            "description": "Token has been refreshed."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrTokenNotFound": {
+                    "$ref": "#/components/examples/ErrTokenNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Token has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Refresh token",
+        "tags": ["Tokens v2"]
+      }
+    },
+    "/v2/tokens/{id}/regenerate": {
+      "parameters": [
+        {
+          "description": "Unique identifier of the authentication token.",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "description": "Revokes the token and generates a new one with the same properties.",
+        "operationId": "regenerateTokenV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "expiration": {
+                  "expiresAt": "2029-03-20T00:00:00Z",
+                  "isSet": true
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/TokenRegenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "createdAt": "2023-02-13T15:00:00Z",
+                  "expiration": {
+                    "expiresAt": "2029-03-20T00:00:00Z",
+                    "isSet": true
+                  },
+                  "id": "c29e3f63-0711-4772-a415-ad79973bdaef",
+                  "lastUsedAt": "2023-02-14T15:25:10Z",
+                  "name": "my-token",
+                  "scope": {
+                    "allRegistries": false,
+                    "modeRW": true,
+                    "registryIds": ["888af692-c646-4b76-a234-81ca9b5bcafe", "6303699d-c2cd-40b1-8428-9dcd6cc3d00d"]
+                  },
+                  "status": "active",
+                  "token": "\u003cnew-token\u003e"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            },
+            "description": "Token has been regenerated successfully."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrTokenNotFound": {
+                    "$ref": "#/components/examples/ErrTokenNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Token has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Regenerate token",
+        "tags": ["Tokens v2"]
+      }
+    },
+    "/v2/tokens/{id}/revoke": {
+      "parameters": [
+        {
+          "description": "Unique identifier of the authentication token.",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "description": "Revokes the specified authentication token.",
+        "operationId": "revokeTokenV2",
+        "responses": {
+          "204": {
+            "description": "Token has been revoked successfully."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ErrTokenNotFound": {
+                    "$ref": "#/components/examples/ErrTokenNotFound"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/registry.commonNotFoundError"
+                }
+              }
+            },
+            "description": "Token has not been found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
+              }
+            },
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Revoke token",
+        "tags": ["Tokens v2"]
+      }
+    }
+  },
+  "security": [
+    {
+      "iam_token_project_scoped": []
+    }
+  ]
+}

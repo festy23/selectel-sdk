@@ -1,0 +1,467 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Audit Logs API",
+    "version": "v1.0",
+    "description": "Managing audit logs"
+  },
+  "security": [
+    {
+      "iam_token_account_scoped": []
+    }
+  ],
+  "paths": {
+    "/v1/logs": {
+      "post": {
+        "summary": "Get logs",
+        "description": "Returns paginated and filtered audit logs.",
+        "operationId": "getAuditLogs",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "description": "An optional, opaque pagination token.   Pass the `next_cursor` value returned in the previous POST /v1/logs response to retrieve the next page of log entries.   If absent, the first page of results is returned.\n",
+            "schema": {
+              "type": "string",
+              "example": "eyJpZCI6IjU3ZmRmNWFkLWUwZDMtNDNkNS04ODUxLTIzYjhmMjVjMGQ5NSIsImNyZWF0ZWRfYXQiOiIyMDI1LTA2LTI1VDEwOjA1OjE1LjAyNzk1ODMzN1oifQ"
+            }
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "required": false,
+            "description": "An optional parameter that controls the chronological direction of the returned log entries.   Use `forward` to sort results from oldest to newest.   Use `backward` to sort results from newest to oldest.   If omitted, the default is `forward`.\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "backward",
+                "forward"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            },
+            "description": "An optional parameter that sets the maximum number of log entries to return per page.   Must be a positive integer no greater than 1000.  If omitted, the service’s default page size is applied.\n"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetLogsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Paginated audit logs have been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedLogResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "code": "VALIDATION_ERROR",
+                      "message": "request body contains badly-formed JSON"
+                    }
+                  },
+                  "wrong_cursor": {
+                    "value": {
+                      "code": "INVALID_CURSOR",
+                      "message": "wrong cursor"
+                    }
+                  },
+                  "invalid_direction": {
+                    "value": {
+                      "code": "INVALID_DIRECTION",
+                      "message": "wrong direction, should be 'forward' or 'backward, but got: backwardd"
+                    }
+                  },
+                  "invalid_limit": {
+                    "value": {
+                      "code": "INVALID_LIMIT",
+                      "message": "wrong limit: limit should be less than 1000"
+                    }
+                  },
+                  "invalid_time_range": {
+                    "value": {
+                      "code": "INVALID_TIME_RANGE",
+                      "message": "date_from cannot be after date_to"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                },
+                "example": {
+                  "code": "LIMIT_EXCEEDED",
+                  "message": "Rate limit exceeded"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                },
+                "example": {
+                  "code": "INTERNAL_ERROR",
+                  "message": "internal error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "iam_token_account_scoped": {
+        "in": "header",
+        "name": "X-Auth-Token",
+        "description": "IAM token for account",
+        "type": "apiKey"
+      }
+    },
+    "schemas": {
+      "GetLogsRequest": {
+        "type": "object",
+        "properties": {
+          "event_saved_time_from": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start of the log time range, in RFC 3339 (ISO 8601) format.",
+            "example": "2025-06-10T13:00:01+00:00"
+          },
+          "event_saved_time_to": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End of the log time range, in RFC 3339 (ISO 8601) format.",
+            "example": "2025-07-10T13:00:01+00:00"
+          },
+          "event_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter logs by one or more event types.",
+            "example": [
+              "iam.account.fill",
+              "iam.account.enforce_grey_network"
+            ]
+          },
+          "project_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter logs by one or more project IDs.",
+            "example": [
+              "2128277041c64440a1a10cdfc0fe1a5f"
+            ]
+          },
+          "source_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter logs by one or more source types.",
+            "example": [
+              "iam",
+              "billing",
+              "cloud"
+            ]
+          }
+        }
+      },
+      "PageResponse": {
+        "type": "object",
+        "properties": {
+          "next_cursor": {
+            "type": "string",
+            "description": "Opaque cursor for fetching the next page of results.",
+            "example": "eyJpZCI6ImM5OThjNjJkLWRjMjUtNGY0Ny1iZGJiLTNhM2NlZmU2OGVkNiIsImNyZWF0ZWRfYXQiOiIyMDI1LTA2LTI1VDEwOjA1OjE2LjgzNDY1MDk2MloifQ"
+          },
+          "prev_cursor": {
+            "type": "string",
+            "description": "Opaque cursor for fetching the previous page of results.",
+            "example": "eyJpZCI6IjU3ZmRmNWFkLWUwZDMtNDNkNS04ODUxLTIzYjhmMjVjMGQ5NSIsImNyZWF0ZWRfYXQiOiIyMDI1LTA2LTI1VDEwOjA1OjE1LjAyNzk1ODMzN1oifQ"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of items returned in this page.",
+            "example": 1000
+          }
+        }
+      },
+      "LogResponse": {
+        "type": "object",
+        "properties": {
+          "event_saved_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the event was saved in RFC 3339 (ISO 8601) format.",
+            "example": "2025-06-19T08:00:13Z"
+          },
+          "event_id": {
+            "type": "string",
+            "description": "",
+            "example": "0c3ba20f-c3db-4ef0-8d48-b9b2bef7c3f1"
+          },
+          "event_type": {
+            "type": "string",
+            "description": "Type of occurred event, unique for every action in every product.",
+            "example": "iam.user.login"
+          },
+          "event_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Original timestamp of the event in RFC 3339 (ISO 8601) format.",
+            "example": "2025-06-19T07:30:13Z"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "fail",
+              "NA",
+              "accepted"
+            ],
+            "description": "Status of event. NA means not applicable for this event type. Accepted means the event was accepted but the final result is unknown.\n"
+          },
+          "error_code": {
+            "type": "string",
+            "description": "Error code for the event, specific to each product.",
+            "example": ""
+          },
+          "request_id": {
+            "type": "string",
+            "description": "Unique identifier of the request that caused this event.",
+            "example": "910d8e34e368d33a8c2989311ad44dec"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/SubjectResponse"
+          },
+          "resource": {
+            "$ref": "#/components/schemas/ResourceResponse"
+          },
+          "source_type": {
+            "type": "string"
+          },
+          "request": {
+            "$ref": "#/components/schemas/RequestResponse"
+          },
+          "schema_version": {
+            "type": "string",
+            "description": "Version of the data scheme.",
+            "example": "1.0.0"
+          }
+        }
+      },
+      "PaginatedLogResponse": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/PageResponse"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LogResponse"
+            }
+          }
+        }
+      },
+      "SubjectResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the subject. Can be in two forms: 12345_13423 and 3112f9b7aec64fe49700c7cd0f5f6ddc",
+            "example": "4436561_123"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "employee",
+              "service",
+              "user",
+              "service_user"
+            ]
+          },
+          "name": {
+            "description": "Human-readable name of the subject (if it exists).",
+            "type": "string",
+            "example": "service"
+          },
+          "auth_provider": {
+            "type": "string",
+            "description": "Service that provided authentication.",
+            "example": "keystone"
+          },
+          "is_authorized": {
+            "type": "boolean",
+            "description": "Whether the subject was authorized (true/false).",
+            "example": true
+          },
+          "authorized_by": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of roles that granted authorization.",
+            "example": [
+              "member"
+            ]
+          },
+          "credentials_fingerprint": {
+            "type": "string",
+            "description": "Masked portion of the secret used to authenticate the request.",
+            "example": "5ec914e26d9567b07cdd815c1d353cbc"
+          }
+        }
+      },
+      "ResourceResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "4436532"
+          },
+          "type": {
+            "type": "string",
+            "description": "Resource type, as defined in the documentation",
+            "example": "iam.user"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name of the resource (if it exists).",
+            "example": "314014"
+          },
+          "account_id": {
+            "type": "string",
+            "description": "Identifier of the account that owns the resource.",
+            "example": "4436532"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Identifier of the project related to this resource; can be empty.",
+            "example": "2128277041c64440a1a10cdfc0fe1a5f"
+          },
+          "location": {
+            "type": "string",
+            "description": "Data center or availability zone, if applicable.",
+            "example": "ru-1"
+          },
+          "old_values": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Previous resource state values.",
+            "example": {
+              "name": "old_name"
+            }
+          },
+          "new_values": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "New resource state values.",
+            "example": {
+              "name": "new_name"
+            }
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Additional data of resource object.",
+            "example": {
+              "additional_data": "value"
+            }
+          }
+        }
+      },
+      "RequestResponse": {
+        "type": "object",
+        "properties": {
+          "remote_address": {
+            "type": "string",
+            "description": "IP address from which the request originated.",
+            "example": "108.171.39.255"
+          },
+          "user_agent": {
+            "type": "string",
+            "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+          },
+          "type": {
+            "type": "string",
+            "description": "Origin type of the request (e.g., http, queue).",
+            "example": "http"
+          },
+          "path": {
+            "type": "string",
+            "example": "/v1/test"
+          },
+          "method": {
+            "type": "string",
+            "example": "POST"
+          },
+          "parameters": {
+            "type": "string",
+            "example": "?test=query"
+          }
+        }
+      },
+      "APIError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Specific unique error code."
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message."
+          },
+          "details": {
+            "type": "object",
+            "description": "Possible details of error."
+          }
+        },
+        "required": [
+          "message",
+          "code"
+        ]
+      }
+    }
+  }
+}

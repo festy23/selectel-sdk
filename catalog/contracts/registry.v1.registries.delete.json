@@ -1,0 +1,100 @@
+{
+  "operation_id": "registry.v1.registries.delete",
+  "effect": "mutation",
+  "endpoint": {
+    "generation": "v1",
+    "override_key": [
+      "registry",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "https://cr.selcloud.ru/api for Russia or exact published servercore address selected by explicit scope; no generation fallback",
+    "recipe_source": "internal/endpoints/locations.go"
+  },
+  "request": {
+    "method": "DELETE",
+    "path": "/v1/registries/{id}",
+    "source_schema": "sources/craas.json#/paths/~1v1~1registries~1{id}/delete",
+    "source_operation": {
+      "description": "Deletes the specified container registry.",
+      "operationId": "deleteRegistry",
+      "parameters": [
+        {
+          "description": "Unique identifier of the registry.",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "Registry has been deleted successfully."
+        },
+        "500": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registry.commonServerError"
+              }
+            }
+          },
+          "description": "Server is not responding. Please try again later."
+        }
+      },
+      "summary": "Delete registry",
+      "tags": [
+        "Registries"
+      ]
+    },
+    "mapping_source": "registry/v1.go",
+    "scope": "project IAM",
+    "identity": "scope from immutable view; existing resource addressed by exact scoped ResourceRef; no name lookup",
+    "path_fields": {
+      "id": "ref.ID escaped once as one segment"
+    },
+    "optional_fields": "nil omitted; explicit false/empty preserved; nullable project fields distinguish omitted/null/value",
+    "body": null,
+    "query": {}
+  },
+  "response": {
+    "successful_statuses": [
+      204
+    ],
+    "schema_ref": "sources/craas.json#/paths/~1v1~1registries~1{id}/delete/responses",
+    "dto_source": "registry/v1_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All properties in the operation response schema; optional values preserve absence; arbitrary-precision Integer/Number; known RFC3339 timestamps normalized to UTC; provider ref field discarded",
+    "resource_ref": "Create requires nonempty provider ID. Exact Get/Update use request ref when optional response ID is absent; a present response ID must match. List refs only for returned IDs. Scope, endpoint and generation from the call.",
+    "sensitive_fields": [],
+    "body": "204 has no content; original exact request ref retained in accepted Receipt"
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for safe reads; mutation rejection only when documented",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible mutation transmission; exact request refs preserved",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy provider IDs already extracted",
+    "foreign_response_id": "scope_mismatch; never replace expected ref",
+    "message": "fixed SDK message; raw provider messages discarded",
+    "mutation_rejected_statuses": [
+      401,
+      403
+    ]
+  },
+  "retry": "bounded safe reads; mutation single attempt, never replay",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; provider CRUD binding does not imply a wait contract"
+  },
+  "recovery": {
+    "availability": "unavailable for root handle; exact Get is observational and does not prove authorship of unknown mutation"
+  },
+  "timeout": "CallTimeout; CollectionTimeout shared across list pages"
+}

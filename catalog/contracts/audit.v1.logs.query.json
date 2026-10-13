@@ -1,0 +1,186 @@
+{
+  "operation_id": "audit.v1.logs.query",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "https://api.selectel.ru/audit-logs/v1/logs",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v1",
+    "override_key": [
+      "audit",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "account",
+    "method": "POST",
+    "source_schema": "sources/audit-logs.json#/paths/~1v1~1logs/post",
+    "mapping_source": "audit/client.go",
+    "source_operation": {
+      "summary": "Get logs",
+      "description": "Returns paginated and filtered audit logs.",
+      "operationId": "getAuditLogs",
+      "parameters": [
+        {
+          "in": "query",
+          "name": "cursor",
+          "description": "An optional, opaque pagination token.   Pass the `next_cursor` value returned in the previous POST /v1/logs response to retrieve the next page of log entries.   If absent, the first page of results is returned.\n",
+          "schema": {
+            "type": "string",
+            "example": "eyJpZCI6IjU3ZmRmNWFkLWUwZDMtNDNkNS04ODUxLTIzYjhmMjVjMGQ5NSIsImNyZWF0ZWRfYXQiOiIyMDI1LTA2LTI1VDEwOjA1OjE1LjAyNzk1ODMzN1oifQ"
+          }
+        },
+        {
+          "in": "query",
+          "name": "dir",
+          "required": false,
+          "description": "An optional parameter that controls the chronological direction of the returned log entries.   Use `forward` to sort results from oldest to newest.   Use `backward` to sort results from newest to oldest.   If omitted, the default is `forward`.\n",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "backward",
+              "forward"
+            ]
+          }
+        },
+        {
+          "in": "query",
+          "name": "limit",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "description": "An optional parameter that sets the maximum number of log entries to return per page.   Must be a positive integer no greater than 1000.  If omitted, the service\u2019s default page size is applied.\n"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GetLogsRequest"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Paginated audit logs have been returned.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaginatedLogResponse"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIError"
+              },
+              "examples": {
+                "default": {
+                  "value": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "request body contains badly-formed JSON"
+                  }
+                },
+                "wrong_cursor": {
+                  "value": {
+                    "code": "INVALID_CURSOR",
+                    "message": "wrong cursor"
+                  }
+                },
+                "invalid_direction": {
+                  "value": {
+                    "code": "INVALID_DIRECTION",
+                    "message": "wrong direction, should be 'forward' or 'backward, but got: backwardd"
+                  }
+                },
+                "invalid_limit": {
+                  "value": {
+                    "code": "INVALID_LIMIT",
+                    "message": "wrong limit: limit should be less than 1000"
+                  }
+                },
+                "invalid_time_range": {
+                  "value": {
+                    "code": "INVALID_TIME_RANGE",
+                    "message": "date_from cannot be after date_to"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "429": {
+          "description": "Rate limit exceeded. Try again later.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIError"
+              },
+              "example": {
+                "code": "LIMIT_EXCEEDED",
+                "message": "Rate limit exceeded"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Server is not responding. Please try again later.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIError"
+              },
+              "example": {
+                "code": "INTERNAL_ERROR",
+                "message": "internal error"
+              }
+            }
+          }
+        }
+      }
+    },
+    "absence": "nil optional fields omitted; explicit false/empty preserved",
+    "identity": "account/project/location from immutable view"
+  },
+  "response": {
+    "dto_source": "audit/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all declared response item properties, optional fields preserve absence; provider cannot inject SDK ref",
+    "sensitive_fields": [
+      "resource.old_values",
+      "resource.new_values",
+      "resource.details",
+      "request.parameters",
+      "pagination.prev_cursor",
+      "pagination.next_cursor"
+    ],
+    "pagination_metadata": "ProviderMetadata retains totalCount/prev_cursor/count when documented",
+    "scope_checks": "provider project/pool/account fields, when declared; mismatches rejected",
+    "timestamps": "RFC3339 fields parsed; DB naive time retained as raw string",
+    "numbers": "integer decimal bytes retained without float64"
+  },
+  "errors": {
+    "403": "permission_denied; never a successful empty collection",
+    "malformed_body": "protocol_error",
+    "foreign_scope": "scope_mismatch",
+    "limit": "incomplete with bounded typed prefix and cursor"
+  },
+  "retry": "bounded safe read, including audit POST",
+  "pagination": {
+    "shape": "cursor/limit/dir",
+    "limits": "MaxItems/MaxPages; one CollectionTimeout shared across all calls",
+    "continuation": "bound to scope, generation, endpoint ID, semantic filters and contract revision",
+    "single_response": "replay original page plus skip when locally truncated",
+    "empty_page": "continuation governs completion"
+  },
+  "inventory": "not included in initial Inventory branches"
+}

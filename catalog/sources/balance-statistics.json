@@ -1,0 +1,656 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Billing Statistics API",
+    "description": "Consumption and expense statistics for cloud servers, Managed Databases, Managed Kubernetes, Object Storage, Container Registry, CDN. It is not yet possible to view consumption and expense statistics via API for dedicated servers, colocation, and firewalls.",
+    "version": "v1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "iam_token_account_scoped": {
+        "in": "header",
+        "name": "X-Auth-Token",
+        "type": "apiKey",
+        "description": "IAM token for account"
+      },
+      "static_token": {
+        "in": "header",
+        "name": "X-Token",
+        "type": "apiKey",
+        "description": "Static token"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Get statistics",
+      "description": "Receiving statistic"
+    }
+  ],
+  "paths": {
+    "/v1/cloud_billing/statistic/projects": {
+      "get": {
+        "tags": [
+          "Get statistics"
+        ],
+        "summary": "Get billing statistics for projects",
+        "description": "Get billing statistics for projects by provider keys",
+        "operationId": "getBillingStatistics",
+        "security": [
+          {
+            "static_token": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider_keys",
+            "in": "query",
+            "description": "Provider keys to filter statistics by",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "vpc",
+                  "serverless",
+                  "mks",
+                  "dbaas",
+                  "storage",
+                  "cdn",
+                  "vmware",
+                  "craas",
+                  "ones",
+                  "mobfarm",
+                  "ses"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "8c37009d-99b2-4f94-adda-7c6e7e0c2b69"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "name_project"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Invalid X-Auth-Token or X-Token header value"
+          },
+          "403": {
+            "description": "Forbidden. The request is not allowed for the user"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/cloud_billing/statistic/objects": {
+      "get": {
+        "tags": [
+          "Get statistics"
+        ],
+        "summary": "Get billing statistics for objects",
+        "description": "Get billing statistics for objects by provider keys",
+        "operationId": "getBillingStatisticsObjects",
+        "security": [
+          {
+            "static_token": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider_keys",
+            "in": "query",
+            "description": "Provider keys to filter statistics by",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "vpc",
+                  "serverless",
+                  "mks",
+                  "dbaas",
+                  "storage",
+                  "cdn",
+                  "vmware",
+                  "craas",
+                  "ones",
+                  "mobfarm",
+                  "ses"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "description": "Locale for returned data",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ru",
+                "en"
+              ]
+            },
+            "style": "form",
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "0cebfc0e-9400-4ac4-987c-368e4af12619"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": null
+                          },
+                          "parent_id": {
+                            "type": "string",
+                            "example": null
+                          },
+                          "project_id": {
+                            "type": "string",
+                            "example": "cab8c287-fbf3-4285-abcb-58f439ef5984"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "cloud_vm"
+                          },
+                          "type_name": {
+                            "type": "string",
+                            "example": "Сервер"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Invalid X-Auth-Token or X-Token header value"
+          },
+          "403": {
+            "description": "Forbidden. The request is not allowed for the user"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/cloud_billing/statistic/summary_stats": {
+      "get": {
+        "tags": [
+          "Get statistics"
+        ],
+        "summary": "Get summary statistics",
+        "description": "Get summary billing statistics by provider keys, date range and grouping parameters",
+        "operationId": "getSummaryBillingStatistics",
+        "security": [
+          {
+            "static_token": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider_keys",
+            "in": "query",
+            "description": "Service Provider Key",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "vpc",
+                  "serverless",
+                  "mks",
+                  "dbaas",
+                  "storage",
+                  "cdn",
+                  "vmware",
+                  "craas",
+                  "ones",
+                  "mobfarm",
+                  "ses"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date for statistics range",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "style": "form",
+            "explode": false
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date for statistics range",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "style": "form",
+            "explode": false
+          },
+          {
+            "name": "group_type",
+            "in": "query",
+            "description": "Grouping type for returned data",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "project",
+                "object",
+                "metric",
+                "project_metric",
+                "region_metric"
+              ]
+            },
+            "style": "form",
+            "explode": false
+          },
+          {
+            "name": "period_group_type",
+            "in": "query",
+            "description": "Period grouping type for returned data",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hour",
+                "day",
+                "week",
+                "month",
+                "year",
+                "all"
+              ]
+            },
+            "style": "form",
+            "explode": false
+          },
+          {
+            "name": "items_count_period_group_type",
+            "in": "query",
+            "description": "Items count period grouping type for returned data",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hour",
+                "day",
+                "week",
+                "month",
+                "year",
+                "all"
+              ]
+            },
+            "style": "form",
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "account_id": {
+                            "type": "string",
+                            "example": "5633235"
+                          },
+                          "period_start": {
+                            "type": "string",
+                            "example": "2023-01-01T00:00:00"
+                          },
+                          "period_end": {
+                            "type": "string",
+                            "example": "2023-01-31T23:59:59"
+                          },
+                          "value": {
+                            "type": "integer",
+                            "example": 29055134
+                          },
+                          "items_count": {
+                            "type": "integer",
+                            "example": 1097
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Invalid X-Auth-Token or X-Token header value"
+          },
+          "403": {
+            "description": "Forbidden. The request is not allowed for the user"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/v1/cloud_billing/statistic/consumption": {
+      "get": {
+        "tags": [
+          "Get statistics"
+        ],
+        "summary": "Getting service consumption statistics",
+        "description": "Getting statistics on the consumption of services on the cloud for a certain period of time",
+        "security": [
+          {
+            "static_token": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "provider_keys",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "vpc",
+                  "serverless",
+                  "mks",
+                  "dbaas",
+                  "storage",
+                  "cdn",
+                  "vmware",
+                  "craas",
+                  "ones",
+                  "mobfarm",
+                  "ses"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "description": "Service provider keys"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "style": "form",
+            "explode": true,
+            "description": "Start of statistics period"
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "style": "form",
+            "explode": true,
+            "description": "End of statistics period"
+          },
+          {
+            "in": "query",
+            "name": "locale",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ru",
+                "en"
+              ]
+            },
+            "style": "form",
+            "explode": true,
+            "description": "Localization language"
+          },
+          {
+            "in": "query",
+            "name": "group_type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "project",
+                "object",
+                "metric",
+                "project_metric",
+                "region_metric"
+              ]
+            },
+            "style": "form",
+            "explode": true,
+            "description": "Statistics grouping type"
+          },
+          {
+            "in": "query",
+            "name": "period_group_type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hour",
+                "day",
+                "week",
+                "month",
+                "year",
+                "all"
+              ]
+            },
+            "style": "form",
+            "explode": true,
+            "description": "Statistics period grouping type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request. Returns service consumption statistics on the cloud",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Request status"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "account_id": {
+                            "type": "string",
+                            "description": "User Account ID"
+                          },
+                          "metric": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Metric ID"
+                              },
+                              "locale": {
+                                "type": "string",
+                                "description": "Metric localization language"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Metric name"
+                              },
+                              "quantity": {
+                                "type": "integer",
+                                "description": "Metric count"
+                              },
+                              "unit": {
+                                "type": "string",
+                                "description": "Metric unit"
+                              }
+                            },
+                            "description": "Service metric"
+                          },
+                          "period": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Metric statistics period"
+                          },
+                          "provider_key": {
+                            "type": "string",
+                            "description": "Service Provider Key"
+                          },
+                          "value": {
+                            "type": "integer",
+                            "description": "Metric value"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": [
+                    {
+                      "account_id": "5633235",
+                      "metric": {
+                        "id": "volume_gigabytes_local",
+                        "locale": "ru",
+                        "name": "Local NVMe SSDs",
+                        "quantity": 672,
+                        "unit": "GB"
+                      },
+                      "period": "2023-06-01T00:00:00",
+                      "provider_key": "vpc",
+                      "value": 1231
+                    },
+                    {
+                      "account_id": "5633235",
+                      "metric": {
+                        "id": "mks_cluster_regional",
+                        "locale": "ru",
+                        "name": "Failover Managed Kubernetes Cluster",
+                        "quantity": 24,
+                        "unit": "item"
+                      },
+                      "period": "2023-06-01T00:00:00",
+                      "provider_key": "mks",
+                      "value": 31525
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Invalid X-Auth-Token or X-Token header value"
+          },
+          "403": {
+            "description": "Forbidden. The request is not allowed for the user"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "operation_id": "registry.v1.registries.list",
+  "effect": "read",
+  "endpoint": {
+    "generation": "v1",
+    "override_key": [
+      "registry",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "https://cr.selcloud.ru/api for Russia or exact published servercore address selected by explicit scope; no generation fallback",
+    "recipe_source": "internal/endpoints/locations.go"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v1/registries",
+    "source_schema": "sources/craas.json#/paths/~1v1~1registries/get",
+    "source_operation": {
+      "description": "Returns a list of available container registries.",
+      "operationId": "listRegistries",
+      "parameters": [
+        {
+          "description": "limit",
+          "in": "query",
+          "name": "limit",
+          "schema": {
+            "default": 10,
+            "type": "integer"
+          }
+        },
+        {
+          "description": "Page offset for pagination.",
+          "in": "query",
+          "name": "offset",
+          "schema": {
+            "default": 0,
+            "type": "integer"
+          }
+        },
+        {
+          "description": "Search query for filtering registries by name.",
+          "in": "query",
+          "name": "search",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "description": "Field to sort by.",
+          "in": "query",
+          "name": "sort_field",
+          "schema": {
+            "$ref": "#/components/schemas/SortRegistriesField"
+          }
+        },
+        {
+          "description": "Sort order type.",
+          "in": "query",
+          "name": "sort_type",
+          "schema": {
+            "$ref": "#/components/schemas/SortType"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/registry.Registry"
+                },
+                "type": "array"
+              }
+            }
+          },
+          "description": "List of registries."
+        },
+        "204": {
+          "description": "No registries have been found."
+        },
+        "500": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registry.commonServerError"
+              }
+            }
+          },
+          "description": "Server is not responding. Please try again later."
+        }
+      },
+      "summary": "List registries",
+      "tags": [
+        "Registries"
+      ]
+    },
+    "mapping_source": "registry/v1.go",
+    "scope": "project IAM",
+    "identity": "scope from immutable view; existing resource addressed by exact scoped ResourceRef; no name lookup",
+    "path_fields": {},
+    "optional_fields": "nil omitted; explicit false/empty preserved; nullable project fields distinguish omitted/null/value",
+    "body": null,
+    "query": {
+      "limit": "effective PageSize bounded by remaining MaxItems",
+      "offset": "V1ListOptions.Offset or 0 on initial call; exact arbitrary-precision offset cursor on continuation",
+      "search": "V1ListOptions.Search when present including empty",
+      "sort_field": "name/createdAt/size when present",
+      "sort_type": "asc/desc when present"
+    }
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      204
+    ],
+    "schema_ref": "sources/craas.json#/paths/~1v1~1registries/get/responses",
+    "dto_source": "registry/v1_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All properties in the operation response schema; optional values preserve absence; arbitrary-precision Integer/Number; known RFC3339 timestamps normalized to UTC; provider ref field discarded",
+    "resource_ref": "Create requires nonempty provider ID. Exact Get/Update use request ref when optional response ID is absent; a present response ID must match. List refs only for returned IDs. Scope, endpoint and generation from the call.",
+    "sensitive_fields": [],
+    "body": "200 is a bare array of registry.Registry; 204 is empty and completes the collection. Empty/missing 200 body and JSON null are protocol_error."
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for safe reads; mutation rejection only when documented",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible mutation transmission; exact request refs preserved",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy provider IDs already extracted",
+    "foreign_response_id": "scope_mismatch; never replace expected ref",
+    "message": "fixed SDK message; raw provider messages discarded",
+    "mutation_rejected_statuses": []
+  },
+  "retry": "bounded safe reads; mutation single attempt, never replay",
+  "pagination": {
+    "shape": "offset/limit with bare array; no totalCount",
+    "end": "200 [] or 204 empty; any positive page advances offset by wire item count, including a short page",
+    "limits": "MaxItems/MaxPages and shared CollectionTimeout; truncated page retains replay offset and skip",
+    "continuation": "bound to exact scope, endpoint, generation, semantic filters/initial offset and contract revision",
+    "consistency": "best_effort; no snapshot promise"
+  },
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; provider CRUD binding does not imply a wait contract"
+  },
+  "recovery": {
+    "availability": "unavailable for root handle; exact Get is observational and does not prove authorship of unknown mutation"
+  },
+  "timeout": "CallTimeout; CollectionTimeout shared across list pages"
+}

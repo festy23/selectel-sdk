@@ -1,0 +1,306 @@
+[
+  {
+    "availability": "documented",
+    "id": "identity",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/authorization/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "iam",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/users-and-roles/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "federations",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/federations/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "projects",
+    "inventory_complete": true,
+    "source_uris": [
+      "https://docs.selectel.ru/api/cloud-projects-and-resources/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "quotas",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/quota-management/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "compute",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.openstack.org/api-ref/compute/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "network",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.openstack.org/api-ref/network/v2/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "volumes",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.openstack.org/api-ref/block-storage/v3/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "images",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.openstack.org/api-ref/image/v2/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "loadbalancers",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.openstack.org/api-ref/load-balancer/v2/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "public_network",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/cloud-public-network/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "private_dns",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/private-dns/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "mks",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/managed-kubernetes/",
+      "https://docs.selectel.ru/api/managed-kubernetes-legacy/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "databases",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/managed-databases/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "registry",
+    "inventory_complete": true,
+    "source_uris": [
+      "https://docs.selectel.ru/api/craas/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "registry_data",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://github.com/opencontainers/distribution-spec"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "s3",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/object-storage-s3/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "swift",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/object-storage-swift/",
+      "https://docs.selectel.ru/api/object-storage-swift-old/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "object_storage",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/object-storage/",
+      "https://docs.selectel.ru/api/selectel-storage-old/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "backups",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/scheduled-backups/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "dedicated",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/dedicated/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "vmware",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/vmware/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "cloud_1c",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/1c-cloud/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "dns",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/dns-actual/",
+      "https://docs.selectel.ru/api/dns-legacy/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "cdn",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/cdn/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "email",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/email-service/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "global_router",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/global-router/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "ip_addresses",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/ip-addresses/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "billing",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/balance/",
+      "https://docs.selectel.ru/api/balance-statistics/",
+      "https://docs.selectel.ru/api/billing-reports/",
+      "https://docs.selectel.ru/api/billing-transactions/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "logs",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/logs/tools/aws-cli/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "metrics",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/metrics/tools/prometheus/",
+      "https://docs.selectel.ru/metrics/tools/grafana/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "audit",
+    "inventory_complete": true,
+    "source_uris": [
+      "https://docs.selectel.ru/api/audit-logs/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "secrets",
+    "inventory_complete": true,
+    "source_uris": [
+      "https://docs.selectel.ru/api/secrets-manager/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "certificates",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/certificates-manager/",
+      "https://docs.selectel.ru/api/lets-encrypt-certificates/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "mobile_farm",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/mobile-farm/"
+    ]
+  },
+  {
+    "availability": "documented",
+    "id": "tickets",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/api/tickets/",
+      "https://docs.selectel.ru/api/tickets-attachments/"
+    ]
+  },
+  {
+    "availability": "discovery_pending",
+    "id": "kms",
+    "inventory_complete": false,
+    "source_uris": []
+  }
+]

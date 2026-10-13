@@ -1,0 +1,61 @@
+{
+  "operation_id": "billing.v3.balances.get",
+  "method": "GET",
+  "path": "/v3/balances",
+  "effect": "read",
+  "scope": {
+    "account": "Config.AccountID",
+    "project": null
+  },
+  "auth": {
+    "preferred": "iam_account",
+    "alternatives": [
+      "static_token"
+    ],
+    "audience": "selectel"
+  },
+  "endpoint": {
+    "url": "https://api.selectel.ru",
+    "generation": "v3",
+    "override_key": "(billing,generation,scope)",
+    "redirects": "reject"
+  },
+  "request": {
+    "headers": {
+      "X-Auth-Token": "verified IAM token when iam_account",
+      "X-Token": "explicit static material when static_token"
+    },
+    "query": {},
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "schema_source": "sources/balance.json#/paths/~1v3~1balances/get/responses/200",
+    "field_mapping": "all documented fields mapped by billing client/types; optional fields preserve presence",
+    "integers": "types.Integer; monetary value -> Money.Raw unchanged",
+    "money_currency": "balance data.settings.currency if present; absent for statistics",
+    "money_unit": "provider_unit_unknown",
+    "money_scale": null,
+    "provider_time": "preserve raw offsetless strings",
+    "account_id": "must match explicit account if present"
+  },
+  "errors": {
+    "401": "unauthenticated + at most one password refresh within attempt budget",
+    "403": "permission_denied",
+    "404": "not_found",
+    "429": "rate_limited",
+    "other_non_success": "provider_error",
+    "malformed": "protocol_error",
+    "foreign_account": "scope_mismatch"
+  },
+  "timeout": "CallTimeout shared with auth/retries",
+  "retry": "read policy in core/request.go; max configured attempts",
+  "validation": {
+    "data_payload_required": true,
+    "provider_keys": null,
+    "period": null,
+    "source": "billing/client.go"
+  },
+  "mapping_source": "billing/client.go",
+  "dto_source": "billing/types.go"
+}
