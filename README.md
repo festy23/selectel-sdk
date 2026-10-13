@@ -31,13 +31,250 @@ Streams, Events, Filter; Prometheus Scrape, Query и QueryRange. Эти bindings
 `inventory_complete=false` и `coverage_ratio=null` сохраняются до полного
 перечисления всех семейств Selectel.
 
-## Использование
+## Начало работы с Selectel
 
-Добавление библиотеки в Go-проект:
+Для регулярной работы используйте сервисного пользователя Selectel. SDK принимает
+его имя и пароль, получает IAM-токены нужной области и обновляет их при следующих
+вызовах перед истечением срока. Вручную выпускать API-ключ для этого способа не нужно.
+Порядок авторизации описан в [документации Selectel](https://docs.selectel.ru/api/authorization/).
+
+### Какие данные подготовить
+
+| Данные | Где получить и для чего нужны |
+| --- | --- |
+| Номер аккаунта | В правом верхнем углу панели Selectel. Это `AccountID`, а не ID проекта |
+| Имя сервисного пользователя | IAM → Сервисные пользователи. Используется как IAM username |
+| Пароль сервисного пользователя | Сохранить при создании пользователя; забытый пароль нужно заменить |
+| Разрешения пользователя | Роли и области доступа для нужных операций: аккаунт или выбранные проекты |
+| ID проекта | В меню проектов панели Selectel. Нужен для ресурсов проекта; SDK использует ID, а не название |
+| Пул и при необходимости регион | Из локации ресурса, например pool=`ru-1`, region=`spb`. Нужны для региональных сервисов |
+
+Пароль и ключи передавайте через локальные переменные окружения, отдельный файл
+профиля или хранилище секретов. Они не должны попадать в README, исходники,
+Git, сообщения агенту или диагностический вывод. Номер аккаунта, ID проекта и
+локация задают область работы, но сами по себе не дают доступа.
+
+### Создать сервисного пользователя и назначить доступ
+
+В панели [my.selectel.ru](https://my.selectel.ru) откройте **IAM → Сервисные
+пользователи → Добавить сервисного пользователя**, задайте имя и сгенерируйте
+пароль. Назначьте разрешения и сохраните пароль в выбранном хранилище.
+Создавать пользователя может владелец аккаунта или пользователь с `iam.admin`.
+Подробные шаги: [Добавить сервисного пользователя](https://docs.selectel.ru/access-control/manage/add-user/#add-service-user).
+
+Выберите доступ под задачу по [справочнику ролей](https://docs.selectel.ru/access-control/role-reference/):
+
+- Для первого примера ниже нужен `reader` в области **Аккаунт**: он позволяет
+  читать настройки проектов и данные биллинга.
+- Для чтения ресурсов одного проекта можно назначить `reader` только в области
+  **Проекты** с выбранным проектом. Тогда используйте пример MKS ниже;
+  account-scoped чтение проектов и биллинга этим разрешением не открывается.
+- Для создания, изменения и удаления ресурсов назначьте подходящие сервисные
+  роли или `member` в выбранном проекте. Управление самими проектами требует
+  разрешения на уровне аккаунта. SDK не расширяет роли пользователя.
+
+Наличие IAM-токена подтверждает авторизацию, но не гарантирует право на каждый
+сервисный вызов. Например, доступ к аудит-логам задаётся отдельно ролью
+`audit_logs.admin` на уровне аккаунта; операции с секретами проверяйте по
+разрешениям Secrets Manager.
+
+### Установить SDK и передать IAM credentials
+
+Требуется **Go 1.26 или новее**. В существующем Go-проекте:
 
 ```sh
 go get github.com/festy23/selectel-sdk
 ```
+
+Для отдельного первого примера создайте рабочий каталог:
+
+```sh
+mkdir selectel-sdk-example
+cd selectel-sdk-example
+go mod init example.com/selectel-sdk-example
+go get github.com/festy23/selectel-sdk
+```
+
+В этой же сессии терминала задайте данные своего сервисного пользователя.
+Следующий блок предназначен для Bash; замените значения в угловых скобках.
+Пароль вводится отдельным скрытым вводом, поэтому его нет в тексте команды:
+
+```bash
+export SELECTEL_ACCOUNT_ID='<номер-аккаунта>'
+export SELECTEL_USERNAME='<имя-сервисного-пользователя>'
+unset SELECTEL_IAM_TOKEN SELECTEL_TOKEN_EXPIRES_AT SELECTEL_PROJECT_ID
+printf 'Пароль сервисного пользователя: '
+IFS= read -r -s SELECTEL_PASSWORD
+printf '\n'
+export SELECTEL_PASSWORD
+```
+
+Для этого примера `SELECTEL_PROJECT_ID` оставлен пустым: credentials привязаны
+к аккаунту, а target проекта выбирается отдельно через `client.Project(id)`.
+SDK читает env только после явного `credentials.FromEnvironment("SELECTEL_")`.
+Он не загружает `.env`, OpenStack RC-файл или AWS-профиль автоматически.
+
+### Первый запрос: чтение списка проектов
+
+Сохраните следующий код в `main.go` рабочего каталога. Он делает реальные
+read-only запросы и выводит только число проектов и полноту результата:
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    "time"
+
+    sdk "github.com/festy23/selectel-sdk"
+    "github.com/festy23/selectel-sdk/credentials"
+    "github.com/festy23/selectel-sdk/pagination"
+    "github.com/festy23/selectel-sdk/projects"
+    "github.com/festy23/selectel-sdk/types"
+)
+
+func main() {
+    if err := run(); err != nil {
+        fmt.Fprintf(os.Stderr, "SDK error: %s\n", types.ErrorCode(err))
+        os.Exit(1)
+    }
+}
+
+func run() error {
+    source, err := credentials.FromEnvironment("SELECTEL_")
+    if err != nil {
+        return err
+    }
+    client, err := sdk.New(sdk.Config{
+        AccountID: os.Getenv("SELECTEL_ACCOUNT_ID"),
+        Credentials: source,
+    })
+    if err != nil {
+        return err
+    }
+    ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+    defer cancel()
+
+    result, err := client.Account().Projects().Collect(ctx,
+        projects.ListOptions{},
+        pagination.Options{MaxItems: 100, MaxPages: 10})
+    fmt.Printf("projects=%d complete=%t\n", len(result.Items), result.Complete)
+    return err
+}
+```
+
+```sh
+go run .
+```
+
+Первый сервисный вызов получает IAM-токен автоматически. `sdk.New` и выбор
+scope не обращаются к облаку. Явная предварительная проверка возможна через
+`client.Authenticate(ctx, types.AuthRequest)` с выбранными Scope, Mode, Service
+и Audience; она не проверяет разрешение на конкретную операцию.
+
+### Выбрать проект и локацию
+
+Для проекта задайте ID и пул. Эти две переменные — входные параметры примера,
+credential loader их не читает:
+
+```sh
+export SELECTEL_TARGET_PROJECT_ID='<id-проекта>'
+export SELECTEL_TARGET_POOL='<пул-ресурса>'
+```
+
+В функции `run` первого примера замените вызов `Projects().Collect` и вывод
+результата следующим блоком, а импорт `projects` замените на
+`"github.com/festy23/selectel-sdk/mks"`:
+
+```go
+project, err := client.Project(os.Getenv("SELECTEL_TARGET_PROJECT_ID"))
+if err != nil {
+    return err
+}
+location, err := project.Location("", os.Getenv("SELECTEL_TARGET_POOL"))
+if err != nil {
+    return err
+}
+result, err := location.MKS().V2.Clusters.Collect(ctx,
+    mks.ListOptions{}, pagination.Options{MaxItems: 100, MaxPages: 10})
+fmt.Printf("clusters=%d complete=%t\n", len(result.Items), result.Complete)
+return err
+```
+
+Пустой region допускается для известного SDK пула: например, `ru-1` соответствует
+`spb`. Pool — это `ru-1`, а не сегмент вроде `ru-1a`. Для поддерживаемых сервисов
+SDK выбирает endpoint из IAM service catalog или встроенного реестра. Для своего
+endpoint используется явный `Config.EndpointOverrides` с соответствующей областью
+доступа. Список адресов провайдера: [URL API](https://docs.selectel.ru/api/urls/).
+
+### Другие способы доступа: токены, логи и метрики
+
+| Задача / способ | Переменные для `FromEnvironment("SELECTEL_")` | Особенности |
+| --- | --- | --- |
+| IAM по паролю | `ACCOUNT_ID`, `USERNAME`, `PASSWORD` | Основной способ; SDK получает account/project token и обновляет его по необходимости |
+| Готовый IAM-токен | `ACCOUNT_ID`, `IAM_TOKEN`, `TOKEN_EXPIRES_AT`; для project token также `PROJECT_ID` | Срок в RFC3339, например `2026-10-14T12:00:00Z`. Передавайте фактический срок; новую пару token/expiry выдаёт внешний источник |
+| Статический API-ключ для Billing | `ACCOUNT_ID`, `STATIC_TOKEN` | Выберите `types.CallOptions{AuthMode: types.StaticToken}`; ключ не заменяет project IAM для VM, MKS или Secrets Manager |
+| Логи CloudWatch | `ACCOUNT_ID`, `PROJECT_ID`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` | S3-ключ нужного проекта; вызов через `location.Logs()` |
+| Метрики Prometheus | `ACCOUNT_ID`, `PROJECT_ID`, `BASIC_USER`, `BASIC_PASSWORD` | `BASIC_USER` — UID сервисного пользователя, а не его IAM-имя; вызов через `location.Metrics()` |
+
+В таблице перечислены суффиксы; полные имена — например,
+`SELECTEL_IAM_TOKEN` и `SELECTEL_S3_SECRET_KEY`. IAM password и IAM token
+нельзя задавать одновременно. Внешний IAM-токен действует только в своей
+области: project token одного проекта нельзя использовать для другого или для
+account Billing. SDK проверяет token через Keystone introspection, но не может
+выпустить новый без password source. По документации Selectel IAM-токен живёт
+24 часа; используйте `expires_at` выданного токена, а не придуманную дату.
+
+`SELECTEL_PROJECT_ID` ограничивает credential source конкретным проектом.
+Он не выбирает target автоматически и блокирует account-scoped методы SDK.
+Для Billing или управления проектами используйте отдельный source без project
+binding; для project-only доступа сохраните точный binding. S3 и Basic sources
+обязательно должны иметь project binding. При нескольких областях доступа можно
+использовать разные prefix или именованные профили и отдельные SDK clients.
+
+Готовый тестовый IAM-токен пользователя панели можно получить через
+[Профиль → Доступ → IAM-токен](https://docs.selectel.ru/account/manage-keys/#manage-iam-tokens).
+Статический API-ключ создаётся там же на вкладке API-ключи. В SDK сейчас он
+предусмотрен как явная альтернатива для трёх методов Billing; поддержка такого
+ключа провайдером для других API не добавляет их в SDK автоматически.
+
+Для логов выдайте сервисному пользователю S3-ключ нужного проекта по инструкции
+[Управлять S3-ключами](https://docs.selectel.ru/account/manage-keys/#manage-s3-keys).
+Selectel подтверждает пару Access key / Secret key в
+[инструкции SDK клиента логов](https://docs.selectel.ru/logs/tools/sdk-client/).
+Для метрик используйте UID и пароль сервисного пользователя с доступом к
+проекту (`metrics.admin`, `member` или `reader`), как описано в
+[инструкции Prometheus](https://docs.selectel.ru/metrics/tools/prometheus/).
+UID можно посмотреть в IAM → Сервисные пользователи, поле UID.
+
+В CI задайте те же переменные через secrets вашего CI; храните IAM, S3 и Basic
+материалы в отдельных записях при разных областях доступа. Альтернативы env:
+`credentials.FromProfile(path, name)` с явным JSON-профилем или
+`credentials.FromKeyring(store, entry)` с адаптером хранилища, переданным caller.
+Файл профиля храните вне репозитория с доступом только для владельца (`chmod 600`);
+SDK сам не выбирает системный keyring и не проверяет права файла.
+
+### Если первый запрос не работает
+
+| Код SDK | Что проверить |
+| --- | --- |
+| `invalid_argument` | Непустой `AccountID`, ID проекта, корректные pool/region и параметры вызова |
+| `credentials_unavailable` | Имена env и prefix, наличие обеих частей пары, формат expiry; не задан ли одновременно password и IAM token |
+| `scope_mismatch` | Совпадение аккаунта и проекта credentials с target; не используется ли project source для account view |
+| `unauthenticated` | Верность пароля, активность сервисного пользователя, истечение или отзыв токена |
+| `permission_denied` | Роль пользователя и область разрешения для конкретного сервиса и операции |
+| `endpoint_unavailable` | Поддержка нужного пула и API generation, IAM catalog или явный endpoint override |
+| `transport_error` / `deadline_exceeded` | DNS, исходящий HTTPS, прокси и сетевые ограничения, общий deadline |
+| `incomplete` / `response_limit` | Получены частичные данные: проверьте `Complete`, лимиты и continuation |
+
+Не выводите пароль, token или сырые provider responses при поиске причины.
+Полезные поля ошибки SDK — Code, HTTPStatus, OperationID и RequestIDs.
+Оба варианта первого запроса проверяются локально на компиляцию; реальная
+успешная авторизация и доступ к ресурсам требуют проверки в вашем аккаунте Selectel.
+
+## Контракты и использование SDK
 
 Go-модуль находится в корне репозитория. Для агента доступен
 [скилл selectelsdk](.agents/skills/selectelsdk/SKILL.md), который описывает
