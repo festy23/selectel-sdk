@@ -20,5 +20,9 @@ jobs:
         run: go generate .
       - name: Verify SDK and catalog evidence
         run: python3 scripts/verify_catalog.py
+      - name: Verify local installer and profile storage
+        run: |
+          bash -n install.sh scripts/setup-profile.sh
+          python3 -m unittest discover -s scripts -p '*_test.py'
       - name: Check generated artifacts
         run: git diff --exit-code

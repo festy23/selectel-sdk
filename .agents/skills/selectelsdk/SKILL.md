@@ -12,10 +12,16 @@ the temporary source file outside the repository. A CLI or MCP is not required.
 
 ## Prepare the SDK
 
+For a copy installed with the one-command installer, read `installation.json`
+beside this file. It records SDK root, Go executable, revision, profiles path
+and the profile name selected during setup. Work in that SDK root and use that
+Go executable; read only the selected record's non-secret scope metadata when
+constructing Config.AccountID. Keep cloud targets explicit in the task.
+
 For a new workstation or Go application, follow
 [installation](references/usage.md#install-and-locate-the-sdk). Keep the SDK
 checkout available for this skill's README, contracts and capability sources;
-installing the Go dependency alone does not install the agent skill.
+`go get` alone does not install the agent skill.
 
 Setup is complete when imports resolve, offline catalog discovery runs, and the
 credential source and account are explicitly selected. Use the

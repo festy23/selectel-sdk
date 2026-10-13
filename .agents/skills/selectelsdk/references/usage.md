@@ -2,6 +2,13 @@
 
 ## Install and locate the SDK
 
+For SDK plus a globally discoverable skill and personal profile, use the
+[one-command installer](../../../../README.md#установить-sdk-и-скилл-одной-командой).
+When `installation.json` exists beside the installed SKILL.md, resolve the SDK
+root, Go executable and selected profile from it before using the examples.
+That metadata is local setup input, not an automatic credential loader in SDK
+core. The installer rebases repository references to its installed SDK revision.
+
 Use a Go toolchain compatible with the repository's `go.mod`. For agent work
 with the SDK source, skill and capability catalog available together:
 
@@ -34,7 +41,7 @@ The agent entrypoint is `.agents/skills/selectelsdk/SKILL.md` in the SDK checkou
 also routed by its `AGENTS.md`. Point the agent to that file when working from
 another repository. Its references depend on the SDK repository layout; retain
 access to the checkout rather than copying only `SKILL.md`. Go dependency
-installation does not register this skill or install a cloud CLI.
+installation with `go get` does not register this skill or install a cloud CLI.
 
 ## Offline discovery
 
