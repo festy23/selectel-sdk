@@ -19,6 +19,7 @@ const (
 	NotFound               Code = "not_found"
 	Conflict               Code = "conflict"
 	RateLimited            Code = "rate_limited"
+	QuotaExceeded          Code = "quota_exceeded"
 	CapabilityUnavailable  Code = "capability_unavailable"
 	EndpointUnavailable    Code = "endpoint_unavailable"
 	ProviderError          Code = "provider_error"
@@ -38,7 +39,7 @@ var messages = map[Code]string{
 	InvalidArgument: "Invalid argument", ScopeMismatch: "Scope mismatch",
 	CredentialsUnavailable: "Credentials unavailable", Unauthenticated: "Authentication failed",
 	PermissionDenied: "Permission denied", NotFound: "Resource not found",
-	Conflict: "Resource conflict", RateLimited: "Rate limited",
+	Conflict: "Resource conflict", RateLimited: "Rate limited", QuotaExceeded: "Quota exceeded",
 	CapabilityUnavailable: "Capability unavailable", EndpointUnavailable: "Endpoint unavailable",
 	ProviderError: "Provider request failed", TransportError: "Transport failed",
 	ProtocolError: "Invalid provider response", ResponseLimit: "Response limit exceeded",

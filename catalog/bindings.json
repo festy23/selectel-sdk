@@ -4585,5 +4585,302 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "volumes.v3.volumes.create": {
+    "go_method": "volumes.Client.Create",
+    "input_type": "volumes.CreateSpec",
+    "output_type": "volumes.Volume",
+    "contract_ref": "contracts/volumes.v3.volumes.create.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [
+      "volume.available",
+      "volume.absent"
+    ],
+    "covered_schema_ref": "contracts/volumes.v3.volumes.create.json#/request",
+    "recovery": true,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
+  },
+  "volumes.v3.volumes.get": {
+    "go_method": "volumes.Client.Get",
+    "input_type": "types.ResourceRef",
+    "output_type": "volumes.Volume",
+    "contract_ref": "contracts/volumes.v3.volumes.get.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [
+      "volume.available",
+      "volume.absent"
+    ],
+    "covered_schema_ref": "contracts/volumes.v3.volumes.get.json#/request",
+    "recovery": false,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
+  },
+  "volumes.v3.volumes.update": {
+    "go_method": "volumes.Client.Update",
+    "input_type": "volumes.UpdateSpec",
+    "output_type": "volumes.Volume",
+    "contract_ref": "contracts/volumes.v3.volumes.update.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [
+      "volume.available",
+      "volume.absent"
+    ],
+    "covered_schema_ref": "contracts/volumes.v3.volumes.update.json#/request",
+    "recovery": true,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
+  },
+  "volumes.v3.volumes.extend": {
+    "go_method": "volumes.Client.Extend",
+    "input_type": "volumes.ExtendSpec",
+    "output_type": "volumes.Empty",
+    "contract_ref": "contracts/volumes.v3.volumes.extend.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [
+      "volume.available",
+      "volume.absent"
+    ],
+    "covered_schema_ref": "contracts/volumes.v3.volumes.extend.json#/request",
+    "recovery": true,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
+  },
+  "volumes.v3.volumes.delete": {
+    "go_method": "volumes.Client.Delete",
+    "input_type": "types.ResourceRef",
+    "output_type": "volumes.Empty",
+    "contract_ref": "contracts/volumes.v3.volumes.delete.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [
+      "volume.available",
+      "volume.absent"
+    ],
+    "covered_schema_ref": "contracts/volumes.v3.volumes.delete.json#/request",
+    "recovery": true,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
+  },
+  "volumes.v3.volumes.list": {
+    "go_method": "volumes.Client.ListPage",
+    "input_type": "pagination.Options",
+    "output_type": "volumes.Volume",
+    "contract_ref": "contracts/volumes.v3.volumes.list.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [
+      "volume.available",
+      "volume.absent"
+    ],
+    "covered_schema_ref": "contracts/volumes.v3.volumes.list.json#/request",
+    "recovery": false,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
+  },
+  "volumes.v3.types.get": {
+    "go_method": "volumes.Types.Get",
+    "input_type": "types.ResourceRef",
+    "output_type": "volumes.VolumeType",
+    "contract_ref": "contracts/volumes.v3.types.get.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [],
+    "covered_schema_ref": "contracts/volumes.v3.types.get.json#/request",
+    "recovery": false,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
+  },
+  "volumes.v3.types.list": {
+    "go_method": "volumes.Types.ListPage",
+    "input_type": "pagination.Options",
+    "output_type": "volumes.VolumeType",
+    "contract_ref": "contracts/volumes.v3.types.list.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [],
+    "covered_schema_ref": "contracts/volumes.v3.types.list.json#/request",
+    "recovery": false,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
+  },
+  "volumes.v3.types.qos_limits": {
+    "go_method": "volumes.Types.QoSLimits",
+    "input_type": "pagination.Options",
+    "output_type": "volumes.QoSLimits",
+    "contract_ref": "contracts/volumes.v3.types.qos_limits.json",
+    "status": "implemented",
+    "evidence_ref": "volumes/public_test.go;volumes/lifecycle_test.go;volumes/catalog_test.go",
+    "files": [
+      "client.go",
+      "generate.go",
+      "volumes/client.go",
+      "volumes/list.go",
+      "volumes/types_generated.go",
+      "volumes/wait.go",
+      "internal/core/request.go",
+      "operations/handle.go",
+      "internal/volumecontractgen/generate.py",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "volumes/public_test.go",
+      "volumes/lifecycle_test.go",
+      "volumes/catalog_test.go"
+    ],
+    "wait_goals": [],
+    "covered_schema_ref": "contracts/volumes.v3.types.qos_limits.json#/request",
+    "recovery": false,
+    "excluded_variants": [
+      "Full upstream Cinder API/microversions/extensions beyond the pinned Selectel SDK surface are not inventoried; no claim of support or absence"
+    ]
   }
 }

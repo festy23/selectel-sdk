@@ -31,6 +31,10 @@ recovery_unavailable без I/O.
    проверяется при первом Status до отправки resource request; несовпадение
    возвращает `endpoint_unavailable` и не меняет адрес сохранённого ref.
 4. Создать Handle без I/O. SDK не отправляет сохранённый request повторно.
+   Accepted/rejected/not_sent Receipt без resource/task ref допускает receipt-only
+   Handle после schema/account/revision/mutation effect/scope validation; endpoint
+   необязателен. Recover conclusive без I/O, Status и Wait unavailable без цели
+   наблюдения. Unknown без exact ref остаётся recovery_unavailable.
 
 ## Status
 

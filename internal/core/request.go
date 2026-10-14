@@ -72,6 +72,13 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			return out, idErr
 		}
 		out.Receipt = &types.Receipt{SchemaVersion: 1, CallID: id, OperationID: op.ID, Scope: in.Scope, Outcome: types.NotSent, Recovery: "unavailable", ResourceRefs: []types.ResourceRef{}}
+		// Local validation failures still return a revision-bound terminal receipt.
+		if r != nil {
+			if capability, e := r.catalog.Describe(op.ID); e == nil {
+				out.Receipt.ContractRevision = capability.ContractRevision
+			}
+		}
+
 	}
 	defer func() {
 		out.Metadata.ObservedAt = time.Now().UTC()
@@ -308,6 +315,31 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		if code, ok := op.ErrorCodes[status]; ok {
 			providerError = types.NewError(code)
 			providerError.HTTPStatus = status
+		}
+		if op.ErrorProtocol == "cinder" && status == http.StatusRequestEntityTooLarge {
+			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
+			if call.Err() != nil {
+				resp.Body.Close()
+				return out, types.ContextError(call.Err())
+			}
+			// Only a structured Cinder fault's retryAfter distinguishes exhausted
+			// quota from request size. Provider messages are never interpreted.
+			if readErr == nil {
+				var wrapper map[string]json.RawMessage
+				if json.Unmarshal(raw, &wrapper) == nil {
+					for _, value := range wrapper {
+						var fault struct {
+							Code       *types.Integer `json:"code"`
+							RetryAfter string         `json:"retryAfter"`
+						}
+						if json.Unmarshal(value, &fault) == nil && fault.Code != nil && fault.Code.String() == "413" && fault.RetryAfter != "" {
+							providerError = types.NewError(types.QuotaExceeded)
+							providerError.HTTPStatus = status
+							break
+						}
+					}
+				}
+			}
 		}
 		if op.ErrorProtocol == "cloudwatch" {
 			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
