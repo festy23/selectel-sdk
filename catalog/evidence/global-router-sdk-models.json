@@ -1,0 +1,121 @@
+{
+  "x-source-uri": "https://github.com/selectel/globalrouter-go/tree/f4e78a2c9d3435a9caa32f92a83910e9fab00fd4/pkg/v1",
+  "revision": "f4e78a2c9d3435a9caa32f92a83910e9fab00fd4",
+  "source_files": {
+    "networks.go": "package v1\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"strings\"\n)\n\ntype (\n\tNetwork struct {\n\t\tID             string   `json:\"id\"`\n\t\tName           string   `json:\"name\"`\n\t\tRouterID       string   `json:\"router_id\"`\n\t\tZoneID         string   `json:\"zone_id\"`\n\t\tStatus         string   `json:\"status\"`\n\t\tCreatedAt      string   `json:\"created_at\"`\n\t\tUpdatedAt      string   `json:\"updated_at\"`\n\t\tAccountID      string   `json:\"account_id\"`\n\t\tProjectID      string   `json:\"project_id,omitempty\"`\n\t\tTags           []string `json:\"tags\"`\n\t\tOsNetworkID    string   `json:\"os_network_id,omitempty\"`\n\t\tVlan           int      `json:\"vlan,omitempty\"`\n\t\tInnerVlan      int      `json:\"inner_vlan,omitempty\"`\n\t\tNetopsVlanUUID string   `json:\"netops_vlan_uuid\"`\n\t\tSvNetworkID    string   `json:\"sv_network_id,omitempty\"`\n\t\tVdcName        string   `json:\"vdc_name,omitempty\"`\n\t}\n\n\tVPCNetworkCreateRequest struct {\n\t\tRouterID    string   `json:\"router_id\"`\n\t\tZoneID      string   `json:\"zone_id\"`\n\t\tProjectID   string   `json:\"project_id\"`\n\t\tOsNetworkID string   `json:\"os_network_id\"`\n\t\tName        string   `json:\"name,omitempty\"`\n\t\tTags        []string `json:\"tags,omitempty\"`\n\t}\n\n\tDedicatedNetworkCreateRequest struct {\n\t\tRouterID  string   `json:\"router_id\"`\n\t\tZoneID    string   `json:\"zone_id\"`\n\t\tVlan      int      `json:\"vlan\"`\n\t\tInnerVlan int      `json:\"inner_vlan,omitempty\"`\n\t\tName      string   `json:\"name,omitempty\"`\n\t\tTags      []string `json:\"tags,omitempty\"`\n\t}\n\n\tNetworkUpdateRequest struct {\n\t\tName *string   `json:\"name,omitempty\"`\n\t\tTags *[]string `json:\"tags,omitempty\"`\n\t}\n\n\tNetworksFilters struct {\n\t\tName string\n\t}\n\n\tNetworksQueryParams struct {\n\t\tFilters NetworksFilters\n\t}\n)\n\nfunc (q *NetworksQueryParams) queryParamsRaw() string {\n\tvals := url.Values{}\n\tif q == nil {\n\t\treturn vals.Encode()\n\t}\n\n\tvar filters []string\n\n\tif q.Filters.Name != \"\" {\n\t\tfilters = append(filters, \"name=\"+q.Filters.Name)\n\t}\n\n\tif len(filters) != 0 {\n\t\tvals.Set(\"filters\", strings.Join(filters, \",\"))\n\t}\n\n\treturn vals.Encode()\n}\n\nfunc (client *ServiceClient) Networks(ctx context.Context, q *NetworksQueryParams) (*[]Network, *ResponseResult, error) {\n\tqueryParams := \"\"\n\tif qRaw := q.queryParamsRaw(); q != nil && qRaw != \"\" {\n\t\tqueryParams = \"?\" + qRaw\n\t}\n\n\tu := fmt.Sprintf(\"%s/networks%s\", client.APIUrl, queryParams)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodGet, u, nil)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar response []Network\n\terr = responseResult.ExtractResult(&response)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn &response, responseResult, nil\n}\n\nfunc (client *ServiceClient) Network(ctx context.Context, networkID string) (*Network, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/networks/%s\", client.APIUrl, networkID)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodGet, u, nil)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Network\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) VPCNetworkCreate(ctx context.Context, req *VPCNetworkCreateRequest) (*Network, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/networks\", client.APIUrl)\n\n\tbody, err := json.Marshal(req)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodPost, u, bytes.NewReader(body))\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Network\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) DedicatedNetworkCreate(ctx context.Context, req *DedicatedNetworkCreateRequest) (*Network, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/networks\", client.APIUrl)\n\n\tbody, err := json.Marshal(req)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodPost, u, bytes.NewReader(body))\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Network\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) NetworkUpdate(ctx context.Context, networkID string, req *NetworkUpdateRequest) (*Network, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/networks/%s\", client.APIUrl, networkID)\n\n\tbody, err := json.Marshal(req)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodPut, u, bytes.NewReader(body))\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Network\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) NetworkDisconnect(ctx context.Context, networkID string) (*ResponseResult, error) {\n\t// Always disconnect network\n\tu := fmt.Sprintf(\"%s/networks/%s?disconnect=true\", client.APIUrl, networkID)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodDelete, u, nil)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn responseResult, responseResult.Err\n\t}\n\n\treturn responseResult, nil\n}\n",
+    "subnets.go": "package v1\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"strings\"\n)\n\ntype (\n\tSubnet struct {\n\t\tID               string   `json:\"id\"`\n\t\tName             string   `json:\"name\"`\n\t\tNetworkID        string   `json:\"network_id,omitempty\"`\n\t\tGateway          string   `json:\"gateway\"`\n\t\tCidr             string   `json:\"cidr\"`\n\t\tServiceAddresses []string `json:\"service_addresses\"`\n\t\tOsSubnetID       string   `json:\"os_subnet_id,omitempty\"`\n\t\tTags             []string `json:\"tags\"`\n\t\tProjectID        string   `json:\"project_id,omitempty\"`\n\t\tStatus           string   `json:\"status\"`\n\t\tCreatedAt        string   `json:\"created_at\"`\n\t\tUpdatedAt        string   `json:\"updated_at\"`\n\t\tAccountID        string   `json:\"account_id\"`\n\t\tNetopsSubnetID   string   `json:\"netops_subnet_id\"`\n\t\tSvSubnetID       string   `json:\"sv_subnet_id,omitempty\"`\n\t}\n\n\tVPCSubnetCreateRequest struct {\n\t\tNetworkID        string   `json:\"network_id\"`\n\t\tGateway          string   `json:\"gateway,omitempty\"`\n\t\tCidr             string   `json:\"cidr\"`\n\t\tOsSubnetID       string   `json:\"os_subnet_id\"`\n\t\tName             string   `json:\"name,omitempty\"`\n\t\tProjectID        string   `json:\"project_id,omitempty\"`\n\t\tServiceAddresses []string `json:\"service_addresses,omitempty\"`\n\t\tTags             []string `json:\"tags,omitempty\"`\n\t}\n\n\tDedicatedSubnetCreateRequest struct {\n\t\tNetworkID        string   `json:\"network_id\"`\n\t\tGateway          string   `json:\"gateway,omitempty\"`\n\t\tCidr             string   `json:\"cidr\"`\n\t\tName             string   `json:\"name,omitempty\"`\n\t\tServiceAddresses []string `json:\"service_addresses,omitempty\"`\n\t\tTags             []string `json:\"tags,omitempty\"`\n\t}\n\n\tSubnetUpdateRequest struct {\n\t\tName *string   `json:\"name,omitempty\"`\n\t\tTags *[]string `json:\"tags,omitempty\"`\n\t}\n\n\tSubnetsFilters struct {\n\t\tName string\n\t}\n\n\tSubnetsQueryParams struct {\n\t\tFilters SubnetsFilters\n\t}\n)\n\nfunc (q *SubnetsQueryParams) queryParamsRaw() string {\n\tvals := url.Values{}\n\tif q == nil {\n\t\treturn vals.Encode()\n\t}\n\n\tvar filters []string\n\n\tif q.Filters.Name != \"\" {\n\t\tfilters = append(filters, \"name=\"+q.Filters.Name)\n\t}\n\n\tif len(filters) != 0 {\n\t\tvals.Set(\"filters\", strings.Join(filters, \",\"))\n\t}\n\n\treturn vals.Encode()\n}\n\nfunc (client *ServiceClient) Subnets(ctx context.Context, q *SubnetsQueryParams) (*[]Subnet, *ResponseResult, error) {\n\tqueryParams := \"\"\n\tif qRaw := q.queryParamsRaw(); q != nil && qRaw != \"\" {\n\t\tqueryParams = \"?\" + qRaw\n\t}\n\n\tu := fmt.Sprintf(\"%s/subnets%s\", client.APIUrl, queryParams)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodGet, u, nil)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar response []Subnet\n\terr = responseResult.ExtractResult(&response)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn &response, responseResult, nil\n}\n\nfunc (client *ServiceClient) Subnet(ctx context.Context, subnetID string) (*Subnet, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/subnets/%s\", client.APIUrl, subnetID)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodGet, u, nil)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Subnet\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) VPCSubnetCreate(ctx context.Context, req *VPCSubnetCreateRequest) (*Subnet, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/subnets\", client.APIUrl)\n\n\tbody, err := json.Marshal(req)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodPost, u, bytes.NewReader(body))\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Subnet\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) DedicatedSubnetCreate(ctx context.Context, req *DedicatedSubnetCreateRequest) (*Subnet, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/subnets\", client.APIUrl)\n\n\tbody, err := json.Marshal(req)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodPost, u, bytes.NewReader(body))\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Subnet\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) SubnetUpdate(ctx context.Context, subnetID string, req *SubnetUpdateRequest) (*Subnet, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/subnets/%s\", client.APIUrl, subnetID)\n\n\tbody, err := json.Marshal(req)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodPut, u, bytes.NewReader(body))\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Subnet\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) SubnetDisconnect(ctx context.Context, subnetID string) (*ResponseResult, error) {\n\t// Always disconnect subnet\n\tu := fmt.Sprintf(\"%s/subnets/%s?disconnect=true\", client.APIUrl, subnetID)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodDelete, u, nil)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn responseResult, responseResult.Err\n\t}\n\n\treturn responseResult, nil\n}\n"
+  },
+  "components": {
+    "schemas": {
+      "SourceVPCNetworkCreate": {
+        "type": "object",
+        "required": [
+          "router_id",
+          "zone_id",
+          "project_id",
+          "os_network_id"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "zone_id": {
+            "type": "string",
+            "description": "Zone identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "os_network_id": {
+            "type": "string",
+            "description": "Network identifier in the cloud platform.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "project_id": {
+            "type": "string"
+          }
+        }
+      },
+      "SourceVPCSubnetCreate": {
+        "type": "object",
+        "required": [
+          "network_id",
+          "cidr",
+          "os_subnet_id"
+        ],
+        "properties": {
+          "network_id": {
+            "type": "string",
+            "description": "Parent network identifier in the Global Router service.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "gateway": {
+            "type": "string",
+            "description": "Subnet IP address that will be used as gateway on the router. This IP address must be available.  If not specified, the first IP address in subnet range will be used.\n",
+            "example": "192.168.0.1"
+          },
+          "cidr": {
+            "type": "string",
+            "description": "Subnet IP address range in CIDR notation.",
+            "example": "192.168.0.0/24"
+          },
+          "os_subnet_id": {
+            "type": "string",
+            "description": "Subnet identifier in the cloud platform.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "service_addresses": {
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array",
+            "description": "Two of the subnet IP addresses that will be reserved as service ones.  These IP addresses must be available. If not specified, the last two IP addresses in subnet range will be reserved.\n",
+            "example": [
+              "192.168.0.253",
+              "192.168.0.254"
+            ],
+            "items": {
+              "type": "string",
+              "description": "IPv4 address.",
+              "example": "192.168.0.1"
+            }
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "project_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

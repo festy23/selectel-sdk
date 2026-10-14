@@ -1,0 +1,209 @@
+{
+  "operation_id": "global_router.v1.subnets.list",
+  "effect": "read",
+  "endpoint": {
+    "generation": "v1",
+    "override_key": [
+      "global_router",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject",
+    "address": "https://api.selectel.ru/naas/v1",
+    "source_uri": "https://github.com/selectel/globalrouter-go/blob/f4e78a2c9d3435a9caa32f92a83910e9fab00fd4/pkg/v1/client.go",
+    "recipe_source": "internal/endpoints/locations.go"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/subnets",
+    "source_schema": "sources/global-router.json#/paths/~1subnets/get",
+    "source_operation": {
+      "tags": [
+        "Subnets"
+      ],
+      "summary": "List subnets",
+      "description": "Returns a list of subnets.",
+      "operationId": "getSubnetsList",
+      "parameters": [
+        {
+          "name": "page",
+          "in": "query",
+          "description": "Number of the page to return. Default number is 1.",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "sort_keys",
+          "in": "query",
+          "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "sort_direction",
+          "in": "query",
+          "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "filters",
+          "in": "query",
+          "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "Accept-Language",
+          "in": "header",
+          "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "X-Request-ID",
+          "in": "header",
+          "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of subnets.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SubnetResponse"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "$ref": "#/components/schemas/ErrorResponse_400"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Bad or expired token. You can reissue a token and try again.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "$ref": "#/components/schemas/ErrorResponse_401"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Access is forbidden. Make sure you have the required permissions.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "$ref": "#/components/schemas/ErrorResponse_403"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "An internal server error occured. Try again later.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "$ref": "#/components/schemas/ErrorResponse_500"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "globalrouter/client.go, pages.go, mutations.go and headers.go",
+    "scope": "Account IAM; immutable account scope. Source service refs retain caller project/location/generation/endpoint separately; no inferred source adoption.",
+    "identity": "Existing Global Router resources addressed by exact typed refs. Creates for network/subnet/route require selected router/zone/network refs and reject conflicting body IDs.",
+    "body": "All properties of generated source DTO; nil omitted, explicit empty strings/arrays preserved, protected fields revealed only at HTTP boundary. PUT uses published replacement endpoint; no PATCH inference. Native AttachVPC uses pinned supplemental DTO with original project_id and os_network_id/os_subnet_id.",
+    "query": "All published parameters: typed current page/limit/sort/filter, router nested, directory show_groups/show_zones, explicit cascade/disconnect. No invented completion marker.",
+    "headers": "Immutable WithHeaders view supports only documented Accept-Language ru/en and UUID-v4 X-Request-ID; authentication remains core-owned.",
+    "native_sdk_variants": "POST networks/subnets additionally has native VPC and dedicated source shapes. Current DTO represents VLAN/inner VLAN/VDC/current source IDs. AttachVPC pins original service ref and native project_id fields absent from current schema. Supplemental evidence: catalog/evidence/global-router-sdk-models.json."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/global-router.json#/paths/~1subnets/get/responses",
+    "dto_source": "globalrouter/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All published properties, including nested router/network/subnet/route and prefix_pool/directory structures. Optional pointers preserve omission; arbitrary-precision Integer counts/VLAN/VPN/quota; RFC3339 timestamps normalize UTC; response ref fields ignored.",
+    "resource_ref": "Account-scoped Global Router refs only for explicit IDs, exact endpoint and generation. Network/router, subnet/network and nested route parents retain confirmed same-service identities. Returned account and ancestor IDs checked. Source OS/service IDs remain typed metadata. AttachVPC checks returned project/source/zone identities before new ID adoption and retains original supplied source ref separately in Receipt, without changing its scope.",
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ]
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for reads; documented mutation rejection",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible transmission; retain exact input refs",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy ID extracted before later DTO decoding",
+    "foreign_identity": "scope_mismatch; no foreign association adopted",
+    "message": "Fixed SDK message; provider error body discarded",
+    "mutation_rejected_statuses": []
+  },
+  "retry": "Bounded safe reads; mutations one attempt, never replay",
+  "pagination": {
+    "mode": "Exactly one caller-selected provider page; page>=1, limit1..200; no total or completion inference; preserve source records"
+  },
+  "wait": {
+    "goals": [],
+    "availability": "No automated wait binding; exact Get returns raw published ACTIVE/ERROR/IMMUTABLE/CREATING/UPDATING/DELETING status without readiness inference"
+  },
+  "recovery": {
+    "availability": "Exact Get observation only; no root Resume, name lookup, adoption or authorship inference"
+  },
+  "timeout": "CallTimeout and MaxJSONBytes bound every page/response",
+  "destructive_semantics": "Explicit cascade may also delete original VPC network/subnet resources. Explicit disconnect preserves source resources. No implicit flags are selected; provider defaults remain provider-owned."
+}

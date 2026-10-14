@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"global-router":                {"global_router", "v1", "iam_account", true},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},

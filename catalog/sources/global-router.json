@@ -1,0 +1,4432 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Global Router API",
+    "version": "v1.0.0",
+    "description": "Managing Global Router: organizing network connectivity between products, services, and servers in different pools\n"
+  },
+  "servers": [
+    {
+      "url": "/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Routers",
+      "description": "Represents the core routing devices connecting networks across services and zones. Routers are the points where networks are attached, and where static routes are applied to shape traffic between zones and services.\n"
+    },
+    {
+      "name": "Networks",
+      "description": "Defines logical networks allocated to products and services, enabling isolation and routing within the infrastructure. If a network is connected to a router, it exists in both Global Router service and its original service, and can be managed separately.  For example, you can delete a cloud platform network in Global Router service without deleting it from the cloud platform, it will disconnect the cloud platform network from the router. Each network is created within a zone, can host multiple subnets, and is connected via a router.\n"
+    },
+    {
+      "name": "Subnets",
+      "description": "Specifies subnetworks within a network — used to segment traffic, allocate IP ranges and manage routing in an L3 VPN context. Same as network, it exists in both Global Router service and its original service, and can be managed separately. Static routes may reference subnets as destinations.\n"
+    },
+    {
+      "name": "Static routes",
+      "description": "Captures manually configured routing entries used to direct traffic between networks and zones via specific addresses."
+    },
+    {
+      "name": "Services",
+      "description": "Represents a scope of products and services using the same network infrastructure.  For example, the `vpc` service represents cloud servers, load balancers, file storage, Managed Kubernetes, and Managed Databases.\n"
+    },
+    {
+      "name": "Zones",
+      "description": "Represents a logical grouping of network resources that are used by a service or a product within one pool.  For example, cloud platform networks in the `ru-3` pool belong to the `ru-3` zone. Zones are logically aggregated into Zone Groups.\n"
+    },
+    {
+      "name": "Zone groups",
+      "description": "Logical association of zones. A router can only connect networks of the same zone group."
+    },
+    {
+      "name": "Quotas",
+      "description": "Provides quotas for resources (routers, networks, subnets, static routes) within the Global Router service."
+    }
+  ],
+  "paths": {
+    "/routers": {
+      "get": {
+        "tags": [
+          "Routers"
+        ],
+        "summary": "List routers",
+        "description": "Returns a list of routers.",
+        "operationId": "getRoutersList",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number of the query results to be shown in the response. Default number is 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort_keys",
+            "in": "query",
+            "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of routers.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RouterResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Routers"
+        ],
+        "summary": "Create router",
+        "operationId": "createRouter",
+        "x-codegen-request-body-name": "payload",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RouterCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/routers/{router_id}": {
+      "get": {
+        "tags": [
+          "Routers"
+        ],
+        "summary": "Get router",
+        "operationId": "getRouter",
+        "parameters": [
+          {
+            "name": "router_id",
+            "in": "path",
+            "required": true,
+            "description": "Router identifier.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nested",
+            "in": "query",
+            "description": "Get information about a router and its nested networks, subnets, and static routes.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Router has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/RouterResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RouterResponseWithNested"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Router was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Routers"
+        ],
+        "summary": "Update router",
+        "operationId": "updateRouter",
+        "x-codegen-request-body-name": "payload",
+        "parameters": [
+          {
+            "name": "router_id",
+            "in": "path",
+            "required": true,
+            "description": "Router identifier.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RouterUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The router has been updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Router was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Routers"
+        ],
+        "summary": "Delete router",
+        "operationId": "deleteRouter",
+        "parameters": [
+          {
+            "name": "router_id",
+            "in": "path",
+            "required": true,
+            "description": "Router identifier.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cascade",
+            "in": "query",
+            "description": "If `true`, the router will be deleted along with its nested networks, subnets, and static routes in the Global Router service.  If networks and subnets are from the `vpc` service, they will also be deleted from the cloud platform.  Networks and subnets from other services will not be deleted from their source services.\n",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "disconnect",
+            "in": "query",
+            "description": "If `true`, only the router will be deleted along with its static routes.  Connected network and subnets will not be deleted from their source services.\n",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Router has been deleted.",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Router was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/networks": {
+      "get": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Returns a list of global router networks.",
+        "operationId": "getNetworksList",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of the page to return. Default number is 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort_keys",
+            "in": "query",
+            "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of networks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NetworkResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Create network",
+        "description": "Creates a network in the Global Router service. If the network belongs to the `vpc` service but doesn't exist on the cloud platform yet, it will also be created on the cloud platform. Networks from other services must be created in the source service beforehand; otherwise, they cannot be created in the Global Router service.\n",
+        "operationId": "createNetwork",
+        "x-codegen-request-body-name": "payload",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NetworkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/networks/{network_id}": {
+      "get": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Get network",
+        "operationId": "getNetwork",
+        "parameters": [
+          {
+            "name": "network_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Network has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NetworkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Network was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Change network",
+        "operationId": "updateNetwork",
+        "x-codegen-request-body-name": "payload",
+        "parameters": [
+          {
+            "name": "network_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Network has been changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NetworkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Network was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Networks"
+        ],
+        "summary": "Delete network",
+        "operationId": "deleteNetwork",
+        "parameters": [
+          {
+            "name": "network_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cascade",
+            "in": "query",
+            "description": "If `true`, the network and its subnets will be deleted from the Global Router service.  If the network is in the `vpc` service, the network and its subnets will also be deleted from the cloud platform.\n",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "disconnect",
+            "in": "query",
+            "description": "If `true`, the network and its subnets will be deleted from the Global Router service.  The network and its subnets will not be deleted from their source services.\n",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Network has been deleted.",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Network was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subnets": {
+      "get": {
+        "tags": [
+          "Subnets"
+        ],
+        "summary": "List subnets",
+        "description": "Returns a list of subnets.",
+        "operationId": "getSubnetsList",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of the page to return. Default number is 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort_keys",
+            "in": "query",
+            "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of subnets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubnetResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Subnets"
+        ],
+        "summary": "Create subnet",
+        "description": "Creates a subnet in the Global Router service.  If the subnet belongs to the `vpc` service but doesn't exist on the cloud platform yet, it will also be created on the cloud platform.  Subnets from other services must be created in the source service beforehand; otherwise, they cannot be created in the Global Router service.\n",
+        "operationId": "createSubnet",
+        "x-codegen-request-body-name": "payload",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubnetCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subnets/{subnet_id}": {
+      "get": {
+        "tags": [
+          "Subnets"
+        ],
+        "summary": "Get subnet",
+        "operationId": "getSubnet",
+        "parameters": [
+          {
+            "name": "subnet_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subnet has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Subnet was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Subnets"
+        ],
+        "summary": "Change subnet",
+        "operationId": "updateSubnet",
+        "x-codegen-request-body-name": "payload",
+        "parameters": [
+          {
+            "name": "subnet_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubnetUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Subnet has been changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubnetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Subnet was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Subnets"
+        ],
+        "summary": "Delete subnet",
+        "operationId": "deleteSubnet",
+        "parameters": [
+          {
+            "name": "subnet_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cascade",
+            "in": "query",
+            "description": "The subnet will be deleted from the Global Router service along with static routes that use subnet IP addresses as next hops.  If the subnet is in the `vpc` service, it will also be deleted from the cloud platform.\n",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "disconnect",
+            "in": "query",
+            "description": "The subnet will be deleted from the Global Router service along with static routes that use subnet IP addresses as next hops.  The subnet will not be deleted from its source service.\n",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Subnet has been deleted.",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Subnet was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/static_routes": {
+      "get": {
+        "tags": [
+          "Static routes"
+        ],
+        "summary": "List static routes",
+        "description": "Returns a list of static routes.",
+        "operationId": "getStaticRoutesList",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of the page to return. Default number is 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort_keys",
+            "in": "query",
+            "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of static routes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StaticRouteResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Static routes"
+        ],
+        "summary": "Create static route",
+        "operationId": "createStaticRoute",
+        "x-codegen-request-body-name": "payload",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaticRouteCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Static route has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaticRouteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/static_routes/{static_route_id}": {
+      "get": {
+        "tags": [
+          "Static routes"
+        ],
+        "summary": "Get static route",
+        "operationId": "getStaticRoute",
+        "parameters": [
+          {
+            "name": "static_route_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Static route has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaticRouteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Static route was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Static routes"
+        ],
+        "summary": "Change static route",
+        "operationId": "updateStaticRoute",
+        "x-codegen-request-body-name": "payload",
+        "parameters": [
+          {
+            "name": "static_route_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaticRouteUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Static route has been changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaticRouteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Static route was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Static routes"
+        ],
+        "summary": "Delete route",
+        "operationId": "deleteStaticRoute",
+        "parameters": [
+          {
+            "name": "static_route_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Static route has been deleted.",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Static route was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_404"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zones": {
+      "get": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "List zones",
+        "operationId": "getZonesList",
+        "parameters": [
+          {
+            "name": "show_groups",
+            "in": "query",
+            "description": "If `true`, the information about zone groups will also be shown in response.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of the page to return. Default number is 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort_keys",
+            "in": "query",
+            "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of zones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZoneResponseWithNested"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/services": {
+      "get": {
+        "tags": [
+          "Services"
+        ],
+        "summary": "List services",
+        "operationId": "getServicesList",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of the page to return. Default number is 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort_keys",
+            "in": "query",
+            "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of services.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ServiceResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zone_groups": {
+      "get": {
+        "tags": [
+          "Zone groups"
+        ],
+        "summary": "List zone groups",
+        "operationId": "getZoneGroupsList",
+        "parameters": [
+          {
+            "name": "show_zones",
+            "in": "query",
+            "description": "If `true`, the information about zones in groups will also be shown in response.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of the page to return. Default number is 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort_keys",
+            "in": "query",
+            "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of zone groups.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZoneGroupResponseWithNested"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/quotas": {
+      "get": {
+        "tags": [
+          "Quotas"
+        ],
+        "summary": "List quotas",
+        "operationId": "getQuotasList",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of the page to return. Default number is 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Maximum number is 200. Default number is 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort_keys",
+            "in": "query",
+            "description": "List of keys to sort results by. If there is more than one key, separate them with commas, for example, `id,name`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_direction",
+            "in": "query",
+            "description": "Sorting direction. Can be `asc` or `desc`. Default direction is `asc`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "List of keys in `<key>`-`<value>` format to filter results. If there is more than one key, separate them with commas.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Request-ID",
+            "in": "header",
+            "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of quotas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuotaResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_400"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue a token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_401"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_403"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An internal server error occured. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/ErrorResponse_500"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RouterCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          }
+        }
+      },
+      "RouterResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "example": "IMMUTABLE",
+            "enum": [
+              "IMMUTABLE",
+              "ACTIVE",
+              "ERROR",
+              "UPDATING",
+              "DELETING",
+              "CREATING"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Project identifier.",
+            "example": "123e4567e89b12d3a456426655440000"
+          },
+          "netops_router_id": {
+            "type": "string",
+            "description": "Service router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "leak_uuid": {
+            "type": "string",
+            "description": "A unique identifier for a group of routers united by a single logical entity.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "prefix_pool_id": {
+            "type": "string",
+            "description": "Prefix pool identifier. Can be used to request a list of allowed subnet prefixes that can be connected to the router.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "vpn_id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65635
+          }
+        }
+      },
+      "RouterUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          }
+        }
+      },
+      "RouterResponseWithNested": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "example": "IMMUTABLE",
+            "enum": [
+              "IMMUTABLE",
+              "ACTIVE",
+              "ERROR",
+              "UPDATING",
+              "DELETING",
+              "CREATING"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Project identifier.",
+            "example": "123e4567e89b12d3a456426655440000"
+          },
+          "netops_router_id": {
+            "type": "string",
+            "description": "Service router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "leak_uuid": {
+            "type": "string",
+            "description": "A unique identifier for a group of routers united by a single logical entity.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "prefix_pool_id": {
+            "type": "string",
+            "description": "Prefix pool identifier. Can be used to request a list of allowed subnet prefixes that can be connected to the router.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "vpn_id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "networks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkResponseWithNested"
+            }
+          },
+          "prefix_pool": {
+            "$ref": "#/components/schemas/PrefixPoolResponse"
+          }
+        }
+      },
+      "NetworkCreate": {
+        "required": [
+          "router_id",
+          "zone_id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "vlan": {
+            "maximum": 4094,
+            "minimum": 2,
+            "type": "integer"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "zone_id": {
+            "type": "string",
+            "description": "Zone identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "vdc_name": {
+            "description": "VMware virtual data center name.",
+            "type": "string"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "inner_vlan": {
+            "maximum": 4094,
+            "minimum": 2,
+            "description": "Q-in-Q tag to create VLAN segment, only available for networks in the `dedicated` service.  To use Q-in-Q, you have to enable it for the network by creating a ticket to technical support.\n",
+            "type": "integer"
+          },
+          "os_network_id": {
+            "type": "string",
+            "description": "Network identifier in the cloud platform.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      },
+      "NetworkResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Network identifier in the Global Router service.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "vlan": {
+            "maximum": 4094,
+            "minimum": 2,
+            "type": "integer"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "zone_id": {
+            "type": "string",
+            "description": "Zone identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Project identifier.",
+            "example": "123e4567e89b12d3a456426655440000"
+          },
+          "vdc_name": {
+            "description": "VMware virtual data center name.",
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "example": "IMMUTABLE",
+            "enum": [
+              "IMMUTABLE",
+              "ACTIVE",
+              "ERROR",
+              "UPDATING",
+              "DELETING",
+              "CREATING"
+            ]
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "sv_network_id": {
+            "type": "string",
+            "description": "Service network identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "netops_vlan_uuid": {
+            "type": "string",
+            "description": "Service VLAN identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "inner_vlan": {
+            "maximum": 4094,
+            "minimum": 2,
+            "description": "Q-in-Q tag to create VLAN segment, only available for networks in the `dedicated` service.  To use Q-in-Q, you have to enable it for the network by creating a ticket to technical support.\n",
+            "type": "integer"
+          },
+          "os_network_id": {
+            "type": "string",
+            "description": "Network identifier in the cloud platform.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      },
+      "NetworkUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          }
+        }
+      },
+      "NetworkResponseWithNested": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Network identifier in the Global Router service.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "vlan": {
+            "maximum": 4094,
+            "minimum": 2,
+            "type": "integer"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "zone_id": {
+            "type": "string",
+            "description": "Zone identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Project identifier.",
+            "example": "123e4567e89b12d3a456426655440000"
+          },
+          "vdc_name": {
+            "description": "VMware virtual data center name.",
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "example": "IMMUTABLE",
+            "enum": [
+              "IMMUTABLE",
+              "ACTIVE",
+              "ERROR",
+              "UPDATING",
+              "DELETING",
+              "CREATING"
+            ]
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "sv_network_id": {
+            "type": "string",
+            "description": "Service network identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "netops_vlan_uuid": {
+            "type": "string",
+            "description": "Service VLAN identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "inner_vlan": {
+            "maximum": 4094,
+            "minimum": 2,
+            "description": "Q-in-Q tag to create VLAN segment, only available for networks in the `dedicated` service.  To use Q-in-Q, you have to enable it for the network by creating a ticket to technical support.\n",
+            "type": "integer"
+          },
+          "os_network_id": {
+            "type": "string",
+            "description": "Network identifier in the cloud platform.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "subnets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubnetResponseWithNested"
+            }
+          }
+        }
+      },
+      "SubnetCreate": {
+        "required": [
+          "cidr",
+          "network_id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "gateway": {
+            "type": "string",
+            "description": "Subnet IP address that will be used as gateway on the router. This IP address must be available.  If not specified, the first IP address in subnet range will be used.\n",
+            "example": "192.168.0.1"
+          },
+          "cidr": {
+            "type": "string",
+            "description": "Subnet IP address range in CIDR notation.",
+            "example": "192.168.0.0/24"
+          },
+          "network_id": {
+            "type": "string",
+            "description": "Parent network identifier in the Global Router service.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "service_addresses": {
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array",
+            "description": "Two of the subnet IP addresses that will be reserved as service ones.  These IP addresses must be available. If not specified, the last two IP addresses in subnet range will be reserved.\n",
+            "example": [
+              "192.168.0.253",
+              "192.168.0.254"
+            ],
+            "items": {
+              "type": "string",
+              "description": "IPv4 address.",
+              "example": "192.168.0.1"
+            }
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "os_subnet_id": {
+            "type": "string",
+            "description": "Subnet identifier in the cloud platform.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      },
+      "SubnetResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Subnet identifier in the Global Router service.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "gateway": {
+            "type": "string",
+            "description": "Subnet IP address that is used as gateway on the router.",
+            "example": "192.168.0.1"
+          },
+          "cidr": {
+            "type": "string",
+            "description": "Subnet IP address range in CIDR notation.",
+            "example": "192.168.0.0/24"
+          },
+          "network_id": {
+            "type": "string",
+            "description": "Parent network identifier in the Global Router service.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "example": "IMMUTABLE",
+            "enum": [
+              "IMMUTABLE",
+              "ACTIVE",
+              "ERROR",
+              "UPDATING",
+              "DELETING",
+              "CREATING"
+            ]
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Project identifier.",
+            "example": "123e4567e89b12d3a456426655440000"
+          },
+          "service_addresses": {
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array",
+            "description": "Two of the subnet IP addresses that are reserved as service ones.",
+            "example": [
+              "192.168.0.253",
+              "192.168.0.254"
+            ],
+            "items": {
+              "type": "string",
+              "description": "IPv4 address.",
+              "example": "192.168.0.1"
+            }
+          },
+          "sv_subnet_id": {
+            "type": "string",
+            "description": "Service subnet identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "netops_subnet_id": {
+            "type": "string",
+            "description": "Service subnet identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "os_subnet_id": {
+            "type": "string",
+            "description": "Subnet identifier in the cloud platform.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      },
+      "SubnetUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          }
+        }
+      },
+      "SubnetResponseWithNested": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Subnet identifier in the Global Router service.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "gateway": {
+            "type": "string",
+            "description": "Subnet IP address that is used as gateway on the router.",
+            "example": "192.168.0.1"
+          },
+          "cidr": {
+            "type": "string",
+            "description": "Subnet IP address range in CIDR notation.",
+            "example": "192.168.0.0/24"
+          },
+          "network_id": {
+            "type": "string",
+            "description": "Parent network identifier in the Global Router service.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "example": "IMMUTABLE",
+            "enum": [
+              "IMMUTABLE",
+              "ACTIVE",
+              "ERROR",
+              "UPDATING",
+              "DELETING",
+              "CREATING"
+            ]
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Project identifier.",
+            "example": "123e4567e89b12d3a456426655440000"
+          },
+          "service_addresses": {
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array",
+            "description": "Two of the subnet IP addresses that are reserved as service ones.",
+            "example": [
+              "192.168.0.253",
+              "192.168.0.254"
+            ],
+            "items": {
+              "type": "string",
+              "description": "IPv4 address.",
+              "example": "192.168.0.1"
+            }
+          },
+          "sv_subnet_id": {
+            "type": "string",
+            "description": "Service subnet identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "netops_subnet_id": {
+            "type": "string",
+            "description": "Service subnet identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          },
+          "os_subnet_id": {
+            "type": "string",
+            "description": "Subnet identifier in the cloud platform.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "static_routes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StaticRouteResponse"
+            }
+          }
+        }
+      },
+      "StaticRouteCreate": {
+        "required": [
+          "cidr",
+          "next_hop",
+          "router_id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "cidr": {
+            "type": "string",
+            "description": "Destination subnet to which you want to direct traffic. Must be subnet IP address range in CIDR notation.",
+            "example": "192.168.0.0/24"
+          },
+          "next_hop": {
+            "type": "string",
+            "description": "IP address in a subnet through which traffic will be routed to the destination subnet.  The IP address must belong to one of the subnets connected to the router.\n",
+            "example": "192.168.0.1"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          }
+        }
+      },
+      "StaticRouteResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Static route identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "cidr": {
+            "type": "string",
+            "description": "Destination subnet to which traffic is redirected, subnet IP address range in CIDR notation.",
+            "example": "192.168.0.0/24"
+          },
+          "next_hop": {
+            "type": "string",
+            "description": "IP address in a subnet through which traffic is routed to the destination subnet.",
+            "example": "192.168.0.1"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Router identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "example": "IMMUTABLE",
+            "enum": [
+              "IMMUTABLE",
+              "ACTIVE",
+              "ERROR",
+              "UPDATING",
+              "DELETING",
+              "CREATING"
+            ]
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Project identifier.",
+            "example": "123e4567e89b12d3a456426655440000"
+          },
+          "subnet_id": {
+            "type": "string",
+            "description": "Unique identifier of the subnet in the Global Router service which contains the next hop IP address.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "netops_static_route_id": {
+            "type": "string",
+            "description": "Service identifier of the static route.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          }
+        }
+      },
+      "StaticRouteUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "tags": {
+            "maxItems": 150,
+            "type": "array",
+            "description": "List of unique tags.",
+            "example": [
+              "resource_tag"
+            ],
+            "items": {
+              "type": "string",
+              "example": "Tag"
+            }
+          }
+        }
+      },
+      "ZoneResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Zone identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "visible_name": {
+            "type": "string"
+          },
+          "service": {
+            "type": "string",
+            "example": "Name"
+          },
+          "enable": {
+            "type": "boolean"
+          },
+          "allow_create": {
+            "type": "boolean"
+          },
+          "allow_update": {
+            "type": "boolean"
+          },
+          "allow_delete": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "options": {
+            "type": "string"
+          }
+        }
+      },
+      "ZoneResponseWithNested": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Zone identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "visible_name": {
+            "type": "string"
+          },
+          "service": {
+            "type": "string",
+            "example": "Name"
+          },
+          "enable": {
+            "type": "boolean"
+          },
+          "allow_create": {
+            "type": "boolean"
+          },
+          "allow_update": {
+            "type": "boolean"
+          },
+          "allow_delete": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "options": {
+            "type": "string"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZoneGroupResponse"
+            }
+          }
+        }
+      },
+      "ServiceResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Service identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "extension": {
+            "type": "string"
+          }
+        }
+      },
+      "ZoneGroupResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Zone group identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "description": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZoneGroupResponseWithNested": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Zone group identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "description": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "zones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZoneResponse"
+            }
+          }
+        }
+      },
+      "QuotaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Quota identifier.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "scope_value": {
+            "type": "string"
+          },
+          "limit": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        }
+      },
+      "PrefixPoolResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Prefix pool identifier. Can be used to request a list of allowed subnet prefixes that can be connected to the router.",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          },
+          "prefixes": {
+            "maxItems": 30,
+            "minItems": 1,
+            "type": "array",
+            "description": "IPv4/6 CIDR",
+            "example": [
+              "192.168.0.0/24"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ErrorResponse_400": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 400
+          },
+          "title": {
+            "type": "string",
+            "example": "Bad Request"
+          },
+          "message": {
+            "type": "string"
+          },
+          "req-id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      },
+      "ErrorResponse_401": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 401
+          },
+          "title": {
+            "type": "string",
+            "example": "Unauthorized"
+          },
+          "message": {
+            "type": "string"
+          },
+          "req-id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      },
+      "ErrorResponse_403": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 403
+          },
+          "title": {
+            "type": "string",
+            "example": "Forbidden"
+          },
+          "message": {
+            "type": "string"
+          },
+          "req-id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      },
+      "ErrorResponse_404": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 404
+          },
+          "title": {
+            "type": "string",
+            "example": "Not Found"
+          },
+          "message": {
+            "type": "string"
+          },
+          "req-id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      },
+      "ErrorResponse_500": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 500
+          },
+          "title": {
+            "type": "string",
+            "example": "Internal Server Error"
+          },
+          "message": {
+            "type": "string"
+          },
+          "req-id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "123e4567-e89b-12d3-a456-426655440000"
+          }
+        }
+      }
+    },
+    "responses": {
+      "ParseError": {
+        "description": "When a mask can't be parsed",
+        "content": {}
+      },
+      "MaskError": {
+        "description": "When any error occurs on mask",
+        "content": {}
+      },
+      "Exception": {
+        "description": "Any exceptions",
+        "content": {}
+      }
+    },
+    "securitySchemes": {
+      "iam_token_account_scoped": {
+        "description": "IAM token for account",
+        "type": "apiKey",
+        "name": "X-Auth-Token",
+        "in": "header"
+      },
+      "X-Auth-Token": {
+        "description": "IAM token for account",
+        "type": "apiKey",
+        "name": "X-Auth-Token",
+        "in": "header"
+      }
+    }
+  }
+}
