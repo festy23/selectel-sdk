@@ -1,0 +1,79 @@
+{
+  "operation_id": "logs.cloudwatch.log_streams.create",
+  "endpoint": {
+    "source": "https://docs.selectel.ru/api/urls/",
+    "recipe": "internal/endpoints/locations.go",
+    "scope": "immutable account/project/region/pool",
+    "generation": "cloudwatch",
+    "redirects": "never follow"
+  },
+  "sources": {
+    "selectel": "catalog/evidence/logs-write-sources.json",
+    "wire_model": "sources/cloudwatch-logs.json#/x-upstream-model/operations/CreateLogStream",
+    "scope": "Only Selectel-demonstrated fields establish support. Upstream AWS optional fields/operations are not assumed Selectel-supported."
+  },
+  "request": {
+    "wire_method": "POST",
+    "wire_path": "/",
+    "target": "Logs_20140328.CreateLogStream",
+    "auth": "S3SigV4 explicit project-bound S3 material, service logs, selected pool",
+    "fields": {
+      "type": "structure",
+      "required": [
+        "logGroupName",
+        "logStreamName"
+      ],
+      "members": {
+        "logGroupName": {
+          "shape": "LogGroupName"
+        },
+        "logStreamName": {
+          "shape": "LogStreamName"
+        }
+      }
+    },
+    "validation": "Required validated names; exact group/stream kind, scope, generation and endpoint; streams require explicit group parent. Event timestamps exact nonnegative int64 milliseconds, ordered; 1..10000 events, <=1048576 UTF8 message bytes+26/event, <=24h batch span. No sorting, splitting, auto-creation or replay. Message revealed only at wire encoding. No wall-clock age/retention inference; provider returns rejection indexes.",
+    "unsupported_aws_fields": []
+  },
+  "response": {
+    "status": 200,
+    "mapping": {
+      "type": "structure",
+      "members": {}
+    },
+    "sensitive_fields": [
+      "message",
+      "nextSequenceToken"
+    ],
+    "acknowledgement": "Receipt Accepted means positive HTTP acknowledgement, not readiness/ownership or ingestion of every event. Put response preserves typed rejection indexes and protected sequence token; token never drives replay. No Complete=true claim. Create/Delete accept the documented empty HTTP200 body or an empty-compatible JSON object; Put requires a JSON object. Rejection indexes must be within the submitted batch.",
+    "identity": "Created group/stream exact submitted names are locators, not ownership proof. Stream parent is caller group. Unknown creation has no decoded new ref; never discovers/adopts by name."
+  },
+  "errors": {
+    "shape": "CloudWatch __type or code, optional namespace# suffix, static known code mappings; raw messages/tokens discarded",
+    "http400": "invalid_argument unless known not_found/conflict/rate_limited/auth subtype",
+    "403": "permission_denied",
+    "5xx": "provider_error; mutation outcome unknown when not conclusively rejected",
+    "accepted_malformed_body": "protocol_error with Accepted Receipt and trustworthy refs retained",
+    "mapping_source": "internal/core/request.go cloudwatchError; logs/mutations.go",
+    "cloudwatch_subtypes": {
+      "ResourceAlreadyExistsException": "conflict",
+      "OperationAbortedException": "conflict",
+      "InvalidSequenceTokenException": "conflict; no token repair/replay",
+      "DataAlreadyAcceptedException": "conflict; no adoption/replay",
+      "LimitExceededException": "rate_limited (resource quota, not proof of transient retryability)",
+      "ResourceNotFoundException": "not_found",
+      "ServiceUnavailableException": "provider_error cause/unknown mutation outcome"
+    },
+    "conclusive_statuses": [
+      400,
+      401,
+      403,
+      429
+    ],
+    "preflight_binding": "Binding errors (including missing pool and unavailable documented endpoint) pass core Request.Validate/finalizer: not_sent Receipt, zero attempts, no credential/HTTP I/O. Error/result share call identity."
+  },
+  "replay": "Mutations execute once; unknown retains Receipt and exact submitted refs, no retry/signature-token repair, no name lookup or adoption. Caller chooses any next action.",
+  "recovery": "No automated recovery or readiness/wait goal. Existing ResourceRefs are exact observation locators only. Receipt recovery=resource is core classification, not a supported Resume/ownership assertion.",
+  "pagination": "Not a collection/stream API; exactly one bounded batch. Shared CallTimeout/MaxJSONBytes apply.",
+  "retention": "No public retention operation confirmed by Selectel page; panel workflow is not API proof. Existing four read bindings remain partial; inventory incomplete."
+}
