@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "globalrouter": ("global-router", {'SourceVPCNetworkCreate': 'SourceVPCNetworkCreateSpec', 'SourceVPCSubnetCreate': 'SourceVPCSubnetCreateSpec', 'RouterCreate': 'RouterCreateSpec', 'RouterUpdate': 'RouterUpdateSpec', 'RouterResponseWithNested': 'Router', 'NetworkCreate': 'NetworkCreateSpec', 'NetworkUpdate': 'NetworkUpdateSpec', 'NetworkResponseWithNested': 'Network', 'SubnetCreate': 'SubnetCreateSpec', 'SubnetUpdate': 'SubnetUpdateSpec', 'SubnetResponseWithNested': 'Subnet', 'StaticRouteCreate': 'StaticRouteCreateSpec', 'StaticRouteUpdate': 'StaticRouteUpdateSpec', 'StaticRouteResponse': 'StaticRoute', 'ZoneResponseWithNested': 'Zone', 'ZoneGroupResponseWithNested': 'ZoneGroup', 'ServiceResponse': 'Service', 'QuotaResponse': 'Quota'}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -47,8 +48,10 @@ for case, (family, initial, top_name) in CASES.items():
     package = "registry" if case == "registry_v1" else case
     doc = json.loads((ROOT / "catalog/sources" / (family + ".json")).read_text())
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
+    if package == "globalrouter":
+        definitions.update(json.loads((ROOT / "catalog/evidence/global-router-sdk-models.json").read_text())["components"]["schemas"])
     roots = initial if isinstance(initial, dict) else {initial: top_name}
-    resource_roots = set(roots)
+    resource_roots = {k for k in roots if "Response" in k} if package == "globalrouter" else set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -77,6 +80,8 @@ for case, (family, initial, top_name) in CASES.items():
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
         kind = schema.get("type")
+        if package == "globalrouter" and field in {"name", "description", "vdc_name", "options"} and kind == "string":
+            return "types.ProtectedValue", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
@@ -164,7 +169,7 @@ for case, (family, initial, top_name) in CASES.items():
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or package == "globalrouter":
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'

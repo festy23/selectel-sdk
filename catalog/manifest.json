@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "1febc42f3147aee6d4af46eab6b433c94f1a27ef019d1818ad719c066319a42a",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "bf07822aafc0f183a8690c7e3792dac727925a3b30060d3b61d713d48e7c8028",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "b39f3eff2fadb3bf4ac20f9098b3988f45f606e556261f4df07dd8ba16260e32",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "dec67ce42ad540148515051b7950cbe7fa6e72044c30c57e12ee9a20a5776993",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +451,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "895959cea5131148d4eed9acb848401ac634c7e4ab6bbc6a3abfeab8bf58578d",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +517,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "210a9e7db9d85853ddddf3a16c2ea5df7f72102e7330f2bef3659fb67e57d262",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +583,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "9c45fcc9f6e97869b324521d4871e376fa58ea82b4e7016e8fa5c3edb2f82479",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +649,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "5f87b38cee711efe28221cb9cd231b8ab454f422bf7a41b772f3b50595cbaf85",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2167,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "3b13c694ff947de391f0ebc86020bb895ee025925a7646231c3fa3c7e01ebce3",
       "level": "offline"
     },
     "wait_goals": []
@@ -4981,6 +4981,1470 @@
     "wait_goals": []
   },
   {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.networks.create.json": "8909be7d194b87ec2b0558d242d823baf5fe9ee291302b658653a081505a8058"
+    },
+    "contract_revision": "1ebbb062271c5da3d7956d6ff2531f9e5fc368b258abaf2330639388ee27dc4f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.networks.create.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.networks.create.json#/errors",
+    "go_method": "globalrouter.NetworksClient.Create",
+    "implementation": {
+      "binding": "globalrouter.NetworksClient.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1networks/post",
+    "input_type": "types.ResourceRef + types.ResourceRef + globalrouter.NetworkCreateSpec + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.networks.create",
+    "output_schema_ref": "sources/global-router.json#/paths/~1networks/post/responses",
+    "output_type": "types.Result[globalrouter.Network]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1networks/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.networks.create.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.networks.create.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/global_router.v1.networks.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "POST /networks",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "1ebbb062271c5da3d7956d6ff2531f9e5fc368b258abaf2330639388ee27dc4f",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "2430c3ee4244f4a8cba6ed0b70413b0d0087d93d22de51df7de38e903ab79ce2",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.networks.delete.json": "6e1a1698aa0cd0c6863e25219af186a2a5bbb02163aea7a30f4d1717274b8a2e"
+    },
+    "contract_revision": "bbfff46657fe63f8a43c96bfb2e1f0cd4a0fa79cede454911ce664b72bee8ee6",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.networks.delete.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.networks.delete.json#/errors",
+    "go_method": "globalrouter.NetworksClient.Delete",
+    "implementation": {
+      "binding": "globalrouter.NetworksClient.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/delete",
+    "input_type": "types.ResourceRef + globalrouter.DeleteOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.networks.delete",
+    "output_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/delete/responses",
+    "output_type": "types.Result[struct{}]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.networks.delete.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.networks.delete.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/global_router.v1.networks.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "DELETE /networks/{network_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "bbfff46657fe63f8a43c96bfb2e1f0cd4a0fa79cede454911ce664b72bee8ee6",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "dba0805143865b8a466a9bf3d734685d3ef28b164993ecc5ca292df4292f666d",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.networks.get.json": "826cc72e1a8be0217db3e02b44d582e5b9c3392714cc4ab63e2d3d54e5341923"
+    },
+    "contract_revision": "1af6da70a38a7b6bcaa70320359cfd58541f86ee8cdb5302465456e9a85fbb9a",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.networks.get.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.networks.get.json#/errors",
+    "go_method": "globalrouter.NetworksClient.Get",
+    "implementation": {
+      "binding": "globalrouter.NetworksClient.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/get",
+    "input_type": "types.ResourceRef + globalrouter.GetOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.networks.get",
+    "output_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/get/responses",
+    "output_type": "types.Result[globalrouter.Network]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.networks.get.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.networks.get.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/global_router.v1.networks.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /networks/{network_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "1af6da70a38a7b6bcaa70320359cfd58541f86ee8cdb5302465456e9a85fbb9a",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "39e26745e628f0dec9313bb0a35fe8e7e0d9fd1e59de64abc70fdd9b02efe53f",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.networks.list.json": "19f1984f772ea64ce1de02e777dbc0188afee61552d7a88d54ee99fc8958b5a7"
+    },
+    "contract_revision": "4ad4552899a9619cf113566515a7523b07a631b8b26071d6bfd71065f84b54a7",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.networks.list.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.networks.list.json#/errors",
+    "go_method": "globalrouter.NetworksClient.ListPage",
+    "implementation": {
+      "binding": "globalrouter.NetworksClient.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1networks/get",
+    "input_type": "globalrouter.PageOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.networks.list",
+    "output_schema_ref": "sources/global-router.json#/paths/~1networks/get/responses",
+    "output_type": "types.Result[globalrouter.Page[globalrouter.Network]]",
+    "pagination_contract_ref": "contracts/global_router.v1.networks.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1networks/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.networks.list.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.networks.list.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/global_router.v1.networks.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /networks",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "4ad4552899a9619cf113566515a7523b07a631b8b26071d6bfd71065f84b54a7",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "ba94fb5a0d35d0e9257bf3c829ebd7500a8691c10105645a9a6d6342d35da54f",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.networks.replace.json": "22d63ee7de0f4d870384bd941b1af56b199c088bdff39b1b4cd06437a62f4ea0"
+    },
+    "contract_revision": "bfbff8a90c1927fedd303726795e01f1fc1bc351d1ea5a9de6daaabfb58ed421",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.networks.replace.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.networks.replace.json#/errors",
+    "go_method": "globalrouter.NetworksClient.Update",
+    "implementation": {
+      "binding": "globalrouter.NetworksClient.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/put",
+    "input_type": "types.ResourceRef + globalrouter.NetworkUpdateSpec + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.networks.replace",
+    "output_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/put/responses",
+    "output_type": "types.Result[globalrouter.Network]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1networks~1{network_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.networks.replace.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.networks.replace.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/global_router.v1.networks.replace.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "PUT /networks/{network_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "bfbff8a90c1927fedd303726795e01f1fc1bc351d1ea5a9de6daaabfb58ed421",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "e6156b6610b0f90a3c2743451344dceee76619d3c1568a68638cd0fab56dedb8",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.quotas.list.json": "adf3fc021df4756ce6e54a5aa3d8d24756a87b24591d1ad6ed9f7e472f180c64"
+    },
+    "contract_revision": "9a5d7618553e1b6d0ace4cfb33416f1a86e32ba66e88e7d7875c3f0b1bc2349b",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.quotas.list.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.quotas.list.json#/errors",
+    "go_method": "globalrouter.Client.QuotasPage",
+    "implementation": {
+      "binding": "globalrouter.Client.QuotasPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1quotas/get",
+    "input_type": "globalrouter.PageOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.quotas.list",
+    "output_schema_ref": "sources/global-router.json#/paths/~1quotas/get/responses",
+    "output_type": "types.Result[globalrouter.Page[globalrouter.Quota]]",
+    "pagination_contract_ref": "contracts/global_router.v1.quotas.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1quotas/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.quotas.list.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.quotas.list.json#/request",
+    "resource": "quotas",
+    "response_binding_ref": "contracts/global_router.v1.quotas.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /quotas",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "9a5d7618553e1b6d0ace4cfb33416f1a86e32ba66e88e7d7875c3f0b1bc2349b",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "30dcd5ec7e45c53c7fe33fadd10030da0e0c53452f76f790aeb6632f450024e8",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.routers.create.json": "d76162ced502b5f825e59491431da898cd151cf48b68325694c2ec0657060964"
+    },
+    "contract_revision": "f11e6f2deef45beedfc7265160a74368e164f89945607de797c17eecc5c6c617",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.routers.create.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.routers.create.json#/errors",
+    "go_method": "globalrouter.RoutersClient.Create",
+    "implementation": {
+      "binding": "globalrouter.RoutersClient.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1routers/post",
+    "input_type": "globalrouter.RouterCreateSpec + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.routers.create",
+    "output_schema_ref": "sources/global-router.json#/paths/~1routers/post/responses",
+    "output_type": "types.Result[globalrouter.Router]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1routers/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.routers.create.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.routers.create.json#/request",
+    "resource": "routers",
+    "response_binding_ref": "contracts/global_router.v1.routers.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "POST /routers",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "f11e6f2deef45beedfc7265160a74368e164f89945607de797c17eecc5c6c617",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "c69541a0f5828802abcf3aa6235282e1b9f64797ae1c08bc9945c93bc7e920b7",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.routers.delete.json": "47218bd93ec367696d8b4c15f378f230a2d7cac7b401c1a9a7cd2f7bb85bfea0"
+    },
+    "contract_revision": "ef3442772efacd41e3b06447e8d32db05b797772634d43936e7c28cc4d96e70f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.routers.delete.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.routers.delete.json#/errors",
+    "go_method": "globalrouter.RoutersClient.Delete",
+    "implementation": {
+      "binding": "globalrouter.RoutersClient.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/delete",
+    "input_type": "types.ResourceRef + globalrouter.DeleteOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.routers.delete",
+    "output_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/delete/responses",
+    "output_type": "types.Result[struct{}]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.routers.delete.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.routers.delete.json#/request",
+    "resource": "routers",
+    "response_binding_ref": "contracts/global_router.v1.routers.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "DELETE /routers/{router_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "ef3442772efacd41e3b06447e8d32db05b797772634d43936e7c28cc4d96e70f",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "92a8c28249e16efd5ccfef648fed2a9da8bd77e297e3303ce233254175a07999",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.routers.get.json": "a6598d123962c257ca19b384e415768e11b15e9767279a8358858cf31ee1e7d8"
+    },
+    "contract_revision": "0d6d2f6646be22877073b52d7e5e878133b6575886d15f03851eeef77668e261",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.routers.get.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.routers.get.json#/errors",
+    "go_method": "globalrouter.RoutersClient.Get",
+    "implementation": {
+      "binding": "globalrouter.RoutersClient.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/get",
+    "input_type": "types.ResourceRef + globalrouter.GetOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.routers.get",
+    "output_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/get/responses",
+    "output_type": "types.Result[globalrouter.Router]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.routers.get.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.routers.get.json#/request",
+    "resource": "routers",
+    "response_binding_ref": "contracts/global_router.v1.routers.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /routers/{router_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "0d6d2f6646be22877073b52d7e5e878133b6575886d15f03851eeef77668e261",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "313d4bae246a19bcd2d0c8704b03d79f3c698013684728c20f0ebc8ced5e8cff",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.routers.list.json": "a6c7278a12b1b271732cc7e62e58b6a2bdb2a98394845eb3efec0a10cb2da135"
+    },
+    "contract_revision": "9611060928cfcd1e28bce0e203c78fe3e8818e169966c20392e6ea4b6767f679",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.routers.list.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.routers.list.json#/errors",
+    "go_method": "globalrouter.RoutersClient.ListPage",
+    "implementation": {
+      "binding": "globalrouter.RoutersClient.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1routers/get",
+    "input_type": "globalrouter.PageOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.routers.list",
+    "output_schema_ref": "sources/global-router.json#/paths/~1routers/get/responses",
+    "output_type": "types.Result[globalrouter.Page[globalrouter.Router]]",
+    "pagination_contract_ref": "contracts/global_router.v1.routers.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1routers/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.routers.list.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.routers.list.json#/request",
+    "resource": "routers",
+    "response_binding_ref": "contracts/global_router.v1.routers.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /routers",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "9611060928cfcd1e28bce0e203c78fe3e8818e169966c20392e6ea4b6767f679",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "de80a9b30355c64acb58eb78712dc744fbecdfda88b212ecffcd22706b5b3d0f",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.routers.replace.json": "f8d5bc304c9fbc1475e108b32ac7de2f36428aa6c3600365a2b081b6081755bb"
+    },
+    "contract_revision": "a4e469f6bc461ad22a1d3218fdd991fc0f800e30560c87b1fdcae203e5c8323a",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.routers.replace.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.routers.replace.json#/errors",
+    "go_method": "globalrouter.RoutersClient.Update",
+    "implementation": {
+      "binding": "globalrouter.RoutersClient.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/put",
+    "input_type": "types.ResourceRef + globalrouter.RouterUpdateSpec + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.routers.replace",
+    "output_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/put/responses",
+    "output_type": "types.Result[globalrouter.Router]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1routers~1{router_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.routers.replace.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.routers.replace.json#/request",
+    "resource": "routers",
+    "response_binding_ref": "contracts/global_router.v1.routers.replace.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "PUT /routers/{router_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "a4e469f6bc461ad22a1d3218fdd991fc0f800e30560c87b1fdcae203e5c8323a",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "1f32dc9b8ea2d350fd2ce5b7bbecb25f799263078ef4c08fa3ed7f500eb5dcbf",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.services.list.json": "f3eaf34f7a08591cb917a1280010f3ecd7057d0d4601d2ab880b25b68fe5e484"
+    },
+    "contract_revision": "04814b2f0b186ad9f939192107015b5822cdfbd420e81e7e99fc86b04ea801f7",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.services.list.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.services.list.json#/errors",
+    "go_method": "globalrouter.Client.ServicesPage",
+    "implementation": {
+      "binding": "globalrouter.Client.ServicesPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1services/get",
+    "input_type": "globalrouter.PageOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.services.list",
+    "output_schema_ref": "sources/global-router.json#/paths/~1services/get/responses",
+    "output_type": "types.Result[globalrouter.Page[globalrouter.Service]]",
+    "pagination_contract_ref": "contracts/global_router.v1.services.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1services/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.services.list.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.services.list.json#/request",
+    "resource": "services",
+    "response_binding_ref": "contracts/global_router.v1.services.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /services",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "04814b2f0b186ad9f939192107015b5822cdfbd420e81e7e99fc86b04ea801f7",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "c65bcdc800955741250fadf726d4345ec29d7820c5c25334e44928ef6b52d3e3",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.static_routes.create.json": "1ec9170ed092bad3e3892d16b3df1800092209df3f8ea3ca6d0850f8c1768326"
+    },
+    "contract_revision": "af37258d74504656e88035e7fe95d4904efedeb0a69ad5b17a262cf1366c6ead",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.create.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.static_routes.create.json#/errors",
+    "go_method": "globalrouter.StaticRoutesClient.Create",
+    "implementation": {
+      "binding": "globalrouter.StaticRoutesClient.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1static_routes/post",
+    "input_type": "types.ResourceRef + globalrouter.StaticRouteCreateSpec + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.static_routes.create",
+    "output_schema_ref": "sources/global-router.json#/paths/~1static_routes/post/responses",
+    "output_type": "types.Result[globalrouter.StaticRoute]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1static_routes/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.static_routes.create.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.static_routes.create.json#/request",
+    "resource": "static_routes",
+    "response_binding_ref": "contracts/global_router.v1.static_routes.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "POST /static_routes",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "af37258d74504656e88035e7fe95d4904efedeb0a69ad5b17a262cf1366c6ead",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "f368537e1da27b08b1ba888ade5496be15bb545e674f222ff938cc26517e8cf2",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.static_routes.delete.json": "7b24ac8d6175962dc97906ac6529d953606c33e924cb058f78fe9c90bc86f1f9"
+    },
+    "contract_revision": "f54f3215889c54d36e512894724d6eeb241ca090bb81ef66dadc47f61aa6a53f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.delete.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.static_routes.delete.json#/errors",
+    "go_method": "globalrouter.StaticRoutesClient.Delete",
+    "implementation": {
+      "binding": "globalrouter.StaticRoutesClient.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/delete",
+    "input_type": "types.ResourceRef + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.static_routes.delete",
+    "output_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/delete/responses",
+    "output_type": "types.Result[struct{}]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.static_routes.delete.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.static_routes.delete.json#/request",
+    "resource": "static_routes",
+    "response_binding_ref": "contracts/global_router.v1.static_routes.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "DELETE /static_routes/{static_route_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "f54f3215889c54d36e512894724d6eeb241ca090bb81ef66dadc47f61aa6a53f",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "ef997da8c5aa7763153ff75ca99ad02ea31ec191ed20f5064248b740cf3a3450",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.static_routes.get.json": "3deff177d2fd95770731a9c6dde0caf7cb5a18bf01c2038aec1b9e0cab31155c"
+    },
+    "contract_revision": "830f5e07063101af52c5fd305c7abde12e9340a00807b08bb68923d0d795696d",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.get.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.static_routes.get.json#/errors",
+    "go_method": "globalrouter.StaticRoutesClient.Get",
+    "implementation": {
+      "binding": "globalrouter.StaticRoutesClient.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/get",
+    "input_type": "types.ResourceRef + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.static_routes.get",
+    "output_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/get/responses",
+    "output_type": "types.Result[globalrouter.StaticRoute]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.static_routes.get.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.static_routes.get.json#/request",
+    "resource": "static_routes",
+    "response_binding_ref": "contracts/global_router.v1.static_routes.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /static_routes/{static_route_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "830f5e07063101af52c5fd305c7abde12e9340a00807b08bb68923d0d795696d",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "c31717a3ca08fdbe573450dfaa4e3bf80c6b68e0fbb0b135dfafce45bd364ade",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.static_routes.list.json": "2fdfe0cdf8b0ea298474c2dc97559408cc47643d21a20f0a0c898b77c6d4b65f"
+    },
+    "contract_revision": "e7104f5748eef2b72a5b3a73cfc36f56436c1f8c7e0304db11d19b4fb278d4f5",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.list.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.static_routes.list.json#/errors",
+    "go_method": "globalrouter.StaticRoutesClient.ListPage",
+    "implementation": {
+      "binding": "globalrouter.StaticRoutesClient.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1static_routes/get",
+    "input_type": "globalrouter.PageOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.static_routes.list",
+    "output_schema_ref": "sources/global-router.json#/paths/~1static_routes/get/responses",
+    "output_type": "types.Result[globalrouter.Page[globalrouter.StaticRoute]]",
+    "pagination_contract_ref": "contracts/global_router.v1.static_routes.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1static_routes/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.static_routes.list.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.static_routes.list.json#/request",
+    "resource": "static_routes",
+    "response_binding_ref": "contracts/global_router.v1.static_routes.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /static_routes",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "e7104f5748eef2b72a5b3a73cfc36f56436c1f8c7e0304db11d19b4fb278d4f5",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "4ed30749ad2d35e998d3817f42950de3767f12dae7ffc0d1b062692ce9ea88aa",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.static_routes.replace.json": "e05eb519177001d2e259435b6c11d7551f2c7ebc2c1617b3ddd0302f174e0bca"
+    },
+    "contract_revision": "b39961d379c1505523634e1b563dede3c1bd5e4ebb3ba764c54cef7b7fb0218d",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.replace.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.static_routes.replace.json#/errors",
+    "go_method": "globalrouter.StaticRoutesClient.Update",
+    "implementation": {
+      "binding": "globalrouter.StaticRoutesClient.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/put",
+    "input_type": "types.ResourceRef + globalrouter.StaticRouteUpdateSpec + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.static_routes.replace",
+    "output_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/put/responses",
+    "output_type": "types.Result[globalrouter.StaticRoute]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1static_routes~1{static_route_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.static_routes.replace.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.static_routes.replace.json#/request",
+    "resource": "static_routes",
+    "response_binding_ref": "contracts/global_router.v1.static_routes.replace.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "PUT /static_routes/{static_route_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "b39961d379c1505523634e1b563dede3c1bd5e4ebb3ba764c54cef7b7fb0218d",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "6ed1a3467318c58e9ac7c3f77dcb8d56f51e1d858ab166b309aba8cee62af365",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.subnets.create.json": "7c53c3063a9369071240250e11a3f9ab3a54762cc731ed26616c3da63cee60de"
+    },
+    "contract_revision": "706e65f16460d9619ce4f1890045e19bd985d8482632aadf1af9b603b1c56df1",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.subnets.create.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.subnets.create.json#/errors",
+    "go_method": "globalrouter.SubnetsClient.Create",
+    "implementation": {
+      "binding": "globalrouter.SubnetsClient.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1subnets/post",
+    "input_type": "types.ResourceRef + globalrouter.SubnetCreateSpec + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.subnets.create",
+    "output_schema_ref": "sources/global-router.json#/paths/~1subnets/post/responses",
+    "output_type": "types.Result[globalrouter.Subnet]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1subnets/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.subnets.create.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.subnets.create.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/global_router.v1.subnets.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "POST /subnets",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "706e65f16460d9619ce4f1890045e19bd985d8482632aadf1af9b603b1c56df1",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "973f9e0c8bef3036ecd394f9ef0285b0702bf031f0c49a1068ac360b96e8542e",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.subnets.delete.json": "785a864593f73ae6c726d7f83e9515e24e8f2cad0832fd5e17470ae1762480f2"
+    },
+    "contract_revision": "700d3bdc7d0cb1da8ea4f149eaf1502ec7f554cf84def92427221e6837d39a4b",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.subnets.delete.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.subnets.delete.json#/errors",
+    "go_method": "globalrouter.SubnetsClient.Delete",
+    "implementation": {
+      "binding": "globalrouter.SubnetsClient.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/delete",
+    "input_type": "types.ResourceRef + globalrouter.DeleteOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.subnets.delete",
+    "output_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/delete/responses",
+    "output_type": "types.Result[struct{}]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.subnets.delete.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.subnets.delete.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/global_router.v1.subnets.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "DELETE /subnets/{subnet_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "700d3bdc7d0cb1da8ea4f149eaf1502ec7f554cf84def92427221e6837d39a4b",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "0630cb32a42463c4a42a67737271e6d87fe5413ff16b475b91071d92f3878c47",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.subnets.get.json": "7f00a55870da0c42ed87620fe85c068d459cd4ac653a3069731194cd5c638361"
+    },
+    "contract_revision": "c1aa0866d9a68b4032710d206494a6ac998bb6f3497e975436340938b2f1224c",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.subnets.get.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.subnets.get.json#/errors",
+    "go_method": "globalrouter.SubnetsClient.Get",
+    "implementation": {
+      "binding": "globalrouter.SubnetsClient.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/get",
+    "input_type": "types.ResourceRef + globalrouter.GetOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.subnets.get",
+    "output_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/get/responses",
+    "output_type": "types.Result[globalrouter.Subnet]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.subnets.get.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.subnets.get.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/global_router.v1.subnets.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /subnets/{subnet_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "c1aa0866d9a68b4032710d206494a6ac998bb6f3497e975436340938b2f1224c",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "ffe755ca75de032cb0dd962ef4fc7f9eec8f4b72a7473abb9fc78f52e4f80c82",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.subnets.list.json": "f35e88feb3da195bfef5a52a4cd48336a5f08a601e9b5e68200ae27b6c324626"
+    },
+    "contract_revision": "9f869e293a80f132d5954989d1f946e0ec7b773c6d52777a619e9c81d40c9dd5",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.subnets.list.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.subnets.list.json#/errors",
+    "go_method": "globalrouter.SubnetsClient.ListPage",
+    "implementation": {
+      "binding": "globalrouter.SubnetsClient.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1subnets/get",
+    "input_type": "globalrouter.PageOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.subnets.list",
+    "output_schema_ref": "sources/global-router.json#/paths/~1subnets/get/responses",
+    "output_type": "types.Result[globalrouter.Page[globalrouter.Subnet]]",
+    "pagination_contract_ref": "contracts/global_router.v1.subnets.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1subnets/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.subnets.list.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.subnets.list.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/global_router.v1.subnets.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /subnets",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "9f869e293a80f132d5954989d1f946e0ec7b773c6d52777a619e9c81d40c9dd5",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "8dc8615ff0430f73d56185aaceeba2186e221d78f000c472c7c60877c38a5671",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.subnets.replace.json": "0f8be69357d940a68d3587b365154b24e17e29d6d8d892b6d249269b108d6cf3"
+    },
+    "contract_revision": "a9b7a18f06b4dfeac68340fb13bc34382f0c6b5620f196748ad1dbfdcd55e868",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/global_router.v1.subnets.replace.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.subnets.replace.json#/errors",
+    "go_method": "globalrouter.SubnetsClient.Update",
+    "implementation": {
+      "binding": "globalrouter.SubnetsClient.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/put",
+    "input_type": "types.ResourceRef + globalrouter.SubnetUpdateSpec + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.subnets.replace",
+    "output_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/put/responses",
+    "output_type": "types.Result[globalrouter.Subnet]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1subnets~1{subnet_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.subnets.replace.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.subnets.replace.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/global_router.v1.subnets.replace.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "PUT /subnets/{subnet_id}",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "a9b7a18f06b4dfeac68340fb13bc34382f0c6b5620f196748ad1dbfdcd55e868",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "3d43ef6f5e9bedc76de613091fa653e8f287e368d9c3b78f11f22fa8f961f9cc",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.zone_groups.list.json": "827dfff71b651bc73bed71a8354d145a8742c5c481631797f57e71232d505472"
+    },
+    "contract_revision": "ad2d8480ffe26177b036e2511f3ed6042edf58e843634a15c08c1d87edaf44c2",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.zone_groups.list.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.zone_groups.list.json#/errors",
+    "go_method": "globalrouter.Client.ZoneGroupsPage",
+    "implementation": {
+      "binding": "globalrouter.Client.ZoneGroupsPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1zone_groups/get",
+    "input_type": "globalrouter.PageOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.zone_groups.list",
+    "output_schema_ref": "sources/global-router.json#/paths/~1zone_groups/get/responses",
+    "output_type": "types.Result[globalrouter.Page[globalrouter.ZoneGroup]]",
+    "pagination_contract_ref": "contracts/global_router.v1.zone_groups.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1zone_groups/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.zone_groups.list.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.zone_groups.list.json#/request",
+    "resource": "zone_groups",
+    "response_binding_ref": "contracts/global_router.v1.zone_groups.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /zone_groups",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "ad2d8480ffe26177b036e2511f3ed6042edf58e843634a15c08c1d87edaf44c2",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "1d9e4504073a2f74ea5753ec81d432f3c88bf0fe757feb65330dd804135f5a0d",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/global_router.v1.zones.list.json": "f41d079ec7a7c992d7c57fc1eefe73a6778bd844dd8306bdef04e56b8b654174"
+    },
+    "contract_revision": "03b04e6fc057a3008bfca68a59e53cbe6e54b6f9ac338fb0f47117fd61f075b3",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/global_router.v1.zones.list.json#/endpoint",
+    "error_binding_ref": "contracts/global_router.v1.zones.list.json#/errors",
+    "go_method": "globalrouter.Client.ZonesPage",
+    "implementation": {
+      "binding": "globalrouter.Client.ZonesPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/global-router.json#/paths/~1zones/get",
+    "input_type": "globalrouter.PageOptions + types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "global_router.v1.zones.list",
+    "output_schema_ref": "sources/global-router.json#/paths/~1zones/get/responses",
+    "output_type": "types.Result[globalrouter.Page[globalrouter.Zone]]",
+    "pagination_contract_ref": "contracts/global_router.v1.zones.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/global-router.json#/paths/~1zones/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/global_router.v1.zones.list.json#/retry",
+    "request_binding_ref": "contracts/global_router.v1.zones.list.json#/request",
+    "resource": "zones",
+    "response_binding_ref": "contracts/global_router.v1.zones.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ],
+    "service": "global_router",
+    "source": {
+      "operation_locator": "GET /zones",
+      "revision": "39d0b62aeb05d9dc4e6ed025e4aa0dcef6679e031cf5a27c936e5acdda1dd651",
+      "uri": "https://docs.selectel.ru/api/global-router.json"
+    },
+    "verification": {
+      "contract_revision": "03b04e6fc057a3008bfca68a59e53cbe6e54b6f9ac338fb0f47117fd61f075b3",
+      "evidence_ref": "globalrouter_test.go",
+      "implementation_revision": "95690bea7205132de6c0a50ea0ede2e69ea745d50783ddde71a82acfbb5c1ab2",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
     "action": "filter",
     "api_generation": "cloudwatch",
     "auth": {
@@ -5044,7 +6508,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "9242bc9e39a76b42a6c31c7f40f4745c50946e8a15f7af20f4e5fbe85edfea94",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +6578,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "fe973ae5846d85e6bcd84daa1454a0edbed5cc05963737fe6833cd894bd13ab7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +6645,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "0da59d1e03e58859cf655e1725063877b987f77ce1f97bc872a64d1cbd86de82",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +6712,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "d881992dd9cedddf0152accbf441d7ec147472e14e9a8919c3e9a3fec3ac36c7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +6778,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "036ce41145db248f87a305e704b254e740587e8ae2fe1038420f2cacb7cda946",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +6844,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "171f82a2bbfa32af4bf9c1801c1a6ad20b82c5cd32b4d8b4b4e1fb67a7dab5bb",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +6909,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "5fa1586481b604f369ba31edb23a7c9aa5e412323b283cf1b538be8c224a32f1",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +6966,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "ff9de128c911ec32bc837be187fd9193d4ecb0fe16b2761ad1d24dcd039a6a9b",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +7025,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "73a59ac2c9fe1039110f7ce0aeb2bdfaccc23da399ea83021f54555ded66dbf4",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +7084,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "cc18d936731a0a952e97c75198c101e4913831bb69708026caaf4590da41c431",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +7145,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "147e84fcabc46f1e29d16d31fec3d81409450ca3ace27119ca7719cd57945a14",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +7204,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "747ac3b8e73871fda3dab1833a0cf0d4c4e30aea65ac5545ef481ba0edef0d52",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +7263,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "99a0d1791ba1769657cfe8cb8eb33386527cf344edd1b2d1ee237127eb51af39",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +7324,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "e5a0c6fd9f2d06abe6ec2a888006d61f7d0562a2883a1261a0549490169cff3b",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +7385,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "12af82a354936a47e3ae82b982915d4ed228cb716b45cd0fe59d74691f3f06e5",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +7442,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "502e56c54d3bb4061eaf6773e6a3505e3c0d95ed4081a9aaa62c3939ead2b546",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +7499,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "e6088825cbb3b57d822455e9753d5370751c97d2f6cbf03abacc819ac9a4454c",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +7560,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "3bf9221ba1182c4ade9e2ce16b53fb5d86c5b22ca8cd6eb4d4a7e33c59977af3",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +7619,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "f210c3bc8c0f0b7151fd85c4241bc0982994e0a54893d4e0284989dea4da5222",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +7676,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "63df157ce87cc237f9685134812890c8f787740ddf7ee84bd8926fb50e00c7fd",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +7735,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "cf8f9135fdd6ef03a8b7f8443f42abb11b461186dc1085d5e061417868e443fe",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +7794,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "493222c06621a00af42ba410581049f0104fae7e9f4948bb16be5c5aeac2d4a4",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +7851,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "86a251361e00693c549c268d381a45059cb1651026e00dfff86c21b3f7b8032b",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +7908,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "00fba2fd05e7229974ed2450895a3631c9227b858c87643e9625045f494ed53a",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +7967,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "b50f6ed9f20333c29379f356c6eb3d993f7ca2c7c9c8eb55c2dc9d5a0a2d7a5b",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +8024,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "9fb1e700af484e8cb649d1c4f4b55610496e9ff541f429ab3eb50f42bf8cb3e4",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +8081,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "0e995091b61dd7962e68a83d6685d0e7cfac99b0aaa02136117f87826bc983e1",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +8138,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "38a35a40dacda4e1e4bf19205bc2c70520b4deb18e35c0243cb625d66fa13e4c",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +8195,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "4c2ab51a64bcc83554060fcd8d612d9b324b242de68c9997e10854f824b527fb",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +8252,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "e6e6570f4f1e48a4fc4ea845959d66f10e659c9bd1d143663b505ff5ab76f5ad",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +8314,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "5a48477aeaa06f5eb41c4796ca7b8c3bddec6e26fd86e0d63aca9865a777db30",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +8376,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "022b56faba23925ac22734e28380c1eab63f9fb6882676d859b04d310b7874a5",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +8437,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "ec650485fc55a3030acb8ffc8831116ad7d3e4894444e8608d02e1f5b6878d1a",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +8498,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "5335f3fc8dc83ba546c44f5260ddbb3f383359269dc3307ad40e8b566e5bb5f8",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +8557,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "23cdbae73ff17759e3576b5fe292ce45ef10b2ad3de4d1433458e7c3baa705b3",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +8614,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "35996d626a5aba6a3dfec70c7d51c45d1c8c0e7ad506a1d30b4b873ffc57ed6a",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +9359,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "c12c9d86d3561264c81870077a9fa92e48679ee8fb54e51d4e4ae78978ce6f9e",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +9415,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "a94201c891b38da902659990c0ca6bc096ad5d575b4d006ff097b33fbfd32ac4",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +9471,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "f59b7148bd49d4d056f285c370daeb0de8c405eac99072ac5aa65dff5f2060a2",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +9527,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "84d311d72c708b7a84ab8fbe8e495126afb386f7c954bed1365c824e17ea079b",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +9583,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "95f8ff7eca6f2fbca6bceb382b9fc997ec9c64cfefd2a850a5b9c99f0a5b99cb",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +10011,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "6fa168b74216eb8c3820da20253f8701e75ab63ee96fba79bcb14ca7e9302e61",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +10068,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "20088968570b4ca7c8fa306907f814b270dbdc54cd40b36329e1c48f86fc9383",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +10125,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "46839fe98fc444837643265225521b4871cb8aade4b4981535ee689033dff370",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +10182,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "d69b2e63d7b9e4f74ab0a26b2a80bdb1b67b53f91878063636a24b05d8dfb420",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +11049,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "7e44e3b94185e92961411ff5e3a25bbf453e9a3d056490ff2ab45a79599569ac",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +11648,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "4719a45c6fa1443246dd2d82fb15f848900a48e17675159ac18d403f368f4858",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +11705,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "98d8c038509bb2f56bf81fafbdcb2014e02acd1e3e91387215cb48c4d00f4806",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +11764,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "671a1ad163f338608d7fa4fe75aae8a6a57b8ee1ff022c22b610be7c09c369fc",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +11821,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "2e7a17f511064c0487e0691270864b0220065f30e10d68439e61664427e39d12",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +11878,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "085d0585b18457730ae91dbdc28d73bbf6233539f0089e8403cdf2fdbe6fa958",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +11937,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "116f6c366ace32e879fc73d2859c4122770aa80ab65d3d55b29de4328e17d9af",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +11996,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "4252954f4fcaef239ec378f8170a502186b7f7b5153c481f581e3bdd8e3f23fb",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +12053,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "da918934eef18b5ae8f164a101430a72f44ab5134dacd9d08f2181009c409e2d",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +12110,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "a0c2128a3b4c8f88034694b2fd49ff51396ba5378cbdcf4e6ce7c50a0e39553e",
       "level": "offline"
     },
     "wait_goals": []

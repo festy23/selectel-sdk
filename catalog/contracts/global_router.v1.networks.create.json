@@ -1,0 +1,178 @@
+{
+  "operation_id": "global_router.v1.networks.create",
+  "effect": "mutation",
+  "endpoint": {
+    "generation": "v1",
+    "override_key": [
+      "global_router",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject",
+    "address": "https://api.selectel.ru/naas/v1",
+    "source_uri": "https://github.com/selectel/globalrouter-go/blob/f4e78a2c9d3435a9caa32f92a83910e9fab00fd4/pkg/v1/client.go",
+    "recipe_source": "internal/endpoints/locations.go"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/networks",
+    "source_schema": "sources/global-router.json#/paths/~1networks/post",
+    "source_operation": {
+      "tags": [
+        "Networks"
+      ],
+      "summary": "Create network",
+      "description": "Creates a network in the Global Router service. If the network belongs to the `vpc` service but doesn't exist on the cloud platform yet, it will also be created on the cloud platform. Networks from other services must be created in the source service beforehand; otherwise, they cannot be created in the Global Router service.\n",
+      "operationId": "createNetwork",
+      "x-codegen-request-body-name": "payload",
+      "parameters": [
+        {
+          "name": "Accept-Language",
+          "in": "header",
+          "description": "Sets language for error responses. Can be 'ru' or 'en'.",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "X-Request-ID",
+          "in": "header",
+          "description": "Sets req-id for request. Must be a valid UUID v4 string. If not provided, will be generated automatically.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NetworkCreate"
+            }
+          }
+        },
+        "required": true
+      },
+      "responses": {
+        "202": {
+          "description": "Accepted",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NetworkResponse"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "$ref": "#/components/schemas/ErrorResponse_400"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Bad or expired token. You can reissue a token and try again.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "$ref": "#/components/schemas/ErrorResponse_401"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Access is forbidden. Make sure you have the required permissions.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "$ref": "#/components/schemas/ErrorResponse_403"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "An internal server error occured. Try again later.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "$ref": "#/components/schemas/ErrorResponse_500"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "globalrouter/client.go, pages.go, mutations.go and headers.go",
+    "scope": "Account IAM; immutable account scope. AttachVPC origin must be service network, SDK generation v2 (Neutron2.0), selected network/subnet kind, same account, explicit nonempty project/region/pool, compatible location and exact validated endpoint. Source ancestor refs preserve service/generation/endpoint identity. Reject before credential lookup or HTTP; retain validated original ref separately.",
+    "identity": "Existing Global Router resources addressed by exact typed refs. Creates for network/subnet/route require selected router/zone/network refs and reject conflicting body IDs.",
+    "body": "All properties of generated source DTO; nil omitted, explicit empty strings/arrays preserved, protected fields revealed only at HTTP boundary. PUT uses published replacement endpoint; no PATCH inference. Native AttachVPC uses pinned supplemental DTO with original project_id and os_network_id/os_subnet_id.",
+    "query": "All published parameters: typed current page/limit/sort/filter, router nested, directory show_groups/show_zones, explicit cascade/disconnect. No invented completion marker.",
+    "headers": "Immutable WithHeaders view supports only documented Accept-Language ru/en and UUID-v4 X-Request-ID; authentication remains core-owned.",
+    "native_sdk_variants": "POST networks/subnets additionally has native VPC and dedicated source shapes. Current DTO represents VLAN/inner VLAN/VDC/current source IDs. AttachVPC pins original service ref and native project_id fields absent from current schema. Supplemental evidence: catalog/evidence/global-router-sdk-models.json."
+  },
+  "response": {
+    "successful_statuses": [
+      202
+    ],
+    "schema_ref": "sources/global-router.json#/paths/~1networks/post/responses",
+    "dto_source": "globalrouter/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All published properties, including nested router/network/subnet/route and prefix_pool/directory structures. Optional pointers preserve omission; arbitrary-precision Integer counts/VLAN/VPN/quota; RFC3339 timestamps normalize UTC; response ref fields ignored.",
+    "resource_ref": "Account-scoped Global Router refs only for explicit IDs, exact endpoint and generation. Network/router, subnet/network and nested route parents retain confirmed same-service identities. Returned account and ancestor IDs checked. Source OS/service IDs remain typed metadata. AttachVPC checks returned project/source/zone identities before new ID adoption and retains original supplied source ref separately in Receipt, without changing its scope. Mutation identity validation checks every available returned router_id/network_id/subnet_id against the exact selected ancestor chain before any new ref adoption; nested static-route subnet parent is not compared with router_id.",
+    "sensitive_fields": [
+      "name",
+      "description",
+      "vdc_name",
+      "options"
+    ]
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for reads; documented mutation rejection",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible transmission; retain exact input refs",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy ID extracted before later DTO decoding",
+    "foreign_identity": "scope_mismatch; no foreign association adopted",
+    "message": "Fixed SDK message; provider error body discarded",
+    "mutation_rejected_statuses": [
+      400,
+      403
+    ]
+  },
+  "retry": "Bounded safe reads; mutations one attempt, never replay",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "No automated wait binding; exact Get returns raw published ACTIVE/ERROR/IMMUTABLE/CREATING/UPDATING/DELETING status without readiness inference"
+  },
+  "recovery": {
+    "availability": "Exact Get observation only; no root Resume, name lookup, adoption or authorship inference"
+  },
+  "timeout": "CallTimeout and MaxJSONBytes bound every page/response",
+  "destructive_semantics": "Explicit cascade may also delete original VPC network/subnet resources. Explicit disconnect preserves source resources. No implicit flags are selected; provider defaults remain provider-owned."
+}

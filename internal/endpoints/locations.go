@@ -36,6 +36,7 @@ func Location(region, pool string) (string, error) {
 }
 
 var addresses = map[string]map[string]string{
+	"global_router.v1":   {"": "https://api.selectel.ru/naas/v1"},
 	"logs.cloudwatch":    {"ru-1": "https://ru-1.logs.selcloud.ru", "ru-3": "https://ru-3.logs.selcloud.ru", "ru-9": "https://ru-9.logs.selcloud.ru", "ru-2": "https://ru-2.logs.selcloud.ru", "ru-6": "https://ru-6.logs.selcloud.ru", "ru-7": "https://ru-7.logs.selcloud.ru", "ru-8": "https://ru-8.logs.selcloud.ru", "uz-1": "https://uz-1.logs.servercore.com", "uz-2": "https://uz-2.logs.servercore.com", "kz-1": "https://kz-1.logs.servercore.com", "ke-1": "https://ke-1.logs.servercore.com"},
 	"metrics.prometheus": {"ru-1": "https://ru-1.metrics.selcloud.ru", "ru-3": "https://ru-3.metrics.selcloud.ru", "ru-9": "https://ru-9.metrics.selcloud.ru", "ru-2": "https://ru-2.metrics.selcloud.ru", "ru-6": "https://ru-6.metrics.selcloud.ru", "ru-7": "https://ru-7.metrics.selcloud.ru", "ru-8": "https://ru-8.metrics.selcloud.ru", "gis-1": "https://gis-1.metrics.selcloud.ru", "gis-2": "https://gis-2.metrics.selcloud.ru", "uz-1": "https://uz-1.metrics.servercore.com", "uz-2": "https://uz-2.metrics.servercore.com", "kz-1": "https://kz-1.metrics.servercore.com", "ke-1": "https://ke-1.metrics.servercore.com", "SPB-2": "https://ru-1.metrics.selcloud.ru", "SPB-3": "https://ru-1.metrics.selcloud.ru", "SPB-4": "https://ru-1.metrics.selcloud.ru", "SPB-5": "https://ru-1.metrics.selcloud.ru", "MSK-1": "https://ru-7.metrics.selcloud.ru", "MSK-2": "https://ru-7.metrics.selcloud.ru", "MSK-3": "https://ru-7.metrics.selcloud.ru", "MSK-7": "https://ru-7.metrics.selcloud.ru", "NSK-1": "https://ru-8.metrics.selcloud.ru", "TAS-1": "https://uz-1.metrics.servercore.com", "TAS-2": "https://uz-1.metrics.servercore.com", "ALM-1": "https://kz-1.metrics.servercore.com", "NBO-1": "https://ke-1.metrics.servercore.com"},
 	"mks.v2":             {"ru-1": "https://ru-1.mks.selcloud.ru/v2", "ru-3": "https://ru-3.mks.selcloud.ru/v2", "ru-9": "https://ru-8.mks.selcloud.ru/v2", "ru-2": "https://ru-2.mks.selcloud.ru/v2", "ru-7": "https://ru-7.mks.selcloud.ru/v2", "ru-8": "https://ru-8.mks.selcloud.ru/v2", "uz-1": "https://uz-1.mks.api.servercore.com/v2", "ke-1": "https://ke-1.mks.api.servercore.com/v2"},
@@ -48,7 +49,11 @@ func Resolve(service, generation string, scope types.Scope) (types.EndpointBindi
 	if u == "" {
 		return types.EndpointBinding{}, types.NewError(types.EndpointUnavailable)
 	}
-	return types.EndpointBinding{ID: "selectel-" + key + ":" + scope.Pool, URL: u, Scope: scope, APIGeneration: generation, Audience: "selectel"}, nil
+	locationID := scope.Pool
+	if key == "global_router.v1" {
+		locationID = "global"
+	}
+	return types.EndpointBinding{ID: "selectel-" + key + ":" + locationID, URL: u, Scope: scope, APIGeneration: generation, Audience: "selectel"}, nil
 }
 
 func Registry(scope types.Scope, generation string) (types.EndpointBinding, error) {
