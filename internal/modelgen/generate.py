@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "resell": ("cloud-projects-and-resources", {"Account": "Account", "Result": "DNSInfo", "_Traffic": "Traffic", "Subnet": "Subnet", "_CreateSubnetRequest": "SubnetSpec", "_GetFloatingIPResponse": "FloatingIP", "_CreateFloatingIPRequest": "FloatingIPSpec", "License": "License", "_CreateLicenseRequest": "LicenseSpec", "_ListKeypairsResponse": "Keypair", "_CreateKeypairRequest": "KeypairSpec"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -47,8 +48,15 @@ for case, (family, initial, top_name) in CASES.items():
     package = "registry" if case == "registry_v1" else case
     doc = json.loads((ROOT / "catalog/sources" / (family + ".json")).read_text())
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
+    if package == "resell":
+        supplement = json.loads((ROOT / "catalog/contracts/resell-sdk-supplement.json").read_text())
+        definitions.update(supplement.get("definitions", {}))
+        for key, fields in supplement["properties"].items():
+            definitions[key]["properties"].update(fields)
+        for key, fields in supplement["optional_request_fields"].items():
+            definitions[key]["required"] = [field for field in definitions[key].get("required", []) if field not in fields]
     roots = initial if isinstance(initial, dict) else {initial: top_name}
-    resource_roots = set(roots)
+    resource_roots = {"Subnet", "_GetFloatingIPResponse", "License", "_ListKeypairsResponse"} if package == "resell" else set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -62,6 +70,9 @@ for case, (family, initial, top_name) in CASES.items():
                 if "$ref" in part:
                     part = definitions[part["$ref"].split("/")[-1]]
                 merged["properties"].update(part.get("properties", {}))
+                for attribute in ("type", "additionalProperties"):
+                    if attribute in part:
+                        merged[attribute] = part[attribute]
                 merged["required"].extend(part.get("required", []))
             return merged
         return schema
@@ -77,6 +88,8 @@ for case, (family, initial, top_name) in CASES.items():
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
         kind = schema.get("type")
+        if package == "resell" and schema.get("format") == "date-time":
+            return "TrafficTimestamp", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
@@ -154,7 +167,7 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             reference_name = value.get("$ref", "").split("/")[-1]
             nested = resolve(definitions.get(reference_name, value))
-            if nested.get("format") == "date-time":
+            if nested.get("format") == "date-time" and package != "resell":
                 code += f"\tif v.{field_name} != nil {{ instant := v.{field_name}.UTC(); v.{field_name} = &instant }}\n"
             elif nested.get("properties"):
                 code += f"\tif v.{field_name} != nil {{ v.{field_name}.normalize() }}\n"

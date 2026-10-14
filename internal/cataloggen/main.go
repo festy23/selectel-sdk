@@ -205,6 +205,15 @@ func generate() error {
 						return err
 					}
 					row["contract_artifact_revisions"] = map[string]string{b.ContractRef: hash(contractRaw)}
+					artifacts := row["contract_artifact_revisions"].(map[string]string)
+					for _, ref := range b.ContractArtifacts {
+						raw, err := os.ReadFile(filepath.Join(dir, ref))
+						if err != nil {
+							return err
+						}
+						artifacts[ref] = hash(raw)
+					}
+
 					var contract struct {
 						Response struct {
 							SensitiveFields []string `json:"sensitive_fields"`
@@ -221,6 +230,9 @@ func generate() error {
 						row["pagination_contract_ref"] = b.ContractRef + "#/pagination"
 					}
 					row["go_method"], row["input_type"], row["output_type"] = b.GoMethod, b.InputType, b.OutputType
+					if len(b.AuthAlternatives) > 0 {
+						row["auth"].(map[string]any)["alternatives"] = b.AuthAlternatives
+					}
 					row["endpoint_recipe_ref"], row["request_binding_ref"], row["response_binding_ref"], row["error_binding_ref"], row["replay_policy_ref"] = b.ContractRef+"#/endpoint", b.ContractRef+"#/request", b.ContractRef+"#/response", b.ContractRef+"#/errors", b.ContractRef+"#/retry"
 					row["parameter_support"] = map[string]any{"covered_schema_ref": pointer, "excluded_variants": []string{}}
 					if b.CoveredSchemaRef != "" {
@@ -285,19 +297,21 @@ func generate() error {
 }
 
 type binding struct {
-	GoMethod         string   `json:"go_method"`
-	InputType        string   `json:"input_type"`
-	OutputType       string   `json:"output_type"`
-	ContractRef      string   `json:"contract_ref"`
-	Status           string   `json:"status"`
-	Files            []string `json:"files"`
-	EvidenceFiles    []string `json:"evidence_files"`
-	EvidenceRef      string   `json:"evidence_ref"`
-	Verification     string   `json:"verification"`
-	CoveredSchemaRef string   `json:"covered_schema_ref"`
-	ExcludedVariants []string `json:"excluded_variants"`
-	WaitGoals        []string `json:"wait_goals"`
-	Recovery         bool     `json:"recovery"`
+	AuthAlternatives  []string `json:"auth_alternatives"`
+	GoMethod          string   `json:"go_method"`
+	InputType         string   `json:"input_type"`
+	OutputType        string   `json:"output_type"`
+	ContractRef       string   `json:"contract_ref"`
+	ContractArtifacts []string `json:"contract_artifacts"`
+	Status            string   `json:"status"`
+	Files             []string `json:"files"`
+	EvidenceFiles     []string `json:"evidence_files"`
+	EvidenceRef       string   `json:"evidence_ref"`
+	Verification      string   `json:"verification"`
+	CoveredSchemaRef  string   `json:"covered_schema_ref"`
+	ExcludedVariants  []string `json:"excluded_variants"`
+	WaitGoals         []string `json:"wait_goals"`
+	Recovery          bool     `json:"recovery"`
 }
 type verification struct {
 	Level                  string `json:"level"`
