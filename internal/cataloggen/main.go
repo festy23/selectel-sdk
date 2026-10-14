@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"blockstorage-cinder":          {"volumes", "v3", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,10 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"blockstorage-cinder PUT /volumes/{volume_id}":                     "volumes.v3.volumes.update",
+	"blockstorage-cinder POST /volumes/{volume_id}/action":             "volumes.v3.volumes.extend",
+	"blockstorage-cinder GET /volumes/detail":                          "volumes.v3.volumes.list",
+	"blockstorage-cinder GET /qos-specs/qos_limits":                    "volumes.v3.types.qos_limits",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
@@ -167,6 +172,9 @@ func generate() error {
 				scope := []string{"account"}
 				if f.Mode == "iam_project" {
 					scope = append(scope, "project")
+				}
+				if name == "blockstorage-cinder" {
+					scope = append(scope, "region", "pool")
 				}
 				if f.Mode == "s3_sigv4" || f.Mode == "basic" {
 					scope = append(scope, "project", "region", "pool")

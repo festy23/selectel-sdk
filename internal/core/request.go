@@ -309,6 +309,31 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			providerError = types.NewError(code)
 			providerError.HTTPStatus = status
 		}
+		if op.ErrorProtocol == "cinder" && status == http.StatusRequestEntityTooLarge {
+			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
+			if call.Err() != nil {
+				resp.Body.Close()
+				return out, types.ContextError(call.Err())
+			}
+			// Only a structured Cinder fault's retryAfter distinguishes exhausted
+			// quota from request size. Provider messages are never interpreted.
+			if readErr == nil {
+				var wrapper map[string]json.RawMessage
+				if json.Unmarshal(raw, &wrapper) == nil {
+					for _, value := range wrapper {
+						var fault struct {
+							Code       *types.Integer `json:"code"`
+							RetryAfter string         `json:"retryAfter"`
+						}
+						if json.Unmarshal(value, &fault) == nil && fault.Code != nil && fault.Code.String() == "413" && fault.RetryAfter != "" {
+							providerError = types.NewError(types.QuotaExceeded)
+							providerError.HTTPStatus = status
+							break
+						}
+					}
+				}
+			}
+		}
 		if op.ErrorProtocol == "cloudwatch" {
 			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
 			if readErr != nil {

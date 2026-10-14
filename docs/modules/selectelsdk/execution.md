@@ -189,3 +189,6 @@ complete. Resource names, tags, filters, URL query, headers, tokens, bodies
 Observer вызывается синхронно; callback не изменяет результат облачной операции.
 Вызывающая сторона отвечает за неблокирующий callback; его panic перехватывается
 и не меняет Receipt или result.
+
+Cinder 413 использует `quota_exceeded` только для подтверждённого структурированного
+fault с retryAfter; oversized request остаётся invalid_argument. См. [volumes](volumes.md).

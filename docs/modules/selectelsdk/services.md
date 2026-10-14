@@ -203,3 +203,5 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+Cinder volumes/types/QoS: [подтверждённый SDK subset v3](volumes.md).

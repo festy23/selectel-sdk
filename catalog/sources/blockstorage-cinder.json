@@ -1,0 +1,137 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Selectel blockstorage SDK confirmed Cinder v3 subset",
+    "version": "v0.2.0"
+  },
+  "x-source-uri": "https://github.com/selectel/blockstorage-go/tree/f229309640ab15be64dcb12703d26d3a706f5abc",
+  "x-source-revision": "f229309640ab15be64dcb12703d26d3a706f5abc",
+  "x-secondary-sources": [
+    {
+      "uri": "https://github.com/selectel/terraform-provider-selectel/tree/cf33c549d0c910c137f4a51411f6d709eb2be7d4/selectel/internal/blockstorage",
+      "revision": "cf33c549d0c910c137f4a51411f6d709eb2be7d4"
+    },
+    {
+      "uri": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli/",
+      "claim": "Cinder3.0 max3.64, observed2026-10-14"
+    },
+    {
+      "uri": "https://docs.selectel.ru/cloud-servers/volumes/edit-volume/",
+      "claim": "No direct network volume retype; IOPS metadata confirmed by pinned provider"
+    }
+  ],
+  "x-local-snapshots": {
+    "LICENSE-blockstorage.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "LICENSE-provider.txt": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+    "README.md": "eb704ebc129f101c6ffc6b53f726b09cfad8d9bf44d57d17b2da6e748f7f30aa",
+    "provider_client.go.txt": "055ffb15390f13373180fdfac29d9ed168e94765b529bf7d78428a65fbe496c7",
+    "provider_volume_plan.go.txt": "e88690a78b823d51455c9ab7a63f1d4b421e3ee4f7572c9fbcbc442e83f1e25b",
+    "provider_volume_resource.go.txt": "208acc81008d59668328bb8b8ea1f373a33d6d076cf47929a131247b509656ce",
+    "provider_volume_schema.go.txt": "3e9ed5a1254d64ad71612df886503869f139c84b3c7b9bc5662c31caa01e50a1",
+    "qos_limits.go.txt": "9491d246e3ecc85586f847b71d7471d6670a4553de5fdb0bdac163e8f6de052b",
+    "requests.go.txt": "b43666ef2b0d396eb97da083ae1882b571db2c0b2201853d868d1335b2442816",
+    "requests_opts.go.txt": "353aa0c336225d54084b60945fb563a8c6705a173cbb7f74ca9b3a8bfedffcab",
+    "schemas.go.txt": "85f9b8c3ab533e32bb825beaee26fa6839e243174692d2b7732f03da3753396b",
+    "transport_errors.go.txt": "9099ab027933b8df2d2adf03c1a2fa108040b602501afde1f749c5d7948c31ad",
+    "transport_errors_test.go.txt": "d8c0d7edbbb80b419762db51a6c36431c1ac8e3f7bcb14f18c8799f3572f346b",
+    "type_requests.go.txt": "620e222840ef367b2f5ededbb814ff518ceaffdf6497877d5db2fed65c59aa40",
+    "type_schemas.go.txt": "eedb3a814afecfcf2a616999189e6174cab676194c0cd7f7bbc5106e64707895"
+  },
+  "paths": {
+    "/volumes": {
+      "post": {
+        "operationId": "volumes.v3.volumes.create",
+        "summary": "Pinned Selectel SDK Create",
+        "responses": {
+          "202": {
+            "description": "Volume"
+          }
+        }
+      }
+    },
+    "/volumes/{volume_id}": {
+      "get": {
+        "operationId": "volumes.v3.volumes.get",
+        "summary": "Pinned Selectel SDK Get",
+        "responses": {
+          "200": {
+            "description": "Volume"
+          }
+        }
+      },
+      "put": {
+        "operationId": "volumes.v3.volumes.update",
+        "summary": "Pinned Selectel SDK Update",
+        "responses": {
+          "200": {
+            "description": "Volume"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "volumes.v3.volumes.delete",
+        "summary": "Pinned Selectel SDK Delete",
+        "responses": {
+          "202": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/volumes/{volume_id}/action": {
+      "post": {
+        "operationId": "volumes.v3.volumes.extend",
+        "summary": "Pinned Selectel SDK Extend",
+        "responses": {
+          "202": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/volumes/detail": {
+      "get": {
+        "operationId": "volumes.v3.volumes.list",
+        "summary": "Pinned Selectel SDK ListPage",
+        "responses": {
+          "200": {
+            "description": "Volume"
+          }
+        }
+      }
+    },
+    "/types/{type_id}": {
+      "get": {
+        "operationId": "volumes.v3.types.get",
+        "summary": "Pinned Selectel SDK Types.Get",
+        "responses": {
+          "200": {
+            "description": "VolumeType"
+          }
+        }
+      }
+    },
+    "/types": {
+      "get": {
+        "operationId": "volumes.v3.types.list",
+        "summary": "Pinned Selectel SDK Types.ListPage",
+        "responses": {
+          "200": {
+            "description": "VolumeType"
+          }
+        }
+      }
+    },
+    "/qos-specs/qos_limits": {
+      "get": {
+        "operationId": "volumes.v3.types.qos_limits",
+        "summary": "Pinned Selectel SDK Types.QoSLimits",
+        "responses": {
+          "200": {
+            "description": "QoSLimits"
+          }
+        }
+      }
+    }
+  }
+}

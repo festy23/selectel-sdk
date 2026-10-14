@@ -1,0 +1,54 @@
+{
+  "operation_id": "volumes.v3.volumes.list",
+  "source_revision": "f229309640ab15be64dcb12703d26d3a706f5abc",
+  "endpoint": "project/location volumev3 catalog endpoint; SDK pkg/v1 is not API generation",
+  "auth": "iam_project",
+  "request": {
+    "method": "GET",
+    "path": "/volumes/detail",
+    "DTO": "pagination.Options",
+    "fields": [],
+    "source": "pinned SDK request fields and omission semantics; metadata replacement, no implicit retype or attach",
+    "microversions": "3.0 default; backup create3.47; attached extend3.42; no arbitrary override"
+  },
+  "response": {
+    "status": 200,
+    "DTO": "Volume",
+    "fields": [
+      "id",
+      "status",
+      "size",
+      "name",
+      "description",
+      "availability_zone",
+      "volume_type",
+      "snapshot_id",
+      "source_volid",
+      "metadata",
+      "attachments",
+      "bootable"
+    ],
+    "attachment_fields": [
+      "id",
+      "attachment_id",
+      "server_id",
+      "device"
+    ],
+    "numbers": "arbitrary precision Integer; attachment.id is volume ID, attachment_id identifies attachment; no attachment mutation"
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for this token, possibly hidden",
+    "406": "capability_unavailable",
+    "409": "conflict",
+    "413": "quota_exceeded only structured code413 plus retryAfter, otherwise invalid_argument",
+    "429": "rate_limited",
+    "malformed": "protocol_error, accepted mutation retains receipt and trustworthy IDs"
+  },
+  "retry": "bounded safe reads; never replay mutation",
+  "pagination": "provider marker links, bounded and exact endpoint; QoS map local bounded replay",
+  "wait": "volume.available requires available (not in-use); volume.absent requires scoped404 plus complete bounded list without ID; WaitExtended exact size and explicit attached terminal; unknown states never success",
+  "recovery": "root Resource/Resume delegates exact-ref service Handle; known receipt conclusive; unknown receipt exact GET remains indeterminate, never mutation replay/name lookup/adoption; shared baseline no-ref receipt Resume unavailable even for known terminal outcome (remaining contract gap)"
+}
