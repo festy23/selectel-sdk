@@ -1,0 +1,70 @@
+{
+  "operation_id": "compute.v2_1.keypairs.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source": "verified project IAM compute catalog public endpoint for explicitly selected pool/region; exact scoped overrides supported",
+    "generation": "v2_1",
+    "redirects": "reject",
+    "microversion": "flavors fixed2.93; keypairs default2.35, create/list explicit version2.1..2.93 with field/permission checks",
+    "provider_support": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli/ (Nova Zed maximum2.93)"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/os-keypairs",
+    "source_schema": "sources/compute-catalog.json#/paths/~1os-keypairs/post",
+    "source_operation": {
+      "operationId": "Create",
+      "native_request_type": "keypairs options",
+      "native_response_type": "keypairs.KeyPair"
+    },
+    "mapping_source": "compute/keypairs.go",
+    "scope": "immutable explicit project/location; IAMProject only, no account fallback",
+    "identity": "exact ID/name/ref with matching view, endpoint, generation, kind and owner parent; no name lookup to prove unknown mutation authorship",
+    "parameters": "flavors minDisk/minRam/changes-since/is_public/sort single or repeated pairs; pagination limit/marker internally bounded; keypairs user_id explicit named-owner or separate Current API; source-only keypair name/type/public_key/user_id body",
+    "keypair_versions": "type requires2.2; explicit owner requires2.10; limit/marker requires2.35; create from2.92 requires public_key and never implicitly generates private key",
+    "ref_ownership": "explicit named filters or returned user_id yield keypair_user parent; absent owner in Current listing yields distinct keypair_current_user parent. Named/Current refs cannot cross APIs before I/O.",
+    "current_entrypoint": "compute.CurrentKeypairs.Create"
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      201
+    ],
+    "dto_source": "compute/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py + internal/computecontractgen/generate.py",
+    "field_mapping": "all pinned fields; Integer/Number preserve precision, legacy swap integer/string/empty accepted; optional values retain absence, nullable flavor description/keypair timestamps retain explicit null; timezone-less Nova timestamps retain original text/fractions with no invented offset; NovaTime.Instant is present only for explicit-timezone timestamps, which serialize RFC3339Nano in UTC",
+    "identity_validation": "nonempty matching source ID/name; explicit owner filter must match returned owner; provider ref discarded; no foreign reference adoption",
+    "sensitive_fields": [
+      "private_key"
+    ]
+  },
+  "errors": {
+    "mutation_rejected_statuses": [
+      400,
+      401,
+      403,
+      409
+    ],
+    "400": "provider_error, with no opaque message classification",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "conflict",
+    "429": "rate_limited for reads; unknown mutation outcome unless rejection proved",
+    "5xx_or_transport_mutation": "unknown_outcome, never replay",
+    "malformed_accepted_response": "protocol_error and accepted Receipt; trustworthy exact key identity retained before sensitive decode failure",
+    "foreign_identity_or_owner": "scope_mismatch; retain original target receipt",
+    "message": "fixed SDK error text; opaque provider payload discarded"
+  },
+  "retry": "bounded safe reads; mutations exactly one attempt",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable"
+  },
+  "recovery": {
+    "availability": "no root Handle/Resume for flavor/keypair; exact key Get observes current data, never replays or adopts an unknown mutation"
+  },
+  "current_principal_limitation": "Current calls are relative to the selected authenticated subject. An owner-less Current ref does not prove original principal identity after credential replacement; returned user_id produces a named-owner ref. No absolute-owner or changed-principal recovery claim.",
+  "timeout": "CallTimeout; one CollectionTimeout over paginated reads"
+}
