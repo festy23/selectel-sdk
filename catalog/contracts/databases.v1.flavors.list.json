@@ -1,0 +1,196 @@
+{
+  "operation_id": "databases.v1.flavors.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v1",
+    "base_includes": "/v1",
+    "scope": "immutable account/project/location; IAM project token; no generation fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "source_schema": "sources/managed-databases.json#/paths/~1flavors/get",
+    "source_operation": {
+      "description": "Returns a list of flavors.",
+      "operationId": "getFlavors",
+      "parameters": [
+        {
+          "description": "Filter the list result by the `id`.",
+          "in": "query",
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `name`.",
+          "in": "query",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "description": "Filter the list result by the `fl_size`.",
+          "in": "query",
+          "name": "fl_size",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of flavors.",
+          "schema": {
+            "$ref": "#/definitions/flavorList"
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_400"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Bad or expired token. You can reissue the token and try again.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_401"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Access is forbidden. Make sure you have the required rights.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_403"
+              }
+            }
+          }
+        }
+      },
+      "summary": "List flavors",
+      "tags": [
+        "Flavors"
+      ]
+    },
+    "mapping_source": "databases/references.go",
+    "scope": "account/project/location required; project carried by auth token, not invented query",
+    "path": "/flavors",
+    "parameters": {
+      "id": "corresponding optional pointer, including explicit empty value",
+      "name": "corresponding optional pointer, including explicit empty value",
+      "fl_size": "corresponding optional pointer, including explicit empty value"
+    },
+    "absence": "nil optional fields omitted, no provider defaults inserted"
+  },
+  "response": {
+    "dto_source": "databases/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "source_item_schema": {
+      "properties": {
+        "datastore_type_ids": {
+          "description": "List of cluster types that flavor should be available to. Retrieved from the `datastore-type` resource.",
+          "items": {
+            "example": "20d7bcf4-f8d6-4bf6-b8f6-46cb440a87f4",
+            "format": "UUID",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "description": {
+          "description": "Description of the flavor.",
+          "type": "string"
+        },
+        "disk": {
+          "description": "Volume size in GB.",
+          "example": 1,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "fl_size": {
+          "description": "Type of the flavor.",
+          "enum": [
+            "standard",
+            "high_freq",
+            "dedicated_host"
+          ],
+          "example": "standard",
+          "type": "string"
+        },
+        "host": {
+          "$ref": "#/definitions/FlavorHost"
+        },
+        "id": {
+          "description": "Flavor identifier.",
+          "example": "20d7bcf4-f8d6-4bf6-b8f6-46cb440a87f4",
+          "format": "UUID",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the flavor.",
+          "example": "Name",
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string"
+        },
+        "ram": {
+          "description": "Amount of RAM in MB.",
+          "example": 1,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "subtype": {
+          "description": "Subtype of the flavor.",
+          "enum": [
+            "STANDARD",
+            "CPU",
+            "MEMORY"
+          ],
+          "example": "STANDARD",
+          "type": "string"
+        },
+        "vcpus": {
+          "description": "Number of vCPUs.",
+          "example": 1,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "envelope": "flavors",
+    "success_statuses": [
+      200
+    ],
+    "field_mapping": "all source properties; optional fields preserve absence; provider SDK ref discarded",
+    "scope_checks": "Get rejects returned ID differing from requested ID when present",
+    "numbers": "Integer/Primitive retain decimal literals without float64; SDK any constraints use ProtectedJSON preserving arbitrary JSON at explicit Reveal boundary",
+    "units": "provider unit verbatim; flavor ram MB and disk GB per source descriptions; no conversion",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated after bounded token refresh",
+    "403": "permission_denied",
+    "404": "not_found; for exact get",
+    "malformed_body": "protocol_error; missing/null item envelope rejected",
+    "foreign_id": "scope_mismatch",
+    "provider_message": "raw body not included in diagnostic output"
+  },
+  "retry": "bounded safe read only; no mutations",
+  "pagination": {
+    "shape": "single response",
+    "items": "flavors",
+    "end": "full provider array; missing/null array is protocol_error",
+    "limits": "MaxItems/MaxPages and shared collection timeout",
+    "continuation": "replay original page plus skip; bound to operation/scope/generation/endpoint/filters/contract revision",
+    "consistency": "best_effort"
+  },
+  "verification": "offline only; source/SDK confirmation is not live API availability",
+  "wait": "unavailable; read only",
+  "recovery": "unavailable; read only"
+}

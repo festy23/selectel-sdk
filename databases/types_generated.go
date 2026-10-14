@@ -34,6 +34,61 @@ func (v DatastoreInstance) Validate() error {
 func (v *DatastoreInstance) normalize() {
 }
 
+type FlavorHost struct {
+	AvailableCount *types.Integer `json:"available_count,omitempty"`
+	Line           *string        `json:"line,omitempty"`
+	Processor      *string        `json:"processor,omitempty"`
+}
+
+func (v FlavorHost) Validate() error {
+	return nil
+}
+func (v *FlavorHost) normalize() {
+}
+
+type ConfigurationParameter struct {
+	CanBeEmpty                *bool             `json:"can_be_empty,omitempty"`
+	Choices                   []types.Primitive `json:"choices,omitzero"`
+	DatastoreTypeID           *string           `json:"datastore_type_id,omitempty"`
+	DefaultValue              types.Primitive   `json:"default_value,omitzero"`
+	Factor                    *types.Integer    `json:"factor,omitempty"`
+	ID                        *string           `json:"id,omitempty"`
+	InvalidValues             []types.Primitive `json:"invalid_values,omitzero"`
+	IsChangeable              *bool             `json:"is_changeable,omitempty"`
+	IsMultipleChoiceAvailable *bool             `json:"is_multiple_choice_available,omitempty"`
+	IsRestartRequired         *bool             `json:"is_restart_required,omitempty"`
+	Max                       types.Primitive   `json:"max,omitzero"`
+	Min                       types.Primitive   `json:"min,omitzero"`
+	Name                      *string           `json:"name,omitempty"`
+	Type                      *string           `json:"type,omitempty"`
+	Unit                      *string           `json:"unit,omitempty"`
+}
+
+func (v ConfigurationParameter) Validate() error {
+	return nil
+}
+func (v *ConfigurationParameter) normalize() {
+}
+func (v *ConfigurationParameter) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ConfigurationParameter
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ConfigurationParameter(value)
+	v.normalize()
+	return nil
+}
+
 type Datastore struct {
 	AllowRestore        *bool                   `json:"allow_restore,omitempty"`
 	BackupRetentionDays *types.Integer          `json:"backup_retention_days,omitempty"`
@@ -126,6 +181,83 @@ func (v *Datastore) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = Datastore(value)
+	v.normalize()
+	return nil
+}
+
+type DatastoreType struct {
+	Engine  *string `json:"engine,omitempty"`
+	ID      *string `json:"id,omitempty"`
+	Version *string `json:"version,omitempty"`
+}
+
+func (v DatastoreType) Validate() error {
+	return nil
+}
+func (v *DatastoreType) normalize() {
+}
+func (v *DatastoreType) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DatastoreType
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DatastoreType(value)
+	v.normalize()
+	return nil
+}
+
+type Flavor struct {
+	DatastoreTypeIds []string       `json:"datastore_type_ids,omitzero"`
+	Description      *string        `json:"description,omitempty"`
+	Disk             *types.Integer `json:"disk,omitempty"`
+	FlSize           *string        `json:"fl_size,omitempty"`
+	Host             *FlavorHost    `json:"host,omitempty"`
+	ID               *string        `json:"id,omitempty"`
+	Name             *string        `json:"name,omitempty"`
+	RAM              *types.Integer `json:"ram,omitempty"`
+	Subtype          *string        `json:"subtype,omitempty"`
+	VCPUs            *types.Integer `json:"vcpus,omitempty"`
+}
+
+func (v Flavor) Validate() error {
+	if v.Host != nil {
+		if err := v.Host.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *Flavor) normalize() {
+	if v.Host != nil {
+		v.Host.normalize()
+	}
+}
+func (v *Flavor) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire Flavor
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = Flavor(value)
 	v.normalize()
 	return nil
 }

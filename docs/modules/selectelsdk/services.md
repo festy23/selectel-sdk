@@ -203,3 +203,58 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### Managed databases v1: справочники
+
+`Databases().V1.DatastoreTypes`, `Flavors`, `ConfigurationParameters` и
+`UserSettingParameters` предоставляют Get по exact ID и
+ListPage/Iterate/Collect. Каждый метод требует immutable account/project/location
+scope и IAM project token; endpoint содержит `/v1` ровно один раз. Справочники
+не добавляют `project_id` query, отсутствующий в source операции.
+
+DatastoreTypes сохраняет engine/version. Flavors сохраняет все поля snapshot,
+включая subtype, host.available_count и точные vcpus/ram/disk; единицы source —
+RAM в MB, disk в GB. Фильтры Flavors: id/name/fl_size. ConfigurationParameters
+поддерживает id/name/datastore_type_id/ram/vcpus/disk и сохраняет ограничения,
+factor, unit, choices, invalid_values и флаги применимости. Nil фильтр опускается;
+указатель на пустую строку передаёт пустую строку.
+
+`types.Primitive` представляет разрешённый схемой number/string/boolean/null:
+String возвращает исходный JSON literal, IsZero различает отсутствие и null.
+Большие числа и десятичные значения не проходят через float64. Тип, unit и
+отсутствующие ограничения не дополняются догадками SDK.
+
+UserSettingParameters — отдельная операция официального dbaas-go,
+отсутствующая в DBaaS JSON snapshot. Она поддерживает id/name/datastore_type_id/
+datastore_id и сохраняет apply_mechanism/is_available_for_customer. Закреплённый
+[source artifact](../../../catalog/sources/dbaas-go-user-settings.json) содержит
+revision, hashes и source evidence. Произвольные SDK `any` в min/max/choices
+представлены ProtectedJSON: точное JSON доступно через явный Reveal, обычная
+сериализация и форматирование защищены. DefaultValue остаётся строкой SDK.
+
+List возвращает один provider array и применяет общие ограничения
+[pagination](pagination.md). Локальный limit возвращает incomplete и cursor
+для повторного чтения того же запроса с skip; изменение фильтров или scope
+отклоняет cursor. Missing/null collection envelope возвращает protocol_error.
+Get отклоняет missing/null object envelope и несовпадающий returned ID;
+все сведения об отсутствии поля сохраняются без выдуманного default.
+Provider 400 отображается в provider_error, 403 — permission_denied,
+404 — not_found; тело ошибки не включается в диагностику. Общая обработка
+401/retries задаётся [execution](execution.md). Live доступность не подтверждена;
+каталог фиксирует offline evidence отдельно от cloud проверки. Эти восемь
+операций не означают полное покрытие DBaaS.
+
+Пример выбора справочника в уже созданном scoped клиенте:
+
+```go
+regional, err := project.Location("", "ru-1")
+if err != nil { return err }
+reference := regional.Databases().V1
+engines, err := reference.DatastoreTypes.Collect(ctx, pagination.Options{MaxItems: 100})
+if err != nil { return err } // incomplete сохраняет полученные Items/NextCursor
+flavorID := "caller-selected-flavor-id"
+flavor, err := reference.Flavors.Get(ctx, flavorID)
+if err != nil { return err }
+_ = engines.Items
+_ = flavor.Data.RAM // types.Integer; MB по source contract
+```
