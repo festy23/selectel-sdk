@@ -230,7 +230,11 @@ DatastoreResponse либо 204 без тела для Delete/DisableLogging. Acc
 single-response replay/skip cursor. Errors/retries/protected diagnostics задаёт
 общий runtime. SDK generic error не устанавливает rejection proof.
 
-Resource/Resume создают observation handle по exact ref. Resume валидирует
+Root Client.Resource/Resume и scoped service Resource/Resume создают observation
+handle по exact ref. Status использует classification succeeded/failed/pending/
+unknown. Malformed schema/call ID/operation ID/revision/outcome receipts дают
+invalid_argument; genuine scope/generation/endpoint mismatch — scope_mismatch.
+Resume валидирует
 operation/contract revision/scope/generation/endpoint/known ref и не ищет
 новый кластер по имени. Create без достоверного ID не восстанавливается через
 Resume. Goal `opensearch.active` означает provider status ACTIVE, не engine

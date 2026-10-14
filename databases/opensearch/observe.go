@@ -13,14 +13,29 @@ func (c *Datastores) Resource(ref types.ResourceRef) (*operations.Handle, error)
 	return c.handle(ref, nil)
 }
 func (c *Datastores) Resume(receipt types.Receipt) (*operations.Handle, error) {
-	if receipt.SchemaVersion != 1 || receipt.CallID == "" || !strings.HasPrefix(receipt.OperationID, "databases.v2.opensearch.") {
+	if receipt.SchemaVersion != 1 || receipt.CallID == "" || receipt.OperationID == "" || receipt.ContractRevision == "" || receipt.Scope.Validate() != nil {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if !strings.HasPrefix(receipt.OperationID, "databases.v2.opensearch.") {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
 	capability, e := c.runtime.Catalog().Describe(receipt.OperationID)
 	if e != nil {
 		return nil, e
 	}
-	if capability.Effect != "mutation" || receipt.Scope != c.scope || receipt.Endpoint == nil || receipt.Endpoint.APIGeneration != "v2" || receipt.Endpoint.Scope != c.scope {
+	if capability.Effect != "mutation" {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if receipt.Scope != c.scope {
+		return nil, types.NewError(types.ScopeMismatch)
+	}
+	if receipt.Endpoint == nil {
+		return nil, types.NewError(types.RecoveryUnavailable)
+	}
+	if receipt.Endpoint.APIGeneration != "v2" || receipt.Endpoint.Scope != c.scope || receipt.Endpoint.Audience != "selectel" {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
 	if receipt.ContractRevision != capability.ContractRevision {
@@ -57,9 +72,9 @@ func (c *Datastores) handle(ref types.ResourceRef, receipt *types.Receipt) (*ope
 		classification := "unknown"
 		switch status {
 		case "ACTIVE":
-			classification = "success"
+			classification = "succeeded"
 		case "ERROR":
-			classification = "failure"
+			classification = "failed"
 		case "CREATING", "UPDATING", "RESIZING", "DELETING", "DELETED", "LOCKING", "LOCKED", "UNLOCKING", "REBUILDING", "MAINTENANCE":
 			classification = "pending"
 		}

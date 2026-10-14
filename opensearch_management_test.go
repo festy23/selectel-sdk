@@ -314,3 +314,79 @@ func TestOpenSearchDeletionWaitObservesExactAbsence(t *testing.T) {
 		t.Fatal("exact absence lost", e)
 	}
 }
+func TestOpenSearchGenericResourceAndResumeDispatch(t *testing.T) {
+	c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.Method == "POST" {
+			return inventoryReply(201, `{"id":"`+osID+`","project_id":"test-project","status":"CREATING"}`), nil
+		}
+		if r.URL.Path != "/v2/datastores/opensearch/"+osID {
+			t.Fatal("wrong generic dispatch", r.URL)
+		}
+		return inventoryReply(200, `{"id":"`+osID+`","status":"ACTIVE"}`), nil
+	}, 0)
+	resource, e := c.Resource(osRef())
+	if e != nil {
+		t.Fatal("generic Resource unavailable", e)
+	}
+	if _, e = resource.Status(context.Background()); e != nil {
+		t.Fatal(e)
+	}
+	created, e := regionalView(t, c, "ru-2").Databases().V2.OpenSearch.Datastores.Create(context.Background(), osSpec(t))
+	if e != nil {
+		t.Fatal(e)
+	}
+	resumed, e := c.Resume(*created.Receipt)
+	if e != nil {
+		t.Fatal("generic Resume unavailable", e)
+	}
+	waited, e := resumed.Wait(context.Background(), "opensearch.active")
+	if e != nil || !waited.Complete {
+		t.Fatal(e)
+	}
+	wrong := osRef()
+	wrong.APIGeneration = "v1"
+	if _, e = c.Resource(wrong); types.ErrorCode(e) != types.CapabilityUnavailable {
+		t.Fatal("v1 feature accidentally dispatched", e)
+	}
+}
+func TestOpenSearchObservationUsesNormativeClassifications(t *testing.T) {
+	status := "ACTIVE"
+	c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+		return inventoryReply(200, `{"id":"`+osID+`","status":"`+status+`"}`), nil
+	}, 0)
+	handle, e := c.Resource(osRef())
+	if e != nil {
+		t.Fatal(e)
+	}
+	for provider, want := range map[string]string{"ACTIVE": "succeeded", "ERROR": "failed", "CREATING": "pending", "UNRECOGNIZED": "unknown"} {
+		status = provider
+		observation, e := handle.Status(context.Background())
+		if e != nil || observation.Classification != want {
+			t.Fatal(provider, observation.Classification, e)
+		}
+	}
+}
+func TestOpenSearchDirectResumeRejectsMalformedReceipts(t *testing.T) {
+	c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+		return inventoryReply(201, `{"id":"`+osID+`","status":"CREATING"}`), nil
+	}, 0)
+	service := regionalView(t, c, "ru-2").Databases().V2.OpenSearch.Datastores
+	created, e := service.Create(context.Background(), osSpec(t))
+	if e != nil {
+		t.Fatal(e)
+	}
+	for name, mutate := range map[string]func(*types.Receipt){"schema": func(r *types.Receipt) { r.SchemaVersion = 9 }, "call-id": func(r *types.Receipt) { r.CallID = "" }, "outcome": func(r *types.Receipt) { r.Outcome = "invented" }, "operation": func(r *types.Receipt) { r.OperationID = "" }, "revision": func(r *types.Receipt) { r.ContractRevision = "" }} {
+		t.Run(name, func(t *testing.T) {
+			receipt := *created.Receipt
+			mutate(&receipt)
+			if _, e := service.Resume(receipt); types.ErrorCode(e) != types.InvalidArgument {
+				t.Fatal("malformed receipt classification", e)
+			}
+		})
+	}
+	foreign := *created.Receipt
+	foreign.Scope.AccountID = "other"
+	if _, e = service.Resume(foreign); types.ErrorCode(e) != types.ScopeMismatch {
+		t.Fatal("genuine scope mismatch lost", e)
+	}
+}

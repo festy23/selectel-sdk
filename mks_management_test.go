@@ -280,6 +280,14 @@ func TestMksCreateWaitResumeAndUnknownStates(t *testing.T) {
 			if e != nil || h.Resource().Kind != "cluster" {
 				t.Fatal("accepted MKS receipt cannot resume", e)
 			}
+			generic, e := c.Resource(h.Resource())
+			if e != nil {
+				t.Fatal("generic MKS Resource dispatch failed", e)
+			}
+			observation, e := generic.Status(context.Background())
+			if e != nil || observation.ProviderState != state {
+				t.Fatal("generic MKS observation failed", e)
+			}
 		})
 	}
 }
