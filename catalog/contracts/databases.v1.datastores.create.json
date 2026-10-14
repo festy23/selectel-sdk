@@ -1,0 +1,150 @@
+{
+  "operation_id": "databases.v1.datastores.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "documented DB v1 URL map; exact pool",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v1",
+    "override_key": [
+      "databases",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/datastores",
+    "source_schema": "sources/managed-databases.json#/paths/~1datastores/post",
+    "source_operation": {
+      "description": "Creates a new cluster.",
+      "operationId": "createDatastore",
+      "parameters": [
+        {
+          "in": "body",
+          "name": "payload",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/DatastorePOST"
+          }
+        }
+      ],
+      "responses": {
+        "201": {
+          "description": "New cluster creation has been started.",
+          "schema": {
+            "$ref": "#/definitions/datastoreWrapper"
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_400"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Bad or expired token. You can reissue the token and try again.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_401"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Access is forbidden. Make sure you have the required rights.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_403"
+              }
+            }
+          }
+        }
+      },
+      "summary": "Create cluster",
+      "tags": [
+        "Clusters"
+      ]
+    },
+    "mapping_source": "databases/datastores.go",
+    "scope": "project/location IAM",
+    "identity": "scope from immutable view; existing resource addressed by exact scoped ResourceRef; no name lookup",
+    "path_fields": {},
+    "optional_fields": "nil omitted; explicit false/zero/empty preserved where permitted by schema; raw datetime string retained",
+    "body": {
+      "datastore": "All DatastoreCreate schema fields; project_id from immutable scope; explicit differing project rejected; protected config and redis_password revealed only at request boundary"
+    },
+    "query": {},
+    "validation": "Required fields and nested required fields; name pattern/length; positive node_count, sizes and retention; disk enums; floating IP ranges including replica <= node_count-1; pooler enum/range; unique nonempty security groups; nonempty restore source; UTF-8 and password length; config JSON object. UUID existence and engine compatibility remain provider checks, without hidden discovery calls."
+  },
+  "response": {
+    "successful_statuses": [
+      201
+    ],
+    "schema_ref": "sources/managed-databases.json#/paths/~1datastores/post/responses",
+    "dto_source": "databases/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All datastore schema properties; optional presence preserved; arbitrary-precision integers; provider datetime strings retained verbatim; provider ref field discarded",
+    "resource_ref": "Create requires nonempty provider ID. Exact Get/Update use request ref when optional response ID is absent; a present response ID must match. List refs only for returned IDs. Scope, endpoint and generation from the call.",
+    "sensitive_fields": [
+      "config",
+      "connection",
+      "redis_password"
+    ]
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for safe reads; mutation rejection only when documented",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible mutation transmission; exact request refs preserved",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy provider IDs already extracted",
+    "foreign_response_id": "scope_mismatch; never replace expected ref",
+    "message": "fixed SDK message; raw provider messages discarded",
+    "mutation_rejected_statuses": [
+      400,
+      401,
+      403
+    ],
+    "foreign_project": "scope_mismatch; no resource ref from a foreign project"
+  },
+  "retry": "bounded safe reads; mutation single attempt, never replay",
+  "pagination": null,
+  "wait": {
+    "goal": "datastore.active",
+    "source": "sources/managed-databases.json#/definitions/datastore/properties/status",
+    "success": [
+      "ACTIVE"
+    ],
+    "pending": [
+      "PENDING_CREATE",
+      "PENDING_UPDATE",
+      "PENDING_DELETE",
+      "RESIZING",
+      "REBUILDING"
+    ],
+    "failure": [
+      "ERROR",
+      "DEGRADED",
+      "DISK_FULL",
+      "DELETED"
+    ],
+    "unknown": "state_unknown, preserve raw provider state; missing status also unknown",
+    "404": "not_found, never successful create",
+    "meaning": "provider ACTIVE only; no SQL/application/configuration readiness claim",
+    "budget": "shared WaitTimeout/context deadline, per-read CallTimeout, PollInterval"
+  },
+  "recovery": {
+    "availability": "exact resource observation only when ref exists; never replay creation or look up by name",
+    "unknown": "resource observation does not prove authorship; outcome remains unknown",
+    "resume": "same account, scope, endpoint, generation, operation and contract revision required; binding uses no I/O"
+  },
+  "timeout": "CallTimeout"
+}

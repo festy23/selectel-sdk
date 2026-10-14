@@ -220,6 +220,9 @@ func generate() error {
 					if len(contract.Pagination) > 0 && string(contract.Pagination) != "null" {
 						row["pagination_contract_ref"] = b.ContractRef + "#/pagination"
 					}
+					if len(b.ScopeRequirements) > 0 {
+						row["scope_requirements"] = b.ScopeRequirements
+					}
 					row["go_method"], row["input_type"], row["output_type"] = b.GoMethod, b.InputType, b.OutputType
 					row["endpoint_recipe_ref"], row["request_binding_ref"], row["response_binding_ref"], row["error_binding_ref"], row["replay_policy_ref"] = b.ContractRef+"#/endpoint", b.ContractRef+"#/request", b.ContractRef+"#/response", b.ContractRef+"#/errors", b.ContractRef+"#/retry"
 					row["parameter_support"] = map[string]any{"covered_schema_ref": pointer, "excluded_variants": []string{}}
@@ -285,19 +288,20 @@ func generate() error {
 }
 
 type binding struct {
-	GoMethod         string   `json:"go_method"`
-	InputType        string   `json:"input_type"`
-	OutputType       string   `json:"output_type"`
-	ContractRef      string   `json:"contract_ref"`
-	Status           string   `json:"status"`
-	Files            []string `json:"files"`
-	EvidenceFiles    []string `json:"evidence_files"`
-	EvidenceRef      string   `json:"evidence_ref"`
-	Verification     string   `json:"verification"`
-	CoveredSchemaRef string   `json:"covered_schema_ref"`
-	ExcludedVariants []string `json:"excluded_variants"`
-	WaitGoals        []string `json:"wait_goals"`
-	Recovery         bool     `json:"recovery"`
+	ScopeRequirements []string `json:"scope_requirements"`
+	GoMethod          string   `json:"go_method"`
+	InputType         string   `json:"input_type"`
+	OutputType        string   `json:"output_type"`
+	ContractRef       string   `json:"contract_ref"`
+	Status            string   `json:"status"`
+	Files             []string `json:"files"`
+	EvidenceFiles     []string `json:"evidence_files"`
+	EvidenceRef       string   `json:"evidence_ref"`
+	Verification      string   `json:"verification"`
+	CoveredSchemaRef  string   `json:"covered_schema_ref"`
+	ExcludedVariants  []string `json:"excluded_variants"`
+	WaitGoals         []string `json:"wait_goals"`
+	Recovery          bool     `json:"recovery"`
 }
 type verification struct {
 	Level                  string `json:"level"`
