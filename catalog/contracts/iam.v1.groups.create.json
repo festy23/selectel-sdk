@@ -1,0 +1,105 @@
+{
+  "operation_id": "iam.v1.groups.create",
+  "effect": "mutation",
+  "endpoint": {
+    "url": "https://api.selectel.ru",
+    "identity": "selectel-iam",
+    "generation": "v1",
+    "override_key": [
+      "iam",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "source_uri": "https://github.com/selectel/iam-go/blob/f104d9516f832b3ce7ee33840f3665aeaf8e8706/iam.go"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/iam/v1/groups",
+    "source_schema": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups/post",
+    "source_operation": {
+      "parameters": [
+        {
+          "description": "Payload",
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/models.CreateGroupRequest"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/models.GroupWithUsers"
+          }
+        },
+        "401": {
+          "description": "Unauthorized"
+        },
+        "409": {
+          "description": "Conflict",
+          "schema": {
+            "$ref": "#/definitions/resterr.IAMErrResponse"
+          }
+        }
+      },
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "summary": "Create group",
+      "tags": [
+        "Groups"
+      ],
+      "x-audit-event-type": "iam.group.create"
+    },
+    "mapping_source": "iam/client.go",
+    "scope": "account IAM",
+    "identity": "exact scoped ResourceRef; no name lookup",
+    "optional_fields": "nil omitted; false, zero and empty string retained",
+    "body": "all documented schema properties; protected password revealed only to request encoder; ref excluded",
+    "query": {}
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups/post/responses",
+    "dto_source": "iam/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all documented properties; optional pointers and arbitrary precision integers; provider ref discarded",
+    "resource_ref": "create requires ID; exact response ID must match requested ID; refs retained on accepted malformed body",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mutation_rejected_statuses": [
+      401,
+      403,
+      409
+    ],
+    "400": "provider_error",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "provider_error",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible transmission; exact refs preserved",
+    "malformed_accepted_response": "protocol_error with accepted Receipt",
+    "foreign_response_id": "scope_mismatch; request ref preserved",
+    "message": "raw provider messages discarded"
+  },
+  "retry": "bounded safe reads; mutations one attempt; never replay",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable"
+  },
+  "recovery": {
+    "availability": "exact reads only; do not infer authorship or replay unknown mutations"
+  },
+  "timeout": "CallTimeout; CollectionTimeout for collections"
+}

@@ -1,0 +1,2854 @@
+{
+  "definitions": {
+    "models.AccessRequest": {
+      "properties": {
+        "group_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.RoleRequest"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.CreateCredentialRequest": {
+      "properties": {
+        "name": {
+          "example": "cred_name",
+          "type": "string"
+        },
+        "project_id": {
+          "example": "f9a2a75fd6a74d658c211ced448dd149",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.CreateCredentialResponse": {
+      "properties": {
+        "access_key": {
+          "example": "a723db66ee8642fc93e18d5d857a1832",
+          "type": "string"
+        },
+        "name": {
+          "example": "cred_name",
+          "type": "string"
+        },
+        "project_id": {
+          "example": "f9a2a75fd6a74d658c211ced448dd149",
+          "type": "string"
+        },
+        "secret_key": {
+          "description": "SecretKey should be returned only once after credentials creation request.",
+          "example": "9538813344c1432ab9819ce485d6ad03",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.CreateGroupRequest": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.Credential": {
+      "properties": {
+        "access_key": {
+          "example": "a723db66ee8642fc93e18d5d857a1832",
+          "type": "string"
+        },
+        "name": {
+          "example": "cred_name",
+          "type": "string"
+        },
+        "project_id": {
+          "example": "f9a2a75fd6a74d658c211ced448dd149",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.CredentialUser": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.CredentialWithUserInfo": {
+      "properties": {
+        "access_key": {
+          "example": "a723db66ee8642fc93e18d5d857a1832",
+          "type": "string"
+        },
+        "name": {
+          "example": "cred_name",
+          "type": "string"
+        },
+        "project_id": {
+          "example": "f9a2a75fd6a74d658c211ced448dd149",
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/models.CredentialUser"
+        }
+      },
+      "type": "object"
+    },
+    "models.FederationInfo": {
+      "properties": {
+        "external_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.Group": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.GroupListResponse": {
+      "properties": {
+        "groups": {
+          "items": {
+            "$ref": "#/definitions/models.GroupWithUserCount"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.GroupWithUserCount": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        },
+        "users_count": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.GroupWithUsers": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        },
+        "service_users": {
+          "items": {
+            "$ref": "#/definitions/models.ServiceUserResponse"
+          },
+          "type": "array"
+        },
+        "users": {
+          "items": {
+            "$ref": "#/definitions/models.UserResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.Groups": {
+      "properties": {
+        "groups": {
+          "items": {
+            "$ref": "#/definitions/models.Group"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ListCredentialsResponse": {
+      "properties": {
+        "credentials": {
+          "items": {
+            "$ref": "#/definitions/models.Credential"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ListProjectsResponse": {
+      "properties": {
+        "projects": {
+          "items": {
+            "$ref": "#/definitions/models.ProjectWithRoles"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ListRolesResponse": {
+      "properties": {
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.RoleResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ModifyGroupRequest": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.ModifyGroupUsersRequest": {
+      "properties": {
+        "keystone_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ModifyServiceUserGroupIdsRequest": {
+      "properties": {
+        "group_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ModifyUserGroupIdsRequest": {
+      "properties": {
+        "group_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ProjectWithRoles": {
+      "properties": {
+        "deleted_at": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "domain_id": {
+          "type": "string"
+        },
+        "domain_name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "is_deleted": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.Role": {
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "project_name": {
+          "type": "string"
+        },
+        "role_name": {
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/definitions/models.Scope"
+        }
+      },
+      "type": "object"
+    },
+    "models.RoleRequest": {
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "role_name": {
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/definitions/models.Scope"
+        }
+      },
+      "type": "object"
+    },
+    "models.RoleResponse": {
+      "properties": {
+        "available_in_onboarding": {
+          "type": "boolean"
+        },
+        "category": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "scopes": {
+          "items": {
+            "$ref": "#/definitions/models.Scope"
+          },
+          "type": "array"
+        },
+        "subject_types": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.RolesRequest": {
+      "properties": {
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.RoleRequest"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.Scope": {
+      "enum": [
+        "account",
+        "project"
+      ],
+      "type": "string",
+      "x-enum-varnames": [
+        "ScopeAccount",
+        "ScopeProject"
+      ]
+    },
+    "models.SearchCredentialsResponse": {
+      "properties": {
+        "credentials": {
+          "items": {
+            "$ref": "#/definitions/models.CredentialWithUserInfo"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ServiceUserCreateRequest": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "group_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.RoleRequest"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ServiceUserResponse": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ServiceUserResponseWithGroups": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "groups": {
+          "items": {
+            "$ref": "#/definitions/models.Group"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ServiceUserUpdateRequest": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.ServiceUserUpdateResponse": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.ServiceUsersResponse": {
+      "properties": {
+        "users": {
+          "items": {
+            "$ref": "#/definitions/models.ServiceUserResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.UserAuthType": {
+      "enum": [
+        "local",
+        "federated"
+      ],
+      "type": "string",
+      "x-enum-varnames": [
+        "LocalAuthType",
+        "FederatedAuthType"
+      ]
+    },
+    "models.UserCreate": {
+      "properties": {
+        "auth_type": {
+          "$ref": "#/definitions/models.UserAuthType"
+        },
+        "description": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "federation": {
+          "$ref": "#/definitions/models.FederationInfo"
+        },
+        "group_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.RoleRequest"
+          },
+          "type": "array"
+        },
+        "subscriptions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "subscriptions_only": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "models.UserProfileResponse": {
+      "properties": {
+        "auth_type": {
+          "$ref": "#/definitions/models.UserAuthType"
+        },
+        "federation": {
+          "$ref": "#/definitions/models.FederationInfo"
+        },
+        "id": {
+          "type": "string"
+        },
+        "keystone_id": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.UserResponse": {
+      "properties": {
+        "auth_type": {
+          "$ref": "#/definitions/models.UserAuthType"
+        },
+        "description": {
+          "type": "string"
+        },
+        "federation": {
+          "$ref": "#/definitions/models.FederationInfo"
+        },
+        "id": {
+          "type": "string"
+        },
+        "keystone_id": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.UserResponseWithGroups": {
+      "properties": {
+        "auth_type": {
+          "$ref": "#/definitions/models.UserAuthType"
+        },
+        "description": {
+          "type": "string"
+        },
+        "federation": {
+          "$ref": "#/definitions/models.FederationInfo"
+        },
+        "groups": {
+          "items": {
+            "$ref": "#/definitions/models.Group"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "keystone_id": {
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/definitions/models.Role"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.UserUpdateRequest": {
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.UsersResponse": {
+      "properties": {
+        "users": {
+          "items": {
+            "$ref": "#/definitions/models.UserResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "resterr.IAMErrResponse": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "Managing control panel users, service users, user groups and S3 keys",
+    "title": "IAM API",
+    "version": "v1.0"
+  },
+  "paths": {
+    "/iam/v1/groups": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.GroupListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get list of groups",
+        "tags": [
+          "Groups"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.CreateGroupRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.GroupWithUsers"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Create group",
+        "tags": [
+          "Groups"
+        ],
+        "x-audit-event-type": "iam.group.create"
+      }
+    },
+    "/iam/v1/groups/{group_id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "group id",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Delete group",
+        "tags": [
+          "Groups"
+        ],
+        "x-audit-event-type": "iam.group.delete"
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "group id",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.GroupWithUsers"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get group",
+        "tags": [
+          "Groups"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "description": "group id",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ModifyGroupRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.GroupWithUsers"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Update group name or description",
+        "tags": [
+          "Groups"
+        ],
+        "x-audit-event-type": "iam.group.update"
+      }
+    },
+    "/iam/v1/groups/{group_id}/roles": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "group id",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.RolesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "UnassignRoles",
+        "tags": [
+          "Groups"
+        ],
+        "x-audit-event-type": "iam.group_role.remove"
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "group id",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.RolesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "AssignRoles",
+        "tags": [
+          "Groups"
+        ],
+        "x-audit-event-type": "iam.group_role.add"
+      }
+    },
+    "/iam/v1/groups/{group_id}/users": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "group id",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ModifyGroupUsersRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Remove users from group",
+        "tags": [
+          "Groups"
+        ],
+        "x-audit-event-type": "iam.group_user.remove"
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "group id",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ModifyGroupUsersRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Add users to group",
+        "tags": [
+          "Groups"
+        ],
+        "x-audit-event-type": "iam.group_user.add"
+      }
+    },
+    "/iam/v1/me": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.UserProfileResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get info about current user.",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/iam/v1/me/groups": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.Groups"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get available groups for the current user.",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/iam/v1/projects": {
+      "get": {
+        "parameters": [
+          {
+            "description": "include deleted",
+            "in": "query",
+            "name": "includeDeleted",
+            "type": "boolean"
+          },
+          {
+            "description": "include roles",
+            "in": "query",
+            "name": "includeRoles",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ListProjectsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get list of projects",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/iam/v1/roles": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ListRolesResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get list of available roles",
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
+    "/iam/v1/roles/{role_id}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "role id",
+            "in": "path",
+            "name": "role_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.RoleResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get role details",
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
+    "/iam/v1/service_users": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ServiceUsersResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get list of service users",
+        "tags": [
+          "Service users"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ServiceUserCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ServiceUserResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Create service user",
+        "tags": [
+          "Service users"
+        ],
+        "x-audit-event-type": "iam.service_user.create"
+      }
+    },
+    "/iam/v1/service_users/{user_id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Delete service user from account and also delete user's keypairs",
+        "tags": [
+          "Service users"
+        ],
+        "x-audit-event-type": "iam.service_user.delete"
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ServiceUserResponseWithGroups"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get service user",
+        "tags": [
+          "Service users"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ServiceUserUpdateRequest"
+            }
+          },
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ServiceUserUpdateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Update info about user",
+        "tags": [
+          "Service users"
+        ],
+        "x-audit-event-type": "iam.service_user.update"
+      }
+    },
+    "/iam/v1/service_users/{user_id}/credentials": {
+      "get": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ListCredentialsResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "List S3 credentials for the specified service user",
+        "tags": [
+          "Credentials"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.CreateCredentialRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/models.CreateCredentialResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Create S3 credential for the specified service user",
+        "tags": [
+          "Credentials"
+        ],
+        "x-audit-event-type": "iam.service_user_credential.create"
+      }
+    },
+    "/iam/v1/service_users/{user_id}/credentials/{access_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "access key",
+            "in": "path",
+            "name": "access_key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Delete S3 credential for the specified service user",
+        "tags": [
+          "Credentials"
+        ],
+        "x-audit-event-type": "iam.service_user_credential.delete"
+      }
+    },
+    "/iam/v1/service_users/{user_id}/groups": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ModifyServiceUserGroupIdsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "RemoveGroups",
+        "tags": [
+          "Service users"
+        ],
+        "x-audit-event-type": "iam.service_user_group.remove"
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ModifyServiceUserGroupIdsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "AddGroups",
+        "tags": [
+          "Service users"
+        ],
+        "x-audit-event-type": "iam.service_user_group.add"
+      }
+    },
+    "/iam/v1/service_users/{user_id}/roles": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.RolesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "UnassignRoles",
+        "tags": [
+          "Service users"
+        ],
+        "x-audit-event-type": "iam.service_user_role.remove"
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.RolesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "AssignRoles",
+        "tags": [
+          "Service users"
+        ],
+        "x-audit-event-type": "iam.service_user_role.add"
+      }
+    },
+    "/iam/v1/service_users/credentials": {
+      "get": {
+        "parameters": [
+          {
+            "description": "project id",
+            "in": "query",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "user id",
+            "in": "query",
+            "name": "user_id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/models.SearchCredentialsResponse"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Search all S3 credentials with filters",
+        "tags": [
+          "Credentials"
+        ]
+      }
+    },
+    "/iam/v1/users": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.UsersResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get list of users",
+        "tags": [
+          "Users"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.UserCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.UserResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Add user to account",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user.create"
+      }
+    },
+    "/iam/v1/users/{user_id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Delete user from account",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user.delete"
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.UserResponseWithGroups"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get info about user",
+        "tags": [
+          "Users"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.UserUpdateRequest"
+            }
+          },
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.UserResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Update info about user",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user.update"
+      }
+    },
+    "/iam/v1/users/{user_id}/access": {
+      "post": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.AccessRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Access",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user.access"
+      }
+    },
+    "/iam/v1/users/{user_id}/credentials": {
+      "get": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ListCredentialsResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "List S3 credentials for the specified subuser",
+        "tags": [
+          "Credentials"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.CreateCredentialRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/models.CreateCredentialResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Create S3 credential for the specified subuser",
+        "tags": [
+          "Credentials"
+        ],
+        "x-audit-event-type": "iam.user_credential.create"
+      }
+    },
+    "/iam/v1/users/{user_id}/credentials/{access_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "access key",
+            "in": "path",
+            "name": "access_key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Delete S3 credential for the specified subuser",
+        "tags": [
+          "Credentials"
+        ],
+        "x-audit-event-type": "iam.user_credential.delete"
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "access key",
+            "in": "path",
+            "name": "access_key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.Credential"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get S3 credential for the specified subuser",
+        "tags": [
+          "Credentials"
+        ]
+      }
+    },
+    "/iam/v1/users/{user_id}/groups": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ModifyUserGroupIdsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "RemoveGroups",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user_group.remove"
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ModifyUserGroupIdsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "AddGroups",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user_group.add"
+      }
+    },
+    "/iam/v1/users/{user_id}/resend_invite": {
+      "post": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "ResendInvite",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user.resend_invite"
+      }
+    },
+    "/iam/v1/users/{user_id}/roles": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.RolesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "UnassignRoles",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user_role.remove"
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "user id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.RolesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "AssignRoles",
+        "tags": [
+          "Users"
+        ],
+        "x-audit-event-type": "iam.user_role.add"
+      }
+    },
+    "/iam/v1/users/credentials": {
+      "get": {
+        "parameters": [
+          {
+            "description": "project id",
+            "in": "query",
+            "name": "project_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "user id",
+            "in": "query",
+            "name": "user_id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/models.SearchCredentialsResponse"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Search all S3 credentials with filters",
+        "tags": [
+          "Credentials"
+        ]
+      }
+    },
+    "/iam/v1/users/me/credentials": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ListCredentialsResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Lists S3 credentials for the current user",
+        "tags": [
+          "Credentials"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.CreateCredentialRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/models.CreateCredentialResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Create S3 credential for the current user",
+        "tags": [
+          "Credentials"
+        ],
+        "x-audit-event-type": "iam.user_credential.create"
+      }
+    },
+    "/iam/v1/users/me/credentials/{access_key}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "access key",
+            "in": "path",
+            "name": "access_key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Delete S3 credential for the current user",
+        "tags": [
+          "Credentials"
+        ],
+        "x-audit-event-type": "iam.user_credential.delete"
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "access key",
+            "in": "path",
+            "name": "access_key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.Credential"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.IAMErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "summary": "Get S3 credential for the current user",
+        "tags": [
+          "Credentials"
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "iam_token_account_scoped": {
+      "description": "IAM token for account.",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0"
+}

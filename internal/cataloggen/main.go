@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"users-and-roles":              {"iam", "v1", "iam_account", true},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,30 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"users-and-roles GET /iam/v1/me/groups":                            "iam.v1.me_groups.list",
+	"users-and-roles GET /iam/v1/me":                                   "iam.v1.me.get",
+	"users-and-roles POST /iam/v1/users/{user_id}/resend_invite":       "iam.v1.users.resend_invite",
+	"users-and-roles DELETE /iam/v1/users/{user_id}/groups":            "iam.v1.users_groups.remove",
+	"users-and-roles PUT /iam/v1/users/{user_id}/groups":               "iam.v1.users_groups.add",
+	"users-and-roles DELETE /iam/v1/users/{user_id}":                   "iam.v1.users.delete",
+	"users-and-roles PATCH /iam/v1/users/{user_id}":                    "iam.v1.users.update",
+	"users-and-roles GET /iam/v1/users/{user_id}":                      "iam.v1.users.get",
+	"users-and-roles POST /iam/v1/users":                               "iam.v1.users.create",
+	"users-and-roles DELETE /iam/v1/service_users/{user_id}/groups":    "iam.v1.service_users_groups.remove",
+	"users-and-roles PUT /iam/v1/service_users/{user_id}/groups":       "iam.v1.service_users_groups.add",
+	"users-and-roles DELETE /iam/v1/service_users/{user_id}":           "iam.v1.service_users.delete",
+	"users-and-roles PATCH /iam/v1/service_users/{user_id}":            "iam.v1.service_users.update",
+	"users-and-roles GET /iam/v1/service_users/{user_id}":              "iam.v1.service_users.get",
+	"users-and-roles POST /iam/v1/service_users":                       "iam.v1.service_users.create",
+	"users-and-roles GET /iam/v1/service_users":                        "iam.v1.service_users.list",
+	"users-and-roles DELETE /iam/v1/groups/{group_id}/users":           "iam.v1.groups_users.remove",
+	"users-and-roles DELETE /iam/v1/groups/{group_id}":                 "iam.v1.groups.delete",
+	"users-and-roles PATCH /iam/v1/groups/{group_id}":                  "iam.v1.groups.update",
+	"users-and-roles GET /iam/v1/groups/{group_id}":                    "iam.v1.groups.get",
+	"users-and-roles GET /iam/v1/groups":                               "iam.v1.groups.list",
+	"users-and-roles PUT /iam/v1/groups/{group_id}/users":              "iam.v1.groups_users.add",
+	"users-and-roles POST /iam/v1/groups":                              "iam.v1.groups.create",
+	"users-and-roles GET /iam/v1/users":                                "iam.v1.users.list",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",

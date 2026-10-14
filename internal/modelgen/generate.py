@@ -11,6 +11,26 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "iam": ("users-and-roles", {
+        "models.ServiceUserResponse": "ServiceUser",
+        "models.ServiceUserResponseWithGroups": "DetailedServiceUser",
+        "models.ServiceUserUpdateResponse": "UpdatedServiceUser",
+        "models.ServiceUserCreateRequest": "ServiceUserCreateRequest",
+        "models.ServiceUserUpdateRequest": "ServiceUserUpdateRequest",
+        "models.ModifyServiceUserGroupIdsRequest": "ModifyServiceUserGroupIDsRequest",
+        "models.UserCreate": "UserCreateRequest",
+        "models.UserUpdateRequest": "UserUpdateRequest",
+        "models.UserResponseWithGroups": "DetailedUser",
+        "models.ModifyUserGroupIdsRequest": "ModifyUserGroupIDsRequest",
+        "models.UserProfileResponse": "CurrentUser",
+        "models.Group": "Group",
+        "models.UserResponse": "User",
+        "models.GroupWithUsers": "DetailedGroup",
+        "models.GroupWithUserCount": "ListedGroup",
+        "models.ModifyGroupRequest": "ModifyGroupRequest",
+        "models.CreateGroupRequest": "CreateGroupRequest",
+        "models.ModifyGroupUsersRequest": "ModifyGroupUsersRequest",
+    }, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -35,7 +55,7 @@ CASES = {
     "registry_v1": ("craas", "registry.Registry", "V1Registry"),
     "audit": ("audit-logs", "LogResponse", "Event"),
 }
-ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "cni": "CNI", "cpu": "CPU", "vcpus": "VCPUs", "ram": "RAM", "api": "API", "x509": "X509"}
+ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "ids": "IDs", "cni": "CNI", "cpu": "CPU", "vcpus": "VCPUs", "ram": "RAM", "api": "API", "x509": "X509"}
 
 
 def name(text):
@@ -49,6 +69,8 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
+    if package == "iam":
+        resource_roots = {"models.UserResponse", "models.GroupWithUsers", "models.GroupWithUserCount", "models.ServiceUserResponse", "models.ServiceUserResponseWithGroups", "models.ServiceUserUpdateResponse", "models.UserResponseWithGroups", "models.UserProfileResponse", "models.Group"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -70,7 +92,7 @@ for case, (family, initial, top_name) in CASES.items():
         if "$ref" in schema:
             reference = schema["$ref"].split("/")[-1]
             if reference not in pending:
-                pending[reference] = name(reference)
+                pending[reference] = name(reference.split(".")[-1] if package == "iam" else reference)
             referenced = resolve(definitions[reference])
             if referenced.get("properties"):
                 return pending[reference], False
@@ -78,6 +100,8 @@ for case, (family, initial, top_name) in CASES.items():
         schema = resolve(schema)
         kind = schema.get("type")
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
+            return "types.ProtectedValue", False
+        if package == "iam" and field == "password":
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False
@@ -140,6 +164,9 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
+            if package == "iam" and nested.get("enum"):
+                invalid = " && ".join(f"*v.{field_name} != {json.dumps(item)}" for item in nested["enum"])
+                code += f"\tif v.{field_name} != nil && ({invalid}) {{ return types.NewError(types.ProtocolError) }}\n"
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
             elif nested.get("type") == "array":
