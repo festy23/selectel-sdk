@@ -1,0 +1,21 @@
+{
+  "source_uri": "https://github.com/selectel/go-selvpcclient/blob/79b0d0ff1d46ebfe7c50056f8c829e0d32349605/selvpcclient/quotamanager/quotas/schemas.go",
+  "source_revision": "79b0d0ff1d46ebfe7c50056f8c829e0d32349605",
+  "purpose": "Preserve flat per-resource errors and returned used counters from the pinned official SDK alongside public API common.Error nesting. Request quota sets retain only zone/value. This adds no remote operations.",
+  "properties": {
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/types.ResourceError"
+      }
+    }
+  },
+  "set_response_quotas": {
+    "$ref": "#/definitions/types.QuotasGet"
+  },
+  "limit_properties": {
+    "used": {
+      "type": "integer"
+    }
+  }
+}

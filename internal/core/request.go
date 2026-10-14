@@ -36,9 +36,13 @@ type Operation struct {
 	RequireProject, RequireLocation        bool
 	Success, Rejected                      []int
 	NoContentSuccess                       []int
-	ErrorCodes                             map[int]types.Code
-	Headers                                http.Header
-	SigV4Service, ErrorProtocol            string
+	// PartialSuccess is an explicit binding contract, never a caller option.
+	PartialSuccess []int
+	// ProjectAccountAuth allows source-declared account auth for a project target.
+	ProjectAccountAuth          bool
+	ErrorCodes                  map[int]types.Code
+	Headers                     http.Header
+	SigV4Service, ErrorProtocol string
 }
 type Request struct {
 	Scope              types.Scope
@@ -175,7 +179,11 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		}
 		mode = in.Options.AuthMode
 	}
-	authReq := types.AuthRequest{Scope: in.Scope, Mode: mode, Service: op.Service, Audience: credentials.SelectelAudience}
+	authScope := in.Scope
+	if op.ProjectAccountAuth && mode == types.IAMAccount {
+		authScope = types.Scope{AccountID: in.Scope.AccountID}
+	}
+	authReq := types.AuthRequest{Scope: authScope, Mode: mode, Service: op.Service, Audience: credentials.SelectelAudience}
 	entry, authErr := r.authorize(call, authReq)
 	if authErr != nil {
 		return out, authErr
@@ -267,6 +275,10 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 				return out, types.NewError(types.ProtocolError)
 			}
 			decoded, decodeErr := decode(raw, endpoint)
+			if decodeErr == nil && containsStatus(op.PartialSuccess, status) {
+				decoded.PartialRead = true
+				decodeErr = types.NewError(types.Incomplete)
+			}
 			if out.Receipt != nil {
 				for _, ref := range decoded.Refs {
 					if ref.Validate() != nil || ref.Scope != in.Scope || ref.Service != op.Service || ref.APIGeneration != op.APIGeneration || ref.EndpointID != endpoint.ID || ref.EndpointURL != endpoint.URL {
@@ -292,7 +304,7 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 					out.Receipt.Recovery = "resource"
 				}
 				out.Data = decoded.Data
-			} else if decodeErr == nil || (decoded.PartialRead && types.ErrorCode(decodeErr) == types.ResponseLimit) {
+			} else if decodeErr == nil || (decoded.PartialRead && (types.ErrorCode(decodeErr) == types.ResponseLimit || (len(op.PartialSuccess) > 0 && types.ErrorCode(decodeErr) == types.Incomplete))) {
 				out.Data = decoded.Data
 			}
 			if decodeErr != nil {
@@ -325,7 +337,7 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			out.Receipt.Outcome = types.Rejected
 		}
 		if status == http.StatusUnauthorized {
-			r.invalidate(entry, in.Scope)
+			r.invalidate(entry, authScope)
 			if op.Effect == "read" && !refreshed && entry.material.Scheme == credentials.IAMPassword && attempt < maxAttempts {
 				refreshed = true
 				entry, authErr = r.authorize(call, authReq)

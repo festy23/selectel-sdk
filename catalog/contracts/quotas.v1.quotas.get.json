@@ -1,0 +1,133 @@
+{
+  "operation_id": "quotas.v1.quotas.get",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v1",
+    "service_type": "quota-manager in official SDK; published regional addresses used by this binding",
+    "override_key": [
+      "quotas",
+      "v1",
+      "exact account/project/region/pool scope"
+    ],
+    "redirects": "reject",
+    "mapping": "only published pool addresses, base /quota-manager and source /v1 path; unsupported aliases require explicit endpoint override"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v1/projects/{projectID}/quotas",
+    "source_schema": "sources/quota-management.json#/paths/~1v1~1projects~1{projectID}~1quotas/get",
+    "source_operation": {
+      "operationId": "getProjectQuotasV1",
+      "parameters": [
+        {
+          "description": "project ID",
+          "in": "path",
+          "name": "projectID",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "collectionFormat": "multi",
+          "description": "filter by resources",
+          "in": "query",
+          "items": {
+            "type": "string"
+          },
+          "name": "resource",
+          "type": "array"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/quotas.GetResponse"
+          }
+        },
+        "207": {
+          "description": "Multi-Status",
+          "schema": {
+            "$ref": "#/definitions/quotas.GetResponse"
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/common.ErrorResponse"
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "schema": {
+            "$ref": "#/definitions/common.ErrorResponse"
+          }
+        }
+      },
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        },
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "summary": "Get project quotas",
+      "tags": [
+        "Quotas"
+      ]
+    },
+    "mapping_source": "quotas/client.go",
+    "scope": "immutable project and location; projectID escaped as one path segment; default IAM project token",
+    "auth_alternative": "explicit IAMAccount permitted by operation security; account token scope separate from unchanged target project/location; no 403 fallback",
+    "body": "PATCH exact quotas map of resource -> zone/value; no SDK ref; nonempty resource/map/value list; integer values retain arbitrary precision and negative values with no guessed sentinel",
+    "query": "GET resource filters repeated using collectionFormat multi; empty filter invalid; omitted means provider selection; PATCH no resource query"
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      207
+    ],
+    "schema_ref": "sources/quota-management.json#/paths/~1v1~1projects~1{projectID}~1quotas/get/responses",
+    "dto_source": "quotas/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all quota/limit resource keys and per-zone values; used/value/code arbitrary precision Integer, optional pointers preserve absence; no guessed numerical ranges",
+    "partial_success": "207 always Incomplete with retained Data; nested common.Error or SDK flat errors also Incomplete; accepted PATCH receipt acknowledges provider acceptance, not every resource applied",
+    "sdk_overlay": "catalog/contracts/quotas-sdk-response-overlay.json",
+    "sensitive_fields": [
+      "error.message",
+      "error.errors[].message",
+      "errors[].message"
+    ],
+    "resource_ref": "PATCH retains exact project_quotas target in immutable scope/generation/endpoint before transmission; no new resource adoption",
+    "sdk_fields": "flat errors for quota Get/Update, optional used counters on Update/Limits from pinned official SDK response; request remains source zone/value only"
+  },
+  "errors": {
+    "mutation_rejected_statuses": [],
+    "400": "provider_error; no published quota-exceeded code enum",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "429": "rate_limited; PATCH outcome unknown unless provider explicitly proves rejection",
+    "207": "only quota GET/PATCH explicitly allow; mixed successful/error resources retained; codes/resource/zone exact and message protected",
+    "5xx_mutation": "unknown_outcome; single attempt",
+    "transport_loss": "unknown_outcome after possible transmission; exact target retained; no replay",
+    "malformed_accepted_response": "protocol_error with accepted Receipt",
+    "quota_exceeded": "No documented distinct provider code in pinned source; preserve numeric codes and protected messages without text classification",
+    "message": "HTTP error body discarded; successful partial response message fields ProtectedValue"
+  },
+  "retry": "bounded safe reads; mutations single attempt, never replay",
+  "pagination": null,
+  "bounds": "single quota map response, bounded by MaxJSONBytes and CallTimeout; no remote page/cursor contract",
+  "wait": {
+    "goals": [],
+    "availability": "unavailable"
+  },
+  "recovery": {
+    "availability": "root Handle/Resume unavailable; explicit exact Get observes current state without proving unknown mutation authorship; no replay"
+  },
+  "timeout": "CallTimeout"
+}
