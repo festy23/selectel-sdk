@@ -1,0 +1,61 @@
+{
+  "operation_id": "swift.v1.objects.delete",
+  "source": "sources/swift-current.json#/paths/~1v1~1{project_id}~1{bucket_name}~1{object_name}/delete",
+  "endpoint": {
+    "source": "https://docs.selectel.ru/api/urls/",
+    "recipe": "documented Swift host, /v1 normalized once from API path examples",
+    "scope": "exact account/project/region/pool",
+    "generation": "v1",
+    "redirects": "never follow"
+  },
+  "request": {
+    "method": "DELETE",
+    "wire_path": "/v1/{project_id}/{bucket_name}/{object_name}",
+    "auth": "project IAM X-Auth-Token; no S3/legacy substitution",
+    "mapping": "Generated typed DTO fields to explicit source header/body roles; protected values reveal only when forming HTTP request. SDK-owned auth/scope cannot collide; exact source generation/kind/scope/endpoint/parent checked before credential/HTTP I/O. Binding errors pass core finalizer.",
+    "go_method": "swift.Client.DeleteObject",
+    "input": "types.ResourceRef, types.CallOptions",
+    "metadata": "Set/Remove explicit headers; duplicate case-folded names or set/remove collisions rejected; protected header values no CR/LF/NUL. Explicit zero and false preserved.",
+    "query": {},
+    "variants": {
+      "DeleteObject": "ordinary DELETE",
+      "DeleteSegments": "explicit multipart-manifest=delete, Accept application/json -> types.Result[swift.DeleteResult]; only caller manifest locator is submitted; no segment refs inferred"
+    }
+  },
+  "response": {
+    "statuses": [
+      "204",
+      "200"
+    ],
+    "mapping": "DeleteObject accepts204 object acknowledgement. DeleteSegments dispatches by status:204 requires empty control body and returns Summary=nil acknowledgement;200 requires typed JSON BulkResult Number Deleted/Number Not Found/Response Status/Response Body/Errors, exposed as DeleteResult.Summary with protected diagnostics. Embedded non2xx/errors =>OperationFailed but Accepted receipt; malformed200body =>ProtocolError with exact manifest ref retained. Never interpret returned segment diagnostic paths as resource identity/ownership or absence proof.",
+    "acknowledgement": "Success is API acknowledgement, not readiness or proof of authorship of an unknown write.",
+    "status_source": "Current Selectel page documents204. Pinned compatible upstream slo.py handle_multipart_delete returns HTTPOk with bulk_deleter.handle_delete_iter; pinned bulk.py defines JSON summary. Both are acknowledged wire variants, not live deployment claims."
+  },
+  "errors": {
+    "source": "internal/core/request.go sanitized per-status mappings",
+    "rejected": [
+      400,
+      401,
+      403,
+      404,
+      409,
+      412,
+      413,
+      422,
+      429
+    ],
+    "raw_headers_bodies": "never logged or retained in errors",
+    "bounds": "CallTimeout/MaxJSONBytes for structured JSON and header metadata; binary transfers use explicit TransferTimeout and caller byte bound"
+  },
+  "replay": "Safe reads bounded; mutations once with retained not_sent/rejected/accepted/unknown Receipt, exact refs, no name discovery/adoption or replay",
+  "recovery": "No automatic Resume or readiness waiter; existing refs identify exact caller-addressed locators, not ownership proof",
+  "evidence": "catalog/evidence/swift-current-sources.json",
+  "limitations": [
+    "Confirmed current Selectel methods/selectors and compatible pinned representations; no whole upstream extension/deployment availability claim, no live verification."
+  ],
+  "contract_document": "docs/modules/selectelsdk/swift.md",
+  "continued_variants_evidence": [
+    "catalog/evidence/swift-current-sources.json",
+    "Pinned OpenStack swift ad136f5b5656f30bdf0716b9ac7966c475b23780 listing_formats.py, slo.py and bulk.py"
+  ]
+}

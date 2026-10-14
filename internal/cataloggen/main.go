@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"swift-current":                {"swift", "v1", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -136,7 +137,7 @@ func generate() error {
 			}
 			sort.Strings(methodNames)
 			for _, method := range methodNames {
-				if method != "get" && method != "post" && method != "put" && method != "patch" && method != "delete" && method != "head" && method != "options" {
+				if method != "get" && method != "post" && method != "put" && method != "patch" && method != "delete" && method != "head" && method != "options" && method != "copy" {
 					continue
 				}
 				generation := f.Generation
@@ -145,7 +146,7 @@ func generate() error {
 					generation = parts[0]
 				}
 				resource := slug(path)
-				action := map[string]string{"get": "get", "post": "create", "put": "replace", "patch": "update", "delete": "delete", "head": "head", "options": "options"}[method]
+				action := map[string]string{"get": "get", "post": "create", "put": "replace", "patch": "update", "delete": "delete", "head": "head", "options": "options", "copy": "copy"}[method]
 				if method == "get" && !strings.HasSuffix(strings.TrimRight(path, "/"), "}") {
 					action = "list"
 				}
@@ -176,11 +177,28 @@ func generate() error {
 					effect = "read"
 				}
 				var sourceOperation struct {
-					Effect  string `json:"x-effect"`
-					Locator string `json:"x-operation-locator"`
+					Effect      string `json:"x-effect"`
+					OperationID string `json:"x-operation-id"`
+					Locator     string `json:"x-operation-locator"`
 				}
 				if err := json.Unmarshal(methods[method], &sourceOperation); err != nil {
 					return err
+				}
+				if sourceOperation.OperationID != "" {
+					delete(seen, id)
+					id = sourceOperation.OperationID
+					if seen[id] {
+						return fmt.Errorf("duplicate source operation %s", id)
+					}
+					seen[id] = true
+					parts := strings.Split(id, ".")
+					if len(parts) != 4 || parts[0] != f.Service || parts[1] != generation || parts[2] == "" || parts[3] == "" {
+						return fmt.Errorf("invalid source operation identity %q", id)
+					}
+					resource, action = parts[2], parts[3]
+				}
+				if name == "swift-current" {
+					scope = append(scope, "region", "pool")
 				}
 				if sourceOperation.Effect != "" {
 					effect = sourceOperation.Effect

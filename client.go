@@ -20,6 +20,7 @@ import (
 	"github.com/festy23/selectel-sdk/projects"
 	"github.com/festy23/selectel-sdk/registry"
 	"github.com/festy23/selectel-sdk/secrets"
+	"github.com/festy23/selectel-sdk/swift"
 	"github.com/festy23/selectel-sdk/types"
 )
 
@@ -176,3 +177,5 @@ func New(config Config) (*Client, error) {
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
 }
+
+func (r RegionalClient) Swift() *swift.Client { return swift.Bind(r.client.runtime, r.client.scope) }
