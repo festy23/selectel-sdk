@@ -21,6 +21,8 @@ type family struct {
 }
 
 var families = map[string]family{
+	"scheduled-backups-sdk":        {"backups", "v2", "iam_project", true},
+	"scheduled-backups":            {"backups", "v2", "iam_project", true},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +36,13 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"scheduled-backups-sdk GET /plans/":                                "backups.v2.sdk_plans.list",
+	"scheduled-backups-sdk POST /plans/":                               "backups.v2.sdk_plans.create",
+	"scheduled-backups-sdk GET /plans/{plan_id}":                       "backups.v2.sdk_plans.get",
+	"scheduled-backups-sdk PATCH /plans/{plan_id}":                     "backups.v2.sdk_plans.update",
+	"scheduled-backups-sdk DELETE /plans/{plan_id}":                    "backups.v2.sdk_plans.delete",
+	"scheduled-backups-sdk GET /checkpoints/":                          "backups.v2.sdk_checkpoints.list",
+	"scheduled-backups DELETE /{project_id}/checkpoints/":              "backups.v2.checkpoint_chains.delete",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
@@ -168,7 +177,7 @@ func generate() error {
 				if f.Mode == "iam_project" {
 					scope = append(scope, "project")
 				}
-				if f.Mode == "s3_sigv4" || f.Mode == "basic" {
+				if f.Mode == "s3_sigv4" || f.Mode == "basic" || f.Service == "backups" {
 					scope = append(scope, "project", "region", "pool")
 				}
 				effect := "mutation"

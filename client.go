@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/festy23/selectel-sdk/audit"
+	"github.com/festy23/selectel-sdk/backups"
 	"github.com/festy23/selectel-sdk/billing"
 	"github.com/festy23/selectel-sdk/catalog"
 	"github.com/festy23/selectel-sdk/compute"
@@ -175,4 +176,8 @@ func New(config Config) (*Client, error) {
 }
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
+}
+
+func (r RegionalClient) Backups() *backups.Client {
+	return backups.Bind(r.client.runtime, r.client.scope)
 }

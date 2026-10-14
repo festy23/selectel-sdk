@@ -1,0 +1,32 @@
+{
+  "checked_at": "2026-10-14",
+  "sources": {
+    "current_api_page": "https://docs.selectel.ru/api/scheduled-backups/",
+    "endpoint_table": "https://docs.selectel.ru/api/urls/",
+    "native_sdk": "https://github.com/selectel/cloudbackup-go/tree/76292b3d4552165d97106dc6aa197c8cd7425233/pkg/v2"
+  },
+  "source_sha256": {
+    "scheduled-backups.json": "c810bbcd58bc7b634575fb38b2483283ad01e50a5fb039c202e0c51ee6fc5e6c",
+    "scheduled-backups-sdk.json": "7c2d3f6394e3f663d198af31ce70575f27b1df8274ccadf0ee99a419730ff093"
+  },
+  "endpoint_pools": {
+    "selcloud": [
+      "ru-1",
+      "ru-2",
+      "ru-3",
+      "ru-6",
+      "ru-7",
+      "ru-8",
+      "ru-9",
+      "gis-1"
+    ],
+    "servercore": [
+      "uz-1",
+      "uz-2",
+      "kz-1",
+      "ke-1"
+    ]
+  },
+  "source_discrepancy": "Current API: project-prefixed routes and max_backups. Native SDK: unprefixed routes and full_backups_amount; explicit SDKV2 namespace and distinct refs, no fallback. Native SDK has six operations and no restore method; current API directly publishes restore POST.",
+  "verification": "Source inspection and offline HTTP seam tests only; no live execution or withdrawal inference."
+}

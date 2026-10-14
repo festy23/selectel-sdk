@@ -77,6 +77,7 @@ flowchart TD
 
 | Документ | Содержание |
 |---|---|
+| [backups.md](backups.md) | Cloud backup V2 и явный native SDK variant |
 | [interface.md](interface.md) | Пакеты, общие типы, сервисные методы и совместимость |
 | [access.md](access.md) | Credentials, scope, авторизация, endpoints |
 | [execution.md](execution.md) | Запросы, повторные попытки, receipts, ошибки, чувствительные значения |

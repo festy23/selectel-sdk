@@ -11,6 +11,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+ "backups_sdk": ("scheduled-backups-sdk", {"SDKPlan":"SDKPlan","SDKCheckpoint":"SDKCheckpoint","SDKPlansPage":"SDKPlansPage","SDKCheckpointsPage":"SDKCheckpointsPage","SDKPlanUpdateSpec":"SDKPlanUpdateSpec"}, None),
+    "backups": ("scheduled-backups", {"Plan":"Plan", "Checkpoint":"Checkpoint", "CheckpointItem":"CheckpointItem", "Restore":"Restore", "CreatePlanRequest":"PlanCreateSpec", "UpdatePlanRequest-Input":"PlanUpdateSpec", "UpdatePlanRequest-Output":"PlanUpdateResponse", "GetPlansResponse":"PlansPage", "GetCheckpointsResponse":"CheckpointsPage", "DeleteCheckpointResponse":"DeletedCheckpoint", "DeleteCheckpointsChainResponse":"DeletedChain"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -44,11 +46,16 @@ def name(text):
 
 
 for case, (family, initial, top_name) in CASES.items():
-    package = "registry" if case == "registry_v1" else case
+    package = "backups" if case == "backups_sdk" else "registry" if case == "registry_v1" else case
     doc = json.loads((ROOT / "catalog/sources" / (family + ".json")).read_text())
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
+    if package == "backups":
+        for schema in definitions.values():
+            if "enum" in schema and all(item is None or isinstance(item,str) for item in schema["enum"]):
+                schema["type"]="string"
+                if None in schema["enum"]: schema["nullable"]=True
     roots = initial if isinstance(initial, dict) else {initial: top_name}
-    resource_roots = set(roots)
+    resource_roots = {"Plan","Checkpoint","CheckpointItem","Restore","UpdatePlanRequest-Output","DeleteCheckpointResponse","SDKPlan","SDKCheckpoint","SDKCheckpointItem"} if package == "backups" else set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -77,6 +84,8 @@ for case, (family, initial, top_name) in CASES.items():
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
         kind = schema.get("type")
+        if package == "backups" and field in {"name", "description"} and kind == "string":
+            return "types.ProtectedValue", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
@@ -120,9 +129,15 @@ for case, (family, initial, top_name) in CASES.items():
         properties = schema["properties"]
         fields = []
         required = []
+        nullable = []
         for wire, value in sorted(properties.items()):
             field_name = name(wire)
             go_type, collection = field_type(value, type_name + field_name, wire)
+            nullable_schema = definitions.get(value.get("$ref", "").split("/")[-1], value)
+            if package == "backups" and (value.get("nullable") or nullable_schema.get("nullable")):
+                go_type = "Optional["+go_type+"]"
+                nullable.append((field_name,wire,go_type))
+                collection=False
             tag = "omitzero" if collection else "omitempty"
             if not collection:
                 go_type = "*" + go_type
@@ -140,6 +155,12 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
+            if package == "backups" and field_name in {entry[0] for entry in nullable}:
+                if nested.get("type") == "array":
+                    item = definitions.get(nested["items"].get("$ref", "").split("/")[-1], nested["items"])
+                    if resolve(item).get("properties"):
+                        code += f"\tif v.{field_name} != nil {{ if items,present:=v.{field_name}.Value();present {{ for _,item:=range items {{ if err:=item.Validate();err!=nil {{return err}} }} }} }}\n"
+                continue
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
             elif nested.get("type") == "array":
@@ -154,6 +175,8 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             reference_name = value.get("$ref", "").split("/")[-1]
             nested = resolve(definitions.get(reference_name, value))
+            if package == "backups" and nested.get("nullable"):
+                continue
             if nested.get("format") == "date-time":
                 code += f"\tif v.{field_name} != nil {{ instant := v.{field_name}.UTC(); v.{field_name} = &instant }}\n"
             elif nested.get("properties"):
@@ -164,13 +187,17 @@ for case, (family, initial, top_name) in CASES.items():
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or package == "backups":
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'
-            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
+            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n"
+            for field_name,wire,go_type in nullable:
+                code += f'\tif raw,present:=fields["{wire}"];present {{ n:=new({go_type});if json.Unmarshal(raw,n)!=nil {{return types.NewError(types.ProtocolError)}};value.{field_name}=n }}\n'
+            code += f"\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
+
         emitted[reference] = code
-    filename = "v1_types_generated.go" if case == "registry_v1" else "types_generated.go"
+    filename = "sdk_types_generated.go" if case == "backups_sdk" else "v1_types_generated.go" if case == "registry_v1" else "types_generated.go"
     target = ROOT / package / filename
     target.parent.mkdir(exist_ok=True)
     header = f"// Code generated by internal/modelgen/generate.py; DO NOT EDIT.\n// Source: catalog/sources/{family}.json.\npackage {package}\n\n"
