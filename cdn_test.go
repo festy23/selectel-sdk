@@ -9,7 +9,9 @@ import (
 	"strings"
 	"testing"
 
+	sdk "github.com/festy23/selectel-sdk"
 	"github.com/festy23/selectel-sdk/cdn"
+	"github.com/festy23/selectel-sdk/credentials"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
 )
@@ -391,5 +393,78 @@ func TestCDNMalformedAcceptedUpdateRetainsCallerReference(t *testing.T) {
 	out, e := svc.PatchResource(context.Background(), ref, cdn.ResourceSpec{Name: &name}, types.CallOptions{})
 	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != ref.ID {
 		t.Fatal("accepted update lost caller identity", e)
+	}
+}
+
+func TestCDNReceiptBoundCertificateWaitGoalsFollowOriginatingOperation(t *testing.T) {
+	for _, operation := range []string{"create", "update", "delete"} {
+		t.Run(operation, func(t *testing.T) {
+			c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.Method == "GET" {
+					if operation == "delete" {
+						return inventoryReply(404, `{}`), nil
+					}
+					return inventoryReply(200, `{"status":0,"data":[{"seq":1}]}`), nil
+				}
+				return inventoryReply(200, `{"status":0,"data":{"seq":1}}`), nil
+			}, 0)
+			svc := projectView(t, c).CDN()
+			seq, _ := types.ParseInteger("1")
+			ref, _ := svc.Certificate(seq)
+			var receipt *types.Receipt
+			var e error
+			value := types.Protect([]byte("synthetic-private-value"))
+			switch operation {
+			case "create":
+				out, x := svc.CreateCertificate(context.Background(), cdn.CreateCertificateRequest{Certificate: &value, PrivateKey: &value, Comment: &value}, types.CallOptions{})
+				receipt, e = out.Receipt, x
+			case "update":
+				out, x := svc.UpdateCertificate(context.Background(), ref, cdn.UpdateCertificateRequest{Comment: &value}, types.CallOptions{})
+				receipt, e = out.Receipt, x
+			case "delete":
+				out, x := svc.DeleteCertificate(context.Background(), ref, types.CallOptions{})
+				receipt, e = out.Receipt, x
+			}
+			if e != nil || receipt == nil {
+				t.Fatal("mutation", e)
+			}
+			credentialsCalls, httpCalls := 0, 0
+			isolated, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(ctx context.Context, r types.AuthRequest) (credentials.Material, error) {
+				credentialsCalls++
+				return source().Lookup(ctx, r)
+			}), Transport: transportFunc(func(*http.Request) (*http.Response, error) { httpCalls++; return nil, context.Canceled })})
+			if e != nil {
+				t.Fatal(e)
+			}
+			h, e := isolated.Resume(*receipt)
+			if e != nil {
+				t.Fatal(e)
+			}
+			invalid, valid := "certificate_absent", "certificate_present"
+			if operation == "delete" {
+				invalid, valid = valid, invalid
+			}
+			_, e = h.Wait(context.Background(), invalid)
+			if types.ErrorCode(e) != types.CapabilityUnavailable || credentialsCalls != 0 || httpCalls != 0 {
+				t.Fatal("unsupported receipt goal performed I/O", e, credentialsCalls, httpCalls)
+			}
+			h, e = c.Resume(*receipt)
+			if e != nil {
+				t.Fatal(e)
+			}
+			done, e := h.Wait(context.Background(), valid)
+			if e != nil || !done.Complete {
+				t.Fatal("valid originating goal", e)
+			}
+			// Receiptless observation still supports both presence and absence.
+			h, e = c.Resource(ref)
+			if e != nil {
+				t.Fatal(e)
+			}
+			done, e = h.Wait(context.Background(), valid)
+			if e != nil || !done.Complete {
+				t.Fatal("receiptless observation", e)
+			}
+		})
 	}
 }

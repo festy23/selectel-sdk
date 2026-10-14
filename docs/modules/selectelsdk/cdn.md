@@ -65,7 +65,10 @@ state, not causality for a particular configuration task, DNS propagation or
 application health. Let's Encrypt processing does not assert TLS readiness.
 Wildcard orders return no pollable identity and do not acquire an inferred one.
 Receipt-bound resume checks the original operation, contract revision and exact
-reference before observation.
+reference before observation. It exposes only that operation’s compiled wait
+goals: certificate create/update allow presence, delete allows absence. Receiptless
+certificate observation supports both. Cache, resource configuration and order
+handles apply the same originating-operation filter.
 
 ## Evidence
 

@@ -121,7 +121,7 @@ func (c *Client) Handle(ref types.ResourceRef, receipt *types.Receipt) (*operati
 	default:
 		return nil, types.NewError(types.CapabilityUnavailable)
 	}
-	return operations.Bind(c.runtime, ref, receipt, read, goals)
+	return c.bindHandle(ref, receipt, read, goals)
 }
 func (c *Client) LetsEncryptHandle(ref types.ResourceRef) (*operations.Handle, error) {
 	if e := c.refError(ref, "resource"); e != nil {
@@ -131,7 +131,7 @@ func (c *Client) LetsEncryptHandle(ref types.ResourceRef) (*operations.Handle, e
 }
 func (c *Client) orderHandle(ref types.ResourceRef, receipt *types.Receipt) (*operations.Handle, error) {
 	goal := operations.Goal{Success: map[string]bool{"processed": true}, Failure: map[string]bool{"failed": true}, Pending: map[string]bool{"accepted": true}}
-	return operations.Bind(c.runtime, ref, receipt, func(ctx context.Context) (operations.Observation, error) {
+	return c.bindHandle(ref, receipt, func(ctx context.Context) (operations.Observation, error) {
 		out, e := c.GetLetsEncryptStatus(ctx, ref, types.CallOptions{})
 		state := ""
 		if out.Data.Data != nil && out.Data.Data.TaskStatus != nil {
@@ -139,4 +139,23 @@ func (c *Client) orderHandle(ref types.ResourceRef, receipt *types.Receipt) (*op
 		}
 		return observe(ref, state, out.Metadata, goal), e
 	}, map[string]operations.Goal{"certificate_order_processed": goal})
+}
+
+// bindHandle restricts receipt-bound observation to the originating operation's
+// compiled goals. Receiptless resource observation retains its supported goals.
+func (c *Client) bindHandle(ref types.ResourceRef, receipt *types.Receipt, read operations.Read, goals map[string]operations.Goal) (*operations.Handle, error) {
+	if receipt != nil {
+		capability, err := c.runtime.Catalog().Describe(receipt.OperationID)
+		if err != nil {
+			return nil, err
+		}
+		allowed := make(map[string]operations.Goal, len(capability.WaitGoals))
+		for _, id := range capability.WaitGoals {
+			if goal, ok := goals[id]; ok {
+				allowed[id] = goal
+			}
+		}
+		goals = allowed
+	}
+	return operations.Bind(c.runtime, ref, receipt, read, goals)
 }

@@ -50,7 +50,7 @@
   "wait_goals": [
     "certificate_present"
   ],
-  "wait_semantics": "cache ok/failed/in_queue/processing; configuration Completed/Error/Processing only current observed state; certificate presence/absence exact sequence; LetsEncrypt processed/failed/accepted only order processing, not TLS readiness; missing/unknown states remain unknown; config task_id is metadata, never inferred cache task",
+  "wait_semantics": "cache ok/failed/in_queue/processing; configuration Completed/Error/Processing only current observed state; certificate presence/absence exact sequence; LetsEncrypt processed/failed/accepted only order processing, not TLS readiness; missing/unknown states remain unknown; config task_id is metadata, never inferred cache task; receipt-bound handles filter all goals by originating capability.WaitGoals, while receiptless observation retains both certificate presence/absence",
   "evidence": "catalog/evidence/cdn-current-sources.json",
   "limitations": [
     "Typed PEM details: details=true prose promises PEM content, but published schema/example only define CertificateInfoWithChain; no PEM field name/type is confirmed. Unknown extensions remain protected, not typed PEM support.",

@@ -54,7 +54,7 @@
   "wait_goals": [
     "configuration_observed"
   ],
-  "wait_semantics": "cache ok/failed/in_queue/processing; configuration Completed/Error/Processing only current observed state; certificate presence/absence exact sequence; LetsEncrypt processed/failed/accepted only order processing, not TLS readiness; missing/unknown states remain unknown; config task_id is metadata, never inferred cache task",
+  "wait_semantics": "cache ok/failed/in_queue/processing; configuration Completed/Error/Processing only current observed state; certificate presence/absence exact sequence; LetsEncrypt processed/failed/accepted only order processing, not TLS readiness; missing/unknown states remain unknown; config task_id is metadata, never inferred cache task; receipt-bound handles filter all goals by originating capability.WaitGoals, while receiptless observation retains both certificate presence/absence",
   "evidence": "catalog/evidence/cdn-current-sources.json",
   "limitations": [
     "Enumerated 19 source operations only; whole service inventory incomplete, coverage ratio null; no live/deployment evidence"
