@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"octavia-lifecycle":            {"loadbalancers", "v2", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,8 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"octavia-lifecycle GET /v2/lbaas/loadbalancers/{loadbalancer_id}":  "loadbalancers.v2.loadbalancers.get",
+	"octavia-lifecycle POST /v2/lbaas/loadbalancers":                   "loadbalancers.v2.loadbalancers.create",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
@@ -168,7 +171,7 @@ func generate() error {
 				if f.Mode == "iam_project" {
 					scope = append(scope, "project")
 				}
-				if f.Mode == "s3_sigv4" || f.Mode == "basic" {
+				if f.Mode == "s3_sigv4" || f.Mode == "basic" || name == "octavia-lifecycle" {
 					scope = append(scope, "project", "region", "pool")
 				}
 				effect := "mutation"

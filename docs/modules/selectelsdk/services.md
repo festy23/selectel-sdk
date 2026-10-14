@@ -203,3 +203,11 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### Octavia load balancers v2
+
+`RegionalClient.LoadBalancers` provides the source-bound core lifecycle of LB,
+listeners, pools, members and health monitors, plus status tree/statistics,
+failover and typed member batch updates. See [the Octavia service contract](loadbalancers.md)
+for the 30-operation subset, five explicit TLS/L7 partial bindings, exact parent
+refs, bounded collections, separate provisioning/operating states and recovery.

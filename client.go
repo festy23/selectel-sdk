@@ -13,6 +13,7 @@ import (
 	"github.com/festy23/selectel-sdk/databases"
 	"github.com/festy23/selectel-sdk/internal/endpoints"
 	"github.com/festy23/selectel-sdk/inventory"
+	"github.com/festy23/selectel-sdk/loadbalancers"
 	"github.com/festy23/selectel-sdk/logs"
 	"github.com/festy23/selectel-sdk/metrics"
 	"github.com/festy23/selectel-sdk/mks"
@@ -84,6 +85,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
+	if ref.Service == "loadbalancers" && ref.APIGeneration == "v2" {
+		return loadbalancers.Bind(c.runtime, ref.Scope).Handle(ref, nil)
+	}
 	return c.mksHandle(ref, nil)
 }
 func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
@@ -103,6 +107,15 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
 	}
+	if capability.Effect != "mutation" {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if len(receipt.ResourceRefs) == 0 && receipt.ProviderOperationRef == nil && receipt.Outcome != types.Unknown {
+		return operations.BindReceipt(c.runtime, &receipt)
+	}
+	if capability.Service == "loadbalancers" {
+		return loadbalancers.Bind(c.runtime, receipt.Scope).Resume(receipt)
+	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)
 	}
@@ -118,6 +131,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if ref.Service == "compute" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, &receipt)
+	}
+	if ref.Service == "loadbalancers" && ref.APIGeneration == "v2" {
+		return loadbalancers.Bind(c.runtime, ref.Scope).Handle(ref, &receipt)
 	}
 	return c.mksHandle(ref, &receipt)
 }
@@ -175,4 +191,8 @@ func New(config Config) (*Client, error) {
 }
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
+}
+
+func (r RegionalClient) LoadBalancers() *loadbalancers.Client {
+	return loadbalancers.Bind(r.client.runtime, r.client.scope)
 }
