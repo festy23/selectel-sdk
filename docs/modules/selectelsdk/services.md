@@ -203,3 +203,9 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### CDN v3
+
+See the [CDN contract](cdn.md) for the 19 enumerated operations, protected
+configuration/certificate data, cache goals and the unresolved typed PEM detail
+variant. Whole-service inventory completeness remains unknown.

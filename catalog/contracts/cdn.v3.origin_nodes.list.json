@@ -1,0 +1,39 @@
+{
+  "operation_id": "cdn.v3.origin_nodes.list",
+  "source": "sources/cdn.json#/paths/~1nodes~1ip2origin/get",
+  "endpoint": {
+    "uri": "https://docs.selectel.ru/api/urls/",
+    "fixed": "https://api.selectel.ru/cdn/v3",
+    "scope": "explicit account/project; no location required; exact endpoint override respected"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/nodes/ip2origin",
+    "parameters": [],
+    "auth": "project IAM X-Auth-Token",
+    "model": "options pagination.Options",
+    "validation": "exact caller CDN v3 refs/service/generation/scope/endpoint, source required/enums/pattern/ranges before credentials or HTTP; typed protected values reveal only at wire boundary; ResourceSpec omits read-only properties; PATCH retains source-required name"
+  },
+  "response": {
+    "status": 200,
+    "schema": {
+      "$ref": "#/definitions/models.NodesResponse"
+    },
+    "model": "Listing[Node, NodesResponse]",
+    "mapping": "generated source-bound nested DTOs, exact integers and optional pointers; free strings and unknown extensions protected; provider ref fields ignored; trustworthy returned identities scanned before field decode; existing caller refs retained; foreign identities rejected; no name adoption",
+    "collections": "fixed single provider page with caller MaxItems/MaxPages/cursor bounds; envelope data removed to prevent unbounded duplicate rows; incomplete results retained"
+  },
+  "errors": {
+    "rejected": [
+      401
+    ],
+    "logical": "model-specific published numeric status codes; zero success, missing status protocol error, unknown code OperationFailed; sanitized errors without provider message",
+    "mutation": "receipt on every path, not_sent on local errors; accepted HTTP200 does not imply operation readiness; unknown outcomes never replay, exact-ref observation only"
+  },
+  "wait_goals": [],
+  "wait_semantics": "cache ok/failed/in_queue/processing; configuration Completed/Error/Processing only current observed state; certificate presence/absence exact sequence; LetsEncrypt processed/failed/accepted only order processing, not TLS readiness; missing/unknown states remain unknown; config task_id is metadata, never inferred cache task; receipt-bound handles filter all goals by originating capability.WaitGoals, while receiptless observation retains both certificate presence/absence",
+  "evidence": "catalog/evidence/cdn-current-sources.json",
+  "limitations": [
+    "Enumerated 19 source operations only; whole service inventory incomplete, coverage ratio null; no live/deployment evidence"
+  ]
+}
