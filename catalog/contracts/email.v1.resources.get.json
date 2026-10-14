@@ -1,0 +1,59 @@
+{
+  "operation_id": "email.v1.resources.get",
+  "source": "sources/email-service.json#/paths/~1resources~1{ses_id}/get",
+  "endpoint": {
+    "mode": "exact explicit EndpointOverrides required",
+    "sources_checked": "catalog/evidence/email-current-sources.json",
+    "scope": "explicit account/project; project IAM X-Auth-Token; no inferred location/host/SMTP endpoint"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/resources/{ses_id}",
+    "parameters": [
+      {
+        "description": "Resource identifier.",
+        "format": "uuid",
+        "in": "path",
+        "name": "ses_id",
+        "required": true,
+        "type": "string"
+      }
+    ],
+    "model": "ref types.ResourceRef, o types.CallOptions",
+    "validation": "source required fields/types/date formats; exact email v1 resource UUID and service/generation/scope/endpoint; no implicit project adoption; protected values reveal only in explicit typed wire encoding"
+  },
+  "response": {
+    "statuses": {
+      "200": {
+        "$ref": "#/definitions/GetResourceByID"
+      }
+    },
+    "model": "types.Result[GetResourceByID]",
+    "mapping": "generated nested DTOs, exact integers, optional pointers; credentials/DKIM keys/domains/user text/message identifiers/reasons protected; source IDs and project validated; untrusted ref ignored; unknown extensions protected",
+    "identity": "source-owned ID scanned before decoding credential fields for create/update/rotate/transfer; caller refs retained on errors; transfer target project is explicit response metadata, receipt/ref retain originating scope, never infer target adoption",
+    "limits": "shared response byte bound plus MaxItems for statistics/delivery/stop-list arrays (config default for zero); ResponseLimit retains typed prefix and aggregate counters; collections use common cursor bounds, typed envelopes omit duplicate rows"
+  },
+  "errors": {
+    "rejected": [
+      400,
+      401,
+      404
+    ],
+    "source_models": [
+      "APIBaseResponse",
+      "BadResponse"
+    ],
+    "mapping": "shared sanitized HTTP status mapping; provider messages/descriptions protected, not diagnostics; 500 mutation outcome unknown, no replay; source SMTP rate prose does not establish undocumented management rejection statuses"
+  },
+  "receipt": "all mutation paths finalize not_sent/accepted/rejected/unknown and preserve independently trustworthy exact refs; receipt is not goal completion; no mutation replay or target/name adoption",
+  "wait_goals": [],
+  "observation": "exact resource status active/blocked/error/deleted; unknown/missing remains unknown, delete absence only exact GET NotFound; receipt goals filtered by originating capability. Rotation/transfer/domain/stop-list outcomes cannot be inferred from active resource state.",
+  "pagination": {
+    "contract": "common pagination.Options scope/operation/revision/filter-bound cursors, bounded rows/pages; preserve typed provider envelopes without duplicate data; only strictly advancing source offsets followed; absent/zero/nonprogress has no proven terminal rule and never declares Complete",
+    "limitations": []
+  },
+  "evidence": "catalog/evidence/email-current-sources.json",
+  "limitations": [
+    "Enumerated snapshot only, whole-service inventory incomplete and coverage_ratio null; explicit endpoint is caller supplied, not a documented deployment claim; offline only, no SMTP sending or live operations"
+  ]
+}

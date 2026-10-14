@@ -1,0 +1,1910 @@
+{
+  "definitions": {
+    "APIBaseResponse": {
+      "properties": {
+        "description": {
+          "description": "Detailed description of the error.",
+          "type": "string"
+        },
+        "message": {
+          "description": "Message with error.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "BadResponse": {
+      "properties": {
+        "message": {
+          "description": "Message with error.",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status of the response.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Bounce": {
+      "properties": {
+        "bounce": {
+          "description": "Description with the reason of the bounce.",
+          "type": "string"
+        },
+        "date": {
+          "description": "Date of the bounce.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Complaint": {
+      "properties": {
+        "date": {
+          "description": "Timestamp of the complaint.",
+          "example": "2024-02-20 15:09:49",
+          "type": "string"
+        },
+        "domain": {
+          "description": "Domain associated with the complaint.",
+          "example": "domain.com",
+          "type": "string"
+        },
+        "email": {
+          "description": "Complaining email address.",
+          "example": "email1@inbox.ru",
+          "type": "string"
+        },
+        "issuen": {
+          "description": "Issue number.",
+          "example": 123456,
+          "type": "integer"
+        },
+        "x_track_id": {
+          "description": "Tracking identifier of the message.",
+          "example": "299_20230621_135411",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ComplaintsByPeriod": {
+      "properties": {
+        "pagination": {
+          "properties": {
+            "cursor_next": {
+              "description": "Pagination cursor for next page retrieval.",
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "report": {
+          "description": "Complain report.",
+          "items": {
+            "$ref": "#/definitions/Complaint"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Status of the response.",
+          "example": "ok",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CreateDomain": {
+      "properties": {
+        "domain": {
+          "description": "Name of the linked domain.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CreateDomainRequest": {
+      "properties": {
+        "name": {
+          "description": "Domain name to link.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "CreateResourceRequest": {
+      "properties": {
+        "name": {
+          "description": "Name of the resource.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "DateWithDomain": {
+      "properties": {
+        "date": {
+          "description": "Date of the action.",
+          "type": "string"
+        },
+        "domain": {
+          "description": "Related domain.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "DeliveredStatus": {
+      "properties": {
+        "created_at": {
+          "example": 1697746906,
+          "type": "integer"
+        },
+        "message_id": {
+          "description": "Identifier of the message.",
+          "example": "1qBv3w-0007Ls-CS11",
+          "type": "string"
+        },
+        "reason": {
+          "description": "Reason of fail if the message was not delivered.",
+          "example": "H=mx02.mail.icloud.com [17.56.9.29]  CV=yes: 550 5.1.1 <example@icloud.com>: user does not exist",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status of delivery.",
+          "example": "failed",
+          "type": "string"
+        },
+        "x_track_id": {
+          "description": "Tracking identifier of the message.",
+          "example": "299_20230621_135411",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "DeliveryStatus": {
+      "properties": {
+        "messages": {
+          "description": "Delivery information with statuses.",
+          "items": {
+            "$ref": "#/definitions/DeliveredStatus"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Status of the response.",
+          "example": "ok",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "DomainVerification": {
+      "properties": {
+        "verification": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/VerificationRecordsStatus"
+            }
+          ],
+          "description": "Information about domain verification statuses."
+        }
+      },
+      "type": "object"
+    },
+    "GetResourceByID": {
+      "properties": {
+        "resource": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ResourceWithCredentials"
+            }
+          ],
+          "description": "Information about the resource."
+        }
+      },
+      "type": "object"
+    },
+    "GetStatistics": {
+      "properties": {
+        "limit": {
+          "description": "Maximum number of items to return in response.",
+          "type": "integer"
+        },
+        "next_offset": {
+          "description": "Pagination offset for retrieving next results.",
+          "type": "integer"
+        },
+        "statistics": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/StatisticsByResource"
+            }
+          ],
+          "description": "Collected statistics."
+        }
+      },
+      "type": "object"
+    },
+    "ListDomains": {
+      "properties": {
+        "domains": {
+          "description": "List of domains names.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "limit": {
+          "description": "Maximum number of items to return in response.",
+          "type": "integer"
+        },
+        "next_offset": {
+          "description": "Pagination offset for retrieving next results.",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ListResources": {
+      "properties": {
+        "limit": {
+          "description": "Maximum number of items to return in response.",
+          "type": "integer"
+        },
+        "next_offset": {
+          "description": "Pagination offset for retrieving next results.",
+          "type": "integer"
+        },
+        "resources": {
+          "description": "List of resources.",
+          "items": {
+            "$ref": "#/definitions/ResourceWithCredentialsAndDomains"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "NonDelivered": {
+      "properties": {
+        "code": {
+          "description": "SMTP error code.",
+          "example": 550,
+          "type": "integer"
+        },
+        "date": {
+          "description": "Failure timestamp.",
+          "example": "2024-02-20 15:09:49",
+          "type": "string"
+        },
+        "email": {
+          "description": "Recipient email.",
+          "example": "email1@inbox.ru",
+          "type": "string"
+        },
+        "issuen": {
+          "description": "Issue number.",
+          "example": 123456,
+          "type": "integer"
+        },
+        "message": {
+          "description": "Message with detailed error.",
+          "example": "Unrouteable address",
+          "type": "string"
+        },
+        "x_track_id": {
+          "description": "Tracking identifier of the message.",
+          "example": "299_20230621_135411",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "NonDeliveredByPeriod": {
+      "properties": {
+        "pagination": {
+          "properties": {
+            "cursor_next": {
+              "description": "Pagination cursor for next page retrieval.",
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "report": {
+          "description": "Report about non-delivered messages.",
+          "items": {
+            "$ref": "#/definitions/NonDelivered"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Status of the response.",
+          "example": "ok",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProjectQuotas": {
+      "properties": {
+        "ses_resources": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Quota"
+            }
+          ],
+          "description": "Information about resources quota for project."
+        }
+      },
+      "type": "object"
+    },
+    "Quota": {
+      "properties": {
+        "max": {
+          "description": "Maximum allowed quota value.",
+          "example": 10,
+          "type": "integer"
+        },
+        "used": {
+          "description": "Currently used quota value.",
+          "example": 3,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ResourceStatus": {
+      "enum": [
+        "active",
+        "blocked",
+        "error",
+        "deleted"
+      ],
+      "type": "string",
+      "x-enum-varnames": [
+        "SESStatusActive",
+        "SESStatusBlocked",
+        "SESStatusError",
+        "SESStatusDeleted"
+      ]
+    },
+    "ResourceWithCredentials": {
+      "properties": {
+        "created_at": {
+          "description": "Resource creation timestamp.",
+          "example": "2024-05-26T15:16:53+00:00",
+          "type": "string"
+        },
+        "dedicated_sender": {
+          "description": "True if emails are sent from a dedicated SMTP instanse, false if using shared servers.",
+          "type": "boolean"
+        },
+        "dns_key": {
+          "description": "A unique identifier used to configure DKIM record.",
+          "example": "xncFjGLFGkeq",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identifier of the resource.",
+          "example": "448355c9-8c3a-4706-8ca4-ed2970fce631",
+          "type": "string"
+        },
+        "login": {
+          "description": "SMTP login for authentication.",
+          "example": "1010",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the resource.",
+          "example": "My SES Resource",
+          "type": "string"
+        },
+        "password": {
+          "description": "SMTP password for authentication.",
+          "example": "NtV4FQscV5BQ",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "Identifier of the project that owns the resource (uuid v4 without \"-\").",
+          "example": "5c4272d6c6274435ae913cff6eceaf22",
+          "type": "string"
+        },
+        "status": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ResourceStatus"
+            }
+          ],
+          "description": "Status of the resource.",
+          "example": "active"
+        },
+        "updated_at": {
+          "description": "Resource last updated timestamp.",
+          "example": "2024-05-27T15:16:53+00:00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ResourceWithCredentialsAndDomains": {
+      "properties": {
+        "created_at": {
+          "description": "Resource creation timestamp.",
+          "example": "2024-05-26T15:16:53+00:00",
+          "type": "string"
+        },
+        "dedicated_sender": {
+          "description": "True if emails are sent from a dedicated SMTP instanse, false if using shared servers.",
+          "type": "boolean"
+        },
+        "dns_key": {
+          "description": "A unique identifier used to configure DKIM record.",
+          "example": "xncFjGLFGkeq",
+          "type": "string"
+        },
+        "domains": {
+          "description": "List of domains.",
+          "example": [
+            "domain1.ru",
+            "domain2.ru"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "Identifier of the resource.",
+          "example": "448355c9-8c3a-4706-8ca4-ed2970fce631",
+          "type": "string"
+        },
+        "login": {
+          "description": "SMTP login for authentication.",
+          "example": "1010",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the resource.",
+          "example": "My SES Resource",
+          "type": "string"
+        },
+        "password": {
+          "description": "SMTP password for authentication.",
+          "example": "NtV4FQscV5BQ",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "Identifier of the project that owns the resource (uuid v4 without \"-\").",
+          "example": "5c4272d6c6274435ae913cff6eceaf22",
+          "type": "string"
+        },
+        "status": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ResourceStatus"
+            }
+          ],
+          "description": "Status of the resource.",
+          "example": "active"
+        },
+        "updated_at": {
+          "description": "Resource last updated timestamp.",
+          "example": "2024-05-27T15:16:53+00:00",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SesResourceQuotas": {
+      "properties": {
+        "domains": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Quota"
+            }
+          ],
+          "description": "Domains quotas."
+        }
+      },
+      "type": "object"
+    },
+    "StatisticsByDate": {
+      "properties": {
+        "date": {
+          "description": "Date of the issue.",
+          "type": "string"
+        },
+        "issuen": {
+          "description": "Issue number.",
+          "type": "integer"
+        },
+        "stat": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/StatisticsMetrics"
+            }
+          ],
+          "description": "Collected statistics."
+        },
+        "status": {
+          "description": "Status of the response.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "StatisticsByResource": {
+      "properties": {
+        "statistics_by_dates": {
+          "description": "Statistics by dates.",
+          "items": {
+            "$ref": "#/definitions/StatisticsByDate"
+          },
+          "type": "array"
+        },
+        "total": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/StatisticsMetrics"
+            }
+          ],
+          "description": "Total statistics."
+        }
+      },
+      "type": "object"
+    },
+    "StatisticsMetrics": {
+      "properties": {
+        "bad": {
+          "description": "Number of invalid email addresses detected.",
+          "type": "integer"
+        },
+        "click_link": {
+          "description": "Total link clicks.",
+          "type": "integer"
+        },
+        "dup": {
+          "description": "Number of duplicate emails errors (XML mailings).",
+          "type": "integer"
+        },
+        "fbl": {
+          "description": "Number of emails to users with spam complaints.",
+          "type": "integer"
+        },
+        "gen_ok": {
+          "description": "Number of emails successfully generated for sending (XML mailings).",
+          "type": "integer"
+        },
+        "open_msg": {
+          "description": "Number of opened emails.",
+          "type": "integer"
+        },
+        "send_fail": {
+          "description": "Number of failed delivery attempts.",
+          "type": "integer"
+        },
+        "send_ok": {
+          "description": "Number of delivered emails.",
+          "type": "integer"
+        },
+        "stop": {
+          "description": "Number of emails to email addresses in stop lists.",
+          "type": "integer"
+        },
+        "total": {
+          "description": "Total messages received.",
+          "type": "integer"
+        },
+        "trap": {
+          "description": "The number of emails sent to email addresses that are in spam trap bases.",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "StopList": {
+      "properties": {
+        "bounces": {
+          "description": "List of bounced (reasons for adding in stop list).",
+          "items": {
+            "$ref": "#/definitions/Bounce"
+          },
+          "type": "array"
+        },
+        "domains": {
+          "description": "List of domains where the searched email is in stop list.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "fbl_report": {
+          "description": "Feedback loop reports.",
+          "items": {
+            "$ref": "#/definitions/DateWithDomain"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Status of the response.",
+          "type": "string"
+        },
+        "user_unsubscribe": {
+          "description": "User unsubscribe requests.",
+          "items": {
+            "$ref": "#/definitions/DateWithDomain"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "TransferResourceRequest": {
+      "properties": {
+        "project_id": {
+          "description": "Target project identifier for the transfer.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "project_id"
+      ],
+      "type": "object"
+    },
+    "UpdateResourceRequest": {
+      "properties": {
+        "name": {
+          "description": "New name of the resource.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "VerificationRecordsStatus": {
+      "properties": {
+        "dkim_status": {
+          "description": "Verifying the DKIM record is correct.",
+          "type": "boolean"
+        },
+        "dmarc_status": {
+          "description": "Verifying the DMARC record is correct.",
+          "type": "boolean"
+        },
+        "dns_status": {
+          "description": "Checking if a TXT record is added from the dns_key resource.",
+          "type": "boolean"
+        },
+        "spf_status": {
+          "description": "Verifying the SPF record is correct.",
+          "type": "boolean"
+        },
+        "verification_status": {
+          "description": "Status of domain verification according to all criteria. True if the domain passed all checks.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "Managing email resources, their domains, retrieving mailing statistics, managing stop lists. Created resources will contain information about SMTP server to connect. The maximum number of requests to SMTP is 10,000 per minute. If the limit is exceeded, the method will return error 429. The average execution time for one request is 500 ms",
+    "title": "Email Service API",
+    "version": "v1.0.0"
+  },
+  "paths": {
+    "/quotas": {
+      "get": {
+        "description": "Retrieves quotas for the projects.",
+        "operationId": "retrieveProjectQuotas",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Project quotas.",
+            "schema": {
+              "$ref": "#/definitions/ProjectQuotas"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Retrieve project quotas",
+        "tags": [
+          "Quotas"
+        ]
+      }
+    },
+    "/resources": {
+      "get": {
+        "description": "Returns a list of resources in the project.",
+        "operationId": "listResources",
+        "parameters": [
+          {
+            "default": 100,
+            "description": "Maximum number of items to return in response. Used for pagination.",
+            "format": "integer",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "description": "Number of items to skip. Used for pagination.",
+            "format": "integer",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of resources.",
+            "schema": {
+              "$ref": "#/definitions/ListResources"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List resources",
+        "tags": [
+          "Resources"
+        ]
+      },
+      "post": {
+        "description": "Creates the resource.",
+        "operationId": "createResource",
+        "parameters": [
+          {
+            "description": "The scheme for creating a resource.",
+            "in": "body",
+            "name": "Form",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateResourceRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "The resource has been created.",
+            "schema": {
+              "$ref": "#/definitions/ResourceWithCredentials"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Create resource",
+        "tags": [
+          "Resources"
+        ]
+      }
+    },
+    "/resources/{ses_id}": {
+      "delete": {
+        "description": "Deletes the resource by its identifier.",
+        "operationId": "deleteResource",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "The resource has been deleted."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "404": {
+            "description": "The resource was not found.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete resource",
+        "tags": [
+          "Resources"
+        ]
+      },
+      "get": {
+        "description": "Returns the resource by its identifier.",
+        "operationId": "getResourceById",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The resource has been returned.",
+            "schema": {
+              "$ref": "#/definitions/GetResourceByID"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "404": {
+            "description": "The resource was not found.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get resource by identifier",
+        "tags": [
+          "Resources"
+        ]
+      },
+      "put": {
+        "description": "Changes the name of the created resource by its identifier.",
+        "operationId": "changeResourceName",
+        "parameters": [
+          {
+            "description": "The scheme for updating a resource.",
+            "in": "body",
+            "name": "Form",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateResourceRequest"
+            }
+          },
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The name of the resource has been updated.",
+            "schema": {
+              "$ref": "#/definitions/ResourceWithCredentials"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Change resource name",
+        "tags": [
+          "Resources"
+        ]
+      }
+    },
+    "/resources/{ses_id}/blist/report/fbl": {
+      "get": {
+        "description": "Returns a list of complaints on messages by period.",
+        "operationId": "getMessageComplaintsByPeriod",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Start date of the period.",
+            "example": "2024-05-25",
+            "format": "date",
+            "in": "query",
+            "name": "date_from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "End date of the period.",
+            "example": "2024-05-26",
+            "format": "date",
+            "in": "query",
+            "name": "date_to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "default": 100,
+            "description": "Maximum number of items to return in response. Used for pagination.",
+            "example": 5,
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "description": "Number of items to skip. Used for pagination.",
+            "example": 20,
+            "in": "query",
+            "name": "cursor_next",
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Complaints have been returned.",
+            "schema": {
+              "$ref": "#/definitions/ComplaintsByPeriod"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List message complaints by period",
+        "tags": [
+          "Statistics"
+        ]
+      }
+    },
+    "/resources/{ses_id}/blist/report/non-delivery": {
+      "get": {
+        "description": "Retrieves undelivered messages by period.",
+        "operationId": "getUndeliveredMessagesByPeriod",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Start date of the period.",
+            "example": "2024-05-25",
+            "format": "date",
+            "in": "query",
+            "name": "date_from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "End date of the period.",
+            "example": "2024-05-26",
+            "format": "date",
+            "in": "query",
+            "name": "date_to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "default": 100,
+            "description": "Maximum number of items to return in response. Used for pagination.",
+            "example": 5,
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "description": "Number of items to skip. Used for pagination.",
+            "example": 20,
+            "in": "query",
+            "name": "cursor_next",
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Messages have been returned.",
+            "schema": {
+              "$ref": "#/definitions/NonDeliveredByPeriod"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Retrieve undelivered messages",
+        "tags": [
+          "Statistics"
+        ]
+      }
+    },
+    "/resources/{ses_id}/domains": {
+      "delete": {
+        "description": "Unlinks domain from the resource.",
+        "operationId": "unlinkDomain",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Name of the domain.",
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "The domain has been deleted."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "404": {
+            "description": "The domain was not found.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Unlink domain",
+        "tags": [
+          "Domains"
+        ]
+      },
+      "get": {
+        "description": "Returns a list of domains of the resource.",
+        "operationId": "retireveResourceDomains",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "default": 16,
+            "description": "Maximum number of items to return in response. Used for pagination.",
+            "format": "integer",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "description": "Number of items to skip. Used for pagination.",
+            "format": "integer",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of domains for the resource.",
+            "schema": {
+              "$ref": "#/definitions/ListDomains"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List resource domains",
+        "tags": [
+          "Domains"
+        ]
+      },
+      "post": {
+        "description": "Links the domain to the resource.",
+        "operationId": "linkDomain",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The scheme for adding a domain.",
+            "in": "body",
+            "name": "Form",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateDomainRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "The domain has been linked.",
+            "schema": {
+              "$ref": "#/definitions/CreateDomain"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Link domain",
+        "tags": [
+          "Domains"
+        ]
+      }
+    },
+    "/resources/{ses_id}/domains/check": {
+      "get": {
+        "description": "Checks the correctness of SPF, DKIM, and DMARC domain record.",
+        "operationId": "checkDomainVerificationStatus",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Name of the domain.",
+            "format": "string",
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Information about domain verification status.",
+            "schema": {
+              "$ref": "#/definitions/DomainVerification"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Check domain verification status",
+        "tags": [
+          "Domains"
+        ]
+      }
+    },
+    "/resources/{ses_id}/issue/status": {
+      "get": {
+        "description": "Returns status of the delivered message.",
+        "operationId": "getDeliveryStatus",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Message identifier.",
+            "format": "string",
+            "in": "query",
+            "name": "message_id",
+            "type": "string"
+          },
+          {
+            "description": "Tracking identifier.",
+            "format": "string",
+            "in": "query",
+            "name": "x_track_id",
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Status of the message.",
+            "schema": {
+              "$ref": "#/definitions/DeliveryStatus"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/BadResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get the delivered message status",
+        "tags": [
+          "Statistics"
+        ]
+      }
+    },
+    "/resources/{ses_id}/password": {
+      "post": {
+        "description": "Generates new password for the created resource by its identifier",
+        "operationId": "generateNewResourcePassword",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The resource has been updated.",
+            "schema": {
+              "$ref": "#/definitions/ResourceWithCredentials"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "404": {
+            "description": "The resource was not found.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Generate new resource password",
+        "tags": [
+          "Resources"
+        ]
+      }
+    },
+    "/resources/{ses_id}/quotas": {
+      "get": {
+        "description": "Retrieves quotas for resource.",
+        "operationId": "retireveResourceQuotas",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Resource quotas have been returned.",
+            "schema": {
+              "$ref": "#/definitions/SesResourceQuotas"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Retrieve resource quotas",
+        "tags": [
+          "Quotas"
+        ]
+      }
+    },
+    "/resources/{ses_id}/statistics": {
+      "get": {
+        "description": "Retrieves the statistics of sent messages of the resource.",
+        "operationId": "retireveResourceStatistics",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Start date of the period.",
+            "example": "2024-05-25",
+            "format": "date",
+            "in": "query",
+            "name": "date_from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "End date of the period.",
+            "example": "2024-05-26",
+            "format": "date",
+            "in": "query",
+            "name": "date_to",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Resource statistics have been returned.",
+            "schema": {
+              "$ref": "#/definitions/GetStatistics"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Retrieve resource statistics",
+        "tags": [
+          "Statistics"
+        ]
+      }
+    },
+    "/resources/{ses_id}/stop-lists": {
+      "delete": {
+        "description": "Remove the email from the stop list.",
+        "operationId": "removeEmailFromStopList",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Sender's email address.",
+            "format": "email",
+            "in": "query",
+            "name": "mail_from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Email address to be removed from the stop list.",
+            "format": "email",
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Email has been removed from the stop list."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Remove email from stop list",
+        "tags": [
+          "Stop lists"
+        ]
+      },
+      "get": {
+        "description": "Searchs the email in the stop list.",
+        "operationId": "searchEmailInStopList",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Email address to be searched in the stop list.",
+            "format": "email",
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Stop list has been returned.",
+            "schema": {
+              "$ref": "#/definitions/StopList"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Search email in stop list",
+        "tags": [
+          "Stop lists"
+        ]
+      },
+      "post": {
+        "description": "Adds the email to the stop list.",
+        "operationId": "addEmailToStopList",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Sender's email address.",
+            "format": "email",
+            "in": "query",
+            "name": "mail_from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Email address to be added to the stop list.",
+            "format": "email",
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "The email has been added to the stop list."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Add email to stop list",
+        "tags": [
+          "Stop lists"
+        ]
+      }
+    },
+    "/resources/{ses_id}/transfer": {
+      "post": {
+        "description": "Transfers created resource to other project by resource identifier.",
+        "operationId": "transferResourceToOtherProject",
+        "parameters": [
+          {
+            "description": "The scheme for transfering a resource.",
+            "in": "body",
+            "name": "Form",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TransferResourceRequest"
+            }
+          },
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "ses_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The resource has been transfered.",
+            "schema": {
+              "$ref": "#/definitions/ResourceWithCredentials"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "404": {
+            "description": "The project was not found.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/APIBaseResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Transfer resource to other project",
+        "tags": [
+          "Resources"
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "iam_token_project_scoped": {
+      "description": "IAM token for project",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0",
+  "tags": [
+    {
+      "description": "Managing resources: viewing a list of resources, creating and deleting resources, and changing resource names.",
+      "name": "Resources"
+    },
+    {
+      "description": "Managing domains: adding and deleting domains from a resource, viewing a list of domains in a resource, and checking domain verification status.",
+      "name": "Domains"
+    },
+    {
+      "description": "Getting statistics for email resources.",
+      "name": "Statistics"
+    },
+    {
+      "description": "Managing stop lists: adding, removing, and searching for email addresses.",
+      "name": "Stop lists"
+    },
+    {
+      "description": "Viewing project and resource usage limits including maximum allowed resources and domains.",
+      "name": "Quotas"
+    }
+  ]
+}
