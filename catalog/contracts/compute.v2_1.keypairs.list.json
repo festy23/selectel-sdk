@@ -31,7 +31,7 @@
     ],
     "dto_source": "compute/types_generated.go",
     "generator_source": "internal/modelgen/generate.py + internal/computecontractgen/generate.py",
-    "field_mapping": "all pinned fields; Integer/Number preserve precision, legacy swap integer/string/empty accepted; optional values retain absence, nullable flavor description/keypair timestamps retain explicit null; Nova timestamps normalize UTC",
+    "field_mapping": "all pinned fields; Integer/Number preserve precision, legacy swap integer/string/empty accepted; optional values retain absence, nullable flavor description/keypair timestamps retain explicit null; timezone-less Nova timestamps retain original text/fractions with no invented offset; NovaTime.Instant is present only for explicit-timezone timestamps, which serialize RFC3339Nano in UTC",
     "identity_validation": "nonempty matching source ID/name; explicit owner filter must match returned owner; provider ref discarded; no foreign reference adoption",
     "sensitive_fields": [
       "private_key"

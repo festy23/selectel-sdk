@@ -398,9 +398,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/compute.v2_1.flavors.get.json": "7f7b9d8bdbc76609c7ffac47798e72bcfece1415ddb8c5c1b19e7a675e84bd35"
+      "contracts/compute.v2_1.flavors.get.json": "78c0f06771e11bc0b7e9fd44b902c3eb7dd4f8205f1478d4c403639d62cc06a2"
     },
-    "contract_revision": "8441542c1a9be47e02e2a93ee24e07eed32c4f1c7648b797629ae0143942864a",
+    "contract_revision": "3bef62249885d020d5e95657f9ed61a7a82857bf64caf770bbfb83f51a6b0c4b",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/compute.v2_1.flavors.get.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.flavors.get.json#/errors",
@@ -441,9 +441,9 @@
       "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
     },
     "verification": {
-      "contract_revision": "8441542c1a9be47e02e2a93ee24e07eed32c4f1c7648b797629ae0143942864a",
+      "contract_revision": "3bef62249885d020d5e95657f9ed61a7a82857bf64caf770bbfb83f51a6b0c4b",
       "evidence_ref": "compute/catalog_create_test.go",
-      "implementation_revision": "39e032b2b9ffe8d7f7fb30e36c965be8521c1cddf5ded8fb019ef17a0e74ab69",
+      "implementation_revision": "0faccc7eb98bd1b28d4bfbdda4caedae99447aa7171b0c10c68bc94ed6ab8518",
       "level": "offline"
     },
     "wait_goals": []
@@ -457,9 +457,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/compute.v2_1.flavors.list.json": "0a00a7164322899e4d987beb49ffa22a3d35261ecbd108f35efdc74cea729c59"
+      "contracts/compute.v2_1.flavors.list.json": "7ee708370a937aec97dab9a905637c477d57e768cbb3e4cbfc6e5419fd2cee67"
     },
-    "contract_revision": "4b4e3d9c9e4f18d40ceae8d1d2f87c3515afd65975bf5b7a5bea47c2b0d04528",
+    "contract_revision": "9e0b6023cee18223bd733016398e5e70e6fdf35b5afb415440716ce4a2fb0633",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/compute.v2_1.flavors.list.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.flavors.list.json#/errors",
@@ -500,9 +500,9 @@
       "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
     },
     "verification": {
-      "contract_revision": "4b4e3d9c9e4f18d40ceae8d1d2f87c3515afd65975bf5b7a5bea47c2b0d04528",
+      "contract_revision": "9e0b6023cee18223bd733016398e5e70e6fdf35b5afb415440716ce4a2fb0633",
       "evidence_ref": "compute/catalog_create_test.go",
-      "implementation_revision": "7c1bbf7de1dd3dbe5004ed2879da1701dc7fff5bbbbefb2ab6b7ede622098fd1",
+      "implementation_revision": "72c79c92cc77ced576e62381d69d0a3c96f8da76445c019960ab38d5ee1b21cd",
       "level": "offline"
     },
     "wait_goals": []
@@ -516,9 +516,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/compute.v2_1.flavors_extra_specs.get.json": "3307d8fc69dc23971b84fb5400c4f6bf941df472146f0b869f6697282aa1e46e"
+      "contracts/compute.v2_1.flavors_extra_specs.get.json": "ea473cecba2ae6d0d455e4177b8755548615875a33f4ab54222aa795c1f979e7"
     },
-    "contract_revision": "f2cc6d293b2f35ae71c6e1019fbfadce12c4be1f75f3cf5623f2bc4b9a45f732",
+    "contract_revision": "6c0588f70e53d37570c189a5554b89a31695ae0c07778ae833d936bd788827f6",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/compute.v2_1.flavors_extra_specs.get.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.flavors_extra_specs.get.json#/errors",
@@ -559,9 +559,9 @@
       "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
     },
     "verification": {
-      "contract_revision": "f2cc6d293b2f35ae71c6e1019fbfadce12c4be1f75f3cf5623f2bc4b9a45f732",
+      "contract_revision": "6c0588f70e53d37570c189a5554b89a31695ae0c07778ae833d936bd788827f6",
       "evidence_ref": "compute/catalog_create_test.go",
-      "implementation_revision": "3d88c0300bea997b0dfc1354e1c5b028f22b5e2924c447b2133970b450987866",
+      "implementation_revision": "933334481be3b833c97ab4f072d7bc2f4f0d4d505f50ae3ee34568beb4e9bcbd",
       "level": "offline"
     },
     "wait_goals": []
@@ -575,9 +575,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/compute.v2_1.keypairs.create.json": "00f38f76b0fb05abbbba019d6a4adc7d0047533bf70205e0a21e59c176fbf73d"
+      "contracts/compute.v2_1.keypairs.create.json": "f26646c848c8a16ee4cd29148e458e7dfa1ec13765be2b81fe654de9c9989da7"
     },
-    "contract_revision": "2aa58b1ac11595fe8f30aad1b33b5cd518a01a69c780de48f639c281b2a6f0f6",
+    "contract_revision": "776592082d370cc01173f25a483556d76da1cf919c035314588b358d0dfc6a36",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/compute.v2_1.keypairs.create.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.keypairs.create.json#/errors",
@@ -620,9 +620,9 @@
       "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
     },
     "verification": {
-      "contract_revision": "2aa58b1ac11595fe8f30aad1b33b5cd518a01a69c780de48f639c281b2a6f0f6",
+      "contract_revision": "776592082d370cc01173f25a483556d76da1cf919c035314588b358d0dfc6a36",
       "evidence_ref": "compute/catalog_create_test.go",
-      "implementation_revision": "855cea0033321341e492133005d39f7ae1671ebe94a10685e7cacf44adc9eaaa",
+      "implementation_revision": "dac0a3a29a47925b20ad9f34ce9ced16e7a3675e2ec1ed87be58f9a0b7291b4d",
       "level": "offline"
     },
     "wait_goals": []
@@ -636,9 +636,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/compute.v2_1.keypairs.delete.json": "dcf0b49ce8a2a4301a908680400f558e61eb12be37f61ee38562cf32a6f6ea19"
+      "contracts/compute.v2_1.keypairs.delete.json": "5713193a1737eb570a37f483fdc5ddc3b931bf09191de62f4d969009d2ba9d50"
     },
-    "contract_revision": "e7be9aa3049be3c4547ae6e1bfc89ffc7262e59d5d624edb170427cf38bbed77",
+    "contract_revision": "df37f337b31abedb2458f5374172319406d5a5054c9ea2e38dede91b97569302",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/compute.v2_1.keypairs.delete.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.keypairs.delete.json#/errors",
@@ -681,9 +681,9 @@
       "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
     },
     "verification": {
-      "contract_revision": "e7be9aa3049be3c4547ae6e1bfc89ffc7262e59d5d624edb170427cf38bbed77",
+      "contract_revision": "df37f337b31abedb2458f5374172319406d5a5054c9ea2e38dede91b97569302",
       "evidence_ref": "compute/catalog_create_test.go",
-      "implementation_revision": "376a879a1f1a7ade5f1734b270ec3ac37009be0595fdb113f8aad47cb666014f",
+      "implementation_revision": "18a0714790174fa190a7f0110015423220ff51f200f79d64c475924bddf4e578",
       "level": "offline"
     },
     "wait_goals": []
@@ -697,9 +697,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/compute.v2_1.keypairs.get.json": "3b532fd43441d40ffa9e0b7e0513a348db5189471fc23fb5288f9329230741d3"
+      "contracts/compute.v2_1.keypairs.get.json": "c46f608d9268aa332823bebd276b334410806f9ce40d97a9316f0727d6389570"
     },
-    "contract_revision": "371026f17835fe9731beec4b19637ce10239a5c080b37faf03510a9c62d580cf",
+    "contract_revision": "953f94ad52ae612a5c0ccc77c392c1eff1f9bdf8d7dffc864b2aa51a90a99698",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/compute.v2_1.keypairs.get.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.keypairs.get.json#/errors",
@@ -742,9 +742,9 @@
       "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
     },
     "verification": {
-      "contract_revision": "371026f17835fe9731beec4b19637ce10239a5c080b37faf03510a9c62d580cf",
+      "contract_revision": "953f94ad52ae612a5c0ccc77c392c1eff1f9bdf8d7dffc864b2aa51a90a99698",
       "evidence_ref": "compute/catalog_create_test.go",
-      "implementation_revision": "d20718505030cd5fb0abd551b260fa726aab622b2f7df5d4415345a43534bde1",
+      "implementation_revision": "0dfedb030d1ecdc89b9e6efe0033f8cfc48b484b7e6e5cda6677e52e9bd4afa2",
       "level": "offline"
     },
     "wait_goals": []
@@ -758,9 +758,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/compute.v2_1.keypairs.list.json": "422f1af2141931f50c987f11bd75a13ac47090a5dbef8de0cbd07218d98aea89"
+      "contracts/compute.v2_1.keypairs.list.json": "16334dfde8c4dd5a7fd3e7fb9a55e138dc372047184e6e0d93c51ee1d14e48c9"
     },
-    "contract_revision": "bedeb44bade08375b724ed9f54cd88af97e7d856347271a61e66b3a1ce5d6704",
+    "contract_revision": "e7409d4728ca2feebc05b09c23f33148c2f2addd07c3f2ea8e95c8c307cf104d",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/compute.v2_1.keypairs.list.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.keypairs.list.json#/errors",
@@ -803,9 +803,9 @@
       "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
     },
     "verification": {
-      "contract_revision": "bedeb44bade08375b724ed9f54cd88af97e7d856347271a61e66b3a1ce5d6704",
+      "contract_revision": "e7409d4728ca2feebc05b09c23f33148c2f2addd07c3f2ea8e95c8c307cf104d",
       "evidence_ref": "compute/catalog_create_test.go",
-      "implementation_revision": "235d00c1b099e76597ec4448de4a6b875748ac8782d4419d32825d2df52363cd",
+      "implementation_revision": "e360a93e7a484adc3cb5ecb2a4794b40e8f47f193c4f017a8d10612735329d6a",
       "level": "offline"
     },
     "wait_goals": []
@@ -867,7 +867,7 @@
     "verification": {
       "contract_revision": "15f527aebf995c290ea01838ec7609889959d037c243bcee6bf2e74a2975e62b",
       "evidence_ref": "compute/catalog_create_test.go",
-      "implementation_revision": "6a7e4fc85b639745b28a981f8d18fe77b47fa0c0f4b7500c9fa31cb4b4c6c132",
+      "implementation_revision": "fdcf544b7137ff6e4c39238b2112508423371433b8672a6d964c48852c49e8c6",
       "level": "offline"
     },
     "wait_goals": [

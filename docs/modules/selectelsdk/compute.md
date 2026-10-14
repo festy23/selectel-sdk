@@ -56,8 +56,10 @@ Keypairs используют microversion 2.35 по умолчанию. Create 
 С 2.92 создание требует явный public_key: SDK не делает скрытый downgrade ради
 генерации private key. Отсутствие public_key в старой версии запрашивает генерацию;
 полученный private_key — ProtectedValue. Public key/fingerprint остаются обычными
-публичными данными. Все timestamp fields нормализуются в UTC, включая legacy
-naive UTC; deleted_at/updated_at сохраняют explicit null.
+публичными данными. Timestamp без timezone сохраняется исходной строкой, включая дробную часть;
+SDK не приписывает отсутствующий offset. `NovaTime.Instant()` возвращает UTC
+instant только для timestamp с явно указанной timezone; такие значения
+сериализуются RFC3339Nano в UTC. deleted_at/updated_at сохраняют explicit null.
 
 Create принимает 200/201, Delete — 204. Mutations сохраняют receipts и выполняются
 один раз. Неизвестный исход сохраняет точный request name/owner/endpoint, когда

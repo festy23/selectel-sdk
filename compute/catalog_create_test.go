@@ -246,7 +246,7 @@ func TestKeypairsCreateListGetDeleteProtectsPrivateKey(t *testing.T) {
 		t.Fatalf("keys %+v %v", list, e)
 	}
 	detail, e := c.Keypairs.Get(context.Background(), *list.Items[0].Ref, types.CallOptions{})
-	if e != nil || detail.Data.ID.String() != "9007199254740993" || detail.Data.CreatedAt.String() != "2026-10-14T12:00:00Z" || detail.Data.DeletedAt == nil {
+	if e != nil || detail.Data.ID.String() != "9007199254740993" || detail.Data.CreatedAt.String() != "2026-10-14T12:00:00.000000" || detail.Data.DeletedAt == nil {
 		t.Fatalf("key detail %+v %v", detail, e)
 	}
 	deleted, e := c.Keypairs.Delete(context.Background(), *detail.Data.Ref, types.CallOptions{})
@@ -534,5 +534,70 @@ func TestCreateRejectsContradictoryResponseVariantWithReceipt(t *testing.T) {
 	got, e := c.Servers.CreateWithResult(context.Background(), request())
 	if types.ErrorCode(e) != types.ProtocolError || got.Receipt == nil || got.Receipt.Outcome != types.Accepted || len(got.Receipt.ResourceRefs) != 1 || got.Receipt.ResourceRefs[0].ID != "created" {
 		t.Fatalf("contradictory union %+v %v", got, e)
+	}
+}
+
+func TestKeypairTimestampKeepsMissingTimezoneAndExplicitInstant(t *testing.T) {
+	for _, tc := range []struct{ wire, want, instant string }{
+		{"2026-10-14T12:00:00.000000", "2026-10-14T12:00:00.000000", ""},
+		{"2026-10-14T12:00:00.123456789123", "2026-10-14T12:00:00.123456789123", ""},
+		{"2026-10-14T12:00:00", "2026-10-14T12:00:00", ""},
+		{"2026-10-14T12:00:00.123456789+03:00", "2026-10-14T09:00:00.123456789Z", "2026-10-14T09:00:00.123456789Z"},
+		{"2026-10-14T12:00:00Z", "2026-10-14T12:00:00Z", "2026-10-14T12:00:00Z"},
+		{"2026-10-14T12:00:00-05:30", "2026-10-14T17:30:00Z", "2026-10-14T17:30:00Z"},
+	} {
+		t.Run(tc.wire, func(t *testing.T) {
+			c := catalogClient(t, func(*http.Request) (*http.Response, error) {
+				body, _ := json.Marshal(map[string]any{"keypair": map[string]any{"name": "key", "user_id": "owner", "created_at": tc.wire, "updated_at": tc.wire, "deleted_at": nil}})
+				return response(200, string(body)), nil
+			})
+			reference := serverRef()
+			reference.Kind = "keypair"
+			reference.ID = "key"
+			parent := reference
+			parent.Kind = "keypair_user"
+			parent.ID = "owner"
+			reference.Parent = &parent
+			got, e := c.Keypairs.Get(context.Background(), reference, types.CallOptions{})
+			if e != nil || got.Data.CreatedAt == nil {
+				t.Fatalf("timestamp response %+v %v", got, e)
+			}
+			raw, _ := json.Marshal(got.Data)
+			var fields map[string]json.RawMessage
+			_ = json.Unmarshal(raw, &fields)
+			want, _ := json.Marshal(tc.want)
+			if string(fields["created_at"]) != string(want) || string(fields["updated_at"]) != string(want) || got.Data.CreatedAt.String() != tc.want {
+				t.Fatalf("timestamp roundtrip %s expected %s", raw, want)
+			}
+			instant, ok := got.Data.CreatedAt.Instant()
+			if tc.instant == "" {
+				if ok || !instant.IsZero() {
+					t.Fatalf("invented offset %v", instant)
+				}
+			} else if !ok || instant.Location() != time.UTC || instant.Format(time.RFC3339Nano) != tc.instant {
+				t.Fatalf("wrong explicit instant %v %v", instant, ok)
+			}
+		})
+	}
+}
+func TestKeypairMalformedTimestampReturnsProtocolError(t *testing.T) {
+	for _, stamp := range []string{"not-a-time", "2026-13-14T12:00:00", "2026-10-14T25:00:00", "2026-10-14T12:00:00+not-offset", "2026-10-14T12:00:00+24:00", "2026-10-14T12:00:00+01:60"} {
+		t.Run(stamp, func(t *testing.T) {
+			c := catalogClient(t, func(*http.Request) (*http.Response, error) {
+				body, _ := json.Marshal(map[string]any{"keypair": map[string]any{"name": "key", "user_id": "owner", "created_at": stamp}})
+				return response(200, string(body)), nil
+			})
+			ref := serverRef()
+			ref.Kind = "keypair"
+			ref.ID = "key"
+			parent := ref
+			parent.Kind = "keypair_user"
+			parent.ID = "owner"
+			ref.Parent = &parent
+			got, e := c.Keypairs.Get(context.Background(), ref, types.CallOptions{})
+			if types.ErrorCode(e) != types.ProtocolError || got.Data.CreatedAt != nil {
+				t.Fatalf("malformed timestamp %+v %v", got, e)
+			}
+		})
 	}
 }
