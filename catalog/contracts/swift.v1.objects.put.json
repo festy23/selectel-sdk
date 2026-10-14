@@ -30,7 +30,8 @@
       "201"
     ],
     "mapping": "Typed protected object headers and exact target ref. Upload additionally yields emitted input byte count, Complete only on accepted 201 with exact count and valid bounded headers/control body. PUT variant acknowledgements do not prove readiness/ownership. Manifest rows preserve exact Integer size_bytes.",
-    "acknowledgement": "Success is API acknowledgement, not readiness or proof of authorship of an unknown write."
+    "acknowledgement": "Success is API acknowledgement, not readiness or proof of authorship of an unknown write.",
+    "progress": "Transfer.Bytes reports caller input bytes consumed at return on success, transport error, cancellation, rejected status and preflight failure (zero); never server-persisted bytes. Exact validated caller object ref retained even if success decoder was not reached. Complete=false on any error. Core Receipt/error are returned unchanged."
   },
   "errors": {
     "source": "internal/core/request.go sanitized per-status mappings",

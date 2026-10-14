@@ -8,6 +8,7 @@ import (
 	sdk "github.com/festy23/selectel-sdk"
 	"io"
 	"net/http"
+	"reflect"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -343,8 +344,8 @@ func TestSwiftCurrentUnknownUploadNeverReplays(t *testing.T) {
 	ref, _ := svc.Object(b, "object")
 	input := &swiftOwnedReader{Reader: strings.NewReader("data")}
 	out, e := svc.Upload(context.Background(), ref, input, 4, swift.UploadOptions{}, types.CallOptions{})
-	if types.ErrorCode(e) != types.UnknownOutcome || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || out.Receipt.Attempts != 1 || len(out.Receipt.ResourceRefs) != 1 || calls != 1 || input.closed {
-		t.Fatal("upload replay/ownership", e)
+	if types.ErrorCode(e) != types.UnknownOutcome || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || out.Receipt.Attempts != 1 || len(out.Receipt.ResourceRefs) != 1 || calls != 1 || input.closed || out.Data.Bytes != 4 || out.Data.Complete || !reflect.DeepEqual(out.Data.Object.Ref, &ref) {
+		t.Fatal("upload replay/ownership/progress", e)
 	}
 }
 func TestSwiftCurrentTransferUsesTransferBudget(t *testing.T) {
@@ -549,5 +550,46 @@ func TestSwiftCurrentTransferDeadlinePreventsLateWriterEmission(t *testing.T) {
 	out, e := svc.Download(context.Background(), ref, &dst, swift.DownloadOptions{MaxBytes: 10}, types.CallOptions{})
 	if types.ErrorCode(e) != types.DeadlineExceeded || dst.Len() != 0 || out.Data.Bytes != 0 || out.Data.Complete {
 		t.Fatal("expired transfer emitted late bytes", e)
+	}
+}
+
+func TestSwiftCurrentUploadProgressSurvivesCancellationAndRejection(t *testing.T) {
+	for _, which := range []string{"cancel", "rejected"} {
+		t.Run(which, func(t *testing.T) {
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			calls := 0
+			c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				buf := make([]byte, 4)
+				if _, e := io.ReadFull(r.Body, buf); e != nil {
+					t.Fatal(e)
+				}
+				if which == "cancel" {
+					cancel()
+					return nil, context.Canceled
+				}
+				return inventoryReply(403, "synthetic-private-rejection"), nil
+			}, 0)
+			svc := regionalView(t, c, "ru-1").Swift()
+			b, _ := svc.Bucket("bucket")
+			ref, _ := svc.Object(b, "object")
+			input := &swiftOwnedReader{Reader: strings.NewReader("fourmore")}
+			out, e := svc.Upload(ctx, ref, input, 8, swift.UploadOptions{}, types.CallOptions{})
+			wantCode, wantOutcome := types.UnknownOutcome, types.Unknown
+			if which == "rejected" {
+				wantCode, wantOutcome = types.PermissionDenied, types.Rejected
+			}
+			if types.ErrorCode(e) != wantCode || out.Receipt == nil || out.Receipt.Outcome != wantOutcome || out.Receipt.Attempts != 1 || calls != 1 || input.closed || out.Data.Bytes != 4 || out.Data.Complete || !reflect.DeepEqual(out.Data.Object.Ref, &ref) || len(out.Receipt.ResourceRefs) != 1 || !reflect.DeepEqual(out.Receipt.ResourceRefs[0], ref) {
+				t.Fatal("upload failure progress/receipt", e)
+			}
+			var detail *types.SDKError
+			if !errors.As(e, &detail) || detail.Receipt != out.Receipt {
+				t.Fatal("receipt detached from original error")
+			}
+			if which == "cancel" && detail.CauseCode != types.Canceled {
+				t.Fatal("cancel cause lost")
+			}
+		})
 	}
 }

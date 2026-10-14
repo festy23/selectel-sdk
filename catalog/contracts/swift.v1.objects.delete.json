@@ -52,5 +52,10 @@
     "Only source-documented 204 acknowledgement accepted; no unconfirmed bulk-style 200 segmented-delete response shape claimed",
     "Current pinned Selectel subset only; whole inventory unknown, no live verification, no old Swift or generic upstream extension adoption"
   ],
-  "contract_document": "docs/modules/selectelsdk/swift.md"
+  "contract_document": "docs/modules/selectelsdk/swift.md",
+  "followup_owner": {
+    "issue": "https://github.com/festy23/selectel-sdk/issues/61",
+    "acceptance_blocked": "https://github.com/festy23/selectel-sdk/issues/76",
+    "disposition": "Current partial variants remain open under #61; #71 is legacy only and #74 accounts for inventory without implementing these variants. Delivery references #61; it does not close full current scope."
+  }
 }

@@ -15,6 +15,17 @@ temporary URL signing, cross-project copy and the legacy API are not claimed.
 Legacy discovery remains the separate legacy coverage issue; no endpoint is
 classified withdrawn merely because it has not been called.
 
+The remaining current variants stay owned by [#61](https://github.com/festy23/selectel-sdk/issues/61):
+non-JSON (XML/plain text) container and object listings, and the segmented-delete
+response/status reconciliation beyond the documented 204. This delivery references
+#61 and does not close it as full current coverage. [#71](https://github.com/festy23/selectel-sdk/issues/71)
+owns legacy generations, not these current variants; [#74](https://github.com/festy23/selectel-sdk/issues/74)
+checks their catalog accounting. [#76](https://github.com/festy23/selectel-sdk/issues/76)
+remains blocked by #61 and cannot accept P2 while these active partial bindings
+remain. Unsupported response semantics must be resolved from primary sources,
+not guessed from a generic Swift deployment.
+
+
 | Methods | Wire behavior |
 | --- | --- |
 | Account, Buckets, UpdateAccount | HEAD account; JSON GET listing; POST metadata/removal/quota |
@@ -49,7 +60,11 @@ collections preserve their elements and protected continuation cursor. XML is
 explicitly outside these JSON bindings.
 
 Upload requires a caller reader and explicit byte size, and reads at most that
-size without probing or closing the caller input. Download requires a positive
+size without probing or closing the caller input. Its Bytes value reports input
+bytes consumed as observed at return on every path, including transport failure,
+cancellation and rejected HTTP status; it does not assert server persistence.
+The exact valid caller object locator stays in the transfer result on those
+paths, with Complete=false when an error is returned. Download requires a positive
 MaxBytes and caller writer; it writes at most that bound and probes one further
 response byte to distinguish EOF from truncation. No object body is buffered in
 full. Transfer results retain byte progress and Complete=false on cancellation,

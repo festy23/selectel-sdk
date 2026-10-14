@@ -84,7 +84,7 @@ func (c *Client) Upload(ctx context.Context, ref types.ResourceRef, reader io.Re
 		}
 	}
 	count := &countedReader{reader: io.LimitReader(reader, max(size, 0)), ctx: ctx}
-	return core.DoResponse(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: refPath(ref), Options: o, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(ref), Transfer: true, BodyStream: count, BodySize: size, Validate: func() error {
+	result, err := core.DoResponse(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: refPath(ref), Options: o, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(ref), Transfer: true, BodyStream: count, BodySize: size, Validate: func() error {
 		if bindErr != nil {
 			return bindErr
 		}
@@ -117,6 +117,17 @@ func (c *Client) Upload(ctx context.Context, ref types.ResourceRef, reader io.Re
 		out.Complete = e == nil
 		return core.Decoded[Transfer]{Data: out}, e
 	})
+	// Bytes is caller-input consumption observed at return, never a claim that the
+	// server persisted those bytes. The success decoder is not reached on all paths.
+	result.Data.Bytes = count.n.Load()
+	if result.Data.Object.Ref == nil && c.refError(ref, "object") == nil {
+		known := cloneRef(ref)
+		result.Data.Object.Ref = &known
+	}
+	if err != nil {
+		result.Data.Complete = false
+	}
+	return result, err
 }
 
 // Download reveals bytes only to the caller-directed writer and never closes it.
