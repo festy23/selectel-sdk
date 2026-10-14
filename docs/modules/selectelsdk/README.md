@@ -84,6 +84,7 @@ flowchart TD
 | [operations.md](operations.md) | Состояние, ожидание, восстановление исхода и отмена |
 | [services.md](services.md) | Семейства API и контракт расширения покрытия |
 | [scenarios.md](scenarios.md) | Начальные сквозные операции |
+| [databases.md](databases.md) | DBaaS v1: создание, точное чтение и ожидание |
 | [catalog.md](catalog.md) | Машинный каталог и правила учёта покрытия |
 | [dependencies.md](dependencies.md) | SDK, совместимые протоколы и reuse Terraform provider |
 | [settings.md](settings.md) | Типы, значения и ограничения настроек |

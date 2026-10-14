@@ -30,12 +30,12 @@ CASES = {
         "RegistriesIntegrationCreateStruct": "RegistryIntegrationCreateSpec",
         "RegistriesIntegrationUpdateStruct": "RegistryIntegrationUpdateSpec",
     }, None),
-    "databases": ("managed-databases", "datastore", "Datastore"),
+    "databases": ("managed-databases", {"datastore": "Datastore", "DatastoreCreate": "CreateRequest"}, None),
     "registry": ("craas", "Registry", "Registry"),
     "registry_v1": ("craas", "registry.Registry", "V1Registry"),
     "audit": ("audit-logs", "LogResponse", "Event"),
 }
-ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "cni": "CNI", "cpu": "CPU", "vcpus": "VCPUs", "ram": "RAM", "api": "API", "x509": "X509"}
+ACRONYMS = {"id": "ID", "ip": "IP", "ips": "IPs", "url": "URL", "oidc": "OIDC", "cni": "CNI", "cpu": "CPU", "vcpus": "VCPUs", "ram": "RAM", "api": "API", "x509": "X509"}
 
 
 def name(text):
@@ -51,6 +51,8 @@ for case, (family, initial, top_name) in CASES.items():
     resource_roots = set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
+    if package == "databases":
+        resource_roots = {"datastore"}
     pending = dict(roots)
     emitted = {}
     imports = {"types": "github.com/festy23/selectel-sdk/types", "json": "encoding/json"}
@@ -78,6 +80,8 @@ for case, (family, initial, top_name) in CASES.items():
         schema = resolve(schema)
         kind = schema.get("type")
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
+            return "types.ProtectedValue", False
+        if field == "redis_password" and package == "databases":
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False

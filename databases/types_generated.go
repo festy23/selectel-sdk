@@ -7,6 +7,155 @@ import (
 	"github.com/festy23/selectel-sdk/types"
 )
 
+type CreateRequest struct {
+	BackupRetentionDays *types.Integer              `json:"backup_retention_days,omitempty"`
+	Config              *types.ProtectedJSON        `json:"config,omitempty"`
+	Disk                *DatastoreCreateDisk        `json:"disk,omitempty"`
+	Flavor              *DatastoreCreateFlavor      `json:"flavor,omitempty"`
+	FlavorID            *string                     `json:"flavor_id,omitempty"`
+	FloatingIPs         *DatastoreCreateFloatingIPs `json:"floating_ips,omitempty"`
+	LogPlatform         *DatastoreEnableLogPlatform `json:"log_platform,omitempty"`
+	Name                *string                     `json:"name,omitempty"`
+	NodeCount           *types.Integer              `json:"node_count,omitempty"`
+	Pooler              *CreateRequestPooler        `json:"pooler,omitempty"`
+	ProjectID           *string                     `json:"project_id,omitempty"`
+	RedisPassword       *types.ProtectedValue       `json:"redis_password,omitempty"`
+	Restore             *CreateRequestRestore       `json:"restore,omitempty"`
+	SecurityGroups      []string                    `json:"security_groups,omitzero"`
+	SubnetID            *string                     `json:"subnet_id,omitempty"`
+	TypeID              *string                     `json:"type_id,omitempty"`
+}
+
+func (v CreateRequest) Validate() error {
+	if v.Name == nil || v.NodeCount == nil || v.SubnetID == nil || v.TypeID == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Disk != nil {
+		if err := v.Disk.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Flavor != nil {
+		if err := v.Flavor.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.FloatingIPs != nil {
+		if err := v.FloatingIPs.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.LogPlatform != nil {
+		if err := v.LogPlatform.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Pooler != nil {
+		if err := v.Pooler.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Restore != nil {
+		if err := v.Restore.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *CreateRequest) normalize() {
+	if v.Disk != nil {
+		v.Disk.normalize()
+	}
+	if v.Flavor != nil {
+		v.Flavor.normalize()
+	}
+	if v.FloatingIPs != nil {
+		v.FloatingIPs.normalize()
+	}
+	if v.LogPlatform != nil {
+		v.LogPlatform.normalize()
+	}
+	if v.Pooler != nil {
+		v.Pooler.normalize()
+	}
+	if v.Restore != nil {
+		v.Restore.normalize()
+	}
+}
+func (v *CreateRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire CreateRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = CreateRequest(value)
+	v.normalize()
+	return nil
+}
+
+type DatastoreCreateDisk struct {
+	Size *types.Integer `json:"size,omitempty"`
+	Type *string        `json:"type,omitempty"`
+}
+
+func (v DatastoreCreateDisk) Validate() error {
+	if v.Size == nil || v.Type == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *DatastoreCreateDisk) normalize() {
+}
+
+type DatastoreCreateFlavor struct {
+	Disk     *types.Integer `json:"disk,omitempty"`
+	DiskType *string        `json:"disk_type,omitempty"`
+	RAM      *types.Integer `json:"ram,omitempty"`
+	VCPUs    *types.Integer `json:"vcpus,omitempty"`
+}
+
+func (v DatastoreCreateFlavor) Validate() error {
+	if v.Disk == nil || v.RAM == nil || v.VCPUs == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *DatastoreCreateFlavor) normalize() {
+}
+
+type DatastoreCreateFloatingIPs struct {
+	Master  *types.Integer `json:"master,omitempty"`
+	Replica *types.Integer `json:"replica,omitempty"`
+}
+
+func (v DatastoreCreateFloatingIPs) Validate() error {
+	if v.Master == nil || v.Replica == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *DatastoreCreateFloatingIPs) normalize() {
+}
+
+type DatastoreEnableLogPlatform struct {
+	LogGroup *string `json:"log_group,omitempty"`
+}
+
+func (v DatastoreEnableLogPlatform) Validate() error {
+	return nil
+}
+func (v *DatastoreEnableLogPlatform) normalize() {
+}
+
 type DatastoreFirewallRule struct {
 	IP *string `json:"ip,omitempty"`
 }
@@ -128,6 +277,31 @@ func (v *Datastore) UnmarshalJSON(raw []byte) error {
 	*v = Datastore(value)
 	v.normalize()
 	return nil
+}
+
+type CreateRequestPooler struct {
+	Mode *string        `json:"mode,omitempty"`
+	Size *types.Integer `json:"size,omitempty"`
+}
+
+func (v CreateRequestPooler) Validate() error {
+	return nil
+}
+func (v *CreateRequestPooler) normalize() {
+}
+
+type CreateRequestRestore struct {
+	DatastoreID *string `json:"datastore_id,omitempty"`
+	TargetTime  *string `json:"target_time,omitempty"`
+}
+
+func (v CreateRequestRestore) Validate() error {
+	if v.DatastoreID == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *CreateRequestRestore) normalize() {
 }
 
 type DatastoreFlavor struct {
