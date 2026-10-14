@@ -1,0 +1,894 @@
+{
+  "x-source-uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5",
+  "x-inventory-kind": "SDK-owned networks/subnets/ports CRUD/list subset, not complete Neutron inventory",
+  "x-source-revision": "460f09b941de260160c68d1c9cac3ae792096bf5",
+  "x-api-reference": "https://docs.openstack.org/api-ref/network/v2/",
+  "x-generator-roots": {
+    "network.Network": "Network",
+    "network.CreateRequest": "NetworkCreateSpec",
+    "network.UpdateRequest": "NetworkUpdateSpec",
+    "subnet.AllocationPool": "SubnetAllocationPool",
+    "subnet.HostRoute": "SubnetHostRoute",
+    "subnet.Subnet": "Subnet",
+    "subnet.CreateRequest": "SubnetCreateSpec",
+    "subnet.UpdateRequest": "SubnetUpdateSpec",
+    "port.FixedIP": "PortFixedIP",
+    "port.AllowedAddressPair": "PortAllowedAddressPair",
+    "port.ExtraDHCPOption": "PortExtraDHCPOption",
+    "port.UpdateExtraDHCPOption": "PortUpdateExtraDHCPOption",
+    "port.Port": "Port",
+    "port.CreateRequest": "PortCreateSpec",
+    "port.UpdateRequest": "PortUpdateSpec"
+  },
+  "x-upstream-asset-uris": {
+    "vpc-network.go.txt": "https://github.com/selectel/vpc-go/blob/460f09b941de260160c68d1c9cac3ae792096bf5/pkg/v2/network/network.go",
+    "vpc-subnet.go.txt": "https://github.com/selectel/vpc-go/blob/460f09b941de260160c68d1c9cac3ae792096bf5/pkg/v2/subnet/subnet.go",
+    "vpc-port.go.txt": "https://github.com/selectel/vpc-go/blob/460f09b941de260160c68d1c9cac3ae792096bf5/pkg/v2/port/port.go",
+    "gopher-networks-requests.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/networks/requests.go",
+    "gopher-networks-results.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/networks/results.go",
+    "gopher-networks-urls.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/networks/urls.go",
+    "gopher-subnets-requests.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/subnets/requests.go",
+    "gopher-subnets-results.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/subnets/results.go",
+    "gopher-subnets-urls.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/subnets/urls.go",
+    "gopher-ports-requests.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/ports/requests.go",
+    "gopher-ports-results.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/ports/results.go",
+    "gopher-ports-urls.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/ports/urls.go",
+    "vpc-internal-api-client.go.txt": "https://github.com/selectel/vpc-go/blob/460f09b941de260160c68d1c9cac3ae792096bf5/internal/api/client.go",
+    "vpc-internal-api-errors.go.txt": "https://github.com/selectel/vpc-go/blob/460f09b941de260160c68d1c9cac3ae792096bf5/internal/api/errors.go",
+    "vpc-internal-api-pagination.go.txt": "https://github.com/selectel/vpc-go/blob/460f09b941de260160c68d1c9cac3ae792096bf5/internal/api/pagination.go",
+    "vpc-pkg-v2-query.go.txt": "https://github.com/selectel/vpc-go/blob/460f09b941de260160c68d1c9cac3ae792096bf5/pkg/v2/query.go"
+  },
+  "x-upstream-assets": {
+    "gopher-networks-requests.go.txt": "package networks\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/gophercloud/gophercloud/v2\"\n\t\"github.com/gophercloud/gophercloud/v2/pagination\"\n)\n\n// ListOptsBuilder allows extensions to add additional parameters to the\n// List request.\ntype ListOptsBuilder interface {\n\tToNetworkListQuery() (string, error)\n}\n\n// ListOpts allows the filtering and sorting of paginated collections through\n// the API. Filtering is achieved by passing in struct field values that map to\n// the network attributes you want to see returned. SortKey allows you to sort\n// by a particular network attribute. SortDir sets the direction, and is either\n// `asc' or `desc'. Marker and Limit are used for pagination.\ntype ListOpts struct {\n\tStatus         string `q:\"status\"`\n\tName           string `q:\"name\"`\n\tDescription    string `q:\"description\"`\n\tAdminStateUp   *bool  `q:\"admin_state_up\"`\n\tTenantID       string `q:\"tenant_id\"`\n\tProjectID      string `q:\"project_id\"`\n\tShared         *bool  `q:\"shared\"`\n\tID             string `q:\"id\"`\n\tMarker         string `q:\"marker\"`\n\tLimit          int    `q:\"limit\"`\n\tSortKey        string `q:\"sort_key\"`\n\tSortDir        string `q:\"sort_dir\"`\n\tTags           string `q:\"tags\"`\n\tTagsAny        string `q:\"tags-any\"`\n\tNotTags        string `q:\"not-tags\"`\n\tNotTagsAny     string `q:\"not-tags-any\"`\n\tRevisionNumber *int   `q:\"revision_number\"`\n}\n\n// ToNetworkListQuery formats a ListOpts into a query string.\nfunc (opts ListOpts) ToNetworkListQuery() (string, error) {\n\tq, err := gophercloud.BuildQueryString(opts)\n\treturn q.String(), err\n}\n\n// List returns a Pager which allows you to iterate over a collection of\n// networks. It accepts a ListOpts struct, which allows you to filter and sort\n// the returned collection for greater efficiency.\nfunc List(c *gophercloud.ServiceClient, opts ListOptsBuilder) pagination.Pager {\n\turl := listURL(c)\n\tif opts != nil {\n\t\tquery, err := opts.ToNetworkListQuery()\n\t\tif err != nil {\n\t\t\treturn pagination.Pager{Err: err}\n\t\t}\n\t\turl += query\n\t}\n\treturn pagination.NewPager(c, url, func(r pagination.PageResult) pagination.Page {\n\t\treturn NetworkPage{pagination.LinkedPageBase{PageResult: r}}\n\t})\n}\n\n// Get retrieves a specific network based on its unique ID.\nfunc Get(ctx context.Context, c *gophercloud.ServiceClient, id string) (r GetResult) {\n\tresp, err := c.Get(ctx, getURL(c, id), &r.Body, nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// CreateOptsBuilder allows extensions to add additional parameters to the\n// Create request.\ntype CreateOptsBuilder interface {\n\tToNetworkCreateMap() (map[string]any, error)\n}\n\n// CreateOpts represents options used to create a network.\ntype CreateOpts struct {\n\tAdminStateUp          *bool    `json:\"admin_state_up,omitempty\"`\n\tName                  string   `json:\"name,omitempty\"`\n\tDescription           string   `json:\"description,omitempty\"`\n\tShared                *bool    `json:\"shared,omitempty\"`\n\tTenantID              string   `json:\"tenant_id,omitempty\"`\n\tProjectID             string   `json:\"project_id,omitempty\"`\n\tAvailabilityZoneHints []string `json:\"availability_zone_hints,omitempty\"`\n}\n\n// ToNetworkCreateMap builds a request body from CreateOpts.\nfunc (opts CreateOpts) ToNetworkCreateMap() (map[string]any, error) {\n\treturn gophercloud.BuildRequestBody(opts, \"network\")\n}\n\n// Create accepts a CreateOpts struct and creates a new network using the values\n// provided. This operation does not actually require a request body, i.e. the\n// CreateOpts struct argument can be empty.\n//\n// The tenant ID that is contained in the URI is the tenant that creates the\n// network. An admin user, however, has the option of specifying another tenant\n// ID in the CreateOpts struct.\nfunc Create(ctx context.Context, c *gophercloud.ServiceClient, opts CreateOptsBuilder) (r CreateResult) {\n\tb, err := opts.ToNetworkCreateMap()\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\tresp, err := c.Post(ctx, createURL(c), b, &r.Body, nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// UpdateOptsBuilder allows extensions to add additional parameters to the\n// Update request.\ntype UpdateOptsBuilder interface {\n\tToNetworkUpdateMap() (map[string]any, error)\n}\n\n// UpdateOpts represents options used to update a network.\ntype UpdateOpts struct {\n\tAdminStateUp *bool   `json:\"admin_state_up,omitempty\"`\n\tName         *string `json:\"name,omitempty\"`\n\tDescription  *string `json:\"description,omitempty\"`\n\tShared       *bool   `json:\"shared,omitempty\"`\n\n\t// RevisionNumber implements extension:standard-attr-revisions. If != \"\" it\n\t// will set revision_number=%s. If the revision number does not match, the\n\t// update will fail.\n\tRevisionNumber *int `json:\"-\" h:\"If-Match\"`\n}\n\n// ToNetworkUpdateMap builds a request body from UpdateOpts.\nfunc (opts UpdateOpts) ToNetworkUpdateMap() (map[string]any, error) {\n\treturn gophercloud.BuildRequestBody(opts, \"network\")\n}\n\n// Update accepts a UpdateOpts struct and updates an existing network using the\n// values provided. For more information, see the Create function.\nfunc Update(ctx context.Context, c *gophercloud.ServiceClient, networkID string, opts UpdateOptsBuilder) (r UpdateResult) {\n\tb, err := opts.ToNetworkUpdateMap()\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\th, err := gophercloud.BuildHeaders(opts)\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\tfor k := range h {\n\t\tif k == \"If-Match\" {\n\t\t\th[k] = fmt.Sprintf(\"revision_number=%s\", h[k])\n\t\t}\n\t}\n\tresp, err := c.Put(ctx, updateURL(c, networkID), b, &r.Body, &gophercloud.RequestOpts{\n\t\tMoreHeaders: h,\n\t\tOkCodes:     []int{200, 201},\n\t})\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// Delete accepts a unique ID and deletes the network associated with it.\nfunc Delete(ctx context.Context, c *gophercloud.ServiceClient, networkID string) (r DeleteResult) {\n\tresp, err := c.Delete(ctx, deleteURL(c, networkID), nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n",
+    "gopher-networks-results.go.txt": "package networks\n\nimport (\n\t\"encoding/json\"\n\t\"time\"\n\n\t\"github.com/gophercloud/gophercloud/v2\"\n\t\"github.com/gophercloud/gophercloud/v2/pagination\"\n)\n\ntype commonResult struct {\n\tgophercloud.Result\n}\n\n// Extract is a function that accepts a result and extracts a network resource.\nfunc (r commonResult) Extract() (*Network, error) {\n\tvar s Network\n\terr := r.ExtractInto(&s)\n\treturn &s, err\n}\n\nfunc (r commonResult) ExtractInto(v any) error {\n\treturn r.ExtractIntoStructPtr(v, \"network\")\n}\n\n// CreateResult represents the result of a create operation. Call its Extract\n// method to interpret it as a Network.\ntype CreateResult struct {\n\tcommonResult\n}\n\n// GetResult represents the result of a get operation. Call its Extract\n// method to interpret it as a Network.\ntype GetResult struct {\n\tcommonResult\n}\n\n// UpdateResult represents the result of an update operation. Call its Extract\n// method to interpret it as a Network.\ntype UpdateResult struct {\n\tcommonResult\n}\n\n// DeleteResult represents the result of a delete operation. Call its\n// ExtractErr method to determine if the request succeeded or failed.\ntype DeleteResult struct {\n\tgophercloud.ErrResult\n}\n\n// Network represents, well, a network.\ntype Network struct {\n\t// UUID for the network\n\tID string `json:\"id\"`\n\n\t// Human-readable name for the network. Might not be unique.\n\tName string `json:\"name\"`\n\n\t// Description for the network\n\tDescription string `json:\"description\"`\n\n\t// The administrative state of network. If false (down), the network does not\n\t// forward packets.\n\tAdminStateUp bool `json:\"admin_state_up\"`\n\n\t// Indicates whether network is currently operational. Possible values include\n\t// `ACTIVE', `DOWN', `BUILD', or `ERROR'. Plug-ins might define additional\n\t// values.\n\tStatus string `json:\"status\"`\n\n\t// Subnets associated with this network.\n\tSubnets []string `json:\"subnets\"`\n\n\t// TenantID is the project owner of the network.\n\tTenantID string `json:\"tenant_id\"`\n\n\t// UpdatedAt and CreatedAt contain ISO-8601 timestamps of when the state of the\n\t// network last changed, and when it was created.\n\tUpdatedAt time.Time `json:\"-\"`\n\tCreatedAt time.Time `json:\"-\"`\n\n\t// ProjectID is the project owner of the network.\n\tProjectID string `json:\"project_id\"`\n\n\t// Specifies whether the network resource can be accessed by any tenant.\n\tShared bool `json:\"shared\"`\n\n\t// Availability zone hints groups network nodes that run services like DHCP, L3, FW, and others.\n\t// Used to make network resources highly available.\n\tAvailabilityZoneHints []string `json:\"availability_zone_hints\"`\n\n\t// Tags optionally set via extensions/attributestags\n\tTags []string `json:\"tags\"`\n\n\t// RevisionNumber optionally set via extensions/standard-attr-revisions\n\tRevisionNumber int `json:\"revision_number\"`\n}\n\nfunc (r *Network) UnmarshalJSON(b []byte) error {\n\ttype tmp Network\n\n\t// Support for older neutron time format\n\tvar s1 struct {\n\t\ttmp\n\t\tCreatedAt gophercloud.JSONRFC3339NoZ `json:\"created_at\"`\n\t\tUpdatedAt gophercloud.JSONRFC3339NoZ `json:\"updated_at\"`\n\t}\n\n\terr := json.Unmarshal(b, &s1)\n\tif err == nil {\n\t\t*r = Network(s1.tmp)\n\t\tr.CreatedAt = time.Time(s1.CreatedAt)\n\t\tr.UpdatedAt = time.Time(s1.UpdatedAt)\n\n\t\treturn nil\n\t}\n\n\t// Support for newer neutron time format\n\tvar s2 struct {\n\t\ttmp\n\t\tCreatedAt time.Time `json:\"created_at\"`\n\t\tUpdatedAt time.Time `json:\"updated_at\"`\n\t}\n\n\terr = json.Unmarshal(b, &s2)\n\tif err != nil {\n\t\treturn err\n\t}\n\n\t*r = Network(s2.tmp)\n\tr.CreatedAt = time.Time(s2.CreatedAt)\n\tr.UpdatedAt = time.Time(s2.UpdatedAt)\n\n\treturn nil\n}\n\n// NetworkPage is the page returned by a pager when traversing over a\n// collection of networks.\ntype NetworkPage struct {\n\tpagination.LinkedPageBase\n}\n\n// NextPageURL is invoked when a paginated collection of networks has reached\n// the end of a page and the pager seeks to traverse over a new one. In order\n// to do this, it needs to construct the next page's URL.\nfunc (r NetworkPage) NextPageURL() (string, error) {\n\tvar s struct {\n\t\tLinks []gophercloud.Link `json:\"networks_links\"`\n\t}\n\terr := r.ExtractInto(&s)\n\tif err != nil {\n\t\treturn \"\", err\n\t}\n\treturn gophercloud.ExtractNextURL(s.Links)\n}\n\n// IsEmpty checks whether a NetworkPage struct is empty.\nfunc (r NetworkPage) IsEmpty() (bool, error) {\n\tif r.StatusCode == 204 {\n\t\treturn true, nil\n\t}\n\n\tis, err := ExtractNetworks(r)\n\treturn len(is) == 0, err\n}\n\n// ExtractNetworks accepts a Page struct, specifically a NetworkPage struct,\n// and extracts the elements into a slice of Network structs. In other words,\n// a generic collection is mapped into a relevant slice.\nfunc ExtractNetworks(r pagination.Page) ([]Network, error) {\n\tvar s []Network\n\terr := ExtractNetworksInto(r, &s)\n\treturn s, err\n}\n\nfunc ExtractNetworksInto(r pagination.Page, v any) error {\n\treturn r.(NetworkPage).ExtractIntoSlicePtr(v, \"networks\")\n}\n",
+    "gopher-networks-urls.go.txt": "package networks\n\nimport \"github.com/gophercloud/gophercloud/v2\"\n\nfunc resourceURL(c *gophercloud.ServiceClient, id string) string {\n\treturn c.ServiceURL(\"networks\", id)\n}\n\nfunc rootURL(c *gophercloud.ServiceClient) string {\n\treturn c.ServiceURL(\"networks\")\n}\n\nfunc getURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n\nfunc listURL(c *gophercloud.ServiceClient) string {\n\treturn rootURL(c)\n}\n\nfunc createURL(c *gophercloud.ServiceClient) string {\n\treturn rootURL(c)\n}\n\nfunc updateURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n\nfunc deleteURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n",
+    "gopher-ports-requests.go.txt": "package ports\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"net/url\"\n\t\"slices\"\n\n\t\"github.com/gophercloud/gophercloud/v2\"\n\t\"github.com/gophercloud/gophercloud/v2/pagination\"\n)\n\n// ListOptsBuilder allows extensions to add additional parameters to the\n// List request.\ntype ListOptsBuilder interface {\n\tToPortListQuery() (string, error)\n}\n\n// ListOpts allows the filtering and sorting of paginated collections through\n// the API. Filtering is achieved by passing in struct field values that map to\n// the port attributes you want to see returned. SortKey allows you to sort\n// by a particular port attribute. SortDir sets the direction, and is either\n// `asc' or `desc'. Marker and Limit are used for pagination.\ntype ListOpts struct {\n\tStatus         string   `q:\"status\"`\n\tName           string   `q:\"name\"`\n\tDescription    string   `q:\"description\"`\n\tAdminStateUp   *bool    `q:\"admin_state_up\"`\n\tNetworkID      string   `q:\"network_id\"`\n\tTenantID       string   `q:\"tenant_id\"`\n\tProjectID      string   `q:\"project_id\"`\n\tDeviceOwner    string   `q:\"device_owner\"`\n\tMACAddress     string   `q:\"mac_address\"`\n\tID             string   `q:\"id\"`\n\tDeviceID       string   `q:\"device_id\"`\n\tLimit          int      `q:\"limit\"`\n\tMarker         string   `q:\"marker\"`\n\tSortKey        string   `q:\"sort_key\"`\n\tSortDir        string   `q:\"sort_dir\"`\n\tTags           string   `q:\"tags\"`\n\tTagsAny        string   `q:\"tags-any\"`\n\tNotTags        string   `q:\"not-tags\"`\n\tNotTagsAny     string   `q:\"not-tags-any\"`\n\tRevisionNumber *int     `q:\"revision_number\"`\n\tSecurityGroups []string `q:\"security_groups\"`\n\tFixedIPs       []FixedIPOpts\n}\n\ntype FixedIPOpts struct {\n\tIPAddress       string\n\tIPAddressSubstr string\n\tSubnetID        string\n}\n\nfunc (f FixedIPOpts) toParams() []string {\n\tvar res []string\n\tif f.IPAddress != \"\" {\n\t\tres = append(res, fmt.Sprintf(\"ip_address=%s\", f.IPAddress))\n\t}\n\tif f.IPAddressSubstr != \"\" {\n\t\tres = append(res, fmt.Sprintf(\"ip_address_substr=%s\", f.IPAddressSubstr))\n\t}\n\tif f.SubnetID != \"\" {\n\t\tres = append(res, fmt.Sprintf(\"subnet_id=%s\", f.SubnetID))\n\t}\n\treturn res\n}\n\n// ToPortListQuery formats a ListOpts into a query string.\nfunc (opts ListOpts) ToPortListQuery() (string, error) {\n\tq, err := gophercloud.BuildQueryString(opts)\n\tparams := q.Query()\n\tfor _, fixedIP := range opts.FixedIPs {\n\t\tfor _, fixedIPParam := range fixedIP.toParams() {\n\t\t\tparams.Add(\"fixed_ips\", fixedIPParam)\n\t\t}\n\t}\n\tq = &url.URL{RawQuery: params.Encode()}\n\treturn q.String(), err\n}\n\n// List returns a Pager which allows you to iterate over a collection of\n// ports. It accepts a ListOpts struct, which allows you to filter and sort\n// the returned collection for greater efficiency.\n//\n// Default policy settings return only those ports that are owned by the tenant\n// who submits the request, unless the request is submitted by a user with\n// administrative rights.\nfunc List(c *gophercloud.ServiceClient, opts ListOptsBuilder) pagination.Pager {\n\turl := listURL(c)\n\tif opts != nil {\n\t\tquery, err := opts.ToPortListQuery()\n\t\tif err != nil {\n\t\t\treturn pagination.Pager{Err: err}\n\t\t}\n\t\turl += query\n\t}\n\treturn pagination.NewPager(c, url, func(r pagination.PageResult) pagination.Page {\n\t\treturn PortPage{pagination.LinkedPageBase{PageResult: r}}\n\t})\n}\n\n// Get retrieves a specific port based on its unique ID.\nfunc Get(ctx context.Context, c *gophercloud.ServiceClient, id string) (r GetResult) {\n\tresp, err := c.Get(ctx, getURL(c, id), &r.Body, nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// CreateOptsBuilder allows extensions to add additional parameters to the\n// Create request.\ntype CreateOptsBuilder interface {\n\tToPortCreateMap() (map[string]any, error)\n}\n\n// CreateOpts represents the attributes used when creating a new port.\ntype CreateOpts struct {\n\tNetworkID             string             `json:\"network_id\" required:\"true\"`\n\tName                  string             `json:\"name,omitempty\"`\n\tDescription           string             `json:\"description,omitempty\"`\n\tAdminStateUp          *bool              `json:\"admin_state_up,omitempty\"`\n\tMACAddress            string             `json:\"mac_address,omitempty\"`\n\tFixedIPs              any                `json:\"fixed_ips,omitempty\"`\n\tDeviceID              string             `json:\"device_id,omitempty\"`\n\tDeviceOwner           string             `json:\"device_owner,omitempty\"`\n\tTenantID              string             `json:\"tenant_id,omitempty\"`\n\tProjectID             string             `json:\"project_id,omitempty\"`\n\tSecurityGroups        *[]string          `json:\"security_groups,omitempty\"`\n\tAllowedAddressPairs   []AddressPair      `json:\"allowed_address_pairs,omitempty\"`\n\tPropagateUplinkStatus *bool              `json:\"propagate_uplink_status,omitempty\"`\n\tValueSpecs            *map[string]string `json:\"value_specs,omitempty\"`\n}\n\n// ToPortCreateMap builds a request body from CreateOpts.\nfunc (opts CreateOpts) ToPortCreateMap() (map[string]any, error) {\n\tbody, err := gophercloud.BuildRequestBody(opts, \"port\")\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn AddValueSpecs(body)\n}\n\n// AddValueSpecs expands the 'value_specs' object and removes 'value_specs'\n// from the request body. It will return error if the value specs would overwrite\n// an existing field or contains forbidden keys.\nfunc AddValueSpecs(body map[string]any) (map[string]any, error) {\n\t// Banned the same as in heat. See https://github.com/openstack/heat/blob/dd7319e373b88812cb18897f742b5196a07227ea/heat/engine/resources/openstack/neutron/neutron.py#L59\n\tbannedKeys := []string{\"shared\", \"tenant_id\"}\n\tport := body[\"port\"].(map[string]any)\n\n\tif port[\"value_specs\"] != nil {\n\t\tfor k, v := range port[\"value_specs\"].(map[string]any) {\n\t\t\tif slices.Contains(bannedKeys, k) {\n\t\t\t\treturn nil, fmt.Errorf(\"forbidden key in value_specs: %s\", k)\n\t\t\t}\n\t\t\tif _, ok := port[k]; ok {\n\t\t\t\treturn nil, fmt.Errorf(\"value_specs would overwrite key: %s\", k)\n\t\t\t}\n\t\t\tport[k] = v\n\t\t}\n\t\tdelete(port, \"value_specs\")\n\t}\n\tbody[\"port\"] = port\n\n\treturn body, nil\n}\n\n// Create accepts a CreateOpts struct and creates a new network using the values\n// provided. You must remember to provide a NetworkID value.\nfunc Create(ctx context.Context, c *gophercloud.ServiceClient, opts CreateOptsBuilder) (r CreateResult) {\n\tb, err := opts.ToPortCreateMap()\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\tresp, err := c.Post(ctx, createURL(c), b, &r.Body, nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// UpdateOptsBuilder allows extensions to add additional parameters to the\n// Update request.\ntype UpdateOptsBuilder interface {\n\tToPortUpdateMap() (map[string]any, error)\n}\n\n// UpdateOpts represents the attributes used when updating an existing port.\ntype UpdateOpts struct {\n\tName                  *string            `json:\"name,omitempty\"`\n\tDescription           *string            `json:\"description,omitempty\"`\n\tAdminStateUp          *bool              `json:\"admin_state_up,omitempty\"`\n\tFixedIPs              any                `json:\"fixed_ips,omitempty\"`\n\tDeviceID              *string            `json:\"device_id,omitempty\"`\n\tDeviceOwner           *string            `json:\"device_owner,omitempty\"`\n\tSecurityGroups        *[]string          `json:\"security_groups,omitempty\"`\n\tAllowedAddressPairs   *[]AddressPair     `json:\"allowed_address_pairs,omitempty\"`\n\tPropagateUplinkStatus *bool              `json:\"propagate_uplink_status,omitempty\"`\n\tValueSpecs            *map[string]string `json:\"value_specs,omitempty\"`\n\tMACAddress            *string            `json:\"mac_address,omitempty\"`\n\n\t// RevisionNumber implements extension:standard-attr-revisions. If != \"\" it\n\t// will set revision_number=%s. If the revision number does not match, the\n\t// update will fail.\n\tRevisionNumber *int `json:\"-\" h:\"If-Match\"`\n}\n\n// ToPortUpdateMap builds a request body from UpdateOpts.\nfunc (opts UpdateOpts) ToPortUpdateMap() (map[string]any, error) {\n\tbody, err := gophercloud.BuildRequestBody(opts, \"port\")\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn AddValueSpecs(body)\n}\n\n// Update accepts a UpdateOpts struct and updates an existing port using the\n// values provided.\nfunc Update(ctx context.Context, c *gophercloud.ServiceClient, id string, opts UpdateOptsBuilder) (r UpdateResult) {\n\tb, err := opts.ToPortUpdateMap()\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\th, err := gophercloud.BuildHeaders(opts)\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\tfor k := range h {\n\t\tif k == \"If-Match\" {\n\t\t\th[k] = fmt.Sprintf(\"revision_number=%s\", h[k])\n\t\t}\n\t}\n\tresp, err := c.Put(ctx, updateURL(c, id), b, &r.Body, &gophercloud.RequestOpts{\n\t\tMoreHeaders: h,\n\t\tOkCodes:     []int{200, 201},\n\t})\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// Delete accepts a unique ID and deletes the port associated with it.\nfunc Delete(ctx context.Context, c *gophercloud.ServiceClient, id string) (r DeleteResult) {\n\tresp, err := c.Delete(ctx, deleteURL(c, id), nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n",
+    "gopher-ports-results.go.txt": "package ports\n\nimport (\n\t\"encoding/json\"\n\t\"time\"\n\n\t\"github.com/gophercloud/gophercloud/v2\"\n\t\"github.com/gophercloud/gophercloud/v2/pagination\"\n)\n\ntype commonResult struct {\n\tgophercloud.Result\n}\n\n// Extract is a function that accepts a result and extracts a port resource.\nfunc (r commonResult) Extract() (*Port, error) {\n\tvar s Port\n\terr := r.ExtractInto(&s)\n\treturn &s, err\n}\n\nfunc (r commonResult) ExtractInto(v any) error {\n\treturn r.ExtractIntoStructPtr(v, \"port\")\n}\n\n// CreateResult represents the result of a create operation. Call its Extract\n// method to interpret it as a Port.\ntype CreateResult struct {\n\tcommonResult\n}\n\n// GetResult represents the result of a get operation. Call its Extract\n// method to interpret it as a Port.\ntype GetResult struct {\n\tcommonResult\n}\n\n// UpdateResult represents the result of an update operation. Call its Extract\n// method to interpret it as a Port.\ntype UpdateResult struct {\n\tcommonResult\n}\n\n// DeleteResult represents the result of a delete operation. Call its\n// ExtractErr method to determine if the request succeeded or failed.\ntype DeleteResult struct {\n\tgophercloud.ErrResult\n}\n\n// IP is a sub-struct that represents an individual IP.\ntype IP struct {\n\tSubnetID  string `json:\"subnet_id,omitempty\"`\n\tIPAddress string `json:\"ip_address,omitempty\"`\n}\n\n// AddressPair contains the IP Address and the MAC address.\ntype AddressPair struct {\n\tIPAddress  string `json:\"ip_address,omitempty\"`\n\tMACAddress string `json:\"mac_address,omitempty\"`\n}\n\n// Port represents a Neutron port. See package documentation for a top-level\n// description of what this is.\ntype Port struct {\n\t// UUID for the port.\n\tID string `json:\"id\"`\n\n\t// Network that this port is associated with.\n\tNetworkID string `json:\"network_id\"`\n\n\t// Human-readable name for the port. Might not be unique.\n\tName string `json:\"name\"`\n\n\t// Describes the port.\n\tDescription string `json:\"description\"`\n\n\t// Administrative state of port. If false (down), port does not forward\n\t// packets.\n\tAdminStateUp bool `json:\"admin_state_up\"`\n\n\t// Indicates whether network is currently operational. Possible values include\n\t// `ACTIVE', `DOWN', `BUILD', or `ERROR'. Plug-ins might define additional\n\t// values.\n\tStatus string `json:\"status\"`\n\n\t// Mac address to use on this port.\n\tMACAddress string `json:\"mac_address\"`\n\n\t// Specifies IP addresses for the port thus associating the port itself with\n\t// the subnets where the IP addresses are picked from\n\tFixedIPs []IP `json:\"fixed_ips\"`\n\n\t// TenantID is the project owner of the port.\n\tTenantID string `json:\"tenant_id\"`\n\n\t// ProjectID is the project owner of the port.\n\tProjectID string `json:\"project_id\"`\n\n\t// Identifies the entity (e.g.: dhcp agent) using this port.\n\tDeviceOwner string `json:\"device_owner\"`\n\n\t// Specifies the IDs of any security groups associated with a port.\n\tSecurityGroups []string `json:\"security_groups\"`\n\n\t// Identifies the device (e.g., virtual server) using this port.\n\tDeviceID string `json:\"device_id\"`\n\n\t// Identifies the list of IP addresses the port will recognize/accept\n\tAllowedAddressPairs []AddressPair `json:\"allowed_address_pairs\"`\n\n\t// Tags optionally set via extensions/attributestags\n\tTags []string `json:\"tags\"`\n\n\t// PropagateUplinkStatus enables/disables propagate uplink status on the port.\n\tPropagateUplinkStatus bool `json:\"propagate_uplink_status\"`\n\n\t// RevisionNumber optionally set via extensions/standard-attr-revisions\n\tRevisionNumber int `json:\"revision_number\"`\n\n\t// Timestamp when the port was created\n\tCreatedAt time.Time `json:\"created_at\"`\n\n\t// Timestamp when the port was last updated\n\tUpdatedAt time.Time `json:\"updated_at\"`\n}\n\nfunc (r *Port) UnmarshalJSON(b []byte) error {\n\ttype tmp Port\n\n\t// Support for older neutron time format\n\tvar s1 struct {\n\t\ttmp\n\t\tCreatedAt gophercloud.JSONRFC3339NoZ `json:\"created_at\"`\n\t\tUpdatedAt gophercloud.JSONRFC3339NoZ `json:\"updated_at\"`\n\t}\n\n\terr := json.Unmarshal(b, &s1)\n\tif err == nil {\n\t\t*r = Port(s1.tmp)\n\t\tr.CreatedAt = time.Time(s1.CreatedAt)\n\t\tr.UpdatedAt = time.Time(s1.UpdatedAt)\n\n\t\treturn nil\n\t}\n\n\t// Support for newer neutron time format\n\tvar s2 struct {\n\t\ttmp\n\t\tCreatedAt time.Time `json:\"created_at\"`\n\t\tUpdatedAt time.Time `json:\"updated_at\"`\n\t}\n\n\terr = json.Unmarshal(b, &s2)\n\tif err != nil {\n\t\treturn err\n\t}\n\n\t*r = Port(s2.tmp)\n\tr.CreatedAt = time.Time(s2.CreatedAt)\n\tr.UpdatedAt = time.Time(s2.UpdatedAt)\n\n\treturn nil\n}\n\n// PortPage is the page returned by a pager when traversing over a collection\n// of network ports.\ntype PortPage struct {\n\tpagination.LinkedPageBase\n}\n\n// NextPageURL is invoked when a paginated collection of ports has reached\n// the end of a page and the pager seeks to traverse over a new one. In order\n// to do this, it needs to construct the next page's URL.\nfunc (r PortPage) NextPageURL() (string, error) {\n\tvar s struct {\n\t\tLinks []gophercloud.Link `json:\"ports_links\"`\n\t}\n\terr := r.ExtractInto(&s)\n\tif err != nil {\n\t\treturn \"\", err\n\t}\n\treturn gophercloud.ExtractNextURL(s.Links)\n}\n\n// IsEmpty checks whether a PortPage struct is empty.\nfunc (r PortPage) IsEmpty() (bool, error) {\n\tif r.StatusCode == 204 {\n\t\treturn true, nil\n\t}\n\n\tis, err := ExtractPorts(r)\n\treturn len(is) == 0, err\n}\n\n// ExtractPorts accepts a Page struct, specifically a PortPage struct,\n// and extracts the elements into a slice of Port structs. In other words,\n// a generic collection is mapped into a relevant slice.\nfunc ExtractPorts(r pagination.Page) ([]Port, error) {\n\tvar s []Port\n\terr := ExtractPortsInto(r, &s)\n\treturn s, err\n}\n\nfunc ExtractPortsInto(r pagination.Page, v any) error {\n\treturn r.(PortPage).ExtractIntoSlicePtr(v, \"ports\")\n}\n",
+    "gopher-ports-urls.go.txt": "package ports\n\nimport \"github.com/gophercloud/gophercloud/v2\"\n\nfunc resourceURL(c *gophercloud.ServiceClient, id string) string {\n\treturn c.ServiceURL(\"ports\", id)\n}\n\nfunc rootURL(c *gophercloud.ServiceClient) string {\n\treturn c.ServiceURL(\"ports\")\n}\n\nfunc listURL(c *gophercloud.ServiceClient) string {\n\treturn rootURL(c)\n}\n\nfunc getURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n\nfunc createURL(c *gophercloud.ServiceClient) string {\n\treturn rootURL(c)\n}\n\nfunc updateURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n\nfunc deleteURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n",
+    "gopher-subnets-requests.go.txt": "package subnets\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/gophercloud/gophercloud/v2\"\n\t\"github.com/gophercloud/gophercloud/v2/pagination\"\n)\n\n// ListOptsBuilder allows extensions to add additional parameters to the\n// List request.\ntype ListOptsBuilder interface {\n\tToSubnetListQuery() (string, error)\n}\n\n// ListOpts allows the filtering and sorting of paginated collections through\n// the API. Filtering is achieved by passing in struct field values that map to\n// the subnet attributes you want to see returned. SortKey allows you to sort\n// by a particular subnet attribute. SortDir sets the direction, and is either\n// `asc' or `desc'. Marker and Limit are used for pagination.\ntype ListOpts struct {\n\tName              string `q:\"name\"`\n\tDescription       string `q:\"description\"`\n\tDNSPublishFixedIP *bool  `q:\"dns_publish_fixed_ip\"`\n\tEnableDHCP        *bool  `q:\"enable_dhcp\"`\n\tNetworkID         string `q:\"network_id\"`\n\tTenantID          string `q:\"tenant_id\"`\n\tProjectID         string `q:\"project_id\"`\n\tIPVersion         int    `q:\"ip_version\"`\n\tGatewayIP         string `q:\"gateway_ip\"`\n\tCIDR              string `q:\"cidr\"`\n\tIPv6AddressMode   string `q:\"ipv6_address_mode\"`\n\tIPv6RAMode        string `q:\"ipv6_ra_mode\"`\n\tID                string `q:\"id\"`\n\tSubnetPoolID      string `q:\"subnetpool_id\"`\n\tLimit             int    `q:\"limit\"`\n\tMarker            string `q:\"marker\"`\n\tSortKey           string `q:\"sort_key\"`\n\tSortDir           string `q:\"sort_dir\"`\n\tTags              string `q:\"tags\"`\n\tTagsAny           string `q:\"tags-any\"`\n\tNotTags           string `q:\"not-tags\"`\n\tNotTagsAny        string `q:\"not-tags-any\"`\n\tRevisionNumber    *int   `q:\"revision_number\"`\n\tSegmentID         string `q:\"segment_id\"`\n}\n\n// ToSubnetListQuery formats a ListOpts into a query string.\nfunc (opts ListOpts) ToSubnetListQuery() (string, error) {\n\tq, err := gophercloud.BuildQueryString(opts)\n\treturn q.String(), err\n}\n\n// List returns a Pager which allows you to iterate over a collection of\n// subnets. It accepts a ListOpts struct, which allows you to filter and sort\n// the returned collection for greater efficiency.\n//\n// Default policy settings return only those subnets that are owned by the tenant\n// who submits the request, unless the request is submitted by a user with\n// administrative rights.\nfunc List(c *gophercloud.ServiceClient, opts ListOptsBuilder) pagination.Pager {\n\turl := listURL(c)\n\tif opts != nil {\n\t\tquery, err := opts.ToSubnetListQuery()\n\t\tif err != nil {\n\t\t\treturn pagination.Pager{Err: err}\n\t\t}\n\t\turl += query\n\t}\n\treturn pagination.NewPager(c, url, func(r pagination.PageResult) pagination.Page {\n\t\treturn SubnetPage{pagination.LinkedPageBase{PageResult: r}}\n\t})\n}\n\n// Get retrieves a specific subnet based on its unique ID.\nfunc Get(ctx context.Context, c *gophercloud.ServiceClient, id string) (r GetResult) {\n\tresp, err := c.Get(ctx, getURL(c, id), &r.Body, nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// CreateOptsBuilder allows extensions to add additional parameters to the\n// List request.\ntype CreateOptsBuilder interface {\n\tToSubnetCreateMap() (map[string]any, error)\n}\n\n// CreateOpts represents the attributes used when creating a new subnet.\ntype CreateOpts struct {\n\t// NetworkID is the UUID of the network the subnet will be associated with.\n\tNetworkID string `json:\"network_id\" required:\"true\"`\n\n\t// CIDR is the address CIDR of the subnet.\n\tCIDR string `json:\"cidr,omitempty\"`\n\n\t// Name is a human-readable name of the subnet.\n\tName string `json:\"name,omitempty\"`\n\n\t// Description of the subnet.\n\tDescription string `json:\"description,omitempty\"`\n\n\t// The UUID of the project who owns the Subnet. Only administrative users\n\t// can specify a project UUID other than their own.\n\tTenantID string `json:\"tenant_id,omitempty\"`\n\n\t// The UUID of the project who owns the Subnet. Only administrative users\n\t// can specify a project UUID other than their own.\n\tProjectID string `json:\"project_id,omitempty\"`\n\n\t// AllocationPools are IP Address pools that will be available for DHCP.\n\tAllocationPools []AllocationPool `json:\"allocation_pools,omitempty\"`\n\n\t// GatewayIP sets gateway information for the subnet. Setting to nil will\n\t// cause a default gateway to automatically be created. Setting to an empty\n\t// string will cause the subnet to be created with no gateway. Setting to\n\t// an explicit address will set that address as the gateway.\n\tGatewayIP *string `json:\"gateway_ip,omitempty\"`\n\n\t// IPVersion is the IP version for the subnet.\n\tIPVersion gophercloud.IPVersion `json:\"ip_version,omitempty\"`\n\n\t// EnableDHCP will either enable to disable the DHCP service.\n\tEnableDHCP *bool `json:\"enable_dhcp,omitempty\"`\n\n\t// DNSNameservers are the nameservers to be set via DHCP.\n\tDNSNameservers []string `json:\"dns_nameservers,omitempty\"`\n\n\t// DNSPublishFixedIP will either enable or disable the publication of fixed IPs to the DNS\n\tDNSPublishFixedIP *bool `json:\"dns_publish_fixed_ip,omitempty\"`\n\n\t// ServiceTypes are the service types associated with the subnet.\n\tServiceTypes []string `json:\"service_types,omitempty\"`\n\n\t// HostRoutes are any static host routes to be set via DHCP.\n\tHostRoutes []HostRoute `json:\"host_routes,omitempty\"`\n\n\t// The IPv6 address modes specifies mechanisms for assigning IPv6 IP addresses.\n\tIPv6AddressMode string `json:\"ipv6_address_mode,omitempty\"`\n\n\t// The IPv6 router advertisement specifies whether the networking service\n\t// should transmit ICMPv6 packets.\n\tIPv6RAMode string `json:\"ipv6_ra_mode,omitempty\"`\n\n\t// SubnetPoolID is the id of the subnet pool that subnet should be associated to.\n\tSubnetPoolID string `json:\"subnetpool_id,omitempty\"`\n\n\t// Prefixlen is used when user creates a subnet from the subnetpool. It will\n\t// overwrite the \"default_prefixlen\" value of the referenced subnetpool.\n\tPrefixlen int `json:\"prefixlen,omitempty\"`\n\n\t// SegmentID is a network segment the subnet is associated with. It is\n\t// available when segment extension is enabled.\n\tSegmentID string `json:\"segment_id,omitempty\"`\n}\n\n// ToSubnetCreateMap builds a request body from CreateOpts.\nfunc (opts CreateOpts) ToSubnetCreateMap() (map[string]any, error) {\n\tb, err := gophercloud.BuildRequestBody(opts, \"subnet\")\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tif m := b[\"subnet\"].(map[string]any); m[\"gateway_ip\"] == \"\" {\n\t\tm[\"gateway_ip\"] = nil\n\t}\n\n\treturn b, nil\n}\n\n// Create accepts a CreateOpts struct and creates a new subnet using the values\n// provided. You must remember to provide a valid NetworkID, CIDR and IP\n// version.\nfunc Create(ctx context.Context, c *gophercloud.ServiceClient, opts CreateOptsBuilder) (r CreateResult) {\n\tb, err := opts.ToSubnetCreateMap()\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\tresp, err := c.Post(ctx, createURL(c), b, &r.Body, nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// UpdateOptsBuilder allows extensions to add additional parameters to the\n// Update request.\ntype UpdateOptsBuilder interface {\n\tToSubnetUpdateMap() (map[string]any, error)\n}\n\n// UpdateOpts represents the attributes used when updating an existing subnet.\ntype UpdateOpts struct {\n\t// Name is a human-readable name of the subnet.\n\tName *string `json:\"name,omitempty\"`\n\n\t// Description of the subnet.\n\tDescription *string `json:\"description,omitempty\"`\n\n\t// AllocationPools are IP Address pools that will be available for DHCP.\n\tAllocationPools []AllocationPool `json:\"allocation_pools,omitempty\"`\n\n\t// GatewayIP sets gateway information for the subnet. Setting to an empty\n\t// string will cause the subnet to not have a gateway. Setting to\n\t// an explicit address will set that address as the gateway.\n\tGatewayIP *string `json:\"gateway_ip,omitempty\"`\n\n\t// DNSNameservers are the nameservers to be set via DHCP.\n\tDNSNameservers *[]string `json:\"dns_nameservers,omitempty\"`\n\n\t// DNSPublishFixedIP will either enable or disable the publication of fixed IPs to the DNS\n\tDNSPublishFixedIP *bool `json:\"dns_publish_fixed_ip,omitempty\"`\n\n\t// ServiceTypes are the service types associated with the subnet.\n\tServiceTypes *[]string `json:\"service_types,omitempty\"`\n\n\t// HostRoutes are any static host routes to be set via DHCP.\n\tHostRoutes *[]HostRoute `json:\"host_routes,omitempty\"`\n\n\t// EnableDHCP will either enable to disable the DHCP service.\n\tEnableDHCP *bool `json:\"enable_dhcp,omitempty\"`\n\n\t// RevisionNumber implements extension:standard-attr-revisions. If != \"\" it\n\t// will set revision_number=%s. If the revision number does not match, the\n\t// update will fail.\n\tRevisionNumber *int `json:\"-\" h:\"If-Match\"`\n\n\t// SegmentID is a network segment the subnet is associated with. It is\n\t// available when segment extension is enabled.\n\tSegmentID *string `json:\"segment_id,omitempty\"`\n}\n\n// ToSubnetUpdateMap builds a request body from UpdateOpts.\nfunc (opts UpdateOpts) ToSubnetUpdateMap() (map[string]any, error) {\n\tb, err := gophercloud.BuildRequestBody(opts, \"subnet\")\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tif m := b[\"subnet\"].(map[string]any); m[\"gateway_ip\"] == \"\" {\n\t\tm[\"gateway_ip\"] = nil\n\t}\n\n\treturn b, nil\n}\n\n// Update accepts a UpdateOpts struct and updates an existing subnet using the\n// values provided.\nfunc Update(ctx context.Context, c *gophercloud.ServiceClient, id string, opts UpdateOptsBuilder) (r UpdateResult) {\n\tb, err := opts.ToSubnetUpdateMap()\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\th, err := gophercloud.BuildHeaders(opts)\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\tfor k := range h {\n\t\tif k == \"If-Match\" {\n\t\t\th[k] = fmt.Sprintf(\"revision_number=%s\", h[k])\n\t\t}\n\t}\n\n\tresp, err := c.Put(ctx, updateURL(c, id), b, &r.Body, &gophercloud.RequestOpts{\n\t\tMoreHeaders: h,\n\t\tOkCodes:     []int{200, 201},\n\t})\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// Delete accepts a unique ID and deletes the subnet associated with it.\nfunc Delete(ctx context.Context, c *gophercloud.ServiceClient, id string) (r DeleteResult) {\n\tresp, err := c.Delete(ctx, deleteURL(c, id), nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n",
+    "gopher-subnets-results.go.txt": "package subnets\n\nimport (\n\t\"encoding/json\"\n\t\"time\"\n\n\t\"github.com/gophercloud/gophercloud/v2\"\n\t\"github.com/gophercloud/gophercloud/v2/pagination\"\n)\n\ntype commonResult struct {\n\tgophercloud.Result\n}\n\n// Extract is a function that accepts a result and extracts a subnet resource.\nfunc (r commonResult) Extract() (*Subnet, error) {\n\tvar s struct {\n\t\tSubnet *Subnet `json:\"subnet\"`\n\t}\n\terr := r.ExtractInto(&s)\n\treturn s.Subnet, err\n}\n\n// CreateResult represents the result of a create operation. Call its Extract\n// method to interpret it as a Subnet.\ntype CreateResult struct {\n\tcommonResult\n}\n\n// GetResult represents the result of a get operation. Call its Extract\n// method to interpret it as a Subnet.\ntype GetResult struct {\n\tcommonResult\n}\n\n// UpdateResult represents the result of an update operation. Call its Extract\n// method to interpret it as a Subnet.\ntype UpdateResult struct {\n\tcommonResult\n}\n\n// DeleteResult represents the result of a delete operation. Call its\n// ExtractErr method to determine if the request succeeded or failed.\ntype DeleteResult struct {\n\tgophercloud.ErrResult\n}\n\n// AllocationPool represents a sub-range of cidr available for dynamic\n// allocation to ports, e.g. {Start: \"10.0.0.2\", End: \"10.0.0.254\"}\ntype AllocationPool struct {\n\tStart string `json:\"start\"`\n\tEnd   string `json:\"end\"`\n}\n\n// HostRoute represents a route that should be used by devices with IPs from\n// a subnet (not including local subnet route).\ntype HostRoute struct {\n\tDestinationCIDR string `json:\"destination\"`\n\tNextHop         string `json:\"nexthop\"`\n}\n\n// Subnet represents a subnet. See package documentation for a top-level\n// description of what this is.\ntype Subnet struct {\n\t// UUID representing the subnet.\n\tID string `json:\"id\"`\n\n\t// UUID of the parent network.\n\tNetworkID string `json:\"network_id\"`\n\n\t// Human-readable name for the subnet. Might not be unique.\n\tName string `json:\"name\"`\n\n\t// Description for the subnet.\n\tDescription string `json:\"description\"`\n\n\t// IP version, either `4' or `6'.\n\tIPVersion int `json:\"ip_version\"`\n\n\t// CIDR representing IP range for this subnet, based on IP version.\n\tCIDR string `json:\"cidr\"`\n\n\t// Default gateway used by devices in this subnet.\n\tGatewayIP string `json:\"gateway_ip\"`\n\n\t// DNS name servers used by hosts in this subnet.\n\tDNSNameservers []string `json:\"dns_nameservers\"`\n\n\t//  Specifies whether the fixed IP addresses are published to the DNS.\n\tDNSPublishFixedIP bool `json:\"dns_publish_fixed_ip\"`\n\n\t// Service types associated with the subnet.\n\tServiceTypes []string `json:\"service_types\"`\n\n\t// Sub-ranges of CIDR available for dynamic allocation to ports.\n\t// See AllocationPool.\n\tAllocationPools []AllocationPool `json:\"allocation_pools\"`\n\n\t// Routes that should be used by devices with IPs from this subnet\n\t// (not including local subnet route).\n\tHostRoutes []HostRoute `json:\"host_routes\"`\n\n\t// Specifies whether DHCP is enabled for this subnet or not.\n\tEnableDHCP bool `json:\"enable_dhcp\"`\n\n\t// TenantID is the project owner of the subnet.\n\tTenantID string `json:\"tenant_id\"`\n\n\t// ProjectID is the project owner of the subnet.\n\tProjectID string `json:\"project_id\"`\n\n\t// The IPv6 address modes specifies mechanisms for assigning IPv6 IP addresses.\n\tIPv6AddressMode string `json:\"ipv6_address_mode\"`\n\n\t// The IPv6 router advertisement specifies whether the networking service\n\t// should transmit ICMPv6 packets.\n\tIPv6RAMode string `json:\"ipv6_ra_mode\"`\n\n\t// SubnetPoolID is the id of the subnet pool associated with the subnet.\n\tSubnetPoolID string `json:\"subnetpool_id\"`\n\n\t// Tags optionally set via extensions/attributestags\n\tTags []string `json:\"tags\"`\n\n\t// RevisionNumber optionally set via extensions/standard-attr-revisions\n\tRevisionNumber int `json:\"revision_number\"`\n\n\t// SegmentID of a network segment the subnet is associated with. It is\n\t// available when segment extension is enabled.\n\tSegmentID string `json:\"segment_id\"`\n\n\t// Timestamp when the subnet was created\n\tCreatedAt time.Time `json:\"-\"`\n\n\t// Timestamp when the subnet was last updated\n\tUpdatedAt time.Time `json:\"-\"`\n}\n\nfunc (r *Subnet) UnmarshalJSON(b []byte) error {\n\ttype tmp Subnet\n\n\t// Support for older neutron time format\n\tvar s1 struct {\n\t\ttmp\n\t\tCreatedAt gophercloud.JSONRFC3339NoZ `json:\"created_at\"`\n\t\tUpdatedAt gophercloud.JSONRFC3339NoZ `json:\"updated_at\"`\n\t}\n\n\terr := json.Unmarshal(b, &s1)\n\tif err == nil {\n\t\t*r = Subnet(s1.tmp)\n\t\tr.CreatedAt = time.Time(s1.CreatedAt)\n\t\tr.UpdatedAt = time.Time(s1.UpdatedAt)\n\n\t\treturn nil\n\t}\n\n\t// Support for newer neutron time format\n\tvar s2 struct {\n\t\ttmp\n\t\tCreatedAt time.Time `json:\"created_at\"`\n\t\tUpdatedAt time.Time `json:\"updated_at\"`\n\t}\n\n\terr = json.Unmarshal(b, &s2)\n\tif err != nil {\n\t\treturn err\n\t}\n\n\t*r = Subnet(s2.tmp)\n\tr.CreatedAt = time.Time(s2.CreatedAt)\n\tr.UpdatedAt = time.Time(s2.UpdatedAt)\n\n\treturn nil\n}\n\n// SubnetPage is the page returned by a pager when traversing over a collection\n// of subnets.\ntype SubnetPage struct {\n\tpagination.LinkedPageBase\n}\n\n// NextPageURL is invoked when a paginated collection of subnets has reached\n// the end of a page and the pager seeks to traverse over a new one. In order\n// to do this, it needs to construct the next page's URL.\nfunc (r SubnetPage) NextPageURL() (string, error) {\n\tvar s struct {\n\t\tLinks []gophercloud.Link `json:\"subnets_links\"`\n\t}\n\terr := r.ExtractInto(&s)\n\tif err != nil {\n\t\treturn \"\", err\n\t}\n\treturn gophercloud.ExtractNextURL(s.Links)\n}\n\n// IsEmpty checks whether a SubnetPage struct is empty.\nfunc (r SubnetPage) IsEmpty() (bool, error) {\n\tif r.StatusCode == 204 {\n\t\treturn true, nil\n\t}\n\n\tis, err := ExtractSubnets(r)\n\treturn len(is) == 0, err\n}\n\n// ExtractSubnets accepts a Page struct, specifically a SubnetPage struct,\n// and extracts the elements into a slice of Subnet structs. In other words,\n// a generic collection is mapped into a relevant slice.\nfunc ExtractSubnets(r pagination.Page) ([]Subnet, error) {\n\tvar s struct {\n\t\tSubnets []Subnet `json:\"subnets\"`\n\t}\n\terr := (r.(SubnetPage)).ExtractInto(&s)\n\treturn s.Subnets, err\n}\n",
+    "gopher-subnets-urls.go.txt": "package subnets\n\nimport \"github.com/gophercloud/gophercloud/v2\"\n\nfunc resourceURL(c *gophercloud.ServiceClient, id string) string {\n\treturn c.ServiceURL(\"subnets\", id)\n}\n\nfunc rootURL(c *gophercloud.ServiceClient) string {\n\treturn c.ServiceURL(\"subnets\")\n}\n\nfunc listURL(c *gophercloud.ServiceClient) string {\n\treturn rootURL(c)\n}\n\nfunc getURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n\nfunc createURL(c *gophercloud.ServiceClient) string {\n\treturn rootURL(c)\n}\n\nfunc updateURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n\nfunc deleteURL(c *gophercloud.ServiceClient, id string) string {\n\treturn resourceURL(c, id)\n}\n",
+    "vpc-internal-api-client.go.txt": "package api\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"io\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"time\"\n\n\t\"github.com/selectel/vpc-go/internal/utils\"\n)\n\nconst (\n\tauthTokenHeader = \"X-Auth-Token\" // #nosec G101 -- This is an HTTP header name.\n\tuserAgentHeader = \"User-Agent\"\n)\n\nvar moduleUserAgent = \"vpc-go/\" + utils.ModuleVersion\n\ntype HTTPClient interface {\n\tDo(*http.Request) (*http.Response, error)\n}\n\ntype Config struct {\n\tEndpoint   string\n\tToken      string\n\tUserAgent  string\n\tHTTPClient HTTPClient\n}\n\ntype Client struct {\n\tendpoint   *url.URL\n\ttoken      string\n\tuserAgent  string\n\thttpClient HTTPClient\n}\n\nfunc NewClient(config Config) (*Client, error) {\n\tif config.Endpoint == \"\" {\n\t\treturn nil, errors.New(\"endpoint is required\")\n\t}\n\tif config.Token == \"\" {\n\t\treturn nil, errors.New(\"token is required\")\n\t}\n\n\tendpoint, err := url.Parse(config.Endpoint)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif endpoint.Scheme == \"\" || endpoint.Host == \"\" {\n\t\treturn nil, errors.New(\"endpoint must be an absolute URL\")\n\t}\n\n\thttpClient := config.HTTPClient\n\tif httpClient == nil {\n\t\thttpClient = &http.Client{Timeout: 120 * time.Second}\n\t}\n\n\tuserAgent := moduleUserAgent\n\tif config.UserAgent != \"\" {\n\t\tuserAgent = config.UserAgent + \" \" + moduleUserAgent\n\t}\n\n\treturn &Client{\n\t\tendpoint: endpoint, token: config.Token, userAgent: userAgent, httpClient: httpClient,\n\t}, nil\n}\n\nfunc (client *Client) do(\n\tctx context.Context,\n\tmethod string,\n\tpath string,\n\tquery url.Values,\n\tbody io.Reader,\n) (*http.Response, error) {\n\trequestURL := client.endpoint.JoinPath(path)\n\trequestURL.RawQuery = query.Encode()\n\n\trequest, err := http.NewRequestWithContext(ctx, method, requestURL.String(), body)\n\tif err != nil {\n\t\treturn nil, newRequestError(err)\n\t}\n\trequest.Header.Set(authTokenHeader, client.token)\n\trequest.Header.Set(userAgentHeader, client.userAgent)\n\tif body != nil {\n\t\trequest.Header.Set(\"Content-Type\", \"application/json\")\n\t}\n\n\tresponse, err := client.httpClient.Do(request)\n\tif err != nil {\n\t\treturn nil, &TransportError{Err: err}\n\t}\n\n\treturn response, nil\n}\n",
+    "vpc-internal-api-errors.go.txt": "package api\n\nimport (\n\t\"encoding/json\"\n\t\"errors\"\n\t\"fmt\"\n\t\"net/http\"\n)\n\ntype ErrorClass string\n\nconst (\n\tErrorClassBadRequest         ErrorClass = \"bad_request\"\n\tErrorClassNotAuthenticated   ErrorClass = \"not_authenticated\"\n\tErrorClassForbidden          ErrorClass = \"forbidden\"\n\tErrorClassNotFound           ErrorClass = \"not_found\"\n\tErrorClassConflict           ErrorClass = \"conflict\"\n\tErrorClassServer             ErrorClass = \"server\"\n\tErrorClassUnexpectedResponse ErrorClass = \"unexpected_response\"\n\tErrorClassUnclassified       ErrorClass = \"unclassified\"\n)\n\ntype ClientError struct{ Err error }\n\nfunc (err *ClientError) Error() string { return \"vpc client error: \" + err.Err.Error() }\nfunc (err *ClientError) Unwrap() error { return err.Err }\n\ntype TransportError struct{ Err error }\n\nfunc (err *TransportError) Error() string { return \"vpc transport error: \" + err.Err.Error() }\nfunc (err *TransportError) Unwrap() error { return err.Err }\n\ntype Error struct {\n\tStatusCode int\n\tType       string\n\tMessage    string\n\tDetail     string\n\tClass      ErrorClass\n\tRawBody    []byte\n}\n\nfunc (err *Error) Error() string {\n\tif err.Message != \"\" {\n\t\treturn fmt.Sprintf(\"vpc API error (%d, %s): %s\", err.StatusCode, err.Type, err.Message)\n\t}\n\n\treturn fmt.Sprintf(\"vpc API error (%d, %s)\", err.StatusCode, err.Type)\n}\n\ntype UnexpectedResponseError struct {\n\tStatusCode int\n\tRawBody    []byte\n\tErr        error\n}\n\nfunc (err *UnexpectedResponseError) Error() string {\n\treturn fmt.Sprintf(\"unexpected vpc API response (%d): %v\", err.StatusCode, err.Err)\n}\nfunc (err *UnexpectedResponseError) Unwrap() error { return err.Err }\n\nfunc IsErrorClass(err error, class ErrorClass) bool {\n\tif apiErr, ok := errors.AsType[*Error](err); ok {\n\t\treturn apiErr.Class == class\n\t}\n\tvar unexpectedErr *UnexpectedResponseError\n\n\treturn class == ErrorClassUnexpectedResponse && errors.As(err, &unexpectedErr)\n}\n\nfunc NewAPIError(statusCode int, body []byte) *Error {\n\tvar envelope struct {\n\t\tNeutronError struct {\n\t\t\tType    string `json:\"type\"`\n\t\t\tMessage string `json:\"message\"`\n\t\t\tDetail  string `json:\"detail\"`\n\t\t} `json:\"NeutronError\"`\n\t}\n\t_ = json.Unmarshal(body, &envelope)\n\n\tapiErr := &Error{\n\t\tStatusCode: statusCode,\n\t\tType:       envelope.NeutronError.Type,\n\t\tMessage:    envelope.NeutronError.Message,\n\t\tDetail:     envelope.NeutronError.Detail,\n\t\tRawBody:    append([]byte(nil), body...),\n\t}\n\tapiErr.Class = classifyAPIError(apiErr)\n\n\treturn apiErr\n}\n\nfunc classifyAPIError(apiErr *Error) ErrorClass {\n\tswitch apiErr.StatusCode {\n\tcase http.StatusBadRequest:\n\t\treturn ErrorClassBadRequest\n\tcase http.StatusUnauthorized:\n\t\treturn ErrorClassNotAuthenticated\n\tcase http.StatusForbidden:\n\t\treturn ErrorClassForbidden\n\tcase http.StatusNotFound:\n\t\treturn ErrorClassNotFound\n\tcase http.StatusConflict:\n\t\treturn ErrorClassConflict\n\tdefault:\n\t\tif apiErr.StatusCode >= http.StatusInternalServerError {\n\t\t\treturn ErrorClassServer\n\t\t}\n\n\t\treturn ErrorClassUnclassified\n\t}\n}\n",
+    "vpc-internal-api-pagination.go.txt": "package api\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"net/url\"\n)\n\n// PageLink is one link in a paginated collection response.\ntype PageLink struct {\n\tRel  string `json:\"rel\"`\n\tHref string `json:\"href\"`\n}\n\n// NextPageLink returns the URL of the next page, or an empty string on the last page.\nfunc NextPageLink(links []PageLink) string {\n\tfor _, link := range links {\n\t\tif link.Rel == \"next\" {\n\t\t\treturn link.Href\n\t\t}\n\t}\n\n\treturn \"\"\n}\n\ntype Page[T any] struct {\n\tItems    []T\n\tNextLink string\n}\n\nfunc WalkPages[T any](\n\tctx context.Context,\n\tinitial url.Values,\n\tfetch func(context.Context, url.Values) (Page[T], error),\n) ([]T, error) {\n\tquery := cloneValues(initial)\n\tvar result []T\n\n\tfor {\n\t\tpage, err := fetch(ctx, query)\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\tresult = append(result, page.Items...)\n\n\t\tif page.NextLink == \"\" {\n\t\t\treturn result, nil\n\t\t}\n\n\t\tnextURL, err := url.Parse(page.NextLink)\n\t\tif err != nil {\n\t\t\treturn nil, fmt.Errorf(\"parse next page link: %w\", err)\n\t\t}\n\t\tquery = nextURL.Query()\n\t}\n}\n\nfunc cloneValues(values url.Values) url.Values {\n\tcloned := make(url.Values, len(values))\n\tfor key, items := range values {\n\t\tcloned[key] = append([]string(nil), items...)\n\t}\n\n\treturn cloned\n}\n",
+    "vpc-network.go.txt": "package network\n\nimport (\n\t\"context\"\n\t\"net/http\"\n\t\"net/url\"\n\n\t\"github.com/selectel/vpc-go/internal/api\"\n\n\tvpc \"github.com/selectel/vpc-go/pkg/v2\"\n)\n\nconst collectionPath = \"/v2.0/networks\"\n\ntype Network struct {\n\tID                    string   `json:\"id\"`\n\tName                  string   `json:\"name\"`\n\tDescription           string   `json:\"description\"`\n\tStatus                string   `json:\"status\"`\n\tAdminStateUp          bool     `json:\"admin_state_up\"`\n\tSubnets               []string `json:\"subnets\"`\n\tProjectID             string   `json:\"project_id\"`\n\tShared                bool     `json:\"shared\"`\n\tRouterExternal        bool     `json:\"router:external\"`\n\tMTU                   int      `json:\"mtu\"`\n\tPortSecurityEnabled   bool     `json:\"port_security_enabled\"`\n\tAvailabilityZones     []string `json:\"availability_zones\"`\n\tAvailabilityZoneHints []string `json:\"availability_zone_hints\"`\n\tRevisionNumber        int      `json:\"revision_number\"`\n\tCreatedAt             string   `json:\"created_at\"`\n\tUpdatedAt             string   `json:\"updated_at\"`\n\tTags                  []string `json:\"tags\"`\n\tBlocked               bool     `json:\"blocked\"`\n\tIsPublic              bool     `json:\"is_public\"`\n\tIsDNSEnabled          bool     `json:\"is_dns_enabled\"`\n\tDNSDomain             string   `json:\"dns_domain\"`\n}\n\ntype CreateRequest struct {\n\tName                  *string   `json:\"name,omitempty\"`\n\tDescription           *string   `json:\"description,omitempty\"`\n\tAdminStateUp          *bool     `json:\"admin_state_up,omitempty\"`\n\tAvailabilityZoneHints *[]string `json:\"availability_zone_hints,omitempty\"`\n\tProjectID             *string   `json:\"project_id,omitempty\"`\n\tDNSDomain             *string   `json:\"dns_domain,omitempty\"`\n}\n\ntype UpdateRequest struct {\n\tName         *string `json:\"name,omitempty\"`\n\tDescription  *string `json:\"description,omitempty\"`\n\tAdminStateUp *bool   `json:\"admin_state_up,omitempty\"`\n\tDNSDomain    *string `json:\"dns_domain,omitempty\"`\n}\n\ntype networkEnvelope struct {\n\tNetwork Network `json:\"network\"`\n}\n\ntype listEnvelope struct {\n\tNetworks []Network      `json:\"networks\"`\n\tLinks    []api.PageLink `json:\"networks_links\"`\n}\n\nfunc Create(ctx context.Context, client *vpc.Client, request CreateRequest) (*Network, error) {\n\tvar envelope networkEnvelope\n\terr := api.Request(ctx, client,\n\t\thttp.MethodPost,\n\t\tcollectionPath,\n\t\tnil,\n\t\tstruct {\n\t\t\tNetwork CreateRequest `json:\"network\"`\n\t\t}{Network: request},\n\t\t&envelope,\n\t\thttp.StatusCreated,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &envelope.Network, nil\n}\n\nfunc Get(ctx context.Context, client *vpc.Client, networkID string) (*Network, error) {\n\tvar envelope networkEnvelope\n\terr := api.Request(ctx, client,\n\t\thttp.MethodGet,\n\t\tresourcePath(networkID),\n\t\tnil,\n\t\tnil,\n\t\t&envelope,\n\t\thttp.StatusOK,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &envelope.Network, nil\n}\n\nfunc Update(\n\tctx context.Context,\n\tclient *vpc.Client,\n\tnetworkID string,\n\trequest UpdateRequest,\n) (*Network, error) {\n\tvar envelope networkEnvelope\n\terr := api.Request(ctx, client,\n\t\thttp.MethodPut,\n\t\tresourcePath(networkID),\n\t\tnil,\n\t\tstruct {\n\t\t\tNetwork UpdateRequest `json:\"network\"`\n\t\t}{Network: request},\n\t\t&envelope,\n\t\thttp.StatusOK,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &envelope.Network, nil\n}\n\nfunc Delete(ctx context.Context, client *vpc.Client, networkID string) error {\n\treturn api.Request(ctx, client,\n\t\thttp.MethodDelete,\n\t\tresourcePath(networkID),\n\t\tnil,\n\t\tnil,\n\t\tnil,\n\t\thttp.StatusNoContent,\n\t)\n}\n\nfunc List(\n\tctx context.Context,\n\tclient *vpc.Client,\n\toptions vpc.ListOptions,\n) ([]Network, error) {\n\treturn api.WalkPages(ctx, options.Values(), func(\n\t\tctx context.Context,\n\t\tquery url.Values,\n\t) (api.Page[Network], error) {\n\t\tvar envelope listEnvelope\n\t\terr := api.Request(ctx, client,\n\t\t\thttp.MethodGet,\n\t\t\tcollectionPath,\n\t\t\tquery,\n\t\t\tnil,\n\t\t\t&envelope,\n\t\t\thttp.StatusOK,\n\t\t)\n\t\treturn api.Page[Network]{\n\t\t\tItems:    envelope.Networks,\n\t\t\tNextLink: api.NextPageLink(envelope.Links),\n\t\t}, err\n\t})\n}\n\ntype Tags struct {\n\toperations api.TagOperations\n}\n\nfunc TagOperations(client *vpc.Client, networkID string) Tags {\n\treturn Tags{operations: api.NewTagOperations(\n\t\tclient,\n\t\t\"networks\",\n\t\tnetworkID,\n\t)}\n}\n\nfunc (tags Tags) Get(ctx context.Context) ([]string, error) {\n\treturn tags.operations.Get(ctx)\n}\n\nfunc (tags Tags) Has(ctx context.Context, tag string) (bool, error) {\n\treturn tags.operations.Has(ctx, tag)\n}\n\nfunc (tags Tags) Add(ctx context.Context, tag string) error {\n\treturn tags.operations.Add(ctx, tag)\n}\n\nfunc (tags Tags) Delete(ctx context.Context, tag string) error {\n\treturn tags.operations.Delete(ctx, tag)\n}\n\nfunc (tags Tags) Replace(ctx context.Context, values []string) ([]string, error) {\n\treturn tags.operations.Replace(ctx, values)\n}\n\nfunc (tags Tags) DeleteAll(ctx context.Context) error {\n\treturn tags.operations.DeleteAll(ctx)\n}\n\nfunc resourcePath(networkID string) string {\n\treturn collectionPath + \"/\" + url.PathEscape(networkID)\n}\n",
+    "vpc-pkg-v2-query.go.txt": "package v2\n\nimport (\n\t\"net/url\"\n\t\"strconv\"\n)\n\n// SelectionOptions contains query parameters shared by all List operations.\ntype SelectionOptions struct {\n\tFilters map[string][]string\n\tFields  []string\n\tSortKey string\n\tSortDir string\n}\n\n// Values encodes selection parameters using repeated keys for repeated values.\nfunc (options SelectionOptions) Values() url.Values {\n\tvalues := make(url.Values)\n\tfor key, items := range options.Filters {\n\t\tfor _, item := range items {\n\t\t\tvalues.Add(key, item)\n\t\t}\n\t}\n\tfor _, field := range options.Fields {\n\t\tvalues.Add(\"fields\", field)\n\t}\n\tif options.SortKey != \"\" {\n\t\tvalues.Set(\"sort_key\", options.SortKey)\n\t}\n\tif options.SortDir != \"\" {\n\t\tvalues.Set(\"sort_dir\", options.SortDir)\n\t}\n\n\treturn values\n}\n\n// ListOptions adds pagination parameters to SelectionOptions.\ntype ListOptions struct {\n\tSelectionOptions\n\tLimit  int\n\tMarker string\n}\n\n// Values encodes selection and pagination parameters.\nfunc (options ListOptions) Values() url.Values {\n\tvalues := options.SelectionOptions.Values()\n\tif options.Limit > 0 {\n\t\tvalues.Set(\"limit\", strconv.Itoa(options.Limit))\n\t}\n\tif options.Marker != \"\" {\n\t\tvalues.Set(\"marker\", options.Marker)\n\t}\n\n\treturn values\n}\n",
+    "vpc-port.go.txt": "package port\n\nimport (\n\t\"context\"\n\t\"net/http\"\n\t\"net/url\"\n\n\t\"github.com/selectel/vpc-go/internal/api\"\n\n\tvpc \"github.com/selectel/vpc-go/pkg/v2\"\n)\n\nconst collectionPath = \"/v2.0/ports\"\n\ntype FixedIP struct {\n\tSubnetID  string `json:\"subnet_id,omitempty\"`\n\tIPAddress string `json:\"ip_address,omitempty\"`\n}\n\ntype AllowedAddressPair struct {\n\tIPAddress  string `json:\"ip_address\"`\n\tMACAddress string `json:\"mac_address,omitempty\"`\n}\n\ntype ExtraDHCPOption struct {\n\tName      string `json:\"opt_name\"`\n\tValue     string `json:\"opt_value\"`\n\tIPVersion int    `json:\"ip_version,omitempty\"`\n}\n\ntype UpdateExtraDHCPOption struct {\n\tName      string  `json:\"opt_name\"`\n\tValue     *string `json:\"opt_value\"`\n\tIPVersion *int    `json:\"ip_version,omitempty\"`\n}\n\ntype Port struct {\n\tID                  string               `json:\"id\"`\n\tNetworkID           string               `json:\"network_id\"`\n\tName                string               `json:\"name\"`\n\tDescription         string               `json:\"description\"`\n\tStatus              string               `json:\"status\"`\n\tAdminStateUp        bool                 `json:\"admin_state_up\"`\n\tMACAddress          string               `json:\"mac_address\"`\n\tFixedIPs            []FixedIP            `json:\"fixed_ips\"`\n\tDeviceID            string               `json:\"device_id\"`\n\tDeviceOwner         string               `json:\"device_owner\"`\n\tSecurityGroups      []string             `json:\"security_groups\"`\n\tAllowedAddressPairs []AllowedAddressPair `json:\"allowed_address_pairs\"`\n\tExtraDHCPOptions    []ExtraDHCPOption    `json:\"extra_dhcp_opts\"`\n\tPortSecurityEnabled bool                 `json:\"port_security_enabled\"`\n\tProjectID           string               `json:\"project_id\"`\n\tRevisionNumber      int                  `json:\"revision_number\"`\n\tCreatedAt           string               `json:\"created_at\"`\n\tUpdatedAt           string               `json:\"updated_at\"`\n\tTags                []string             `json:\"tags\"`\n\tBlocked             bool                 `json:\"blocked\"`\n\tDHCPBlocked         bool                 `json:\"dhcp_blocked\"`\n\tDNSName             string               `json:\"dns_name,omitempty\"`\n}\n\ntype CreateRequest struct {\n\tNetworkID           string                `json:\"network_id\"`\n\tName                *string               `json:\"name,omitempty\"`\n\tDescription         *string               `json:\"description,omitempty\"`\n\tAdminStateUp        *bool                 `json:\"admin_state_up,omitempty\"`\n\tMACAddress          *string               `json:\"mac_address,omitempty\"`\n\tFixedIPs            *[]FixedIP            `json:\"fixed_ips,omitempty\"`\n\tDeviceID            *string               `json:\"device_id,omitempty\"`\n\tDeviceOwner         *string               `json:\"device_owner,omitempty\"`\n\tSecurityGroups      *[]string             `json:\"security_groups,omitempty\"`\n\tAllowedAddressPairs *[]AllowedAddressPair `json:\"allowed_address_pairs,omitempty\"`\n\tExtraDHCPOptions    *[]ExtraDHCPOption    `json:\"extra_dhcp_opts,omitempty\"`\n\tProjectID           *string               `json:\"project_id,omitempty\"`\n\tDNSName             *string               `json:\"dns_name,omitempty\"`\n}\n\ntype UpdateRequest struct {\n\tName                *string                  `json:\"name,omitempty\"`\n\tDescription         *string                  `json:\"description,omitempty\"`\n\tAdminStateUp        *bool                    `json:\"admin_state_up,omitempty\"`\n\tFixedIPs            *[]FixedIP               `json:\"fixed_ips,omitempty\"`\n\tDeviceID            *string                  `json:\"device_id,omitempty\"`\n\tDeviceOwner         *string                  `json:\"device_owner,omitempty\"`\n\tSecurityGroups      *[]string                `json:\"security_groups,omitempty\"`\n\tAllowedAddressPairs *[]AllowedAddressPair    `json:\"allowed_address_pairs,omitempty\"`\n\tExtraDHCPOptions    *[]UpdateExtraDHCPOption `json:\"extra_dhcp_opts,omitempty\"`\n\tDNSName             *string                  `json:\"dns_name,omitempty\"`\n}\n\ntype envelope struct {\n\tPort Port `json:\"port\"`\n}\n\ntype listEnvelope struct {\n\tPorts []Port         `json:\"ports\"`\n\tLinks []api.PageLink `json:\"ports_links\"`\n}\n\nfunc Create(ctx context.Context, client *vpc.Client, request CreateRequest) (*Port, error) {\n\tvar result envelope\n\terr := api.Request(ctx, client, http.MethodPost, collectionPath, nil,\n\t\tstruct {\n\t\t\tPort CreateRequest `json:\"port\"`\n\t\t}{Port: request},\n\t\t&result, http.StatusCreated,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &result.Port, nil\n}\n\nfunc Get(ctx context.Context, client *vpc.Client, id string) (*Port, error) {\n\tvar result envelope\n\terr := api.Request(ctx, client, http.MethodGet, resourcePath(id), nil, nil, &result,\n\t\thttp.StatusOK,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &result.Port, nil\n}\n\nfunc Update(ctx context.Context, client *vpc.Client, id string, request UpdateRequest) (*Port, error) {\n\tvar result envelope\n\terr := api.Request(ctx, client, http.MethodPut, resourcePath(id), nil,\n\t\tstruct {\n\t\t\tPort UpdateRequest `json:\"port\"`\n\t\t}{Port: request},\n\t\t&result, http.StatusOK,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &result.Port, nil\n}\n\nfunc Delete(ctx context.Context, client *vpc.Client, id string) error {\n\treturn api.Request(ctx, client, http.MethodDelete, resourcePath(id), nil, nil, nil,\n\t\thttp.StatusNoContent,\n\t)\n}\n\nfunc List(ctx context.Context, client *vpc.Client, options vpc.ListOptions) ([]Port, error) {\n\treturn api.WalkPages(ctx, options.Values(), func(\n\t\tctx context.Context, query url.Values,\n\t) (api.Page[Port], error) {\n\t\tvar result listEnvelope\n\t\terr := api.Request(ctx, client, http.MethodGet, collectionPath, query, nil, &result,\n\t\t\thttp.StatusOK,\n\t\t)\n\t\treturn api.Page[Port]{Items: result.Ports, NextLink: api.NextPageLink(result.Links)}, err\n\t})\n}\n\ntype Tags struct{ operations api.TagOperations }\n\nfunc TagOperations(client *vpc.Client, id string) Tags {\n\treturn Tags{api.NewTagOperations(client, \"ports\", id)}\n}\nfunc (tags Tags) Get(ctx context.Context) ([]string, error) { return tags.operations.Get(ctx) }\nfunc (tags Tags) Has(ctx context.Context, tag string) (bool, error) {\n\treturn tags.operations.Has(ctx, tag)\n}\nfunc (tags Tags) Add(ctx context.Context, tag string) error { return tags.operations.Add(ctx, tag) }\nfunc (tags Tags) Delete(ctx context.Context, tag string) error {\n\treturn tags.operations.Delete(ctx, tag)\n}\n\nfunc (tags Tags) Replace(ctx context.Context, values []string) ([]string, error) {\n\treturn tags.operations.Replace(ctx, values)\n}\nfunc (tags Tags) DeleteAll(ctx context.Context) error { return tags.operations.DeleteAll(ctx) }\n\nfunc resourcePath(id string) string { return collectionPath + \"/\" + url.PathEscape(id) }\n",
+    "vpc-subnet.go.txt": "package subnet\n\nimport (\n\t\"context\"\n\t\"net/http\"\n\t\"net/url\"\n\n\t\"github.com/selectel/vpc-go/internal/api\"\n\n\tvpc \"github.com/selectel/vpc-go/pkg/v2\"\n)\n\nconst collectionPath = \"/v2.0/subnets\"\n\ntype AllocationPool struct {\n\tStart string `json:\"start\"`\n\tEnd   string `json:\"end\"`\n}\n\ntype HostRoute struct {\n\tDestination string `json:\"destination\"`\n\tNextHop     string `json:\"nexthop\"`\n}\n\ntype Subnet struct {\n\tID              string           `json:\"id\"`\n\tNetworkID       string           `json:\"network_id\"`\n\tIPVersion       int              `json:\"ip_version\"`\n\tCIDR            string           `json:\"cidr\"`\n\tName            string           `json:\"name\"`\n\tDescription     string           `json:\"description\"`\n\tGatewayIP       *string          `json:\"gateway_ip\"`\n\tAllocationPools []AllocationPool `json:\"allocation_pools\"`\n\tDNSNameservers  []string         `json:\"dns_nameservers\"`\n\tHostRoutes      []HostRoute      `json:\"host_routes\"`\n\tEnableDHCP      bool             `json:\"enable_dhcp\"`\n\tIPv6RAMode      *string          `json:\"ipv6_ra_mode\"`\n\tIPv6AddressMode *string          `json:\"ipv6_address_mode\"`\n\tProjectID       string           `json:\"project_id\"`\n\tServiceTypes    []string         `json:\"service_types\"`\n\tRevisionNumber  int              `json:\"revision_number\"`\n\tCreatedAt       string           `json:\"created_at\"`\n\tUpdatedAt       string           `json:\"updated_at\"`\n\tTags            []string         `json:\"tags\"`\n\tBlocked         bool             `json:\"blocked\"`\n}\n\ntype CreateRequest struct {\n\tNetworkID       string                `json:\"network_id\"`\n\tIPVersion       int                   `json:\"ip_version\"`\n\tCIDR            *string               `json:\"cidr,omitempty\"`\n\tName            *string               `json:\"name,omitempty\"`\n\tDescription     *string               `json:\"description,omitempty\"`\n\tGatewayIP       *vpc.Optional[string] `json:\"gateway_ip,omitempty\"`\n\tAllocationPools *[]AllocationPool     `json:\"allocation_pools,omitempty\"`\n\tDNSNameservers  *[]string             `json:\"dns_nameservers,omitempty\"`\n\tHostRoutes      *[]HostRoute          `json:\"host_routes,omitempty\"`\n\tEnableDHCP      *bool                 `json:\"enable_dhcp,omitempty\"`\n\tIPv6RAMode      *string               `json:\"ipv6_ra_mode,omitempty\"`\n\tIPv6AddressMode *string               `json:\"ipv6_address_mode,omitempty\"`\n\tProjectID       *string               `json:\"project_id,omitempty\"`\n}\n\ntype UpdateRequest struct {\n\tName            *string               `json:\"name,omitempty\"`\n\tDescription     *string               `json:\"description,omitempty\"`\n\tGatewayIP       *vpc.Optional[string] `json:\"gateway_ip,omitempty\"`\n\tAllocationPools *[]AllocationPool     `json:\"allocation_pools,omitempty\"`\n\tDNSNameservers  *[]string             `json:\"dns_nameservers,omitempty\"`\n\tHostRoutes      *[]HostRoute          `json:\"host_routes,omitempty\"`\n\tEnableDHCP      *bool                 `json:\"enable_dhcp,omitempty\"`\n}\n\ntype envelope struct {\n\tSubnet Subnet `json:\"subnet\"`\n}\n\ntype listEnvelope struct {\n\tSubnets []Subnet       `json:\"subnets\"`\n\tLinks   []api.PageLink `json:\"subnets_links\"`\n}\n\nfunc Create(ctx context.Context, client *vpc.Client, request CreateRequest) (*Subnet, error) {\n\tvar result envelope\n\terr := api.Request(ctx, client, http.MethodPost, collectionPath, nil,\n\t\tstruct {\n\t\t\tSubnet CreateRequest `json:\"subnet\"`\n\t\t}{Subnet: request},\n\t\t&result,\n\t\thttp.StatusCreated,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &result.Subnet, nil\n}\n\nfunc Get(ctx context.Context, client *vpc.Client, subnetID string) (*Subnet, error) {\n\tvar result envelope\n\terr := api.Request(ctx, client, http.MethodGet, resourcePath(subnetID), nil, nil, &result,\n\t\thttp.StatusOK,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &result.Subnet, nil\n}\n\nfunc Update(\n\tctx context.Context,\n\tclient *vpc.Client,\n\tsubnetID string,\n\trequest UpdateRequest,\n) (*Subnet, error) {\n\tvar result envelope\n\terr := api.Request(ctx, client, http.MethodPut, resourcePath(subnetID), nil,\n\t\tstruct {\n\t\t\tSubnet UpdateRequest `json:\"subnet\"`\n\t\t}{Subnet: request},\n\t\t&result,\n\t\thttp.StatusOK,\n\t)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &result.Subnet, nil\n}\n\nfunc Delete(ctx context.Context, client *vpc.Client, subnetID string) error {\n\treturn api.Request(ctx, client, http.MethodDelete, resourcePath(subnetID), nil, nil, nil,\n\t\thttp.StatusNoContent,\n\t)\n}\n\nfunc List(\n\tctx context.Context,\n\tclient *vpc.Client,\n\toptions vpc.ListOptions,\n) ([]Subnet, error) {\n\treturn api.WalkPages(ctx, options.Values(), func(\n\t\tctx context.Context,\n\t\tquery url.Values,\n\t) (api.Page[Subnet], error) {\n\t\tvar result listEnvelope\n\t\terr := api.Request(ctx, client, http.MethodGet, collectionPath, query, nil, &result,\n\t\t\thttp.StatusOK,\n\t\t)\n\t\treturn api.Page[Subnet]{\n\t\t\tItems:    result.Subnets,\n\t\t\tNextLink: api.NextPageLink(result.Links),\n\t\t}, err\n\t})\n}\n\ntype Tags struct {\n\toperations api.TagOperations\n}\n\nfunc TagOperations(client *vpc.Client, subnetID string) Tags {\n\treturn Tags{operations: api.NewTagOperations(\n\t\tclient, \"subnets\", subnetID,\n\t)}\n}\n\nfunc (tags Tags) Get(ctx context.Context) ([]string, error) {\n\treturn tags.operations.Get(ctx)\n}\n\nfunc (tags Tags) Has(ctx context.Context, tag string) (bool, error) {\n\treturn tags.operations.Has(ctx, tag)\n}\n\nfunc (tags Tags) Add(ctx context.Context, tag string) error {\n\treturn tags.operations.Add(ctx, tag)\n}\n\nfunc (tags Tags) Delete(ctx context.Context, tag string) error {\n\treturn tags.operations.Delete(ctx, tag)\n}\n\nfunc (tags Tags) Replace(ctx context.Context, values []string) ([]string, error) {\n\treturn tags.operations.Replace(ctx, values)\n}\n\nfunc (tags Tags) DeleteAll(ctx context.Context) error {\n\treturn tags.operations.DeleteAll(ctx)\n}\n\nfunc resourcePath(subnetID string) string {\n\treturn collectionPath + \"/\" + url.PathEscape(subnetID)\n}\n"
+  },
+  "paths": {
+    "/v2.0/networks": {
+      "get": {
+        "operationId": "List",
+        "resource": "network",
+        "native_request_type": "vpc.ListOptions",
+        "native_response_type": "Network[]"
+      },
+      "post": {
+        "operationId": "Create",
+        "resource": "network",
+        "native_request_type": "NetworkCreateSpec",
+        "native_response_type": "Network"
+      }
+    },
+    "/v2.0/networks/{network_id}": {
+      "get": {
+        "operationId": "Get",
+        "resource": "network"
+      },
+      "put": {
+        "operationId": "Update",
+        "resource": "network"
+      },
+      "delete": {
+        "operationId": "Delete",
+        "resource": "network"
+      }
+    },
+    "/v2.0/subnets": {
+      "get": {
+        "operationId": "List",
+        "resource": "subnet",
+        "native_request_type": "vpc.ListOptions",
+        "native_response_type": "Subnet[]"
+      },
+      "post": {
+        "operationId": "Create",
+        "resource": "subnet",
+        "native_request_type": "SubnetCreateSpec",
+        "native_response_type": "Subnet"
+      }
+    },
+    "/v2.0/subnets/{subnet_id}": {
+      "get": {
+        "operationId": "Get",
+        "resource": "subnet"
+      },
+      "put": {
+        "operationId": "Update",
+        "resource": "subnet"
+      },
+      "delete": {
+        "operationId": "Delete",
+        "resource": "subnet"
+      }
+    },
+    "/v2.0/ports": {
+      "get": {
+        "operationId": "List",
+        "resource": "port",
+        "native_request_type": "vpc.ListOptions",
+        "native_response_type": "Port[]"
+      },
+      "post": {
+        "operationId": "Create",
+        "resource": "port",
+        "native_request_type": "PortCreateSpec",
+        "native_response_type": "Port"
+      }
+    },
+    "/v2.0/ports/{port_id}": {
+      "get": {
+        "operationId": "Get",
+        "resource": "port"
+      },
+      "put": {
+        "operationId": "Update",
+        "resource": "port"
+      },
+      "delete": {
+        "operationId": "Delete",
+        "resource": "port"
+      }
+    }
+  },
+  "definitions": {
+    "network.Network": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-go-field-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "status": {
+          "type": "string",
+          "x-go-field-name": "Status"
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "subnets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "Subnets"
+        },
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "shared": {
+          "type": "boolean",
+          "x-go-field-name": "Shared"
+        },
+        "router:external": {
+          "type": "boolean",
+          "x-go-field-name": "RouterExternal"
+        },
+        "mtu": {
+          "type": "integer",
+          "x-go-field-name": "MTU"
+        },
+        "port_security_enabled": {
+          "type": "boolean",
+          "x-go-field-name": "PortSecurityEnabled"
+        },
+        "availability_zones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "AvailabilityZones"
+        },
+        "availability_zone_hints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "AvailabilityZoneHints"
+        },
+        "revision_number": {
+          "type": "integer",
+          "x-go-field-name": "RevisionNumber"
+        },
+        "created_at": {
+          "type": "string",
+          "x-go-field-name": "CreatedAt"
+        },
+        "updated_at": {
+          "type": "string",
+          "x-go-field-name": "UpdatedAt"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "Tags"
+        },
+        "blocked": {
+          "type": "boolean",
+          "x-go-field-name": "Blocked"
+        },
+        "is_public": {
+          "type": "boolean",
+          "x-go-field-name": "IsPublic"
+        },
+        "is_dns_enabled": {
+          "type": "boolean",
+          "x-go-field-name": "IsDNSEnabled"
+        },
+        "dns_domain": {
+          "type": "string",
+          "x-go-field-name": "DNSDomain"
+        },
+        "tenant_id": {
+          "type": "string",
+          "x-go-field-name": "TenantID"
+        }
+      },
+      "required": []
+    },
+    "network.CreateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "availability_zone_hints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "AvailabilityZoneHints"
+        },
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "dns_domain": {
+          "type": "string",
+          "x-go-field-name": "DNSDomain"
+        },
+        "tenant_id": {
+          "type": "string",
+          "x-go-field-name": "TenantID"
+        },
+        "shared": {
+          "type": "boolean",
+          "x-go-field-name": "Shared"
+        }
+      },
+      "required": []
+    },
+    "network.UpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "dns_domain": {
+          "type": "string",
+          "x-go-field-name": "DNSDomain"
+        },
+        "shared": {
+          "type": "boolean",
+          "x-go-field-name": "Shared"
+        }
+      },
+      "required": []
+    },
+    "subnet.AllocationPool": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "x-go-field-name": "Start"
+        },
+        "end": {
+          "type": "string",
+          "x-go-field-name": "End"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    "subnet.HostRoute": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "x-go-field-name": "Destination"
+        },
+        "nexthop": {
+          "type": "string",
+          "x-go-field-name": "NextHop"
+        }
+      },
+      "required": [
+        "destination",
+        "nexthop"
+      ]
+    },
+    "subnet.Subnet": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-go-field-name": "ID"
+        },
+        "network_id": {
+          "type": "string",
+          "x-go-field-name": "NetworkID"
+        },
+        "ip_version": {
+          "type": "integer",
+          "x-go-field-name": "IPVersion"
+        },
+        "cidr": {
+          "type": "string",
+          "x-go-field-name": "CIDR"
+        },
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "gateway_ip": {
+          "type": "string",
+          "x-nullable": true,
+          "x-go-field-name": "GatewayIP"
+        },
+        "allocation_pools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/subnet.AllocationPool"
+          },
+          "x-go-field-name": "AllocationPools"
+        },
+        "dns_nameservers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "DNSNameservers"
+        },
+        "host_routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/subnet.HostRoute"
+          },
+          "x-go-field-name": "HostRoutes"
+        },
+        "enable_dhcp": {
+          "type": "boolean",
+          "x-go-field-name": "EnableDHCP"
+        },
+        "ipv6_ra_mode": {
+          "type": "string",
+          "x-nullable": true,
+          "x-go-field-name": "IPv6RAMode"
+        },
+        "ipv6_address_mode": {
+          "type": "string",
+          "x-nullable": true,
+          "x-go-field-name": "IPv6AddressMode"
+        },
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "service_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "ServiceTypes"
+        },
+        "revision_number": {
+          "type": "integer",
+          "x-go-field-name": "RevisionNumber"
+        },
+        "created_at": {
+          "type": "string",
+          "x-go-field-name": "CreatedAt"
+        },
+        "updated_at": {
+          "type": "string",
+          "x-go-field-name": "UpdatedAt"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "Tags"
+        },
+        "blocked": {
+          "type": "boolean",
+          "x-go-field-name": "Blocked"
+        },
+        "tenant_id": {
+          "type": "string",
+          "x-go-field-name": "TenantID"
+        }
+      },
+      "required": []
+    },
+    "subnet.CreateRequest": {
+      "type": "object",
+      "properties": {
+        "ip_version": {
+          "type": "integer",
+          "x-go-field-name": "IPVersion"
+        },
+        "cidr": {
+          "type": "string",
+          "x-go-field-name": "CIDR"
+        },
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "gateway_ip": {
+          "type": "string",
+          "x-nullable": true,
+          "x-go-field-name": "GatewayIP"
+        },
+        "allocation_pools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/subnet.AllocationPool"
+          },
+          "x-go-field-name": "AllocationPools"
+        },
+        "dns_nameservers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "DNSNameservers"
+        },
+        "host_routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/subnet.HostRoute"
+          },
+          "x-go-field-name": "HostRoutes"
+        },
+        "enable_dhcp": {
+          "type": "boolean",
+          "x-go-field-name": "EnableDHCP"
+        },
+        "ipv6_ra_mode": {
+          "type": "string",
+          "x-go-field-name": "IPv6RAMode"
+        },
+        "ipv6_address_mode": {
+          "type": "string",
+          "x-go-field-name": "IPv6AddressMode"
+        },
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "tenant_id": {
+          "type": "string",
+          "x-go-field-name": "TenantID"
+        }
+      },
+      "required": [
+        "ip_version"
+      ]
+    },
+    "subnet.UpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "gateway_ip": {
+          "type": "string",
+          "x-nullable": true,
+          "x-go-field-name": "GatewayIP"
+        },
+        "allocation_pools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/subnet.AllocationPool"
+          },
+          "x-go-field-name": "AllocationPools"
+        },
+        "dns_nameservers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "DNSNameservers"
+        },
+        "host_routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/subnet.HostRoute"
+          },
+          "x-go-field-name": "HostRoutes"
+        },
+        "enable_dhcp": {
+          "type": "boolean",
+          "x-go-field-name": "EnableDHCP"
+        }
+      },
+      "required": []
+    },
+    "port.FixedIP": {
+      "type": "object",
+      "properties": {
+        "subnet_id": {
+          "type": "string",
+          "x-go-field-name": "SubnetID"
+        },
+        "ip_address": {
+          "type": "string",
+          "x-go-field-name": "IPAddress"
+        }
+      },
+      "required": []
+    },
+    "port.AllowedAddressPair": {
+      "type": "object",
+      "properties": {
+        "ip_address": {
+          "type": "string",
+          "x-go-field-name": "IPAddress"
+        },
+        "mac_address": {
+          "type": "string",
+          "x-go-field-name": "MACAddress"
+        }
+      },
+      "required": [
+        "ip_address"
+      ]
+    },
+    "port.ExtraDHCPOption": {
+      "type": "object",
+      "properties": {
+        "opt_name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "opt_value": {
+          "type": "string",
+          "x-go-field-name": "Value"
+        },
+        "ip_version": {
+          "type": "integer",
+          "x-go-field-name": "IPVersion"
+        }
+      },
+      "required": [
+        "opt_name",
+        "opt_value"
+      ]
+    },
+    "port.UpdateExtraDHCPOption": {
+      "type": "object",
+      "properties": {
+        "opt_name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "opt_value": {
+          "type": "string",
+          "x-nullable": true,
+          "x-go-field-name": "Value"
+        },
+        "ip_version": {
+          "type": "integer",
+          "x-go-field-name": "IPVersion"
+        }
+      },
+      "required": [
+        "opt_name",
+        "opt_value"
+      ]
+    },
+    "port.Port": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-go-field-name": "ID"
+        },
+        "network_id": {
+          "type": "string",
+          "x-go-field-name": "NetworkID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "status": {
+          "type": "string",
+          "x-go-field-name": "Status"
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "mac_address": {
+          "type": "string",
+          "x-go-field-name": "MACAddress"
+        },
+        "fixed_ips": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.FixedIP"
+          },
+          "x-go-field-name": "FixedIPs"
+        },
+        "device_id": {
+          "type": "string",
+          "x-go-field-name": "DeviceID"
+        },
+        "device_owner": {
+          "type": "string",
+          "x-go-field-name": "DeviceOwner"
+        },
+        "security_groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "SecurityGroups"
+        },
+        "allowed_address_pairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.AllowedAddressPair"
+          },
+          "x-go-field-name": "AllowedAddressPairs"
+        },
+        "extra_dhcp_opts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.ExtraDHCPOption"
+          },
+          "x-go-field-name": "ExtraDHCPOptions"
+        },
+        "port_security_enabled": {
+          "type": "boolean",
+          "x-go-field-name": "PortSecurityEnabled"
+        },
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "revision_number": {
+          "type": "integer",
+          "x-go-field-name": "RevisionNumber"
+        },
+        "created_at": {
+          "type": "string",
+          "x-go-field-name": "CreatedAt"
+        },
+        "updated_at": {
+          "type": "string",
+          "x-go-field-name": "UpdatedAt"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "Tags"
+        },
+        "blocked": {
+          "type": "boolean",
+          "x-go-field-name": "Blocked"
+        },
+        "dhcp_blocked": {
+          "type": "boolean",
+          "x-go-field-name": "DHCPBlocked"
+        },
+        "dns_name": {
+          "type": "string",
+          "x-go-field-name": "DNSName"
+        },
+        "tenant_id": {
+          "type": "string",
+          "x-go-field-name": "TenantID"
+        }
+      },
+      "required": []
+    },
+    "port.CreateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "mac_address": {
+          "type": "string",
+          "x-go-field-name": "MACAddress"
+        },
+        "fixed_ips": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.FixedIP"
+          },
+          "x-go-field-name": "FixedIPs"
+        },
+        "device_id": {
+          "type": "string",
+          "x-go-field-name": "DeviceID"
+        },
+        "device_owner": {
+          "type": "string",
+          "x-go-field-name": "DeviceOwner"
+        },
+        "security_groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "SecurityGroups"
+        },
+        "allowed_address_pairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.AllowedAddressPair"
+          },
+          "x-go-field-name": "AllowedAddressPairs"
+        },
+        "extra_dhcp_opts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.ExtraDHCPOption"
+          },
+          "x-go-field-name": "ExtraDHCPOptions"
+        },
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "dns_name": {
+          "type": "string",
+          "x-go-field-name": "DNSName"
+        },
+        "tenant_id": {
+          "type": "string",
+          "x-go-field-name": "TenantID"
+        }
+      },
+      "required": []
+    },
+    "port.UpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "fixed_ips": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.FixedIP"
+          },
+          "x-go-field-name": "FixedIPs"
+        },
+        "device_id": {
+          "type": "string",
+          "x-go-field-name": "DeviceID"
+        },
+        "device_owner": {
+          "type": "string",
+          "x-go-field-name": "DeviceOwner"
+        },
+        "security_groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "SecurityGroups"
+        },
+        "allowed_address_pairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.AllowedAddressPair"
+          },
+          "x-go-field-name": "AllowedAddressPairs"
+        },
+        "extra_dhcp_opts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port.UpdateExtraDHCPOption"
+          },
+          "x-go-field-name": "ExtraDHCPOptions"
+        },
+        "dns_name": {
+          "type": "string",
+          "x-go-field-name": "DNSName"
+        },
+        "mac_address": {
+          "type": "string",
+          "x-go-field-name": "MACAddress"
+        }
+      },
+      "required": []
+    }
+  }
+}

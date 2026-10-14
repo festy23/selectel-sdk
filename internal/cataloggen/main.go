@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"network-core":                 {"network", "v2", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,21 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"network-core DELETE /v2.0/ports/{port_id}":                        "network.v2.ports.delete",
+	"network-core PUT /v2.0/ports/{port_id}":                           "network.v2.ports.update",
+	"network-core GET /v2.0/ports/{port_id}":                           "network.v2.ports.get",
+	"network-core POST /v2.0/ports":                                    "network.v2.ports.create",
+	"network-core GET /v2.0/ports":                                     "network.v2.ports.list",
+	"network-core DELETE /v2.0/subnets/{subnet_id}":                    "network.v2.subnets.delete",
+	"network-core PUT /v2.0/subnets/{subnet_id}":                       "network.v2.subnets.update",
+	"network-core GET /v2.0/subnets/{subnet_id}":                       "network.v2.subnets.get",
+	"network-core POST /v2.0/subnets":                                  "network.v2.subnets.create",
+	"network-core GET /v2.0/subnets":                                   "network.v2.subnets.list",
+	"network-core DELETE /v2.0/networks/{network_id}":                  "network.v2.networks.delete",
+	"network-core PUT /v2.0/networks/{network_id}":                     "network.v2.networks.update",
+	"network-core GET /v2.0/networks/{network_id}":                     "network.v2.networks.get",
+	"network-core POST /v2.0/networks":                                 "network.v2.networks.create",
+	"network-core GET /v2.0/networks":                                  "network.v2.networks.list",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",

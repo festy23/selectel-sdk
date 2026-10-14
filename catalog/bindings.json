@@ -4585,5 +4585,455 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "network.v2.networks.create": {
+    "go_method": "network.Networks.Create",
+    "input_type": "network.NetworkCreateSpec",
+    "output_type": "types.Result[network.Network]",
+    "contract_ref": "contracts/network.v2.networks.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.networks.list": {
+    "go_method": "network.Networks.ListPage",
+    "input_type": "network.NetworkFilters, pagination.Options",
+    "output_type": "pagination.Page[network.Network]",
+    "contract_ref": "contracts/network.v2.networks.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.networks.get": {
+    "go_method": "network.Networks.Get",
+    "input_type": "types.ResourceRef, network.NetworkGetOptions, types.CallOptions",
+    "output_type": "types.Result[network.Network]",
+    "contract_ref": "contracts/network.v2.networks.get.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.networks.update": {
+    "go_method": "network.Networks.Update",
+    "input_type": "network.NetworkUpdateRequest",
+    "output_type": "types.Result[network.Network]",
+    "contract_ref": "contracts/network.v2.networks.update.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.networks.delete": {
+    "go_method": "network.Networks.Delete",
+    "input_type": "network.DeleteRequest",
+    "output_type": "types.Result[struct{}]",
+    "contract_ref": "contracts/network.v2.networks.delete.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.subnets.create": {
+    "go_method": "network.Subnets.Create",
+    "input_type": "network.SubnetCreateRequest",
+    "output_type": "types.Result[network.Subnet]",
+    "contract_ref": "contracts/network.v2.subnets.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.subnets.list": {
+    "go_method": "network.Subnets.ListPage",
+    "input_type": "network.SubnetFilters, pagination.Options",
+    "output_type": "pagination.Page[network.Subnet]",
+    "contract_ref": "contracts/network.v2.subnets.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.subnets.get": {
+    "go_method": "network.Subnets.Get",
+    "input_type": "types.ResourceRef, network.SubnetGetOptions, types.CallOptions",
+    "output_type": "types.Result[network.Subnet]",
+    "contract_ref": "contracts/network.v2.subnets.get.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.subnets.update": {
+    "go_method": "network.Subnets.Update",
+    "input_type": "network.SubnetUpdateRequest",
+    "output_type": "types.Result[network.Subnet]",
+    "contract_ref": "contracts/network.v2.subnets.update.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.subnets.delete": {
+    "go_method": "network.Subnets.Delete",
+    "input_type": "network.DeleteRequest",
+    "output_type": "types.Result[struct{}]",
+    "contract_ref": "contracts/network.v2.subnets.delete.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.ports.create": {
+    "go_method": "network.Ports.Create",
+    "input_type": "network.PortCreateRequest",
+    "output_type": "types.Result[network.Port]",
+    "contract_ref": "contracts/network.v2.ports.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.ports.list": {
+    "go_method": "network.Ports.ListPage",
+    "input_type": "network.PortFilters, pagination.Options",
+    "output_type": "pagination.Page[network.Port]",
+    "contract_ref": "contracts/network.v2.ports.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.ports.get": {
+    "go_method": "network.Ports.Get",
+    "input_type": "types.ResourceRef, network.PortGetOptions, types.CallOptions",
+    "output_type": "types.Result[network.Port]",
+    "contract_ref": "contracts/network.v2.ports.get.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.ports.update": {
+    "go_method": "network.Ports.Update",
+    "input_type": "network.PortUpdateRequest",
+    "output_type": "types.Result[network.Port]",
+    "contract_ref": "contracts/network.v2.ports.update.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
+  },
+  "network.v2.ports.delete": {
+    "go_method": "network.Ports.Delete",
+    "input_type": "network.DeleteRequest",
+    "output_type": "types.Result[struct{}]",
+    "contract_ref": "contracts/network.v2.ports.delete.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "generate.go",
+      "internal/cataloggen/main.go",
+      "internal/modelgen/generate.py",
+      "internal/networkcontractgen/generate.py",
+      "network/client.go",
+      "network/fields_generated.go",
+      "network/list.go",
+      "network/ports.go",
+      "network/selection.go",
+      "network/subnets.go",
+      "network/types_generated.go",
+      "network/wire.go"
+    ],
+    "evidence_files": [
+      "network/core_test.go",
+      "network/catalog_test.go",
+      "internal/core/request_test.go",
+      "pagination/pagination_test.go"
+    ],
+    "evidence_ref": "network/core_test.go",
+    "verification": "offline"
   }
 }

@@ -203,3 +203,8 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### Neutron core
+
+Network/subnet/port v2 CRUD, доступные shared reads, owner/auth-view semantics,
+проекции и bounded pagination описаны в [network.md](network.md).
