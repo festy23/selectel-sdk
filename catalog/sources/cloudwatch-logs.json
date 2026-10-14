@@ -5469,6 +5469,270 @@
           }
         }
       }
+    },
+    "/CreateLogGroup": {
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-locator": "CloudWatch CreateLogGroup",
+        "x-source-uri": "https://docs.selectel.ru/logs/manage/add-logs/",
+        "x-wire-path": "/",
+        "x-amz-target": "Logs_20140328.CreateLogGroup",
+        "x-selectel-evidence": "../evidence/logs-write-sources.json",
+        "request_shape": {
+          "type": "structure",
+          "required": [
+            "logGroupName"
+          ],
+          "members": {
+            "logGroupName": {
+              "shape": "LogGroupName"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "type": "structure",
+            "members": {}
+          }
+        },
+        "errors": [
+          {
+            "shape": "InvalidParameterException"
+          },
+          {
+            "shape": "ResourceAlreadyExistsException"
+          },
+          {
+            "shape": "LimitExceededException"
+          },
+          {
+            "shape": "OperationAbortedException"
+          },
+          {
+            "shape": "ServiceUnavailableException"
+          }
+        ],
+        "x-unsupported-aws-fields": [
+          "kmsKeyId",
+          "logGroupClass",
+          "tags"
+        ]
+      }
+    },
+    "/CreateLogStream": {
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-locator": "CloudWatch CreateLogStream",
+        "x-source-uri": "https://docs.selectel.ru/logs/manage/add-logs/",
+        "x-wire-path": "/",
+        "x-amz-target": "Logs_20140328.CreateLogStream",
+        "x-selectel-evidence": "../evidence/logs-write-sources.json",
+        "request_shape": {
+          "type": "structure",
+          "required": [
+            "logGroupName",
+            "logStreamName"
+          ],
+          "members": {
+            "logGroupName": {
+              "shape": "LogGroupName"
+            },
+            "logStreamName": {
+              "shape": "LogStreamName"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "type": "structure",
+            "members": {}
+          }
+        },
+        "errors": [
+          {
+            "shape": "InvalidParameterException"
+          },
+          {
+            "shape": "ResourceAlreadyExistsException"
+          },
+          {
+            "shape": "ResourceNotFoundException"
+          },
+          {
+            "shape": "ServiceUnavailableException"
+          }
+        ],
+        "x-unsupported-aws-fields": []
+      }
+    },
+    "/DeleteLogGroup": {
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-locator": "CloudWatch DeleteLogGroup",
+        "x-source-uri": "https://docs.selectel.ru/logs/manage/delete-logs/",
+        "x-wire-path": "/",
+        "x-amz-target": "Logs_20140328.DeleteLogGroup",
+        "x-selectel-evidence": "../evidence/logs-write-sources.json",
+        "request_shape": {
+          "type": "structure",
+          "required": [
+            "logGroupName"
+          ],
+          "members": {
+            "logGroupName": {
+              "shape": "LogGroupName"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "type": "structure",
+            "members": {}
+          }
+        },
+        "errors": [
+          {
+            "shape": "InvalidParameterException"
+          },
+          {
+            "shape": "ResourceNotFoundException"
+          },
+          {
+            "shape": "OperationAbortedException"
+          },
+          {
+            "shape": "ServiceUnavailableException"
+          }
+        ],
+        "x-unsupported-aws-fields": []
+      }
+    },
+    "/DeleteLogStream": {
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-locator": "CloudWatch DeleteLogStream",
+        "x-source-uri": "https://docs.selectel.ru/logs/manage/delete-logs/",
+        "x-wire-path": "/",
+        "x-amz-target": "Logs_20140328.DeleteLogStream",
+        "x-selectel-evidence": "../evidence/logs-write-sources.json",
+        "request_shape": {
+          "type": "structure",
+          "required": [
+            "logGroupName",
+            "logStreamName"
+          ],
+          "members": {
+            "logGroupName": {
+              "shape": "LogGroupName"
+            },
+            "logStreamName": {
+              "shape": "LogStreamName"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "type": "structure",
+            "members": {}
+          }
+        },
+        "errors": [
+          {
+            "shape": "InvalidParameterException"
+          },
+          {
+            "shape": "ResourceNotFoundException"
+          },
+          {
+            "shape": "OperationAbortedException"
+          },
+          {
+            "shape": "ServiceUnavailableException"
+          }
+        ],
+        "x-unsupported-aws-fields": []
+      }
+    },
+    "/PutLogEvents": {
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-locator": "CloudWatch PutLogEvents",
+        "x-source-uri": "https://docs.selectel.ru/logs/manage/add-logs/",
+        "x-wire-path": "/",
+        "x-amz-target": "Logs_20140328.PutLogEvents",
+        "x-selectel-evidence": "../evidence/logs-write-sources.json",
+        "request_shape": {
+          "type": "structure",
+          "required": [
+            "logGroupName",
+            "logStreamName",
+            "logEvents"
+          ],
+          "members": {
+            "logGroupName": {
+              "shape": "LogGroupName"
+            },
+            "logStreamName": {
+              "shape": "LogStreamName"
+            },
+            "logEvents": {
+              "shape": "InputLogEvents"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "shape": "PutLogEventsResponse"
+          }
+        },
+        "errors": [
+          {
+            "shape": "InvalidParameterException"
+          },
+          {
+            "shape": "InvalidSequenceTokenException"
+          },
+          {
+            "shape": "DataAlreadyAcceptedException"
+          },
+          {
+            "shape": "ResourceNotFoundException"
+          },
+          {
+            "shape": "ServiceUnavailableException"
+          },
+          {
+            "shape": "UnrecognizedClientException"
+          }
+        ],
+        "x-unsupported-aws-fields": [
+          "sequenceToken"
+        ]
+      }
+    }
+  },
+  "x-write-response-additions": {
+    "source_uri": "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutLogEvents.html",
+    "disposition": "Current compatible response field absent from the older pinned upstream model. Decode defensively if returned, without claiming Selectel entity input support.",
+    "members": {
+      "PutLogEventsResponse": {
+        "rejectedEntityInfo": {
+          "shape": "RejectedEntityInfo"
+        }
+      }
+    },
+    "shapes": {
+      "RejectedEntityInfo": {
+        "type": "structure",
+        "members": {
+          "errorType": {
+            "shape": "RejectionErrorType"
+          }
+        }
+      },
+      "RejectionErrorType": {
+        "type": "string"
+      }
     }
   }
 }

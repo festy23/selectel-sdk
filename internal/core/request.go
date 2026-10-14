@@ -435,7 +435,7 @@ func cloudwatchError(status int, raw []byte) *types.SDKError {
 	if i := strings.LastIndex(code, "#"); i >= 0 {
 		code = code[i+1:]
 	}
-	known := map[string]types.Code{"ResourceNotFoundException": types.NotFound, "InvalidParameterException": types.InvalidArgument, "AccessDeniedException": types.PermissionDenied, "UnrecognizedClientException": types.Unauthenticated, "InvalidSignatureException": types.Unauthenticated, "ThrottlingException": types.RateLimited, "ServiceUnavailableException": types.ProviderError}
+	known := map[string]types.Code{"ResourceNotFoundException": types.NotFound, "ResourceAlreadyExistsException": types.Conflict, "OperationAbortedException": types.Conflict, "LimitExceededException": types.RateLimited, "InvalidSequenceTokenException": types.Conflict, "DataAlreadyAcceptedException": types.Conflict, "InvalidParameterException": types.InvalidArgument, "AccessDeniedException": types.PermissionDenied, "UnrecognizedClientException": types.Unauthenticated, "InvalidSignatureException": types.Unauthenticated, "ThrottlingException": types.RateLimited, "ServiceUnavailableException": types.ProviderError}
 	if mapped, ok := known[code]; ok {
 		e := types.NewError(mapped)
 		e.HTTPStatus = status

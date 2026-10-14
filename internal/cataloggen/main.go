@@ -50,6 +50,11 @@ var overrides = map[string]string{
 	"compute-nova POST /servers":                                       "compute.v2_1.servers.create",
 	"compute-nova GET /servers/{server_id}":                            "compute.v2_1.servers.get",
 	"compute-nova DELETE /servers/{server_id}":                         "compute.v2_1.servers.delete",
+	"cloudwatch-logs POST /CreateLogGroup":                             "logs.cloudwatch.log_groups.create",
+	"cloudwatch-logs POST /CreateLogStream":                            "logs.cloudwatch.log_streams.create",
+	"cloudwatch-logs POST /DeleteLogGroup":                             "logs.cloudwatch.log_groups.delete",
+	"cloudwatch-logs POST /DeleteLogStream":                            "logs.cloudwatch.log_streams.delete",
+	"cloudwatch-logs POST /PutLogEvents":                               "logs.cloudwatch.events.put",
 	"cloudwatch-logs POST /DescribeLogGroups":                          "logs.cloudwatch.log_groups.list",
 	"cloudwatch-logs POST /DescribeLogStreams":                         "logs.cloudwatch.log_streams.list",
 	"cloudwatch-logs POST /GetLogEvents":                               "logs.cloudwatch.events.get",
@@ -177,6 +182,7 @@ func generate() error {
 				}
 				var sourceOperation struct {
 					Effect  string `json:"x-effect"`
+					URI     string `json:"x-source-uri"`
 					Locator string `json:"x-operation-locator"`
 				}
 				if err := json.Unmarshal(methods[method], &sourceOperation); err != nil {
@@ -189,9 +195,13 @@ func generate() error {
 				if sourceOperation.Locator != "" {
 					locator = sourceOperation.Locator
 				}
+				rowURI := sourceURI
+				if sourceOperation.URI != "" {
+					rowURI = sourceOperation.URI
+				}
 				row := map[string]any{
 					"operation_id": id, "service": f.Service, "api_generation": generation, "resource": resource, "action": action, "effect": effect, "availability": "documented",
-					"source":    map[string]any{"uri": sourceURI, "revision": revision, "operation_locator": locator},
+					"source":    map[string]any{"uri": rowURI, "revision": revision, "operation_locator": locator},
 					"go_method": nil, "input_type": nil, "output_type": nil, "input_schema_ref": pointer, "output_schema_ref": pointer + "/responses",
 					"scope_requirements": scope, "auth": map[string]any{"scheme": f.Mode, "audience": "selectel"},
 					"endpoint_recipe_ref": nil, "request_binding_ref": nil, "response_binding_ref": nil, "error_binding_ref": pointer + "/responses", "replay_policy_ref": nil,

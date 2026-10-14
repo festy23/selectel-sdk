@@ -151,7 +151,8 @@ server по update/delete ref может подтвердить текущую �
 
 ## Телеметрия
 
-Операции этой части являются safe reads. Time bounds обязательны для логов,
+Описанные ниже операции чтения являются safe reads. Пять операций записи Logs
+определены отдельно в [контракте Logs](logs.md). Time bounds обязательны для логов,
 аудита и range queries: после преобразования в wire precision Start < End.
 Данные передаются caller; содержимое не выводится в diagnostics.
 
