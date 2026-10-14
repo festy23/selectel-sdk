@@ -5128,9 +5128,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/logs.cloudwatch.events.put.json": "94c27f60be4b8f92bdb19b2dec183e582bab7e456c8068252ff1bb966c08e327"
+      "contracts/logs.cloudwatch.events.put.json": "e2f91f6e1b694fe00140742ad6975151d5213f01592273ce5f01e0c9badc2d4e"
     },
-    "contract_revision": "e10895abba0135e81fc4440fd21fad12a20781e7ad274a3686c2809136dc33a7",
+    "contract_revision": "e2728af13ea6186e912b02fee7796ca2ab5d5c701fce1d0abbca3e0c70324bff",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/logs.cloudwatch.events.put.json#/endpoint",
     "error_binding_ref": "contracts/logs.cloudwatch.events.put.json#/errors",
@@ -5175,9 +5175,9 @@
       "uri": "https://docs.selectel.ru/logs/manage/add-logs/"
     },
     "verification": {
-      "contract_revision": "e10895abba0135e81fc4440fd21fad12a20781e7ad274a3686c2809136dc33a7",
+      "contract_revision": "e2728af13ea6186e912b02fee7796ca2ab5d5c701fce1d0abbca3e0c70324bff",
       "evidence_ref": "logs_mutations_test.go",
-      "implementation_revision": "56977b1114e71b753d7caa15f8c9dd960db89f155dd6ed272995edbd6c6d6ec0",
+      "implementation_revision": "1d9daf2c097fd81192fceda699c04ded182064c57d29349efb72be9abe3f994d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5191,9 +5191,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/logs.cloudwatch.log_groups.create.json": "279998818b37b21f58f67fd27a997cc7ce49f2ec5882a32f86bf693caede2d77"
+      "contracts/logs.cloudwatch.log_groups.create.json": "5f47f58b61d91f2b79fd9c8f917654e7a17456cfba96b5980669e4d895b78e5a"
     },
-    "contract_revision": "8d45fabb5c0e117fa8a43b841291528651934bab328a7be0740d9f3c00426fa2",
+    "contract_revision": "09cf4099a37b4a9fba2d837f2125097aba3d53f424900914f9811179a7a2f8dc",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/logs.cloudwatch.log_groups.create.json#/endpoint",
     "error_binding_ref": "contracts/logs.cloudwatch.log_groups.create.json#/errors",
@@ -5237,9 +5237,9 @@
       "uri": "https://docs.selectel.ru/logs/manage/add-logs/"
     },
     "verification": {
-      "contract_revision": "8d45fabb5c0e117fa8a43b841291528651934bab328a7be0740d9f3c00426fa2",
+      "contract_revision": "09cf4099a37b4a9fba2d837f2125097aba3d53f424900914f9811179a7a2f8dc",
       "evidence_ref": "logs_mutations_test.go",
-      "implementation_revision": "6a3550a206c6dc719ee3477d77d2f560240d698e5a9486c574cc396d786e9212",
+      "implementation_revision": "504bdab340ead6d2e7af5d013c4f93d7db392bfe6a2adc20314825655d1c777b",
       "level": "offline"
     },
     "wait_goals": []
@@ -5253,9 +5253,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/logs.cloudwatch.log_groups.delete.json": "5059c252e8b766482ee4decfc893ef9d054aded72801de42742c2cd44ef4ee70"
+      "contracts/logs.cloudwatch.log_groups.delete.json": "0c229ed0c82eb5a8ab03395c25e0bf684142272765eb62cd651872f1619452c9"
     },
-    "contract_revision": "48f82808f94c1a9ea912a408805060c300733fa8e18afe9e6f4b0c7dd546bbcc",
+    "contract_revision": "67e047f8c51dd26f6fce7776b2b2bea160963d830b91ab299f2723992e53c5e7",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/logs.cloudwatch.log_groups.delete.json#/endpoint",
     "error_binding_ref": "contracts/logs.cloudwatch.log_groups.delete.json#/errors",
@@ -5299,9 +5299,9 @@
       "uri": "https://docs.selectel.ru/logs/manage/delete-logs/"
     },
     "verification": {
-      "contract_revision": "48f82808f94c1a9ea912a408805060c300733fa8e18afe9e6f4b0c7dd546bbcc",
+      "contract_revision": "67e047f8c51dd26f6fce7776b2b2bea160963d830b91ab299f2723992e53c5e7",
       "evidence_ref": "logs_mutations_test.go",
-      "implementation_revision": "acfe3a75c5c05cb1d182346ddd2610d599a7c428dc05a49893fe06aab9ae27f6",
+      "implementation_revision": "d43d9393bd527a21a9bce7f1b4534fd39ef4104338eea9878ed20ca005aa77c4",
       "level": "offline"
     },
     "wait_goals": []
@@ -5382,9 +5382,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/logs.cloudwatch.log_streams.create.json": "e6f004fe6a0c9c4ce2fcaac97157fcc4d21e49158c17df779cae11ff987d8a43"
+      "contracts/logs.cloudwatch.log_streams.create.json": "4296e2c2ff5789794025c1e6f409330bfcf3f9c6120ceb9f14e80bb60b9a9904"
     },
-    "contract_revision": "1f263c6af855de33610891725171d2ffc5c7d6fdad5b7fdf01abe874b1eed1df",
+    "contract_revision": "bf24af13a00eab739489c2299956b8794ddb5c20d1552687d3e753585d7e1bf5",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/logs.cloudwatch.log_streams.create.json#/endpoint",
     "error_binding_ref": "contracts/logs.cloudwatch.log_streams.create.json#/errors",
@@ -5428,9 +5428,9 @@
       "uri": "https://docs.selectel.ru/logs/manage/add-logs/"
     },
     "verification": {
-      "contract_revision": "1f263c6af855de33610891725171d2ffc5c7d6fdad5b7fdf01abe874b1eed1df",
+      "contract_revision": "bf24af13a00eab739489c2299956b8794ddb5c20d1552687d3e753585d7e1bf5",
       "evidence_ref": "logs_mutations_test.go",
-      "implementation_revision": "36cda317e29c5648199c9d776f7a20f73bc66cef7cabf5eb57d5dc618dbaae94",
+      "implementation_revision": "3a65928ff37120473c706d8382a7098c32a1a4331d34903a45c8952f97c6332b",
       "level": "offline"
     },
     "wait_goals": []
@@ -5444,9 +5444,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/logs.cloudwatch.log_streams.delete.json": "bbd6f32e529d4fb55fcc89b1de285e85cc58611491ea34de81318d84f3805e86"
+      "contracts/logs.cloudwatch.log_streams.delete.json": "61aebb4fa0ca16f6a2422c78582f92f704680768681a9332b77877deb797dc5b"
     },
-    "contract_revision": "39c8189d15a42b09e60218bd09cb84e00021b5c81ece67e1c7019c01e15b17ca",
+    "contract_revision": "18f72eb09c1bfdf55025ac6234faba5e975664ccbd9ac414c1cceb5dfb3b4a5c",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/logs.cloudwatch.log_streams.delete.json#/endpoint",
     "error_binding_ref": "contracts/logs.cloudwatch.log_streams.delete.json#/errors",
@@ -5490,9 +5490,9 @@
       "uri": "https://docs.selectel.ru/logs/manage/delete-logs/"
     },
     "verification": {
-      "contract_revision": "39c8189d15a42b09e60218bd09cb84e00021b5c81ece67e1c7019c01e15b17ca",
+      "contract_revision": "18f72eb09c1bfdf55025ac6234faba5e975664ccbd9ac414c1cceb5dfb3b4a5c",
       "evidence_ref": "logs_mutations_test.go",
-      "implementation_revision": "ce04b26dadc9ba3ab5d90e893cbd38323a27cc3129f21633753b71bafd464ddb",
+      "implementation_revision": "479352e14896cfe61caf2204d425e0e97f6a13d89bc47f101e2d0718dd4df0f5",
       "level": "offline"
     },
     "wait_goals": []

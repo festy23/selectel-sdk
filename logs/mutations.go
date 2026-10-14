@@ -72,14 +72,14 @@ func object(raw []byte) error {
 
 // CreateGroup creates the exact caller-named group. Acceptance is not ownership or readiness proof.
 func (c *Client) CreateGroup(ctx context.Context, name string, o types.CallOptions) (types.Result[types.ResourceRef], error) {
-	op, e := c.mutation("logs.cloudwatch.log_groups.create", "CreateLogGroup")
-	if e != nil {
-		return types.Result[types.ResourceRef]{}, e
-	}
+	op, bindErr := c.mutation("logs.cloudwatch.log_groups.create", "CreateLogGroup")
 	body, _ := json.Marshal(struct {
 		Name string `json:"logGroupName"`
 	}{name})
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/", Body: body, Options: o, Validate: func() error {
+		if bindErr != nil {
+			return bindErr
+		}
 		if !validGroup(name) {
 			return types.NewError(types.InvalidArgument)
 		}
@@ -92,15 +92,15 @@ func (c *Client) CreateGroup(ctx context.Context, name string, o types.CallOptio
 
 // CreateStream creates a stream under the explicitly selected group.
 func (c *Client) CreateStream(ctx context.Context, group types.ResourceRef, name string, o types.CallOptions) (types.Result[types.ResourceRef], error) {
-	op, e := c.mutation("logs.cloudwatch.log_streams.create", "CreateLogStream")
-	if e != nil {
-		return types.Result[types.ResourceRef]{}, e
-	}
+	op, bindErr := c.mutation("logs.cloudwatch.log_streams.create", "CreateLogStream")
 	body, _ := json.Marshal(struct {
 		Group string `json:"logGroupName"`
 		Name  string `json:"logStreamName"`
 	}{group.ID, name})
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/", Body: body, Options: o, Refs: []types.ResourceRef{group}, PinnedEndpoint: pinned(group), Validate: func() error {
+		if bindErr != nil {
+			return bindErr
+		}
 		if e := c.refError(group, "log_group"); e != nil {
 			return e
 		}
@@ -135,12 +135,14 @@ func (c *Client) remove(ctx context.Context, ref types.ResourceRef, kind string,
 		}
 		body["logStreamName"] = ref.ID
 	}
-	op, e := c.mutation(id, action)
-	if e != nil {
-		return types.Result[struct{}]{}, e
-	}
+	op, bindErr := c.mutation(id, action)
 	raw, _ := json.Marshal(body)
-	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/", Body: raw, Options: o, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pinned(ref), Validate: func() error { return c.refError(ref, kind) }}, func(raw []byte, _ types.EndpointBinding) (core.Decoded[struct{}], error) {
+	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/", Body: raw, Options: o, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pinned(ref), Validate: func() error {
+		if bindErr != nil {
+			return bindErr
+		}
+		return c.refError(ref, kind)
+	}}, func(raw []byte, _ types.EndpointBinding) (core.Decoded[struct{}], error) {
 		return core.Decoded[struct{}]{}, acknowledgement(raw)
 	})
 }
@@ -148,12 +150,12 @@ func (c *Client) remove(ctx context.Context, ref types.ResourceRef, kind string,
 // PutEvents submits one bounded ordered batch. HTTP acceptance does not mean every
 // event was ingested: inspect RejectedLogEventsInfo. Unknown writes never replay.
 func (c *Client) PutEvents(ctx context.Context, stream types.ResourceRef, events []InputLogEvent, o types.CallOptions) (types.Result[PutLogEventsResponse], error) {
-	op, e := c.mutation("logs.cloudwatch.events.put", "PutLogEvents")
-	if e != nil {
-		return types.Result[PutLogEventsResponse]{}, e
-	}
+	op, bindErr := c.mutation("logs.cloudwatch.events.put", "PutLogEvents")
 	var raw []byte
 	validate := func() error {
+		if bindErr != nil {
+			return bindErr
+		}
 		if e := c.refError(stream, "log_stream"); e != nil {
 			return e
 		}

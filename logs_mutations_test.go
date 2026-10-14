@@ -246,3 +246,64 @@ func TestLogsAcceptedResponseByteLimitPreservesReceipt(t *testing.T) {
 		t.Fatal("accepted oversized response lost receipt", e)
 	}
 }
+
+func TestLogsMutationBindingFailuresRetainNotSentReceipt(t *testing.T) {
+	for _, pool := range []string{"", "gis-2"} {
+		for _, action := range []string{"CreateGroup", "CreateStream", "DeleteGroup", "DeleteStream", "PutEvents"} {
+			t.Run(action+"/"+pool, func(t *testing.T) {
+				credentialCalls, httpCalls := 0, 0
+				c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+					credentialCalls++
+					return credentials.Material{}, nil
+				}), Transport: transportFunc(func(*http.Request) (*http.Response, error) { httpCalls++; return nil, io.ErrUnexpectedEOF })})
+				if e != nil {
+					t.Fatal(e)
+				}
+				project, e := c.Project("p")
+				if e != nil {
+					t.Fatal(e)
+				}
+				view, e := project.Location("spb", pool)
+				if e != nil {
+					t.Fatal(e)
+				}
+				group := types.ResourceRef{Scope: view.Scope(), Service: "logs", APIGeneration: "cloudwatch", Kind: "log_group", ID: "group", EndpointID: "explicit-log-endpoint", EndpointURL: "https://explicit.example"}
+				stream := group
+				stream.Kind = "log_stream"
+				stream.ID = "stream"
+				stream.Parent = &group
+				var receipt *types.Receipt
+				switch action {
+				case "CreateGroup":
+					out, err := view.Logs().CreateGroup(context.Background(), "group", types.CallOptions{})
+					receipt, e = out.Receipt, err
+				case "CreateStream":
+					out, err := view.Logs().CreateStream(context.Background(), group, "stream", types.CallOptions{})
+					receipt, e = out.Receipt, err
+				case "DeleteGroup":
+					out, err := view.Logs().DeleteGroup(context.Background(), group, types.CallOptions{})
+					receipt, e = out.Receipt, err
+				case "DeleteStream":
+					out, err := view.Logs().DeleteStream(context.Background(), stream, types.CallOptions{})
+					receipt, e = out.Receipt, err
+				case "PutEvents":
+					n, _ := types.ParseInteger("1")
+					m := types.Protect([]byte("test"))
+					out, err := view.Logs().PutEvents(context.Background(), stream, []logs.InputLogEvent{{Timestamp: &n, Message: &m}}, types.CallOptions{})
+					receipt, e = out.Receipt, err
+				}
+				code := types.EndpointUnavailable
+				if pool == "" {
+					code = types.InvalidArgument
+				}
+				if types.ErrorCode(e) != code || receipt == nil || receipt.Outcome != types.NotSent || receipt.Attempts != 0 || receipt.Scope != view.Scope() || receipt.CallID == "" || credentialCalls != 0 || httpCalls != 0 {
+					t.Fatalf("binding error lost not_sent receipt: code=%s receipt=%v credentials=%d HTTP=%d", types.ErrorCode(e), receipt, credentialCalls, httpCalls)
+				}
+				sdkError, ok := e.(*types.SDKError)
+				if !ok || sdkError.Receipt == nil || sdkError.Receipt.CallID != receipt.CallID {
+					t.Fatal("error/result receipt mismatch")
+				}
+			})
+		}
+	}
+}

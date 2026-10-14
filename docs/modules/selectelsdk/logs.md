@@ -34,7 +34,10 @@ Selectel support for entity input.
 HTTP200/Receipt Accepted is an acknowledgement, not proof every event was
 accepted. A rejected prefix/suffix is not discarded or silently retried.
 
-Every mutation runs once and retains its Receipt on errors, including accepted
+Every mutation returns a not_sent Receipt for preflight failures, including a
+missing required pool or an unavailable documented endpoint, with zero attempts
+and no credential/HTTP access. Every mutation runs once and retains its Receipt
+on later errors, including accepted
 malformed responses and unknown transport outcomes. Existing exact refs remain
 available for caller-directed observation. Recovery=resource in a receipt names
 that locator class; no automated Resume, name lookup, adoption or replay is

@@ -69,7 +69,8 @@
       401,
       403,
       429
-    ]
+    ],
+    "preflight_binding": "Binding errors (including missing pool and unavailable documented endpoint) pass core Request.Validate/finalizer: not_sent Receipt, zero attempts, no credential/HTTP I/O. Error/result share call identity."
   },
   "replay": "Mutations execute once; unknown retains Receipt and exact submitted refs, no retry/signature-token repair, no name lookup or adoption. Caller chooses any next action.",
   "recovery": "No automated recovery or readiness/wait goal. Existing ResourceRefs are exact observation locators only. Receipt recovery=resource is core classification, not a supported Resume/ownership assertion.",
