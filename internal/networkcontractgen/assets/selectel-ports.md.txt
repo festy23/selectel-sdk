@@ -1,0 +1,1114 @@
+---
+title: 'Порты'
+sidebar_label: 'Порты'
+sidebar_position: 5
+description: 'Как добавить порт в подсеть, добавить облачный сервер в подсеть, подключить публичный плавающий IP-адрес к порту в приватной подсети и другие инструкции'
+toc_max_heading_level: 6
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+import {TabItemLabel} from '@selectel/docux/components'
+import MoreVerticalIcon from '@selectel/docux/icons/more-vertical'
+import EditIcon from '@selectel/docux/icons/edit'
+import CheckIcon from '@selectel/docux/icons/check'
+import CopyIcon from '@selectel/docux/icons/copy'
+import ShieldOkIcon from '@selectel/docux/icons/shield-ok'
+import TrashIcon from '@selectel/docux/icons/trash'
+import ConnectDirectIpToCloudServer from '@site/docs/_partials/cloud-servers/cloud-networks/connect-direct-ip-to-cloud-server.mdx'
+import Formbricks from '@theme/MDXComponents/Formbricks'
+
+# Порты
+
+Порт — это виртуальная сетевая карта, на которую назначается связка MAC-адреса и IP-адреса.
+Порты используются для подключения устройства к приватной сети или к интернету.
+
+Порт может находиться в приватной или публичной подсети.
+Для доступа в интернет вместо добавления порта в подсеть также можно создать порт с отдельным IP-адресом — прямым публичным IP-адресом.
+
+Трафик порта может отправляться только с одной пары IP/MAC-адрес, которая назначается при [добавлении порта в подсеть](/cloud-servers/cloud-networks/ports.mdx#add-port-to-subnet), трафик с прочих адресов отбрасывается. Чтобы разрешить трафик с адресов, которые не указаны на порте, нужно [добавить разрешенные IP/MAC-адреса на порт](#add-allowed-ip-mac-addresses-on-port). Для портов с прямым публичным IP-адресом нельзя добавить разрешенные IP/MAC-адреса.
+
+Работать с портами подсетей можно в [панели управления](https://my.selectel.ru/vpc/default/networks/), с помощью [OpenStack CLI](/cloud-servers/tools/openstack-cli/) или [Terraform](/terraform/providers/). Работать с портами прямых публичных IP-адресов можно в [панели управления](https://my.selectel.ru/vpc/default/networks/) и с помощью [OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+В облачных сетях автоматически создаются служебные порты, управление ими недоступно:
+
+* два DHCP-порта в приватной подсети. Создаются при [включении DHCP в подсети](/cloud-servers/cloud-networks/private-networks-and-subnets.mdx#enable-dhcp-in-private-subnet), удаляются при [отключении DHCP](/cloud-servers/cloud-networks/private-networks-and-subnets.mdx#disable-dhcp-in-private-subnet);
+* два DNS-порта в приватной подсети. Создаются при [подключении сети к приватному DNS-резолверу](/cloud-servers/private-dns/manage-network-dns-setting.mdx#connect-network-to-dns-resolver), удаляются при отключении приватной сети от приватного DNS-резолвера;
+* три служебных порта для сетевого оборудования в подсети, которая подключена к глобальному роутеру. Создаются при [подключении приватной сети к глобальному роутеру⁠](/cloud-servers/cloud-networks/private-networks-and-subnets.mdx#connect-private-network-to-global-router), удаляются при [отключении приватной сети от глобального роутера](/cloud-servers/cloud-networks/private-networks-and-subnets.mdx#disconnect-private-network-from-global-router) или при [удалении глобального роутера](/global-router/router/delete-router.mdx);
+* VRRP-порты и downlinks (порты для резервирования) в приватных подсетях, в которых находится балансировщик нагрузки. Количество служебных портов зависит от типа балансировщика, подробнее о [портах балансировщика нагрузки](/cloud-servers/load-balancers/about-load-balancers.mdx#balancer-ports);
+* порт в приватной подсети, в которой находится [файловое хранилище](/file-storage/about/about-file-storage.mdx). Создается вместе с подсетью для файлового хранилища, можно удалить только с хранилищем.
+
+## Добавить порт в публичную или приватную подсеть \{#add-port-to-subnet}
+
+<Tabs queryString="add-port-to-subnet">
+  <TabItem value="private" default>
+    <TabItemLabel>
+      Приватная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="add-port-to-private-subnet">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+
+        3. Откройте страницу сети → вкладка **Порты**.
+
+        4. Нажмите **Добавить порт**.
+
+        5. Выберите подсеть.
+
+        6. Введите IP-адрес порта.
+
+        7. Опционально: выберите сервер или ноду кластера Managed Kubernetes, к которой нужно добавить этот порт.
+
+        8. Нажмите **Добавить порт**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+        2. Создайте порт в подсети:
+
+           ```bash
+           openstack port create \
+             --network <network> \
+             --fixed-ip subnet=<subnet>,ip-address=<port_ip_address> \
+             <port_name>
+           ```
+
+           Укажите:
+
+           * `<network>` — ID или имя приватной сети, можно посмотреть с помощью команды `openstack network list`;
+           * `<subnet>` — ID или имя подсети, можно посмотреть с помощью команды `openstack subnet list`;
+           * `<port_ip_address>` — IP-адрес порта;
+           * `<port_name>` — имя порта.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="public-subnet">
+    <TabItemLabel>
+      Публичная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="add-port-to-public-subnet">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        3. Откройте карточку подсети → вкладка **Порты**.
+
+        4. Нажмите **Добавить порт**.
+
+        5. Выберите подсеть.
+
+        6. Введите IP-адрес порта.
+
+        7. Нажмите **Добавить порт**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+        2. Создайте порт в подсети:
+
+           ```bash
+           openstack port create \
+             --network <network> \
+             --fixed-ip subnet=<subnet>,ip-address=<port_ip_address> \
+             <port_name>
+           ```
+
+           Укажите:
+
+           * `<network>` — ID или имя публичной сети, совпадает с параметром `<subnet>`, можно посмотреть с помощью команды `openstack subnet list`;
+           * `<subnet>` — ID или имя подсети, можно посмотреть с помощью команды `openstack subnet list`;
+           * `<port_ip_address>` — IP-адрес порта;
+           * `<port_name>` — имя порта.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+## Добавить к облачному серверу порт с прямым публичным IP-адресом \{#add-port-with-direct-ip-to-cloud-server}
+
+К облачному серверу после создания можно добавить порт с прямым публичным IP-адресом.
+
+<ConnectDirectIpToCloudServer />
+
+## Добавить облачный сервер или ноду кластера Managed Kubernetes в подсеть через порт \{#add-cloud-server-to-subnet-via-port}
+
+Облачный сервер можно добавить в приватную подсеть или публичную подсеть. Ноду кластера Managed Kubernetes можно добавить в приватную подсеть.
+
+Для этого нужно добавить к серверу или ноде порт.
+
+<Tabs queryString="add-cloud-server-to-subnet-via-port">
+  <TabItem value="panel" default>
+    <TabItemLabel>
+      Панель управления
+    </TabItemLabel>
+
+    1. В [панели управления](https://my.selectel.ru/vpc/default/servers/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+    2. Перейдите в раздел **Серверы**.
+    3. Откройте страницу сервера → вкладка **Порты**.
+    4. Нажмите **Добавить порт**.
+    5. Выберите приватную или публичную подсеть.
+    6. Введите IP-адрес порта.
+    7. Нажмите **Добавить**.
+  </TabItem>
+
+  <TabItem value="openstack">
+    <TabItemLabel>
+      OpenStack CLI
+    </TabItemLabel>
+
+    1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+    2. Создайте порт в подсети:
+
+       ```bash
+       openstack port create \
+         --network <network> \
+         --fixed-ip subnet=<subnet>,ip-address=<port_ip_address> \
+         <port_name>
+       ```
+
+       Укажите:
+
+       * `<network>` — ID или имя приватной или публичной подсети, можно посмотреть с помощью команды `openstack network list`. Для публичной подсети совпадает с параметром `<subnet>`;
+       * `<subnet>` — ID или имя подсети, можно посмотреть с помощью команды `openstack subnet list`;
+       * `<port_ip_address>` — IP-адрес порта;
+       * `<port_name>` — имя порта.
+
+    3. Добавьте порт к облачному серверу:
+
+       ```bash
+       openstack server add port <server> <port>
+       ```
+
+       Укажите:
+
+       * `<server>` — ID или имя облачного сервера, можно посмотреть с помощью команды `openstack server list`;
+       * `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+  </TabItem>
+</Tabs>
+
+## Подключить публичный плавающий IP-адрес к порту в приватной подсети \{#assign-ip-to-port-in-private-subnet}
+
+Если к порту в приватной подсети подключен облачный сервер или балансировщик нагрузки, к порту можно подключить [публичный плавающий IP-адрес](/cloud-servers/cloud-networks/public-floating-ip-addresses.mdx).
+
+Для подключения публичного плавающего IP-адреса в разделах устройств в панели управления используйте инструкцию [Публичные плавающие IP-адреса](/cloud-servers/cloud-networks/public-floating-ip-addresses.mdx).
+
+<Tabs queryString="assign-ip-to-port-in-private-subnet">
+  <TabItem value="panel" default>
+    <TabItemLabel>
+      Панель управления
+    </TabItemLabel>
+
+    1. Убедитесь, что устройство находится в подсети, которая соответствует требованиям, подробнее в подразделе [Подготовить приватную подсеть для подключения публичного плавающего IP-адреса⁠⁠](/cloud-servers/cloud-networks/public-floating-ip-addresses.mdx#configure-subnet-for-internet-access) инструкции [Публичные плавающие IP-адреса](/cloud-servers/cloud-networks/public-floating-ip-addresses.mdx).
+    2. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+    3. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+    4. Откройте страницу сети → вкладка **Порты**.
+    5. В карточке порта облачного сервера или балансировщика нагрузки нажмите **Подключить публичный IP**.
+    6. Выберите публичный плавающий IP-адрес.
+    7. Нажмите **Подключить**.
+  </TabItem>
+
+  <TabItem value="openstack">
+    <TabItemLabel>
+      OpenStack CLI
+    </TabItemLabel>
+
+    1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+    2. Подключите публичный плавающий IP-адрес к порту:
+
+       ```bash
+       openstack floating ip set --port <port> <floating_ip_address>
+       ```
+
+       Укажите:
+
+       * `<port>` — ID порта облачного сервера или балансировщика нагрузки, можно посмотреть с помощью команды `openstack port list`;
+       * `<floating_ip_address>` — ID или публичный плавающий IP-адрес, можно посмотреть с помощью команды `openstack floating ip list`.
+  </TabItem>
+</Tabs>
+
+## Отключить публичный плавающий IP-адрес от порта в приватной подсети \{#disconnect-ip-from-port-in-private-subnet}
+
+Для отключения публичного плавающего IP-адреса в разделах устройств в панели управления используйте инструкцию [Публичные плавающие IP-адреса](/cloud-servers/cloud-networks/public-floating-ip-addresses.mdx).
+
+<Tabs queryString="disconnect-ip-from-port-in-private-subnet">
+  <TabItem value="panel" default>
+    <TabItemLabel>
+      Панель управления
+    </TabItemLabel>
+
+    1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+    2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+    3. Откройте страницу сети → вкладка **Порты**.
+    4. В карточке порта облачного сервера или балансировщика нагрузки рядом с публичным плавающим IP-адресом нажмите <EditIcon />.
+    5. Выберите **Отключить публичный IP-адрес**.
+    6. Опционально: если публичный плавающий IP-адрес вам больше не нужен, отметьте чекбокс **Удалить адрес**.
+    7. Нажмите **Сохранить**.
+  </TabItem>
+
+  <TabItem value="openstack">
+    <TabItemLabel>
+      OpenStack CLI
+    </TabItemLabel>
+
+    1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+    2. Отключите публичный плавающий IP-адрес от порта:
+
+       ```bash
+       openstack floating ip unset --port <floating_ip_address>
+       ```
+
+       Укажите `<floating_ip_address>` — ID или публичный плавающий IP-адрес, можно посмотреть с помощью команды `openstack floating ip list`.
+  </TabItem>
+</Tabs>
+
+## Назначить группу безопасности на порт \{#assign-security-group-on-port}
+
+Для назначения группы безопасности на странице облачного сервера в панели управления используйте инструкцию [Назначить группу безопасности](/cloud-servers/security-groups/manage-groups/assign-security-groups.mdx).
+
+Чтобы на порт можно было назначить группу безопасности, в сети порта должна быть включена [фильтрация трафика (port security)](/cloud-servers/cloud-networks/about-networks.mdx#traffic-filtering-port-security). Состояние фильтрации в сети можно посмотреть в [панели управления](https://my.selectel.ru/vpc/default/networks): в верхнем меню нажмите **Продукты** → **Облачные серверы** → **Сеть** → вкладка **Приватные сети** или **Публичные сети**.
+Сеть с включенной фильтрацией отмечена <ShieldOkIcon />.
+
+<Tabs queryString="assign-security-group-on-port">
+  <TabItem value="private" default>
+    <TabItemLabel>
+      Приватная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="assign-security-group-on-private-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+
+        3. Откройте страницу сети → вкладка **Порты**.
+
+        4. В карточке порта в поле групп безопасности нажмите <EditIcon />.
+           Если выбор группы безопасности недоступен, в сети выключена [фильтрация трафика (port security)](/cloud-servers/cloud-networks/about-networks.mdx#traffic-filtering-port-security).
+           Для использования групп безопасности [создайте новую приватную сеть](/cloud-servers/cloud-networks/private-networks-and-subnets.mdx#create-private-network).
+
+        5. В поле **Группы безопасности** отметьте группы, которые нужно назначить на порт, или нажмите **Новая группа безопасности** и [создайте группу](/cloud-servers/security-groups/manage-groups/create-group.mdx).
+
+        6. Нажмите **Сохранить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Убедитесь, что в сети включена [фильтрация трафика (port security)](/cloud-servers/cloud-networks/about-networks.mdx#traffic-filtering-port-security) — в поле `port_security_enabled` значение `true`:
+
+           ```bash
+           openstack network show <network>
+           ```
+
+           Укажите `<network>` — ID или имя сети.
+
+           Если в поле `port_security_enabled` значение `false`, для использования групп безопасности [создайте новую приватную сеть](/cloud-servers/cloud-networks/private-networks-and-subnets.mdx#create-private-network).
+
+        3. Назначьте группу безопасности на порт:
+
+           ```bash
+           openstack port set \
+             --security-group <security_group> \
+             <port>
+           ```
+
+           Укажите:
+
+           * `<security_group>` — ID или имя группы безопасности, можно посмотреть с помощью команды `openstack security group list`;
+           * `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="public-subnet">
+    <TabItemLabel>
+      Публичная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="assign-security-group-on-public-subnet-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        3. Откройте карточку подсети → вкладка **Порты**.
+
+        4. В строке порта в поле **Группы безопасности** нажмите <EditIcon />.
+           Если выбор группы безопасности недоступен, в сети выключена [фильтрация трафика (port security)](/cloud-servers/cloud-networks/about-networks.mdx#traffic-filtering-port-security).
+           Для использования групп безопасности [создайте новую публичную подсеть](/cloud-servers/cloud-networks/public-subnets.mdx#create-public-subnet).
+
+        5. В поле **Группы безопасности** отметьте группы, которые нужно назначить на порт, или нажмите **Новая группа безопасности** и [создайте группу](/cloud-servers/security-groups/manage-groups/create-group.mdx).
+
+        6. Нажмите **Сохранить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Убедитесь, что в подсети включена [фильтрация трафика (port security)](/cloud-servers/cloud-networks/about-networks.mdx#traffic-filtering-port-security) — в поле `port_security_enabled` значение `true`:
+
+           ```bash
+           openstack subnet show <subnet>
+           ```
+
+           Укажите `<subnet>` — ID или имя подсети.
+
+           Если в поле `port_security_enabled` значение `false`, для использования групп безопасности [создайте новую публичную подсеть](/cloud-servers/cloud-networks/public-subnets.mdx#create-public-subnet).
+
+        3. Назначьте группу безопасности на порт:
+
+           ```bash
+           openstack port set \
+             --security-group <security_group> \
+             <port>
+           ```
+
+           Укажите:
+
+           * `<security_group>` — ID или имя группы безопасности, можно посмотреть с помощью команды `openstack security group list`;
+           * `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="direct-public-ip">
+    <TabItemLabel>
+      Прямой публичный IP-адрес
+    </TabItemLabel>
+
+    <Tabs queryString="assign-security-group-on-direct-public-ip-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. В разделе **Серверы** откройте страницу сервера → вкладка **Порты**.
+
+        3. В строке порта в поле **Группы безопасности** нажмите <EditIcon />.
+
+        4. В поле **Группы безопасности**:
+
+           * отметьте группы, которые нужно назначить на порт;
+           * или нажмите **Новая группа безопасности** и [создайте группу](/cloud-servers/security-groups/manage-groups/create-group.mdx).
+
+        5. Нажмите **Сохранить**.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+## Отключить группу безопасности от порта \{#remove-security-group-from-port}
+
+<Tabs queryString="remove-security-group-from-port">
+  <TabItem value="private" default>
+    <TabItemLabel>
+      Приватная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="remove-security-group-from-private-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+
+        3. Откройте страницу сети → вкладка **Порты**.
+
+        4. В карточке порта в поле групп безопасности нажмите <EditIcon />.
+
+        5. В поле **Группы безопасности** снимите чекбоксы групп, которые нужно отключить от порта.
+
+        6. Нажмите **Сохранить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Отключите группу безопасности от порта:
+
+           ```bash
+           openstack port unset \
+             --security-group <security_group> \
+             <port>
+           ```
+
+           Укажите:
+
+           * `<security_group>` — ID или имя группы безопасности, можно посмотреть с помощью команды `openstack security group list`;
+           * `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="public-subnet" default>
+    <TabItemLabel>
+      Публичная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="remove-security-group-from-public-subnet-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        3. Откройте карточку подсети → вкладка **Порты**.
+
+        4. В строке порта в поле **Группы безопасности** нажмите <EditIcon />.
+
+        5. В поле **Группы безопасности** снимите чекбоксы групп, которые нужно отключить от порта.
+
+        6. Нажмите **Сохранить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Отключите группу безопасности от порта:
+
+           ```bash
+           openstack port unset \
+             --security-group <security_group> \
+             <port>
+           ```
+
+           Укажите:
+
+           * `<security_group>` — ID или имя группы безопасности, можно посмотреть с помощью команды `openstack security group list`;
+           * `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="direct-public-ip">
+    <TabItemLabel>
+      Прямой публичный IP-адрес
+    </TabItemLabel>
+
+    <Tabs queryString="remove-security-group-from-direct-public-ip-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. В разделе **Серверы** откройте страницу сервера → вкладка **Порты**.
+
+        3. В строке порта в поле **Группы безопасности** нажмите <EditIcon />.
+
+        4. В поле **Группы безопасности** снимите чекбоксы групп, которые нужно отключить от порта.
+
+        5. Нажмите **Сохранить**.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+## Добавить разрешенные IP/MAC-адреса на порт \{#add-allowed-ip-mac-addresses-on-port}
+
+Если в сети включена [фильтрация трафика (port security)](/cloud-servers/cloud-networks/about-networks.mdx#traffic-filtering-port-security), то трафик порта может отправляться только с одной пары IP/MAC-адрес, которая назначается при [добавлении порта в подсеть](/cloud-servers/cloud-networks/ports.mdx#add-port-to-subnet) или [добавлении порта с прямым публичным IP-адресом](#add-port-with-direct-ip-to-cloud-server). Если через порт передается трафик с адресов, которые не указаны на порте, такой трафик будет заблокирован. Чтобы разрешить трафик с адресов, которые не указаны на порте, нужно добавить разрешенные IP/MAC-адреса в настройки порта.
+
+Например, если вы самостоятельно развернули:
+
+* роутинговое ПО на облачном сервере — нужно разрешить все маршрутизируемые сети;
+* VPN-сервер на облачном сервере — нужно разрешить IP-адреса всех VPN-клиентов;
+* кластер Kubernetes с CNI Calico в режиме роутинга Direct на облачном сервере — нужно разрешить всю подсеть, которая используется в кластере. Для CNI Flannel настройка не требуется;
+* VRRP-группу из нескольких облачных серверов — на каждом из серверов в зависимости от настроек VRRP нужно разрешить VIP-адрес либо связку VIP/MAC-адрес сервера.
+
+Для одного порта можно добавить не более 10 дополнительных пар IP/MAC-адрес. Если разрешенные адреса будут не нужны, вы сможете [удалить их с порта](#remove-allowed-ip-mac-addresses-from-port). На порт с прямым публичным IP-адресом добавить дополнительные адреса нельзя.
+
+Настраивать разрешенные адреса не требуется в кластерах [Managed Kubernetes](/managed-kubernetes/), [облачных базах данных](/managed-databases/), [готовом облаке 1С](/cloud-1c/), а также на облачных серверах, созданных из образов с [приложениями](https://docs.selectel.ru/cloud-servers/applications/about-applications/). Все необходимые настройки для них уже выполнены.
+
+<Tabs queryString="add-allowed-ip-mac-addresses-on-port">
+  <TabItem value="private" default>
+    <TabItemLabel>
+      Приватная подсеть, подсеть глобального роутера
+    </TabItemLabel>
+
+    <Tabs queryString="add-allowed-ip-mac-addresses-on-private-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+
+        3. Откройте страницу сети → вкладка **Порты**.
+
+        4. В карточке порта в поле групп безопасности нажмите <EditIcon />.
+
+        5. Если вы хотите разрешить все IP-адреса, нажмите **Разрешить все IP-адреса для VPN**. Будет разрешен трафик из подсети `0.0.0.0/0` с MAC-адресом порта по умолчанию.
+
+        6. Если вы хотите разрешить трафик с конкретных адресов:
+
+           6.1.  Нажмите **Добавить пару IP/MAC**.
+
+           6.2.  Введите IP-адрес или подсеть в формате CIDR.
+
+           6.3.  Введите MAC-адрес, который соответствует IP-адресу, или оставьте MAC-адрес порта по умолчанию. Не используйте адреса из диапазона `00:00:5e:00:01:82` – `00:00:5e:00:01:c6`.
+           Эти MAC-адреса зарезервированы сетевым оборудованием Selectel, их использование приведет к блокировке трафика на интерфейсе облачного сервера.
+
+           6.4.  Чтобы добавить еще одну пару адресов, повторите шаги 6.1 — 6.3.
+
+        7. Нажмите **Сохранить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Добавьте разрешенные адреса на порт:
+
+           ```bash
+           openstack port set \
+             --allowed-address ip-address=<ip_address>[,mac-address=<mac_address>] \
+             <port>
+           ```
+
+           Укажите:
+
+           * `<ip_address>` — IP-адрес или подсеть. Если вы хотите разрешить все IP-адреса, введите подсеть `0.0.0.0/0`;
+           * опционально: `,mac-address=<mac_address>` — MAC-адрес, соответствующий IP-адресу. Параметр `<mac_address>` — значение MAC-адреса. Не используйте адреса из диапазона `00:00:5e:00:01:82` – `00:00:5e:00:01:c6`. Эти MAC-адреса зарезервированы сетевым оборудованием Selectel, их использование приведет к блокировке трафика на интерфейсе облачного сервера. Если не указать MAC-адрес, будет использоваться основной MAC-адрес порта;
+           * `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="public-subnet">
+    <TabItemLabel>
+      Публичная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="add-allowed-ip-mac-addresses-on-public-subnet-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        3. Откройте карточку подсети → вкладка **Порты**.
+
+        4. В строке порта в поле **Группы безопасности** нажмите <EditIcon />.
+
+        5. Если вы хотите разрешить все IP-адреса, нажмите **Разрешить все IP-адреса для VPN**. Будет разрешен трафик из подсети `0.0.0.0/0` с MAC-адресом порта по умолчанию.
+
+        6. Если вы хотите разрешить трафик с конкретных адресов:
+
+           6.1.  Нажмите **Добавить пару IP/MAC**.
+
+           6.2.  Введите IP-адрес или подсеть в формате CIDR.
+
+           6.3.  Введите MAC-адрес, который соответствует IP-адресу, или оставьте MAC-адрес порта по умолчанию. Не используйте адреса из диапазона `00:00:5e:00:01:82` – `00:00:5e:00:01:c6`.
+           Эти MAC-адреса зарезервированы сетевым оборудованием Selectel, их использование приведет к блокировке трафика на интерфейсе облачного сервера.
+
+           6.4.  Чтобы добавить еще одну пару адресов, повторите шаги 6.1 — 6.3.
+
+        7. Нажмите **Сохранить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Добавьте разрешенные адреса на порт:
+
+           ```bash
+           openstack port set \
+             --allowed-address ip-address=<ip_address>[,mac-address=<mac_address>] \
+             <port>
+           ```
+
+           Укажите:
+
+           * `<ip_address>` — IP-адрес или подсеть. Если вы хотите разрешить все IP-адреса, введите подсеть `0.0.0.0/0`;
+           * опционально: `,mac-address=<mac_address>` — MAC-адрес, соответствующий IP-адресу. Параметр `<mac_address>` — значение MAC-адреса. Не используйте адреса из диапазона `00:00:5e:00:01:82` – `00:00:5e:00:01:c6`. Эти MAC-адреса зарезервированы сетевым оборудованием Selectel, их использование приведет к блокировке трафика на интерфейсе облачного сервера. Если не указать MAC-адрес, будет использоваться основной MAC-адрес порта;
+           * `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+## Удалить разрешенные IP/MAC-адреса с порта \{#remove-allowed-ip-mac-addresses-from-port}
+
+<Tabs queryString="remove-allowed-ip-mac-addresses-from-port">
+  <TabItem value="private">
+    <TabItemLabel>
+      Приватная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="remove-allowed-ip-mac-addresses-from-private-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+
+        3. Откройте страницу сети → вкладка **Порты**.
+
+        4. В карточке порта в поле групп безопасности нажмите <EditIcon />.
+
+        5. В строке пары адресов нажмите <TrashIcon />.
+
+        6. Нажмите **Сохранить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Удалите разрешенные адреса с порта. Останется разрешена пара IP/MAC-адрес, которые были назначены при создании порта:
+
+           ```bash
+           openstack port set \
+             --no-allowed-address \
+             <port>
+           ```
+
+           Укажите `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="public-subnet">
+    <TabItemLabel>
+      Публичная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="remove-allowed-ip-mac-addresses-from-public-subnet-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        3. Откройте карточку подсети → вкладка **Порты**.
+
+        4. В строке порта в поле **Группы безопасности** нажмите <EditIcon />.
+
+        5. В строке пары адресов нажмите <TrashIcon />.
+
+        6. Нажмите **Сохранить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Удалите разрешенные адреса с порта. Останется разрешена одна пара IP/MAC-адрес, которая была назначена при создании порта:
+
+           ```bash
+           openstack port set \
+             --no-allowed-address \
+             <port>
+           ```
+
+           Укажите `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+## Включить порт \{#enable-port}
+
+<Tabs queryString="enable-port">
+  <TabItem value="private" default>
+    <TabItemLabel>
+      Приватная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="enable-private-port">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+
+        3. Откройте страницу сети → вкладка **Порты**.
+
+        4. В карточке порта включите порт.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Включите порт:
+
+           ```bash
+           openstack port set --enable <port>
+           ```
+
+           Укажите `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="public-subnet">
+    <TabItemLabel>
+      Публичная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="enable-public-subnet-port">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        3. Откройте карточку подсети → вкладка **Порты**.
+
+        4. В строке порта включите порт.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Включите порт:
+
+           ```bash
+           openstack port set --enable <port>
+           ```
+
+           Укажите `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="direct-public-ip">
+    <TabItemLabel>
+      Прямой публичный IP-адрес
+    </TabItemLabel>
+
+    <Tabs queryString="enable-direct-public-ip-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. В разделе **Серверы** откройте страницу сервера → вкладка **Порты**.
+
+        3. В карточке включите порт.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+## Отключить порт \{#disable-port}
+
+<Tabs queryString="disable-port">
+  <TabItem value="private" default>
+    <TabItemLabel>
+      Приватная подсеть, подсеть глобального роутера
+    </TabItemLabel>
+
+    <Tabs queryString="disable-private-port">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+
+        3. Откройте страницу сети → вкладка **Порты**.
+
+        4. В карточке порта отключите порт.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Отключите порт:
+
+           ```bash
+           openstack port set --disable <port>
+           ```
+
+           Укажите `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="public-subnet">
+    <TabItemLabel>
+      Публичная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="disable-public-subnet-port">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        3. Откройте карточку подсети → вкладка **Порты**.
+
+        4. В строке порта отключите порт.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Отключите порт:
+
+           ```bash
+           openstack port set --disable <port>
+           ```
+
+           Укажите `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="direct-public-ip">
+    <TabItemLabel>
+      Прямой публичный IP-адрес
+    </TabItemLabel>
+
+    <Tabs queryString="disable-direct-public-ip-port">
+      <TabItem value="panel">
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. В разделе **Серверы** откройте страницу сервера → вкладка **Порты**.
+
+        3. В карточке выключите порт.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+## Удалить порт \{#delete-port}
+
+<Tabs queryString="delete-port">
+  <TabItem value="private" default>
+    <TabItemLabel>
+      Приватная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="delete-private-port">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Приватные сети**.
+
+        3. Откройте страницу сети → вкладка **Порты**.
+
+        4. В меню <MoreVerticalIcon /> порта выберите <TrashIcon /> **Удалить порт**.
+
+        5. В зависимости от того, нужно ли выполнить дополнительные действия для удаления порта, появится диалоговое окно:
+
+           * если нужно выполнить дополнительные действия, появится окно с описанием действий. Выполните их и вернитесь на шаг 1;
+           * если дополнительные действия выполнять не нужно, появится окно для подтверждения удаления. Нажмите **Удалить**.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Удалите порт:
+
+           ```bash
+           openstack port delete <port>
+           ```
+
+           Укажите `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="public-subnet">
+    <TabItemLabel>
+      Публичная подсеть
+    </TabItemLabel>
+
+    <Tabs queryString="delete-public-subnet-port">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        3. Откройте карточку подсети → вкладка **Порты**.
+
+        4. Если для порта неактивна кнопка <TrashIcon />, подготовьте его к удалению:
+
+           4.1. В столбце **Подключен к** посмотрите, к какому устройству подключен порт.
+
+           4.2. Подготовьте порт к удалению в зависимости от устройства:
+
+           * облачный сервер — переведите сервер в [статус](/cloud-servers/manage/server-statuses.mdx) `ACTIVE`, `PAUSED` или `STOPPED`;
+           * любое другое устройство — удалите устройство, порт будет автоматически удален вместе с устройством.
+
+        5. Перейдите в раздел **Сеть** → вкладка **Публичные сети**.
+
+        6. Откройте карточку подсети → вкладка **Порты**.
+
+        7. В строке порта нажмите <TrashIcon />.
+      </TabItem>
+
+      <TabItem value="openstack">
+        <TabItemLabel>
+          OpenStack CLI
+        </TabItemLabel>
+
+        1. [Откройте OpenStack CLI](/cloud-servers/tools/openstack-cli/).
+
+        2. Удалите порт:
+
+           ```bash
+           openstack port delete <port>
+           ```
+
+           Укажите `<port>` — ID или имя порта, можно посмотреть с помощью команды `openstack port list`.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="direct-public-ip">
+    <TabItemLabel>
+      Прямой публичный IP-адрес
+    </TabItemLabel>
+
+    Удалить порт можно только вместе с прямым публичным IP-адресом, который на него назначен.
+
+    <Tabs queryString="delete-direct-public-ip-port">
+      <TabItem value="panel" default>
+        <TabItemLabel>
+          Панель управления
+        </TabItemLabel>
+
+        1. В [панели управления](https://my.selectel.ru/vpc/default/networks/) в верхнем меню нажмите **Продукты** и выберите **Облачные серверы**.
+
+        2. В разделе **Серверы** откройте страницу сервера → вкладка **Порты**.
+
+        3. В карточке порта нажмите <TrashIcon />.
+
+        4. Опционально: чтобы удалить прямой публичный IP-адрес вместе с портом, отметьте чекбокс.
+
+        5. Нажмите **Удалить** для подтверждения удаления.
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
+
+<Formbricks />

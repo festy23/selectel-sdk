@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "780611e2e95e7fca2032533f6e8360acf7cb9a628764c0b8ecdfbb533b89d20f",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "6e898cc63390ebb13a45bfb875c98d5535ca4749a3e7c35907a508b1e77fd6dc",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "834c8d0fbf02b7a5f01992fbb78bb003bc2a04060b60f2d4e0b87e76eb9c47ec",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "bf6a08f9231aacf5f9f826f0bf318680cc5f5623ef12ae7cf837e94bb331b85e",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +451,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "dafc1da33b111e5d6c0bcec6d59c99a3c494d4b64ad79a725b428cd08435cc66",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +517,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "9e025029ffd5d9ff55cc561b8203f962a612ffe84e95300572884473097f8123",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +583,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "573417fb8e82012fe15f3c924baf9687cca0211bda2e21830781e15e821eb629",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +649,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "4b25217b2e71b3ab9f89cd916c43c0b6c3dd89b01a47295bdaf3fad3a4e0a08f",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2167,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "ca8c7ec96631e658f76f1a55c685b4c6b17ee341a384124d5d319bae602659fd",
       "level": "offline"
     },
     "wait_goals": []
@@ -5044,7 +5044,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "50c0961c33b3e004813a4e4e966c88edbced0aaffd805b584edd6475a33b423d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +5114,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "8e46fac2ca2c0f7ae5c6c1fab9bb370397672ad6d568c4065b93bfd589fa43ad",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +5181,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "760baa454494a8eb33a5c8599bf7d5677d3a8c5cf5fa49a1e096e84765a750b9",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +5248,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "6d5f143ef1e81b9abe7d5b36234b9bb4acdd7d482db8c77e47eb5cc8951839ea",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +5314,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "08cd4e6639426f16fcb208cdc814d17e8f207f8d135b65c86b2a64737ab62a49",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +5380,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "8e1be6c023fb316171053b850d95df6fdaea361b8986ed04cc35879479d8619c",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +5445,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "085caa8371dfc65142499d3db88e5ccbf220abc93977dc368d97d5c89f6857be",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +5502,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "cf73f666b3ab97f8f8166f445910f9d754107427495bdff234a4d218caa96a45",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +5561,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "0f348a0751d226ee5e3b34e81bb804f8630ebd5e6809f403503356fa4ebff1a8",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +5620,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "ce3e296902dec7847a8ffb5096e0dabf10e1e41efb84f292d9a4963b4b33a5c0",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +5681,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "09140970e269d74e6a31067badd03d6e7084226a42dc2f7ca1a8989ee7000934",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +5740,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "415218afdef4e2bc757afe771b32cd82e0a270c13d94c1575d536601e0fb5c12",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +5799,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "8feb796f3f6a68b6695e8a66d88d20b75853d62e28be6a95888724b0b8bc844d",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +5860,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "1be3f5094e17863d48640d77dcb7608276fae592e85b23014c651195f882a823",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +5921,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "3fe6772ea8ec95f90cbe88cfc160a284d717a7f8b847b024fc7fce7ba32539cb",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +5978,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "758825b66c0ff224a72d46054b8fbac59717c91443206bafd8fe462db8a38510",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +6035,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "91f3e2a272b18ad6323e6f1fde072823b5c406eaaf1beee894497b91fd30b999",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +6096,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "3e732c3f502f07fc8598454424b3dd2bd62d4f6a44e94aaa1fd06825e971e8db",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +6155,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "315e24a5398f5888fd4c5ab597d58a8bf922c1e46620ddb26efb78071be5878f",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +6212,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "53e63bbaac7a55e1f181d4c25d4a2721b5187caa10f9ec0495f3354d90e43e80",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +6271,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "634d7c6c5d9c05d3406ef545bf36a70df0451364fc5bc765e9e31f46a8c4aec3",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +6330,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "79241b1e868c3fa7c74fce421f2355206c52470e8e031ef7f73c7c0acbe68a1c",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +6387,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "a7cf00c7f58ad38748d17b4a4202f86cfea0f33c01f2a7289b85e1f468bb3793",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +6444,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "5e80def291ec4127dbca44dde914d0e72c68a793591bc2c8868db7f4c2ce2c50",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +6503,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "bde802c2e7f3674340efb32337be8508a4e29f309ca6d4c63ab5734edff9431d",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +6560,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "ceaee75d9782ffb7616d97a69675be171cac34227af4de11c1d84a53dd8df650",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +6617,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "d92d877f405a3181bfd92ece88804d7f2ef6c059a20b5903eb4e65dcb1dbd8ad",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +6674,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "184cf958c606055e62ba11fac42ed305ff73eed72c8af9a9c251ffdc613d668e",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +6731,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "dae17af1c1e18bfeb80a65225b07b36cfab4becd400cdae842e4e7d88109f469",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +6788,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "c73cad2aed38fa3768176c68c3ef03b36b37e67cb44a298db2557125a0c37869",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +6850,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "00d094ba9a066ecb16f91465fbf2f9d81c871b73d4c27fbb2353ee7f77b46718",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +6912,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "b0ee44da606fe71fddcfc2c44bb467b5f69c1802b1b84af68aa62d7aae8e7bd9",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +6973,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "38cadb386554c5da6609481cdb193e62a2646d9f9182d9ab6781c1867a7a0e6c",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +7034,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "4bfb708ad36aa7fef87b440659cea1875978c51f4878d7ce1b946ece0e1b4c95",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +7093,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "4410fa66b611753d61536abe9a1b3bf7380ee6f8149565cef3aeafef22f206a6",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +7150,862 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "a86d1e4dda8c2629a627856f10d0962ceee930077515aa7c72bcaa20b24a8a1e",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.networks.create.json": "b30e727a4ec691499f26c011fad421af6a067bc5cfd856df2accc3e49ab6e04e"
+    },
+    "contract_revision": "b1fa5b3eabb312825d910596dd609945e339067050ad1f9d19939567e0b1cb7d",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.networks.create.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.networks.create.json#/errors",
+    "go_method": "network.Networks.Create",
+    "implementation": {
+      "binding": "network.Networks.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks/post",
+    "input_type": "network.NetworkCreateSpec",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.networks.create",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks/post/responses",
+    "output_type": "types.Result[network.Network]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.networks.create.json#/retry",
+    "request_binding_ref": "contracts/network.v2.networks.create.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/network.v2.networks.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "POST /v2.0/networks",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "b1fa5b3eabb312825d910596dd609945e339067050ad1f9d19939567e0b1cb7d",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "ae840c94ab829046ef14ed715ab557cb2c327c461f5dd6a9b8d981e8313fc9db",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.networks.delete.json": "ee318715c20c1b426841898156239cfeb8d4d7cb56f3aee55ee3e171e0dae87e"
+    },
+    "contract_revision": "f6fa437f0f69f8377d1830a946ba2dd57015f1a08c96a8dfe83e384b3c60ee9f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.networks.delete.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.networks.delete.json#/errors",
+    "go_method": "network.Networks.Delete",
+    "implementation": {
+      "binding": "network.Networks.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/delete",
+    "input_type": "network.DeleteRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.networks.delete",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/delete/responses",
+    "output_type": "types.Result[struct{}]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.networks.delete.json#/retry",
+    "request_binding_ref": "contracts/network.v2.networks.delete.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/network.v2.networks.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "DELETE /v2.0/networks/{network_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "f6fa437f0f69f8377d1830a946ba2dd57015f1a08c96a8dfe83e384b3c60ee9f",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "50dc259d5e20955bd0313f644e675b340507eeedb2387abe93d5cfcd3996c4e6",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.networks.get.json": "4c4e3183e2745cf5a5d14284397a87cb1e05e3d4cb2ae604f82d4f1e86dc5295"
+    },
+    "contract_revision": "2b5e80daa529355b083ca64ef8bf30940432fcdb6acceba3fa6c6e6156bd8cfb",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/network.v2.networks.get.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.networks.get.json#/errors",
+    "go_method": "network.Networks.Get",
+    "implementation": {
+      "binding": "network.Networks.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/get",
+    "input_type": "types.ResourceRef, network.NetworkGetOptions, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.networks.get",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/get/responses",
+    "output_type": "types.Result[network.Network]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.networks.get.json#/retry",
+    "request_binding_ref": "contracts/network.v2.networks.get.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/network.v2.networks.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "GET /v2.0/networks/{network_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "2b5e80daa529355b083ca64ef8bf30940432fcdb6acceba3fa6c6e6156bd8cfb",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "659c08ee1ad35f2eec865d36f80496a780ba119d93001b13753f93918a3a34f6",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.networks.list.json": "6bf78746ad9b1139f685ae7e9a8373e88685c1c55b441b69a81f2603cd705de4"
+    },
+    "contract_revision": "7dfc9fe24f1d2f5b238371748c52532a38569924f3b2f40a1a4a1576928c9756",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/network.v2.networks.list.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.networks.list.json#/errors",
+    "go_method": "network.Networks.ListPage",
+    "implementation": {
+      "binding": "network.Networks.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks/get",
+    "input_type": "network.NetworkFilters, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.networks.list",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks/get/responses",
+    "output_type": "pagination.Page[network.Network]",
+    "pagination_contract_ref": "contracts/network.v2.networks.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.networks.list.json#/retry",
+    "request_binding_ref": "contracts/network.v2.networks.list.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/network.v2.networks.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "GET /v2.0/networks",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "7dfc9fe24f1d2f5b238371748c52532a38569924f3b2f40a1a4a1576928c9756",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "27d01b87ff6d24e21d4a04a5f77258d992b6210c5a25a63490ac1b04c2298092",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.networks.update.json": "0fcf42d0b8dcff7cf92af1b32aca1be0c1ec8963182f4ecefea41169dd6205c9"
+    },
+    "contract_revision": "e0920ca7f5bc4988d5c5634d5cc558efa21e28981817edf1b7164368a092b153",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.networks.update.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.networks.update.json#/errors",
+    "go_method": "network.Networks.Update",
+    "implementation": {
+      "binding": "network.Networks.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/put",
+    "input_type": "network.NetworkUpdateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.networks.update",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/put/responses",
+    "output_type": "types.Result[network.Network]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1networks~1{network_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.networks.update.json#/retry",
+    "request_binding_ref": "contracts/network.v2.networks.update.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/network.v2.networks.update.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "PUT /v2.0/networks/{network_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "e0920ca7f5bc4988d5c5634d5cc558efa21e28981817edf1b7164368a092b153",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "c68123ccaac74d348db869a4bc3bcdab2ec23942238c7562f0a08f92a8f67efa",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.ports.create.json": "5d0800b4fed8c78230fb93e43410f092f2cdb49525c6ac553b7ade8f7c3d46da"
+    },
+    "contract_revision": "99b1d9b660baf7271b23dfa9d73fba30648f5a1f3f70cf9bb209998bdc220e37",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.ports.create.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.ports.create.json#/errors",
+    "go_method": "network.Ports.Create",
+    "implementation": {
+      "binding": "network.Ports.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports/post",
+    "input_type": "network.PortCreateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.ports.create",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports/post/responses",
+    "output_type": "types.Result[network.Port]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.ports.create.json#/retry",
+    "request_binding_ref": "contracts/network.v2.ports.create.json#/request",
+    "resource": "ports",
+    "response_binding_ref": "contracts/network.v2.ports.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "POST /v2.0/ports",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "99b1d9b660baf7271b23dfa9d73fba30648f5a1f3f70cf9bb209998bdc220e37",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "a4d6c81f29d6d0a1fb509c69443338b74d95f8edb1345f1dc0e8508ecc4852c5",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.ports.delete.json": "6589bc978957ee4ee52300d6728d219efae46e59567467ada38130417a10fff0"
+    },
+    "contract_revision": "08cd5d1cf31a0b5aaac63e2c865d002f14b3423b4c15ca601fba224a72b33042",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.ports.delete.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.ports.delete.json#/errors",
+    "go_method": "network.Ports.Delete",
+    "implementation": {
+      "binding": "network.Ports.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/delete",
+    "input_type": "network.DeleteRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.ports.delete",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/delete/responses",
+    "output_type": "types.Result[struct{}]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.ports.delete.json#/retry",
+    "request_binding_ref": "contracts/network.v2.ports.delete.json#/request",
+    "resource": "ports",
+    "response_binding_ref": "contracts/network.v2.ports.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "DELETE /v2.0/ports/{port_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "08cd5d1cf31a0b5aaac63e2c865d002f14b3423b4c15ca601fba224a72b33042",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "c442f0a81ea4d92b89d59d150a699c105fa5258bd75ff81a0fc9559c8b7dab67",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.ports.get.json": "8393d9b759c5e8d544b08c906e200979db3b8bc9851187603e258e9be8aaceae"
+    },
+    "contract_revision": "6b6a3e7aaa11884447ea4a269cf596cb8e9e86b659a4838155c1290f7b1db04e",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/network.v2.ports.get.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.ports.get.json#/errors",
+    "go_method": "network.Ports.Get",
+    "implementation": {
+      "binding": "network.Ports.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/get",
+    "input_type": "types.ResourceRef, network.PortGetOptions, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.ports.get",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/get/responses",
+    "output_type": "types.Result[network.Port]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.ports.get.json#/retry",
+    "request_binding_ref": "contracts/network.v2.ports.get.json#/request",
+    "resource": "ports",
+    "response_binding_ref": "contracts/network.v2.ports.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "GET /v2.0/ports/{port_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "6b6a3e7aaa11884447ea4a269cf596cb8e9e86b659a4838155c1290f7b1db04e",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "37b06e45553128bc35d1e64b9dcb06a6cb675d3eb978f4e3c4d8f4a08f0d80f4",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.ports.list.json": "f5fe20086ba68eea4179291d4ef208d9521d5fec0f20c617355d1592d4e614ba"
+    },
+    "contract_revision": "13a6022117edcbe2de7d9f77ae3bfc6e14a6fb0e7db8eccf31b0818065450722",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/network.v2.ports.list.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.ports.list.json#/errors",
+    "go_method": "network.Ports.ListPage",
+    "implementation": {
+      "binding": "network.Ports.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports/get",
+    "input_type": "network.PortFilters, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.ports.list",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports/get/responses",
+    "output_type": "pagination.Page[network.Port]",
+    "pagination_contract_ref": "contracts/network.v2.ports.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.ports.list.json#/retry",
+    "request_binding_ref": "contracts/network.v2.ports.list.json#/request",
+    "resource": "ports",
+    "response_binding_ref": "contracts/network.v2.ports.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "GET /v2.0/ports",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "13a6022117edcbe2de7d9f77ae3bfc6e14a6fb0e7db8eccf31b0818065450722",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "32a3a41913670b95bb5786daaf3c80a1955feef7569de3af39a7e8d9fcb149c6",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.ports.update.json": "bcff5260ed6916440a8b5f360790ec6743d283bce9b43eee4c6d9ac698c5bc8d"
+    },
+    "contract_revision": "771cfdd7516ee06e458ca827567d7ad86534bd43b05c8a5fd9c3601c362a7c52",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.ports.update.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.ports.update.json#/errors",
+    "go_method": "network.Ports.Update",
+    "implementation": {
+      "binding": "network.Ports.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/put",
+    "input_type": "network.PortUpdateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.ports.update",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/put/responses",
+    "output_type": "types.Result[network.Port]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1ports~1{port_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.ports.update.json#/retry",
+    "request_binding_ref": "contracts/network.v2.ports.update.json#/request",
+    "resource": "ports",
+    "response_binding_ref": "contracts/network.v2.ports.update.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "PUT /v2.0/ports/{port_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "771cfdd7516ee06e458ca827567d7ad86534bd43b05c8a5fd9c3601c362a7c52",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "6731abdeeaa41d97150a49d0e865c91d8be3105e626ed058a868250371150d7d",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.subnets.create.json": "71cac026cc6df47c0fecb5c2c5736e75ec6dbd6c8cf1f29bd1b9d75b2c358b3c"
+    },
+    "contract_revision": "e1e2382e103f866b30cca21c871da37a5c1c7b0babb9cb28ec7cd0ec5beb3a2a",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.subnets.create.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.subnets.create.json#/errors",
+    "go_method": "network.Subnets.Create",
+    "implementation": {
+      "binding": "network.Subnets.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets/post",
+    "input_type": "network.SubnetCreateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.subnets.create",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets/post/responses",
+    "output_type": "types.Result[network.Subnet]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.subnets.create.json#/retry",
+    "request_binding_ref": "contracts/network.v2.subnets.create.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/network.v2.subnets.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "POST /v2.0/subnets",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "e1e2382e103f866b30cca21c871da37a5c1c7b0babb9cb28ec7cd0ec5beb3a2a",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "0b26b6d3eb117c5c9cc35f56006b31ff26571aa60357c9f1d10bc065149da66c",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.subnets.delete.json": "a7042b1a6681150b819ac64540a1650d439c4c819884c48a3baad3033d4818c3"
+    },
+    "contract_revision": "6b401f9fa79543b1a117d711379b7df956792111b32e06f64b67fb63ebad78bd",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.subnets.delete.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.subnets.delete.json#/errors",
+    "go_method": "network.Subnets.Delete",
+    "implementation": {
+      "binding": "network.Subnets.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/delete",
+    "input_type": "network.DeleteRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.subnets.delete",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/delete/responses",
+    "output_type": "types.Result[struct{}]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.subnets.delete.json#/retry",
+    "request_binding_ref": "contracts/network.v2.subnets.delete.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/network.v2.subnets.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "DELETE /v2.0/subnets/{subnet_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "6b401f9fa79543b1a117d711379b7df956792111b32e06f64b67fb63ebad78bd",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "a9acd82386e7be6ab382964b1f84fbe8d953f2044a9aefcaab2e289ab36100c9",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.subnets.get.json": "e364d4070aa3c39f137574a6d80fd05c7cf8e43c66c24c0a5633d767e9436b1d"
+    },
+    "contract_revision": "dc03f3ef0e98bcca09a34c2cc5225ccbedc2695f962e1be3d7cc0e6525cd54e0",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/network.v2.subnets.get.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.subnets.get.json#/errors",
+    "go_method": "network.Subnets.Get",
+    "implementation": {
+      "binding": "network.Subnets.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/get",
+    "input_type": "types.ResourceRef, network.SubnetGetOptions, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.subnets.get",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/get/responses",
+    "output_type": "types.Result[network.Subnet]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.subnets.get.json#/retry",
+    "request_binding_ref": "contracts/network.v2.subnets.get.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/network.v2.subnets.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "GET /v2.0/subnets/{subnet_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "dc03f3ef0e98bcca09a34c2cc5225ccbedc2695f962e1be3d7cc0e6525cd54e0",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "bcea4c4d474896fe61598cf016743955d7f51b219b1bbf1e0ac88aff95a77710",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.subnets.list.json": "be86765d64604fd31433db290d9fb9413c73dff7ea4b2aa20835585af1c85b9a"
+    },
+    "contract_revision": "84b363aff598d01fba2f6fd53739352d8f922d9032d91df616cabb92f8dd4202",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/network.v2.subnets.list.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.subnets.list.json#/errors",
+    "go_method": "network.Subnets.ListPage",
+    "implementation": {
+      "binding": "network.Subnets.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets/get",
+    "input_type": "network.SubnetFilters, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.subnets.list",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets/get/responses",
+    "output_type": "pagination.Page[network.Subnet]",
+    "pagination_contract_ref": "contracts/network.v2.subnets.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.subnets.list.json#/retry",
+    "request_binding_ref": "contracts/network.v2.subnets.list.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/network.v2.subnets.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "GET /v2.0/subnets",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "84b363aff598d01fba2f6fd53739352d8f922d9032d91df616cabb92f8dd4202",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "67f64017d972b071a3ec2a949952256d25aa5eb9cf51d633b35811b3138209a6",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/network.v2.subnets.update.json": "a8ea43cf77a7e3793f23773eff74add3c7266bf43326b54cac53df4185d4acd0"
+    },
+    "contract_revision": "45b54d93ee53ba59567dbf820d7453bfe5101354f33a0dce6e1640076b7553f1",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/network.v2.subnets.update.json#/endpoint",
+    "error_binding_ref": "contracts/network.v2.subnets.update.json#/errors",
+    "go_method": "network.Subnets.Update",
+    "implementation": {
+      "binding": "network.Subnets.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/put",
+    "input_type": "network.SubnetUpdateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "network.v2.subnets.update",
+    "output_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/put/responses",
+    "output_type": "types.Result[network.Subnet]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/network-core.json#/paths/~1v2.0~1subnets~1{subnet_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/network.v2.subnets.update.json#/retry",
+    "request_binding_ref": "contracts/network.v2.subnets.update.json#/request",
+    "resource": "subnets",
+    "response_binding_ref": "contracts/network.v2.subnets.update.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "network",
+    "source": {
+      "operation_locator": "PUT /v2.0/subnets/{subnet_id}",
+      "revision": "edfead02434feeb193680b92866cd1c31f4ca4d9b1d3f38579ff00e64f47ade2",
+      "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
+    },
+    "verification": {
+      "contract_revision": "45b54d93ee53ba59567dbf820d7453bfe5101354f33a0dce6e1640076b7553f1",
+      "evidence_ref": "network/core_test.go",
+      "implementation_revision": "afc5375443332cd039b208f248a5a06606d84b12409037c536a46b2e3b8e5ce4",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +8750,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "30127a300482b20b91a335571ba131107e05605b2f22c101d2de59c11071f9df",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +8806,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "f50292d779d893bfc67b0cefd02b0ccd33c919bdbeef83b43bc22ad09fda7bc6",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +8862,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "89cd5c79cacbb74a9b5d862b0b0ead71beb78ceba53c1d79e97c70a76c29701c",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +8918,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "4afafbdf0498149a46620f1927ed10f51ff032bd43450e2582c313a538285b15",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +8974,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "44a8aacf1eae8fd25327c59606934ca06ed4b56b29582d928fab0e4c60c28f8e",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +9402,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "336b400030fb0c25c893475c52aa10d7e47d8ff43582a7bd93b47468154bca38",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +9459,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "0c9c8ec1bdc92611beddac2da262e49e6fce80b3cf5e82bbc581c4c42763e581",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +9516,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "b16fef44788d623a761eb49fa6746d0ebc027e2c54af1cfda318046df9320423",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +9573,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "018a184ce05c3d1408be88c8b8083b9b8bb4fe9b3ebb20c3fb59b5cadd54e412",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +10440,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "b0bcf082e8b3de7cc492172ec71e5bc61335fe1fcf302be54b3d08ce12eee1cf",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +11039,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "5855be74c419869e89b83f863ddf9da82c4ceb4d64ada3004fa7ae963f7e3ed2",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +11096,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "6fccf699313953d583457e2971e5705f780417cc49aa837b380dec3d4ba9bcde",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +11155,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "a327a036830b0f91442da10cb5b7578ceeec91dab4beb6ef0d013f0485ba1513",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +11212,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "ea6d3aa874a18664d924b4f17232d5920bac914bedb2cbfe33b30b069c0470d3",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +11269,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "45fcd0d4f4113188c68b7c68b99ca06b689315646f678b8061dd33e57b306b1b",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +11328,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "ac3404381ec29cddb965c41dd975161f0f2c4f3b3a85d38d5b78b78b6b3ea36f",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +11387,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "1459d31001656183933eea12fd7088281cea78e0866deb380d36941ffb50562e",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +11444,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "e9215375951119d43ce97bc5ea0394da05665cfed1478e57532c2d9f5bbd3b98",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +11501,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "bfd29839eff71f37ab2cebdaed79173d9723372d37380289b418bdd3e41249be",
       "level": "offline"
     },
     "wait_goals": []
