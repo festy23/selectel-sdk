@@ -1,0 +1,205 @@
+{
+  "x-source-uri": "https://docs.selectel.ru/api/object-storage-swift/",
+  "x-inventory-kind": "Confirmed current Selectel Swift subset; normalized bulk query selector; headers/query variants share primitive binding, inventory completeness unknown",
+  "x-pinned-evidence": [
+    {
+      "uri": "https://docs.selectel.ru/api/object-storage-swift.md",
+      "sha256": "b18a7dcfc6e973032f62388384f907bbc288b5119c1ec56b7541bf3273949611"
+    },
+    {
+      "uri": "https://docs.selectel.ru/api/urls.md",
+      "sha256": "4a47e45e5a7d47d3a844c06c96df7d8a6739841f8ae56f6e7bee5a748d6c0284"
+    },
+    {
+      "uri": "https://docs.openstack.org/api-ref/object-store/",
+      "sha256": "3e3742bfb8c8a788928efc459fe5e048f761755cb461544fef62295f9306b967"
+    }
+  ],
+  "x-disposition": {
+    "auth": "IAM project X-Auth-Token only; not S3SigV4 or legacy Swift auth.",
+    "inventory": "Current account/container/object method-path primitives plus bulk-delete query selector; metadata/limits share POST bindings, upload/copy-from/DLO/SLO/symlink share PUT binding with explicit source-confirmed variants. No duplicate coverage for convenience aliases.",
+    "stream": "Binary upload/download use explicit reader/writer, TransferTimeout, byte bounds, no full buffering and no implicit replay. Known segment locators/manifests explicit; no discovery/adoption or automatic segment creation.",
+    "source_discrepancies": [
+      "Account quota table says X-Container-Meta-Quota-Bytes, but description and explicit account example use X-Account-Meta-Quota-Bytes; choose the repeated account-specific example, never scope-shift container header.",
+      "Object metadata table says X-Container-Meta but object example uses X-Object-Meta-Some; retain source evidence and choose explicit object header.",
+      "Some response examples incorrectly say X-Openstack-Requiest-Id; canonical documented header plus X-Trans-Id are allowlisted, do not echo arbitrary headers.",
+      "Most endpoint table rows include /v1 while kz-1 row lacks it; API examples consistently wire /v1/{project_id}. Normalize confirmed service version once, preserve exact host, do not guess different domain.",
+      "Bulk-delete example uses single-quoted Python-like notation despite JSON format; decoder accepts the documented compatible JSON wire shape only, never eval or quote rewriting."
+    ]
+  },
+  "paths": {
+    "/v1/{project_id}": {
+      "head": {
+        "x-effect": "read",
+        "x-operation-id": "swift.v1.account.get",
+        "x-operation-locator": "HEAD /v1/{project_id}",
+        "responses": {
+          "204": {
+            "typed": true
+          }
+        }
+      },
+      "get": {
+        "x-effect": "read",
+        "x-operation-id": "swift.v1.buckets.list",
+        "x-operation-locator": "GET /v1/{project_id}",
+        "responses": {
+          "200": {
+            "typed": true
+          },
+          "204": {
+            "typed": true
+          }
+        }
+      },
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.account.update",
+        "x-operation-locator": "POST /v1/{project_id}",
+        "responses": {
+          "204": {
+            "typed": true
+          },
+          "202": {
+            "typed": true
+          }
+        }
+      }
+    },
+    "/v1/{project_id}/{bucket_name}": {
+      "head": {
+        "x-effect": "read",
+        "x-operation-id": "swift.v1.buckets.get",
+        "x-operation-locator": "HEAD /v1/{project_id}/{bucket_name}",
+        "responses": {
+          "204": {
+            "typed": true
+          }
+        }
+      },
+      "get": {
+        "x-effect": "read",
+        "x-operation-id": "swift.v1.objects.list",
+        "x-operation-locator": "GET /v1/{project_id}/{bucket_name}",
+        "responses": {
+          "200": {
+            "typed": true
+          },
+          "204": {
+            "typed": true
+          }
+        }
+      },
+      "put": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.buckets.create",
+        "x-operation-locator": "PUT /v1/{project_id}/{bucket_name}",
+        "responses": {
+          "201": {
+            "typed": true
+          }
+        }
+      },
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.buckets.update",
+        "x-operation-locator": "POST /v1/{project_id}/{bucket_name}",
+        "responses": {
+          "204": {
+            "typed": true
+          },
+          "202": {
+            "typed": true
+          }
+        }
+      },
+      "delete": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.buckets.delete",
+        "x-operation-locator": "DELETE /v1/{project_id}/{bucket_name}",
+        "responses": {
+          "204": {
+            "typed": true
+          }
+        }
+      }
+    },
+    "/v1/{project_id}/{bucket_name}/{object_name}": {
+      "get": {
+        "x-effect": "read",
+        "x-operation-id": "swift.v1.objects.get",
+        "x-operation-locator": "GET /v1/{project_id}/{bucket_name}/{object_name}",
+        "responses": {
+          "200": {
+            "typed": true
+          }
+        }
+      },
+      "head": {
+        "x-effect": "read",
+        "x-operation-id": "swift.v1.objects.head_symlink",
+        "x-operation-locator": "HEAD /v1/{project_id}/{bucket_name}/{object_name}",
+        "responses": {
+          "200": {
+            "typed": true
+          }
+        }
+      },
+      "put": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.objects.put",
+        "x-operation-locator": "PUT /v1/{project_id}/{bucket_name}/{object_name}",
+        "responses": {
+          "201": {
+            "typed": true
+          }
+        }
+      },
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.objects.update",
+        "x-operation-locator": "POST /v1/{project_id}/{bucket_name}/{object_name}",
+        "responses": {
+          "201": {
+            "typed": true
+          },
+          "202": {
+            "typed": true
+          }
+        }
+      },
+      "copy": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.objects.copy",
+        "x-operation-locator": "COPY /v1/{project_id}/{bucket_name}/{object_name}",
+        "responses": {
+          "201": {
+            "typed": true
+          }
+        }
+      },
+      "delete": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.objects.delete",
+        "x-operation-locator": "DELETE /v1/{project_id}/{bucket_name}/{object_name}",
+        "responses": {
+          "204": {
+            "typed": true
+          }
+        }
+      }
+    },
+    "/$bulk-delete": {
+      "post": {
+        "x-effect": "mutation",
+        "x-operation-id": "swift.v1.objects.bulk_delete",
+        "x-operation-locator": "POST /v1/{project_id}?bulk-delete=true&format=json",
+        "responses": {
+          "200": {
+            "typed": true
+          }
+        }
+      }
+    }
+  }
+}

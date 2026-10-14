@@ -1,0 +1,51 @@
+{
+  "operation_id": "swift.v1.buckets.get",
+  "source": "sources/swift-current.json#/paths/~1v1~1{project_id}~1{bucket_name}/head",
+  "endpoint": {
+    "source": "https://docs.selectel.ru/api/urls/",
+    "recipe": "documented Swift host, /v1 normalized once from API path examples",
+    "scope": "exact account/project/region/pool",
+    "generation": "v1",
+    "redirects": "never follow"
+  },
+  "request": {
+    "method": "HEAD",
+    "wire_path": "/v1/{project_id}/{bucket_name}",
+    "auth": "project IAM X-Auth-Token; no S3/legacy substitution",
+    "mapping": "Generated typed DTO fields to explicit source header/body roles; protected values reveal only when forming HTTP request. SDK-owned auth/scope cannot collide; exact source generation/kind/scope/endpoint/parent checked before credential/HTTP I/O. Binding errors pass core finalizer.",
+    "go_method": "swift.Client.BucketInfo",
+    "input": "types.ResourceRef, types.CallOptions",
+    "metadata": "Set/Remove explicit headers; duplicate case-folded names or set/remove collisions rejected; protected header values no CR/LF/NUL. Explicit zero and false preserved.",
+    "query": {}
+  },
+  "response": {
+    "statuses": [
+      "204"
+    ],
+    "mapping": "Generated Swift header DTO: exact Integer/Number values, protected metadata/secret temporaryURL keys, explicit scope-bound refs. No undocumented parsing of HTML control bodies; bounded discard only. Account policy usage and quotas retained. Bucket metadata/count/quota/type/version/policy fields retained.",
+    "acknowledgement": "Success is API acknowledgement, not readiness or proof of authorship of an unknown write."
+  },
+  "errors": {
+    "source": "internal/core/request.go sanitized per-status mappings",
+    "rejected": [
+      400,
+      401,
+      403,
+      404,
+      409,
+      412,
+      413,
+      422,
+      429
+    ],
+    "raw_headers_bodies": "never logged or retained in errors",
+    "bounds": "CallTimeout/MaxJSONBytes for structured JSON and header metadata; binary transfers use explicit TransferTimeout and caller byte bound"
+  },
+  "replay": "Safe reads bounded; mutations once with retained not_sent/rejected/accepted/unknown Receipt, exact refs, no name discovery/adoption or replay",
+  "recovery": "No automatic Resume or readiness waiter; existing refs identify exact caller-addressed locators, not ownership proof",
+  "evidence": "catalog/evidence/swift-current-sources.json",
+  "limitations": [
+    "Current pinned Selectel subset only; whole inventory unknown, no live verification, no old Swift or generic upstream extension adoption"
+  ],
+  "contract_document": "docs/modules/selectelsdk/swift.md"
+}

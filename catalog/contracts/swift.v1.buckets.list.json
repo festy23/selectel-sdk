@@ -1,0 +1,59 @@
+{
+  "operation_id": "swift.v1.buckets.list",
+  "source": "sources/swift-current.json#/paths/~1v1~1{project_id}/get",
+  "endpoint": {
+    "source": "https://docs.selectel.ru/api/urls/",
+    "recipe": "documented Swift host, /v1 normalized once from API path examples",
+    "scope": "exact account/project/region/pool",
+    "generation": "v1",
+    "redirects": "never follow"
+  },
+  "request": {
+    "method": "GET",
+    "wire_path": "/v1/{project_id}",
+    "auth": "project IAM X-Auth-Token; no S3/legacy substitution",
+    "mapping": "Generated typed DTO fields to explicit source header/body roles; protected values reveal only when forming HTTP request. SDK-owned auth/scope cannot collide; exact source generation/kind/scope/endpoint/parent checked before credential/HTTP I/O. Binding errors pass core finalizer.",
+    "go_method": "swift.Client.Buckets",
+    "input": "swift.ListOptions, pagination.Options",
+    "metadata": "Set/Remove explicit headers; duplicate case-folded names or set/remove collisions rejected; protected header values no CR/LF/NUL. Explicit zero and false preserved.",
+    "query": {
+      "format": "compiled json only",
+      "limit": "bounded pagination PageSize",
+      "marker": "explicit first marker or validated protected continuation",
+      "prefix": "optional UTF-8 prefix",
+      "delimiter": "optional UTF-8 pseudo-directory selector"
+    }
+  },
+  "response": {
+    "statuses": [
+      "200",
+      "204"
+    ],
+    "mapping": "Typed JSON array rows: bucket name/count/bytes/last_modified; object name/bytes/hash/content_type/last_modified or subdir. Integer exact; content_type protected; raw timestamps. SDK ref fields ignored and exact scope-bound refs constructed only for names. Per-page account/container header DTOs retained. 204 requires empty body. Empty page ends; short page continues; malformed/nonprogressing marker rejects. Existing pagination preserves partial rows and bound opaque cursor.",
+    "acknowledgement": "Success is API acknowledgement, not readiness or proof of authorship of an unknown write."
+  },
+  "errors": {
+    "source": "internal/core/request.go sanitized per-status mappings",
+    "rejected": [
+      400,
+      401,
+      403,
+      404,
+      409,
+      412,
+      413,
+      422,
+      429
+    ],
+    "raw_headers_bodies": "never logged or retained in errors",
+    "bounds": "CallTimeout/MaxJSONBytes for structured JSON and header metadata; binary transfers use explicit TransferTimeout and caller byte bound"
+  },
+  "replay": "Safe reads bounded; mutations once with retained not_sent/rejected/accepted/unknown Receipt, exact refs, no name discovery/adoption or replay",
+  "recovery": "No automatic Resume or readiness waiter; existing refs identify exact caller-addressed locators, not ownership proof",
+  "evidence": "catalog/evidence/swift-current-sources.json",
+  "limitations": [
+    "Source-confirmed XML/plain text listing output is not decoded; binding compiles format=json only",
+    "Current pinned Selectel subset only; whole inventory unknown, no live verification, no old Swift or generic upstream extension adoption"
+  ],
+  "contract_document": "docs/modules/selectelsdk/swift.md"
+}
