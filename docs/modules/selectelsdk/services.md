@@ -203,3 +203,76 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### OpenSearch DBaaS v2: lifecycle slice
+
+`Databases().V2.OpenSearch.Datastores` предоставляет девять source-bound SDK
+операций: Create/Get/ListPage/Iterate/Collect, Update/Delete, UpdatePassword,
+UpdateSecurityGroups и EnableLogging/DisableLogging. Отдельные generated DTO
+находятся в `databases/opensearch`; ClickHouse и DBaaS v1 DTO/endpoints не
+подставляются. [Pinned source](../../../catalog/sources/dbaas-opensearch-v2.json)
+содержит SDK revision `1e051e332ba3e5fc8690f27128be34f7fe2caa0d`, definitions,
+validate source, wire/status fixtures, hashes и Apache license.
+
+Create сохраняет все Name/TypeID/SubnetID/Password/NodeGroups и optional
+LogPlatform/SecurityGroups. Password и NewPassword защищены вне приватной wire
+границы. Роли OpenSearch — DATA/MANAGER/DASHBOARD; KEEPER не принимается.
+NodeGroups сохраняет Name/Role/Flavor/NodeCount/HasPublicIPs; FIXED/FLEXIBLE
+flavor ограничения берутся из собственного SDK. NodeCount/resources сохраняют
+точные Integer. UpdateSecurityGroups требует непустой массив UUID согласно
+OpenSearch validator; поведение ClickHouse clearing не переносится.
+
+Create принимает 201 с достоверным ID; остальные изменения принимают 200 с
+DatastoreResponse либо 204 без тела для Delete/DisableLogging. Accepted receipt
+сохраняется при malformed success, unknown mutation не повторяется. Known refs
+требуют exact account/project/location, v2 generation, OpenSearch kind, endpoint
+и ID; foreign project/response ID отклоняются. List имеет bounded prefix и
+single-response replay/skip cursor. Errors/retries/protected diagnostics задаёт
+общий runtime. SDK generic error не устанавливает rejection proof.
+
+Resource/Resume создают observation handle по exact ref. Resume валидирует
+operation/contract revision/scope/generation/endpoint/known ref и не ищет
+новый кластер по имени. Create без достоверного ID не восстанавливается через
+Resume. Goal `opensearch.active` означает provider status ACTIVE, не engine
+health/SQL readiness/применение настроек. Pending/failure states закреплены
+SDK constants; неизвестный status остаётся state_unknown. Goal
+`opensearch.deleted` требует exact Get 404, статус DELETED ещё не доказывает
+отсутствие. Receipt Wait доступен для Create и Delete; прочие изменения не
+объявляют readiness goal. Get не является доказательством авторства изменения.
+Default v2 endpoint документирован SDK README только для ru-2; другие pools
+требуют explicit scoped override. Evidence остаётся offline.
+
+#### Оставшийся acceptance gap #21: engine settings
+
+Этот slice не завершает #21. SDK OpenSearch DatastoreService не содержит
+ClickHouse-подобных Config/ConfigurationParameters методов. Проверенная
+[официальная Managed Databases schema](https://docs.selectel.ru/api/managed-databases/)
+имеет basePath `/v1`, 45 paths и не содержит OpenSearch v2 routes (JSON SHA-256
+`ec22893d707fa0ae9e0125e60269620a280e5aa98125a14f5043919f9876f45a`).
+Это не доказательство отсутствия настройки самого engine.
+
+[Официальный список Selectel OpenSearch operations](https://docs.selectel.ru/en/managed-databases/opensearch/supported-operations/)
+подтверждает data-plane `/_cluster/settings` для 12 перечисленных options.
+Это отдельный protocol на endpoint кластера, с engine credentials и upstream
+OpenSearch request/response contract. Он остаётся unimplemented в этом slice;
+DBaaS v2 `/config` или `/configuration-parameters` для OpenSearch не выдумываются.
+[Версии и конфигурации](https://docs.selectel.ru/managed-databases/opensearch/configurations/)
+описывают node-group ресурсы; resize/node-group mutations относятся к #22 и не
+заменяют engine settings. Исследованы pinned SDK datastore/node-group/flavor,
+current SDK HEAD, Managed DB API index/schema, OpenSearch product index,
+configurations и supported operations. Отдельный protocol adapter с explicit
+cluster endpoint/auth, typed Selectel options и source-bound evidence требуется
+для оставшегося settings критерия #21.
+
+Пример в уже созданном scoped клиенте:
+
+```go
+regional, err := project.Location("", "ru-2")
+if err != nil { return err }
+service := regional.Databases().V2.OpenSearch.Datastores
+handle, err := service.Resume(savedReceipt)
+if err != nil { return err }
+observed, err := handle.Status(ctx)
+if err != nil { return err }
+_ = observed.Ref // exact OpenSearch v2 reference
+```
