@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "d461e77757b68b0445aaf45ab5a0a17aa4abfbcbc47890b76c1d3e286e9b31fb",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "26ea6317afaa8c3de3160efc1ac995ea6af70bfafd9bdba00b463d7b2b3225ac",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "57ab1f215de97d8cfeee29b60a67d21d73c1c140a1444ed81cb26cd7155879c2",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,10 +384,1119 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "7337500405b99bf95501933db9322b93cd6ecb93b1b1c0b905e73b3aa6193775",
       "level": "offline"
     },
     "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.cache_tasks.create.json": "65cda4244ce7be14fadea8d90758e53d6c90c41dcc8cc49b584b0d65374852f4"
+    },
+    "contract_revision": "8f62d55855c90dbc3822fd4d630ecf4886ee3b9a6a72811f84fcc8c51c0946d8",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.cache_tasks.create.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.cache_tasks.create.json#/errors",
+    "go_method": "cdn.Client.CreateCacheTask",
+    "implementation": {
+      "binding": "cdn.Client.CreateCacheTask",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1cache~1tasks/post",
+    "input_type": "spec Task, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.cache_tasks.create",
+    "output_schema_ref": "sources/cdn.json#/paths/~1cache~1tasks/post/responses",
+    "output_type": "types.Result[CreateTaskResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.cache_tasks.create.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.cache_tasks.create.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.cache_tasks.create.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.cache_tasks.create.json#/request",
+    "resource": "cache_tasks",
+    "response_binding_ref": "contracts/cdn.v3.cache_tasks.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "POST /cache/tasks",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "8f62d55855c90dbc3822fd4d630ecf4886ee3b9a6a72811f84fcc8c51c0946d8",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "b6414004636fa57dc9f621f959d1f29fb9445b8a4cd54e38c6831ba9e6238330",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "cache_processed"
+    ]
+  },
+  {
+    "action": "get",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.cache_tasks.get.json": "fa3ce00526d9305f4f11d1a6f076df0b873059b4a32cee97555c5ad7fe4e275c"
+    },
+    "contract_revision": "4c1c388814d1ae4dbaf57cd60cac7bdc29f662c84f8ebb3f2f6c623d3e037a69",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.cache_tasks.get.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.cache_tasks.get.json#/errors",
+    "go_method": "cdn.Client.GetCacheTask",
+    "implementation": {
+      "binding": "cdn.Client.GetCacheTask",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1cache~1tasks~1{task_id}/get",
+    "input_type": "ref types.ResourceRef, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.cache_tasks.get",
+    "output_schema_ref": "sources/cdn.json#/paths/~1cache~1tasks~1{task_id}/get/responses",
+    "output_type": "types.Result[TaskResult]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.cache_tasks.get.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.cache_tasks.get.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.cache_tasks.get.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.cache_tasks.get.json#/request",
+    "resource": "cache_tasks",
+    "response_binding_ref": "contracts/cdn.v3.cache_tasks.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /cache/tasks/{task_id}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "4c1c388814d1ae4dbaf57cd60cac7bdc29f662c84f8ebb3f2f6c623d3e037a69",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "81ae4d665253017eeb5db9e61c6c6577df96adf8e4a017cb97de133b39d40321",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "cache_processed"
+    ]
+  },
+  {
+    "action": "create",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.certificates.create.json": "6c856a7f2e5b7b3e4a982be3804ced8bbb4c3b77946ec6ffe2b77c3186a959f8"
+    },
+    "contract_revision": "55304ad8413f09465ba4b0008b8a13a368348bdbf68347cf0ca3b7f80153e947",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.certificates.create.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.certificates.create.json#/errors",
+    "go_method": "cdn.Client.CreateCertificate",
+    "implementation": {
+      "binding": "cdn.Client.CreateCertificate",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1certificate/post",
+    "input_type": "spec CreateCertificateRequest, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.certificates.create",
+    "output_schema_ref": "sources/cdn.json#/paths/~1certificate/post/responses",
+    "output_type": "types.Result[CreateCertificateResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.certificates.create.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.certificates.create.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.certificates.create.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.certificates.create.json#/request",
+    "resource": "certificates",
+    "response_binding_ref": "contracts/cdn.v3.certificates.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "POST /certificate",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "55304ad8413f09465ba4b0008b8a13a368348bdbf68347cf0ca3b7f80153e947",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "a49f8e6818f211ea7cf887b869054e9c25b33976af48c04c0d229f87e1aa5f95",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "certificate_present"
+    ]
+  },
+  {
+    "action": "delete",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.certificates.delete.json": "0dde9cad28eb46925725630864dacc71eeb0bbe9b8f6444f3280fa878f6cce33"
+    },
+    "contract_revision": "f32eac133a6a2889f9cdad7b7e5afd64444f972d311082c21789cc1777cc1759",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.certificates.delete.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.certificates.delete.json#/errors",
+    "go_method": "cdn.Client.DeleteCertificate",
+    "implementation": {
+      "binding": "cdn.Client.DeleteCertificate",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1certificate~1{certificate_seq}/delete",
+    "input_type": "ref types.ResourceRef, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.certificates.delete",
+    "output_schema_ref": "sources/cdn.json#/paths/~1certificate~1{certificate_seq}/delete/responses",
+    "output_type": "types.Result[DeleteCertificateResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.certificates.delete.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.certificates.delete.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.certificates.delete.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.certificates.delete.json#/request",
+    "resource": "certificates",
+    "response_binding_ref": "contracts/cdn.v3.certificates.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "DELETE /certificate/{certificate_seq}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "f32eac133a6a2889f9cdad7b7e5afd64444f972d311082c21789cc1777cc1759",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "019c244b80b99a5a8c8f7a05cd640e3413d21dba96d35bc419ef3d0f000c6538",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "certificate_absent"
+    ]
+  },
+  {
+    "action": "get",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.certificates.get.json": "a72a4b6d1b92f947cabfcb96ff37593af39c88a59a88a90c6f5fc27b32a0c88d"
+    },
+    "contract_revision": "6d10368343b36737bbc93602876acfca7a8390a6ecbaf6b034b0e998e2e9e456",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.certificates.get.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.certificates.get.json#/errors",
+    "go_method": "cdn.Client.GetCertificate",
+    "implementation": {
+      "binding": "cdn.Client.GetCertificate",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1certificate~1{certificate_seq}/get",
+    "input_type": "ref types.ResourceRef, spec CertificateOptions, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.certificates.get",
+    "output_schema_ref": "sources/cdn.json#/paths/~1certificate~1{certificate_seq}/get/responses",
+    "output_type": "types.Result[GetCertificateResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.certificates.get.json#/request",
+      "excluded_variants": [
+        "Typed PEM details: details=true prose promises PEM content, but published schema/example only define CertificateInfoWithChain; no PEM field name/type is confirmed. Unknown extensions remain protected, not typed PEM support."
+      ]
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.certificates.get.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.certificates.get.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.certificates.get.json#/request",
+    "resource": "certificates",
+    "response_binding_ref": "contracts/cdn.v3.certificates.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /certificate/{certificate_seq}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "6d10368343b36737bbc93602876acfca7a8390a6ecbaf6b034b0e998e2e9e456",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "3cb435969d56eb3e40244c0efe70182d09274293cc6cd78836e74d65ddf0370c",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "certificate_present"
+    ]
+  },
+  {
+    "action": "list",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.certificates.list.json": "5fcdbf7bbfdeca94c7579e81da77af9c34917750fa62bdc137111034ec4bfa71"
+    },
+    "contract_revision": "865f06a9bdb503b9a13947b99b525cbb7c1adeb7c28634bcbe1495968bf21fb0",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.certificates.list.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.certificates.list.json#/errors",
+    "go_method": "cdn.Client.ListCertificates",
+    "implementation": {
+      "binding": "cdn.Client.ListCertificates",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1certificate/get",
+    "input_type": "options pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.certificates.list",
+    "output_schema_ref": "sources/cdn.json#/paths/~1certificate/get/responses",
+    "output_type": "Listing[CertificateInfo, ListCertificatesResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.certificates.list.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cdn.v3.certificates.list.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.certificates.list.json#/request",
+    "resource": "certificates",
+    "response_binding_ref": "contracts/cdn.v3.certificates.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /certificate",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "865f06a9bdb503b9a13947b99b525cbb7c1adeb7c28634bcbe1495968bf21fb0",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "7ada2864f4247b0654e05bddf4b7872c2bdeb0157a88419bf2c83ec49ad6d297",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.certificates.update.json": "1c22a87f8f8622e84c70c456d7487758b2d7a459d7ac4a395602707b6cfd0515"
+    },
+    "contract_revision": "8cd73a0a1318c7b4620b376e007a7ef04ceb87c678e7aceb977626c462ed340c",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.certificates.update.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.certificates.update.json#/errors",
+    "go_method": "cdn.Client.UpdateCertificate",
+    "implementation": {
+      "binding": "cdn.Client.UpdateCertificate",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1certificate~1{certificate_seq}/patch",
+    "input_type": "ref types.ResourceRef, spec UpdateCertificateRequest, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.certificates.update",
+    "output_schema_ref": "sources/cdn.json#/paths/~1certificate~1{certificate_seq}/patch/responses",
+    "output_type": "types.Result[UpdateCertificateResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.certificates.update.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.certificates.update.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.certificates.update.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.certificates.update.json#/request",
+    "resource": "certificates",
+    "response_binding_ref": "contracts/cdn.v3.certificates.update.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "PATCH /certificate/{certificate_seq}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "8cd73a0a1318c7b4620b376e007a7ef04ceb87c678e7aceb977626c462ed340c",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "3685f70c8e8843e6ee0956cb2231499e783f89cd8384f612ba8d5f8cc7bd666c",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "certificate_present"
+    ]
+  },
+  {
+    "action": "list",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.delivery_nodes.list.json": "32bf8c41764522f7bc05ab53b8fe9c7003b4f4dfdcde9af63aa85e6273d20eb2"
+    },
+    "contract_revision": "d4761e02ccfa71513ae493254bb309db51751d3cbba7071f1c814eaeda8595f4",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.delivery_nodes.list.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.delivery_nodes.list.json#/errors",
+    "go_method": "cdn.Client.ListDeliveryNodes",
+    "implementation": {
+      "binding": "cdn.Client.ListDeliveryNodes",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1nodes~1ip2user/get",
+    "input_type": "spec DeliveryOptions, options pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.delivery_nodes.list",
+    "output_schema_ref": "sources/cdn.json#/paths/~1nodes~1ip2user/get/responses",
+    "output_type": "Listing[Node, NodesResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.delivery_nodes.list.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cdn.v3.delivery_nodes.list.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.delivery_nodes.list.json#/request",
+    "resource": "delivery_nodes",
+    "response_binding_ref": "contracts/cdn.v3.delivery_nodes.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /nodes/ip2user",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "d4761e02ccfa71513ae493254bb309db51751d3cbba7071f1c814eaeda8595f4",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "44d658a234a29106e40738bd0c9f97382a22aeb59e384742ff5076ae02865d2c",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.letsencrypt.get.json": "7fbb8b8d4850030985348e517a1be3332f7dc1c10514b02c411db36a78367f76"
+    },
+    "contract_revision": "13335da456e71cdd2a962762ab175e9eb09c1656e38495fcb1423fc8b5efa45d",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.letsencrypt.get.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.letsencrypt.get.json#/errors",
+    "go_method": "cdn.Client.GetLetsEncryptStatus",
+    "implementation": {
+      "binding": "cdn.Client.GetLetsEncryptStatus",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1letsencrypt~1{resource_id}/get",
+    "input_type": "ref types.ResourceRef, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.letsencrypt.get",
+    "output_schema_ref": "sources/cdn.json#/paths/~1letsencrypt~1{resource_id}/get/responses",
+    "output_type": "types.Result[LetsEncryptStatusResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.letsencrypt.get.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.letsencrypt.get.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.letsencrypt.get.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.letsencrypt.get.json#/request",
+    "resource": "letsencrypt",
+    "response_binding_ref": "contracts/cdn.v3.letsencrypt.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /letsencrypt/{resource_id}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "13335da456e71cdd2a962762ab175e9eb09c1656e38495fcb1423fc8b5efa45d",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "3ddaa8370fb377433a1306498a359b37add633424fc6c322e19cb8416f450bad",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "certificate_order_processed"
+    ]
+  },
+  {
+    "action": "order",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.letsencrypt.order.json": "6afcadeb779116c3fb9210b7961035cddfa51c398db74d4a6c155c6526ea4af4"
+    },
+    "contract_revision": "3f03f49268fa62464cf8902b1b94c1661c257974a014f5492661f5cdcf351c75",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.letsencrypt.order.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.letsencrypt.order.json#/errors",
+    "go_method": "cdn.Client.OrderLetsEncrypt",
+    "implementation": {
+      "binding": "cdn.Client.OrderLetsEncrypt",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1letsencrypt~1{resource_id}/post",
+    "input_type": "ref types.ResourceRef, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.letsencrypt.order",
+    "output_schema_ref": "sources/cdn.json#/paths/~1letsencrypt~1{resource_id}/post/responses",
+    "output_type": "types.Result[LetsEncryptOrderResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.letsencrypt.order.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.letsencrypt.order.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.letsencrypt.order.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.letsencrypt.order.json#/request",
+    "resource": "letsencrypt",
+    "response_binding_ref": "contracts/cdn.v3.letsencrypt.order.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "POST /letsencrypt/{resource_id}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "3f03f49268fa62464cf8902b1b94c1661c257974a014f5492661f5cdcf351c75",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "2ef0483c801f3a058ad10720ff68e46805358c63d0b3fe20aabef1a92ee96a24",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "certificate_order_processed"
+    ]
+  },
+  {
+    "action": "order_wildcard",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.letsencrypt.order_wildcard.json": "cb2b6f255d05c4acaa8b8386bde94d3712491a4e728c3956188be22baea84a23"
+    },
+    "contract_revision": "659ddbb382f5e3a1bed2b0850b5820c50e287b57832e0dd262455d83ebdd11e6",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.letsencrypt.order_wildcard.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.letsencrypt.order_wildcard.json#/errors",
+    "go_method": "cdn.Client.OrderWildcardLetsEncrypt",
+    "implementation": {
+      "binding": "cdn.Client.OrderWildcardLetsEncrypt",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1letsencrypt/post",
+    "input_type": "spec LetsEncryptWildcardOrderRequest, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.letsencrypt.order_wildcard",
+    "output_schema_ref": "sources/cdn.json#/paths/~1letsencrypt/post/responses",
+    "output_type": "types.Result[LetsEncryptWildcardOrderResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.letsencrypt.order_wildcard.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cdn.v3.letsencrypt.order_wildcard.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.letsencrypt.order_wildcard.json#/request",
+    "resource": "letsencrypt",
+    "response_binding_ref": "contracts/cdn.v3.letsencrypt.order_wildcard.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "POST /letsencrypt",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "659ddbb382f5e3a1bed2b0850b5820c50e287b57832e0dd262455d83ebdd11e6",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "dac2d0c41d5502eea4ea18e1069e5fd3870bb100f712a7966d80edc90a6b7f4e",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.origin_nodes.list.json": "7186ac1fc657a60253972af70017161e817b8bd3c7dda3430afdc51803cf109b"
+    },
+    "contract_revision": "464cf57db92b78eb99705c9a8ada553a8f6e1a90514b4d128780e55d6a20484d",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.origin_nodes.list.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.origin_nodes.list.json#/errors",
+    "go_method": "cdn.Client.ListOriginNodes",
+    "implementation": {
+      "binding": "cdn.Client.ListOriginNodes",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1nodes~1ip2origin/get",
+    "input_type": "options pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.origin_nodes.list",
+    "output_schema_ref": "sources/cdn.json#/paths/~1nodes~1ip2origin/get/responses",
+    "output_type": "Listing[Node, NodesResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.origin_nodes.list.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cdn.v3.origin_nodes.list.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.origin_nodes.list.json#/request",
+    "resource": "origin_nodes",
+    "response_binding_ref": "contracts/cdn.v3.origin_nodes.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /nodes/ip2origin",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "464cf57db92b78eb99705c9a8ada553a8f6e1a90514b4d128780e55d6a20484d",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "bbf7e09fda78d8f4aa8ce4b30f5bc59e16e6b2da230c6c4d3ce43204d0744be0",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.resource_status.get.json": "e5211339e28f81671dd1bf6daad1a15c30c2fcd487881e65ac56488e654e60d6"
+    },
+    "contract_revision": "3709b3303b62f84f2789cfbb983c6832453fef9ef321925e42ec82bd35d080fe",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.resource_status.get.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.resource_status.get.json#/errors",
+    "go_method": "cdn.Client.GetResourceStatus",
+    "implementation": {
+      "binding": "cdn.Client.GetResourceStatus",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1resources~1{resource_id}~1status/get",
+    "input_type": "ref types.ResourceRef, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.resource_status.get",
+    "output_schema_ref": "sources/cdn.json#/paths/~1resources~1{resource_id}~1status/get/responses",
+    "output_type": "types.Result[ResourceStatus]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.resource_status.get.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cdn.v3.resource_status.get.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.resource_status.get.json#/request",
+    "resource": "resource_status",
+    "response_binding_ref": "contracts/cdn.v3.resource_status.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /resources/{resource_id}/status",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "3709b3303b62f84f2789cfbb983c6832453fef9ef321925e42ec82bd35d080fe",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "3ed4341da5a37f20f310af901de86cefc4fbc0c94eb355977d9786374da46db1",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.resource_status.list.json": "ed144b2b6e5c7b235de7a9a07a2945164b806a0045449daf9bcab67bb5d6541e"
+    },
+    "contract_revision": "28a5d0f724f72a881bdbe3d0ab170c3cdbf7e3615b3e1869321495f44c0c654c",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.resource_status.list.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.resource_status.list.json#/errors",
+    "go_method": "cdn.Client.GetResourcesStatus",
+    "implementation": {
+      "binding": "cdn.Client.GetResourcesStatus",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1resources~1status/get",
+    "input_type": "refs []types.ResourceRef, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.resource_status.list",
+    "output_schema_ref": "sources/cdn.json#/paths/~1resources~1status/get/responses",
+    "output_type": "types.Result[[]ResourceStatus]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.resource_status.list.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cdn.v3.resource_status.list.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.resource_status.list.json#/request",
+    "resource": "resource_status",
+    "response_binding_ref": "contracts/cdn.v3.resource_status.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /resources/status",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "28a5d0f724f72a881bdbe3d0ab170c3cdbf7e3615b3e1869321495f44c0c654c",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "e7e4416db59656472860e95e9b58a68586e0211e298af97a78290f22965ff948",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.resources.create.json": "af6eb7ee01fc81b6fe71d3a37434c6283a32c134428c9dbf715152d4515bd75b"
+    },
+    "contract_revision": "79aae9a8b442f4919f1c261df31e2b24a5b8b56e0664cb1a4b601c5ea0f89f16",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.resources.create.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.resources.create.json#/errors",
+    "go_method": "cdn.Client.CreateResource",
+    "implementation": {
+      "binding": "cdn.Client.CreateResource",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1resources/post",
+    "input_type": "spec ResourceSpec, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.resources.create",
+    "output_schema_ref": "sources/cdn.json#/paths/~1resources/post/responses",
+    "output_type": "types.Result[CreateUpdateResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.resources.create.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.resources.create.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.resources.create.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.resources.create.json#/request",
+    "resource": "resources",
+    "response_binding_ref": "contracts/cdn.v3.resources.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "POST /resources",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "79aae9a8b442f4919f1c261df31e2b24a5b8b56e0664cb1a4b601c5ea0f89f16",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "7bacfa4f01b448380a5d4421f4df66d8189cabe7b71c449758b8571ee79ab41c",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "configuration_observed"
+    ]
+  },
+  {
+    "action": "get",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.resources.get.json": "6701cb3ed1aae4d514ec61f3e4753fcf1c68bc039f54bb747fa447abc5b98d03"
+    },
+    "contract_revision": "a2dfd6639e48a62e44ac2f9572e628be7f2f142a11eba266331bdc523765b2c6",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.resources.get.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.resources.get.json#/errors",
+    "go_method": "cdn.Client.GetResource",
+    "implementation": {
+      "binding": "cdn.Client.GetResource",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1resources~1{resource_id}/get",
+    "input_type": "ref types.ResourceRef, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.resources.get",
+    "output_schema_ref": "sources/cdn.json#/paths/~1resources~1{resource_id}/get/responses",
+    "output_type": "types.Result[Resource]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.resources.get.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.resources.get.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.resources.get.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.resources.get.json#/request",
+    "resource": "resources",
+    "response_binding_ref": "contracts/cdn.v3.resources.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /resources/{resource_id}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "a2dfd6639e48a62e44ac2f9572e628be7f2f142a11eba266331bdc523765b2c6",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "4be727268eeae7ffd5a1f808af1bca1533a88ff6a86a635c0cde753bc3f15a46",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "configuration_observed"
+    ]
+  },
+  {
+    "action": "list",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.resources.list.json": "8b76b32e26121403d4597fbd948522964b5ce23504ef0082762540824db6e816"
+    },
+    "contract_revision": "3e6e56bbe62360f71b56f3e94cd8363b36c004c061260a6d86cbe1d1366ed2b2",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cdn.v3.resources.list.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.resources.list.json#/errors",
+    "go_method": "cdn.Client.ListResources",
+    "implementation": {
+      "binding": "cdn.Client.ListResources",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1resources/get",
+    "input_type": "spec ListOptions, options pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.resources.list",
+    "output_schema_ref": "sources/cdn.json#/paths/~1resources/get/responses",
+    "output_type": "pagination.Collection[Resource]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.resources.list.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cdn.v3.resources.list.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.resources.list.json#/request",
+    "resource": "resources",
+    "response_binding_ref": "contracts/cdn.v3.resources.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "GET /resources",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "3e6e56bbe62360f71b56f3e94cd8363b36c004c061260a6d86cbe1d1366ed2b2",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "81933d97ccbd1d0ed69e62f76cf03494ce70fec9dc0137cc05b8e60df99e9c96",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.resources.replace.json": "69400ffb05df8ddc49418b299ba28c4065b0429afabec552f2b2981a4375bd18"
+    },
+    "contract_revision": "32a87afd1a251f545c3aafce56730b081c3508f2207e898091c0b7e201977911",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.resources.replace.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.resources.replace.json#/errors",
+    "go_method": "cdn.Client.ReplaceResource",
+    "implementation": {
+      "binding": "cdn.Client.ReplaceResource",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1resources~1{resource_id}/put",
+    "input_type": "ref types.ResourceRef, spec ResourceSpec, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.resources.replace",
+    "output_schema_ref": "sources/cdn.json#/paths/~1resources~1{resource_id}/put/responses",
+    "output_type": "types.Result[CreateUpdateResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.resources.replace.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.resources.replace.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.resources.replace.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.resources.replace.json#/request",
+    "resource": "resources",
+    "response_binding_ref": "contracts/cdn.v3.resources.replace.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "PUT /resources/{resource_id}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "32a87afd1a251f545c3aafce56730b081c3508f2207e898091c0b7e201977911",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "cb5cbd4f4bfba453e887d88dcb615b2ec85731119fd18c09f22d0b41d2e6ae2b",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "configuration_observed"
+    ]
+  },
+  {
+    "action": "update",
+    "api_generation": "v3",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cdn.v3.resources.update.json": "cc2e1db0e3b1cddc11de128a16977ee96438ab359c5618eef2add5c9636fb5b2"
+    },
+    "contract_revision": "98efe4d97cebaae3b8a7c56afd6abf26bdd1eb37939db4cec93674a93e17200a",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/cdn.v3.resources.update.json#/endpoint",
+    "error_binding_ref": "contracts/cdn.v3.resources.update.json#/errors",
+    "go_method": "cdn.Client.PatchResource",
+    "implementation": {
+      "binding": "cdn.Client.PatchResource",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/cdn.json#/paths/~1resources~1{resource_id}/patch",
+    "input_type": "ref types.ResourceRef, spec ResourceSpec, o types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cdn.v3.resources.update",
+    "output_schema_ref": "sources/cdn.json#/paths/~1resources~1{resource_id}/patch/responses",
+    "output_type": "types.Result[CreateUpdateResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "contracts/cdn.v3.resources.update.json#/request",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": "contracts/cdn.v3.resources.update.json#/recovery",
+    "replay_policy_ref": "contracts/cdn.v3.resources.update.json#/retry",
+    "request_binding_ref": "contracts/cdn.v3.resources.update.json#/request",
+    "resource": "resources",
+    "response_binding_ref": "contracts/cdn.v3.resources.update.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cdn",
+    "source": {
+      "operation_locator": "PATCH /resources/{resource_id}",
+      "revision": "fca519003fbb95296f9d2822fd3a4fa8fff39bc8e895cabc0e649aeba132af73",
+      "uri": "https://docs.selectel.ru/api/cdn.json"
+    },
+    "verification": {
+      "contract_revision": "98efe4d97cebaae3b8a7c56afd6abf26bdd1eb37939db4cec93674a93e17200a",
+      "evidence_ref": "cdn_test.go",
+      "implementation_revision": "e34bef5e457e5136b2aa93a37f13f3c4214df7005556cfeb24a28b97c6e7e9a8",
+      "level": "offline"
+    },
+    "wait_goals": [
+      "configuration_observed"
+    ]
   },
   {
     "action": "create",
@@ -451,7 +1560,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "b7f6c0769b867b19cc1433f302188d70ea39c5f730e74557d666ce75487ebc13",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +1626,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "4df327e151b2514818a16640061d244ee1375db235b49a1821b24990553cb49a",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +1692,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "69914708a3ae7a7daa4da4aba8ea85e4e5b160da4884e757e067bef44a9c4b61",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +1758,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "fc79675053d9dca11b88f1c9842cd501bae1e2712efbc55de0e60e194bb8342d",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +3276,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "4cc39a9a1f8f713ee792788d3555164f42c92d66b4b1e5f1c37afb22dda61995",
       "level": "offline"
     },
     "wait_goals": []
@@ -5044,7 +6153,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "9fa9ff1c4bb23ddf161c54e3563908b448714ec212c9d8cfef39e01038ecc521",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +6223,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "0c3684e6fdaa8e913457cf42bd595074548bc0a74902a1f6833985861df2c6e4",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +6290,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "d5d3eb8233fee9cb973faca5ff9a6611ead34d3dad3657d54514a94342fb2dec",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +6357,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "ae829addf5a683fadf19da0389a817d45ede9782652ca5b8b605acee3654b809",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +6423,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "728722cec2c7edafcec99a7d9afc88dd4ebeb3d65535c25be365401f27749f02",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +6489,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "3be3ad92ce634b838e622abeb715dc6b20c5fa51bd695e93e1a101df6078a348",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +6554,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "84530252570ac69e093be87b8af836f1baccf82d3ee4cd978080691d1383011b",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +6611,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "ba6a35b11b44f2f6d125071416f21a6163a10e90d9acd7dbdd33b0b1533cd133",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +6670,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "2263970d6eaa10f540861c6b08c7f003438f8dc0139340fbe6f0bf8d88bfd729",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +6729,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "0209cbb05f576b9220c8d85a4ce53cfaa03896b5296980d4b09dd9cc291b31b6",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +6790,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "c3eefb2cdcf0703fb7d39d254afbf83cb028ef8513829e7e64886bbc98e15153",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +6849,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "0fbfceaab76aa68c6d4564e3a35384874d3bd4200c6040eceda25b4ff40a9d13",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +6908,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "c65c78c81bec69cfcecd176995f9aa33365895d87b01c4f344236432438f000d",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +6969,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "fc4cecc233e11e91708845f03264a9702aac5afdd1e7b75fc8e283473c52f689",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +7030,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "e6bcd4c3c55243f3d2f017a391cf40c32197db803cb39a3c81e8c4152b4005b7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +7087,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "74a7a6f86dd23ec72c02a2854621e60fb18d05708520e5fbf59d1a02a59a7e1b",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +7144,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "92ecbc2ea2f040bdad6c6f78470812b3db8afe5cb2e39a3557ec9f98a89294f1",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +7205,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "57cc134e21d8f4312d70856e6ce0eb57fe95db297e5bfb1ddb45fd8fe78a5a9c",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +7264,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "1e4133a05974d068760abccf7a141677e162725c6f5e470a7fa94e5e4fb9b21a",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +7321,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "d257996786324e33f7b5162712a65a83e7b9d9df1192e9df4cd0d474a01a9473",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +7380,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "1965062597217b142a51f66e2eb124773d13d5d18b3eef310d147745d81d6974",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +7439,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "50ffa71b7b76920bb2e7676507c6fa7a13fe4c73cd54079b178c3caae7455895",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +7496,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "ba2eb7059253e2c6c6282c43f3f3144cab99921e24b3e61f70752c8fc6ad54a1",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +7553,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "c6e5230a174124719729679866176a6c4a404ab92c1abe74ae3eb1a72e02c456",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +7612,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "06cd4cedd7ceeb3410242077cb9d0f8f8325e3b546c28c47cd0336a93f59cb67",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +7669,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "d1e4c15ac628d7fb038e067d0fdbfc83b7cabac26d9fe2309ac08a4a838423f1",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +7726,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "be3d35a6ccd4b3888ec8a2dad810ef433888bbbde886ab306adb01628a374477",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +7783,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "6c8172264cbe186c74a631820706fcc820630fad34b042655954932e962414e9",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +7840,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "c0dd54a0e51f347391b0b9ee23fb5e6a33262b47936f45fa00a6801214546fab",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +7897,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "25804bb2a0b4c3ae980be44fe315ed6bea4abee07a69565d43a716bf2aa17826",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +7959,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "1ce2e939abd7328b325932231b9a0658c7c33fcf4ba50cdfe57d5904c9c68283",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +8021,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "48f36ed830a02d9abd5201048efe5fac7a023d9b882e3cffa3e3f8f461461be8",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +8082,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "1d3937c75347d2efdc63d670e5601f0b6deaf90848aca8e317f56cc6d947e33f",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +8143,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "71c2e7d1ad98d3447e0736d64da9c11da100e5ba6797c6357daedfff40db002b",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +8202,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "f080f4a05147e598ec4cd948ea3e14cf0370a143baf0c1963f72429f48a6f040",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +8259,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "0185c2c0e1323cb6511b6508dc4d55eae2c88b78be5518caa694c00c727bd121",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +9004,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "0f4c506d6bc5a76186acf6e72680f95d4f3fe006cfedaf13a830b452b97084f4",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +9060,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "c1311d6413294d341374d42387e6fdcc7b148f0a617469e7bc0f4ae3b9564c19",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +9116,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "c2803eb3b5d3f74cb296d9cfc882e89a8c9b51d7ad41dc0e3f47d133c45347e5",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +9172,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "c53eeb4aadc6b9051046db481a66572457ac34e7effb42ac59b5f22bcc4d259b",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +9228,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "01f2b4ae10b90e338680efc5b4c728324ed4686ed6796949bf9176a4c02129cd",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +9656,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "8c8b90f9aebe7b1b5d13a6d86784ceeb1133e991592a74c5cf7f7e288c769a53",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +9713,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "0834c62eeb986c7d82bd3198bb7d9732f6649fe649bc5e2698d18fe6538726c4",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +9770,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "f3407023458e97de1a476753e064ab542629adb56375284ec7184a3a623d6449",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +9827,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "1d0ba7c8923d161e83ee6a9da916a42cdc7c1df611b380a78f256afad1e1298c",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +10694,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "6b55843ee57b7d230945dd3352ddd5f6528fc6423b76646a10736331789e0b64",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +11293,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "35ec1f0f1e8bbda73f029ca7bff88ed4d2b6578c271bd456e866b6d4033c3fb8",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +11350,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "762ba78576c41b2707a5abb6894ca4649247af8b48eec277b1e2f1c0e0717782",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +11409,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "1c95fce5907f800af981eb06b5ac7044735d6c135f71a7e0659c3afcaad5c8ca",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +11466,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "f3643df9fcb6c8830eb77dd85dad9763ed9ccb3699ae1a16a29863f7b31b1b78",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +11523,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "b91df092876f66e9fa82dc56ba1f01e27b0e428cddf0d9dd9dca712a82ca3115",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +11582,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "88746d7a1b545b6989e3c4aca38e15d5e0eb4de8d3274f590d6a4b90d9c6b200",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +11641,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "4e9ba1e4112e985c2c9fcbdce34b355464eeb20a29c793c7e403b1c54c31f0fe",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +11698,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "31293c08f2529cb092b406ea61b7ce35a8f08672fb958b07bd69ca5e5b183c3e",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +11755,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "450d351f085f0288ac255ca0438ac51b75850e3186c0d7ae5668eeb98cdc37a0",
       "level": "offline"
     },
     "wait_goals": []

@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"cdn":                          {"cdn", "v3", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,24 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"cdn GET /nodes/ip2origin":                                         "cdn.v3.origin_nodes.list",
+	"cdn GET /nodes/ip2user":                                           "cdn.v3.delivery_nodes.list",
+	"cdn POST /letsencrypt":                                            "cdn.v3.letsencrypt.order_wildcard",
+	"cdn POST /letsencrypt/{resource_id}":                              "cdn.v3.letsencrypt.order",
+	"cdn GET /letsencrypt/{resource_id}":                               "cdn.v3.letsencrypt.get",
+	"cdn GET /certificate":                                             "cdn.v3.certificates.list",
+	"cdn GET /certificate/{certificate_seq}":                           "cdn.v3.certificates.get",
+	"cdn PATCH /certificate/{certificate_seq}":                         "cdn.v3.certificates.update",
+	"cdn DELETE /certificate/{certificate_seq}":                        "cdn.v3.certificates.delete",
+	"cdn POST /certificate":                                            "cdn.v3.certificates.create",
+	"cdn GET /resources/status":                                        "cdn.v3.resource_status.list",
+	"cdn GET /resources/{resource_id}/status":                          "cdn.v3.resource_status.get",
+	"cdn PATCH /resources/{resource_id}":                               "cdn.v3.resources.update",
+	"cdn PUT /resources/{resource_id}":                                 "cdn.v3.resources.replace",
+	"cdn POST /resources":                                              "cdn.v3.resources.create",
+	"cdn POST /cache/tasks":                                            "cdn.v3.cache_tasks.create",
+	"cdn GET /cache/tasks/{task_id}":                                   "cdn.v3.cache_tasks.get",
+	"cdn GET /resources/{resource_id}":                                 "cdn.v3.resources.get",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",

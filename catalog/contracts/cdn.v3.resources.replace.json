@@ -1,0 +1,62 @@
+{
+  "operation_id": "cdn.v3.resources.replace",
+  "source": "sources/cdn.json#/paths/~1resources~1{resource_id}/put",
+  "endpoint": {
+    "uri": "https://docs.selectel.ru/api/urls/",
+    "fixed": "https://api.selectel.ru/cdn/v3",
+    "scope": "explicit account/project; no location required; exact endpoint override respected"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/resources/{resource_id}",
+    "parameters": [
+      {
+        "description": "Resource identifier.",
+        "format": "uuid",
+        "in": "path",
+        "name": "resource_id",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "description": "HTTP resource update payload.",
+        "in": "body",
+        "name": "body",
+        "required": true,
+        "schema": {
+          "$ref": "#/definitions/models.Resource"
+        }
+      }
+    ],
+    "auth": "project IAM X-Auth-Token",
+    "model": "ref types.ResourceRef, spec ResourceSpec, o types.CallOptions",
+    "validation": "exact caller CDN v3 refs/service/generation/scope/endpoint, source required/enums/pattern/ranges before credentials or HTTP; typed protected values reveal only at wire boundary; ResourceSpec omits read-only properties; PATCH retains source-required name"
+  },
+  "response": {
+    "status": 200,
+    "schema": {
+      "$ref": "#/definitions/models.CreateUpdateResponse"
+    },
+    "model": "types.Result[CreateUpdateResponse]",
+    "mapping": "generated source-bound nested DTOs, exact integers and optional pointers; free strings and unknown extensions protected; provider ref fields ignored; trustworthy returned identities scanned before field decode; existing caller refs retained; foreign identities rejected; no name adoption",
+    "collections": "fixed single provider page with caller MaxItems/MaxPages/cursor bounds; envelope data removed to prevent unbounded duplicate rows; incomplete results retained"
+  },
+  "errors": {
+    "rejected": [
+      400,
+      401,
+      403,
+      404
+    ],
+    "logical": "model-specific published numeric status codes; zero success, missing status protocol error, unknown code OperationFailed; sanitized errors without provider message",
+    "mutation": "receipt on every path, not_sent on local errors; accepted HTTP200 does not imply operation readiness; unknown outcomes never replay, exact-ref observation only"
+  },
+  "wait_goals": [
+    "configuration_observed"
+  ],
+  "wait_semantics": "cache ok/failed/in_queue/processing; configuration Completed/Error/Processing only current observed state; certificate presence/absence exact sequence; LetsEncrypt processed/failed/accepted only order processing, not TLS readiness; missing/unknown states remain unknown; config task_id is metadata, never inferred cache task",
+  "evidence": "catalog/evidence/cdn-current-sources.json",
+  "limitations": [
+    "Enumerated 19 source operations only; whole service inventory incomplete, coverage ratio null; no live/deployment evidence"
+  ]
+}

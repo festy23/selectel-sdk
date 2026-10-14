@@ -9,6 +9,7 @@ import (
 	"github.com/festy23/selectel-sdk/audit"
 	"github.com/festy23/selectel-sdk/billing"
 	"github.com/festy23/selectel-sdk/catalog"
+	"github.com/festy23/selectel-sdk/cdn"
 	"github.com/festy23/selectel-sdk/compute"
 	"github.com/festy23/selectel-sdk/databases"
 	"github.com/festy23/selectel-sdk/internal/endpoints"
@@ -43,6 +44,7 @@ func (c *Client) Project(id string) (ProjectClient, error) {
 	}
 	return ProjectClient{client: &Client{runtime: c.runtime, scope: types.Scope{AccountID: c.scope.AccountID, ProjectID: id}}}, nil
 }
+func (p ProjectClient) CDN() *cdn.Client   { return cdn.Bind(p.client.runtime, p.client.scope) }
 func (p ProjectClient) Scope() types.Scope { return p.client.scope }
 func (p ProjectClient) Secrets() *secrets.Client {
 	return secrets.Bind(p.client.runtime, p.client.scope)
@@ -81,6 +83,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Scope.AccountID != c.scope.AccountID {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
+	if ref.Service == "cdn" && ref.APIGeneration == "v3" {
+		return cdn.Bind(c.runtime, ref.Scope).Handle(ref, nil)
+	}
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
@@ -115,6 +120,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if capability.Effect != "mutation" || capability.APIGeneration != ref.APIGeneration {
 		return nil, types.NewError(types.InvalidArgument)
+	}
+	if ref.Service == "cdn" {
+		return cdn.Bind(c.runtime, ref.Scope).Handle(ref, &receipt)
 	}
 	if ref.Service == "compute" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, &receipt)

@@ -1,0 +1,2613 @@
+{
+  "basePath": "/cdn/v3",
+  "definitions": {
+    "models.AWSAuth": {
+      "properties": {
+        "access_key": {
+          "description": "AWS access key identifier.",
+          "type": "string"
+        },
+        "secret_key": {
+          "description": "AWS secret access key.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "access_key",
+        "secret_key"
+      ],
+      "type": "object"
+    },
+    "models.AuthMD5": {
+      "properties": {
+        "anywhere": {
+          "default": false,
+          "description": "If `true`, the IP address will be ignored.",
+          "type": "boolean"
+        },
+        "forever": {
+          "default": false,
+          "description": "If `true`, no time limit will be applied.",
+          "type": "boolean"
+        },
+        "secret": {
+          "description": "Secret word.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.CacheValid": {
+      "properties": {
+        "2xx": {
+          "default": "24h",
+          "description": "Cache time for `2xx` codes.\nPattern: `^(\\d+)[smhd]$`.",
+          "example": "1d",
+          "type": "string"
+        },
+        "3xx": {
+          "default": "1s",
+          "description": "Cache time for `3xx` codes.\nPattern: `^(\\d+)[smhd]$`.",
+          "example": "1d",
+          "type": "string"
+        },
+        "4xx": {
+          "default": "5s",
+          "description": "Cache time for `4xx` codes.\nPattern: `^(\\d+)[smhd]$`.",
+          "example": "1s",
+          "type": "string"
+        },
+        "5xx": {
+          "default": "1s",
+          "description": "Cache time for `5xx` codes.\nPattern: `^(\\d+)[smhd]$`.",
+          "example": "1s",
+          "type": "string"
+        },
+        "browser": {
+          "description": "Browser cache duration (works for status codes `200`, `201`, `204`, `206`, `301`, `302`, `303`, `304`, `307`, `308`).\nPattern: `^(\\d+)[smhd]$`.",
+          "example": "1d",
+          "type": "string"
+        },
+        "force": {
+          "default": false,
+          "description": "If `true`, caching headers will be ignored.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "models.CertificateInfo": {
+      "properties": {
+        "alt": {
+          "description": "Alternative Names of the certificate.",
+          "example": "*.test.com, test.com",
+          "type": "string"
+        },
+        "cn": {
+          "description": "Common Name of the certificate.",
+          "example": "*.test.com",
+          "type": "string"
+        },
+        "comment": {
+          "description": "Certificate comment.",
+          "example": "july_23",
+          "type": "string"
+        },
+        "end_iso8601": {
+          "description": "Certificate validity end date/time in the `ISO8601` format.",
+          "example": "2023-07-17T05:13:02Z",
+          "type": "string"
+        },
+        "end_timestamp": {
+          "description": "Certificate validity end timestamp.",
+          "example": 1689570782,
+          "type": "integer"
+        },
+        "issuer": {
+          "description": "Certificate issuer.",
+          "example": "Let's Encrypt Authority X3",
+          "type": "string"
+        },
+        "seq": {
+          "description": "Certificate sequence number (ID).",
+          "example": 1,
+          "type": "integer"
+        },
+        "start_iso8601": {
+          "description": "Certificate validity start date/time in the `ISO8601` format.",
+          "example": "2022-06-15T05:13:03Z",
+          "type": "string"
+        },
+        "start_timestamp": {
+          "description": "Certificate validity start timestamp.",
+          "example": 1655269983,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.CertificateInfoWithChain": {
+      "properties": {
+        "alt": {
+          "description": "Alternative Names of the certificate.",
+          "example": "*.test.com, test.com",
+          "type": "string"
+        },
+        "chain_info": {
+          "description": "Certificate chain information.",
+          "items": {
+            "$ref": "#/definitions/models.ChainInfo"
+          },
+          "type": "array"
+        },
+        "cn": {
+          "description": "Common Name of the certificate.",
+          "example": "*.test.com",
+          "type": "string"
+        },
+        "comment": {
+          "description": "Certificate comment.",
+          "example": "july_23",
+          "type": "string"
+        },
+        "end_iso8601": {
+          "description": "Certificate validity end date/time in the `ISO8601` format.",
+          "example": "2023-07-17T05:13:02Z",
+          "type": "string"
+        },
+        "end_timestamp": {
+          "description": "Certificate validity end timestamp.",
+          "example": 1689570782,
+          "type": "integer"
+        },
+        "issuer": {
+          "description": "Certificate issuer.",
+          "example": "Let's Encrypt Authority X3",
+          "type": "string"
+        },
+        "seq": {
+          "description": "Certificate sequence number (ID).",
+          "example": 1,
+          "type": "integer"
+        },
+        "start_iso8601": {
+          "description": "Certificate validity start date/time in the `ISO8601` format.",
+          "example": "2022-06-15T05:13:03Z",
+          "type": "string"
+        },
+        "start_timestamp": {
+          "description": "Certificate validity start timestamp.",
+          "example": 1655269983,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.CertificateSeqData": {
+      "properties": {
+        "seq": {
+          "description": "Certificate sequence number (ID).",
+          "example": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.ChainInfo": {
+      "properties": {
+        "end_iso8601": {
+          "description": "Certificate validity end date/time in the `ISO8601` format.",
+          "example": "2029-03-18T00:00:00Z",
+          "type": "string"
+        },
+        "end_timestamp": {
+          "description": "Certificate validity end timestamp.",
+          "example": 1868475600,
+          "type": "integer"
+        },
+        "fingerprint": {
+          "description": "Certificate fingerprint from the chain.",
+          "example": "1C:61:0A:0A:87:D4:92:F4:83:22:C2:AF:D3:BE:9B:6A:D3:6B:6B:EE",
+          "type": "string"
+        },
+        "issuer_CN": {
+          "description": "Issuer Common Name of the certificate from the chain.",
+          "example": "GlobalSign",
+          "type": "string"
+        },
+        "serial": {
+          "description": "Serial Number of the certificate from the chain.",
+          "example": "77:BD:0E:07:42:D5:D9:E9:D0:49:D7:74:D0:2A:6F:9A",
+          "type": "string"
+        },
+        "start_iso8601": {
+          "description": "Certificate validity start date/time in the `ISO8601` format.",
+          "example": "2020-07-28T00:00:00Z",
+          "type": "string"
+        },
+        "start_timestamp": {
+          "description": "Certificate validity start timestamp.",
+          "example": 1595883600,
+          "type": "integer"
+        },
+        "subject_CN": {
+          "description": "Subject Common Name of the certificate from the chain.",
+          "example": "GlobalSign GCC R3 DV TLS CA 2020",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.CreateCertificateRequest": {
+      "properties": {
+        "certificate": {
+          "description": "Certificate text in `PEM` format.",
+          "example": "-----BEGIN CERTIFICATE-----\nMIIMvzCCC6egAwIBAgISBDOHrUbe+jaL2W0x4w3T5YuBMA0GCSqGSIb3DQEBCwUA\n-----END CERTIFICATE-----",
+          "type": "string"
+        },
+        "comment": {
+          "description": "Certificate comment.",
+          "example": "new comment",
+          "type": "string"
+        },
+        "private_key": {
+          "description": "Private key text in `PEM` format.",
+          "example": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDQtDgBy3kRiv2\n-----END PRIVATE KEY-----",
+          "type": "string"
+        }
+      },
+      "required": [
+        "certificate",
+        "comment",
+        "private_key"
+      ],
+      "type": "object"
+    },
+    "models.CreateCertificateResponse": {
+      "properties": {
+        "data": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.CertificateSeqData"
+            }
+          ],
+          "description": "Uploaded certificate information when `status` is `0`."
+        },
+        "message": {
+          "description": "Text description of the status.",
+          "example": "cert saved",
+          "type": "string"
+        },
+        "status": {
+          "description": "Response status code:\n- `0` - cert saved;\n- `450` - Invalid request;\n- `455` - Not Allowed;\n- `459` - Certificate already exist, use `PATCH` to update certificate;\n- `471` - Invalid certificate;\n- `472` - Invalid private key;\n- `473` - Private key does not match certificate;\n- `474` - Certificate is expired;\n- `475` - Root certificate is not found in system trusted certificates;\n- `476` - One of certificates is not signed by previous certificate in chain;\n- `477` - Certificate has `N` invalid line(s);\n- `478` - Cert chain error: Two or more certificates have the same subject;\n- `479` - Cert chain error: Too many certificates have the same issuer;\n- `550` - Internal Server Error.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.CreateTaskResponse": {
+      "properties": {
+        "task_id": {
+          "description": "Created task identifier.",
+          "example": "30ee3d06-b7fa-4dc7-ba84-44f4aa5bfaf0",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id"
+      ],
+      "type": "object"
+    },
+    "models.CreateUpdateResponse": {
+      "properties": {
+        "cdn_domain": {
+          "description": "CDN domain of the created HTTP resource (set when `status` is `accept`).",
+          "example": "6d19b7a2-a493-48fa-a9ec-aea7ba9ffa28.selcdn.net",
+          "type": "string"
+        },
+        "description": {
+          "description": "Error description (set when `status` is `error`).",
+          "example": "Key incorrect or not found ( origin )",
+          "type": "string"
+        },
+        "message": {
+          "description": "Error message (set when `status` is `error`).",
+          "example": "Json invalid",
+          "type": "string"
+        },
+        "resource_id": {
+          "description": "Created HTTP resource identifier (set when `status` is `accept`).",
+          "example": "6d19b7a2-a493-48fa-a9ec-aea7ba9ffa28",
+          "type": "string"
+        },
+        "status": {
+          "description": "Operation status: `accept` or `error`.",
+          "enum": [
+            "accept",
+            "error"
+          ],
+          "type": "string"
+        },
+        "task_id": {
+          "description": "Configuration change task identifier (set when `status` is `accept`).",
+          "example": "20180402162358692400",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.DeleteCertificateResponse": {
+      "properties": {
+        "data": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.CertificateSeqData"
+            }
+          ],
+          "description": "Deleted certificate information."
+        },
+        "message": {
+          "description": "Text description of the status.",
+          "example": "cert deleted",
+          "type": "string"
+        },
+        "status": {
+          "description": "Response status code:\n- `0` - cert deleted;\n- `450` - Invalid request;\n- `454` - Record not found in database;\n- `455` - Not Allowed;\n- `550` - Internal Server Error.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.GeoExclude": {
+      "properties": {
+        "action": {
+          "description": "Action type: `allow` or `deny`.",
+          "enum": [
+            "allow",
+            "deny"
+          ],
+          "example": "deny",
+          "type": "string"
+        },
+        "country": {
+          "description": "Country code in `ISO 3166-1 alpha-2` format.",
+          "example": "RU",
+          "type": "string"
+        },
+        "region": {
+          "description": "Region code in `ISO 3166-2` format or `null`.",
+          "example": "BEL",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.GeoLimitation": {
+      "properties": {
+        "default_action": {
+          "description": "Default action: `allow` or `deny`.",
+          "enum": [
+            "allow",
+            "deny"
+          ],
+          "type": "string"
+        },
+        "exclude": {
+          "description": "Exceptions.",
+          "items": {
+            "$ref": "#/definitions/models.GeoExclude"
+          },
+          "type": "array"
+        },
+        "times": {
+          "description": "Time intervals for the restriction.",
+          "items": {
+            "$ref": "#/definitions/models.LimitationTime"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.GetCertificateResponse": {
+      "properties": {
+        "data": {
+          "description": "Certificate information when `status` is `0`.\nIf `details` is `true`, contains `chain_info`.",
+          "items": {
+            "$ref": "#/definitions/models.CertificateInfoWithChain"
+          },
+          "type": "array"
+        },
+        "message": {
+          "description": "Text description of the status.",
+          "example": "OK",
+          "type": "string"
+        },
+        "status": {
+          "description": "Response status code:\n- `0` - OK;\n- `454` - Record not found in database;\n- `455` - Not Allowed;\n- `550` - Internal Server Error.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.IPExclude": {
+      "properties": {
+        "ip": {
+          "description": "IP address in CIDR notation.",
+          "example": "192.168.0.1/24",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.IPLimitation": {
+      "properties": {
+        "default_action": {
+          "description": "Default action: `allow` or `deny`.",
+          "enum": [
+            "allow",
+            "deny"
+          ],
+          "type": "string"
+        },
+        "exclude": {
+          "description": "Exceptions.",
+          "items": {
+            "$ref": "#/definitions/models.IPExclude"
+          },
+          "type": "array"
+        },
+        "times": {
+          "description": "Time intervals for the restriction.",
+          "items": {
+            "$ref": "#/definitions/models.LimitationTime"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.LetsEncryptOrderResponse": {
+      "properties": {
+        "message": {
+          "description": "Text description of the status.",
+          "example": "Success",
+          "type": "string"
+        },
+        "status": {
+          "description": "Response status code:\n- `0` - Success;\n- `450` - Invalid request;\n- `454` - Record not found in database (about resource);\n- `455` - Not Allowed;\n- `479` - Main domain already in use;\n- `480` - DNS settings are incorrect;\n- `489` - Task already exist;\n- `550` - Internal Server Error.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.LetsEncryptStatusData": {
+      "properties": {
+        "task_status": {
+          "description": "Certificate order task status.",
+          "enum": [
+            "no",
+            "accepted",
+            "processed",
+            "failed"
+          ],
+          "example": "accepted",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.LetsEncryptStatusResponse": {
+      "properties": {
+        "data": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.LetsEncryptStatusData"
+            }
+          ],
+          "description": "Certificate order task information."
+        },
+        "message": {
+          "description": "Text description of the status.",
+          "example": "Success",
+          "type": "string"
+        },
+        "status": {
+          "description": "Response status code:\n- `0` - Success;\n- `450` - Invalid Request;\n- `454` - Record not found in database (about resource);\n- `455` - Not Allowed;\n- `550` - Internal Server Error.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.LetsEncryptWildcardOrderRequest": {
+      "properties": {
+        "domains": {
+          "description": "List of domains for a wildcard certificate.",
+          "example": [
+            "*.d.example.com",
+            "*.e.example.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "domains"
+      ],
+      "type": "object"
+    },
+    "models.LetsEncryptWildcardOrderResponse": {
+      "properties": {
+        "message": {
+          "description": "Text description of the status.",
+          "example": "Success",
+          "type": "string"
+        },
+        "status": {
+          "description": "Response status code:\n- `0` - Success;\n- `450` - Invalid request;\n- `454` - Record not found in database (about resource);\n- `455` - Not Allowed;\n- `479` - Main domain already in use;\n- `480` - DNS settings are incorrect;\n- `489` - Task already exist;\n- `550` - Internal Server Error.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.LimitationTime": {
+      "properties": {
+        "end": {
+          "description": "End of interval in the `ISO 8601-1:2019` format.",
+          "example": "2024-01-02T00:00:00Z",
+          "type": "string"
+        },
+        "start": {
+          "description": "Start of interval in the `ISO 8601-1:2019` format.",
+          "example": "2024-01-01T00:00:00Z",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.ListCertificatesResponse": {
+      "properties": {
+        "data": {
+          "description": "List of certificates when `status` is `0`.",
+          "items": {
+            "$ref": "#/definitions/models.CertificateInfo"
+          },
+          "type": "array"
+        },
+        "message": {
+          "description": "Text description of the status.",
+          "example": "OK",
+          "type": "string"
+        },
+        "status": {
+          "description": "Response status code:\n- `0` - OK;\n- `454` - Record not found in database;\n- `455` - Not Allowed;\n- `550` - Internal Server Error.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.Node": {
+      "properties": {
+        "IPv4_subnet": {
+          "description": "The Internet Protocol version 4 subnet of the node.",
+          "type": "string"
+        },
+        "IPv6_subnet": {
+          "description": "The Internet Protocol version 6 subnet of the node.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.NodesResponse": {
+      "properties": {
+        "data": {
+          "description": "List of nodes.",
+          "items": {
+            "$ref": "#/definitions/models.Node"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Response status.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.OriginAWS": {
+      "properties": {
+        "auth": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.AWSAuth"
+            }
+          ],
+          "description": "Authorization keys."
+        }
+      },
+      "required": [
+        "auth"
+      ],
+      "type": "object"
+    },
+    "models.OriginServer": {
+      "properties": {
+        "backup": {
+          "default": false,
+          "description": "Indicates whether the origin is a backup.",
+          "type": "boolean"
+        },
+        "max_fails": {
+          "default": 10,
+          "description": "Number of failed attempts for load balancing.",
+          "type": "integer"
+        },
+        "port": {
+          "description": "Origin port.\nDefault: `80` (if `origin.https` is `false`) or `443` (if `origin.https` is `true`).",
+          "example": 443,
+          "maximum": 65535,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "weight": {
+          "default": 1,
+          "description": "Weight for load balancing.",
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.PackagingMP4": {
+      "properties": {
+        "output_protocols": {
+          "description": "Output protocols for video distribution.",
+          "items": {
+            "enum": [
+              "MPEG-DASH",
+              "HLS"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.RefererExclude": {
+      "properties": {
+        "referer": {
+          "description": "Referer (domain name or regular expression).",
+          "example": "*.ru",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.RefererLimitation": {
+      "properties": {
+        "default_action": {
+          "description": "Default action: `allow` or `deny`.",
+          "enum": [
+            "allow",
+            "deny"
+          ],
+          "type": "string"
+        },
+        "exclude": {
+          "description": "Exceptions.",
+          "items": {
+            "$ref": "#/definitions/models.RefererExclude"
+          },
+          "type": "array"
+        },
+        "times": {
+          "description": "Time intervals for the restriction.",
+          "items": {
+            "$ref": "#/definitions/models.LimitationTime"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.Resource": {
+      "properties": {
+        "active": {
+          "default": true,
+          "description": "Indicates whether the resource is active.",
+          "type": "boolean"
+        },
+        "allowed_http_methods": {
+          "description": "List of allowed HTTP methods.\n`GET`, `HEAD`, and `OPTIONS` are always allowed.",
+          "example": [
+            "POST",
+            "PATCH"
+          ],
+          "items": {
+            "enum": [
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE",
+              "MKCOL",
+              "COPY",
+              "MOVE",
+              "PROPFIND",
+              "PROPPATCH",
+              "LOCK",
+              "UNLOCK"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "auth": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceAuth"
+            }
+          ],
+          "description": "User request authorization settings."
+        },
+        "cache": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceCache"
+            }
+          ],
+          "description": "Cache settings."
+        },
+        "cdn_domain": {
+          "description": "CDN domain for distribution (read-only).",
+          "example": "6d19b7a2-a493-48fa-a9ec-aea7ba9ffa28.selcdn.net",
+          "type": "string"
+        },
+        "certificate": {
+          "description": "Identifier of the SSL certificate to bind to the resource.",
+          "example": 1,
+          "type": "integer"
+        },
+        "compress": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceCompress"
+            }
+          ],
+          "description": "Compression settings."
+        },
+        "cors": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceCORS"
+            }
+          ],
+          "description": "CORS settings."
+        },
+        "creation_ts": {
+          "description": "Resource creation timestamp (read-only).",
+          "example": 1708581262,
+          "type": "integer"
+        },
+        "follow_redirects": {
+          "default": false,
+          "description": "Indicates whether to follow redirects.",
+          "type": "boolean"
+        },
+        "headers": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceHeaders"
+            }
+          ],
+          "description": "Headers settings."
+        },
+        "http2https": {
+          "default": false,
+          "description": "If `true`, HTTP will be automatically redirected to HTTPS during distribution.",
+          "type": "boolean"
+        },
+        "https_only": {
+          "default": false,
+          "description": "If `true`, only HTTPS will be used during distribution.",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Identifier of the HTTP resource (read-only).",
+          "example": "6d19b7a2-a493-48fa-a9ec-aea7ba9ffa28",
+          "type": "string"
+        },
+        "ioss": {
+          "default": false,
+          "description": "Indicates whether image optimization and modification is enabled.",
+          "type": "boolean"
+        },
+        "limitations": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceLimitations"
+            }
+          ],
+          "description": "Distribution restrictions by geography, IP, Referer, or UserAgent."
+        },
+        "locations": {
+          "additionalProperties": {
+            "$ref": "#/definitions/models.ResourceLocation"
+          },
+          "description": "Rules for specific request paths.\nKey: path pattern (e.g., `/images`, `/video/*`).\nValue: location-specific configuration.",
+          "type": "object"
+        },
+        "modern_tls_only": {
+          "default": false,
+          "description": "If `true`, only modern TLS versions will be used.",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Resource name.\nPattern: `^[a-zA-Zа-яА-ЯёЁ0-9\\-\\_\\ ]{1,50}$`.",
+          "example": "testname",
+          "type": "string"
+        },
+        "names": {
+          "description": "Canonical Names (CNAMEs) for the CDN domain.",
+          "example": [
+            "cdn.test.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "no_http2": {
+          "default": false,
+          "description": "If `true`, HTTP/2 will be disabled.",
+          "type": "boolean"
+        },
+        "origin": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceOrigin"
+            }
+          ],
+          "description": "Origin server parameters."
+        },
+        "packaging": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourcePackaging"
+            }
+          ],
+          "description": "Video conversion."
+        },
+        "return": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceReturn"
+            }
+          ],
+          "description": "Forced response instead of content."
+        },
+        "rewrite": {
+          "description": "Request path rewrite rules.",
+          "items": {
+            "$ref": "#/definitions/models.ResourceRewrite"
+          },
+          "type": "array"
+        },
+        "robots": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceRobots"
+            }
+          ],
+          "description": "`robots.txt` settings."
+        },
+        "slice_size_megabytes": {
+          "default": 0,
+          "description": "Slice size in MB (only when `tuning` is `large`).",
+          "example": 16,
+          "maximum": 1024,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "ssl_protocols": {
+          "description": "List of allowed TLS versions.",
+          "example": [
+            "TLSv1.2",
+            "TLSv1.3"
+          ],
+          "items": {
+            "enum": [
+              "TLSv1",
+              "TLSv1.1",
+              "TLSv1.2",
+              "TLSv1.3",
+              "SSLv3"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "strong_ssl_ciphers": {
+          "default": false,
+          "description": "If `true`, strong SSL ciphers will be used (requires `modern_tls_only` to be `true`).",
+          "type": "boolean"
+        },
+        "tuning": {
+          "default": "default",
+          "description": "Distribution optimization:\n- `default` - for small static files;\n- `large` - for large files over 20 MB;\n- `live` - for HTTP LIVE streams.",
+          "enum": [
+            "default",
+            "large",
+            "live"
+          ],
+          "type": "string"
+        },
+        "use_http3": {
+          "default": false,
+          "description": "Indicates whether to use HTTP/3.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "models.ResourceAuth": {
+      "properties": {
+        "forbidden": {
+          "default": false,
+          "description": "If `true`, access will be denied.",
+          "type": "boolean"
+        },
+        "md5": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.AuthMD5"
+            }
+          ],
+          "description": "Local authorization settings (signature-based)."
+        },
+        "url": {
+          "description": "URL of an external authorization script.",
+          "example": "https://test.com/check",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceCORS": {
+      "properties": {
+        "always": {
+          "default": true,
+          "description": "Indicates whether to add `Access-Control-Allow-Origin` header:\n- `true` - regardless of status code;\n- `false` - only for specific status codes.",
+          "type": "boolean"
+        },
+        "credentials": {
+          "default": false,
+          "description": "Indicates whether to set `Access-Control-Allow-Credentials` header.",
+          "type": "boolean"
+        },
+        "disable": {
+          "default": false,
+          "description": "If `true`, CORS will be disabled.",
+          "type": "boolean"
+        },
+        "domains": {
+          "description": "Allowed domains.",
+          "example": [
+            "example.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "expose": {
+          "description": "Headers accessible to the top-level API (Expose Headers). Default allowed: `Cache-Control`, `Content-Language`, `Content-Type`, `Expires`, `Last-Modified`, `Pragma`.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "headers": {
+          "description": "Safe request headers. Default allowed: `Accept`, `Accept-Language`, `Content-Type`, `Content-Language`.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "max_age": {
+          "description": "Preflight response lifetime.",
+          "example": 120,
+          "type": "integer"
+        },
+        "methods": {
+          "description": "Safe methods. Default allowed: `GET`, `HEAD`, `POST`.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceCache": {
+      "properties": {
+        "args_blacklist": {
+          "description": "List of query string parameters to ignore when caching (requires `cache.consider_args` to be `true`).",
+          "example": [
+            "param1"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "args_whitelist": {
+          "description": "List of query string parameters to consider when caching (requires `cache.consider_args` to be `true`).",
+          "example": [
+            "param1"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "consider_args": {
+          "default": false,
+          "description": "If `true`, query string will be considered when caching.",
+          "example": true,
+          "type": "boolean"
+        },
+        "consider_cookies": {
+          "default": false,
+          "description": "If `true`, cookies will be considered when caching.",
+          "example": true,
+          "type": "boolean"
+        },
+        "cookies_blacklist": {
+          "description": "List of cookies to ignore when caching (requires `cache.consider_cookies` to be `true`).",
+          "example": [
+            "param1"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "cookies_whitelist": {
+          "description": "List of cookies to consider when caching (requires `cache.consider_cookies` to be `true`).",
+          "example": [
+            "param1"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "disable": {
+          "default": false,
+          "description": "If `true`, content will not be cached.",
+          "type": "boolean"
+        },
+        "stale_conditions": {
+          "description": "List of conditions for serving stale cached content (requires `use_stale` to be `true`).",
+          "example": [
+            "error"
+          ],
+          "items": {
+            "enum": [
+              "error",
+              "timeout",
+              "invalid_header",
+              "updating",
+              "http_500",
+              "http_502",
+              "http_503",
+              "http_504",
+              "http_403",
+              "http_404",
+              "http_429"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "use_stale": {
+          "default": false,
+          "description": "Indicates whether serving stale cached content is enabled when the origin is unavailable.",
+          "type": "boolean"
+        },
+        "valid": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.CacheValid"
+            }
+          ],
+          "description": "Cache time parameters."
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceCompress": {
+      "properties": {
+        "brotli": {
+          "default": false,
+          "description": "Indicates whether to use Brotli compression.",
+          "type": "boolean"
+        },
+        "gzip": {
+          "default": true,
+          "description": "Indicates whether to use Gzip compression.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceHeaders": {
+      "properties": {
+        "hide_in_response": {
+          "description": "List of headers from the origin that CDN servers hide in the response.",
+          "example": [
+            "header-to-hide"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "request": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Headers to add to origin requests.\nKey: header name, Value: header value.\nExample: `{\"X-Custom-Header\": \"custom-value\", \"X-Another-Header\": \"another-value\"}`.",
+          "type": "object"
+        },
+        "response": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Headers to add to user responses.\nKey: header name, Value: header value.\nExample: `{\"X-Custom-Header\": \"custom-value\", \"X-Another-Header\": \"another-value\"}`.",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceLimitations": {
+      "properties": {
+        "geo": {
+          "description": "Geographic distribution restrictions.",
+          "items": {
+            "$ref": "#/definitions/models.GeoLimitation"
+          },
+          "type": "array"
+        },
+        "ip": {
+          "description": "IP-based distribution restrictions.",
+          "items": {
+            "$ref": "#/definitions/models.IPLimitation"
+          },
+          "type": "array"
+        },
+        "referer": {
+          "description": "Referer-based distribution restrictions.",
+          "items": {
+            "$ref": "#/definitions/models.RefererLimitation"
+          },
+          "type": "array"
+        },
+        "useragent": {
+          "description": "UserAgent-based distribution restrictions.",
+          "items": {
+            "$ref": "#/definitions/models.UserAgentLimitation"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceLocation": {
+      "properties": {
+        "allowed_http_methods": {
+          "description": "List of allowed HTTP methods. `GET`, `HEAD`, and `OPTIONS` are always allowed.",
+          "example": [
+            "POST",
+            "PATCH"
+          ],
+          "items": {
+            "enum": [
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE",
+              "MKCOL",
+              "COPY",
+              "MOVE",
+              "PROPFIND",
+              "PROPPATCH",
+              "LOCK",
+              "UNLOCK"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "auth": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceAuth"
+            }
+          ],
+          "description": "Authorization settings."
+        },
+        "cache": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceCache"
+            }
+          ],
+          "description": "Cache settings."
+        },
+        "compress": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceCompress"
+            }
+          ],
+          "description": "Compression settings."
+        },
+        "cors": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceCORS"
+            }
+          ],
+          "description": "CORS settings."
+        },
+        "headers": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceHeaders"
+            }
+          ],
+          "description": "Headers settings."
+        },
+        "ioss": {
+          "default": false,
+          "description": "Indicates whether image optimization is enabled.",
+          "type": "boolean"
+        },
+        "limitations": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceLimitations"
+            }
+          ],
+          "description": "Distribution restrictions."
+        },
+        "order": {
+          "description": "Order for regular expression checking (only for locations with regular expression).",
+          "example": 1,
+          "maximum": 999999,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "origin": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceOrigin"
+            }
+          ],
+          "description": "Origin server parameters."
+        },
+        "packaging": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourcePackaging"
+            }
+          ],
+          "description": "Video conversion."
+        },
+        "return": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.ResourceReturn"
+            }
+          ],
+          "description": "Forced response."
+        },
+        "rewrite": {
+          "description": "Path rewrite rules.",
+          "items": {
+            "$ref": "#/definitions/models.ResourceRewrite"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceOrigin": {
+      "properties": {
+        "aws": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.OriginAWS"
+            }
+          ],
+          "description": "AWS authorization parameters for origin requests."
+        },
+        "connect_timeout": {
+          "default": "5s",
+          "description": "Connect timeout in seconds.",
+          "example": "10s",
+          "type": "string"
+        },
+        "forward_host_header": {
+          "default": false,
+          "description": "Indicates whether to send the `Host` header from the CDN request to the origin.\nCannot be set together with `origin.hostname`.",
+          "type": "boolean"
+        },
+        "hostname": {
+          "description": "Host header when accessing the origin.\nCannot be set together with `origin.forward_host_header`.",
+          "type": "string"
+        },
+        "https": {
+          "default": false,
+          "description": "Indicates whether to use HTTPS when accessing the origin.",
+          "type": "boolean"
+        },
+        "read_timeout": {
+          "default": "10s",
+          "description": "Read timeout in seconds.",
+          "example": "10s",
+          "type": "string"
+        },
+        "s3_bucket": {
+          "description": "Allowed bucket when using a common Simple Storage Service (S3) domain as the origin.",
+          "type": "string"
+        },
+        "send_timeout": {
+          "default": "10s",
+          "description": "Send timeout in seconds.",
+          "example": "10s",
+          "type": "string"
+        },
+        "servers": {
+          "additionalProperties": {
+            "$ref": "#/definitions/models.OriginServer"
+          },
+          "description": "Origin servers description.\nKey: domain/ip, Value: origin parameters.",
+          "type": "object"
+        },
+        "sni_hostname": {
+          "description": "Allows overriding the server name used for the origin certificate verification and SNI.\n(requires `origin.https` to be `true`).",
+          "type": "string"
+        },
+        "ssl_verify": {
+          "default": false,
+          "description": "Indicates whether to verify the origin certificate (requires `origin.https` to be `true`).",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourcePackaging": {
+      "properties": {
+        "mp4": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.PackagingMP4"
+            }
+          ],
+          "description": "MPEG-4 (MP4) conversion parameters."
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceReturn": {
+      "properties": {
+        "body": {
+          "description": "Response body.",
+          "type": "string"
+        },
+        "http_status_code": {
+          "description": "HTTP status code for response.",
+          "maximum": 599,
+          "minimum": 100,
+          "type": "integer"
+        },
+        "url": {
+          "description": "Absolute redirect URL (only for `301`, `302`, `303`, `307`, `308` status codes).",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceRewrite": {
+      "properties": {
+        "flag": {
+          "description": "Redirection completes processing.",
+          "enum": [
+            "break"
+          ],
+          "type": "string"
+        },
+        "from": {
+          "description": "Regular expression for source URL.",
+          "example": "^/cdn/.+(/_video_.+)",
+          "type": "string"
+        },
+        "scope": {
+          "default": "edge",
+          "description": "Execution scope:\n- `edge` - on edge nodes;\n- `shield` - on intermediate nodes.",
+          "enum": [
+            "edge",
+            "shield"
+          ],
+          "type": "string"
+        },
+        "to": {
+          "description": "Target address for request redirection.",
+          "example": "$1",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceRobots": {
+      "properties": {
+        "robotsContent": {
+          "description": "`robots.txt` content (only when `type` is `custom`).",
+          "type": "string"
+        },
+        "type": {
+          "default": "deny",
+          "description": "`robots.txt` operation type:\n- `deny` - hide CDN usage;\n- `custom` - upload custom `robots.txt`;\n- `cached` - proxy `robots.txt`.",
+          "enum": [
+            "deny",
+            "custom",
+            "cached"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.ResourceStatus": {
+      "properties": {
+        "message": {
+          "description": "Status description:\n- `dns processing` - DNS settings are being applied;\n- `configuration processing` - configuration is being distributed across the network.",
+          "enum": [
+            "dns processing",
+            "configuration processing"
+          ],
+          "type": "string"
+        },
+        "resource": {
+          "description": "Resource identifier.",
+          "type": "string"
+        },
+        "status": {
+          "description": "Resource status:\n- `Completed` - Active;\n- `Processing` - Applying settings;",
+          "enum": [
+            "Completed",
+            "Processing",
+            "Error"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.Task": {
+      "properties": {
+        "action": {
+          "description": "Action type: delete or preload.",
+          "enum": [
+            "delete",
+            "preload"
+          ],
+          "example": "delete",
+          "type": "string"
+        },
+        "action_type": {
+          "default": "single",
+          "description": "Operation type:\n- `single` - by paths list;\n- `full` - clear entire domain cache (delete only);\n- `playlist` - from `.m3u8` playlist file (preload only).",
+          "enum": [
+            "single",
+            "full",
+            "playlist"
+          ],
+          "example": "single",
+          "type": "string"
+        },
+        "domain": {
+          "description": "Domain name (CNAME or CDN domain).",
+          "example": "6d19b7a2-a493-48fa-fa9ec-aea7ba9ffa28.selcdn.net",
+          "type": "string"
+        },
+        "paths": {
+          "description": "List of file paths.",
+          "example": [
+            "/path/to/file1",
+            "/path/to/file2"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "action",
+        "domain"
+      ],
+      "type": "object"
+    },
+    "models.TaskResult": {
+      "properties": {
+        "rate": {
+          "description": "Success rates for each path (order matches paths order).",
+          "example": [
+            98,
+            98
+          ],
+          "items": {
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Task execution status.",
+          "enum": [
+            "ok",
+            "in_queue",
+            "failed",
+            "processing"
+          ],
+          "example": "ok",
+          "type": "string"
+        },
+        "task": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.Task"
+            }
+          ],
+          "description": "Task information."
+        },
+        "task_id": {
+          "description": "Task identifier.",
+          "example": "30ee3d06-b7fa-4dc7-ba84-44f4aa5bfaf0",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "task",
+        "task_id"
+      ],
+      "type": "object"
+    },
+    "models.UpdateCertificateRequest": {
+      "properties": {
+        "certificate": {
+          "description": "New certificate text in `PEM` format (optional).",
+          "example": "-----BEGIN CERTIFICATE-----\nMIIMvzCCC6egAwIBAgISBDOHrUbe+jaL2W0x4w3T5YuBMA0GCSqGSIb3DQEBCwUA\n-----END CERTIFICATE-----",
+          "type": "string"
+        },
+        "comment": {
+          "description": "New certificate comment (optional).",
+          "example": "new comment",
+          "type": "string"
+        },
+        "private_key": {
+          "description": "New private key text in `PEM` format (optional).",
+          "example": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDQtDgBy3kRiv2\n-----END PRIVATE KEY-----",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.UpdateCertificateResponse": {
+      "properties": {
+        "data": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/models.CertificateSeqData"
+            }
+          ],
+          "description": "Updated certificate information when `status` is `0`."
+        },
+        "message": {
+          "description": "Text description of the status.",
+          "example": "cert updated",
+          "type": "string"
+        },
+        "status": {
+          "description": "Response status code:\n- `0` - cert updated;\n- `450` - Invalid request;\n- `454` - Record not found in database;\n- `455` - Not Allowed;\n- `471` - Invalid certificate;\n- `472` - Invalid private key;\n- `473` - Private key does not match certificate;\n- `474` - Certificate is expired;\n- `475` - Root certificate is not found in system trusted certificates;\n- `476` - One of certificates is not signed by previous certificate in chain;\n- `477` - Certificate has `N` invalid line(s);\n- `550` - Internal Server Error.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "models.UserAgentExclude": {
+      "properties": {
+        "useragent": {
+          "description": "UserAgent or regular expression.",
+          "example": "browser_name",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "models.UserAgentLimitation": {
+      "properties": {
+        "default_action": {
+          "description": "Default action: `allow` or `deny`.",
+          "enum": [
+            "allow",
+            "deny"
+          ],
+          "type": "string"
+        },
+        "exclude": {
+          "description": "Exceptions.",
+          "items": {
+            "$ref": "#/definitions/models.UserAgentExclude"
+          },
+          "type": "array"
+        },
+        "times": {
+          "description": "Time intervals for the restriction.",
+          "items": {
+            "$ref": "#/definitions/models.LimitationTime"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "Managing CDN resources, cache tasks, SSL, and Let's Encrypt certificates.",
+    "title": "CDN API",
+    "version": "v0.0.1"
+  },
+  "paths": {
+    "/cache/tasks": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Creates a new cache task to delete or preload files in CDN cache.",
+        "operationId": "createCacheTask",
+        "parameters": [
+          {
+            "description": "Cache task payload.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.Task"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `task_id` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.CreateTaskResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights."
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again."
+          },
+          "429": {
+            "description": "Too many requests. Please try again later."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Create cache task",
+        "tags": [
+          "Cache"
+        ]
+      }
+    },
+    "/cache/tasks/{task_id}": {
+      "get": {
+        "description": "Returns information about a specific cache task.",
+        "operationId": "getCacheTask",
+        "parameters": [
+          {
+            "description": "Task identifier.",
+            "format": "string",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.TaskResult"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights."
+          },
+          "404": {
+            "description": "Task has not been found."
+          },
+          "429": {
+            "description": "Too many requests. Please try again later."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get cache task",
+        "tags": [
+          "Cache"
+        ]
+      }
+    },
+    "/certificate": {
+      "get": {
+        "description": "Returns a list of certificates for the account.",
+        "operationId": "listCertificates",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.ListCertificatesResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List certificates",
+        "tags": [
+          "Certificates"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Creates a custom certificate for the account.",
+        "operationId": "createCertificate",
+        "parameters": [
+          {
+            "description": "Certificate create payload.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.CreateCertificateRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.CreateCertificateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Create certificate",
+        "tags": [
+          "Certificates"
+        ]
+      }
+    },
+    "/certificate/{certificate_seq}": {
+      "delete": {
+        "description": "Deletes the certificate.",
+        "operationId": "deleteCertificate",
+        "parameters": [
+          {
+            "description": "Certificate sequence number.",
+            "format": "int",
+            "in": "path",
+            "name": "certificate_seq",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.DeleteCertificateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "404": {
+            "description": "Certificate has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete certificate",
+        "tags": [
+          "Certificates"
+        ]
+      },
+      "get": {
+        "description": "Returns the certificate details.",
+        "operationId": "getCertificate",
+        "parameters": [
+          {
+            "description": "Certificate sequence number.",
+            "format": "int",
+            "in": "path",
+            "name": "certificate_seq",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "If true, certificate details (PEM content) will be included.",
+            "in": "query",
+            "name": "details",
+            "type": "boolean"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.GetCertificateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "404": {
+            "description": "Certificate has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get certificate",
+        "tags": [
+          "Certificates"
+        ]
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Updates an existing certificate.",
+        "operationId": "updateCertificate",
+        "parameters": [
+          {
+            "description": "Certificate sequence number.",
+            "format": "int",
+            "in": "path",
+            "name": "certificate_seq",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Certificate update payload.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.UpdateCertificateRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.UpdateCertificateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "404": {
+            "description": "Certificate has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Update certificate",
+        "tags": [
+          "Certificates"
+        ]
+      }
+    },
+    "/letsencrypt": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Creates a Let's Encrypt wildcard certificate order.",
+        "operationId": "orderWildcardLetsEncrypt",
+        "parameters": [
+          {
+            "description": "Domains for a wildcard certificate.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.LetsEncryptWildcardOrderRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.LetsEncryptWildcardOrderResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Order wildcard Let's Encrypt certificate",
+        "tags": [
+          "LetsEncrypt"
+        ]
+      }
+    },
+    "/letsencrypt/{resource_id}": {
+      "get": {
+        "description": "Returns the Let's Encrypt order status for the resource.",
+        "operationId": "getLetsEncryptStatus",
+        "parameters": [
+          {
+            "description": "CDN resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.LetsEncryptStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get Let's Encrypt status",
+        "tags": [
+          "LetsEncrypt"
+        ]
+      },
+      "post": {
+        "description": "Creates a Let's Encrypt certificate order for an existing HTTP CDN resource.",
+        "operationId": "orderLetsEncrypt",
+        "parameters": [
+          {
+            "description": "CDN resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.LetsEncryptOrderResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Order Let's Encrypt certificate",
+        "tags": [
+          "LetsEncrypt"
+        ]
+      }
+    },
+    "/nodes/ip2origin": {
+      "get": {
+        "description": "Returns a list of IP addresses/subnets of nodes that can request content from the origin.",
+        "operationId": "listOriginNodes",
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of nodes that request content from origin.",
+            "schema": {
+              "$ref": "#/definitions/models.NodesResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List origin nodes",
+        "tags": [
+          "Nodes"
+        ]
+      }
+    },
+    "/nodes/ip2user": {
+      "get": {
+        "description": "Returns a list of IP addresses of nodes that can deliver content to users for a specific domain.",
+        "operationId": "listDeliveryNodes",
+        "parameters": [
+          {
+            "description": "The primary (technical) CDN domain. Example: f5e45429-2216-4975-a4bb-2134383bd510.selcdn.net",
+            "format": "string",
+            "in": "query",
+            "name": "cdn-domain",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of nodes that deliver content to users.",
+            "schema": {
+              "$ref": "#/definitions/models.NodesResponse"
+            }
+          },
+          "404": {
+            "description": "Domain has not been found or is not owned by the account."
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List delivery nodes",
+        "tags": [
+          "Nodes"
+        ]
+      }
+    },
+    "/resources": {
+      "get": {
+        "description": "Returns a list of resources in the project.",
+        "operationId": "listResources",
+        "parameters": [
+          {
+            "default": true,
+            "description": "Filter by active/deactivated resources.",
+            "in": "query",
+            "name": "active",
+            "type": "boolean"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of resources has been returned.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/models.Resource"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List resources",
+        "tags": [
+          "Resources"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Creates an HTTP CDN resource for the project.",
+        "operationId": "createResource",
+        "parameters": [
+          {
+            "description": "HTTP resource create payload.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.Resource"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.CreateUpdateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights."
+          },
+          "404": {
+            "description": "Resource has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Create resource",
+        "tags": [
+          "Resources"
+        ]
+      }
+    },
+    "/resources/{resource_id}": {
+      "get": {
+        "description": "Returns the resource by its identifier.",
+        "operationId": "getResourceById",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Resource object has been returned.",
+            "schema": {
+              "$ref": "#/definitions/models.Resource"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "404": {
+            "description": "Resource has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get resource by identifier",
+        "tags": [
+          "Resources"
+        ]
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Partially updates the first-level fields of the HTTP resource with the payload from the request body.",
+        "operationId": "updateResourcePatch",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "HTTP resource patch payload.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.Resource"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.CreateUpdateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights."
+          },
+          "404": {
+            "description": "Resource has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Partially update resource",
+        "tags": [
+          "Resources"
+        ]
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Fully replaces the HTTP resource configuration with the payload from the request body.",
+        "operationId": "updateResourcePut",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "HTTP resource update payload.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.Resource"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request processed. See `status` field in body.",
+            "schema": {
+              "$ref": "#/definitions/models.CreateUpdateResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights."
+          },
+          "404": {
+            "description": "Resource has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Fully update resource",
+        "tags": [
+          "Resources"
+        ]
+      }
+    },
+    "/resources/{resource_id}/status": {
+      "get": {
+        "description": "Returns status for the specified HTTP resource.",
+        "operationId": "getResourceStatus",
+        "parameters": [
+          {
+            "description": "Resource identifier.",
+            "format": "uuid",
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Status has been returned.",
+            "schema": {
+              "$ref": "#/definitions/models.ResourceStatus"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights."
+          },
+          "404": {
+            "description": "Resource has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get resource status",
+        "tags": [
+          "Resources"
+        ]
+      }
+    },
+    "/resources/status": {
+      "get": {
+        "description": "Returns status for up to 50 HTTP resources. If `resource_id` is not provided, returns empty response.",
+        "operationId": "getResourcesStatus",
+        "parameters": [
+          {
+            "collectionFormat": "csv",
+            "description": "Resource identifiers (up to 50).",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "resource_id",
+            "type": "array"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Status has been returned.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/models.ResourceStatus"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again."
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights."
+          },
+          "404": {
+            "description": "Resource has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get resources status",
+        "tags": [
+          "Resources"
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "iam_token_project_scoped": {
+      "description": "IAM token for project",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0",
+  "tags": [
+    {
+      "description": "Managing CDN resources: viewing a list of resources, creating, updating, and deleting resources.",
+      "name": "Resources"
+    },
+    {
+      "description": "Managing cache tasks: deleting files from cache, preloading files into cache, and getting task execution status.",
+      "name": "Cache"
+    },
+    {
+      "description": "Managing SSL certificates: viewing a list of certificates, adding, updating, and deleting certificates.",
+      "name": "Certificates"
+    },
+    {
+      "description": "Retrieving CDN nodes: nodes that request content from origin and nodes that deliver content to users.",
+      "name": "Nodes"
+    },
+    {
+      "description": "Managing Let's Encrypt certificates: ordering certificates for a resource, ordering wildcard certificates, and getting order status.",
+      "name": "LetsEncrypt"
+    }
+  ]
+}
