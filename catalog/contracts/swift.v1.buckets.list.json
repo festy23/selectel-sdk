@@ -17,11 +17,14 @@
     "input": "swift.ListOptions, pagination.Options",
     "metadata": "Set/Remove explicit headers; duplicate case-folded names or set/remove collisions rejected; protected header values no CR/LF/NUL. Explicit zero and false preserved.",
     "query": {
-      "format": "compiled json only",
+      "format": "typed ListFormat: zero/default json, explicit json/xml/plain; invalid enum rejected before I/O",
       "limit": "bounded pagination PageSize",
       "marker": "explicit first marker or validated protected continuation",
       "prefix": "optional UTF-8 prefix",
       "delimiter": "optional UTF-8 pseudo-directory selector"
+    },
+    "headers": {
+      "Accept": "compiled application/json, application/xml, or text/plain according to ListFormat"
     }
   },
   "response": {
@@ -29,7 +32,7 @@
       "200",
       "204"
     ],
-    "mapping": "Typed JSON array rows: bucket name/count/bytes/last_modified; object name/bytes/hash/content_type/last_modified or subdir. Integer exact; content_type protected; raw timestamps. SDK ref fields ignored and exact scope-bound refs constructed only for names. Per-page account/container header DTOs retained. 204 requires empty body. Empty page ends; short page continues; malformed/nonprogressing marker rejects. Existing pagination preserves partial rows and bound opaque cursor.",
+    "mapping": "Source-bound JSON/XML/plain rows normalized into generated typed DTOs. Exact Integer fields and protected content_type retained; XML account/container owner checked when present, subdir pseudo rows have no inferred refs. Plain with delimiter emits ListedName without manufacturing object/container identity. Plain without delimiter supplies exact names with optional stats absent. XML rejects directives, namespaces outside compiled shape, malformed structure and nesting over16. Existing MaxJSONBytes/header/page/deadline/cursor/progress checks apply equally to all representations. Cursor semantic binding includes format. Present HTTP200 Content-Type must match selected representation; do not interpret HTML as names.",
     "acknowledgement": "Success is API acknowledgement, not readiness or proof of authorship of an unknown write."
   },
   "errors": {
@@ -52,13 +55,11 @@
   "recovery": "No automatic Resume or readiness waiter; existing refs identify exact caller-addressed locators, not ownership proof",
   "evidence": "catalog/evidence/swift-current-sources.json",
   "limitations": [
-    "Source-confirmed XML/plain text listing output is not decoded; binding compiles format=json only",
-    "Current pinned Selectel subset only; whole inventory unknown, no live verification, no old Swift or generic upstream extension adoption"
+    "Confirmed current Selectel methods/selectors and compatible pinned representations; no whole upstream extension/deployment availability claim, no live verification."
   ],
   "contract_document": "docs/modules/selectelsdk/swift.md",
-  "followup_owner": {
-    "issue": "https://github.com/festy23/selectel-sdk/issues/61",
-    "acceptance_blocked": "https://github.com/festy23/selectel-sdk/issues/76",
-    "disposition": "Current partial variants remain open under #61; #71 is legacy only and #74 accounts for inventory without implementing these variants. Delivery references #61; it does not close full current scope."
-  }
+  "continued_variants_evidence": [
+    "catalog/evidence/swift-current-sources.json",
+    "Pinned OpenStack swift ad136f5b5656f30bdf0716b9ac7966c475b23780 listing_formats.py, slo.py and bulk.py"
+  ]
 }

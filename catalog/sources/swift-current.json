@@ -13,6 +13,18 @@
     {
       "uri": "https://docs.openstack.org/api-ref/object-store/",
       "sha256": "3e3742bfb8c8a788928efc459fe5e048f761755cb461544fef62295f9306b967"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openstack/swift/ad136f5b5656f30bdf0716b9ac7966c475b23780/swift/common/middleware/slo.py",
+      "sha256": "6c1f9f7d622bbd9bc4d407a04dabd362c4105b1ee6e44621540282de4df21753"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openstack/swift/ad136f5b5656f30bdf0716b9ac7966c475b23780/swift/common/middleware/bulk.py",
+      "sha256": "92eec74a3a98fd768bce89d667eff2f6a305955bd1b777298647cdd4c0c26d35"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openstack/swift/ad136f5b5656f30bdf0716b9ac7966c475b23780/swift/common/middleware/listing_formats.py",
+      "sha256": "d8391feb0eee6a1477f84510cd0e620231920dac381836db358b9bbea3ef35de"
     }
   ],
   "x-disposition": {
@@ -25,7 +37,9 @@
       "Some response examples incorrectly say X-Openstack-Requiest-Id; canonical documented header plus X-Trans-Id are allowlisted, do not echo arbitrary headers.",
       "Most endpoint table rows include /v1 while kz-1 row lacks it; API examples consistently wire /v1/{project_id}. Normalize confirmed service version once, preserve exact host, do not guess different domain.",
       "Bulk-delete example uses single-quoted Python-like notation despite JSON format; decoder accepts the documented compatible JSON wire shape only, never eval or quote rewriting."
-    ]
+    ],
+    "continued_variants": "Current Selectel plain listings plus compatible core Swift XML list format; pinned listing_formats.py resolves exact XML shapes. Already-confirmed Selectel multipart-manifest=delete accepts documented204 acknowledgement and source-bound compatible SLO200 JSON bulk summary; pinned slo.py+bulk.py resolve status and body. This does not assert a specific provider deployment revision or support for unmentioned upstream features.",
+    "upstream_boundary": "The pinned upstream revision is compatible wire-shape evidence, not the Selectel deployment revision. New optional upstream features (SLO range/inline data/heartbeat/async, additional listing properties, and unrequested middleware APIs) are not silently admitted to the Selectel inventory. Only current Selectel-confirmed methods/selectors are bound; XML/plain representations and the JSON SLO delete response are decoded using the pinned compatible protocol implementation."
   },
   "paths": {
     "/v1/{project_id}": {
@@ -184,6 +198,9 @@
         "x-operation-locator": "DELETE /v1/{project_id}/{bucket_name}/{object_name}",
         "responses": {
           "204": {
+            "typed": true
+          },
+          "200": {
             "typed": true
           }
         }

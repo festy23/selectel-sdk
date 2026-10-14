@@ -19,15 +19,17 @@
     "query": {},
     "variants": {
       "DeleteObject": "ordinary DELETE",
-      "DeleteSegments": "explicit multipart-manifest=delete cascade; no enumerated segment refs inferred"
+      "DeleteSegments": "explicit multipart-manifest=delete, Accept application/json -> types.Result[swift.DeleteResult]; only caller manifest locator is submitted; no segment refs inferred"
     }
   },
   "response": {
     "statuses": [
-      "204"
+      "204",
+      "200"
     ],
-    "mapping": "Generated Swift header DTO: exact Integer/Number values, protected metadata/secret temporaryURL keys, explicit scope-bound refs. No undocumented parsing of HTML control bodies; bounded discard only. Account policy usage and quotas retained. Bucket metadata/count/quota/type/version/policy fields retained.",
-    "acknowledgement": "Success is API acknowledgement, not readiness or proof of authorship of an unknown write."
+    "mapping": "DeleteObject accepts204 object acknowledgement. DeleteSegments dispatches by status:204 requires empty control body and returns Summary=nil acknowledgement;200 requires typed JSON BulkResult Number Deleted/Number Not Found/Response Status/Response Body/Errors, exposed as DeleteResult.Summary with protected diagnostics. Embedded non2xx/errors =>OperationFailed but Accepted receipt; malformed200body =>ProtocolError with exact manifest ref retained. Never interpret returned segment diagnostic paths as resource identity/ownership or absence proof.",
+    "acknowledgement": "Success is API acknowledgement, not readiness or proof of authorship of an unknown write.",
+    "status_source": "Current Selectel page documents204. Pinned compatible upstream slo.py handle_multipart_delete returns HTTPOk with bulk_deleter.handle_delete_iter; pinned bulk.py defines JSON summary. Both are acknowledged wire variants, not live deployment claims."
   },
   "errors": {
     "source": "internal/core/request.go sanitized per-status mappings",
@@ -49,13 +51,11 @@
   "recovery": "No automatic Resume or readiness waiter; existing refs identify exact caller-addressed locators, not ownership proof",
   "evidence": "catalog/evidence/swift-current-sources.json",
   "limitations": [
-    "Only source-documented 204 acknowledgement accepted; no unconfirmed bulk-style 200 segmented-delete response shape claimed",
-    "Current pinned Selectel subset only; whole inventory unknown, no live verification, no old Swift or generic upstream extension adoption"
+    "Confirmed current Selectel methods/selectors and compatible pinned representations; no whole upstream extension/deployment availability claim, no live verification."
   ],
   "contract_document": "docs/modules/selectelsdk/swift.md",
-  "followup_owner": {
-    "issue": "https://github.com/festy23/selectel-sdk/issues/61",
-    "acceptance_blocked": "https://github.com/festy23/selectel-sdk/issues/76",
-    "disposition": "Current partial variants remain open under #61; #71 is legacy only and #74 accounts for inventory without implementing these variants. Delivery references #61; it does not close full current scope."
-  }
+  "continued_variants_evidence": [
+    "catalog/evidence/swift-current-sources.json",
+    "Pinned OpenStack swift ad136f5b5656f30bdf0716b9ac7966c475b23780 listing_formats.py, slo.py and bulk.py"
+  ]
 }

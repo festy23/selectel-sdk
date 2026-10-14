@@ -6,6 +6,8 @@ import "github.com/festy23/selectel-sdk/types"
 import "github.com/festy23/selectel-sdk/pagination"
 
 type BucketEntry struct {
+	ListedName   *string            `json:"listed_name,omitempty"`
+	Subdir       *string            `json:"subdir,omitempty"`
 	Name         *string            `json:"name,omitempty"`
 	Count        *types.Integer     `json:"count,omitempty"`
 	Bytes        *types.Integer     `json:"bytes,omitempty"`
@@ -14,6 +16,7 @@ type BucketEntry struct {
 }
 
 type ObjectEntry struct {
+	ListedName   *string               `json:"listed_name,omitempty"`
 	Name         *string               `json:"name,omitempty"`
 	Subdir       *string               `json:"subdir,omitempty"`
 	Bytes        *types.Integer        `json:"bytes,omitempty"`
@@ -29,6 +32,11 @@ type BulkResult struct {
 	ResponseStatus *types.ProtectedValue `json:"response_status,omitempty"`
 	ResponseBody   *types.ProtectedValue `json:"response_body,omitempty"`
 	Errors         []BulkError           `json:"errors,omitempty"`
+}
+
+type DeleteResult struct {
+	Object  ObjectInfo  `json:"object,omitempty"`
+	Summary *BulkResult `json:"summary,omitempty"`
 }
 
 type BulkError struct {
@@ -162,4 +170,15 @@ type Listing[T, H any] struct {
 	pagination.Collection[T]
 	HeaderPages []H `json:"header_pages,omitempty"`
 }
-type ListOptions struct{ Marker, Prefix, Delimiter *string }
+type ListFormat string
+
+const (
+	ListJSON  ListFormat = "json"
+	ListXML   ListFormat = "xml"
+	ListPlain ListFormat = "plain"
+)
+
+type ListOptions struct {
+	Marker, Prefix, Delimiter *string
+	Format                    ListFormat
+}

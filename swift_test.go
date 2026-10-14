@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	sdk "github.com/festy23/selectel-sdk"
 	"io"
 	"net/http"
@@ -273,8 +274,8 @@ func TestSwiftCurrentDeleteSegmentsIsExplicit(t *testing.T) {
 	if e != nil || a.Receipt.Outcome != types.Accepted {
 		t.Fatal(e)
 	}
-	a, e = svc.DeleteSegments(context.Background(), obj, types.CallOptions{})
-	if e != nil || a.Receipt.Outcome != types.Accepted || len(a.Receipt.ResourceRefs) != 1 {
+	segments, e := svc.DeleteSegments(context.Background(), obj, types.CallOptions{})
+	if e != nil || segments.Receipt.Outcome != types.Accepted || len(segments.Receipt.ResourceRefs) != 1 || segments.Data.Summary != nil {
 		t.Fatal(e)
 	}
 }
@@ -589,6 +590,190 @@ func TestSwiftCurrentUploadProgressSurvivesCancellationAndRejection(t *testing.T
 			}
 			if which == "cancel" && detail.CauseCode != types.Canceled {
 				t.Fatal("cancel cause lost")
+			}
+		})
+	}
+}
+
+func TestSwiftCurrentXMLListingsRetainPrecisionAndScope(t *testing.T) {
+	calls := 0
+	c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Query().Get("format") != "xml" || r.Header.Get("Accept") != "application/xml" {
+			t.Fatal("XML representation not explicit")
+		}
+		if calls == 1 {
+			return inventoryReply(200, `<?xml version="1.0"?><account name="test-project"><container><name>bucket</name><count>9007199254740993</count><bytes>42</bytes><last_modified>2013-11-19T20:08:13.283452</last_modified></container></account>`), nil
+		}
+		return inventoryReply(200, `<account name="test-project"></account>`), nil
+	}, 0)
+	out, e := regionalView(t, c, "ru-1").Swift().Buckets(context.Background(), swift.ListOptions{Format: swift.ListXML}, pagination.Options{PageSize: 2})
+	if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Count.String() != "9007199254740993" || out.Items[0].Ref.Parent.ID != "test-project" || calls != 2 {
+		t.Fatal("XML shape/precision/scope", e)
+	}
+}
+
+func TestSwiftCurrentPlainListingsDoNotInventPseudoDirectoryRefs(t *testing.T) {
+	calls := 0
+	c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Query().Get("format") != "plain" || r.Header.Get("Accept") != "text/plain" {
+			t.Fatal("plain selector")
+		}
+		if calls == 1 {
+			return inventoryReply(200, "folder/\nobject\n"), nil
+		}
+		return inventoryReply(204, ""), nil
+	}, 0)
+	svc := regionalView(t, c, "ru-1").Swift()
+	b, _ := svc.Bucket("bucket")
+	out, e := svc.Objects(context.Background(), b, swift.ListOptions{Format: swift.ListPlain, Delimiter: managementPtr("/")}, pagination.Options{PageSize: 3})
+	if e != nil || !out.Complete || len(out.Items) != 2 || out.Items[0].ListedName == nil || *out.Items[0].ListedName != "folder/" || out.Items[0].Ref != nil || out.Items[1].Ref != nil {
+		t.Fatal("plain ambiguity adopted object", e)
+	}
+}
+
+func TestSwiftCurrentXMLObjectRowsAndForeignRoot(t *testing.T) {
+	for _, foreign := range []bool{false, true} {
+		t.Run(fmt.Sprint(foreign), func(t *testing.T) {
+			calls := 0
+			c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				root := "bucket"
+				if foreign {
+					root = "foreign"
+				}
+				if calls == 1 {
+					return inventoryReply(200, `<container name="`+root+`"><subdir name="folder/"><name>folder/</name></subdir><object><name>object</name><bytes>9007199254740993</bytes><hash>etag</hash><content_type>synthetic-private-type</content_type></object></container>`), nil
+				}
+				return inventoryReply(200, `<container name="bucket"/>`), nil
+			}, 0)
+			svc := regionalView(t, c, "ru-1").Swift()
+			b, _ := svc.Bucket("bucket")
+			out, e := svc.Objects(context.Background(), b, swift.ListOptions{Format: swift.ListXML, Delimiter: managementPtr("/")}, pagination.Options{PageSize: 3})
+			if foreign {
+				if types.ErrorCode(e) != types.ScopeMismatch || len(out.Items) != 0 {
+					t.Fatal("foreign XML scope accepted", e)
+				}
+				return
+			}
+			if e != nil || !out.Complete || len(out.Items) != 2 || out.Items[0].Subdir == nil || out.Items[0].Ref != nil || out.Items[1].Bytes.String() != "9007199254740993" || out.Items[1].Ref.Parent.ID != "bucket" {
+				t.Fatal("XML rows", e)
+			}
+			encoded, _ := json.Marshal(out)
+			if strings.Contains(string(encoded), "synthetic-private-type") {
+				t.Fatal("XML metadata leaked")
+			}
+		})
+	}
+}
+func TestSwiftCurrentXMLRejectsNestedDocumentDirective(t *testing.T) {
+	c := inventoryClient(t, func(*http.Request) (*http.Response, error) {
+		return inventoryReply(200, `<account name="test-project"><container><!DOCTYPE ignored><name>bucket</name></container></account>`), nil
+	}, 0)
+	out, e := regionalView(t, c, "ru-1").Swift().Buckets(context.Background(), swift.ListOptions{Format: swift.ListXML}, pagination.Options{MaxPages: 1})
+	if types.ErrorCode(e) != types.ProtocolError || len(out.Items) != 0 {
+		t.Fatal("XML directive accepted", e)
+	}
+}
+
+func TestSwiftCurrentSegmentedDeleteDecodesBulkStatusWithoutAdoptingSegments(t *testing.T) {
+	for _, failed := range []bool{false, true} {
+		t.Run(fmt.Sprint(failed), func(t *testing.T) {
+			calls := 0
+			c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				if r.Method != "DELETE" || r.URL.Query().Get("multipart-manifest") != "delete" || r.Header.Get("Accept") != "application/json" {
+					t.Fatal("segmented selector/representation")
+				}
+				if failed {
+					return inventoryReply(200, `{"Number Deleted":1,"Number Not Found":0,"Response Status":"403 Forbidden","Response Body":"synthetic-private-detail","Errors":[["unknown-segments/part1","synthetic-private-error"]]}`), nil
+				}
+				return inventoryReply(200, `{"Number Deleted":2,"Number Not Found":1,"Response Status":"200 OK","Response Body":"","Errors":[]}`), nil
+			}, 0)
+			svc := regionalView(t, c, "ru-1").Swift()
+			b, _ := svc.Bucket("bucket")
+			ref, _ := svc.Object(b, "manifest")
+			out, e := svc.DeleteSegments(context.Background(), ref, types.CallOptions{})
+			want := types.Code("")
+			if failed {
+				want = types.OperationFailed
+			}
+			if types.ErrorCode(e) != want || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || !reflect.DeepEqual(out.Receipt.ResourceRefs[0], ref) || out.Data.Summary == nil || out.Data.Summary.NumberDeleted == nil || calls != 1 || !reflect.DeepEqual(out.Data.Object.Ref, &ref) {
+				t.Fatal("segmented summary/receipt", e)
+			}
+			encoded, _ := json.Marshal(out)
+			if strings.Contains(string(encoded), "synthetic-private") || strings.Contains(string(encoded), "unknown-segments") {
+				t.Fatal("segment diagnostics leaked")
+			}
+		})
+	}
+}
+
+func TestSwiftCurrentRepresentationCursorCannotSwitchFormats(t *testing.T) {
+	calls := 0
+	c := inventoryClient(t, func(*http.Request) (*http.Response, error) {
+		calls++
+		return inventoryReply(200, `<account name="test-project"><container><name>bucket</name><count>1</count><bytes>2</bytes></container></account>`), nil
+	}, 0)
+	svc := regionalView(t, c, "ru-1").Swift()
+	first, e := svc.Buckets(context.Background(), swift.ListOptions{Format: swift.ListXML}, pagination.Options{PageSize: 1, MaxPages: 1})
+	if types.ErrorCode(e) != types.Incomplete || first.NextCursor == nil {
+		t.Fatal("missing XML continuation", e)
+	}
+	_, e = svc.Buckets(context.Background(), swift.ListOptions{Format: swift.ListPlain}, pagination.Options{PageSize: 1, Cursor: first.NextCursor})
+	if types.ErrorCode(e) != types.ScopeMismatch || calls != 1 {
+		t.Fatal("format-switch cursor accepted", e)
+	}
+}
+func TestSwiftCurrentSegmentedMalformedSummaryKeepsAcceptedManifestReceipt(t *testing.T) {
+	c := inventoryClient(t, func(*http.Request) (*http.Response, error) {
+		return inventoryReply(200, `{"Number Deleted":"not-an-integer","Errors":[]}`), nil
+	}, 0)
+	svc := regionalView(t, c, "ru-1").Swift()
+	b, _ := svc.Bucket("bucket")
+	ref, _ := svc.Object(b, "manifest")
+	out, e := svc.DeleteSegments(context.Background(), ref, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || !reflect.DeepEqual(out.Receipt.ResourceRefs[0], ref) || !reflect.DeepEqual(out.Data.Object.Ref, &ref) {
+		t.Fatal("malformed accepted summary lost receipt", e)
+	}
+}
+
+func TestSwiftCurrentPlainRejectsHTMLInsteadOfAdoptingMarkup(t *testing.T) {
+	c := inventoryClient(t, func(*http.Request) (*http.Response, error) {
+		out := inventoryReply(200, "<html>\n")
+		out.Header.Set("Content-Type", "text/html")
+		return out, nil
+	}, 0)
+	out, e := regionalView(t, c, "ru-1").Swift().Buckets(context.Background(), swift.ListOptions{Format: swift.ListPlain}, pagination.Options{MaxPages: 1})
+	if types.ErrorCode(e) != types.ProtocolError || len(out.Items) != 0 {
+		t.Fatal("HTML became locator", e)
+	}
+}
+
+func TestSwiftCurrentPlainNamesWithoutDelimiterHaveExactRefsAndAbsentStats(t *testing.T) {
+	for _, objects := range []bool{false, true} {
+		t.Run(fmt.Sprint(objects), func(t *testing.T) {
+			calls := 0
+			c := inventoryClient(t, func(*http.Request) (*http.Response, error) {
+				calls++
+				if calls == 1 {
+					return inventoryReply(200, "selected\n"), nil
+				}
+				return inventoryReply(204, ""), nil
+			}, 0)
+			svc := regionalView(t, c, "ru-1").Swift()
+			if !objects {
+				out, e := svc.Buckets(context.Background(), swift.ListOptions{Format: swift.ListPlain}, pagination.Options{PageSize: 2})
+				if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.ID != "selected" || out.Items[0].Ref.Parent.ID != "test-project" || out.Items[0].Count != nil {
+					t.Fatal("plain container identity/stats", e)
+				}
+			} else {
+				b, _ := svc.Bucket("bucket")
+				out, e := svc.Objects(context.Background(), b, swift.ListOptions{Format: swift.ListPlain}, pagination.Options{PageSize: 2})
+				if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.ID != "selected" || out.Items[0].Ref.Parent.ID != "bucket" || out.Items[0].Bytes != nil {
+					t.Fatal("plain object identity/stats", e)
+				}
 			}
 		})
 	}

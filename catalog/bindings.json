@@ -4648,6 +4648,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -4731,6 +4732,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -4814,6 +4816,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -4897,6 +4900,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -4980,6 +4984,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5063,6 +5068,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5146,6 +5152,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5229,6 +5236,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5255,7 +5263,7 @@
     "input_type": "swift.ListOptions, pagination.Options",
     "output_type": "swift.Listing[swift.BucketEntry, swift.AccountInfo]",
     "contract_ref": "contracts/swift.v1.buckets.list.json",
-    "status": "partial",
+    "status": "implemented",
     "files": [
       "audit/client.go",
       "audit/types_generated.go",
@@ -5312,6 +5320,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5331,16 +5340,14 @@
     "evidence_ref": "swift_test.go",
     "verification": "offline",
     "covered_schema_ref": "contracts/swift.v1.buckets.list.json#/request",
-    "excluded_variants": [
-      "Source-confirmed XML/plain text listing output is not decoded; binding compiles format=json only"
-    ]
+    "excluded_variants": []
   },
   "swift.v1.objects.list": {
     "go_method": "swift.Client.Objects",
     "input_type": "types.ResourceRef, swift.ListOptions, pagination.Options",
     "output_type": "swift.Listing[swift.ObjectEntry, swift.BucketInfo]",
     "contract_ref": "contracts/swift.v1.objects.list.json",
-    "status": "partial",
+    "status": "implemented",
     "files": [
       "audit/client.go",
       "audit/types_generated.go",
@@ -5397,6 +5404,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5416,9 +5424,7 @@
     "evidence_ref": "swift_test.go",
     "verification": "offline",
     "covered_schema_ref": "contracts/swift.v1.objects.list.json#/request",
-    "excluded_variants": [
-      "Source-confirmed XML/plain text listing output is not decoded; binding compiles format=json only"
-    ]
+    "excluded_variants": []
   },
   "swift.v1.objects.head_symlink": {
     "go_method": "swift.Client.SymlinkInfo",
@@ -5482,6 +5488,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5565,6 +5572,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5648,6 +5656,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5674,7 +5683,7 @@
     "input_type": "types.ResourceRef, types.CallOptions",
     "output_type": "types.Result[swift.ObjectInfo]",
     "contract_ref": "contracts/swift.v1.objects.delete.json",
-    "status": "partial",
+    "status": "implemented",
     "files": [
       "audit/client.go",
       "audit/types_generated.go",
@@ -5731,6 +5740,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",
@@ -5750,9 +5760,7 @@
     "evidence_ref": "swift_test.go",
     "verification": "offline",
     "covered_schema_ref": "contracts/swift.v1.objects.delete.json#/request",
-    "excluded_variants": [
-      "Only source-documented 204 acknowledgement accepted; no unconfirmed bulk-style 200 segmented-delete response shape claimed"
-    ]
+    "excluded_variants": []
   },
   "swift.v1.objects.bulk_delete": {
     "go_method": "swift.Client.BulkDelete",
@@ -5816,6 +5824,7 @@
       "swift/headers.go",
       "swift/lists.go",
       "swift/objects.go",
+      "swift/representations.go",
       "swift/transfers.go",
       "swift/types_generated.go",
       "types/contracts.go",

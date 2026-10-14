@@ -16,7 +16,11 @@ import (
 )
 
 func listQuery(spec ListOptions) url.Values {
-	q := url.Values{"format": {"json"}}
+	format := spec.Format
+	if format == "" {
+		format = ListJSON
+	}
+	q := url.Values{"format": {string(format)}}
 	if spec.Prefix != nil {
 		q.Set("prefix", *spec.Prefix)
 	}
@@ -26,6 +30,9 @@ func listQuery(spec ListOptions) url.Values {
 	return q
 }
 func validList(spec ListOptions) error {
+	if spec.Format != "" && spec.Format != ListJSON && spec.Format != ListXML && spec.Format != ListPlain {
+		return types.NewError(types.InvalidArgument)
+	}
 	for _, v := range []*string{spec.Marker, spec.Prefix, spec.Delimiter} {
 		if v != nil && (!utf8.ValidString(*v) || strings.ContainsAny(*v, "\r\n\x00") || len(*v) > 1024) {
 			return types.NewError(types.InvalidArgument)
@@ -72,7 +79,10 @@ func collect[T, H any](c *Client, ctx context.Context, id, path string, ref *typ
 			refs = append(refs, *ref)
 		}
 		next := ""
-		result, e := invoke(c, ctx, id, "GET", path, []int{200, 204}, refs, http.Header{"Accept": {"application/json"}}, nil, q, types.CallOptions{}, nil, func(_ context.Context, r io.Reader, ep types.EndpointBinding, status int, h http.Header) (core.Decoded[[]T], error) {
+		result, e := invoke(c, ctx, id, "GET", path, []int{200, 204}, refs, http.Header{"Accept": {listAccept(spec.Format)}}, nil, q, types.CallOptions{}, nil, func(_ context.Context, r io.Reader, ep types.EndpointBinding, status int, h http.Header) (core.Decoded[[]T], error) {
+			if status == 200 && !listContentType(spec.Format, h.Get("Content-Type")) {
+				return core.Decoded[[]T]{}, types.NewError(types.ProtocolError)
+			}
 			info, e := header(h, ep)
 			if e != nil {
 				return core.Decoded[[]T]{}, e
@@ -93,7 +103,21 @@ func collect[T, H any](c *Client, ctx context.Context, id, path string, ref *typ
 				return core.Decoded[[]T]{}, types.NewError(types.ProtocolError)
 			}
 			var wire []map[string]json.RawMessage
-			if json.Unmarshal(raw, &wire) != nil || wire == nil {
+			if spec.Format == ListXML {
+				root, owner := "account", c.scope.ProjectID
+				if ref != nil {
+					root, owner = "container", ref.ID
+				}
+				wire, e = xmlListing(raw, root, owner)
+				if e != nil {
+					return core.Decoded[[]T]{}, e
+				}
+			} else if spec.Format == ListPlain {
+				wire, e = plainListing(raw, spec.Delimiter != nil)
+				if e != nil {
+					return core.Decoded[[]T]{}, e
+				}
+			} else if json.Unmarshal(raw, &wire) != nil || wire == nil {
 				return core.Decoded[[]T]{}, types.NewError(types.ProtocolError)
 			}
 			if len(wire) > int(size) {
@@ -145,6 +169,20 @@ func (c *Client) Buckets(ctx context.Context, spec ListOptions, options paginati
 	return collect(c, ctx, "swift.v1.buckets.list", accountPath(c.scope), nil, spec, options, func(h http.Header, ep types.EndpointBinding) (AccountInfo, error) {
 		return accountInfo(h, accountRef(ep))
 	}, func(row *BucketEntry, ep types.EndpointBinding) (string, error) {
+		if spec.Format == ListPlain && spec.Delimiter != nil {
+			if row.ListedName == nil || !validName(*row.ListedName) {
+				return "", types.NewError(types.ProtocolError)
+			}
+			row.Ref = nil
+			return *row.ListedName, nil
+		}
+		if row.Subdir != nil {
+			if row.Name != nil || !validName(*row.Subdir) {
+				return "", types.NewError(types.ProtocolError)
+			}
+			row.Ref = nil
+			return *row.Subdir, nil
+		}
 		if row.Name == nil || !validName(*row.Name) || strings.Contains(*row.Name, "/") {
 			return "", types.NewError(types.ProtocolError)
 		}
@@ -157,6 +195,13 @@ func (c *Client) Objects(ctx context.Context, bucket types.ResourceRef, spec Lis
 		r := cloneRef(bucket)
 		return bucketInfo(h, &r)
 	}, func(row *ObjectEntry, _ types.EndpointBinding) (string, error) {
+		if spec.Format == ListPlain && spec.Delimiter != nil {
+			if row.ListedName == nil || !validName(*row.ListedName) {
+				return "", types.NewError(types.ProtocolError)
+			}
+			row.Ref = nil
+			return *row.ListedName, nil
+		}
 		if (row.Name == nil) == (row.Subdir == nil) {
 			return "", types.NewError(types.ProtocolError)
 		}

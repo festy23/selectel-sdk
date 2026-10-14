@@ -10662,7 +10662,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.account.get.json": "91fae5b509e0ee455878e105f9eda45c20842b6eddf3b936cd55b7d21ed5bd8f"
     },
-    "contract_revision": "4f9730fb64ba89fe7d778df747bbc1729edffea16c35b3133a92b009896aa04e",
+    "contract_revision": "e7b15c6d9a6c040b3c0dcef5af06699834f89ee160357cd965f352f95d393ea6",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/swift.v1.account.get.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.account.get.json#/errors",
@@ -10699,13 +10699,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "HEAD /v1/{project_id}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "4f9730fb64ba89fe7d778df747bbc1729edffea16c35b3133a92b009896aa04e",
+      "contract_revision": "e7b15c6d9a6c040b3c0dcef5af06699834f89ee160357cd965f352f95d393ea6",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "ea9b01de4d10f7caf37c04a5d2ff1ed82061ac9d239d0bad5043b3710be1998c",
+      "implementation_revision": "a1be4ec3efa5e81b430a836050c10cac3caa7caa51eea5811a318441841c27e8",
       "level": "offline"
     },
     "wait_goals": []
@@ -10721,7 +10721,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.account.update.json": "a4be67266d9b8d75e6182b19b2d6f2a6ddffc314cef8b8777d4d1f60e6869cd2"
     },
-    "contract_revision": "d6443f01e0d78f32d3a7e914b25ab853893fd80f821a7e2b41ee873cca3115d3",
+    "contract_revision": "9234b4d637c3e6cdc253189816e1f2de28a0704bc5612ba1cbcdb50e51f62d0c",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.account.update.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.account.update.json#/errors",
@@ -10758,13 +10758,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "POST /v1/{project_id}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "d6443f01e0d78f32d3a7e914b25ab853893fd80f821a7e2b41ee873cca3115d3",
+      "contract_revision": "9234b4d637c3e6cdc253189816e1f2de28a0704bc5612ba1cbcdb50e51f62d0c",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "051df790aea3803a07be2b2d1d2be4b5b703720a2423649efe8c33c1cf339723",
+      "implementation_revision": "ccfe93b6500454dacef9a1a81a3ec469d54429a9ddc3e8fb8d9e9278c4fd1dd0",
       "level": "offline"
     },
     "wait_goals": []
@@ -10780,7 +10780,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.buckets.create.json": "6adf7057af3800b5c65e02855e2a81c740ae0668fbbaa0c41122820fa4d6dbfa"
     },
-    "contract_revision": "85bfa2df1fdc13a8b8e47a4b5c09902a5f8064f0b77f1c2d0c22e24ae7eb97b5",
+    "contract_revision": "b8c96e1651bef03e27cab52155536199b9d31a9b1bf8ef5a1bb99bc688c5ce33",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.buckets.create.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.buckets.create.json#/errors",
@@ -10817,13 +10817,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "PUT /v1/{project_id}/{bucket_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "85bfa2df1fdc13a8b8e47a4b5c09902a5f8064f0b77f1c2d0c22e24ae7eb97b5",
+      "contract_revision": "b8c96e1651bef03e27cab52155536199b9d31a9b1bf8ef5a1bb99bc688c5ce33",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "195bd0545a0bbcd23c356a6920c75bff90b626b0cfde6aaa89b92c3ec538d2f6",
+      "implementation_revision": "f8bebe8dd8df84afbc8fd2f13c3c17c642b84eb69f80e866c37c8e91e30e0578",
       "level": "offline"
     },
     "wait_goals": []
@@ -10839,7 +10839,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.buckets.delete.json": "9d07a6904ef0ce7b69923a7d844e67d0412e29caddc2ade1c4835351ddab9c3f"
     },
-    "contract_revision": "59c194ed6cee07cf781d9881e63f4ddaf20c3129cf3617d3cc22ca033023ef7b",
+    "contract_revision": "dfafcc502b980a022384ff2a043ec4ffa44ad386facfa7ea13684c86c68c085a",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.buckets.delete.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.buckets.delete.json#/errors",
@@ -10876,13 +10876,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "DELETE /v1/{project_id}/{bucket_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "59c194ed6cee07cf781d9881e63f4ddaf20c3129cf3617d3cc22ca033023ef7b",
+      "contract_revision": "dfafcc502b980a022384ff2a043ec4ffa44ad386facfa7ea13684c86c68c085a",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "5a6f858dc6469b441b6a1f7664a8e6535c102930df0fb222dec8fdbef81d4a8d",
+      "implementation_revision": "a06dd30e051ddd4da593f63aa8a85ff5e9376b9b159df29307cf9b68683b1736",
       "level": "offline"
     },
     "wait_goals": []
@@ -10898,7 +10898,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.buckets.get.json": "03ad812104227d9c8e70006be5a87f381d9df5521086876dc3405d04bcbad9a4"
     },
-    "contract_revision": "575623de835b5aa50ca4c969b051842cf5f5c99ed4fceaf5c4e5909d89da229d",
+    "contract_revision": "e71819a41897860f61a9212d1174cf0d695d755aaea79487033d9eb0fb768d30",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/swift.v1.buckets.get.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.buckets.get.json#/errors",
@@ -10935,13 +10935,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "HEAD /v1/{project_id}/{bucket_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "575623de835b5aa50ca4c969b051842cf5f5c99ed4fceaf5c4e5909d89da229d",
+      "contract_revision": "e71819a41897860f61a9212d1174cf0d695d755aaea79487033d9eb0fb768d30",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "07a5667b9c7bb8ad45651354899ea3312be449e1162edd67d31411e6be700e23",
+      "implementation_revision": "c2ec35e7e468eda58fe3dbda8b5b0cb262c08b952dc4c9c9beeb889925731029",
       "level": "offline"
     },
     "wait_goals": []
@@ -10955,16 +10955,16 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/swift.v1.buckets.list.json": "44d28d84f2d4fc69b61f17d23f176fc5108ebf7dbb450fcdf93fb73c95338784"
+      "contracts/swift.v1.buckets.list.json": "331175202832f6c348941ea11663917f3d5a735bce34cb2e91a23b6bf3efdcc6"
     },
-    "contract_revision": "c969a3d617127b33d860d7f28b0a19c6585593c321099033de5c59aab8773450",
+    "contract_revision": "bfac2f9fd2ead13bb7fab6d273459455c397b59480cb837afd600bd4175ec169",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/swift.v1.buckets.list.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.buckets.list.json#/errors",
     "go_method": "swift.Client.Buckets",
     "implementation": {
       "binding": "swift.Client.Buckets",
-      "status": "partial"
+      "status": "implemented"
     },
     "input_schema_ref": "sources/swift-current.json#/paths/~1v1~1{project_id}/get",
     "input_type": "swift.ListOptions, pagination.Options",
@@ -10977,9 +10977,7 @@
     "pagination_contract_ref": null,
     "parameter_support": {
       "covered_schema_ref": "contracts/swift.v1.buckets.list.json#/request",
-      "excluded_variants": [
-        "Source-confirmed XML/plain text listing output is not decoded; binding compiles format=json only"
-      ]
+      "excluded_variants": []
     },
     "recovery_contract_ref": null,
     "replay_policy_ref": "contracts/swift.v1.buckets.list.json#/retry",
@@ -10996,13 +10994,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "GET /v1/{project_id}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "c969a3d617127b33d860d7f28b0a19c6585593c321099033de5c59aab8773450",
+      "contract_revision": "bfac2f9fd2ead13bb7fab6d273459455c397b59480cb837afd600bd4175ec169",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "0c69bf30ad55a219eff533eb56e67a26d7c4df4257eb07c353994d2d9772b0fd",
+      "implementation_revision": "24d8ca83d20c9ed008c28afd53e27bfabfb606dac85ce27244062ea40bf78a70",
       "level": "offline"
     },
     "wait_goals": []
@@ -11018,7 +11016,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.buckets.update.json": "7ca999b8797a19d378fa600dbbe0b760a0a62f4c1a2a368ffa0c4f4a095c4fd1"
     },
-    "contract_revision": "b1113c33b1c89f0bced0943c6044c089680c856b607297382eb3993d0289504a",
+    "contract_revision": "aed3fa620a946e7353334c70239b81b4252e4ad2a7f9014d0e73e4f5d0948f13",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.buckets.update.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.buckets.update.json#/errors",
@@ -11055,13 +11053,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "POST /v1/{project_id}/{bucket_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "b1113c33b1c89f0bced0943c6044c089680c856b607297382eb3993d0289504a",
+      "contract_revision": "aed3fa620a946e7353334c70239b81b4252e4ad2a7f9014d0e73e4f5d0948f13",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "b61e5c96bf6b9314694a72c830ac296ac4efbce53b03864de103a6794b477a10",
+      "implementation_revision": "5ef88007452c08fe937ea6486bf13e899e07fd449cc068d11860a6d75b4d366d",
       "level": "offline"
     },
     "wait_goals": []
@@ -11077,7 +11075,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.objects.bulk_delete.json": "c2f85d0d8336c8708ffd0a3ccf903cdd9021b5415ab4d3059a7a9ac1b2e157d8"
     },
-    "contract_revision": "4bfdc1b88147523ec888ac398e287983d5437cd350159a1f9b80370145b8dd07",
+    "contract_revision": "1ad64f159604f4f6e790b5b3dffc06c933ae0be0379e42eafe52d09c3b2d8b9b",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.objects.bulk_delete.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.objects.bulk_delete.json#/errors",
@@ -11114,13 +11112,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "POST /v1/{project_id}?bulk-delete=true\u0026format=json",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "4bfdc1b88147523ec888ac398e287983d5437cd350159a1f9b80370145b8dd07",
+      "contract_revision": "1ad64f159604f4f6e790b5b3dffc06c933ae0be0379e42eafe52d09c3b2d8b9b",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "85fc272fcb97c2ab4b8a9cb60c3c0e8849c969cbab7fdd84b5ec3274e36b25d4",
+      "implementation_revision": "00ad814533dac3743c999245845289cad99ce115ca78d1e97770a3a85c5206e3",
       "level": "offline"
     },
     "wait_goals": []
@@ -11136,7 +11134,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.objects.copy.json": "d26d3caf44cbc12a9bb7fb747d2e1b0381de90d84e061b2beb70a0626d1ec4da"
     },
-    "contract_revision": "1ef3e5502b25a1c6f431dc10ab5c9b1fd2d9b0ef9e26851cc51af3645ffbba2b",
+    "contract_revision": "5da1010da5455783606f69a58effb6333715860ec9b36f495d459151de7b7c13",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.objects.copy.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.objects.copy.json#/errors",
@@ -11173,13 +11171,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "COPY /v1/{project_id}/{bucket_name}/{object_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "1ef3e5502b25a1c6f431dc10ab5c9b1fd2d9b0ef9e26851cc51af3645ffbba2b",
+      "contract_revision": "5da1010da5455783606f69a58effb6333715860ec9b36f495d459151de7b7c13",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "b51e370c5d7cda5745cab205a822761997b739075ac8be42f630745ed7ce3ebf",
+      "implementation_revision": "391f86c091c4ea844674be4b451b71dc64f7e26e63bd12ad651ba84f8bf1cc01",
       "level": "offline"
     },
     "wait_goals": []
@@ -11193,16 +11191,16 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/swift.v1.objects.delete.json": "030a3b9be193f5d7222f49661c6ba7df6fc3603fe592e3d08b11c6501d65c51c"
+      "contracts/swift.v1.objects.delete.json": "0b34439abf08b68f47e7d2588ad72d69d10fcc9cd66568073f9a7ff610e4684b"
     },
-    "contract_revision": "fbd80a8c9210dedf0edd1f04b554c26dfd9041dec72be9a0e99d522f22dc0676",
+    "contract_revision": "81ac375c5a79fe513a4073808913b559d52409852f51d6afbab905aaecc29a44",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.objects.delete.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.objects.delete.json#/errors",
     "go_method": "swift.Client.DeleteObject",
     "implementation": {
       "binding": "swift.Client.DeleteObject",
-      "status": "partial"
+      "status": "implemented"
     },
     "input_schema_ref": "sources/swift-current.json#/paths/~1v1~1{project_id}~1{bucket_name}~1{object_name}/delete",
     "input_type": "types.ResourceRef, types.CallOptions",
@@ -11215,9 +11213,7 @@
     "pagination_contract_ref": null,
     "parameter_support": {
       "covered_schema_ref": "contracts/swift.v1.objects.delete.json#/request",
-      "excluded_variants": [
-        "Only source-documented 204 acknowledgement accepted; no unconfirmed bulk-style 200 segmented-delete response shape claimed"
-      ]
+      "excluded_variants": []
     },
     "recovery_contract_ref": null,
     "replay_policy_ref": "contracts/swift.v1.objects.delete.json#/retry",
@@ -11234,13 +11230,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "DELETE /v1/{project_id}/{bucket_name}/{object_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "fbd80a8c9210dedf0edd1f04b554c26dfd9041dec72be9a0e99d522f22dc0676",
+      "contract_revision": "81ac375c5a79fe513a4073808913b559d52409852f51d6afbab905aaecc29a44",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "0a551429735085f73a65cbd5a94cf058f3487f7afcf8c7f00ff62d9aa5b9a03b",
+      "implementation_revision": "ffeb1b81cbebf819ed872bec4fd4ab7f39c372665476ed0dae29be091cdb90cb",
       "level": "offline"
     },
     "wait_goals": []
@@ -11256,7 +11252,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.objects.get.json": "2a892532a3c43ef00427d70bf9d6cb9f4dbd152202e003d5eb37150967d22979"
     },
-    "contract_revision": "f5389c3524de189d3d8c7d257bdf2f09c2dad288967fd01204a0ccab3eb3d71a",
+    "contract_revision": "3aaf117025b6b34af11b9de60fee51e96daa8073b11dce484d05929f7f66da11",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/swift.v1.objects.get.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.objects.get.json#/errors",
@@ -11293,13 +11289,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "GET /v1/{project_id}/{bucket_name}/{object_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "f5389c3524de189d3d8c7d257bdf2f09c2dad288967fd01204a0ccab3eb3d71a",
+      "contract_revision": "3aaf117025b6b34af11b9de60fee51e96daa8073b11dce484d05929f7f66da11",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "638a14d1083d8aa73c98f9b5e5b0ac8424cece0afa7e8361b8268253726c98eb",
+      "implementation_revision": "6208751001bc01ba4971b62ecb3d3d1d617eee59c78f4463b1519901e48ca513",
       "level": "offline"
     },
     "wait_goals": []
@@ -11315,7 +11311,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.objects.head_symlink.json": "1e15269d96dd6883d9a15c206bb0ff016b33809642bc416d6c8179631c017070"
     },
-    "contract_revision": "bbd9d99ef90eb2a8288d42b016306e9fd239d11bbf8b2942971f3bcb6fec37a5",
+    "contract_revision": "34639db87d353d1628ba4193bc5ba90975fcd5f5dde49c550b52e4a1dde1dbd5",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/swift.v1.objects.head_symlink.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.objects.head_symlink.json#/errors",
@@ -11352,13 +11348,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "HEAD /v1/{project_id}/{bucket_name}/{object_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "bbd9d99ef90eb2a8288d42b016306e9fd239d11bbf8b2942971f3bcb6fec37a5",
+      "contract_revision": "34639db87d353d1628ba4193bc5ba90975fcd5f5dde49c550b52e4a1dde1dbd5",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "37af78b7f68a6c254a0f5b0c6d7bf6f1f9ef00e45770e68cbfd0635cbdd8b952",
+      "implementation_revision": "e5b8981d294ec5e3fd990d6c82188093ae0a8ead7b414d840f7d3871fd2caa83",
       "level": "offline"
     },
     "wait_goals": []
@@ -11372,16 +11368,16 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/swift.v1.objects.list.json": "b8f7c70d4c56a3cb1e026fdf312d80e01a0a2f0b44c040515a3313d26f0e44f6"
+      "contracts/swift.v1.objects.list.json": "f81b785573bd8f8e5163c19bb982373468d36adc126af83fc5f82a0df6364b84"
     },
-    "contract_revision": "1fe30da0419db3bc9de826cc645ef85f8bc11f873032b77cb9884dbb560f431b",
+    "contract_revision": "7dc522e99a7fe33f04cd4b2eaae1e1945e7461d4a03eb6322759f8cfb70d37d7",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/swift.v1.objects.list.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.objects.list.json#/errors",
     "go_method": "swift.Client.Objects",
     "implementation": {
       "binding": "swift.Client.Objects",
-      "status": "partial"
+      "status": "implemented"
     },
     "input_schema_ref": "sources/swift-current.json#/paths/~1v1~1{project_id}~1{bucket_name}/get",
     "input_type": "types.ResourceRef, swift.ListOptions, pagination.Options",
@@ -11394,9 +11390,7 @@
     "pagination_contract_ref": null,
     "parameter_support": {
       "covered_schema_ref": "contracts/swift.v1.objects.list.json#/request",
-      "excluded_variants": [
-        "Source-confirmed XML/plain text listing output is not decoded; binding compiles format=json only"
-      ]
+      "excluded_variants": []
     },
     "recovery_contract_ref": null,
     "replay_policy_ref": "contracts/swift.v1.objects.list.json#/retry",
@@ -11413,13 +11407,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "GET /v1/{project_id}/{bucket_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "1fe30da0419db3bc9de826cc645ef85f8bc11f873032b77cb9884dbb560f431b",
+      "contract_revision": "7dc522e99a7fe33f04cd4b2eaae1e1945e7461d4a03eb6322759f8cfb70d37d7",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "6aec7e91031f4486e36ebd2658499b6ad3fe5a63356a186fc58da1b9e6109423",
+      "implementation_revision": "7a67625a9ced06e9a6cb1fea7395ab8556315b54863ec1d58919f6c28a03248f",
       "level": "offline"
     },
     "wait_goals": []
@@ -11435,7 +11429,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.objects.put.json": "91ea8fc66430f90584fa072ac8f82b450b532dd212ca82950db556f408b62d56"
     },
-    "contract_revision": "da7e1d882200fa22c2412343e0e86062627bd6bc662c52828be5b21ed67203c6",
+    "contract_revision": "639f5a52433ddb4c77c1d9a7f017a57263fab9587e3a632a700bb0edd525652e",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.objects.put.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.objects.put.json#/errors",
@@ -11472,13 +11466,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "PUT /v1/{project_id}/{bucket_name}/{object_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "da7e1d882200fa22c2412343e0e86062627bd6bc662c52828be5b21ed67203c6",
+      "contract_revision": "639f5a52433ddb4c77c1d9a7f017a57263fab9587e3a632a700bb0edd525652e",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "54288423953888fc57a7b095a8d9c2482985e54f4eccd17fa5a7efe728e91d11",
+      "implementation_revision": "be6c4e1194051d4650ae0838a1fa2266f5f93c4ada788ae2f552f113470e2984",
       "level": "offline"
     },
     "wait_goals": []
@@ -11494,7 +11488,7 @@
     "contract_artifact_revisions": {
       "contracts/swift.v1.objects.update.json": "d07a133ed2ea9046bd6060823676a062f827dddb42dde7d96a8846e76a0735d1"
     },
-    "contract_revision": "f564669c35768b39ed1c29c4aaa621b116fe394ccbc2b8f186de9951814cf5cb",
+    "contract_revision": "ee19dcc3048516260b317c4ce68ab72299b4936e43e13ecb18aed50ee4a4486b",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/swift.v1.objects.update.json#/endpoint",
     "error_binding_ref": "contracts/swift.v1.objects.update.json#/errors",
@@ -11531,13 +11525,13 @@
     "service": "swift",
     "source": {
       "operation_locator": "POST /v1/{project_id}/{bucket_name}/{object_name}",
-      "revision": "0986af7ae42853aa64312da178b7c979b22f16ce93e897214ed05bc8fe2673e1",
+      "revision": "23b769a8782176497ea86137af4c846e7545072969b20ed02fe4e0126db17cc8",
       "uri": "https://docs.selectel.ru/api/object-storage-swift/"
     },
     "verification": {
-      "contract_revision": "f564669c35768b39ed1c29c4aaa621b116fe394ccbc2b8f186de9951814cf5cb",
+      "contract_revision": "ee19dcc3048516260b317c4ce68ab72299b4936e43e13ecb18aed50ee4a4486b",
       "evidence_ref": "swift_test.go",
-      "implementation_revision": "41e34bb20f96bf798c5e8463231077648cfc3b22bd5f7965c6a2c37aac2858df",
+      "implementation_revision": "85338f2b1e7edddccf115fd98d858a8f0f7248a189a006b8564f3c846342d29e",
       "level": "offline"
     },
     "wait_goals": []

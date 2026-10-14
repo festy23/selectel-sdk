@@ -8,9 +8,10 @@ evidence=json.loads((ROOT/'catalog/evidence/swift-current-sources.json').read_te
 # Models are explicit SDK-owned mappings of the pinned Selectel headers and
 # compatible OpenStack JSON rows. No protocol-specific raw executor is public.
 models={
- 'BucketEntry':{'Name':'*string','Count':'*types.Integer','Bytes':'*types.Integer','LastModified':'*string','Ref':'*types.ResourceRef'},
- 'ObjectEntry':{'Name':'*string','Subdir':'*string','Bytes':'*types.Integer','Hash':'*string','ContentType':'*types.ProtectedValue','LastModified':'*string','Ref':'*types.ResourceRef'},
+ 'BucketEntry':{'ListedName':'*string','Subdir':'*string','Name':'*string','Count':'*types.Integer','Bytes':'*types.Integer','LastModified':'*string','Ref':'*types.ResourceRef'},
+ 'ObjectEntry':{'ListedName':'*string','Name':'*string','Subdir':'*string','Bytes':'*types.Integer','Hash':'*string','ContentType':'*types.ProtectedValue','LastModified':'*string','Ref':'*types.ResourceRef'},
  'BulkResult':{'NumberDeleted':'*types.Integer','NumberNotFound':'*types.Integer','ResponseStatus':'*types.ProtectedValue','ResponseBody':'*types.ProtectedValue','Errors':'[]BulkError'},
+ 'DeleteResult':{'Object':'ObjectInfo','Summary':'*BulkResult'},
  'BulkError':{'Path':'types.ProtectedValue','Detail':'types.ProtectedValue'},
  'Segment':{'Object':'types.ResourceRef','ETag':'*string','SizeBytes':'*types.Integer'},
  'StoragePolicyUsage':{'BytesUsed':'*types.Integer','ContainerCount':'*types.Integer','ObjectCount':'*types.Integer'},
@@ -36,9 +37,10 @@ for name,fields in models.items():
  for field,typ in fields.items():wire={'LastModified':'last_modified','ContentType':'content_type','ETag':'etag','SymlinkTargetETag':'symlink_target_etag'}.get(field,snake(field)); lines.append(field+' '+typ+' `json:"'+wire+',omitempty"`')
  lines.append('}\n')
 lines.append('type Listing[T, H any] struct { pagination.Collection[T]; HeaderPages []H `json:"header_pages,omitempty"` }')
-lines.append('type ListOptions struct { Marker, Prefix, Delimiter *string }')
+lines.append('type ListFormat string\nconst (ListJSON ListFormat = \"json\"; ListXML ListFormat = \"xml\"; ListPlain ListFormat = \"plain\")')
+lines.append('type ListOptions struct { Marker, Prefix, Delimiter *string; Format ListFormat }')
 (ROOT/'swift/types_generated.go').write_text('\n'.join(lines))
-ops=[('HEAD','/v1/{project_id}','account.get',[204]),('GET','/v1/{project_id}','buckets.list',[200,204]),('POST','/v1/{project_id}','account.update',[204,202]),('HEAD','/v1/{project_id}/{bucket_name}','buckets.get',[204]),('GET','/v1/{project_id}/{bucket_name}','objects.list',[200,204]),('PUT','/v1/{project_id}/{bucket_name}','buckets.create',[201]),('POST','/v1/{project_id}/{bucket_name}','buckets.update',[204,202]),('DELETE','/v1/{project_id}/{bucket_name}','buckets.delete',[204]),('GET','/v1/{project_id}/{bucket_name}/{object_name}','objects.get',[200]),('HEAD','/v1/{project_id}/{bucket_name}/{object_name}','objects.head_symlink',[200]),('PUT','/v1/{project_id}/{bucket_name}/{object_name}','objects.put',[201]),('POST','/v1/{project_id}/{bucket_name}/{object_name}','objects.update',[201,202]),('COPY','/v1/{project_id}/{bucket_name}/{object_name}','objects.copy',[201]),('DELETE','/v1/{project_id}/{bucket_name}/{object_name}','objects.delete',[204]),('POST','/$bulk-delete','objects.bulk_delete',[200])]
+ops=[('HEAD','/v1/{project_id}','account.get',[204]),('GET','/v1/{project_id}','buckets.list',[200,204]),('POST','/v1/{project_id}','account.update',[204,202]),('HEAD','/v1/{project_id}/{bucket_name}','buckets.get',[204]),('GET','/v1/{project_id}/{bucket_name}','objects.list',[200,204]),('PUT','/v1/{project_id}/{bucket_name}','buckets.create',[201]),('POST','/v1/{project_id}/{bucket_name}','buckets.update',[204,202]),('DELETE','/v1/{project_id}/{bucket_name}','buckets.delete',[204]),('GET','/v1/{project_id}/{bucket_name}/{object_name}','objects.get',[200]),('HEAD','/v1/{project_id}/{bucket_name}/{object_name}','objects.head_symlink',[200]),('PUT','/v1/{project_id}/{bucket_name}/{object_name}','objects.put',[201]),('POST','/v1/{project_id}/{bucket_name}/{object_name}','objects.update',[201,202]),('COPY','/v1/{project_id}/{bucket_name}/{object_name}','objects.copy',[201]),('DELETE','/v1/{project_id}/{bucket_name}/{object_name}','objects.delete',[204,200]),('POST','/$bulk-delete','objects.bulk_delete',[200])]
 source={'x-source-uri':'https://docs.selectel.ru/api/object-storage-swift/','x-inventory-kind':'Confirmed current Selectel Swift subset; normalized bulk query selector; headers/query variants share primitive binding, inventory completeness unknown','x-pinned-evidence':[{'uri':d['uri'],'sha256':d['sha256']} for d in evidence['documents']],'x-disposition':evidence['disposition'],'paths':{}}
 for method,path,tail,statuses in ops:
  source['paths'].setdefault(path,{})[method.lower()]={'x-effect':'read' if method in ['GET','HEAD'] else 'mutation','x-operation-id':'swift.v1.'+tail,'x-operation-locator':method+' '+(path if path!='/'+ '$bulk-delete' else '/v1/{project_id}?bulk-delete=true&format=json'),'responses':{str(status):{'typed':True} for status in statuses}}

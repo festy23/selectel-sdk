@@ -6,30 +6,26 @@ protocol adapter for the documented Selectel Swift endpoint, independent of S3
 credentials and the legacy Swift API. [Sources](../../../catalog/evidence/swift-current-sources.json)
 are pinned public documentation; generation is offline.
 
-The current binding set has 15 normalized method/path or bulk-query operations: 12 implemented and three partial bindings (JSON-only listings and the documented segmented-delete acknowledgement).
-Metadata and quota methods share POST; upload, segment upload, copy-from,
-dynamic/static manifests and symlinks share PUT. Convenience methods do not add
-coverage. Whole Swift inventory completeness is unknown and `coverage_ratio`
-remains null. XML listing representation, generic upstream Swift extensions,
-temporary URL signing, cross-project copy and the legacy API are not claimed.
-Legacy discovery remains the separate legacy coverage issue; no endpoint is
-classified withdrawn merely because it has not been called.
+The current binding set has 15 normalized method/path or bulk-query operations,
+including JSON/XML/plain listings and both source-bound segmented-delete wire
+responses. Metadata/quota and PUT variants share canonical bindings; convenience
+methods do not add coverage. Whole Swift inventory completeness is unknown and
+`coverage_ratio` remains null. Generic upstream extensions, temporary URL signing,
+cross-project copy and the legacy API are not claimed. No endpoint is classified
+withdrawn merely because it has not been called.
 
-The remaining current variants stay owned by [#61](https://github.com/festy23/selectel-sdk/issues/61):
-non-JSON (XML/plain text) container and object listings, and the segmented-delete
-response/status reconciliation beyond the documented 204. This delivery references
-#61 and does not close it as full current coverage. [#71](https://github.com/festy23/selectel-sdk/issues/71)
-owns legacy generations, not these current variants; [#74](https://github.com/festy23/selectel-sdk/issues/74)
-checks their catalog accounting. [#76](https://github.com/festy23/selectel-sdk/issues/76)
-remains blocked by #61 and cannot accept P2 while these active partial bindings
-remain. Unsupported response semantics must be resolved from primary sources,
-not guessed from a generic Swift deployment.
-
+Current non-JSON listings and segmented-delete status/result dispatch belong to
+[#61](https://github.com/festy23/selectel-sdk/issues/61), separately from legacy
+[#71](https://github.com/festy23/selectel-sdk/issues/71).
+[#74](https://github.com/festy23/selectel-sdk/issues/74) accounts for inventory;
+[#76](https://github.com/festy23/selectel-sdk/issues/76) acceptance also requires
+the other P2 prerequisites. This does not establish whole-family coverage or
+live availability.
 
 | Methods | Wire behavior |
 | --- | --- |
-| Account, Buckets, UpdateAccount | HEAD account; JSON GET listing; POST metadata/removal/quota |
-| BucketInfo, Objects, CreateBucket, UpdateBucket, DeleteBucket | HEAD, JSON GET, PUT, POST, DELETE container |
+| Account, Buckets, UpdateAccount | HEAD account; JSON/XML/plain GET listing; POST metadata/removal/quota |
+| BucketInfo, Objects, CreateBucket, UpdateBucket, DeleteBucket | HEAD, JSON/XML/plain GET, PUT, POST, DELETE container |
 | Download, SymlinkInfo | GET bytes/manifest/symlink; HEAD with explicit `symlink=get` |
 | Upload, CopyFrom, PutDynamicManifest, PutStaticManifest, PutSymlink | PUT with the explicitly selected body/header variant |
 | UpdateObject, Copy | POST object metadata/HTTP headers; source-addressed COPY with explicit destination |
@@ -51,13 +47,19 @@ Only forming the explicit request or writing to the caller's download writer
 reveals their bytes. Ordinary JSON and formatting do not reveal those values.
 Request metadata rejects case-folded duplicates, set/remove collisions and invalid HTTP field-value control bytes; quota/type fields use their typed fields, preserving zero and false.
 
-Listings request JSON and retain per-page account/container headers. PageSize,
-MaxPages, collection deadline and existing opaque cursor checks apply. A clamped
-short page is not proof of completion; an empty page terminates the scan. Markers
-must progress, and cursors bind the scope, endpoint, contract revision and filters.
-Delimiter pseudo-directories have no manufactured object reference. Partial
-collections preserve their elements and protected continuation cursor. XML is
-explicitly outside these JSON bindings.
+Listings default to JSON; typed ListFormat additionally selects XML or plain.
+They retain per-page account/container headers. PageSize, MaxPages, collection
+deadline and existing opaque cursor checks apply, including the representation.
+A clamped short page is not proof of completion; an empty page terminates the scan.
+Markers must progress, and cursors bind scope, endpoint, contract and filters.
+XML retains row order, exact numbers, protected content types and raw times;
+account/container owner attributes must match the selected scope. Directives and
+nesting over16 are rejected; no external entity resolver is used. Delimiter
+pseudo-directories have no manufactured resource refs. Plain with a delimiter
+cannot distinguish an actual name from a pseudo-directory: those rows expose
+ListedName and no ref. Plain without a delimiter provides names, with extended
+statistics absent. Partial collections preserve prior pages and continuation.
+Present response Content-Type must match the selected representation.
 
 Upload requires a caller reader and explicit byte size, and reads at most that
 size without probing or closing the caller input. Its Bytes value reports input
@@ -86,10 +88,16 @@ bodies. BulkDelete encodes only caller-selected object paths, validates returned
 error paths against those targets, and retains per-object protected diagnostics.
 HTTP 200 with an unsuccessful embedded status or errors is OperationFailed with
 an Accepted receipt and partial typed summary. Not-found counts do not prove that
-this request deleted those objects. DeleteSegments explicitly requests the
-provider cascade; the documented 204 is an acknowledgement, not an enumeration
-or absence proof for unknown segment IDs. No unconfirmed 200 bulk-style cascade
-response is decoded as success.
+this request deleted those objects. DeleteSegments explicitly requests the provider cascade and JSON response.
+Status204 requires an empty body and returns acknowledgement with Summary=nil.
+Compatible SLO status200 decodes typed protected BulkResult summary; an embedded
+failure returns OperationFailed while retaining the Accepted receipt and the
+exact submitted manifest locator. Returned segment paths are diagnostics only,
+not references, ownership evidence or proof of absence. The original Selectel
+page documents204; pinned upstream SLO/bulk implementation resolves the200 JSON
+shape for that same confirmed query. This is an offline compatibility binding,
+not a claim about the provider's deployed upstream revision. DeleteObject retains
+its ordinary204-only semantics.
 
 Every mutation preserves a NotSent/Rejected/Accepted/Unknown receipt on errors,
 including endpoint binding and request validation failures. Accepted malformed
