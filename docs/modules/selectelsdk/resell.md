@@ -1,46 +1,92 @@
 # Resell v2
 
-`Client.Account().Resell()` reads account status with `Account` and inspects
-DNS delegation with `DNSCheck(ctx, hostname, options)`. Both use account IAM,
-the existing `projects` catalog service ID and
-`https://api.selectel.ru/vpc/resell`, preserving the Projects API.
-The generated response DTOs retain optional fields and explicit false values;
-account enabled/locked/name/onboarding and each lock's fields are required.
-Neither read invents a resource reference or a wait/recovery guarantee.
-DNS hostname is escaped as one path segment; documented 400 maps to not_found.
+`Client.Account().Resell()` manages account metadata, allocation and the
+explicitly selected deprecated Resell interfaces. `Client.Project(id).Resell()`
+uses project IAM for the allocation operations published with that alternative.
+Existing `Account().Projects()` methods and catalog service ID `projects`
+remain compatible. The endpoint is `https://api.selectel.ru/vpc/resell`;
+exact overrides use service `projects`, generation `v2` and the chosen scope.
 
-The source snapshot was re-fetched on 2026-10-14 from the official
-[Resell schema](https://docs.selectel.ru/api/cloud-projects-and-resources.json);
-SHA-256 `0545ced4f3c4af315eba1027ebd166240f91bc7e8e7835041cc7626cb191d22e`
-matched the pinned artifact. Verification remains offline, with no live calls.
+| Public API | Contract and identity |
+|---|---|
+| `Account` | Account IAM; enabled/locked/name/onboarding and nested locks required |
+| `DNSCheck` | Account IAM; escaped hostname; documented 400 is not_found |
+| `Subnets.Collect/Get/Create/Delete` | Account or project IAM; `resell_subnet` ID is the Resell integer allocation ID |
+| `FloatingIPs.Collect/Get/Create/Delete` | List account IAM; remaining operations account or project IAM; `resell_floatingip` ID |
+| `Licenses.Collect/Get/Create/Delete` | Account or project IAM; explicit deprecated API; `resell_license` integer ID |
+| `Keypairs.Collect/Create/Delete` | Account IAM; explicit deprecated API; `resell_keypair` name with `resell_user` owner parent |
+| `Traffic` | Account IAM; typed domain map and exact byte quantities |
+| `TrafficReport` | Account IAM; strict calendar dates; bounded protected CSV bytes |
+| `PublishedSchema` | Account IAM; bounded protected JSON; does not update SDK coverage |
 
-Remaining create allocations, floating-IP and license/keypair operations are unimplemented.
-Deprecated keypair and license operations remain documented and unimplemented:
-the current source still publishes them. The stated 2025 removal date alone
-is not evidence of withdrawal, and a permission error cannot prove withdrawal.
-Their eventual adapters must retain explicit generation and disposition.
-Resell subnet/IP allocation refs must be distinct from Neutron resources.
+Resell allocation, Neutron resource association and direct public ports remain
+different concepts. `Subnet.SubnetID` and `NetworkID` describe associated
+Neutron objects; neither is adopted as the allocation ID. Project creation
+requests explicitly provide the target project; a project view rejects a target
+outside its selected project before I/O. Provider project IDs, when present,
+must agree with the chosen project. No endpoint or scope fallback is attempted.
 
-## Traffic and subnet allocation reads
+Collections return one documented provider response under shared collection
+limits. Local truncation returns an incomplete result and a cursor tied to
+scope, endpoint, generation, contract and filters; it never reports completion.
+`Detailed` preserves omission and explicit false. The floating-IP source defines
+a string filter, so its separate `FloatingIPListOptions.Detailed` retains that
+wire type rather than narrowing arbitrary values to boolean.
 
-`Traffic` retains typed paid/prepared/used values with arbitrary-precision
-integers and normalizes documented RFC3339 timestamps to UTC.
-`TrafficReport` accepts strict start/end calendar dates and returns protected CSV
-bytes, bounded by `Config.MaxJSONBytes` and `CallTimeout`. It buffers at most the
-configured limit; this read is not a streaming transfer. `PublishedSchema`
-returns protected arbitrary JSON and does not update the embedded SDK catalog.
+Optional mutation bodies may be omitted. Typed nonnil bodies retain all fields,
+including `cidrs`, `ips`, `quantity`, regions and keypair owner/public key.
+The official SDK omits quantities for its allocation create variants; the SDK
+preserves that omission without inventing a quantity/default. Explicit int32
+parameters are range-checked; license quantity must be at least one when given.
+Request arrays and all returned allocations are retained, never first-only.
 
-`Subnets.Collect` applies bounded collection semantics to the fixed provider
-list and preserves explicit `Detailed=false`. `Subnets.Get` and `Delete` use
-exact account-scoped `resell_subnet` refs. Integer Resell IDs preserve precision;
-`subnet_id` identifies the associated Neutron subnet and is never adopted as
-an allocation ID. Unknown deletion returns a Receipt and is not retried;
-no deletion wait or root recovery handle is promised.
+Mutations return Receipt on accepted, rejected, not-sent and unknown outcomes.
+There is no mutation replay. Create extracts all trustworthy returned identities
+before decoding other fields so a malformed accepted response still preserves
+known refs. Foreign project/identity and duplicate allocation IDs are rejected.
+Exact Get/Delete use scoped endpoint-bound refs; unknown create never adopts an
+object by name. No allocation wait, readiness guarantee or root Resume handle is
+published; exact Get observes known refs without proving authorship.
 
-The official SDK at revision
-[`79b0d0ff1d46ebfe7c50056f8c829e0d32349605`](https://github.com/selectel/go-selvpcclient/tree/79b0d0ff1d46ebfe7c50056f8c829e0d32349605)
-uses plural arrays for allocation create responses while the current Swagger
-schema describes singular objects for subnet and floating-IP create.
-SDK subnet DTOs also publish `vlan_id` and `vtep_ip_address`, absent in Swagger.
-These differences remain an explicit coverage gap; the Swagger subnet read
-binding is partial relative to the combined SDK/API inventory.
+## Sources and discrepancies
+
+The [official Resell schema](https://docs.selectel.ru/api/cloud-projects-and-resources.json)
+was re-fetched on 2026-10-14. SHA-256
+`0545ced4f3c4af315eba1027ebd166240f91bc7e8e7835041cc7626cb191d22e`
+matched the pinned artifact. All 25 method/path operations in that snapshot
+have catalog bindings, including the five pre-existing Projects operations.
+
+The official [go-selvpcclient revision](https://github.com/selectel/go-selvpcclient/tree/79b0d0ff1d46ebfe7c50056f8c829e0d32349605)
+was also checked against upstream HEAD on 2026-10-14. Source snippets and
+source-derived schema extensions are pinned in
+`catalog/contracts/resell-sdk-supplement.json`; relevant operation contracts
+hash that artifact, so changes invalidate stale verification.
+
+Subnet/floating-IP create has singular object envelopes in Swagger and plural
+arrays in the SDK. Both independently published shapes decode into typed arrays;
+a response containing both envelopes is ambiguous and rejected. SDK-only
+`vlan_id`/`vtep_ip_address`, and keypair `region`/`regions` variants are retained
+through the model generator. Native SDK quantity omission remains a separate
+published request variant rather than a manufactured provider default.
+
+Traffic domain keys are typed map entries, preserving both Swagger `prepared`
+and SDK `prepaid`. `TrafficTimestamp.Raw` retains provider text. `UTC` is present
+only for timestamps carrying an explicit offset; timezone-free timestamps are
+validated but never assigned a timezone. CSV reports preserve bytes and remain
+protected from ordinary formatting/serialization; explicit Reveal/CopyTo is
+the caller-directed output boundary. Report/schema reads buffer at most
+`Config.MaxJSONBytes` under `CallTimeout`; they are not streaming transfers.
+
+## Deprecated disposition and verification
+
+Keypair and license operations remain documented in the current schema and
+callable only through their explicit Resell v2 adapter. The source says keypairs
+would be removed in 2025 and directs users to Nova. That date, deprecated flag
+and a caller's permission error cannot establish withdrawal. No automatic Nova
+migration or alternate endpoint retry is performed; provider rejection remains
+visible. License APIs similarly retain their deprecated source designation.
+
+This is implemented coverage of the enumerated Resell baseline, with offline
+contract tests. No live cloud changes were performed, and availability for a
+particular account/project is not established. Other families still have
+incomplete inventories, so global coverage_ratio remains null.

@@ -37,6 +37,7 @@ scope_requirements: [account | project | region | pool | parent]
 auth:
   scheme: iam_account | iam_project | static_token | s3_sigv4 | basic | protocol_specific
   audience: string
+  alternatives: [iam_account | iam_project | static_token | protocol_specific] # optional published alternatives
 endpoint_recipe_ref: string | null
 request_binding_ref: string | null
 response_binding_ref: string | null
@@ -119,3 +120,8 @@ region. Permission/availability для caller определяется конк�
 Native SDK method list и Terraform resource list не являются знаменателем
 API coverage. При изменении API source новая версия каталога сохраняет старые
 идентификаторы, добавляет новые и явно отмечает withdrawn операции.
+
+Bindings may reference additional `contract_artifacts` whose hashes join the
+operation contract revision. Resell uses this for pinned official SDK variants
+beyond its Swagger snapshot. `auth.alternatives` describes published auth
+variants; it does not authorize fallback or change the caller-selected scope.

@@ -20,8 +20,9 @@ type Source struct {
 	OperationLocator string `json:"operation_locator"`
 }
 type Auth struct {
-	Scheme   types.AuthMode `json:"scheme"`
-	Audience string         `json:"audience"`
+	Alternatives []types.AuthMode `json:"alternatives,omitempty"`
+	Scheme       types.AuthMode   `json:"scheme"`
+	Audience     string           `json:"audience"`
 }
 type Implementation struct {
 	Status  string  `json:"status"`

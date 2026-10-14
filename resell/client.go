@@ -12,14 +12,20 @@ import (
 )
 
 type Client struct {
-	runtime *core.Runtime
-	scope   types.Scope
-	Subnets *SubnetsClient
+	runtime     *core.Runtime
+	scope       types.Scope
+	Subnets     *SubnetsClient
+	FloatingIPs *FloatingIPsClient
+	Licenses    *LicensesClient
+	Keypairs    *KeypairsClient
 }
 
 func Bind(r *core.Runtime, scope types.Scope) *Client {
 	c := &Client{runtime: r, scope: scope}
 	c.Subnets = &SubnetsClient{client: c}
+	c.FloatingIPs = &FloatingIPsClient{client: c}
+	c.Licenses = &LicensesClient{client: c}
+	c.Keypairs = &KeypairsClient{client: c}
 	return c
 }
 func (c *Client) Account(ctx context.Context, options types.CallOptions) (types.Result[Account], error) {

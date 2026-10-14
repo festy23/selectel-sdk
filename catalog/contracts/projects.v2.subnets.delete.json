@@ -52,15 +52,15 @@
       ]
     },
     "mapping_source": "resell/subnets.go",
-    "scope": "account IAM only",
-    "identity": "immutable account scope; subnet allocation addressed by exact scoped ResourceRef, not Neutron subnet_id",
+    "scope": "account IAM or project IAM where declared; lists floatingips/keypairs and keypair mutations account only",
+    "identity": "immutable account/project scope; exact Resell allocation ID; keypair name plus owner parent; no Neutron ref adoption",
     "path_fields": {
-      "subnet_id": "ref.ID escaped as one segment"
+      "subnet_id": "matching ref.ID, owner parent.ID or request.ProjectID escaped once"
     },
     "optional_fields": "no optional request fields",
     "body": null,
     "query": {},
-    "validation": "account scope; dates strict YYYY-MM-DD and end>=start; subnet ref kind=resell_subnet, same account/service/generation/endpoint, no parent"
+    "validation": "explicit target project required and must match project view; required spec fields; int32 numeric request fields; license quantity >=1 when present; exact ref kind/account/project/service/generation/endpoint and owner validated before IO; no hidden defaults"
   },
   "response": {
     "successful_statuses": [
@@ -69,8 +69,8 @@
     "schema_ref": "sources/cloud-projects-and-resources.json#/paths/~1v2~1subnets~1{subnet_id}/delete/responses",
     "dto_source": "resell/types_generated.go",
     "generator_source": "internal/modelgen/generate.py",
-    "field_mapping": "all pinned response fields; exact Integer precision; RFC3339 UTC normalization; CSV preserved byte-for-byte under MaxJSONBytes limit; arbitrary schema and CSV protected from ordinary serialization",
-    "resource_ref": "allocation ID from Resell id, never subnet_id; scoped endpoint-bound ref; exact get rejects changed response ID",
+    "field_mapping": "All schema fields plus pinned SDK-only subnet vlan_id/vtep_ip_address and SSH-key region/regions. Integer precision retained; optional fields preserve absence. Provider injected refs discarded.",
+    "resource_ref": "ID from Resell id (keypair name+user owner); exact endpoint/scope/generation; create extracts all trustworthy IDs before decoding fields; foreign project or duplicate allocation IDs rejected; no name lookup",
     "sensitive_fields": []
   },
   "errors": {
@@ -85,7 +85,8 @@
     "mutation_rejected_statuses": [
       400,
       401
-    ]
+    ],
+    "foreign_response_id": "scope_mismatch; reject before adding foreign identity to Receipt"
   },
   "retry": "bounded safe reads; mutation single attempt, never replay",
   "pagination": null,
@@ -96,5 +97,10 @@
   "recovery": {
     "availability": "unavailable for root handle; exact Get is observational and does not prove authorship of unknown mutation"
   },
-  "timeout": "CallTimeout; CollectionTimeout shared across list pages"
+  "timeout": "CallTimeout; CollectionTimeout shared across list pages",
+  "sdk_source": {
+    "artifact": "contracts/resell-sdk-supplement.json",
+    "revision": "79b0d0ff1d46ebfe7c50056f8c829e0d32349605",
+    "disposition": "published SDK extends pinned API schema; independently confirmed response shapes, optional quantity and subnet fields are supported explicitly"
+  }
 }

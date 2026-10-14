@@ -56,7 +56,7 @@
     "schema_ref": "sources/cloud-projects-and-resources.json#/paths/~1v2~1traffic/get/responses",
     "dto_source": "resell/types_generated.go",
     "generator_source": "internal/modelgen/generate.py",
-    "field_mapping": "all pinned response fields; exact Integer precision; RFC3339 UTC normalization; CSV preserved byte-for-byte under MaxJSONBytes limit; arbitrary schema and CSV protected from ordinary serialization",
+    "field_mapping": "Domain map retains all provider traffic-type keys, including schema prepared and SDK prepaid; quantities exact Integer; known offset timestamps normalize UTC while timezone-free values retain raw string with UTC absent.",
     "resource_ref": "none",
     "sensitive_fields": []
   },
@@ -69,7 +69,8 @@
     "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy provider IDs already extracted",
     "message": "fixed SDK message; raw provider messages discarded",
     "400": "provider_error",
-    "mutation_rejected_statuses": []
+    "mutation_rejected_statuses": [],
+    "foreign_response_id": "scope_mismatch; reject before adding foreign identity to Receipt"
   },
   "retry": "bounded safe reads; mutation single attempt, never replay",
   "pagination": null,
@@ -80,5 +81,9 @@
   "recovery": {
     "availability": "unavailable for root handle; exact Get is observational and does not prove authorship of unknown mutation"
   },
-  "timeout": "CallTimeout; CollectionTimeout shared across list pages"
+  "timeout": "CallTimeout; CollectionTimeout shared across list pages",
+  "sdk_source": {
+    "artifact": "contracts/resell-sdk-supplement.json",
+    "revision": "79b0d0ff1d46ebfe7c50056f8c829e0d32349605"
+  }
 }

@@ -179,3 +179,5 @@ func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (t
 }
 
 func (a AccountClient) Resell() *resell.Client { return resell.Bind(a.client.runtime, a.client.scope) }
+
+func (p ProjectClient) Resell() *resell.Client { return resell.Bind(p.client.runtime, p.client.scope) }
