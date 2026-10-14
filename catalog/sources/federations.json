@@ -1,0 +1,2148 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Federations API",
+    "version": "v1.0.0",
+    "description": "Managing federations and certificates"
+  },
+  "tags": [
+    {
+      "name": "SAML federations"
+    },
+    {
+      "name": "SAML certificates"
+    },
+    {
+      "name": "SAML group mappings"
+    },
+    {
+      "name": "OIDC federations"
+    },
+    {
+      "name": "OIDC group mappings"
+    }
+  ],
+  "paths": {
+    "/v1/federations/saml": {
+      "get": {
+        "operationId": "listSamlFederations",
+        "summary": "List SAML federations",
+        "description": "Returns a list of all configured SAML federations.",
+        "tags": [
+          "SAML federations"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of SAML federations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Federations"
+                },
+                "example": {
+                  "federations": [
+                    {
+                      "account_id": "242137",
+                      "id": "e35a6d85-9a81-4d03-9c93-424714708fe0",
+                      "name": "federation name",
+                      "description": "simple description",
+                      "alias": "custom-federation",
+                      "issuer": "https://idp.example.com/realms/master",
+                      "sso_url": "https://idp.example.com/realms/master/protocol/saml",
+                      "sign_authn_requests": false,
+                      "force_authn": false,
+                      "session_max_age_hours": 8,
+                      "auto_users_creation": true,
+                      "enable_group_mappings": false
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSamlFederation",
+        "summary": "Create SAML federation",
+        "description": "Creates a new SAML federation.",
+        "tags": [
+          "SAML federations"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateFederationRequest"
+              },
+              "example": {
+                "name": "federation name",
+                "description": "simple description",
+                "issuer": "https://idp.example.com/realms/master",
+                "sso_url": "https://idp.example.com/realms/master/protocol/saml",
+                "sign_authn_requests": false,
+                "force_authn": false,
+                "session_max_age_hours": 8,
+                "auto_users_creation": true,
+                "enable_group_mappings": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A new SAML federation has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Federation"
+                },
+                "example": {
+                  "account_id": "242137",
+                  "id": "e35a6d85-9a81-4d03-9c93-424714708fe0",
+                  "name": "federation name",
+                  "description": "simple description",
+                  "alias": "custom-federation",
+                  "issuer": "https://idp.example.com/realms/master",
+                  "sso_url": "https://idp.example.com/realms/master/protocol/saml",
+                  "sign_authn_requests": false,
+                  "force_authn": false,
+                  "session_max_age_hours": 8,
+                  "auto_users_creation": true,
+                  "enable_group_mappings": false
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/federations/saml/{federation_id}": {
+      "head": {
+        "operationId": "checkSamlFederationExists",
+        "summary": "Get SAML federation status",
+        "description": "Returns the status of the specified federation without the response body. Does not require authentication.",
+        "tags": [
+          "SAML federations"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SAML federation exists."
+          },
+          "404": {
+            "description": "SAML federation has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        }
+      },
+      "get": {
+        "operationId": "getSamlFederation",
+        "summary": "Get SAML federation data",
+        "description": "Returns the federation name, issuer, SSO URL, and other settings.",
+        "tags": [
+          "SAML federations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The SAML federation data has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Federation"
+                },
+                "example": {
+                  "account_id": "242137",
+                  "id": "e35a6d85-9a81-4d03-9c93-424714708fe0",
+                  "name": "federation name",
+                  "description": "simple description",
+                  "alias": "custom-federation",
+                  "issuer": "https://idp.example.com/realms/master",
+                  "sso_url": "https://idp.example.com/realms/master/protocol/saml",
+                  "sign_authn_requests": false,
+                  "force_authn": false,
+                  "session_max_age_hours": 8,
+                  "auto_users_creation": true,
+                  "enable_group_mappings": false
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateSamlFederation",
+        "summary": "Update SAML federation data",
+        "description": "Partially updates the federation name, description, alias, issuer, SSO URL, or other settings.",
+        "tags": [
+          "SAML federations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.UpdateFederationRequest"
+              },
+              "example": {
+                "name": "updated federation name",
+                "description": "updated description",
+                "alias": "custom-federation",
+                "issuer": "https://idp.example.com/realms/master",
+                "sso_url": "https://idp.example.com/realms/master/protocol/saml",
+                "sign_authn_requests": true,
+                "force_authn": true,
+                "session_max_age_hours": 12,
+                "auto_users_creation": false,
+                "enable_group_mappings": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "SAML federation has been updated."
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSamlFederation",
+        "summary": "Delete SAML federation",
+        "description": "Deletes the specified federation and all its associated data.",
+        "tags": [
+          "SAML federations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "SAML federation has been deleted."
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/federations/saml/{federation_id}/certificates": {
+      "get": {
+        "operationId": "listSamlCertificates",
+        "summary": "List SAML federation certificates",
+        "description": "Returns a list of certificates used in the specified SAML federation.",
+        "tags": [
+          "SAML certificates"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of certificates.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Certificates"
+                },
+                "example": {
+                  "certificates": [
+                    {
+                      "id": "bcceb50a-e4a3-404f-8391-f319e40c1fd5",
+                      "account_id": "242137",
+                      "federation_id": "f9a51b33-9194-4d44-a959-43740b6334a4",
+                      "name": "certificate name",
+                      "description": "certificate description",
+                      "not_before": "2023-06-23T11:26:48Z",
+                      "not_after": "2033-06-23T11:28:28Z",
+                      "fingerprint": "6A822A2645D9A18D1CC40D5B5BDA444AA579AF3B399AF77309ABD5222CC23FC0"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "post": {
+        "operationId": "uploadSamlCertificate",
+        "summary": "Upload certificate",
+        "description": "Uploads a new certificate for the specified federation.",
+        "tags": [
+          "SAML certificates"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateCertificateRequest"
+              },
+              "example": {
+                "name": "certificate name",
+                "description": "certificate description",
+                "data": "-----BEGIN CERTIFICATE-----\nMIICmzCCAYMCBgGI6ANFczANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjMwNjIzMTEyNjQ4WhcNMzMwNjIzMTEyODI4WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC04rOaDpre/MucE3HXVCnAnpqIqQOeMn696AW2FATnI26x1BsxVAGjcrheAOIu+CxC28m48Ah4+SiTEk/u2X/WbGTd/1GZooz37cge0AWMQGyh8ysZRd6q06kg4QGD1iUtdQyHioMbSr9pPne2QQgSX5/gM9XDuA6dpG9Yv0PIPLFlk3BIUL1qEfUiYbDlrunkN/y4XromJaJPpgXKWraH194bqcgXGQLrCqicKwsRBoQJHg3ODWHjHFOwYODJ1XBsRcAue4J88PKiPV1tZNPVczMptrkqGBYTgOYGjKXGe5EH50RJE4/3Ynurz2s34DSDVJhJOYtGwpfeSuU3i3mVAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAGAweCuWJmJXMUdRtgoFIiu6BGotDX5sA/VOm4CRsEXV7/qnBagrAPkRz86KGm4lOPL0X+I13JQh4/OB1gxnPN+BXhNtCWCoj1wA3/BWjs1ow/gaVXzwdy+1mbc/sUBudsLq2Yqs54GgeYsTBKMVpSLKiRg1NebEFlqFmG2hjPzYg1QHL4VBusMQgqt7TTnOfGtdT3Ss9TKGRQ+iwfNL0BtSAKaTRdhNVU4lDYUs788Kw5od/uJj0wTICKO5/PrkX7Uy42+fyU+4SvJynPOy+M+z+s08JC9+eYXixfeeFG1nNWR+DIKXcXaSwNQW+8RweGbOJxQ2BoUKtl0NCHrvxJw=\n-----END CERTIFICATE-----"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The certificate has been uploaded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Certificate"
+                },
+                "example": {
+                  "id": "bcceb50a-e4a3-404f-8391-f319e40c1fd5",
+                  "account_id": "242137",
+                  "federation_id": "f9a51b33-9194-4d44-a959-43740b6334a4",
+                  "name": "certificate name",
+                  "description": "certificate description",
+                  "not_before": "2023-06-23T11:26:48Z",
+                  "not_after": "2033-06-23T11:28:28Z",
+                  "fingerprint": "6A822A2645D9A18D1CC40D5B5BDA444AA579AF3B399AF77309ABD5222CC23FC0"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/federations/saml/{federation_id}/certificates/{certificate_id}": {
+      "get": {
+        "operationId": "getSamlCertificate",
+        "summary": "Get certificate data",
+        "description": "Returns information about the specified certificate.",
+        "tags": [
+          "SAML certificates"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          },
+          {
+            "$ref": "#/components/parameters/certificateIDPathParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Certificate data has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Certificate"
+                },
+                "example": {
+                  "id": "bcceb50a-e4a3-404f-8391-f319e40c1fd5",
+                  "account_id": "242137",
+                  "federation_id": "f9a51b33-9194-4d44-a959-43740b6334a4",
+                  "name": "certificate name",
+                  "description": "certificate description",
+                  "not_before": "2023-06-23T11:26:48Z",
+                  "not_after": "2033-06-23T11:28:28Z",
+                  "fingerprint": "6A822A2645D9A18D1CC40D5B5BDA444AA579AF3B399AF77309ABD5222CC23FC0"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateSamlCertificate",
+        "summary": "Update SAML certificate data",
+        "description": "Partially updates the certificate name or description.",
+        "tags": [
+          "SAML certificates"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          },
+          {
+            "$ref": "#/components/parameters/certificateIDPathParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.ModifyCertificateRequest"
+              },
+              "example": {
+                "name": "updated certificate name",
+                "description": "updated certificate description"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Certificate has been updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Certificate"
+                },
+                "example": {
+                  "id": "bcceb50a-e4a3-404f-8391-f319e40c1fd5",
+                  "account_id": "242137",
+                  "federation_id": "f9a51b33-9194-4d44-a959-43740b6334a4",
+                  "name": "updated certificate name",
+                  "description": "updated certificate description",
+                  "not_before": "2023-06-23T11:26:48Z",
+                  "not_after": "2033-06-23T11:28:28Z",
+                  "fingerprint": "6A822A2645D9A18D1CC40D5B5BDA444AA579AF3B399AF77309ABD5222CC23FC0"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSamlCertificate",
+        "summary": "Delete certificate",
+        "description": "Deletes the specified certificate from the federation.",
+        "tags": [
+          "SAML certificates"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          },
+          {
+            "$ref": "#/components/parameters/certificateIDPathParam"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Certificate has been deleted."
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/federations/saml/{federation_id}/group-mappings": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of group mappings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.GroupMappingsResponse"
+                },
+                "example": {
+                  "group_mappings": [
+                    {
+                      "internal_group_id": "group-1",
+                      "external_group_id": "idp-admins"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        },
+        "operationId": "listSamlGroupMappings",
+        "summary": "List SAML group mappings",
+        "description": "Returns a list of group mappings for the specified federation.",
+        "tags": [
+          "SAML group mappings"
+        ]
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.GroupMappingsRequest"
+              },
+              "example": {
+                "group_mappings": [
+                  {
+                    "internal_group_id": "group-1",
+                    "external_group_id": "idp-admins"
+                  },
+                  {
+                    "internal_group_id": "group-2",
+                    "external_group_id": "idp-developers"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Group mappings have been updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.GroupMappingsResponse"
+                },
+                "example": {
+                  "group_mappings": [
+                    {
+                      "internal_group_id": "group-1",
+                      "external_group_id": "idp-admins"
+                    },
+                    {
+                      "internal_group_id": "group-2",
+                      "external_group_id": "idp-developers"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        },
+        "operationId": "updateSamlGroupMappings",
+        "summary": "Update SAML group mappings",
+        "description": "Replaces all group mappings for the specified federation with the provided list.",
+        "tags": [
+          "SAML group mappings"
+        ]
+      }
+    },
+    "/v1/federations/saml/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}": {
+      "put": {
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "IAM group identifier.",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "External group identifier.",
+            "in": "path",
+            "name": "external_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "A group mapping has been created."
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        },
+        "operationId": "createSamlGroupMapping",
+        "summary": "Create SAML group mapping",
+        "description": "Creates a mapping between an IAM group and an external group.",
+        "tags": [
+          "SAML group mappings"
+        ]
+      },
+      "head": {
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "IAM group identifier.",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "External group identifier.",
+            "in": "path",
+            "name": "external_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Group mapping exists."
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        },
+        "operationId": "getSamlGroupMappingStatus",
+        "summary": "Get SAML group mapping status",
+        "description": "Checks whether the external group is mapped to the IAM group.",
+        "tags": [
+          "SAML group mappings"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "IAM group identifier.",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "External group identifier.",
+            "in": "path",
+            "name": "external_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Group mapping has been deleted."
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        },
+        "operationId": "deleteSamlGroupMapping",
+        "summary": "Delete SAML group mapping",
+        "description": "Deletes the mapping between an IAM group and an external group.",
+        "tags": [
+          "SAML group mappings"
+        ]
+      }
+    },
+    "/v1/federations/oidc": {
+      "get": {
+        "operationId": "listOidcFederations",
+        "summary": "List OIDC federations",
+        "description": "Returns a list of all configured OIDC federations.",
+        "tags": [
+          "OIDC federations"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of OIDC federations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.OIDCFederations"
+                },
+                "example": {
+                  "federations": [
+                    {
+                      "id": "2ee97f11-fa79-46ad-9912-5c876339e2ba",
+                      "account_id": "242137",
+                      "name": "oidc federation name",
+                      "description": "simple description",
+                      "alias": "custom-oidc-federation",
+                      "issuer": "https://idp.example.com/realms/master",
+                      "client_id": "my-client-id",
+                      "auth_url": "https://idp.example.com/realms/master/protocol/openid-connect/auth",
+                      "token_url": "https://idp.example.com/realms/master/protocol/openid-connect/token",
+                      "jwks_url": "https://idp.example.com/realms/master/protocol/openid-connect/certs",
+                      "session_max_age_hours": 8,
+                      "auto_users_creation": true,
+                      "enable_group_mappings": false
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOidcFederation",
+        "summary": "Create OIDC federation",
+        "description": "Creates a new OIDC federation.",
+        "tags": [
+          "OIDC federations"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateOIDCFederationRequest"
+              },
+              "example": {
+                "name": "oidc federation name",
+                "description": "simple description",
+                "alias": "custom-oidc-federation",
+                "issuer": "https://idp.example.com/realms/master",
+                "client_id": "my-client-id",
+                "client_secret": "my-client-secret",
+                "auth_url": "https://idp.example.com/realms/master/protocol/openid-connect/auth",
+                "token_url": "https://idp.example.com/realms/master/protocol/openid-connect/token",
+                "jwks_url": "https://idp.example.com/realms/master/protocol/openid-connect/certs",
+                "session_max_age_hours": 8,
+                "auto_users_creation": true,
+                "enable_group_mappings": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New OIDC federation has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.OIDCFederation"
+                },
+                "example": {
+                  "id": "2ee97f11-fa79-46ad-9912-5c876339e2ba",
+                  "account_id": "242137",
+                  "name": "oidc federation name",
+                  "description": "simple description",
+                  "alias": "custom-oidc-federation",
+                  "issuer": "https://idp.example.com/realms/master",
+                  "client_id": "my-client-id",
+                  "auth_url": "https://idp.example.com/realms/master/protocol/openid-connect/auth",
+                  "token_url": "https://idp.example.com/realms/master/protocol/openid-connect/token",
+                  "jwks_url": "https://idp.example.com/realms/master/protocol/openid-connect/certs",
+                  "session_max_age_hours": 8,
+                  "auto_users_creation": true,
+                  "enable_group_mappings": false
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/federations/oidc/{federation_id}": {
+      "head": {
+        "operationId": "checkOidcFederationExists",
+        "summary": "Get OIDC federation status",
+        "description": "Returns the status of the specified federation without the response body.",
+        "tags": [
+          "OIDC federations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OIDC federation exists."
+          },
+          "404": {
+            "description": "The OIDC federation has not been found."
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        }
+      },
+      "get": {
+        "operationId": "getOidcFederation",
+        "summary": "Get OIDC federation data",
+        "description": "Returns the federation name, issuer, client ID, endpoint URLs, and other settings.",
+        "tags": [
+          "OIDC federations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OIDC federation data has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.OIDCFederation"
+                },
+                "example": {
+                  "id": "2ee97f11-fa79-46ad-9912-5c876339e2ba",
+                  "account_id": "242137",
+                  "name": "oidc federation name",
+                  "description": "simple description",
+                  "alias": "custom-oidc-federation",
+                  "issuer": "https://idp.example.com/realms/master",
+                  "client_id": "my-client-id",
+                  "auth_url": "https://idp.example.com/realms/master/protocol/openid-connect/auth",
+                  "token_url": "https://idp.example.com/realms/master/protocol/openid-connect/token",
+                  "jwks_url": "https://idp.example.com/realms/master/protocol/openid-connect/certs",
+                  "session_max_age_hours": 8,
+                  "auto_users_creation": true,
+                  "enable_group_mappings": false
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateOidcFederation",
+        "summary": "Update OIDC federation data",
+        "description": "Partially updates the federation name, description, alias, issuer, client credentials, endpoint URLs, or other settings.",
+        "tags": [
+          "OIDC federations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.UpdateOIDCFederationRequest"
+              },
+              "example": {
+                "name": "updated oidc federation name",
+                "description": "updated description",
+                "alias": "custom-oidc-federation",
+                "issuer": "https://idp.example.com/realms/master",
+                "client_id": "my-client-id",
+                "client_secret": "my-new-client-secret",
+                "auth_url": "https://idp.example.com/realms/master/protocol/openid-connect/auth",
+                "token_url": "https://idp.example.com/realms/master/protocol/openid-connect/token",
+                "jwks_url": "https://idp.example.com/realms/master/protocol/openid-connect/certs",
+                "session_max_age_hours": 12,
+                "auto_users_creation": false,
+                "enable_group_mappings": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The OIDC federation has been updated."
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteOidcFederation",
+        "summary": "Delete OIDC federation",
+        "description": "Deletes the specified federation and all its associated data.",
+        "tags": [
+          "OIDC federations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDPathParam"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OIDC federation has been deleted."
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/federations/{federation_id}/preview": {
+      "get": {
+        "operationId": "getSamlFederationPreview",
+        "summary": "Get SAML/OIDC federation preview data",
+        "description": "Returns the federation name, description, and alias. Does not require authentication.",
+        "tags": [
+          "SAML federations",
+          "OIDC federations"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/federationIDOrAliasPathParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SAML/OIDC federation preview data has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.FederationPreview"
+                },
+                "example": {
+                  "id": "e35a6d85-9a81-4d03-9c93-424714708fe0",
+                  "name": "federation name",
+                  "description": "simple description",
+                  "alias": "custom.federation"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/federations/oidc/{federation_id}/group-mappings": {
+      "get": {
+        "operationId": "listOidcGroupMappings",
+        "summary": "List OIDC group mappings",
+        "description": "Returns a list of group mappings for the specified OIDC federation.",
+        "tags": [
+          "OIDC group mappings"
+        ],
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of group mappings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.GroupMappingsResponse"
+                },
+                "example": {
+                  "group_mappings": [
+                    {
+                      "internal_group_id": "group-1",
+                      "external_group_id": "idp-admins"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateOidcGroupMappings",
+        "summary": "Update OIDC group mappings",
+        "description": "Replaces all group mappings for the specified OIDC federation with the provided list.",
+        "tags": [
+          "OIDC group mappings"
+        ],
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.GroupMappingsRequest"
+              },
+              "example": {
+                "group_mappings": [
+                  {
+                    "internal_group_id": "group-1",
+                    "external_group_id": "idp-admins"
+                  },
+                  {
+                    "internal_group_id": "group-2",
+                    "external_group_id": "idp-developers"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Group mappings have been updated."
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/federations/oidc/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}": {
+      "put": {
+        "operationId": "createOidcGroupMapping",
+        "summary": "Create OIDC group mapping",
+        "description": "Creates a mapping between an IAM group and an external group.",
+        "tags": [
+          "OIDC group mappings"
+        ],
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "IAM group identifier.",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "External group identifier.",
+            "in": "path",
+            "name": "external_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Group mapping has been created."
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "head": {
+        "operationId": "getOidcGroupMappingStatus",
+        "summary": "Get OIDC group mapping status",
+        "description": "Checks whether the external group is mapped to the IAM group.",
+        "tags": [
+          "OIDC group mappings"
+        ],
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "IAM group identifier.",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "External group identifier.",
+            "in": "path",
+            "name": "external_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Group mapping exists."
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteOidcGroupMapping",
+        "summary": "Delete OIDC group mapping",
+        "description": "Deletes the mapping between an IAM group and an external group.",
+        "tags": [
+          "OIDC group mappings"
+        ],
+        "parameters": [
+          {
+            "description": "Federation identifier.",
+            "in": "path",
+            "name": "federation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "IAM group identifier.",
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "External group identifier.",
+            "in": "path",
+            "name": "external_group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Group mapping has been deleted."
+          },
+          "400": {
+            "$ref": "#/components/responses/IAMBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/IAMUnauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IAMForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/IAMNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/IAMInternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "models.CreateCertificateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Certificate name.",
+            "example": "certificate name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Certificate description.",
+            "example": "certificate description"
+          },
+          "data": {
+            "type": "string",
+            "description": "PEM-encoded certificate data.",
+            "example": "-----BEGIN CERTIFICATE-----\nMIICmzCCAYMCBgGI6ANFczANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjMwNjIzMTEyNjQ4WhcNMzMwNjIzMTEyODI4WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC04rOaDpre/MucE3HXVCnAnpqIqQOeMn696AW2FATnI26x1BsxVAGjcrheAOIu+CxC28m48Ah4+SiTEk/u2X/WbGTd/1GZooz37cge0AWMQGyh8ysZRd6q06kg4QGD1iUtdQyHioMbSr9pPne2QQgSX5/gM9XDuA6dpG9Yv0PIPLFlk3BIUL1qEfUiYbDlrunkN/y4XromJaJPpgXKWraH194bqcgXGQLrCqicKwsRBoQJHg3ODWHjHFOwYODJ1XBsRcAue4J88PKiPV1tZNPVczMptrkqGBYTgOYGjKXGe5EH50RJE4/3Ynurz2s34DSDVJhJOYtGwpfeSuU3i3mVAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAGAweCuWJmJXMUdRtgoFIiu6BGotDX5sA/VOm4CRsEXV7/qnBagrAPkRz86KGm4lOPL0X+I13JQh4/OB1gxnPN+BXhNtCWCoj1wA3/BWjs1ow/gaVXzwdy+1mbc/sUBudsLq2Yqs54GgeYsTBKMVpSLKiRg1NebEFlqFmG2hjPzYg1QHL4VBusMQgqt7TTnOfGtdT3Ss9TKGRQ+iwfNL0BtSAKaTRdhNVU4lDYUs788Kw5od/uJj0wTICKO5/PrkX7Uy42+fyU+4SvJynPOy+M+z+s08JC9+eYXixfeeFG1nNWR+DIKXcXaSwNQW+8RweGbOJxQ2BoUKtl0NCHrvxJw=\n-----END CERTIFICATE-----"
+          }
+        },
+        "required": [
+          "name",
+          "data"
+        ]
+      },
+      "models.ModifyCertificateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Certificate name.",
+            "example": "certificate name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Certificate description.",
+            "example": "certificate description"
+          }
+        }
+      },
+      "models.Certificates": {
+        "type": "object",
+        "properties": {
+          "certificates": {
+            "items": {
+              "$ref": "#/components/schemas/models.Certificate"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "models.Certificate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "bcceb50a-e4a3-404f-8391-f319e40c1fd5"
+          },
+          "account_id": {
+            "type": "string",
+            "example": "242137"
+          },
+          "federation_id": {
+            "type": "string",
+            "example": "f9a51b33-9194-4d44-a959-43740b6334a4"
+          },
+          "name": {
+            "type": "string",
+            "example": "certificate name"
+          },
+          "description": {
+            "type": "string",
+            "example": "certificate description"
+          },
+          "not_before": {
+            "type": "string",
+            "example": "2023-06-23T11:26:48Z"
+          },
+          "not_after": {
+            "type": "string",
+            "example": "2033-06-23T11:28:28Z"
+          },
+          "fingerprint": {
+            "type": "string",
+            "example": "6A822A2645D9A18D1CC40D5B5BDA444AA579AF3B399AF77309ABD5222CC23FC0"
+          },
+          "data": {
+            "type": "string",
+            "example": "-----BEGIN CERTIFICATE-----\nMIICmzCCAYMCBgGI6ANFczANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjMwNjIzMTEyNjQ4WhcNMzMwNjIzMTEyODI4WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC04rOaDpre/MucE3HXVCnAnpqIqQOeMn696AW2FATnI26x1BsxVAGjcrheAOIu+CxC28m48Ah4+SiTEk/u2X/WbGTd/1GZooz37cge0AWMQGyh8ysZRd6q06kg4QGD1iUtdQyHioMbSr9pPne2QQgSX5/gM9XDuA6dpG9Yv0PIPLFlk3BIUL1qEfUiYbDlrunkN/y4XromJaJPpgXKWraH194bqcgXGQLrCqicKwsRBoQJHg3ODWHjHFOwYODJ1XBsRcAue4J88PKiPV1tZNPVczMptrkqGBYTgOYGjKXGe5EH50RJE4/3Ynurz2s34DSDVJhJOYtGwpfeSuU3i3mVAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAGAweCuWJmJXMUdRtgoFIiu6BGotDX5sA/VOm4CRsEXV7/qnBagrAPkRz86KGm4lOPL0X+I13JQh4/OB1gxnPN+BXhNtCWCoj1wA3/BWjs1ow/gaVXzwdy+1mbc/sUBudsLq2Yqs54GgeYsTBKMVpSLKiRg1NebEFlqFmG2hjPzYg1QHL4VBusMQgqt7TTnOfGtdT3Ss9TKGRQ+iwfNL0BtSAKaTRdhNVU4lDYUs788Kw5od/uJj0wTICKO5/PrkX7Uy42+fyU+4SvJynPOy+M+z+s08JC9+eYXixfeeFG1nNWR+DIKXcXaSwNQW+8RweGbOJxQ2BoUKtl0NCHrvxJw=\n-----END CERTIFICATE-----"
+          }
+        }
+      },
+      "models.CreateFederationRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Federation name.",
+            "example": "federation name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Federation description.",
+            "example": "simple description"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Identity provider issuer URL.",
+            "example": "https://idp.example.com/realms/master"
+          },
+          "sso_url": {
+            "type": "string",
+            "description": "Single Sign-On URL of the identity provider.",
+            "example": "https://idp.example.com/realms/master/protocol/saml"
+          },
+          "sign_authn_requests": {
+            "type": "boolean",
+            "description": "Indicates whether authentication requests should be signed."
+          },
+          "force_authn": {
+            "type": "boolean",
+            "description": "Indicates whether the identity provider must reauthenticate the user."
+          },
+          "session_max_age_hours": {
+            "type": "integer",
+            "description": "Maximum session duration in hours."
+          },
+          "auto_users_creation": {
+            "type": "boolean",
+            "description": "Indicates whether users are automatically created upon first login."
+          },
+          "enable_group_mappings": {
+            "type": "boolean",
+            "description": "Indicates whether group mappings are enabled for the federation."
+          }
+        }
+      },
+      "models.UpdateFederationRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Federation name.",
+            "example": "federation name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Federation description.",
+            "example": "simple description"
+          },
+          "alias": {
+            "type": "string",
+            "description": "Federation alias used in login URLs.",
+            "example": "custom-federation"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Identity provider issuer URL.",
+            "example": "https://idp.example.com/realms/master"
+          },
+          "sso_url": {
+            "type": "string",
+            "description": "Single Sign-On URL of the identity provider.",
+            "example": "https://idp.example.com/realms/master/protocol/saml"
+          },
+          "sign_authn_requests": {
+            "type": "boolean",
+            "description": "Indicates whether authentication requests should be signed."
+          },
+          "force_authn": {
+            "type": "boolean",
+            "description": "Indicates whether the identity provider must reauthenticate the user."
+          },
+          "session_max_age_hours": {
+            "type": "integer",
+            "description": "Maximum session duration in hours."
+          },
+          "auto_users_creation": {
+            "type": "boolean",
+            "description": "Indicates whether users are automatically created upon first login."
+          },
+          "enable_group_mappings": {
+            "type": "boolean",
+            "description": "Indicates whether group mappings are enabled for the federation."
+          }
+        }
+      },
+      "models.Federation": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "example": "242137"
+          },
+          "id": {
+            "type": "string",
+            "example": "e35a6d85-9a81-4d03-9c93-424714708fe0"
+          },
+          "name": {
+            "type": "string",
+            "example": "federation name"
+          },
+          "description": {
+            "type": "string",
+            "example": "simple description"
+          },
+          "alias": {
+            "type": "string",
+            "example": "custom-federation"
+          },
+          "issuer": {
+            "type": "string",
+            "example": "https://idp.example.com/realms/master"
+          },
+          "sso_url": {
+            "type": "string",
+            "example": "https://idp.example.com/realms/master/protocol/saml"
+          },
+          "sign_authn_requests": {
+            "type": "boolean"
+          },
+          "force_authn": {
+            "type": "boolean"
+          },
+          "session_max_age_hours": {
+            "type": "integer"
+          },
+          "auto_users_creation": {
+            "type": "boolean"
+          },
+          "enable_group_mappings": {
+            "type": "boolean"
+          }
+        }
+      },
+      "models.Federations": {
+        "type": "object",
+        "properties": {
+          "federations": {
+            "items": {
+              "$ref": "#/components/schemas/models.Federation"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "models.FederationPreview": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "e35a6d85-9a81-4d03-9c93-424714708fe0"
+          },
+          "name": {
+            "type": "string",
+            "example": "federation name"
+          },
+          "description": {
+            "type": "string",
+            "example": "simple description"
+          },
+          "alias": {
+            "type": "string",
+            "example": "custom.federation"
+          }
+        }
+      },
+      "models.GroupMapping": {
+        "type": "object",
+        "properties": {
+          "internal_group_id": {
+            "type": "string",
+            "description": "IAM group identifier.",
+            "pattern": "^[A-z0-9-]{1,64}$"
+          },
+          "external_group_id": {
+            "type": "string",
+            "description": "External group identifier from the identity provider.",
+            "maxLength": 255,
+            "minLength": 1
+          }
+        }
+      },
+      "models.GroupMappingsRequest": {
+        "type": "object",
+        "properties": {
+          "group_mappings": {
+            "items": {
+              "$ref": "#/components/schemas/models.GroupMapping"
+            },
+            "type": "array",
+            "maxItems": 100
+          }
+        }
+      },
+      "models.GroupMappingsResponse": {
+        "type": "object",
+        "properties": {
+          "group_mappings": {
+            "items": {
+              "$ref": "#/components/schemas/models.GroupMapping"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "models.CreateOIDCFederationRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "issuer",
+          "client_id",
+          "client_secret",
+          "auth_url",
+          "token_url",
+          "jwks_url",
+          "session_max_age_hours"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Federation name.",
+            "minLength": 1,
+            "maxLength": 255,
+            "example": "oidc federation name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Federation description.",
+            "maxLength": 255,
+            "example": "simple description"
+          },
+          "alias": {
+            "type": "string",
+            "description": "Federation alias used in login URLs.",
+            "pattern": "^[A-Za-z0-9_-]{1,255}$",
+            "example": "custom-oidc-federation"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Identity provider issuer URL.",
+            "maxLength": 4096,
+            "example": "https://idp.example.com/realms/master"
+          },
+          "client_id": {
+            "type": "string",
+            "description": "Client identifier registered in the identity provider.",
+            "minLength": 1,
+            "maxLength": 255,
+            "example": "my-client-id"
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "Client secret registered in the identity provider.",
+            "minLength": 1,
+            "maxLength": 255,
+            "example": "my-client-secret"
+          },
+          "auth_url": {
+            "type": "string",
+            "description": "Authorization endpoint URL of the identity provider.",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/auth"
+          },
+          "token_url": {
+            "type": "string",
+            "description": "Token endpoint URL of the identity provider.",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/token"
+          },
+          "jwks_url": {
+            "type": "string",
+            "description": "JSON Web Key Set endpoint URL of the identity provider.",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/certs"
+          },
+          "session_max_age_hours": {
+            "type": "integer",
+            "description": "Maximum session duration in hours.",
+            "minimum": 1,
+            "maximum": 720,
+            "example": 8
+          },
+          "auto_users_creation": {
+            "type": "boolean",
+            "description": "Indicates whether users are automatically created upon first login."
+          },
+          "enable_group_mappings": {
+            "type": "boolean",
+            "description": "Indicates whether group mappings are enabled for the federation."
+          }
+        }
+      },
+      "models.UpdateOIDCFederationRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Federation name.",
+            "minLength": 1,
+            "maxLength": 255,
+            "example": "oidc federation name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Federation description.",
+            "nullable": true,
+            "maxLength": 255,
+            "example": "simple description"
+          },
+          "alias": {
+            "type": "string",
+            "description": "Federation alias used in login URLs.",
+            "nullable": true,
+            "pattern": "^[A-Za-z0-9_-]{1,255}$",
+            "example": "custom-oidc-federation"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Identity provider issuer URL.",
+            "maxLength": 4096,
+            "example": "https://idp.example.com/realms/master"
+          },
+          "client_id": {
+            "type": "string",
+            "description": "Client identifier registered in the identity provider.",
+            "minLength": 1,
+            "maxLength": 255,
+            "example": "my-client-id"
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "Client secret registered in the identity provider.",
+            "nullable": true,
+            "minLength": 1,
+            "maxLength": 255,
+            "example": "my-client-secret"
+          },
+          "auth_url": {
+            "type": "string",
+            "description": "Authorization endpoint URL of the identity provider.",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/auth"
+          },
+          "token_url": {
+            "type": "string",
+            "description": "Token endpoint URL of the identity provider.",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/token"
+          },
+          "jwks_url": {
+            "type": "string",
+            "description": "JSON Web Key Set endpoint URL of the identity provider.",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/certs"
+          },
+          "session_max_age_hours": {
+            "type": "integer",
+            "description": "Maximum session duration in hours.",
+            "nullable": true,
+            "minimum": 1,
+            "maximum": 720,
+            "example": 8
+          },
+          "auto_users_creation": {
+            "type": "boolean",
+            "description": "Indicates whether users are automatically created upon first login.",
+            "nullable": true
+          },
+          "enable_group_mappings": {
+            "type": "boolean",
+            "description": "Indicates whether group mappings are enabled for the federation.",
+            "nullable": true
+          }
+        }
+      },
+      "models.OIDCFederation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2ee97f11-fa79-46ad-9912-5c876339e2ba"
+          },
+          "account_id": {
+            "type": "string",
+            "example": "242137"
+          },
+          "name": {
+            "type": "string",
+            "example": "oidc federation name"
+          },
+          "description": {
+            "type": "string",
+            "example": "simple description"
+          },
+          "alias": {
+            "type": "string",
+            "example": "custom-oidc-federation"
+          },
+          "issuer": {
+            "type": "string",
+            "example": "https://idp.example.com/realms/master"
+          },
+          "client_id": {
+            "type": "string",
+            "example": "my-client-id"
+          },
+          "auth_url": {
+            "type": "string",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/auth"
+          },
+          "token_url": {
+            "type": "string",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/token"
+          },
+          "jwks_url": {
+            "type": "string",
+            "example": "https://idp.example.com/realms/master/protocol/openid-connect/certs"
+          },
+          "session_max_age_hours": {
+            "type": "integer",
+            "example": 8
+          },
+          "auto_users_creation": {
+            "type": "boolean"
+          },
+          "enable_group_mappings": {
+            "type": "boolean"
+          }
+        }
+      },
+      "models.OIDCFederations": {
+        "type": "object",
+        "properties": {
+          "federations": {
+            "items": {
+              "$ref": "#/components/schemas/models.OIDCFederation"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "ErrResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "FEDERATION_NOT_FOUND"
+          },
+          "message": {
+            "type": "string",
+            "example": "Federation with id '1' is not found."
+          }
+        }
+      }
+    },
+    "parameters": {
+      "federationIDOrAliasPathParam": {
+        "in": "path",
+        "name": "federation_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Federation identifier in the UUID v4 format or configured alias name."
+      },
+      "federationIDPathParam": {
+        "in": "path",
+        "name": "federation_id",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "Federation identifier in the UUID v4 format."
+      },
+      "certificateIDPathParam": {
+        "in": "path",
+        "name": "certificate_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Certificate identifier."
+      }
+    },
+    "responses": {
+      "IAMBadRequest": {
+        "description": "Bad request. Fix the request and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrResponse"
+            },
+            "example": {
+              "code": "FEDERATION_MAX_NUMBER_EXCEEDED",
+              "message": "Max number of federations exceeded."
+            }
+          }
+        }
+      },
+      "IAMUnauthorized": {
+        "description": "Unauthorized.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrResponse"
+            },
+            "example": {
+              "code": "UNAUTHORIZED",
+              "message": "Unauthorized"
+            }
+          }
+        }
+      },
+      "IAMForbidden": {
+        "description": "Access is forbidden. Make sure you have the required rights.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrResponse"
+            },
+            "example": {
+              "code": "FORBIDDEN",
+              "message": "Forbidden"
+            }
+          }
+        }
+      },
+      "IAMNotFound": {
+        "description": "Requested resource has not been found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrResponse"
+            },
+            "example": {
+              "code": "FEDERATION_NOT_FOUND",
+              "message": "Federation with id is '1' not found."
+            }
+          }
+        }
+      },
+      "IAMInternalServerError": {
+        "description": "Server is not responding. Please try again later.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrResponse"
+            },
+            "example": {
+              "code": "INTERNAL_ERROR",
+              "message": "Internal error"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "iam_token_account_scoped": {
+        "type": "apiKey",
+        "description": "IAM token for account",
+        "name": "X-Auth-Token",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "iam_token_account_scoped": []
+    }
+  ]
+}

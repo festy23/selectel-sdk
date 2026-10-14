@@ -176,9 +176,14 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		mode = in.Options.AuthMode
 	}
 	authReq := types.AuthRequest{Scope: in.Scope, Mode: mode, Service: op.Service, Audience: credentials.SelectelAudience}
-	entry, authErr := r.authorize(call, authReq)
-	if authErr != nil {
-		return out, authErr
+	publicRead := publicFederationRead(op) && capability.Auth.Scheme == types.ProtocolSpecific
+	entry := &authEntry{}
+	var authErr error
+	if !publicRead {
+		entry, authErr = r.authorize(call, authReq)
+		if authErr != nil {
+			return out, authErr
+		}
 	}
 	if out.Receipt != nil {
 		out.Receipt.CredentialIdentity = entry.material.Identity
@@ -221,8 +226,10 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		if len(in.Body) > 0 && req.Header.Get("Content-Type") == "" {
 			req.Header.Set("Content-Type", "application/json")
 		}
-		if headerErr := authorizeHeader(req, entry, op, in); headerErr != nil {
-			return out, headerErr
+		if !publicRead {
+			if headerErr := authorizeHeader(req, entry, op, in); headerErr != nil {
+				return out, headerErr
+			}
 		}
 		attempt++
 		if out.Receipt != nil {
@@ -324,7 +331,7 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		if out.Receipt != nil && containsStatus(op.Rejected, status) {
 			out.Receipt.Outcome = types.Rejected
 		}
-		if status == http.StatusUnauthorized {
+		if status == http.StatusUnauthorized && !publicRead {
 			r.invalidate(entry, in.Scope)
 			if op.Effect == "read" && !refreshed && entry.material.Scheme == credentials.IAMPassword && attempt < maxAttempts {
 				refreshed = true
@@ -569,4 +576,20 @@ func cloneRefs(refs []types.ResourceRef) []types.ResourceRef {
 		}
 	}
 	return out
+}
+
+// publicFederationRead is an operation-specific binding of schema security:[].
+// It cannot disable authorization for a mutation or a caller-selected operation.
+func publicFederationRead(op Operation) bool {
+	if op.Service != "federations" || op.APIGeneration != "v1" || op.Effect != "read" || op.Auth != types.ProtocolSpecific {
+		return false
+	}
+	switch op.ID {
+	case "federations.v1.saml.exists":
+		return op.Method == "HEAD"
+	case "federations.v1.preview.get":
+		return op.Method == "GET"
+	default:
+		return false
+	}
 }
