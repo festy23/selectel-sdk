@@ -151,6 +151,8 @@ server по update/delete ref может подтвердить текущую �
 
 ## Телеметрия
 
+Сверка источников и ограничения Metrics: [read subset](metrics.md).
+
 Операции этой части являются safe reads. Time bounds обязательны для логов,
 аудита и range queries: после преобразования в wire precision Start < End.
 Данные передаются caller; содержимое не выводится в diagnostics.

@@ -58,5 +58,52 @@
         }
       }
     }
+  },
+  "x-selectel-read-subset": {
+    "namespaces": [
+      "compute",
+      "dedicated",
+      "inference"
+    ],
+    "disposition": {
+      "scrape": "GET named project/namespace/prometheus/metrics, Basic auth explicit userID/password; three namespaces from directory. Dedicated pool aliases use documented cloud-pool metrics endpoint.",
+      "query": "Existing GET instant/range queries are compatible Prometheus bindings under documented Grafana integration base; no new upstream methods or optional parameters inferred from general integration wording.",
+      "unconfirmed": [
+        "POST form queries",
+        "timeout/limit/lookback_delta/stats and additional upstream query options",
+        "OpenMetrics exemplars/UTF8 identifiers",
+        "namespace CRUD",
+        "Selectel remote_write ingestion",
+        "additional arbitrary namespaces"
+      ],
+      "remote_write": "Selectel describes writing scraped metrics to caller external storage; this is not an ingestion API in Selectel.",
+      "scope": "Three existing read operations remain partial, inventory incomplete, coverage ratio null; no live claim."
+    },
+    "evidence": [
+      {
+        "uri": "https://docs.selectel.ru/metrics/tools/prometheus.md",
+        "sha256": "8de1afd5f1cda43f33c0e7f9315323f07a454cb1203be8b2d8cea8cdf916bf83"
+      },
+      {
+        "uri": "https://docs.selectel.ru/metrics/tools/grafana.md",
+        "sha256": "6194f1e2e15261fa205eccbeda2b49bc4dd5a4e7f9fa66716d9200e8c242ae99"
+      },
+      {
+        "uri": "https://docs.selectel.ru/metrics/tools/vmagent.md",
+        "sha256": "40834d6650819148112c8dc78eeb56e5e3bdd5ce18bf6d4e967cd27e6b62e1a6"
+      },
+      {
+        "uri": "https://docs.selectel.ru/metrics/tools/telegraf.md",
+        "sha256": "30446e6c38d4f87bbc06995ef9b3e25652c4df195901bfb36bb95f866e1e6d70"
+      },
+      {
+        "uri": "https://docs.selectel.ru/metrics/manage/get-metrics.md",
+        "sha256": "37fd9468157d8cbb7758300bdb46090c9dcdd65f5961b41355f1fafa4268814f"
+      },
+      {
+        "uri": "https://docs.selectel.ru/metrics/metrics-references.md",
+        "sha256": "cfaac3360b15d8ca198080231b929eade5f3f9bb740efe26d18e954092449333"
+      }
+    ]
   }
 }
