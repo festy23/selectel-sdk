@@ -10,7 +10,7 @@ import (
 )
 
 func diagnostic[T any](s service, ctx context.Context, ref types.ResourceRef, resource, kind, action, path, field string, o types.CallOptions, validate func(*T) error) (types.Result[T], error) {
-	return core.DoJSON(s.runtime, ctx, operation(resource, action, "GET", 200), core.Request{Scope: s.scope, Path: "/v2/lbaas/" + resource + "/" + segment(ref.ID) + path, Refs: []types.ResourceRef{ref}, Options: o, Validate: func() error { return s.valid(ref, kind) }}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[T], error) {
+	return core.DoJSON(s.runtime, ctx, operation(resource, action, "GET", 200), core.Request{Scope: s.scope, Path: "/v2/lbaas/" + resource + "/" + segment(ref.ID) + path, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(&ref), Options: o, Validate: func() error { return s.valid(ref, kind) }}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[T], error) {
 		var env map[string]json.RawMessage
 		var v *T
 		if json.Unmarshal(raw, &env) != nil || json.Unmarshal(env[field], &v) != nil || v == nil {
@@ -40,7 +40,7 @@ func (c *Client) StatusTree(ctx context.Context, ref types.ResourceRef, o types.
 }
 
 func (c *Client) Failover(ctx context.Context, ref types.ResourceRef, o types.CallOptions) (types.Result[Empty], error) {
-	return core.DoJSON(c.runtime, ctx, operation("loadbalancers", "failover", "PUT", 202), core.Request{Scope: c.scope, Path: "/v2/lbaas/loadbalancers/" + segment(ref.ID) + "/failover", Refs: []types.ResourceRef{ref}, Options: o, Validate: func() error { return c.valid(ref, "loadbalancer") }}, func([]byte, types.EndpointBinding) (core.Decoded[Empty], error) { return core.Decoded[Empty]{}, nil })
+	return core.DoJSON(c.runtime, ctx, operation("loadbalancers", "failover", "PUT", 202), core.Request{Scope: c.scope, Path: "/v2/lbaas/loadbalancers/" + segment(ref.ID) + "/failover", Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(&ref), Options: o, Validate: func() error { return c.valid(ref, "loadbalancer") }}, func([]byte, types.EndpointBinding) (core.Decoded[Empty], error) { return core.Decoded[Empty]{}, nil })
 }
 
 // Replace has provider replacement semantics; absent members are deleted. No atomicity is promised.
@@ -50,7 +50,7 @@ func (c *Members) BatchUpdate(ctx context.Context, pool types.ResourceRef, membe
 		q.Set("additive_only", strconv.FormatBool(*additiveOnly))
 	}
 	body, e := json.Marshal(map[string]any{"members": members})
-	return core.DoJSON(c.runtime, ctx, operation("members", "batch_update", "PUT", 202), core.Request{Scope: c.scope, Path: "/v2/lbaas/pools/" + segment(pool.ID) + "/members", Query: q, Body: body, Refs: []types.ResourceRef{pool}, Options: o, Validate: func() error {
+	return core.DoJSON(c.runtime, ctx, operation("members", "batch_update", "PUT", 202), core.Request{Scope: c.scope, Path: "/v2/lbaas/pools/" + segment(pool.ID) + "/members", Query: q, Body: body, Refs: []types.ResourceRef{pool}, PinnedEndpoint: pin(&pool), Options: o, Validate: func() error {
 		if e != nil || members == nil {
 			return types.NewError(types.InvalidArgument)
 		}

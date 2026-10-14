@@ -45,7 +45,11 @@ the known pool identity only: that response does not establish its LB parent.
 Member addressing always requires the pool ref. Known ancestor chains are
 retained, including fully populated create responses. Missing projected IDs or
 relationships produce no ref; the SDK never adopts a provider-supplied `ref`.
-Wrong scopes, kinds, parent chains or endpoints are rejected. No implicit parent
+Every exact resource/parent call pins the saved endpoint ID, URL, scope and
+generation against the newly resolved endpoint. Changed authenticated catalogs
+or overrides fail before target I/O, including Resume/Resource Status,
+diagnostics, child mutations and parent lists. Wrong scopes, kinds, parent
+chains or endpoints are rejected. No implicit parent
 lookup or name adoption occurs.
 
 VIP network/subnet/port IDs, default pool IDs and other native related-resource
@@ -68,7 +72,10 @@ variants: LB/listener/monitor/pool 200 or 202, member 200/201/202. Delete accept
 204. Failover and member batch updates accept 202 without resource creation
 proof. Every mutation returns a Receipt, including local `not_sent`, documented
 400/401/403/404/409 rejection, acknowledged malformed responses and unknown
-outcomes. Mutations are sent once. Other unexpected statuses, including 429,
+outcomes. Identity and required relationships are validated before the rest of
+the response DTO; an acknowledged malformed counter or other unrelated field
+retains the trustworthy target ref. Malformed IDs and foreign parent relations
+never establish a target. Mutations are sent once. Other unexpected statuses, including 429,
 remain conservative unknown outcomes with a sanitized cause; reads retain
 shared bounded retries and status classification. HTTP 400 is `provider_error`;
 403 is `permission_denied`, 404 is scoped `not_found`, 409 is `conflict`, and

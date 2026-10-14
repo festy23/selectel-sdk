@@ -731,3 +731,197 @@ func TestMissingStatusTreeRootIsStructuredProtocolError(t *testing.T) {
 		t.Fatal(e)
 	}
 }
+
+func TestExactPathsRejectChangedOverrideBeforeTargetIO(t *testing.T) {
+	scope := types.Scope{AccountID: "a", ProjectID: "p", Region: "r", Pool: "pool"}
+	lb := types.ResourceRef{Scope: scope, Service: "loadbalancers", APIGeneration: "v2", Kind: "loadbalancer", ID: "lb", EndpointID: "octavia", EndpointURL: "https://old.test/v2"}
+	pool := lb
+	pool.Kind = "pool"
+	pool.ID = "po"
+	pool.Parent = &lb
+	listener := lb
+	listener.Kind = "listener"
+	listener.ID = "li"
+	listener.Parent = &lb
+	member := pool
+	member.Kind = "member"
+	member.ID = "m"
+	member.Parent = &pool
+	port, _ := types.ParseInteger("80")
+	calls := []struct {
+		name string
+		run  func(*sdk.Client, *loadbalancers.Client) error
+	}{
+		{"get", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Get(context.Background(), lb, types.CallOptions{})
+			return e
+		}},
+		{"delete", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Delete(context.Background(), lb, nil, types.CallOptions{})
+			return e
+		}},
+		{"update", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Update(context.Background(), lb, loadbalancers.LoadBalancerUpdate{}, types.CallOptions{})
+			return e
+		}},
+		{"failover", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Failover(context.Background(), lb, types.CallOptions{})
+			return e
+		}},
+		{"statistics", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Statistics(context.Background(), lb, types.CallOptions{})
+			return e
+		}},
+		{"statuses", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.StatusTree(context.Background(), lb, types.CallOptions{})
+			return e
+		}},
+		{"child-create", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Listeners.Create(context.Background(), lb, loadbalancers.ListenerCreate{Protocol: "HTTP", ProtocolPort: port}, types.CallOptions{})
+			return e
+		}},
+		{"child-get", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Listeners.Get(context.Background(), listener, types.CallOptions{})
+			return e
+		}},
+		{"child-update", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Listeners.Update(context.Background(), listener, loadbalancers.ListenerUpdate{}, types.CallOptions{})
+			return e
+		}},
+		{"child-delete", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Members.Delete(context.Background(), member, types.CallOptions{})
+			return e
+		}},
+		{"batch", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Members.Replace(context.Background(), pool, []loadbalancers.MemberCreate{}, types.CallOptions{})
+			return e
+		}},
+		{"parent-list", func(_ *sdk.Client, c *loadbalancers.Client) error {
+			_, e := c.Members.Collect(context.Background(), pool, loadbalancers.ListOptions{}, pagination.Options{})
+			return e
+		}},
+		{"resource-status", func(root *sdk.Client, _ *loadbalancers.Client) error {
+			h, e := root.Resource(lb)
+			if e != nil {
+				return e
+			}
+			_, e = h.Status(context.Background())
+			return e
+		}},
+		{"resume-status", func(root *sdk.Client, _ *loadbalancers.Client) error {
+			cap, e := root.Catalog().Describe("loadbalancers.v2.loadbalancers.update")
+			if e != nil {
+				return e
+			}
+			r := types.Receipt{SchemaVersion: 1, CallID: "call", Scope: scope, OperationID: cap.OperationID, ContractRevision: cap.ContractRevision, Outcome: types.Accepted, Recovery: "resource", ResourceRefs: []types.ResourceRef{lb}, Endpoint: &types.EndpointBinding{ID: lb.EndpointID, URL: lb.EndpointURL, Scope: scope, APIGeneration: "v2", Audience: "selectel"}}
+			h, e := root.Resume(r)
+			if e != nil {
+				return e
+			}
+			_, e = h.Status(context.Background())
+			return e
+		}},
+	}
+	for _, call := range calls {
+		t.Run(call.name, func(t *testing.T) {
+			targets := 0
+			root, c := clientsAt(t, func(*http.Request) (*http.Response, error) { targets++; return response(200, `{}`), nil }, "https://new.test/v2")
+			e := call.run(root, c)
+			if types.ErrorCode(e) != types.EndpointUnavailable || targets != 0 {
+				t.Fatal(e, targets)
+			}
+		})
+	}
+}
+
+func TestChangedAuthenticatedCatalogCannotRetargetSavedReference(t *testing.T) {
+	scope := types.Scope{AccountID: "a", ProjectID: "p", Region: "r", Pool: "pool"}
+	targets := 0
+	root, e := sdk.New(sdk.Config{AccountID: "a", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+		return credentials.Material{Identity: "s", Revision: "1", Binding: scope, Audience: "selectel", Scheme: credentials.IAMToken, Token: types.Protect([]byte("synthetic")), ExpiresAt: time.Now().Add(time.Hour)}, nil
+	}), Transport: transport(func(r *http.Request) (*http.Response, error) {
+		if strings.HasSuffix(r.URL.Path, "auth/tokens") {
+			return response(200, `{"token":{"expires_at":"2099-01-01T00:00:00Z","project":{"id":"p","domain":{"name":"a"}},"catalog":[{"id":"svc","type":"load-balancer","endpoints":[{"id":"octavia","interface":"public","region_id":"pool","url":"https://changed.test/v2"}]}]}}`), nil
+		}
+		targets++
+		return response(200, `{}`), nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	ref := types.ResourceRef{Scope: scope, Service: "loadbalancers", APIGeneration: "v2", Kind: "loadbalancer", ID: "lb", EndpointID: "octavia", EndpointURL: "https://original.test/v2"}
+	h, e := root.Resource(ref)
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = h.Status(context.Background())
+	if types.ErrorCode(e) != types.EndpointUnavailable || targets != 0 {
+		t.Fatal(e, targets)
+	}
+}
+
+func TestAcceptedMalformedLoadBalancerKeepsTrustworthyIdentity(t *testing.T) {
+	root, c := clients(t, func(*http.Request) (*http.Response, error) {
+		return response(201, `{"loadbalancer":{"id":"lb","admin_state_up":"invalid"}}`), nil
+	})
+	got, e := c.Create(context.Background(), loadbalancers.LoadBalancerCreate{VIPSubnetID: ptr("subnet")}, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || got.Receipt.Outcome != types.Accepted || len(got.Receipt.ResourceRefs) != 1 || got.Receipt.ResourceRefs[0].ID != "lb" || got.Data.Ref != nil {
+		t.Fatal(e, len(got.Receipt.ResourceRefs))
+	}
+	h, e := root.Resume(*got.Receipt)
+	if e != nil {
+		t.Fatal(e)
+	}
+	recovered, e := h.Recover(context.Background())
+	if e != nil || recovered.ProofStatus != "conclusive" {
+		t.Fatal(e)
+	}
+}
+
+func TestAcceptedMalformedMonitorKeepsValidatedChildAndParent(t *testing.T) {
+	for _, row := range []struct {
+		body      string
+		wantChild bool
+	}{
+		{`{"healthmonitor":{"id":"hm","pools":[{"id":"po"}],"delay":"bad"}}`, true},
+		{`{"healthmonitor":{"id":"hm","pools":[{"id":"foreign"}],"delay":"bad"}}`, false},
+		{`{"healthmonitor":{"id":123,"pools":[{"id":"po"}],"delay":"bad"}}`, false},
+	} {
+		t.Run(row.body, func(t *testing.T) {
+			_, c := clients(t, func(*http.Request) (*http.Response, error) { return response(201, row.body), nil })
+			parent := types.ResourceRef{Scope: types.Scope{AccountID: "a", ProjectID: "p", Region: "r", Pool: "pool"}, Service: "loadbalancers", APIGeneration: "v2", Kind: "pool", ID: "po", EndpointID: "octavia", EndpointURL: "https://octavia.test/v2"}
+			delay, _ := types.ParseInteger("5")
+			timeout, _ := types.ParseInteger("3")
+			retries, _ := types.ParseInteger("2")
+			got, e := c.Monitors.Create(context.Background(), parent, loadbalancers.MonitorCreate{Type: "HTTP", Delay: delay, Timeout: timeout, MaxRetries: retries}, types.CallOptions{})
+			if types.ErrorCode(e) != types.ProtocolError || got.Receipt.Outcome != types.Accepted || got.Data.Ref != nil {
+				t.Fatal(e)
+			}
+			if len(got.Receipt.ResourceRefs) == 0 || got.Receipt.ResourceRefs[0].Kind != "pool" || got.Receipt.ResourceRefs[0].ID != "po" || got.Receipt.ResourceRefs[0].EndpointURL != parent.EndpointURL {
+				t.Fatal("known parent lost")
+			}
+			found := false
+			for _, r := range got.Receipt.ResourceRefs {
+				if r.Kind == "healthmonitor" {
+					found = true
+					if r.ID != "hm" || r.Parent == nil || r.Parent.ID != "po" {
+						t.Fatal("wrong identity")
+					}
+				}
+			}
+			if found != row.wantChild {
+				t.Fatal("trusted child lost/adopted", found)
+			}
+		})
+	}
+}
+
+func TestRootIdentitySurvivesMalformedUnrelatedRelationships(t *testing.T) {
+	_, c := clients(t, func(*http.Request) (*http.Response, error) {
+		return response(201, `{"loadbalancer":{"id":"lb","pools":"bad"}}`), nil
+	})
+	got, e := c.Create(context.Background(), loadbalancers.LoadBalancerCreate{VIPSubnetID: ptr("subnet")}, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || got.Receipt.Outcome != types.Accepted || len(got.Receipt.ResourceRefs) != 1 || got.Receipt.ResourceRefs[0].ID != "lb" {
+		t.Fatal(e, len(got.Receipt.ResourceRefs))
+	}
+}

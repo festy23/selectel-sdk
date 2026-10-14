@@ -7,7 +7,7 @@
     "method": "DELETE",
     "path": "/v2/lbaas/pools/{pool_id}/members/{member_id}",
     "DTO": "types.ResourceRef",
-    "scope": "caller authorization view; provider project_id remains owner metadata",
+    "scope": "caller authorization view; provider project_id remains owner metadata; every exact resource/parent request pins original endpoint ID+URL+scope+generation before target I/O",
     "variants": "TLS/L7 request variants excluded to #41, never unsupported; core optional fields preserve presence; parent IDs injected from exact refs; member batch additive_only explicit, Replace convenience forces false"
   },
   "response": {
@@ -15,7 +15,7 @@
       204
     ],
     "DTO": "Empty",
-    "mapping": "source-bound generated core/full-inline model; provisioning and operating states independent; precise Integer/Number, nullable member monitoring fields, raw provider timestamp strings; ref from wire ignored"
+    "mapping": "identity and required parent relationships validated before remaining DTO; trustworthy refs retained on acknowledged malformed payload, invalid/foreign identity never adopted; source-bound generated core/full-inline model; provisioning and operating states independent; precise Integer/Number, nullable member monitoring fields, raw provider timestamp strings; ref from wire ignored"
   },
   "errors": {
     "400": "provider_error",

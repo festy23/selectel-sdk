@@ -34,14 +34,7 @@ func (c *Client) Create(ctx context.Context, spec LoadBalancerCreate, opts types
 		}
 		return validateInput(spec)
 	}}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[LoadBalancer], error) {
-		var v struct {
-			LoadBalancer *LoadBalancer `json:"loadbalancer"`
-		}
-		if json.Unmarshal(raw, &v) != nil || v.LoadBalancer == nil || v.LoadBalancer.ID == "" {
-			return core.Decoded[LoadBalancer]{}, types.NewError(types.ProtocolError)
-		}
-		v.LoadBalancer.Ref = core.Ref(ep, "loadbalancers", "loadbalancer", v.LoadBalancer.ID)
-		return core.Decoded[LoadBalancer]{Data: *v.LoadBalancer, Refs: []types.ResourceRef{*v.LoadBalancer.Ref}}, linkNested(v.LoadBalancer)
+		return decodeResource[LoadBalancer](raw, ep, "loadbalancer", nil, nil)
 	})
 }
 
@@ -65,18 +58,8 @@ func (c *Client) valid(ref types.ResourceRef, kind string) error {
 	return nil
 }
 func (c *Client) Get(ctx context.Context, ref types.ResourceRef, o types.CallOptions) (types.Result[LoadBalancer], error) {
-	return core.DoJSON(c.runtime, ctx, operation("loadbalancers", "get", "GET", 200), core.Request{Scope: c.scope, Path: "/v2/lbaas/loadbalancers/" + segment(ref.ID), Options: o, Refs: []types.ResourceRef{ref}, Validate: func() error { return c.valid(ref, "loadbalancer") }}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[LoadBalancer], error) {
-		var v struct {
-			LoadBalancer *LoadBalancer `json:"loadbalancer"`
-		}
-		if json.Unmarshal(raw, &v) != nil || v.LoadBalancer == nil || v.LoadBalancer.ID != ref.ID {
-			return core.Decoded[LoadBalancer]{}, types.NewError(types.ProtocolError)
-		}
-		v.LoadBalancer.Ref = core.Ref(ep, "loadbalancers", "loadbalancer", v.LoadBalancer.ID)
-		if e := linkNested(v.LoadBalancer); e != nil {
-			return core.Decoded[LoadBalancer]{}, e
-		}
-		return core.Decoded[LoadBalancer]{Data: *v.LoadBalancer}, nil
+	return core.DoJSON(c.runtime, ctx, operation("loadbalancers", "get", "GET", 200), core.Request{Scope: c.scope, Path: "/v2/lbaas/loadbalancers/" + segment(ref.ID), Options: o, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(&ref), Validate: func() error { return c.valid(ref, "loadbalancer") }}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[LoadBalancer], error) {
+		return decodeResource[LoadBalancer](raw, ep, "loadbalancer", &ref, nil)
 	})
 }
 
@@ -84,7 +67,7 @@ type Empty struct{}
 
 func (c *Client) Update(ctx context.Context, ref types.ResourceRef, spec LoadBalancerUpdate, o types.CallOptions) (types.Result[LoadBalancer], error) {
 	body, e := json.Marshal(map[string]any{"loadbalancer": spec})
-	return core.DoJSON(c.runtime, ctx, operation("loadbalancers", "update", "PUT", 200, 202), core.Request{Scope: c.scope, Path: "/v2/lbaas/loadbalancers/" + segment(ref.ID), Body: body, Options: o, Refs: []types.ResourceRef{ref}, Validate: func() error {
+	return core.DoJSON(c.runtime, ctx, operation("loadbalancers", "update", "PUT", 200, 202), core.Request{Scope: c.scope, Path: "/v2/lbaas/loadbalancers/" + segment(ref.ID), Body: body, Options: o, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(&ref), Validate: func() error {
 		if e != nil {
 			return types.NewError(types.InvalidArgument)
 		}
@@ -93,14 +76,7 @@ func (c *Client) Update(ctx context.Context, ref types.ResourceRef, spec LoadBal
 		}
 		return c.valid(ref, "loadbalancer")
 	}}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[LoadBalancer], error) {
-		var v struct {
-			LoadBalancer *LoadBalancer `json:"loadbalancer"`
-		}
-		if json.Unmarshal(raw, &v) != nil || v.LoadBalancer == nil || v.LoadBalancer.ID != ref.ID {
-			return core.Decoded[LoadBalancer]{}, types.NewError(types.ProtocolError)
-		}
-		v.LoadBalancer.Ref = core.Ref(ep, "loadbalancers", "loadbalancer", ref.ID)
-		return core.Decoded[LoadBalancer]{Data: *v.LoadBalancer, Refs: []types.ResourceRef{*v.LoadBalancer.Ref}}, linkNested(v.LoadBalancer)
+		return decodeResource[LoadBalancer](raw, ep, "loadbalancer", &ref, nil)
 	})
 }
 func (c *Client) Delete(ctx context.Context, ref types.ResourceRef, cascade *bool, o types.CallOptions) (types.Result[Empty], error) {
@@ -108,5 +84,12 @@ func (c *Client) Delete(ctx context.Context, ref types.ResourceRef, cascade *boo
 	if cascade != nil {
 		q.Set("cascade", strconv.FormatBool(*cascade))
 	}
-	return core.DoJSON(c.runtime, ctx, operation("loadbalancers", "delete", "DELETE", 204), core.Request{Scope: c.scope, Path: "/v2/lbaas/loadbalancers/" + segment(ref.ID), Query: q, Options: o, Refs: []types.ResourceRef{ref}, Validate: func() error { return c.valid(ref, "loadbalancer") }}, func([]byte, types.EndpointBinding) (core.Decoded[Empty], error) { return core.Decoded[Empty]{}, nil })
+	return core.DoJSON(c.runtime, ctx, operation("loadbalancers", "delete", "DELETE", 204), core.Request{Scope: c.scope, Path: "/v2/lbaas/loadbalancers/" + segment(ref.ID), Query: q, Options: o, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(&ref), Validate: func() error { return c.valid(ref, "loadbalancer") }}, func([]byte, types.EndpointBinding) (core.Decoded[Empty], error) { return core.Decoded[Empty]{}, nil })
+}
+
+func pin(ref *types.ResourceRef) *types.EndpointBinding {
+	if ref == nil {
+		return nil
+	}
+	return &types.EndpointBinding{ID: ref.EndpointID, URL: ref.EndpointURL, Scope: ref.Scope, APIGeneration: ref.APIGeneration, Audience: "selectel"}
 }

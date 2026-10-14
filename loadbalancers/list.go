@@ -101,7 +101,7 @@ func iterate[T any](s service, resource, kind string, parentRef *types.ResourceR
 		if parentRef != nil {
 			refs = append(refs, *parentRef)
 		}
-		result, e := core.DoJSON(s.runtime, ctx, op, core.Request{Scope: s.scope, Path: path, Query: cq, Refs: refs, ExpectedEndpointID: expected}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[page[T]], error) {
+		result, e := core.DoJSON(s.runtime, ctx, op, core.Request{Scope: s.scope, Path: path, Query: cq, Refs: refs, PinnedEndpoint: pin(parentRef), ExpectedEndpointID: expected}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[page[T]], error) {
 			var env map[string]json.RawMessage
 			var data page[T]
 			if json.Unmarshal(raw, &env) != nil || json.Unmarshal(env[resource], &data.Items) != nil || data.Items == nil {

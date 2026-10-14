@@ -4989,9 +4989,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.healthmonitors.create.json": "5d852f3223e0c8bc0b4347c5fccec4e7b199cbd6e9f23e5bb65a14fbc933e963"
+      "contracts/loadbalancers.v2.healthmonitors.create.json": "6550571b20e61ad47ed7a1c95e8e089aaae40910f6d7b2e6425f2b50e78e9f98"
     },
-    "contract_revision": "b56975132fddf92d64ac3d6a4554d25ef6f477d6d78150d049a7afa3f76da9e3",
+    "contract_revision": "ca4cfa2e9d298b96a2b35646660d3033faa2ca5be9721b2ac51cd85a7bbeaaab",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.healthmonitors.create.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.healthmonitors.create.json#/errors",
@@ -5033,9 +5033,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "b56975132fddf92d64ac3d6a4554d25ef6f477d6d78150d049a7afa3f76da9e3",
+      "contract_revision": "ca4cfa2e9d298b96a2b35646660d3033faa2ca5be9721b2ac51cd85a7bbeaaab",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "0a5a65208d01f10f87813ba7c3bf3e9d0cb768ea6cc0cc6b0efd0159052bae53",
+      "implementation_revision": "371618525f97865f5cac2441f908b4e266c6a66c8a44252ed9157d4570971087",
       "level": "offline"
     },
     "wait_goals": [
@@ -5051,9 +5051,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.healthmonitors.delete.json": "9e332032329f1847469bbd5e3e32ea0e6a1a73c76176b35f51b9e6352cde9c11"
+      "contracts/loadbalancers.v2.healthmonitors.delete.json": "a806d56b15473ceb3b76e0e8f7c0a1e221884b647228cbed8752e0bf1a38d490"
     },
-    "contract_revision": "3398f00b597a1654dc9bd07af7956a2887100b743ef2e242d9ebf9261ce3bb7c",
+    "contract_revision": "33d9350846a24ac3abf23fb1d4513be92ca917411e2ec778b1ea6f4190260d1c",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.healthmonitors.delete.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.healthmonitors.delete.json#/errors",
@@ -5095,9 +5095,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "3398f00b597a1654dc9bd07af7956a2887100b743ef2e242d9ebf9261ce3bb7c",
+      "contract_revision": "33d9350846a24ac3abf23fb1d4513be92ca917411e2ec778b1ea6f4190260d1c",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "e8ade85f46433669f53ce89c89b454927b6ee59d592929ced5c81f09dd7bd5d5",
+      "implementation_revision": "85b36f8381552418fe21ae646570652d8adff2a8bd671f976768c50ce297f6fc",
       "level": "offline"
     },
     "wait_goals": [
@@ -5113,9 +5113,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.healthmonitors.get.json": "c8ecddf316268599756abce4687083b75f75fd1025d312f384f7e371721d19a7"
+      "contracts/loadbalancers.v2.healthmonitors.get.json": "ae520b2c5a766c8b229343394b3ec85748a509f6d548008e827fe446009f0c73"
     },
-    "contract_revision": "4fa15254d728852c516f18eff1d9bce27b76573808fe57f7da3e91a1f42a2574",
+    "contract_revision": "8e4e6285c548b67476f5138cc35617d4107a159932bd9d5b0db272400dae7715",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.healthmonitors.get.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.healthmonitors.get.json#/errors",
@@ -5157,9 +5157,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "4fa15254d728852c516f18eff1d9bce27b76573808fe57f7da3e91a1f42a2574",
+      "contract_revision": "8e4e6285c548b67476f5138cc35617d4107a159932bd9d5b0db272400dae7715",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "0f815434cfc6af4aa07eff60f90349c43154727d740982b7d35ad45635a65e6c",
+      "implementation_revision": "8e3ec4d9cb7774e14b1381c1e1434bfaa33f26c70a8e4be3b34ff61589d36390",
       "level": "offline"
     },
     "wait_goals": [
@@ -5175,9 +5175,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.healthmonitors.list.json": "a6e338022a97d1d4abab698e4dca98c60b3f0bfdd0ecca05e59cbd401f9a7419"
+      "contracts/loadbalancers.v2.healthmonitors.list.json": "af80be4756061af7ccfcc42304d3b464928ee506f97b5617f3fe3552777b513f"
     },
-    "contract_revision": "6282ee46940cdc827f5d0d1b82b76ab9250e3e31e5f43efd4b7beccda63874d5",
+    "contract_revision": "acd07ace7731c8a8bf1646938522908d4aeab9cc14819a9a3ce56b84ed48a405",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.healthmonitors.list.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.healthmonitors.list.json#/errors",
@@ -5219,9 +5219,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "6282ee46940cdc827f5d0d1b82b76ab9250e3e31e5f43efd4b7beccda63874d5",
+      "contract_revision": "acd07ace7731c8a8bf1646938522908d4aeab9cc14819a9a3ce56b84ed48a405",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "79b5773f3822afa582ec415440835b2a7ce48b1f2c26ca7992cbc378d675817d",
+      "implementation_revision": "6ed21e4844947bbafc036a1deac872b0aafb4cc2d8e61dd46c497dbc3ba045b4",
       "level": "offline"
     },
     "wait_goals": [
@@ -5237,9 +5237,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.healthmonitors.update.json": "7e82073708fda758c5b3cd724da11d0731f35df75ee5bfdea01d1ad333118850"
+      "contracts/loadbalancers.v2.healthmonitors.update.json": "632d93d26624f7a00d890a64ed1b38a173a1f64713fb9b5a8785c7e364306abc"
     },
-    "contract_revision": "6d334516eef1675fae6850a295c7d20ef709f2e3dbe74093d6de2accb04e08b0",
+    "contract_revision": "24f663393d8452a216180198fe6931b95d07989f8401dca5f2dc4e35a27f61d0",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.healthmonitors.update.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.healthmonitors.update.json#/errors",
@@ -5281,9 +5281,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "6d334516eef1675fae6850a295c7d20ef709f2e3dbe74093d6de2accb04e08b0",
+      "contract_revision": "24f663393d8452a216180198fe6931b95d07989f8401dca5f2dc4e35a27f61d0",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "6bf1b8fb93568a2758772e6bf995a154383883137687708de8aedbec1f00f8b0",
+      "implementation_revision": "526313d324658e8d578b85531ead064a70aa9366fb5a4d0ed3d63f784cb308f4",
       "level": "offline"
     },
     "wait_goals": [
@@ -5299,9 +5299,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.listeners.create.json": "1e012799c5b38a2078ff60c753720085f672c9c470ff62b08bd4aa20e3e588d8"
+      "contracts/loadbalancers.v2.listeners.create.json": "3fd309aac6b2a559f3cacb14c77a7c05a0897a3dc6933a200ee3ac73001bf77e"
     },
-    "contract_revision": "1f5921d027bc7b12868c6d8e932c1b713150e576e767b8c5c0cb35bdf9bfc957",
+    "contract_revision": "f39939159f4ef2ad1cadc99b95c7a7615f6b9f7b4e4bb23740ceffc3653d7224",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.listeners.create.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.listeners.create.json#/errors",
@@ -5345,9 +5345,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "1f5921d027bc7b12868c6d8e932c1b713150e576e767b8c5c0cb35bdf9bfc957",
+      "contract_revision": "f39939159f4ef2ad1cadc99b95c7a7615f6b9f7b4e4bb23740ceffc3653d7224",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "e0fdbb8e11e40d2ab720f2e701bc42724c54b60c86b196d7ff334f768ac9334e",
+      "implementation_revision": "ff441798f3892da792e52b237b6863df66bd7de6b0062994f12b18619025d43c",
       "level": "offline"
     },
     "wait_goals": [
@@ -5363,9 +5363,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.listeners.delete.json": "147a15f5d4d7c435e639f3efa05c641536c249ff3e91a11680a09499852346f6"
+      "contracts/loadbalancers.v2.listeners.delete.json": "f627fc0e72c7acea5e9e601f668eb36cbd8fce70e776be01439c304c193e214b"
     },
-    "contract_revision": "0319af4a29a3aa146fd13e1a8772285c9e24ff477b9567858c5d4f9ecb8a086d",
+    "contract_revision": "8fc2bd7d766fa0a19e28998da807d4c76c7fccf7cd6603e6c563f488cbc11515",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.listeners.delete.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.listeners.delete.json#/errors",
@@ -5407,9 +5407,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "0319af4a29a3aa146fd13e1a8772285c9e24ff477b9567858c5d4f9ecb8a086d",
+      "contract_revision": "8fc2bd7d766fa0a19e28998da807d4c76c7fccf7cd6603e6c563f488cbc11515",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "9b3ce22454056ead1e52e3307534f04bdd8224b7d0c3e4b9b92b15025b6af585",
+      "implementation_revision": "1e8242fcc56331b1ac9989c19eed647bc1761207d5d0b7f81c31d4bec0c6a041",
       "level": "offline"
     },
     "wait_goals": [
@@ -5425,9 +5425,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.listeners.get.json": "b9ecb7b113c9847b2043ad35d42493ca8eaca9b543041cb5f8cf7e4717e6d9c7"
+      "contracts/loadbalancers.v2.listeners.get.json": "10e5273d12727c713d7d531737cdc16720616966a81607bea4c6dda7aef8f78a"
     },
-    "contract_revision": "b5674d9613baac8be574e797025d27f671915d8bb0ed022b6a94689a5742f500",
+    "contract_revision": "724fba0494183210ec4a96d12a4a787fcafdba7b3009e8142af9ce76929f0d75",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.listeners.get.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.listeners.get.json#/errors",
@@ -5469,9 +5469,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "b5674d9613baac8be574e797025d27f671915d8bb0ed022b6a94689a5742f500",
+      "contract_revision": "724fba0494183210ec4a96d12a4a787fcafdba7b3009e8142af9ce76929f0d75",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "7e4444edc9783b741f592ea07262ebd14b16a14fb3cab50679f07f10aefa350d",
+      "implementation_revision": "3c863488bc6f677fa8564e6dca9c6c7eff5159c12d4b85bd68918c6d71ed39fd",
       "level": "offline"
     },
     "wait_goals": [
@@ -5487,9 +5487,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.listeners.list.json": "0117a3837d51dc8ef882943a420fbfb7b3a66ebf01e8979d8c6aba34b2e4e4ae"
+      "contracts/loadbalancers.v2.listeners.list.json": "9904d900e27cc7e5c43e53dcf02558bdb145e45698d3160441f3b45ff5a05f96"
     },
-    "contract_revision": "ce3c3c0096e46d49a78f1c5d9d03561f5d3ed32dbe1dc7e121078f1089ad549f",
+    "contract_revision": "652ba38f6afd526c7eebade0222fca3c09f4d01e0d55678e280bdc90a6294b11",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.listeners.list.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.listeners.list.json#/errors",
@@ -5531,9 +5531,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "ce3c3c0096e46d49a78f1c5d9d03561f5d3ed32dbe1dc7e121078f1089ad549f",
+      "contract_revision": "652ba38f6afd526c7eebade0222fca3c09f4d01e0d55678e280bdc90a6294b11",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "918f6c0980fdbfabecf454202e2f2d7b8129d1f6877f84799c238077587d17d1",
+      "implementation_revision": "fc20d69633b21f3ff4897908b8f0e38dcbfa81c0a69714a70986617aca7935c8",
       "level": "offline"
     },
     "wait_goals": [
@@ -5549,9 +5549,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.listeners.statistics.json": "9302103295aef4fe4169332a0fde6491dada9a1d1c881b6c30584b382b91ef0b"
+      "contracts/loadbalancers.v2.listeners.statistics.json": "0ac7037224bced61bdb33ba6173a24b4d7cd5e524670b8b8bd50681783ddb1ef"
     },
-    "contract_revision": "47b6b487b26978075f80b235a16f292aeb139941a9596ed7dd3ee900ea895109",
+    "contract_revision": "8c3d731f01a58f99ce7d3a7ce3c0fb0f8c2624cc00fad10cb70dc72bdb419be1",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.listeners.statistics.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.listeners.statistics.json#/errors",
@@ -5593,9 +5593,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "47b6b487b26978075f80b235a16f292aeb139941a9596ed7dd3ee900ea895109",
+      "contract_revision": "8c3d731f01a58f99ce7d3a7ce3c0fb0f8c2624cc00fad10cb70dc72bdb419be1",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "f2b7cdf118fa20bcdbffc8c4a017b66386bdaf536d888fc193c053e3a0b1b38f",
+      "implementation_revision": "9cf0f40e4f1e4ea29381247e2b5cff5a3c713971f7a66a2af6b0a2f46bdbf26d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5609,9 +5609,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.listeners.update.json": "1e1983ed790e83ab0a21e508eacd80d05372ba88116fa99726f040bbac5a902b"
+      "contracts/loadbalancers.v2.listeners.update.json": "dd784e4886abe8342ad22e48f93dd3d220b10ec1621dcfa7dd088f6036bdb4fd"
     },
-    "contract_revision": "30fdf7228a66c15202de2dd9155d37f57011271caa39fc5c8303824a7024d671",
+    "contract_revision": "521c56d89479ba5b44348e06b1349fd58657f3bd66f1f71f8d0e9f614ca8ea75",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.listeners.update.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.listeners.update.json#/errors",
@@ -5655,9 +5655,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "30fdf7228a66c15202de2dd9155d37f57011271caa39fc5c8303824a7024d671",
+      "contract_revision": "521c56d89479ba5b44348e06b1349fd58657f3bd66f1f71f8d0e9f614ca8ea75",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "5437ce73372ad16d5a3e1ef5637acc8216ed66c8830398c44523175898db1abe",
+      "implementation_revision": "67a41abb728c8cd22bc15546b3d4596db1462528a8cb2fe2ba00458374c74b77",
       "level": "offline"
     },
     "wait_goals": [
@@ -5673,9 +5673,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.loadbalancers.create.json": "e105e228ded71113ae96d8e20bf8385793bc11c171a376ff4f970386aab18df7"
+      "contracts/loadbalancers.v2.loadbalancers.create.json": "cdba164dc8bc8b80bb26dc467238fe6f9ede12704f98ff2f3c6a262a990f718c"
     },
-    "contract_revision": "b82bb253e32d5918ba67aa242a5d15d39ad09ecd92b9c6ac06387479b3801ee8",
+    "contract_revision": "94871cdc6704d93a411318d27d87f5890b3da292ebebec580ab66013f7faf95c",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.loadbalancers.create.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.loadbalancers.create.json#/errors",
@@ -5719,9 +5719,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "b82bb253e32d5918ba67aa242a5d15d39ad09ecd92b9c6ac06387479b3801ee8",
+      "contract_revision": "94871cdc6704d93a411318d27d87f5890b3da292ebebec580ab66013f7faf95c",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "2b9a9506502f0894cedf06e42402fa3216b3fa08c23d50b213cb64b162373748",
+      "implementation_revision": "91452685b7b580ff780bcaa4f3c4c225e83b7bbb0d4977fd84c9505212f00950",
       "level": "offline"
     },
     "wait_goals": [
@@ -5737,9 +5737,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.loadbalancers.delete.json": "4bd23a61cbbdecdafe6188adc7212ad29e625d23493f731bb4b3af8a5023b41d"
+      "contracts/loadbalancers.v2.loadbalancers.delete.json": "e4df81a8127b4a7740aaffa0755d071c6a55714a4145a8b5f9852be191e93a9a"
     },
-    "contract_revision": "2de745cc3ce4961e0cd5a92817c89d6bd016eac130442a8e74e31de8dd285ec3",
+    "contract_revision": "4fb72df86fd1397fe030199e9d5274a54e3311b1e44ba375b14d952768054379",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.loadbalancers.delete.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.loadbalancers.delete.json#/errors",
@@ -5781,9 +5781,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "2de745cc3ce4961e0cd5a92817c89d6bd016eac130442a8e74e31de8dd285ec3",
+      "contract_revision": "4fb72df86fd1397fe030199e9d5274a54e3311b1e44ba375b14d952768054379",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "abb8b802b0ec8ae5158605ccf5aa4e266ce7cdeee75b2571c191f1f16fd4bc24",
+      "implementation_revision": "9d1df0b9f1fae40c5a9b984cc667cfe8e86855c3e83377eb1119c57783a498ba",
       "level": "offline"
     },
     "wait_goals": [
@@ -5799,9 +5799,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.loadbalancers.failover.json": "6f981e06b31d8021508d6b497bf211b0d4aa5d0b56c0b8fd2f725f0feadb635b"
+      "contracts/loadbalancers.v2.loadbalancers.failover.json": "99bc103676a6b3ae5bc63f0288c7bb6086d3ee63ba42e6586b260200bf72949d"
     },
-    "contract_revision": "6b09193fbcec95bd12cfe0fe5181e7ec785c152b33b9b1e9f9c59e22bc4eb6d4",
+    "contract_revision": "c2514cac43bdc847b47ef801584f7713bf587c84ac4823578f0d5a3865509e7c",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.loadbalancers.failover.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.loadbalancers.failover.json#/errors",
@@ -5843,9 +5843,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "6b09193fbcec95bd12cfe0fe5181e7ec785c152b33b9b1e9f9c59e22bc4eb6d4",
+      "contract_revision": "c2514cac43bdc847b47ef801584f7713bf587c84ac4823578f0d5a3865509e7c",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "654f391b5a343f226c34a69785e17ec2c187ea6a51e2178bf94bc0736fbd62d8",
+      "implementation_revision": "0b2c334409994000612896f131cd50a7f628b4e73a4b36dc8ecb742b6c7fcf6c",
       "level": "offline"
     },
     "wait_goals": []
@@ -5859,9 +5859,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.loadbalancers.get.json": "15a47c78a9db100c0187ad077906dde82451747590ea15b50ec7dc6b29cad8be"
+      "contracts/loadbalancers.v2.loadbalancers.get.json": "06db356d7908fa89a9fbacc5e441f97d5a302577e5fc2528d6c4b3e6f98a5326"
     },
-    "contract_revision": "9e40998ef17ee581df62a860c621cea460d13cae34eff2fddc9413955806b2cc",
+    "contract_revision": "3c0f0c11efe3e884c276731dc9ec8182465ec9384ca6a3c25ef6281a21ce6d83",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.loadbalancers.get.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.loadbalancers.get.json#/errors",
@@ -5903,9 +5903,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "9e40998ef17ee581df62a860c621cea460d13cae34eff2fddc9413955806b2cc",
+      "contract_revision": "3c0f0c11efe3e884c276731dc9ec8182465ec9384ca6a3c25ef6281a21ce6d83",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "e310666f61d2824925522402b98cc19864a3ba5b0b2b58ff665f38f0d997e135",
+      "implementation_revision": "51399b84fcfca1ede3c6fcde4637c7cd9ff37028b541937421282961b5c0f6f0",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,9 +5921,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.loadbalancers.list.json": "4f4dfa431d5536dcff0d97e933a9918bcef055039872bc55f6e1690e5f70b783"
+      "contracts/loadbalancers.v2.loadbalancers.list.json": "929e7ab1efd7318b7c4ab7ee2e4382e1f29aed4958f70961ba7c9723474ad0ee"
     },
-    "contract_revision": "33af78fc8586bab013ad1d1af1a152be74c41e4e2a8c6a809c6fbd0eb7cf7794",
+    "contract_revision": "2c8543e67015053e4bfe2a46c46f381f67671f3a3f6f7d7570044157fb1ab9a1",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.loadbalancers.list.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.loadbalancers.list.json#/errors",
@@ -5965,9 +5965,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "33af78fc8586bab013ad1d1af1a152be74c41e4e2a8c6a809c6fbd0eb7cf7794",
+      "contract_revision": "2c8543e67015053e4bfe2a46c46f381f67671f3a3f6f7d7570044157fb1ab9a1",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "93e4dc9fe0eeea7fe34b02f5bd4b0b55ab55b607f6f8030fdb9e77ff1f6f2962",
+      "implementation_revision": "85b673835489c49b33e162725ad686347c3f454d405c8c2e9bb651cd405441cb",
       "level": "offline"
     },
     "wait_goals": [
@@ -5983,9 +5983,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.loadbalancers.statistics.json": "640262504477e0eda5a8860aefb1645f489db2ffe854008b41520014a9c3c5e7"
+      "contracts/loadbalancers.v2.loadbalancers.statistics.json": "1057453715afcfb6f95ca8b0253ca695e7d67eb3a7bdbc2019b270fbe8de8634"
     },
-    "contract_revision": "757ac3417d84c62ee2373c15e86b220e7b963f9f1d2024886436c796d301ecf8",
+    "contract_revision": "d357d5028640ae9cb4de12423b9258d28208031fa56388e513efbbd2da311bc8",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.loadbalancers.statistics.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.loadbalancers.statistics.json#/errors",
@@ -6027,9 +6027,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "757ac3417d84c62ee2373c15e86b220e7b963f9f1d2024886436c796d301ecf8",
+      "contract_revision": "d357d5028640ae9cb4de12423b9258d28208031fa56388e513efbbd2da311bc8",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "8960b23ba943644ed3d583c5b4111dab94b9831ca3ef4e71bfb11c641ef1f480",
+      "implementation_revision": "f6beb3b6d37303a8e613dec04bf70ad3da31bd515abacd5e9ce7d5e2a7d004db",
       "level": "offline"
     },
     "wait_goals": []
@@ -6043,9 +6043,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.loadbalancers.statuses.json": "9387b7778bbfba1fb942f436c832a43e8c67919a66b953367b321358659cf609"
+      "contracts/loadbalancers.v2.loadbalancers.statuses.json": "86ce97cc14252addcc649dd59631b9d97731a29229bb3f63f723e174038cc9c6"
     },
-    "contract_revision": "2a62526cba65ecf385ece0757eb745b641e0a131695ccd40e34e07427702c462",
+    "contract_revision": "11809a813c4d70290d435b19f195a693c11f1ddabac3a37353c1fdfa6f1ec9c7",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.loadbalancers.statuses.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.loadbalancers.statuses.json#/errors",
@@ -6087,9 +6087,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "2a62526cba65ecf385ece0757eb745b641e0a131695ccd40e34e07427702c462",
+      "contract_revision": "11809a813c4d70290d435b19f195a693c11f1ddabac3a37353c1fdfa6f1ec9c7",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "2969a130dbb61ab02ead4e4bd323a670d67a5f665d1936193e5195da6a1055ec",
+      "implementation_revision": "4884a283187dcee0d02dfc8d75027b6e0ba61f76ba3e688d7c4a717572b43240",
       "level": "offline"
     },
     "wait_goals": []
@@ -6103,9 +6103,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.loadbalancers.update.json": "a275f9dc12862dba8ef10ed4f02ff2e3adbd6381f9f0a1d883f7b7d73a2e2779"
+      "contracts/loadbalancers.v2.loadbalancers.update.json": "fb641bc2b4120ff67db78b3af22943d1d8fb926244fe82f07a5f2cdb0c1950fa"
     },
-    "contract_revision": "9d44ebe6d00df64d0bcfea68b50481ad7fa4254fea252c946f9aa9211191af73",
+    "contract_revision": "ea89e82573643edef376aef89179572232128e4c7ba66e5d26c937c74d3729ca",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.loadbalancers.update.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.loadbalancers.update.json#/errors",
@@ -6147,9 +6147,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "9d44ebe6d00df64d0bcfea68b50481ad7fa4254fea252c946f9aa9211191af73",
+      "contract_revision": "ea89e82573643edef376aef89179572232128e4c7ba66e5d26c937c74d3729ca",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "63531d01c88c86254ad79daf460a9b0193910c7c736734014a9a9e135c8a8591",
+      "implementation_revision": "a74eb3c659a180c596f8553d78eee85d4eb18ebd14cbc0b100b383b28d190940",
       "level": "offline"
     },
     "wait_goals": [
@@ -6165,9 +6165,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.members.batch_update.json": "a398b24240865a4dd52b81b9d6a3fb596d7b0c85ba22c14bc96cdbb331e775fc"
+      "contracts/loadbalancers.v2.members.batch_update.json": "5a57523cf26742f6dda8f2c7ce4c399e17928591f836c711aed9379e2ae03849"
     },
-    "contract_revision": "722a3e3cc041c4fe98f5b25d0a75ca7d8b8f324a57ccf40e4ea524a609b1df0c",
+    "contract_revision": "848f225bd774425623838b53f9e54c5b82d6e498b8574542ab2c7d96459d9804",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.members.batch_update.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.members.batch_update.json#/errors",
@@ -6209,9 +6209,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "722a3e3cc041c4fe98f5b25d0a75ca7d8b8f324a57ccf40e4ea524a609b1df0c",
+      "contract_revision": "848f225bd774425623838b53f9e54c5b82d6e498b8574542ab2c7d96459d9804",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "b9061e17bf862535c43b11c66d8539b64cf1a2a7aaf075074eabf232111b4ff3",
+      "implementation_revision": "a3714a76e8fb574f5f920be820708f18455e53ca487e0e150cb79176dd6f4190",
       "level": "offline"
     },
     "wait_goals": []
@@ -6225,9 +6225,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.members.create.json": "2b2a0e5e8f8a6f6c5cf12fe73e1360ac631f246eb21d4a786f66da868280b147"
+      "contracts/loadbalancers.v2.members.create.json": "d5e6d361fe51b1f467b4c019ebf5d55738eecda66dde58ddade76ba9a03fc50c"
     },
-    "contract_revision": "f0ad5b8e40d7e46c44f50daeecec8264b678fef01985e444d9dd16665e81c2e5",
+    "contract_revision": "64d663b7db85968ce13af06a908d4c29939a38c222050b514bce06b8baae2054",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.members.create.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.members.create.json#/errors",
@@ -6269,9 +6269,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "f0ad5b8e40d7e46c44f50daeecec8264b678fef01985e444d9dd16665e81c2e5",
+      "contract_revision": "64d663b7db85968ce13af06a908d4c29939a38c222050b514bce06b8baae2054",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "d19ca765a2a92cfedefd0866a9f25420350a28a286417cce77ac1fd43160d895",
+      "implementation_revision": "c45143d4389bb0939ae6d76c9747cfb6f450b3a285a3636511102d018a5332c3",
       "level": "offline"
     },
     "wait_goals": [
@@ -6287,9 +6287,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.members.delete.json": "acc853d13d172146f98dc21e95a4fa31fcfea2377bfc5354f737d79536da6144"
+      "contracts/loadbalancers.v2.members.delete.json": "714c59bf3447dd448bfee7fdcff250f0b989fc083ab2e7f6cee233afe8860dde"
     },
-    "contract_revision": "0a675dcb1999c5b7dc440200ea45c3d55071aeb68d90db24199b81e1955e46cc",
+    "contract_revision": "a2a2619015b8c99b9c7c41e08bc1946fd47ef69cd104277f026f04638faa6c89",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.members.delete.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.members.delete.json#/errors",
@@ -6331,9 +6331,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "0a675dcb1999c5b7dc440200ea45c3d55071aeb68d90db24199b81e1955e46cc",
+      "contract_revision": "a2a2619015b8c99b9c7c41e08bc1946fd47ef69cd104277f026f04638faa6c89",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "53780a625272afc8b50f01e3272cc285ea3ce711a252560a5fe9084b0f08919a",
+      "implementation_revision": "73a8305147090ae4af93c3cb5427864b6bcbabedf7c01fd20ded343c99ee9438",
       "level": "offline"
     },
     "wait_goals": [
@@ -6349,9 +6349,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.members.get.json": "b4001d8e12b5d15f9c6537ce02596ef5c04bfa59088ac95f10ae7f5b487eeb79"
+      "contracts/loadbalancers.v2.members.get.json": "074c324e5eadec8b9165941f77e60605fde5b2943b03105a2844aa587dc38c1a"
     },
-    "contract_revision": "70d1fc6c1a9d3a8150674f0cbdb6a0c5f4768c361e9a0c265d591ef6ec39c206",
+    "contract_revision": "6cd212796486f157864f3e260b2a6402201081c2e8002ecb8f75624724dbd317",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.members.get.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.members.get.json#/errors",
@@ -6393,9 +6393,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "70d1fc6c1a9d3a8150674f0cbdb6a0c5f4768c361e9a0c265d591ef6ec39c206",
+      "contract_revision": "6cd212796486f157864f3e260b2a6402201081c2e8002ecb8f75624724dbd317",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "550081a78f00d5a8a587d93308328530fc5133628d1ff5d813cb40232bde596c",
+      "implementation_revision": "1f81b2b9b549bbd45b9683151183e21be79743e5459c74de24c96cb2f6f312fd",
       "level": "offline"
     },
     "wait_goals": [
@@ -6411,9 +6411,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.members.list.json": "f4c2e819233c793f3b78e3c27c7c65e4dfa52429ad556666ec58d2fd43cb1c94"
+      "contracts/loadbalancers.v2.members.list.json": "04c21907e6f8aff65bea457c2d6a1051631a5aa9dc65347e31a6c439da779fe0"
     },
-    "contract_revision": "343123cde85a3b695944c348a84e56a8078859b6dd9fd293bffcc525e3f7633d",
+    "contract_revision": "e0fcfe142d16f291ab9162237b10465ff4472b75e2aa58071b6128eac97dc809",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.members.list.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.members.list.json#/errors",
@@ -6455,9 +6455,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "343123cde85a3b695944c348a84e56a8078859b6dd9fd293bffcc525e3f7633d",
+      "contract_revision": "e0fcfe142d16f291ab9162237b10465ff4472b75e2aa58071b6128eac97dc809",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "fbc152830efb9bba4f2280a5616b6aed4f94aae638773cc521b3fc891f8210da",
+      "implementation_revision": "095230cea165ff286cc139fed378cc3277063c591d0e230453d3d368bc32c992",
       "level": "offline"
     },
     "wait_goals": [
@@ -6473,9 +6473,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.members.update.json": "1937b62c284b5a789e9b265746a7fe011b655c9e455edc140265649ebadbfee3"
+      "contracts/loadbalancers.v2.members.update.json": "682f1bb919e3e2f22f0ebcb8e42cbf83cb81e762daf78c93aa7ba09b9dafa9f9"
     },
-    "contract_revision": "e14a3c75624e945298a2640f3ea1c113b06c98fb642f6a519d1cfa11930f594c",
+    "contract_revision": "a7ff2216f325f0902cdd8768e85335bfe3ec6db0776ef1fe13140b652f050aee",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.members.update.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.members.update.json#/errors",
@@ -6517,9 +6517,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "e14a3c75624e945298a2640f3ea1c113b06c98fb642f6a519d1cfa11930f594c",
+      "contract_revision": "a7ff2216f325f0902cdd8768e85335bfe3ec6db0776ef1fe13140b652f050aee",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "09b9a17827d2122d94ef0781540336fe63d87d440944c62371c4b7769ff2d1c9",
+      "implementation_revision": "a8f95a18d37ad1d4cd107e44ee880e9b12f9635996fd3b4409105b6ec32d34ae",
       "level": "offline"
     },
     "wait_goals": [
@@ -6535,9 +6535,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.pools.create.json": "39aa54b690ccdd7fb1880a783237c4e980df7e52fe1d39b21d0eee4acf78f7b3"
+      "contracts/loadbalancers.v2.pools.create.json": "ad1ec5e6ee8cad75d6dd11eddc3979c0c7aad97c2c8219885f901d7e11571dc0"
     },
-    "contract_revision": "852856c8fba574ba1f26bccd98955a6a117308da66e981c567465fbd46253bb3",
+    "contract_revision": "e7f1a62b229e99b087e07cd2d2b27a113ebfc4e09d157c5c5981c7f2fdcbc393",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.pools.create.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.pools.create.json#/errors",
@@ -6581,9 +6581,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "852856c8fba574ba1f26bccd98955a6a117308da66e981c567465fbd46253bb3",
+      "contract_revision": "e7f1a62b229e99b087e07cd2d2b27a113ebfc4e09d157c5c5981c7f2fdcbc393",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "87e383457170884f4cd57380e0755a0f7abbd7b49b088d2039cdf3eac34606ac",
+      "implementation_revision": "d590d903709e4adfb013e3191616fbac8f2e0ce53b46effe6b9ab4db5d961ba4",
       "level": "offline"
     },
     "wait_goals": [
@@ -6599,9 +6599,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.pools.delete.json": "aa37af4a7f91063a4c698dee42c2fdcfe33a0e2189b1e25c9284aa1961e87fef"
+      "contracts/loadbalancers.v2.pools.delete.json": "fbd5f35e45c8b0e733549cdf59dcab0f80d3def82129201d8fb1950bfb21e6e7"
     },
-    "contract_revision": "5c64a83c6dec44585e5286c1048baf7e3eb725c6bc096f0e78304064f413e021",
+    "contract_revision": "48a276a99a02b6daaeb095ca83d8c6d032acf4252a2e9af7122a53d2107b2f4a",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.pools.delete.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.pools.delete.json#/errors",
@@ -6643,9 +6643,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "5c64a83c6dec44585e5286c1048baf7e3eb725c6bc096f0e78304064f413e021",
+      "contract_revision": "48a276a99a02b6daaeb095ca83d8c6d032acf4252a2e9af7122a53d2107b2f4a",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "b80f9189e53f67c4d6597badbd1f4aa7e21a93cad88e5c5aadc463be9b14bc7e",
+      "implementation_revision": "f4c3222226a7b8e631e0268f4c51799ba1cd8198053240194d3b3d6b535cfb3a",
       "level": "offline"
     },
     "wait_goals": [
@@ -6661,9 +6661,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.pools.get.json": "c160a33af9b953edb1f118b0c87f9b26006aecc35c70ce57fe881a0e778c2e46"
+      "contracts/loadbalancers.v2.pools.get.json": "2a2286d342f88da45c3a13f54ca2d01ce95129819bec3e6b81303c190d9588c1"
     },
-    "contract_revision": "8deb8fdfda5a4d59394490d92b8c92a3069c7dfb0e6da417ededfa0607cc4c4a",
+    "contract_revision": "bea2d8846d1b8764cc5532257623e7588182b7bb7a299908892ab138dd062cf2",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.pools.get.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.pools.get.json#/errors",
@@ -6705,9 +6705,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "8deb8fdfda5a4d59394490d92b8c92a3069c7dfb0e6da417ededfa0607cc4c4a",
+      "contract_revision": "bea2d8846d1b8764cc5532257623e7588182b7bb7a299908892ab138dd062cf2",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "d75082a2ca5d3b20a73c2a296407663c8698eca69d4990383d6a90680814e674",
+      "implementation_revision": "a15b77fb283de611dc62e0bc2c00e18322fd31a727f2519af0acedb27a8f7111",
       "level": "offline"
     },
     "wait_goals": [
@@ -6723,9 +6723,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.pools.list.json": "abafafa78a620dbea36b02c527c3088d57face2474289b453c9c6d7e7fda0e9c"
+      "contracts/loadbalancers.v2.pools.list.json": "01dfbc7cb315d907a48abc5ce95852f3d8b1492c5ff7f8cd88f8bb543163ef7a"
     },
-    "contract_revision": "b0d35db2ec8c409455ec5088ae05b9de994152b7fc8273c17097c93eee2c7148",
+    "contract_revision": "bd128887ed3798fb9f1c6eca2bd3649c9d3d1b3dcf83681fa1ff0b3bc5fcd369",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.pools.list.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.pools.list.json#/errors",
@@ -6767,9 +6767,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "b0d35db2ec8c409455ec5088ae05b9de994152b7fc8273c17097c93eee2c7148",
+      "contract_revision": "bd128887ed3798fb9f1c6eca2bd3649c9d3d1b3dcf83681fa1ff0b3bc5fcd369",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "1b8c39e2de1d37ae30f1d5c9c6bf83a8c8e0b6f5288df38d223723f7242b8222",
+      "implementation_revision": "20ebf74a456276860d5ebf4d2673691581f71cf937edcbe2fe558864b3ec0fcc",
       "level": "offline"
     },
     "wait_goals": [
@@ -6785,9 +6785,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/loadbalancers.v2.pools.update.json": "05ae0a88b7f4fe443b2c3d24e9a6a438e75abc047ef72a23efd08ced8428e4de"
+      "contracts/loadbalancers.v2.pools.update.json": "86cc0464b1c03b6655394e3bee3a4eab58fc76a71c384d46ea025ba7cd95510e"
     },
-    "contract_revision": "130d06b60ffc3ce064e461d2a29a99e73961ad7a7ee1afc43f3a8d0167621dfd",
+    "contract_revision": "521318acdbe9f026eeba401606bfef94041589ed26e0a3e1066c8d8c7255bc22",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/loadbalancers.v2.pools.update.json#/endpoint",
     "error_binding_ref": "contracts/loadbalancers.v2.pools.update.json#/errors",
@@ -6831,9 +6831,9 @@
       "uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42"
     },
     "verification": {
-      "contract_revision": "130d06b60ffc3ce064e461d2a29a99e73961ad7a7ee1afc43f3a8d0167621dfd",
+      "contract_revision": "521318acdbe9f026eeba401606bfef94041589ed26e0a3e1066c8d8c7255bc22",
       "evidence_ref": "loadbalancers/public_test.go;loadbalancers/catalog_test.go",
-      "implementation_revision": "bdaa98118cc5ff998bfd9256421a0530557caa4ade1bd1a928714082e552b693",
+      "implementation_revision": "2ab0583f0ec65e1271910e59d8ee09d52c3950ec90542a76ac2f647f288352d5",
       "level": "offline"
     },
     "wait_goals": [

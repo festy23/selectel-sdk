@@ -175,13 +175,17 @@ func one[T any](s service, ctx context.Context, resource, kind, action, method s
 		}
 		body, bodyErr = json.Marshal(map[string]any{kind: fields})
 	}
+	pinned := pin(ref)
+	if ref == nil {
+		pinned = pin(parentRef)
+	}
 	refs := []types.ResourceRef{}
 	if ref != nil {
 		refs = append(refs, *ref)
 	} else if parentRef != nil {
 		refs = append(refs, *parentRef)
 	}
-	return core.DoJSON(s.runtime, ctx, operation(resource, action, method, statuses...), core.Request{Scope: s.scope, Path: path, Body: body, Refs: refs, Options: o, Validate: func() error {
+	return core.DoJSON(s.runtime, ctx, operation(resource, action, method, statuses...), core.Request{Scope: s.scope, Path: path, Body: body, Refs: refs, PinnedEndpoint: pinned, Options: o, Validate: func() error {
 		if spec != nil {
 			if e := validateInput(spec); e != nil {
 				return e
@@ -205,16 +209,7 @@ func one[T any](s service, ctx context.Context, resource, kind, action, method s
 		}
 		return nil
 	}}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[T], error) {
-		var envelope map[string]json.RawMessage
-		var v T
-		if json.Unmarshal(raw, &envelope) != nil || json.Unmarshal(envelope[kind], &v) != nil {
-			return core.Decoded[T]{}, types.NewError(types.ProtocolError)
-		}
-		target, e := attach(&v, ep, kind, ref, parentRef)
-		if e != nil {
-			return core.Decoded[T]{}, e
-		}
-		return core.Decoded[T]{Data: v, Refs: []types.ResourceRef{*target}}, nil
+		return decodeResource[T](raw, ep, kind, ref, parentRef)
 	})
 }
 func remove(s service, ctx context.Context, resource, kind string, ref types.ResourceRef, o types.CallOptions) (types.Result[Empty], error) {
@@ -222,7 +217,7 @@ func remove(s service, ctx context.Context, resource, kind string, ref types.Res
 	if kind == "member" && ref.Parent != nil {
 		path = "/v2/lbaas/pools/" + segment(ref.Parent.ID) + "/members/" + segment(ref.ID)
 	}
-	return core.DoJSON(s.runtime, ctx, operation(resource, "delete", "DELETE", 204), core.Request{Scope: s.scope, Path: path, Refs: []types.ResourceRef{ref}, Options: o, Validate: func() error { return s.valid(ref, kind) }}, func([]byte, types.EndpointBinding) (core.Decoded[Empty], error) { return core.Decoded[Empty]{}, nil })
+	return core.DoJSON(s.runtime, ctx, operation(resource, "delete", "DELETE", 204), core.Request{Scope: s.scope, Path: path, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(&ref), Options: o, Validate: func() error { return s.valid(ref, kind) }}, func([]byte, types.EndpointBinding) (core.Decoded[Empty], error) { return core.Decoded[Empty]{}, nil })
 }
 func (c *Listeners) Create(ctx context.Context, lb types.ResourceRef, spec ListenerCreate, o types.CallOptions) (types.Result[Listener], error) {
 	return one[Listener](c.service, ctx, "listeners", "listener", "create", "POST", []int{201}, nil, &lb, spec, o)
@@ -306,4 +301,59 @@ func linkNested(lb *LoadBalancer) error {
 		linkPoolChildren(&lb.Pools[i])
 	}
 	return nil
+}
+
+// decodeResource validates identity and addressing relationships independently
+// from optional payload fields. An accepted response can prove identity even
+// when its remaining DTO is malformed; foreign or malformed identities cannot.
+func decodeResource[T any](raw []byte, ep types.EndpointBinding, kind string, expected, parentRef *types.ResourceRef) (core.Decoded[T], error) {
+	var envelope map[string]json.RawMessage
+	if json.Unmarshal(raw, &envelope) != nil {
+		return core.Decoded[T]{}, types.NewError(types.ProtocolError)
+	}
+	body := envelope[kind]
+	var fields map[string]json.RawMessage
+	var id string
+	if json.Unmarshal(body, &fields) != nil || json.Unmarshal(fields["id"], &id) != nil || id == "" {
+		return core.Decoded[T]{}, types.NewError(types.ProtocolError)
+	}
+	var minimal T
+	var relationErr error
+	switch x := any(&minimal).(type) {
+	case *LoadBalancer:
+		x.ID = id
+	case *Listener:
+		x.ID = id
+		relationErr = json.Unmarshal(fields["loadbalancers"], &x.Loadbalancers)
+	case *Pool:
+		x.ID = id
+		relationErr = json.Unmarshal(fields["loadbalancers"], &x.Loadbalancers)
+		if relationErr == nil && parentRef != nil && parentRef.Kind == "listener" {
+			relationErr = json.Unmarshal(fields["listeners"], &x.Listeners)
+		}
+	case *Monitor:
+		x.ID = id
+		relationErr = json.Unmarshal(fields["pools"], &x.Pools)
+	case *Member:
+		x.ID = id
+	default:
+		return core.Decoded[T]{}, types.NewError(types.ProtocolError)
+	}
+	if relationErr != nil {
+		return core.Decoded[T]{}, types.NewError(types.ProtocolError)
+	}
+	target, e := attach(&minimal, ep, kind, expected, parentRef)
+	if e != nil {
+		return core.Decoded[T]{}, e
+	}
+	out := core.Decoded[T]{Refs: []types.ResourceRef{*target}}
+	var v T
+	if json.Unmarshal(body, &v) != nil {
+		return out, types.NewError(types.ProtocolError)
+	}
+	if _, e := attach(&v, ep, kind, expected, parentRef); e != nil {
+		return out, e
+	}
+	out.Data = v
+	return out, nil
 }
