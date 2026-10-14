@@ -1,0 +1,145 @@
+{
+  "operation_id": "databases.v1.user_setting_parameters.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v1",
+    "base_includes": "/v1",
+    "scope": "immutable account/project/location; IAM project token; no generation fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "source_schema": "sources/dbaas-go-user-settings.json#/paths/~1user-setting-parameters/get",
+    "source_operation": {
+      "x-operation-locator": "dbaas-go.UserSettingParameters",
+      "parameters": [
+        {
+          "in": "query",
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "in": "query",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "in": "query",
+          "name": "datastore_type_id",
+          "type": "string"
+        },
+        {
+          "in": "query",
+          "name": "datastore_id",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "properties": {
+              "user-setting-parameters": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/UserSettingParameter"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "databases/references.go",
+    "scope": "account/project/location required; project carried by auth token, not invented query",
+    "path": "/user-setting-parameters",
+    "parameters": {
+      "id": "corresponding optional pointer, including explicit empty value",
+      "name": "corresponding optional pointer, including explicit empty value",
+      "datastore_type_id": "corresponding optional pointer, including explicit empty value",
+      "datastore_id": "corresponding optional pointer, including explicit empty value"
+    },
+    "absence": "nil optional fields omitted, no provider defaults inserted"
+  },
+  "response": {
+    "dto_source": "databases/settings_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "source_item_schema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "apply_mechanism": {
+          "type": "string"
+        },
+        "default_value": {
+          "type": "string"
+        },
+        "min": {
+          "x-sdk-preserve-null": true
+        },
+        "max": {
+          "x-sdk-preserve-null": true
+        },
+        "choices": {
+          "type": "array",
+          "items": {},
+          "x-sdk-preserve-null": true
+        },
+        "is_available_for_customer": {
+          "type": "boolean"
+        },
+        "is_changeable": {
+          "type": "boolean"
+        },
+        "can_be_empty": {
+          "type": "boolean"
+        }
+      }
+    },
+    "envelope": "user-setting-parameters",
+    "success_statuses": [
+      200
+    ],
+    "field_mapping": "all source properties; optional fields preserve absence; min/max/choices preserve omitted/null/value through *Nullable; provider SDK ref discarded",
+    "scope_checks": "Get rejects returned ID differing from requested ID when present",
+    "numbers": "Integer/Primitive retain decimal literals without float64; SDK any constraints use ProtectedJSON preserving arbitrary JSON at explicit Reveal boundary",
+    "units": "provider unit verbatim; flavor ram MB and disk GB per source descriptions; no conversion",
+    "sensitive_fields": [
+      "min",
+      "max",
+      "choices[]"
+    ]
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated after bounded token refresh",
+    "403": "permission_denied",
+    "404": "not_found; for exact get",
+    "malformed_body": "protocol_error; missing/null item envelope rejected",
+    "foreign_id": "scope_mismatch",
+    "provider_message": "raw body not included in diagnostic output"
+  },
+  "retry": "bounded safe read only; no mutations",
+  "pagination": {
+    "shape": "single response",
+    "items": "user-setting-parameters",
+    "end": "full provider array; missing/null array is protocol_error",
+    "limits": "MaxItems/MaxPages and shared collection timeout",
+    "continuation": "replay original page plus skip; bound to operation/scope/generation/endpoint/filters/contract revision",
+    "consistency": "best_effort"
+  },
+  "verification": "offline only; source/SDK confirmation is not live API availability",
+  "wait": "unavailable; read only",
+  "recovery": "unavailable; read only"
+}

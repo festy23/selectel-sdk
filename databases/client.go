@@ -10,7 +10,13 @@ import (
 )
 
 type Client struct{ V1 V1Client }
-type V1Client struct{ Datastores *Datastores }
+type V1Client struct {
+	Datastores              *Datastores
+	DatastoreTypes          *DatastoreTypes
+	Flavors                 *Flavors
+	ConfigurationParameters *ConfigurationParameters
+	UserSettingParameters   *UserSettingParameters
+}
 type Datastores struct {
 	runtime *core.Runtime
 	scope   types.Scope
@@ -30,7 +36,7 @@ type ListOptions struct {
 }
 
 func Bind(r *core.Runtime, scope types.Scope) *Client {
-	return &Client{V1: V1Client{Datastores: &Datastores{runtime: r, scope: scope}}}
+	return &Client{V1: V1Client{Datastores: &Datastores{runtime: r, scope: scope}, DatastoreTypes: &DatastoreTypes{runtime: r, scope: scope}, Flavors: &Flavors{runtime: r, scope: scope}, ConfigurationParameters: &ConfigurationParameters{runtime: r, scope: scope}, UserSettingParameters: &UserSettingParameters{runtime: r, scope: scope}}}
 }
 func (c *Datastores) Iterate(f ListOptions, o pagination.Options) (*pagination.Iterator[Datastore], error) {
 	op, e := c.runtime.BindDocumented(core.Operation{ID: "databases.v1.datastores.list", Service: "databases", APIGeneration: "v1", Method: "GET", Effect: "read", Auth: types.IAMProject, RequireProject: true, RequireLocation: true, Success: []int{200}}, c.scope)

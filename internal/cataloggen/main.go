@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"dbaas-go-user-settings":       {"databases", "v1", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},

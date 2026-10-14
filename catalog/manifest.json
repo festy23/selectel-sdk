@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "12e75c422e37aa68feeb4dab3c163615ef54313951ea9b3297192151c2607057",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "71c52434b4b36f1b2b20ce41be8a8edd790c0f7bf4a8a92f311e56b970af69ac",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "b3699396f1fcb3e6a57a89f99e341590d67626f201ad98fd4e1bb7bab66cb0f7",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "800729019bb18d7cff6c3519e98bbe2341ff94845e31a54b4cb8e8561a0b4d7d",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +451,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "8160ca05b49aec66b7f1e01c4a5bbf58a8a230a482bdeae706849fd9c2003ad7",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +517,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "da1ef1d64b450e1eebbab196438a76bfe9ba7457ec6258d251345a19ef3cab08",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +583,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "efe295d1cf92b2a24d1224246775404382d8766b8beeea17b429482ff06e79b0",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +649,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "b6fbe8d42e1623e3396110fa74814ebde7a53e96324c694c78c0f14792242e46",
       "level": "offline"
     },
     "wait_goals": []
@@ -1472,33 +1472,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "80687fc599d16beaf1173855c0e42803acbc151edcdae9b865e81fe9fcdf89ed",
+    "contract_artifact_revisions": {
+      "contracts/databases.v1.configuration_parameters.get.json": "fe8b9d41d3fdf626f9344693971e4122331d57087db73a5b727891a392390650"
+    },
+    "contract_revision": "0404ea3798ae42db4355a9929eee5133cd16232334b0ba6371c11b9188ea51ce",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/managed-databases.json#/paths/~1configuration-parameters~1{configuration_parameter_id}/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/databases.v1.configuration_parameters.get.json#/endpoint",
+    "error_binding_ref": "contracts/databases.v1.configuration_parameters.get.json#/errors",
+    "go_method": "databases.ConfigurationParameters.Get",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "databases.ConfigurationParameters.Get",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/managed-databases.json#/paths/~1configuration-parameters~1{configuration_parameter_id}/get",
-    "input_type": null,
+    "input_type": "string",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "databases.v1.configuration_parameters.get",
     "output_schema_ref": "sources/managed-databases.json#/paths/~1configuration-parameters~1{configuration_parameter_id}/get/responses",
-    "output_type": null,
+    "output_type": "types.Result[databases.ConfigurationParameter]",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/managed-databases.json#/paths/~1configuration-parameters~1{configuration_parameter_id}/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/databases.v1.configuration_parameters.get.json#/retry",
+    "request_binding_ref": "contracts/databases.v1.configuration_parameters.get.json#/request",
     "resource": "configuration_parameters",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/databases.v1.configuration_parameters.get.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -1511,10 +1514,10 @@
       "uri": "https://docs.selectel.ru/api/managed-databases.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "0404ea3798ae42db4355a9929eee5133cd16232334b0ba6371c11b9188ea51ce",
+      "evidence_ref": "dbaas_reference_test.go",
+      "implementation_revision": "bf9910fef496cd9bb8ecf6e0d1537f675272b9b916ad38ec4ea46b3817c07381",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -1526,33 +1529,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "d1576230abfb5d6d6cafdfcdbd041eeda6cec86df0957f2d03c7d2d5d6955485",
+    "contract_artifact_revisions": {
+      "contracts/databases.v1.configuration_parameters.list.json": "6f6acb90d1719c6aa6139f43f931cf2c3bcc79cfa3bba98d2c95882debb1ce39"
+    },
+    "contract_revision": "ba20475354c410ede36fffc1bcda7547b176281c3a2eaec386930837d1babcea",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/managed-databases.json#/paths/~1configuration-parameters/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/databases.v1.configuration_parameters.list.json#/endpoint",
+    "error_binding_ref": "contracts/databases.v1.configuration_parameters.list.json#/errors",
+    "go_method": "databases.ConfigurationParameters.ListPage",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "databases.ConfigurationParameters.ListPage",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/managed-databases.json#/paths/~1configuration-parameters/get",
-    "input_type": null,
+    "input_type": "databases.ConfigurationParameterListOptions, pagination.Options",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "databases.v1.configuration_parameters.list",
     "output_schema_ref": "sources/managed-databases.json#/paths/~1configuration-parameters/get/responses",
-    "output_type": null,
-    "pagination_contract_ref": null,
+    "output_type": "pagination.Page[databases.ConfigurationParameter]",
+    "pagination_contract_ref": "contracts/databases.v1.configuration_parameters.list.json#/pagination",
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/managed-databases.json#/paths/~1configuration-parameters/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/databases.v1.configuration_parameters.list.json#/retry",
+    "request_binding_ref": "contracts/databases.v1.configuration_parameters.list.json#/request",
     "resource": "configuration_parameters",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/databases.v1.configuration_parameters.list.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -1565,10 +1571,10 @@
       "uri": "https://docs.selectel.ru/api/managed-databases.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "ba20475354c410ede36fffc1bcda7547b176281c3a2eaec386930837d1babcea",
+      "evidence_ref": "dbaas_reference_test.go",
+      "implementation_revision": "a362fc4ec5b6fa61bfd5abd0156ae54eaa1ddc5dd629c08bd57ff3d187339368",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -1850,33 +1856,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "de26de224f5bc01d41a08abb798cec66ecee83c809bdde7a6c4c1eed243525f0",
+    "contract_artifact_revisions": {
+      "contracts/databases.v1.datastore_types.get.json": "6dca58ccbf4d138f9e1dba9bdd6c98ed3bab4aa12ee4ec3c586369356b9ed8a4"
+    },
+    "contract_revision": "0dd166d21975f2c9407058abe75cd132ef3091dbf194e004b9bcdec6a007d2da",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/managed-databases.json#/paths/~1datastore-types~1{datastore_type_id}/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/databases.v1.datastore_types.get.json#/endpoint",
+    "error_binding_ref": "contracts/databases.v1.datastore_types.get.json#/errors",
+    "go_method": "databases.DatastoreTypes.Get",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "databases.DatastoreTypes.Get",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/managed-databases.json#/paths/~1datastore-types~1{datastore_type_id}/get",
-    "input_type": null,
+    "input_type": "string",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "databases.v1.datastore_types.get",
     "output_schema_ref": "sources/managed-databases.json#/paths/~1datastore-types~1{datastore_type_id}/get/responses",
-    "output_type": null,
+    "output_type": "types.Result[databases.DatastoreType]",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/managed-databases.json#/paths/~1datastore-types~1{datastore_type_id}/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/databases.v1.datastore_types.get.json#/retry",
+    "request_binding_ref": "contracts/databases.v1.datastore_types.get.json#/request",
     "resource": "datastore_types",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/databases.v1.datastore_types.get.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -1889,10 +1898,10 @@
       "uri": "https://docs.selectel.ru/api/managed-databases.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "0dd166d21975f2c9407058abe75cd132ef3091dbf194e004b9bcdec6a007d2da",
+      "evidence_ref": "dbaas_reference_test.go",
+      "implementation_revision": "9cdf09f82ddbc2e27dd06c2fa41a0e3b63c3e7d6036ecbd5b5e752ef9a2f7093",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -1904,33 +1913,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "f4d1355c15707eedf99fde6daa26cc42fad3d92e643459e88fc07a24d663936b",
+    "contract_artifact_revisions": {
+      "contracts/databases.v1.datastore_types.list.json": "0b1e59f317378b7580bc66e545789ce2856c053b0e941e8e17464314845ce241"
+    },
+    "contract_revision": "725d69cb95312fee1e9bcf133fb9785c4272611400e3c2a948997cbb10b4b5ba",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/managed-databases.json#/paths/~1datastore-types/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/databases.v1.datastore_types.list.json#/endpoint",
+    "error_binding_ref": "contracts/databases.v1.datastore_types.list.json#/errors",
+    "go_method": "databases.DatastoreTypes.ListPage",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "databases.DatastoreTypes.ListPage",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/managed-databases.json#/paths/~1datastore-types/get",
-    "input_type": null,
+    "input_type": "pagination.Options",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "databases.v1.datastore_types.list",
     "output_schema_ref": "sources/managed-databases.json#/paths/~1datastore-types/get/responses",
-    "output_type": null,
-    "pagination_contract_ref": null,
+    "output_type": "pagination.Page[databases.DatastoreType]",
+    "pagination_contract_ref": "contracts/databases.v1.datastore_types.list.json#/pagination",
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/managed-databases.json#/paths/~1datastore-types/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/databases.v1.datastore_types.list.json#/retry",
+    "request_binding_ref": "contracts/databases.v1.datastore_types.list.json#/request",
     "resource": "datastore_types",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/databases.v1.datastore_types.list.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -1943,10 +1955,10 @@
       "uri": "https://docs.selectel.ru/api/managed-databases.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "725d69cb95312fee1e9bcf133fb9785c4272611400e3c2a948997cbb10b4b5ba",
+      "evidence_ref": "dbaas_reference_test.go",
+      "implementation_revision": "791e6b9da94e0cf7cce76f593234242e24372a9b57d22156e58d02a2ffece769",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -2167,7 +2179,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "4b742f39a8d7c6985aa78d68b86a1673923cd3839eb1bf0d90fc4b3496ae297d",
       "level": "offline"
     },
     "wait_goals": []
@@ -3260,33 +3272,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "3049dc8fe965a6429181a236081016a4c387035ccf55a921379d961d5aaed5d1",
+    "contract_artifact_revisions": {
+      "contracts/databases.v1.flavors.get.json": "03c46b556bfbc891bbf63fe50a597764f552f96fc829448f410e9e9bc20f79cd"
+    },
+    "contract_revision": "c436377ee5bdd5555600fbbdfd7cef9ec4113b0507c4efb70b09c856d4b060a6",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/managed-databases.json#/paths/~1flavors~1{flavor_id}/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/databases.v1.flavors.get.json#/endpoint",
+    "error_binding_ref": "contracts/databases.v1.flavors.get.json#/errors",
+    "go_method": "databases.Flavors.Get",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "databases.Flavors.Get",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/managed-databases.json#/paths/~1flavors~1{flavor_id}/get",
-    "input_type": null,
+    "input_type": "string",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "databases.v1.flavors.get",
     "output_schema_ref": "sources/managed-databases.json#/paths/~1flavors~1{flavor_id}/get/responses",
-    "output_type": null,
+    "output_type": "types.Result[databases.Flavor]",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/managed-databases.json#/paths/~1flavors~1{flavor_id}/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/databases.v1.flavors.get.json#/retry",
+    "request_binding_ref": "contracts/databases.v1.flavors.get.json#/request",
     "resource": "flavors",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/databases.v1.flavors.get.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -3299,10 +3314,10 @@
       "uri": "https://docs.selectel.ru/api/managed-databases.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "c436377ee5bdd5555600fbbdfd7cef9ec4113b0507c4efb70b09c856d4b060a6",
+      "evidence_ref": "dbaas_reference_test.go",
+      "implementation_revision": "c17dbc3d2d1c111abc700c602ef64a47e6a7556b98b1b842ca055d135e48e36a",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -3314,33 +3329,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "18a7dd5bc148d48b2136a742a757cac935ae1a0e8e1ad908f3f483503706b46f",
+    "contract_artifact_revisions": {
+      "contracts/databases.v1.flavors.list.json": "75c5792fde20e1f7fb784e4a9da097c3169e44baa2dd56d55db2e783acab4b9b"
+    },
+    "contract_revision": "ad0772d08c6ebeabf5138ecd19f5b5d7360969cf4728600a2e9d22db94010ca1",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/managed-databases.json#/paths/~1flavors/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/databases.v1.flavors.list.json#/endpoint",
+    "error_binding_ref": "contracts/databases.v1.flavors.list.json#/errors",
+    "go_method": "databases.Flavors.ListPage",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "databases.Flavors.ListPage",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/managed-databases.json#/paths/~1flavors/get",
-    "input_type": null,
+    "input_type": "databases.FlavorListOptions, pagination.Options",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "databases.v1.flavors.list",
     "output_schema_ref": "sources/managed-databases.json#/paths/~1flavors/get/responses",
-    "output_type": null,
-    "pagination_contract_ref": null,
+    "output_type": "pagination.Page[databases.Flavor]",
+    "pagination_contract_ref": "contracts/databases.v1.flavors.list.json#/pagination",
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/managed-databases.json#/paths/~1flavors/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/databases.v1.flavors.list.json#/retry",
+    "request_binding_ref": "contracts/databases.v1.flavors.list.json#/request",
     "resource": "flavors",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/databases.v1.flavors.list.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -3353,10 +3371,10 @@
       "uri": "https://docs.selectel.ru/api/managed-databases.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "ad0772d08c6ebeabf5138ecd19f5b5d7360969cf4728600a2e9d22db94010ca1",
+      "evidence_ref": "dbaas_reference_test.go",
+      "implementation_revision": "42b87e35c7dea5b8eb271f91f4b81db04efd9ee866c8589660eafb3707872842",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -4711,6 +4729,128 @@
     "wait_goals": []
   },
   {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/databases.v1.user_setting_parameters.get.json": "ded23160211dc86e6c86693b3ff12349eecfaaf6530f4a544e7c0d006ffa3127"
+    },
+    "contract_revision": "57bc685d944d4d02137151af062f41549c2b19b710d04e68bc0aa06a8254d276",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/databases.v1.user_setting_parameters.get.json#/endpoint",
+    "error_binding_ref": "contracts/databases.v1.user_setting_parameters.get.json#/errors",
+    "go_method": "databases.UserSettingParameters.Get",
+    "implementation": {
+      "binding": "databases.UserSettingParameters.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/dbaas-go-user-settings.json#/paths/~1user-setting-parameters~1{user_setting_parameter_id}/get",
+    "input_type": "string",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "databases.v1.user_setting_parameters.get",
+    "output_schema_ref": "sources/dbaas-go-user-settings.json#/paths/~1user-setting-parameters~1{user_setting_parameter_id}/get/responses",
+    "output_type": "types.Result[databases.UserSettingParameter]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/dbaas-go-user-settings.json#/paths/~1user-setting-parameters~1{user_setting_parameter_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/databases.v1.user_setting_parameters.get.json#/retry",
+    "request_binding_ref": "contracts/databases.v1.user_setting_parameters.get.json#/request",
+    "resource": "user_setting_parameters",
+    "response_binding_ref": "contracts/databases.v1.user_setting_parameters.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "min",
+      "max",
+      "choices[]"
+    ],
+    "service": "databases",
+    "source": {
+      "operation_locator": "dbaas-go.UserSettingParameter",
+      "revision": "e113e3277fd3de1cbb4c00dbfb8eab8158b501866c2a2866d85d670cc50ce4dd",
+      "uri": "https://github.com/selectel/dbaas-go/blob/1e051e332ba3e5fc8690f27128be34f7fe2caa0d/user_setting_parameter.go"
+    },
+    "verification": {
+      "contract_revision": "57bc685d944d4d02137151af062f41549c2b19b710d04e68bc0aa06a8254d276",
+      "evidence_ref": "dbaas_reference_test.go",
+      "implementation_revision": "74b6c97bb24ce390bf67c0ac6259e5d485e652fa85258f278a7fc84165885df4",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/databases.v1.user_setting_parameters.list.json": "f2b58dff84a3445439a1f3424218e27a1294b8af2e79ff02f3608f18e6d60937"
+    },
+    "contract_revision": "5d4c5f58ad4f32bab5a956277ef9539661d8529054122ee2a64c8ccb66540cf4",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/databases.v1.user_setting_parameters.list.json#/endpoint",
+    "error_binding_ref": "contracts/databases.v1.user_setting_parameters.list.json#/errors",
+    "go_method": "databases.UserSettingParameters.ListPage",
+    "implementation": {
+      "binding": "databases.UserSettingParameters.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/dbaas-go-user-settings.json#/paths/~1user-setting-parameters/get",
+    "input_type": "databases.UserSettingParameterListOptions, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "databases.v1.user_setting_parameters.list",
+    "output_schema_ref": "sources/dbaas-go-user-settings.json#/paths/~1user-setting-parameters/get/responses",
+    "output_type": "pagination.Page[databases.UserSettingParameter]",
+    "pagination_contract_ref": "contracts/databases.v1.user_setting_parameters.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/dbaas-go-user-settings.json#/paths/~1user-setting-parameters/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/databases.v1.user_setting_parameters.list.json#/retry",
+    "request_binding_ref": "contracts/databases.v1.user_setting_parameters.list.json#/request",
+    "resource": "user_setting_parameters",
+    "response_binding_ref": "contracts/databases.v1.user_setting_parameters.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "min",
+      "max",
+      "choices[]"
+    ],
+    "service": "databases",
+    "source": {
+      "operation_locator": "dbaas-go.UserSettingParameters",
+      "revision": "e113e3277fd3de1cbb4c00dbfb8eab8158b501866c2a2866d85d670cc50ce4dd",
+      "uri": "https://github.com/selectel/dbaas-go/blob/1e051e332ba3e5fc8690f27128be34f7fe2caa0d/user_setting_parameter.go"
+    },
+    "verification": {
+      "contract_revision": "5d4c5f58ad4f32bab5a956277ef9539661d8529054122ee2a64c8ccb66540cf4",
+      "evidence_ref": "dbaas_reference_test.go",
+      "implementation_revision": "a88fd095fc6fea0c4c57f9ca52918c9cae57acef69c7dee08bccfc1cee86ba79",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
     "action": "create",
     "api_generation": "v1",
     "auth": {
@@ -5044,7 +5184,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "a0cb266500c4cfb4618171631349d9b90b8bbde7e1d51535051976eb74ac5917",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +5254,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "6e60184407562e2f462c696a45f9ea9322a61d5993b51ba1585f849b1e60f89e",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +5321,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "cc8404e872e5a8c5e4de17fdc1342e212f2ae5b90bd670b3c10452ecadf9ea26",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +5388,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "d8ef43104f2374e0975831e6331b6e49a95dca51f97f61930f7bac26c02e828d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +5454,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "e5eda30d081bbfde397e3df7af399db8117c7aa104d522aabc3d5ace292186d4",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +5520,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "59cd7488efda3aaf3abf19ec158ac40138b5cbe46bcf24b88abc283e8e6a033d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +5585,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "ce909b29e72685a81ac22f1549c67164960e2553a6660049d79e67bc9b151861",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +5642,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "7e0b8a5cebc913b4c10316cc4943bf69ce4bff7a77fbf4d6fbc44d84561eda44",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +5701,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "f5cc2bb84ebac1dd032740b7fa721ced14c483444b23964afbd516922f84f0b4",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +5760,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "beb15f4eece65079603bb54d04ba0b478e7b13e05a62e98a5c72453b969467d8",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +5821,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "9534ade8ae8622ef5d8fccdf7f10cd8d25653196b3759ae6ff3203bfe0b0250c",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +5880,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "8b9410e3f5dd2e47046631b4f529b86312270df32c6a9bdee46c3144b9f5623c",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +5939,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "072f2fc49f4e513131b5a37e7f8f72fcc3e21fc3f1bb7d88ea9db9f75f724cd4",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +6000,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "8723009c81a79b90dcfaf2ca676dfce1b2ed786200916b3c8f074fc66e211cf7",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +6061,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "29705aaa80c491c869b4e985188371f8d3fcedc4e79896da0b497e34b9c529cf",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +6118,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "dae2bc9dac286bbddfc15e7496ce4c442143ede7e7c03fb4fcdb6f8cc92640a7",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +6175,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "c73f0ad7d82e119272798d0215af09d23ae4ed37d30e7ead15e1b2f797206ebe",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +6236,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "5678fbc77c7632bc9101c623b353a94610001e4e196060115bdd72050e9441d6",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +6295,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "fb2dd059a0aee766816eb122ac791081ef55ad6946392703407332579c42fd65",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +6352,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "c83315f4b042ce9a3787973e257ffdbb31e4ef8072a7c5fcf0539a086d28834d",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +6411,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "8d87132852ed22a044553994327ec07144e31aff40f3644432d020c2c1025e2b",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +6470,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "7240a1fc1cfded96528bf58ff2c038c6236817eff8b17947a832746716a2ab50",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +6527,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "bcb3c8055d7bc8d4ffffedc006cb9e633f3e9e9e75a45c5c795c81f36b13ffe2",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +6584,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "528236b541c077a40e18ecaed384dae810e717481ae80f62d054211d80bdcf48",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +6643,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "dbceaadfae34ca7b56d17711906ab69c41e036852b12fb09743d05c2c2c653c9",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +6700,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "b907907038c8da4b48596f6e58b3f265f6a6c46cf675c5dba1b250af6741c08e",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +6757,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "d2364de015b472b11761c4c441f189db2607b0584d7814a15b9651fb4db14a01",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +6814,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "738bc3d41c9d238908a62a13c854c1af04a0ecfdfdcdcf7c993366f0d543405f",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +6871,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "1e1f22e18254ce04bcdd89d090fb4730ff99a3b25efb316e726a89a0f48ce5e7",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +6928,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "05f1a0f66e36ee5e14d89f90ec40214e22c288df34bfb9ba8c553f03c7e7c163",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +6990,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "f7e02c5441826dff21f1d7761890942f19832d108b1e07438f46fa5db5432ab8",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +7052,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "46b9e59671a4426e157826d3baa9d287632ee4f571920f379d7871aafe1b38a2",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +7113,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "f9b313f22aeaadf272080c265ba0b57b32aabe9a8706e8b188873a1e65f9b14f",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +7174,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "17b24bceb4c21f31d2ea7eb9e2bcd93dadfaca2a09cc29577fb8ba3df1290516",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +7233,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "0eea2ada39d66e25d33186cfa2cd166d9d0ceb95b8b1bdb13eed3ab2e269c763",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +7290,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "763dee87d5f710430cddd400bd0a5ff6c1015ab52afee2754a5b2cc68a666eb0",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +8035,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "585016648e35678fb6df6ae0981bfb79adf5d42aca1882177648994662b3679d",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +8091,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "0027894c2aad710d313e867646348a98299f5a529abedd81ab69b3e2fc799cfd",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +8147,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "70154df1fcbc60cd08e731512a012bc113ea26a370787d8033d2fb2d625af647",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +8203,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "6c3584978bcd057fd71778e96a0a5ef3bf818a0e0738409c48ad737d37fd5797",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +8259,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "8cc47d8a9b8fe3ee87ed5d14d90b19abfe76527565c74020a3156394fd99d135",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +8687,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "7a4a5d1d2627196b3c24a6f71c1bb9ccc95b9f53865c8d02e849fdc9b622cb9f",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +8744,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "5ef2d32e1ef07adad08519d3a4315ef1b89f7ba0eee9ea7e0a830eec36aa70be",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +8801,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "d9861fcff13de72e396d29a7e862a14b863c8005f88bdd7ed389f257d4d79adb",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +8858,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "116a3ecee5e276ac1ea5c2d74aa40d6e68f71a433b6ece10cafb70ad374069ab",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +9725,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "ca8bc6b30ebd80f46db799234031fdb070b9598682855efec788148496a650de",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +10324,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "bee8381826f0c0ae470e2e13527ddd2f69f1c9d5147539ef376ba793a2436a65",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +10381,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "c6b6cb1f2cffe9519dcd496c6ac3a7f3c51f222b7a913ae96ee7b78f41fb48c4",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +10440,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "096f4330af248e5e04e1ab23ee84594af9606a491d659dea7ad848da7929e14e",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +10497,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "51a03b3f4504952b9003bef6257c1906d5f10006afa008228cb37d3b6d5144e9",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +10554,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "9336342686b411176eedc17676ff2e2774caccdeda34496371102a1984e41d60",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +10613,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "5ae9d6929e742c19cffdc1d5006d53482b93d2b897fa809eb0b43c22fe2924e2",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +10672,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "414b18b2cf167e005ad44e685b83e5b9cea2f3ababf25b294967fea813294618",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +10729,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "441bac0f36ad11e24bea1c3aa262112a8c0c783654609e07946436456d0bd850",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +10786,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "e8c86e836814b46da6992276d2de2fc47ad7ee02765b3456caedbfc933b179cb",
       "level": "offline"
     },
     "wait_goals": []

@@ -1,0 +1,118 @@
+{
+  "operation_id": "databases.v1.user_setting_parameters.get",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v1",
+    "base_includes": "/v1",
+    "scope": "immutable account/project/location; IAM project token; no generation fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "source_schema": "sources/dbaas-go-user-settings.json#/paths/~1user-setting-parameters~1{user_setting_parameter_id}/get",
+    "source_operation": {
+      "x-operation-locator": "dbaas-go.UserSettingParameter",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "user_setting_parameter_id",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "properties": {
+              "user-setting-parameter": {
+                "$ref": "#/definitions/UserSettingParameter"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "databases/references.go",
+    "scope": "account/project/location required; project carried by auth token, not invented query",
+    "path": "/user-setting-parameters/{user_setting_parameter_id}",
+    "parameters": {
+      "user_setting_parameter_id": "exact caller ID as one escaped segment"
+    },
+    "absence": "nil optional fields omitted, no provider defaults inserted"
+  },
+  "response": {
+    "dto_source": "databases/settings_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "source_item_schema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "apply_mechanism": {
+          "type": "string"
+        },
+        "default_value": {
+          "type": "string"
+        },
+        "min": {
+          "x-sdk-preserve-null": true
+        },
+        "max": {
+          "x-sdk-preserve-null": true
+        },
+        "choices": {
+          "type": "array",
+          "items": {},
+          "x-sdk-preserve-null": true
+        },
+        "is_available_for_customer": {
+          "type": "boolean"
+        },
+        "is_changeable": {
+          "type": "boolean"
+        },
+        "can_be_empty": {
+          "type": "boolean"
+        }
+      }
+    },
+    "envelope": "user-setting-parameter",
+    "success_statuses": [
+      200
+    ],
+    "field_mapping": "all source properties; optional fields preserve absence; min/max/choices preserve omitted/null/value through *Nullable; provider SDK ref discarded",
+    "scope_checks": "Get rejects returned ID differing from requested ID when present",
+    "numbers": "Integer/Primitive retain decimal literals without float64; SDK any constraints use ProtectedJSON preserving arbitrary JSON at explicit Reveal boundary",
+    "units": "provider unit verbatim; flavor ram MB and disk GB per source descriptions; no conversion",
+    "sensitive_fields": [
+      "min",
+      "max",
+      "choices[]"
+    ]
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated after bounded token refresh",
+    "403": "permission_denied",
+    "404": "not_found; for exact get",
+    "malformed_body": "protocol_error; missing/null item envelope rejected",
+    "foreign_id": "scope_mismatch",
+    "provider_message": "raw body not included in diagnostic output"
+  },
+  "retry": "bounded safe read only; no mutations",
+  "pagination": null,
+  "verification": "offline only; source/SDK confirmation is not live API availability",
+  "wait": "unavailable; read only",
+  "recovery": "unavailable; read only"
+}

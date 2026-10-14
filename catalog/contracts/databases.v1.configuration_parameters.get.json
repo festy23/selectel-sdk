@@ -1,0 +1,218 @@
+{
+  "operation_id": "databases.v1.configuration_parameters.get",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v1",
+    "base_includes": "/v1",
+    "scope": "immutable account/project/location; IAM project token; no generation fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "source_schema": "sources/managed-databases.json#/paths/~1configuration-parameters~1{configuration_parameter_id}/get",
+    "source_operation": {
+      "description": "Returns a configuration parameter.",
+      "operationId": "getConfigurationParameter",
+      "parameters": [
+        {
+          "description": "Configuration parameter identifier.",
+          "in": "path",
+          "name": "configuration_parameter_id",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "The configuration parameter has been returned.",
+          "schema": {
+            "$ref": "#/definitions/configuration-parameterWrapper"
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_400"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Bad or expired token. You can reissue the token and try again.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_401"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Access is forbidden. Make sure you have the required rights.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_403"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Configuration parameter has not been found.",
+          "schema": {
+            "properties": {
+              "error": {
+                "$ref": "#/definitions/ErrorResponse_404"
+              }
+            }
+          }
+        }
+      },
+      "summary": "Get configuration parameter",
+      "tags": [
+        "Configuration parameters"
+      ]
+    },
+    "mapping_source": "databases/references.go",
+    "scope": "account/project/location required; project carried by auth token, not invented query",
+    "path": "/configuration-parameters/{configuration_parameter_id}",
+    "parameters": {
+      "configuration_parameter_id": "exact caller ID as one escaped segment"
+    },
+    "absence": "nil optional fields omitted, no provider defaults inserted"
+  },
+  "response": {
+    "dto_source": "databases/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "source_item_schema": {
+      "properties": {
+        "can_be_empty": {
+          "description": "Indicates whether the configuration parameter can have an empty value.",
+          "type": "boolean"
+        },
+        "choices": {
+          "description": "Available choices for the configuration parameter.",
+          "items": {
+            "description": "Any primitive value: number, string, boolean, null",
+            "type": [
+              "number",
+              "string",
+              "boolean",
+              "null"
+            ]
+          },
+          "type": "array"
+        },
+        "datastore_type_id": {
+          "description": "Unique identifier of the cluster type for which the configuration parameter is available.",
+          "example": "20d7bcf4-f8d6-4bf6-b8f6-46cb440a87f4",
+          "format": "UUID",
+          "type": "string"
+        },
+        "default_value": {
+          "description": "Default value of the configuration parameter.",
+          "type": [
+            "number",
+            "string",
+            "boolean",
+            "null"
+          ]
+        },
+        "factor": {
+          "description": "Factor of the configuration parameter. A number that divides configuration parameter value evenly.",
+          "example": 1,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "id": {
+          "description": "Configuration parameter identifier.",
+          "example": "20d7bcf4-f8d6-4bf6-b8f6-46cb440a87f4",
+          "format": "UUID",
+          "type": "string"
+        },
+        "invalid_values": {
+          "description": "List of invalid values for configuration parameter. If a value is in the list of `invalid_values`, an error is returned.",
+          "items": {
+            "description": "Any primitive value: number, string, boolean, null",
+            "type": [
+              "number",
+              "string",
+              "boolean",
+              "null"
+            ]
+          },
+          "type": "array"
+        },
+        "is_changeable": {
+          "description": "Indicates whether the configuration parameter can be changed.",
+          "type": "boolean"
+        },
+        "is_multiple_choice_available": {
+          "description": "Indicates whether the configuration parameter can have multiple choices.",
+          "type": "boolean"
+        },
+        "is_restart_required": {
+          "description": "Indicates whether the database needs a restart to apply changes.",
+          "type": "boolean"
+        },
+        "max": {
+          "description": "Maximum value of the configuration parameter.",
+          "type": [
+            "number",
+            "string",
+            "boolean",
+            "null"
+          ]
+        },
+        "min": {
+          "description": "Minimum value of the configuration parameter.",
+          "type": [
+            "number",
+            "string",
+            "boolean",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "Name of the configuration parameter.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Type of the configuration parameter.",
+          "type": "string"
+        },
+        "unit": {
+          "description": "Units of the configuration parameter.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "envelope": "configuration-parameter",
+    "success_statuses": [
+      200
+    ],
+    "field_mapping": "all source properties; optional fields preserve absence; provider SDK ref discarded",
+    "scope_checks": "Get rejects returned ID differing from requested ID when present",
+    "numbers": "Integer/Primitive retain decimal literals without float64; SDK any constraints use ProtectedJSON preserving arbitrary JSON at explicit Reveal boundary",
+    "units": "provider unit verbatim; flavor ram MB and disk GB per source descriptions; no conversion",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated after bounded token refresh",
+    "403": "permission_denied",
+    "404": "not_found; for exact get",
+    "malformed_body": "protocol_error; missing/null item envelope rejected",
+    "foreign_id": "scope_mismatch",
+    "provider_message": "raw body not included in diagnostic output"
+  },
+  "retry": "bounded safe read only; no mutations",
+  "pagination": null,
+  "verification": "offline only; source/SDK confirmation is not live API availability",
+  "wait": "unavailable; read only",
+  "recovery": "unavailable; read only"
+}
