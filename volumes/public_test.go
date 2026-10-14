@@ -20,7 +20,7 @@ func client(t *testing.T, wire transport) *volumes.Client             { _, c := 
 func clients(t *testing.T, wire transport) (*sdk.Client, *volumes.Client) {
 	t.Helper()
 	scope := types.Scope{AccountID: "a", ProjectID: "p", Region: "r", Pool: "pool"}
-	c, e := sdk.New(sdk.Config{AccountID: "a", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+	c, e := sdk.New(sdk.Config{AccountID: "a", PollInterval: time.Millisecond, Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
 		return credentials.Material{Identity: "s", Revision: "1", Scheme: credentials.IAMToken, Binding: scope, Audience: "selectel", Token: types.Protect([]byte("synthetic")), ExpiresAt: time.Now().Add(time.Hour)}, nil
 	}), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "volumes", APIGeneration: "v3", Scope: scope}: {ID: "cinder", URL: "https://cinder.test/v3/p", Scope: scope, APIGeneration: "v3", Audience: "selectel"}}, Transport: transport(func(r *http.Request) (*http.Response, error) {
 		if strings.HasSuffix(r.URL.Path, "auth/tokens") {

@@ -33,6 +33,6 @@
   },
   "retry": "bounded safe reads; never replay mutation",
   "pagination": "provider marker links, bounded and exact endpoint; QoS map local bounded replay",
-  "wait": "volume.available requires available (not in-use); volume.absent requires scoped404 plus complete bounded list without ID; WaitExtended exact size and explicit attached terminal; unknown states never success",
-  "recovery": "root Resource/Resume delegates exact-ref service Handle; known receipt conclusive; unknown receipt exact GET remains indeterminate, never mutation replay/name lookup/adoption; shared baseline no-ref receipt Resume unavailable even for known terminal outcome (remaining contract gap)"
+  "wait": "volume.available requires available (not in-use); volume.absent requires scoped404 plus complete bounded list without ID; WaitExtended polls stale stable sizes until exact target and explicit attached terminal within budget; only documented error states terminal failure; unknown states never success",
+  "recovery": "root Resource/Resume delegates exact-ref service Handle; known receipt conclusive; unknown receipt exact GET remains indeterminate, never mutation replay/name lookup/adoption; known accepted/rejected/not_sent no-ref receipt Resume supports conclusive Recover without I/O; Status/Wait unavailable without observation target"
 }

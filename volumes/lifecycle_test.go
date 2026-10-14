@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestLifecycleMetadataReplacementOnlineExtendAndDelete(t *testing.T) {
@@ -182,8 +183,10 @@ func TestWaitGoalsDoNotTreatInUseOrWrongSizeAsAvailable(t *testing.T) {
 		t.Fatalf("%+v %v", result, e)
 	}
 	target, _ = types.ParseInteger("21")
-	result, e = c.WaitExtended(context.Background(), r, target, true)
-	if types.ErrorCode(e) != types.OperationFailed || result.Complete {
+	deadline, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	defer cancel()
+	result, e = c.WaitExtended(deadline, r, target, true)
+	if types.ErrorCode(e) != types.DeadlineExceeded || result.Complete {
 		t.Fatalf("%+v %v", result, e)
 	}
 	h, e := c.Handle(r, nil)
@@ -424,5 +427,121 @@ func TestUpdateRejectsNullMetadataVariantAbsentFromSource(t *testing.T) {
 	got, e := c.Update(context.Background(), r, volumes.UpdateSpec{Metadata: &metadata}, types.CallOptions{})
 	if types.ErrorCode(e) != types.InvalidArgument || got.Receipt.Outcome != types.NotSent || calls != 0 {
 		t.Fatalf("%+v %v calls=%d", got, e, calls)
+	}
+}
+
+func TestKnownReceiptWithoutIdentityRecoversConclusiveWithoutIO(t *testing.T) {
+	for _, outcome := range []types.Outcome{types.Accepted, types.Rejected, types.NotSent} {
+		t.Run(string(outcome), func(t *testing.T) {
+			calls := 0
+			root, c := clients(t, func(*http.Request) (*http.Response, error) {
+				calls++
+				if outcome == types.Accepted {
+					return response(202, `{"volume":{}}`), nil
+				}
+				return response(403, `{}`), nil
+			})
+			n, _ := types.ParseInteger("1")
+			spec := volumes.CreateSpec{Size: &n}
+			if outcome == types.NotSent {
+				spec.Size = nil
+			}
+			got, e := c.Create(context.Background(), spec, types.CallOptions{})
+			if e == nil || got.Receipt.Outcome != outcome || len(got.Receipt.ResourceRefs) != 0 {
+				t.Fatalf("%+v %v", got, e)
+			}
+			noEndpoint := *got.Receipt
+			noEndpoint.Endpoint = nil
+			terminal, terminalErr := root.Resume(noEndpoint)
+			if terminalErr != nil {
+				t.Fatal(terminalErr)
+			}
+			proof, terminalErr := terminal.Recover(context.Background())
+			if terminalErr != nil || proof.ProofStatus != "conclusive" || proof.Receipt.Outcome != outcome {
+				t.Fatalf("missing endpoint proof %+v %v", proof, terminalErr)
+			}
+			before := calls
+			h, e := root.Resume(*got.Receipt)
+			if e != nil {
+				t.Fatal(e)
+			}
+			recovered, e := h.Recover(context.Background())
+			if e != nil || recovered.ProofStatus != "conclusive" || recovered.Receipt.Outcome != outcome || recovered.Observation != nil || calls != before {
+				t.Fatalf("%+v %v calls=%d", recovered, e, calls)
+			}
+			waited, e := h.Wait(context.Background(), "volume.available")
+			if e == nil || waited.Complete || calls != before {
+				t.Fatalf("receipt-only wait %+v %v", waited, e)
+			}
+			if _, e = h.Status(context.Background()); e == nil || calls != before {
+				t.Fatal("receipt-only status", e)
+			}
+			for _, mutate := range []func(*types.Receipt){func(r *types.Receipt) { r.Scope.AccountID = "foreign" }, func(r *types.Receipt) { r.SchemaVersion = 2 },
+				func(r *types.Receipt) { r.Scope.ProjectID = "" }, func(r *types.Receipt) { r.ContractRevision = "wrong" }, func(r *types.Receipt) { r.Outcome = types.Unknown }, func(r *types.Receipt) {
+					cap, _ := root.Catalog().Describe("volumes.v3.volumes.get")
+					r.OperationID = cap.OperationID
+					r.ContractRevision = cap.ContractRevision
+				}} {
+				wrong := *got.Receipt
+				mutate(&wrong)
+				if _, e = root.Resume(wrong); e == nil || calls != before {
+					t.Fatal("malformed/no-ref unknown receipt accepted", e)
+				}
+			}
+		})
+	}
+}
+func TestExtendWaitPollsStaleStateUntilExactTarget(t *testing.T) {
+	for _, attached := range []bool{false, true} {
+		t.Run(map[bool]string{false: "available", true: "in-use"}[attached], func(t *testing.T) {
+			calls := 0
+			c := client(t, func(r *http.Request) (*http.Response, error) {
+				if r.Method == "POST" {
+					return response(202, ""), nil
+				}
+				calls++
+				status := "available"
+				size := "10"
+				if attached {
+					status = "in-use"
+				}
+				if calls == 2 {
+					status = "extending"
+				}
+				if calls >= 3 {
+					size = "20"
+				}
+				return response(200, `{"volume":{"id":"v","size":`+size+`,"status":"`+status+`"}}`), nil
+			})
+			r := types.ResourceRef{Scope: types.Scope{AccountID: "a", ProjectID: "p", Region: "r", Pool: "pool"}, Service: "volumes", APIGeneration: "v3", Kind: "volume", ID: "v", EndpointID: "cinder", EndpointURL: "https://cinder.test/v3/p"}
+			n, _ := types.ParseInteger("20")
+			accepted, e := c.Extend(context.Background(), r, volumes.ExtendSpec{NewSize: n, Attached: attached}, types.CallOptions{})
+			if e != nil || accepted.Receipt.Outcome != types.Accepted {
+				t.Fatal("extend not accepted", e)
+			}
+			got, e := c.WaitExtended(context.Background(), r, n, attached)
+			if e != nil || !got.Complete || calls != 3 {
+				t.Fatalf("%+v %v calls=%d", got, e, calls)
+			}
+		})
+	}
+}
+func TestExtendWaitWrongOrDisallowedTerminalStateExhaustsBudget(t *testing.T) {
+	for _, state := range []string{"available", "in-use"} {
+		t.Run(state, func(t *testing.T) {
+			calls := 0
+			c := client(t, func(*http.Request) (*http.Response, error) {
+				calls++
+				return response(200, `{"volume":{"id":"v","size":30,"status":"`+state+`"}}`), nil
+			})
+			r := types.ResourceRef{Scope: types.Scope{AccountID: "a", ProjectID: "p", Region: "r", Pool: "pool"}, Service: "volumes", APIGeneration: "v3", Kind: "volume", ID: "v", EndpointID: "cinder", EndpointURL: "https://cinder.test/v3/p"}
+			ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+			defer cancel()
+			n, _ := types.ParseInteger("20")
+			got, e := c.WaitExtended(ctx, r, n, false)
+			if types.ErrorCode(e) != types.DeadlineExceeded || got.Complete || got.Last == nil || calls < 1 {
+				t.Fatalf("%+v %v calls=%d", got, e, calls)
+			}
+		})
 	}
 }

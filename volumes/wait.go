@@ -113,14 +113,12 @@ func (c *Client) WaitExtended(ctx context.Context, r types.ResourceRef, size typ
 		out.Last = &got
 		switch got.Data.Status {
 		case "available", "in-use":
-			if got.Data.Status == "in-use" && !attached {
-				return out, types.NewError(types.OperationFailed)
+			// A just-accepted extend may still expose the previous stable state.
+			// Only the exact target and explicitly allowed attachment state finish.
+			if got.Data.Size.String() == size.String() && (got.Data.Status == "available" || attached) {
+				out.Complete = true
+				return out, nil
 			}
-			if got.Data.Size.String() != size.String() {
-				return out, types.NewError(types.OperationFailed)
-			}
-			out.Complete = true
-			return out, nil
 		case "creating", "downloading", "restoring-backup", "extending":
 		case "error", "error_extending", "error_deleting", "error_restoring":
 			return out, types.NewError(types.OperationFailed)

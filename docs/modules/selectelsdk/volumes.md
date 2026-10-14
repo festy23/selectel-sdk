@@ -67,16 +67,20 @@ QoS map сортируется как в SDK по VolumeTypeID и entry name; se
 404 может скрывать ресурс от токена, отсутствие не доказывает физическое удаление
 вне текущего view. Incomplete list не доказывает отсутствие.
 `WaitExtended(ctx,ref,size,attached)` требует точного размера и available, либо
-in-use при explicit attached=true. Неизвестное состояние сохраняется и не успех.
+in-use при explicit attached=true. Старый размер в available/in-use после принятия
+Extend остаётся pending: waiter наблюдает до точного target либо deadline. Размер
+больше target и in-use без разрешения также не дают ложный успех; они ожидают
+в рамках budget. Только документированные error states дают OperationFailed.
+Неизвестное состояние сохраняется и не успех.
 Методы используют общие WaitTimeout/PollInterval и context cancellation.
 Handle/WaitExtended наблюдают caller-selected ref и не переигрывают неизвестную mutation.
 Root Resource/Resume делегирует exact-ref Cinder Handle; Resume сохраняет Receipt.
 Known receipt Recover conclusive без I/O; unknown остаётся indeterminate после exact GET.
-Baseline Resume требует один resource ref и endpoint: no-ID receipt возвращает
-RecoveryUnavailable, включая known terminal receipt без ID. Последнее — общий
-остаточный gap относительно conclusive Recover known outcomes, не выполненный
-критерий и не повод создавать фиктивный ID. No-ID unknown не позволяет recovery.
-Type/QoS read refs не имеют lifecycle handle.
+Known accepted/rejected/not_sent receipt без ref/endpoint также поддерживает
+conclusive Recover без I/O после проверки schema/account/revision/mutation effect
+и scope. NotSent Receipt содержит catalog revision даже при локальной ошибке
+валидации. Receipt-only Status/Wait не обещает готовность ресурса и unavailable.
+No-ID unknown не позволяет recovery. Type/QoS read refs не имеют lifecycle handle.
 
 ## Граница покрытия
 

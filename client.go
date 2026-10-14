@@ -107,6 +107,12 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
 	}
+	if capability.Effect != "mutation" {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if len(receipt.ResourceRefs) == 0 && receipt.ProviderOperationRef == nil && receipt.Outcome != types.Unknown {
+		return operations.BindReceipt(c.runtime, &receipt)
+	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)
 	}
