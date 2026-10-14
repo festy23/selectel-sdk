@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"compute-catalog":              {"compute", "v2_1", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,13 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"compute-catalog GET /os-keypairs":                                 "compute.v2_1.keypairs.list",
+	"compute-catalog POST /os-keypairs":                                "compute.v2_1.keypairs.create",
+	"compute-catalog GET /os-keypairs/{keypair_name}":                  "compute.v2_1.keypairs.get",
+	"compute-catalog DELETE /os-keypairs/{keypair_name}":               "compute.v2_1.keypairs.delete",
+	"compute-catalog GET /flavors/detail":                              "compute.v2_1.flavors.list",
+	"compute-catalog GET /flavors/{flavor_id}":                         "compute.v2_1.flavors.get",
+	"compute-catalog GET /flavors/{flavor_id}/os-extra_specs":          "compute.v2_1.flavors_extra_specs.get",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
@@ -233,6 +241,9 @@ func generate() error {
 						row["recovery_contract_ref"] = b.ContractRef + "#/recovery"
 					}
 					row["limitations"] = []string{"Verification does not establish live availability"}
+				}
+				if f.Service == "compute" {
+					row["scope_requirements"] = []string{"account", "project", "region", "pool"}
 				}
 				canonical, err := json.Marshal(row)
 				if err != nil {

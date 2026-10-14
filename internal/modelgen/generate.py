@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "compute": ("compute-catalog", {"Flavor":"Flavor", "FlavorExtraSpecs":"FlavorExtraSpecs", "PersonalityFile":"PersonalityFile", "BlockDeviceMapping":"BlockDeviceMapping", "LegacyBlockDeviceMapping":"LegacyBlockDeviceMapping", "NetworkAttachment":"NetworkAttachment", "KeyPair":"Keypair"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -49,6 +50,8 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
+    if package == "compute":
+        resource_roots = {"Flavor", "KeyPair"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -77,6 +80,22 @@ for case, (family, initial, top_name) in CASES.items():
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
         kind = schema.get("type")
+        if package == "compute" and field == "description":
+            return "types.Nullable[string]", False
+        if package == "compute" and field in {"deleted_at","updated_at"}:
+            return "types.Nullable[NovaTime]", False
+        if package == "compute" and field == "created_at":
+            return "NovaTime", False
+        if package == "compute" and field == "private_key":
+            return "types.ProtectedValue", False
+        if package == "compute" and field == "boot_index":
+            return "types.Nullable[types.Integer]", False
+        if package == "compute" and field == "port":
+            return "types.Nullable[string]", False
+        if package == "compute" and field in {"contents", "connection_info"}:
+            return "types.ProtectedValue", False
+        if package == "compute" and field == "swap":
+            return "FlavorSwap", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
@@ -122,6 +141,8 @@ for case, (family, initial, top_name) in CASES.items():
         required = []
         for wire, value in sorted(properties.items()):
             field_name = name(wire)
+            if package == "compute":
+                field_name = {"uuid":"UUID", "rxtx_factor":"RxTxFactor", "os-flavor-access:is_public":"IsPublic", "OS-FLV-EXT-DATA:ephemeral":"Ephemeral", "OS-FLV-DISABLED:disabled":"Disabled"}.get(wire, field_name)
             go_type, collection = field_type(value, type_name + field_name, wire)
             tag = "omitzero" if collection else "omitempty"
             if not collection:
@@ -137,6 +158,8 @@ for case, (family, initial, top_name) in CASES.items():
             code += "\tif " + " || ".join(required) + " { return types.NewError(types.ProtocolError) }\n"
         for wire, value in sorted(properties.items()):
             field_name = name(wire)
+            if package == "compute":
+                field_name = {"uuid":"UUID", "rxtx_factor":"RxTxFactor", "os-flavor-access:is_public":"IsPublic", "OS-FLV-EXT-DATA:ephemeral":"Ephemeral", "OS-FLV-DISABLED:disabled":"Disabled"}.get(wire, field_name)
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
@@ -151,6 +174,8 @@ for case, (family, initial, top_name) in CASES.items():
         code += f"func (v *{type_name}) normalize() {{\n"
         for wire, value in sorted(properties.items()):
             field_name = name(wire)
+            if package == "compute":
+                field_name = {"uuid":"UUID", "rxtx_factor":"RxTxFactor", "os-flavor-access:is_public":"IsPublic", "OS-FLV-EXT-DATA:ephemeral":"Ephemeral", "OS-FLV-DISABLED:disabled":"Disabled"}.get(wire, field_name)
             value = resolve(value)
             reference_name = value.get("$ref", "").split("/")[-1]
             nested = resolve(definitions.get(reference_name, value))
@@ -168,7 +193,12 @@ for case, (family, initial, top_name) in CASES.items():
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'
-            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
+            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value);\n"
+            if package == "compute" and reference == "Flavor":
+                code += 'if string(fields["description"]) == "null" {v.Description=types.Null[string]()}\n'
+            if package == "compute" and reference == "KeyPair":
+                code += 'if string(fields["deleted_at"]) == "null" {v.DeletedAt=types.Null[NovaTime]()}\nif string(fields["updated_at"]) == "null" {v.UpdatedAt=types.Null[NovaTime]()}\n'
+            code += "v.normalize(); return nil\n}\n"
         emitted[reference] = code
     filename = "v1_types_generated.go" if case == "registry_v1" else "types_generated.go"
     target = ROOT / package / filename

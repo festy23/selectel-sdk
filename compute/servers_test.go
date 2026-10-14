@@ -6,12 +6,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gophercloud/gophercloud/v2/openstack/compute/v2/servers"
 	sdk "github.com/festy23/selectel-sdk"
 	"github.com/festy23/selectel-sdk/compute"
 	"github.com/festy23/selectel-sdk/credentials"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
+	"github.com/gophercloud/gophercloud/v2/openstack/compute/v2/servers"
 	"io"
 	"net/http"
 	"strings"
@@ -207,16 +207,17 @@ func TestCreateValidationPreventsIO(t *testing.T) {
 	n := 0
 	_, s := client(t, func(*http.Request) (*http.Response, error) { n++; return nil, errors.New("must not send") })
 	bad := request()
-	bad.Options.Networks = nil
+	bad.Options.Networks = "unsupported-network-mode"
 	r, e := s.Create(context.Background(), bad)
 	if types.ErrorCode(e) != types.InvalidArgument || n != 0 || r.Receipt == nil || r.Receipt.Outcome != types.NotSent {
 		t.Fatal("invalid create sent")
 	}
 	bad = request()
+	bad.Options.Min = 3
 	bad.Options.Max = 2
 	_, e = s.Create(context.Background(), bad)
-	if types.ErrorCode(e) != types.CapabilityUnavailable || n != 0 {
-		t.Fatal("multi-create sent")
+	if types.ErrorCode(e) != types.InvalidArgument || n != 0 {
+		t.Fatal("invalid count bounds sent")
 	}
 }
 

@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "228440b9154fcdfde7509a77d9226957e19165df431bd76f162066f48950ff4a",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "f0d65cec9f4a85ddc66cb544ed5a18e18735eda417c5f18e27d043b40d65cf26",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "e9aa4f56ea4224c813311f7b6a39851f83446597649dca09d7436349e5e1ee6b",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,184 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "f1844bfdbe28a21a0b90595528af4b9d446adf340e9852d059efeaa779730c69",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2_1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/compute.v2_1.flavors.get.json": "7f7b9d8bdbc76609c7ffac47798e72bcfece1415ddb8c5c1b19e7a675e84bd35"
+    },
+    "contract_revision": "8441542c1a9be47e02e2a93ee24e07eed32c4f1c7648b797629ae0143942864a",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/compute.v2_1.flavors.get.json#/endpoint",
+    "error_binding_ref": "contracts/compute.v2_1.flavors.get.json#/errors",
+    "go_method": "compute.Flavors.Get",
+    "implementation": {
+      "binding": "compute.Flavors.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1{flavor_id}/get",
+    "input_type": "types.ResourceRef,types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "compute.v2_1.flavors.get",
+    "output_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1{flavor_id}/get/responses",
+    "output_type": "compute.Flavor",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1{flavor_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/compute.v2_1.flavors.get.json#/retry",
+    "request_binding_ref": "contracts/compute.v2_1.flavors.get.json#/request",
+    "resource": "flavors",
+    "response_binding_ref": "contracts/compute.v2_1.flavors.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [],
+    "service": "compute",
+    "source": {
+      "operation_locator": "GET /flavors/{flavor_id}",
+      "revision": "3eeac59dd1ad696276659ae2157d8e0c42ebbca742df856305701d7c4676749f",
+      "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
+    },
+    "verification": {
+      "contract_revision": "8441542c1a9be47e02e2a93ee24e07eed32c4f1c7648b797629ae0143942864a",
+      "evidence_ref": "compute/catalog_create_test.go",
+      "implementation_revision": "39e032b2b9ffe8d7f7fb30e36c965be8521c1cddf5ded8fb019ef17a0e74ab69",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2_1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/compute.v2_1.flavors.list.json": "0a00a7164322899e4d987beb49ffa22a3d35261ecbd108f35efdc74cea729c59"
+    },
+    "contract_revision": "4b4e3d9c9e4f18d40ceae8d1d2f87c3515afd65975bf5b7a5bea47c2b0d04528",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/compute.v2_1.flavors.list.json#/endpoint",
+    "error_binding_ref": "contracts/compute.v2_1.flavors.list.json#/errors",
+    "go_method": "compute.Flavors.ListPage",
+    "implementation": {
+      "binding": "compute.Flavors.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1detail/get",
+    "input_type": "compute.FlavorFilters,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "compute.v2_1.flavors.list",
+    "output_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1detail/get/responses",
+    "output_type": "pagination.Page[compute.Flavor]",
+    "pagination_contract_ref": "contracts/compute.v2_1.flavors.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1detail/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/compute.v2_1.flavors.list.json#/retry",
+    "request_binding_ref": "contracts/compute.v2_1.flavors.list.json#/request",
+    "resource": "flavors",
+    "response_binding_ref": "contracts/compute.v2_1.flavors.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [],
+    "service": "compute",
+    "source": {
+      "operation_locator": "GET /flavors/detail",
+      "revision": "3eeac59dd1ad696276659ae2157d8e0c42ebbca742df856305701d7c4676749f",
+      "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
+    },
+    "verification": {
+      "contract_revision": "4b4e3d9c9e4f18d40ceae8d1d2f87c3515afd65975bf5b7a5bea47c2b0d04528",
+      "evidence_ref": "compute/catalog_create_test.go",
+      "implementation_revision": "7c1bbf7de1dd3dbe5004ed2879da1701dc7fff5bbbbefb2ab6b7ede622098fd1",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2_1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/compute.v2_1.flavors_extra_specs.get.json": "3307d8fc69dc23971b84fb5400c4f6bf941df472146f0b869f6697282aa1e46e"
+    },
+    "contract_revision": "f2cc6d293b2f35ae71c6e1019fbfadce12c4be1f75f3cf5623f2bc4b9a45f732",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/compute.v2_1.flavors_extra_specs.get.json#/endpoint",
+    "error_binding_ref": "contracts/compute.v2_1.flavors_extra_specs.get.json#/errors",
+    "go_method": "compute.Flavors.ExtraSpecs",
+    "implementation": {
+      "binding": "compute.Flavors.ExtraSpecs",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1{flavor_id}~1os-extra_specs/get",
+    "input_type": "types.ResourceRef,types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "compute.v2_1.flavors_extra_specs.get",
+    "output_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1{flavor_id}~1os-extra_specs/get/responses",
+    "output_type": "compute.FlavorExtraSpecs",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/compute-catalog.json#/paths/~1flavors~1{flavor_id}~1os-extra_specs/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/compute.v2_1.flavors_extra_specs.get.json#/retry",
+    "request_binding_ref": "contracts/compute.v2_1.flavors_extra_specs.get.json#/request",
+    "resource": "flavors_extra_specs",
+    "response_binding_ref": "contracts/compute.v2_1.flavors_extra_specs.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [],
+    "service": "compute",
+    "source": {
+      "operation_locator": "GET /flavors/{flavor_id}/os-extra_specs",
+      "revision": "3eeac59dd1ad696276659ae2157d8e0c42ebbca742df856305701d7c4676749f",
+      "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
+    },
+    "verification": {
+      "contract_revision": "f2cc6d293b2f35ae71c6e1019fbfadce12c4be1f75f3cf5623f2bc4b9a45f732",
+      "evidence_ref": "compute/catalog_create_test.go",
+      "implementation_revision": "3d88c0300bea997b0dfc1354e1c5b028f22b5e2924c447b2133970b450987866",
       "level": "offline"
     },
     "wait_goals": []
@@ -398,16 +575,260 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/compute.v2_1.servers.create.json": "b7c76a30253472ac52cdc0855331afc03168bea12a4c2c2627d1d49e3d6f895c"
+      "contracts/compute.v2_1.keypairs.create.json": "00f38f76b0fb05abbbba019d6a4adc7d0047533bf70205e0a21e59c176fbf73d"
     },
-    "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
+    "contract_revision": "2aa58b1ac11595fe8f30aad1b33b5cd518a01a69c780de48f639c281b2a6f0f6",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/compute.v2_1.keypairs.create.json#/endpoint",
+    "error_binding_ref": "contracts/compute.v2_1.keypairs.create.json#/errors",
+    "go_method": "compute.Keypairs.Create",
+    "implementation": {
+      "binding": "compute.Keypairs.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs/post",
+    "input_type": "compute.KeypairCreateRequest,types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "compute.v2_1.keypairs.create",
+    "output_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs/post/responses",
+    "output_type": "compute.Keypair",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/compute.v2_1.keypairs.create.json#/retry",
+    "request_binding_ref": "contracts/compute.v2_1.keypairs.create.json#/request",
+    "resource": "keypairs",
+    "response_binding_ref": "contracts/compute.v2_1.keypairs.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "private_key"
+    ],
+    "service": "compute",
+    "source": {
+      "operation_locator": "POST /os-keypairs",
+      "revision": "3eeac59dd1ad696276659ae2157d8e0c42ebbca742df856305701d7c4676749f",
+      "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
+    },
+    "verification": {
+      "contract_revision": "2aa58b1ac11595fe8f30aad1b33b5cd518a01a69c780de48f639c281b2a6f0f6",
+      "evidence_ref": "compute/catalog_create_test.go",
+      "implementation_revision": "855cea0033321341e492133005d39f7ae1671ebe94a10685e7cacf44adc9eaaa",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2_1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/compute.v2_1.keypairs.delete.json": "dcf0b49ce8a2a4301a908680400f558e61eb12be37f61ee38562cf32a6f6ea19"
+    },
+    "contract_revision": "e7be9aa3049be3c4547ae6e1bfc89ffc7262e59d5d624edb170427cf38bbed77",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/compute.v2_1.keypairs.delete.json#/endpoint",
+    "error_binding_ref": "contracts/compute.v2_1.keypairs.delete.json#/errors",
+    "go_method": "compute.Keypairs.Delete",
+    "implementation": {
+      "binding": "compute.Keypairs.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs~1{keypair_name}/delete",
+    "input_type": "types.ResourceRef,types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "compute.v2_1.keypairs.delete",
+    "output_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs~1{keypair_name}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs~1{keypair_name}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/compute.v2_1.keypairs.delete.json#/retry",
+    "request_binding_ref": "contracts/compute.v2_1.keypairs.delete.json#/request",
+    "resource": "keypairs",
+    "response_binding_ref": "contracts/compute.v2_1.keypairs.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "private_key"
+    ],
+    "service": "compute",
+    "source": {
+      "operation_locator": "DELETE /os-keypairs/{keypair_name}",
+      "revision": "3eeac59dd1ad696276659ae2157d8e0c42ebbca742df856305701d7c4676749f",
+      "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
+    },
+    "verification": {
+      "contract_revision": "e7be9aa3049be3c4547ae6e1bfc89ffc7262e59d5d624edb170427cf38bbed77",
+      "evidence_ref": "compute/catalog_create_test.go",
+      "implementation_revision": "376a879a1f1a7ade5f1734b270ec3ac37009be0595fdb113f8aad47cb666014f",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2_1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/compute.v2_1.keypairs.get.json": "3b532fd43441d40ffa9e0b7e0513a348db5189471fc23fb5288f9329230741d3"
+    },
+    "contract_revision": "371026f17835fe9731beec4b19637ce10239a5c080b37faf03510a9c62d580cf",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/compute.v2_1.keypairs.get.json#/endpoint",
+    "error_binding_ref": "contracts/compute.v2_1.keypairs.get.json#/errors",
+    "go_method": "compute.Keypairs.Get",
+    "implementation": {
+      "binding": "compute.Keypairs.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs~1{keypair_name}/get",
+    "input_type": "types.ResourceRef,types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "compute.v2_1.keypairs.get",
+    "output_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs~1{keypair_name}/get/responses",
+    "output_type": "compute.Keypair",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs~1{keypair_name}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/compute.v2_1.keypairs.get.json#/retry",
+    "request_binding_ref": "contracts/compute.v2_1.keypairs.get.json#/request",
+    "resource": "keypairs",
+    "response_binding_ref": "contracts/compute.v2_1.keypairs.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "private_key"
+    ],
+    "service": "compute",
+    "source": {
+      "operation_locator": "GET /os-keypairs/{keypair_name}",
+      "revision": "3eeac59dd1ad696276659ae2157d8e0c42ebbca742df856305701d7c4676749f",
+      "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
+    },
+    "verification": {
+      "contract_revision": "371026f17835fe9731beec4b19637ce10239a5c080b37faf03510a9c62d580cf",
+      "evidence_ref": "compute/catalog_create_test.go",
+      "implementation_revision": "d20718505030cd5fb0abd551b260fa726aab622b2f7df5d4415345a43534bde1",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2_1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/compute.v2_1.keypairs.list.json": "422f1af2141931f50c987f11bd75a13ac47090a5dbef8de0cbd07218d98aea89"
+    },
+    "contract_revision": "bedeb44bade08375b724ed9f54cd88af97e7d856347271a61e66b3a1ce5d6704",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/compute.v2_1.keypairs.list.json#/endpoint",
+    "error_binding_ref": "contracts/compute.v2_1.keypairs.list.json#/errors",
+    "go_method": "compute.Keypairs.ListPage",
+    "implementation": {
+      "binding": "compute.Keypairs.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs/get",
+    "input_type": "compute.KeypairFilters,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "compute.v2_1.keypairs.list",
+    "output_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs/get/responses",
+    "output_type": "pagination.Page[compute.Keypair]",
+    "pagination_contract_ref": "contracts/compute.v2_1.keypairs.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/compute-catalog.json#/paths/~1os-keypairs/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/compute.v2_1.keypairs.list.json#/retry",
+    "request_binding_ref": "contracts/compute.v2_1.keypairs.list.json#/request",
+    "resource": "keypairs",
+    "response_binding_ref": "contracts/compute.v2_1.keypairs.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "private_key"
+    ],
+    "service": "compute",
+    "source": {
+      "operation_locator": "GET /os-keypairs",
+      "revision": "3eeac59dd1ad696276659ae2157d8e0c42ebbca742df856305701d7c4676749f",
+      "uri": "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/compute/v2"
+    },
+    "verification": {
+      "contract_revision": "bedeb44bade08375b724ed9f54cd88af97e7d856347271a61e66b3a1ce5d6704",
+      "evidence_ref": "compute/catalog_create_test.go",
+      "implementation_revision": "235d00c1b099e76597ec4448de4a6b875748ac8782d4419d32825d2df52363cd",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2_1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/compute.v2_1.servers.create.json": "433fe242279c10f27b8f1d3509c83217220688b29202a559cc9089e695e8443c"
+    },
+    "contract_revision": "15f527aebf995c290ea01838ec7609889959d037c243bcee6bf2e74a2975e62b",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/compute.v2_1.servers.create.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.servers.create.json#/errors",
-    "go_method": "compute.Servers.Create",
+    "go_method": "compute.Servers.CreateWithResult",
     "implementation": {
-      "binding": "compute.Servers.Create",
-      "status": "partial"
+      "binding": "compute.Servers.CreateWithResult",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/compute-nova.json#/paths/~1servers/post",
     "input_type": "compute.CreateRequest",
@@ -416,18 +837,11 @@
     ],
     "operation_id": "compute.v2_1.servers.create",
     "output_schema_ref": "sources/compute-nova.json#/paths/~1servers/post/responses",
-    "output_type": "compute.Server",
+    "output_type": "compute.CreateResult",
     "pagination_contract_ref": null,
     "parameter_support": {
       "covered_schema_ref": "contracts/compute.v2_1.servers.create.json#/request",
-      "excluded_variants": [
-        "Additional Nova microversions and API variants outside the initial v2.1 contract",
-        "Unknown extension fields not represented by native servers.Server",
-        "Multi-create",
-        "Implicit network selection and auto/none networks",
-        "Personality payloads",
-        "Newer microversion Tags, Hostname, HypervisorHostname, network tags, volume type/tags"
-      ]
+      "excluded_variants": []
     },
     "recovery_contract_ref": "contracts/compute.v2_1.servers.create.json#/recovery",
     "replay_policy_ref": "contracts/compute.v2_1.servers.create.json#/retry",
@@ -436,7 +850,9 @@
     "response_binding_ref": "contracts/compute.v2_1.servers.create.json#/response",
     "scope_requirements": [
       "account",
-      "project"
+      "project",
+      "region",
+      "pool"
     ],
     "sensitive_fields": [
       "adminPass",
@@ -445,13 +861,13 @@
     "service": "compute",
     "source": {
       "operation_locator": "POST /servers",
-      "revision": "8240fee7138de3fc5075132472a665babcef0fc0255c86d807f24363e0dc2c4c",
+      "revision": "7ae7a822f7f8bd834fad4a580cc4dd90c48cc06b4805ece3dd1e1ee4cf2878a5",
       "uri": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/compute/v2/servers/requests.go"
     },
     "verification": {
-      "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
-      "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "contract_revision": "15f527aebf995c290ea01838ec7609889959d037c243bcee6bf2e74a2975e62b",
+      "evidence_ref": "compute/catalog_create_test.go",
+      "implementation_revision": "6a7e4fc85b639745b28a981f8d18fe77b47fa0c0f4b7500c9fa31cb4b4c6c132",
       "level": "offline"
     },
     "wait_goals": [
@@ -470,7 +886,7 @@
     "contract_artifact_revisions": {
       "contracts/compute.v2_1.servers.delete.json": "1054ab701a5f80ed0a472c48b4ce1a6c24bae3c17edf053c6733e822d9a0b30c"
     },
-    "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
+    "contract_revision": "a0ac3f6e0e1671d7413201a924ae7b7a3d14a43899d6ea90e5e8e033f0c9e054",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/compute.v2_1.servers.delete.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.servers.delete.json#/errors",
@@ -502,7 +918,9 @@
     "response_binding_ref": "contracts/compute.v2_1.servers.delete.json#/response",
     "scope_requirements": [
       "account",
-      "project"
+      "project",
+      "region",
+      "pool"
     ],
     "sensitive_fields": [
       "adminPass",
@@ -511,13 +929,13 @@
     "service": "compute",
     "source": {
       "operation_locator": "DELETE /servers/{server_id}",
-      "revision": "8240fee7138de3fc5075132472a665babcef0fc0255c86d807f24363e0dc2c4c",
+      "revision": "7ae7a822f7f8bd834fad4a580cc4dd90c48cc06b4805ece3dd1e1ee4cf2878a5",
       "uri": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/compute/v2/servers/requests.go"
     },
     "verification": {
-      "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
+      "contract_revision": "a0ac3f6e0e1671d7413201a924ae7b7a3d14a43899d6ea90e5e8e033f0c9e054",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "123763c7450dfc14ed0276976826e4e550a69155a7d476d81ea0046b64769180",
       "level": "offline"
     },
     "wait_goals": [
@@ -536,7 +954,7 @@
     "contract_artifact_revisions": {
       "contracts/compute.v2_1.servers.get.json": "bc9736784b4830c0f616a584d4ed5cf3827ce14e91bec41b2eccae059b035ecf"
     },
-    "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
+    "contract_revision": "0c62c0657c338faad76c43fbf59dc31017856d2bf2bfa44f06cca857864b5529",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/compute.v2_1.servers.get.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.servers.get.json#/errors",
@@ -568,7 +986,9 @@
     "response_binding_ref": "contracts/compute.v2_1.servers.get.json#/response",
     "scope_requirements": [
       "account",
-      "project"
+      "project",
+      "region",
+      "pool"
     ],
     "sensitive_fields": [
       "adminPass",
@@ -577,13 +997,13 @@
     "service": "compute",
     "source": {
       "operation_locator": "GET /servers/{server_id}",
-      "revision": "8240fee7138de3fc5075132472a665babcef0fc0255c86d807f24363e0dc2c4c",
+      "revision": "7ae7a822f7f8bd834fad4a580cc4dd90c48cc06b4805ece3dd1e1ee4cf2878a5",
       "uri": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/compute/v2/servers/requests.go"
     },
     "verification": {
-      "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
+      "contract_revision": "0c62c0657c338faad76c43fbf59dc31017856d2bf2bfa44f06cca857864b5529",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "8996c715bec2dcc12b5e4936e35ca898ba84256d898e59e2d2527c6a01db87ab",
       "level": "offline"
     },
     "wait_goals": []
@@ -599,7 +1019,7 @@
     "contract_artifact_revisions": {
       "contracts/compute.v2_1.servers.list.json": "fa8ad368ccdbb7e7c1a560a54f796e4f62a1ec012c0f98dafad3d3b67eab3334"
     },
-    "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
+    "contract_revision": "b5d59436d661cacb02043dbc26e54e354ac74babe462cca04f669d6b94fa2f08",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/compute.v2_1.servers.list.json#/endpoint",
     "error_binding_ref": "contracts/compute.v2_1.servers.list.json#/errors",
@@ -634,7 +1054,9 @@
     "response_binding_ref": "contracts/compute.v2_1.servers.list.json#/response",
     "scope_requirements": [
       "account",
-      "project"
+      "project",
+      "region",
+      "pool"
     ],
     "sensitive_fields": [
       "adminPass",
@@ -643,13 +1065,13 @@
     "service": "compute",
     "source": {
       "operation_locator": "GET /servers/detail",
-      "revision": "8240fee7138de3fc5075132472a665babcef0fc0255c86d807f24363e0dc2c4c",
+      "revision": "7ae7a822f7f8bd834fad4a580cc4dd90c48cc06b4805ece3dd1e1ee4cf2878a5",
       "uri": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/compute/v2/servers/requests.go"
     },
     "verification": {
-      "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
+      "contract_revision": "b5d59436d661cacb02043dbc26e54e354ac74babe462cca04f669d6b94fa2f08",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "4b2b8d239a321e8f6bd8e8018b1ca5a29f459eb8647c27cc5b1b6da831047886",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2589,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "ca3bd416aafb215b590155c223d6c8d0641b181c456aec838782bbd83eac4dda",
       "level": "offline"
     },
     "wait_goals": []
@@ -5044,7 +5466,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "f0972b65326e5dfdd3e6ff20478b4d6ecb6f02e32dfc8a55d43199ae2abd747f",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +5536,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "bec92205c2ec5dbde455b7631a151e49249e5e761fe0be72baed7ea78298b8e7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +5603,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "e0fef081ced06cb56dbfab60dc93e60d5ef3549c7d7a69d61b2261251fc2febe",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +5670,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "f3c1ef8b5524e818dc69d44d75bdd3ed33cb2307c30825903e47b3a707174c80",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +5736,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "8aad186f0389a4cd97e509cea2c4aa25b24f6a66aab3c6f5f6838b9ab34445f8",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +5802,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "a28b2ae6176e6da22a98bafb46179add621ff8aa0f61db1a21d0871347fd3825",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +5867,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "3763dd03a1578768d450c42ef8480cefafd66fd93d1cb50044bf31319b367023",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +5924,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "d886ad02f9f958e556e8f008a71c3953c80369bd6df75ab576ed72b14eaf1e5d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +5983,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "562c870593c63a39567faef2c560e0bca833b49b21391f3fa86ea2d31b288a79",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +6042,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "0a143228920313f183c3aa1cba7e83a76c5b8bd60cd18a0017fd27a6dd0f4faa",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +6103,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "e33cdcc3d434de405f44beb405d3b86bb055ac16fe1242676dcc4445e07f18e6",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +6162,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "3e2fea02f2feb5b6d9e7de7e9e3669c997cb1dc322b99beec3412fbdccaa1ba5",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +6221,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "436981e5aa297aef9b2ad394852168c3996801ee9cbccaee776089ae9241ebd8",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +6282,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "999e22f28449aa81598e2aa70e9226c5e161dc35bce9bfa2f1d3427b2ec36ced",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +6343,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "384c9ef150e6a0e4f980b2a766c1a9b867941b977deb8aacc9d7d1cc7b237f67",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +6400,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "370264b358fbe64568c94bec8d4749705f36f4f1576450ada17717f358ef18fb",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +6457,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "7ff972b8081c5343d1233343aab5c42c8b6c39f35bf8de2119570415ebc729e5",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +6518,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "fa0ef3419953ac0c4c01038e4790c81c3706d42add76ce1251d1045ec61c868a",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +6577,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "4ad44ec87d776256e802ba7be987537ec1c2292c13598de765583c1c7f172fd3",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +6634,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "e7cd82ce37e5243be87399067ce9e492e597aef6fe9b1efab02be42eff92eb66",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +6693,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "b54650bb19f947beb2efe525cea351024c9d77045cbb8e6d3b0cbc1d595ce94f",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +6752,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "cf13a8532e483b0cd1017cba78491f0def1bc42f8094913985eba0bf71ee8b98",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +6809,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "3ac758eaef7ffcd790d8cdddd087e9ef631d4713645e73d6ef7a6896b01aa7ad",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +6866,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "139a63b27dae89353afe0155752d2d9e7521d5b1d250ab9fb7ec6a33ade34725",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +6925,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "969ba4888ef1bf5306e71801ea40d8edc982ddaa74d8df09fa3430ee8c097854",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +6982,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "504613d5cbded142e6e6c4ac9734f7d8568f00f8c68aef08bd949a6d09f82ff3",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +7039,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "4a4bfbcd25eaaabbaaa8b5252c68b13984b2fc386ba240cf72363d26e3c518c4",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +7096,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "2777d36b2ba958461e0310fdb2196b1d658d3ae6b1dde67ef91ab71109dee50e",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +7153,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "bcdae5f5c6d307ae087f4f0094cf45173a3b3ef7facc65d71419787070c476c6",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +7210,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "07164a46ac4d0e3bb9597d7bf4354c6c1b6bc3bbc500cc572079ff01de456e9b",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +7272,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "c8d325236fc78a1c69a0a9b1e0299daef7e6ade10331d176d0fc377e99552a52",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +7334,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "0f0ab4b9e0247f33aa3fe08661c58e91d64fbce08a6edecee39c411b181cb2fa",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +7395,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "f4f8c1b6f697f15967d4a01eb473ed9dd90e56b3aefcebd36b17edbbffd2cad9",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +7456,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "10ab6619fc0ca44eced381ece531e6bb7b6f4a8aaad63e825c874c08a45b2acf",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +7515,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "c083aa08764ce0c2b55ccbbbb4b8cdf9d0c219ec7f2095dbcde53505bda0f5d3",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +7572,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "6c11d5e58000fccaca7cd91c3afb9cea1a053c2d12a76fe537785b6c937f2e88",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +8317,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "d0b2052a32bbbcd15fe800a5852786b83affba50be44dd55eb082e822eeb32f3",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +8373,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "5c6796a2dc071f6ad60d41a4ae864c914f5cd04e406593a353668e6d13a6e7d7",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +8429,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "b4044c485e932e94a809ee30f1294aa12a2232cf50c792c7a5e60953f88fe197",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +8485,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "2246d5d9cdd403a2a1124dac1db413a0cc8e7c4ecb7a9b7cca2cb24fd3bcc130",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +8541,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "c87e3985237af9dc9b2be8ecae74d18ed42120cf8195e5106af2310e3eaaf12c",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +8969,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "90a4b4e8ff1447ec81526218d523d7c6ed7f02adbedcaedf8f3aed2471cc5925",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +9026,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "bd891148ce4e7a9eaaaf033e78a354b50281050fc66f797ab371d6f2c4d7a6e1",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +9083,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "9f4e3a69480ba56545e6ac8b67d7d2c3cf23358cde790e228553534fbd59faeb",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +9140,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "d6941efcf19f1afa6ff39404299f009a94533e05b86a0a7feeb6070b88adbe0e",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +10007,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "663475f61824acccf9710c05702e145ce2162179e520406cc6d97855d5124e93",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +10606,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "b857769db2698d1455b21a79460c602b6d3795a98c98ffa415e2c64353cc6d49",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +10663,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "47c74f14753b362f0908cb972b49b093f094202ade28a2e249e7bc061854ed81",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +10722,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "3e84d25efdf7a9c1d038f63e29078913bd0d3154cf0055b02fd3d74e1d11a5cc",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +10779,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "d4e03b3d91521e4f0818068a964956607b654591b68ccc550847e1d9eb33ea6f",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +10836,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "83ce595cf989c289ab0a674ebf0243ad1d8c0352c169a1d12662c4aab6f2eb88",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +10895,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "90170719fa5f6083c0693c05d04560203b8d737c64768fee92967e2be1050cf7",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +10954,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "bc6b8bd8a5e33dd8d4362cbd994b8f02d90e303fb29622ea7e53a956d22d0b25",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +11011,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "00665fdcfc46d4e7dfc6b44420eeb5a610b74a2914e55484d538775a664e01f0",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +11068,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "14becc8e676bd9a34cb47c3a3c3806caf4ed7f39f1b04aded0cf3fd9d5e13ec0",
       "level": "offline"
     },
     "wait_goals": []

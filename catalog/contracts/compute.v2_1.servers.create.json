@@ -3,31 +3,85 @@
   "endpoint": {
     "source": "exact project-scoped IAM compute catalog public endpoint for region/pool",
     "generation": "v2_1",
-    "microversion": "2.1",
-    "redirects": "reject"
+    "microversion": "explicit CreateRequest.Microversion2.1..2.93, default2.1; dual headers, no implicit upgrade",
+    "redirects": "reject",
+    "selectel_support": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli/"
   },
   "request": {
     "method": "POST",
     "path": "/servers",
-    "schema": "pinned Gophercloud v2.13.0 native DTO plus ProtectedValue replacements",
-    "scope": "explicit project/location",
-    "covered_fields": "compute/servers.go",
-    "excluded_variants": [
-      "Additional Nova microversions and API variants outside the initial v2.1 contract",
-      "Unknown extension fields not represented by native servers.Server",
-      "Multi-create",
-      "Implicit network selection and auto/none networks",
-      "Personality payloads",
-      "Newer microversion Tags, Hostname, HypervisorHostname, network tags, volume type/tags"
-    ]
+    "schema": "Gophercloud v2.13.0 servers.CreateOpts plus source-bound protected/extension DTOs generated from pinned Nova Zed3d1a705 schema",
+    "source_schema": "sources/compute-nova.json#/paths/~1servers/post",
+    "source_operation": {
+      "operationId": "Create",
+      "native_request_type": "compute.CreateRequest (protected/native options + source-bound extension DTOs)",
+      "native_response_type": "compute.CreateResult (server or reservation)",
+      "source_schema_revision": "3d1a705fc85a0f0a46e7cbc322e98fff892e21b8",
+      "supported_microversions": [
+        "2.1",
+        "2.93"
+      ],
+      "request_fields": [
+        "name",
+        "imageRef",
+        "flavorRef",
+        "adminPass",
+        "metadata",
+        "networks",
+        "OS-DCF:diskConfig",
+        "accessIPv4",
+        "accessIPv6",
+        "personality",
+        "availability_zone",
+        "block_device_mapping",
+        "block_device_mapping_v2",
+        "config_drive",
+        "key_name",
+        "min_count",
+        "max_count",
+        "return_reservation_id",
+        "security_groups",
+        "user_data",
+        "description",
+        "tags",
+        "trusted_image_certificates",
+        "host",
+        "hypervisor_hostname",
+        "hostname",
+        "os:scheduler_hints",
+        "OS-SCH-HNT:scheduler_hints"
+      ]
+    },
+    "scope": "immutable explicit project and location, exact IAM compute catalog endpoint",
+    "covered_fields": "every confirmed Zed server create field through2.93; protected AdminPassword/UserData/Personality.Contents/BDM.ConnectionInfo/BDM.NoDevice revealed only to source-bound request fields",
+    "typed_extensions": [
+      "KeyName",
+      "Description (omitted/null/value)",
+      "Host",
+      "TrustedImageCertificates (omitted/null/array)",
+      "SchedulerHints (native typed hints plus source-defined wildcard extension properties)",
+      "NetworkAttachments (explicit replacement of native networks; nullable port)",
+      "BlockDevices (v2 aliases/nullable boot index)",
+      "LegacyBlockDevices",
+      "ReturnReservationID"
+    ],
+    "validation": "field minimum versions, tag gaps2.33..2.41 for BDM and2.37..2.41 for networks, personality removed2.57, required networks and UUID format from2.37, hostname2.90 length2..63 label not FQDN, min/max positive ordered counts, source cert constraints; provider validates deployment permissions/quotas/extensions and remaining source constraints",
+    "sensitive_inputs": "native plaintext AdminPass/nonempty UserData/Personality rejected; protected replacements preserve bytes and encode base64 exactly once",
+    "counts": "multi-create supported; false return_reservation_id returns first VM only; no inferred refs for other VMs",
+    "excluded_variants": []
   },
   "response": {
-    "status": 202,
-    "mapping": "native DTO, adminPass/userdata moved into ProtectedValue; ID and project verified",
+    "successful_statuses": [
+      202
+    ],
+    "mapping": "CreateWithResult typed server-or-reservation union; compatibility Create returns first Server when reservation not requested; response follows the explicit request variant",
+    "server_mapping": "all documented create response fields via servers.Server; adminPass/user_data removed from native plaintext fields and exposed protected; source ID/project checked",
+    "reservation_mapping": "nonempty reservation_id retained as scoped server_reservation ref; no operation polling endpoint or resource adoption inferred",
     "sensitive_fields": [
       "adminPass",
       "OS-EXT-SRV-ATTR:user_data"
-    ]
+    ],
+    "malformed": "accepted receipt and trustworthy returned ID retained before unrelated decode failure"
   },
   "errors": {
     "400": "rejected validation",
@@ -70,11 +124,13 @@
         "ERROR"
       ],
       "pending": "all documented existing states except ERROR"
-    }
+    },
+    "availability": "single-server refs only; CreateAndWait rejects multi-create/reservation before HTTP. No batch/reservation wait contract."
   },
   "recovery": {
     "known_outcome": "conclusive receipt, no IO",
     "unknown_without_ID": "recovery_unavailable",
-    "unknown_with_exact_resource": "indeterminate observation; outcome remains unknown, no replay"
+    "unknown_with_exact_resource": "indeterminate observation; outcome remains unknown, no replay",
+    "reservation": "unavailable: exact reservation ref is acknowledgement metadata, not a proof or a remotely readable reservation resource; receipt.Recovery unavailable; no scanning/adoption/replay"
   }
 }

@@ -12,21 +12,25 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gophercloud/gophercloud/v2/openstack/compute/v2/servers"
 	"github.com/festy23/selectel-sdk/internal/core"
 	"github.com/festy23/selectel-sdk/operations"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
+	"github.com/gophercloud/gophercloud/v2/openstack/compute/v2/servers"
 )
 
-type Client struct{ Servers *Servers }
+type Client struct {
+	Servers  *Servers
+	Flavors  *Flavors
+	Keypairs *Keypairs
+}
 type Servers struct {
 	runtime *core.Runtime
 	scope   types.Scope
 }
 
 func Bind(r *core.Runtime, scope types.Scope) *Client {
-	return &Client{Servers: &Servers{runtime: r, scope: scope}}
+	return &Client{Servers: &Servers{runtime: r, scope: scope}, Flavors: &Flavors{runtime: r, scope: scope}, Keypairs: bindKeypairs(r, scope)}
 }
 
 type Server struct {
@@ -38,8 +42,18 @@ type Server struct {
 
 // Native options are reused, while sensitive inputs have explicit protected fields.
 type CreateRequest struct {
-	Options                 servers.CreateOpts
-	AdminPassword, UserData *types.ProtectedValue
+	NetworkAttachments       []NetworkAttachment
+	BlockDevices             []BlockDeviceMapping
+	LegacyBlockDevices       []LegacyBlockDeviceMapping
+	ReturnReservationID      *bool
+	KeyName, Host            *string
+	Description              *types.Nullable[string]
+	TrustedImageCertificates *types.Nullable[[]string]
+	Personality              []PersonalityFile
+	SchedulerHints           *servers.SchedulerHintOpts
+	Microversion             string
+	Options                  servers.CreateOpts
+	AdminPassword, UserData  *types.ProtectedValue
 }
 
 func (r CreateRequest) Format(s fmt.State, _ rune)   { _, _ = io.WriteString(s, "[VM Create Request]") }
@@ -81,7 +95,11 @@ func decodeServer(raw json.RawMessage, endpoint types.EndpointBinding, expected 
 		return Server{}, types.NewError(types.ScopeMismatch)
 	}
 	out := Server{Server: native, Ref: ref(endpoint, native.ID)}
-	if native.AdminPass != "" {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil {
+		return Server{}, types.NewError(types.ProtocolError)
+	}
+	if _, present := fields["adminPass"]; present {
 		v := types.Protect([]byte(native.AdminPass))
 		out.AdminPassword = &v
 		out.Server.AdminPass = ""
@@ -134,31 +152,63 @@ func (s *Servers) Delete(ctx context.Context, r types.ResourceRef) (types.Result
 }
 func createBody(request CreateRequest) ([]byte, error) {
 	opts := request.Options
-	if opts.Name == "" || opts.FlavorRef == "" || (opts.ImageRef == "" && len(opts.BlockDevice) == 0) {
+	if e := validateCreateFields(request); e != nil {
+		return nil, e
+	}
+	minor, _, versionErr := microversion(request.Microversion)
+	if versionErr != nil {
+		return nil, versionErr
+	}
+	if opts.Name == "" || opts.FlavorRef == "" || (opts.ImageRef == "" && len(opts.BlockDevice) == 0 && len(request.BlockDevices) == 0 && len(request.LegacyBlockDevices) == 0) {
 		return nil, types.NewError(types.InvalidArgument)
 	}
-	if opts.Min > 1 || opts.Max > 1 || opts.Min < 0 || opts.Max < 0 || len(opts.Tags) > 0 || opts.Hostname != "" || opts.HypervisorHostname != "" {
-		return nil, types.NewError(types.CapabilityUnavailable)
+	min, max := opts.Min, opts.Max
+	if min == 0 {
+		min = 1
+	}
+	if max == 0 {
+		max = min
+	}
+	if min < 1 || max < min {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if (len(opts.Tags) > 0 && minor < 52) || (opts.Hostname != "" && minor < 90) || (opts.HypervisorHostname != "" && minor < 74) {
+		return nil, types.NewError(types.InvalidArgument)
 	}
 	if opts.AdminPass != "" || len(opts.UserData) > 0 || len(opts.Personality) > 0 {
 		return nil, types.NewError(types.InvalidArgument)
 	}
-	networks, ok := opts.Networks.([]servers.Network)
-	if !ok || len(networks) == 0 {
-		return nil, types.NewError(types.InvalidArgument)
-	}
-	for _, n := range networks {
-		if (n.UUID == "") == (n.Port == "") {
+	if request.NetworkAttachments == nil {
+		switch networks := opts.Networks.(type) {
+		case nil:
+			if minor >= 37 {
+				return nil, types.NewError(types.InvalidArgument)
+			}
+		case string:
+			if minor < 37 || (networks != "auto" && networks != "none") {
+				return nil, types.NewError(types.InvalidArgument)
+			}
+		case []servers.Network:
+			for _, n := range networks {
+				if minor >= 37 && n.UUID != "" && !novaUUID.MatchString(n.UUID) {
+					return nil, types.NewError(types.InvalidArgument)
+				}
+				if (n.UUID == "") == (n.Port == "") {
+					return nil, types.NewError(types.InvalidArgument)
+				}
+				if n.Tag != "" && !(minor >= 32 && minor <= 36 || minor >= 42) {
+					return nil, types.NewError(types.InvalidArgument)
+				}
+			}
+		default:
 			return nil, types.NewError(types.InvalidArgument)
 		}
-		if n.Tag != "" {
-			return nil, types.NewError(types.CapabilityUnavailable)
-		}
+
 	}
 	boot := 0
 	for _, b := range opts.BlockDevice {
-		if b.Tag != "" || b.VolumeType != "" {
-			return nil, types.NewError(types.CapabilityUnavailable)
+		if (b.Tag != "" && !(minor == 32 || minor >= 42)) || (b.VolumeType != "" && minor < 67) {
+			return nil, types.NewError(types.InvalidArgument)
 		}
 		if b.BootIndex == 0 {
 			boot++
@@ -176,7 +226,13 @@ func createBody(request CreateRequest) ([]byte, error) {
 			return nil, types.NewError(types.InvalidArgument)
 		}
 	}
-	if opts.ImageRef == "" && boot != 1 || opts.ImageRef != "" && boot > 0 {
+	if (opts.ImageRef == "" && boot != 1 && request.BlockDevices == nil && request.LegacyBlockDevices == nil) || (opts.ImageRef != "" && boot > 0) {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if request.Personality != nil && minor >= 57 {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if (request.Description != nil && minor < 19) || (request.TrustedImageCertificates != nil && minor < 63) || (request.Host != nil && minor < 74) {
 		return nil, types.NewError(types.InvalidArgument)
 	}
 	body, err := opts.ToServerCreateMap()
@@ -193,6 +249,43 @@ func createBody(request CreateRequest) ([]byte, error) {
 	if request.UserData != nil {
 		server["user_data"] = base64.StdEncoding.EncodeToString(request.UserData.Reveal())
 	}
+	if e := applyDeviceVariants(server, request, minor); e != nil {
+		return nil, e
+	}
+	if request.ReturnReservationID != nil {
+		server["return_reservation_id"] = *request.ReturnReservationID
+	}
+	if request.KeyName != nil {
+		server["key_name"] = *request.KeyName
+	}
+	if request.Host != nil {
+		server["host"] = *request.Host
+	}
+	if request.Description != nil {
+		server["description"] = request.Description
+	}
+	if request.TrustedImageCertificates != nil {
+		server["trusted_image_certificates"] = request.TrustedImageCertificates
+	}
+	if request.Personality != nil {
+		files := make([]map[string]string, 0, len(request.Personality))
+		for _, f := range request.Personality {
+			if f.Path == nil || f.Contents == nil || f.Validate() != nil {
+				return nil, types.NewError(types.InvalidArgument)
+			}
+			files = append(files, map[string]string{"path": *f.Path, "contents": base64.StdEncoding.EncodeToString(f.Contents.Reveal())})
+		}
+		server["personality"] = files
+	}
+	if request.SchedulerHints != nil {
+		h, e := request.SchedulerHints.ToSchedulerHintsMap()
+		if e != nil {
+			return nil, types.NewError(types.InvalidArgument)
+		}
+		for k, v := range h {
+			body[k] = v
+		}
+	}
 	raw, err := json.Marshal(body)
 	if err != nil {
 		return nil, types.NewError(types.InvalidArgument)
@@ -201,7 +294,14 @@ func createBody(request CreateRequest) ([]byte, error) {
 }
 func (s *Servers) Create(ctx context.Context, r CreateRequest) (types.Result[Server], error) {
 	raw, err := createBody(r)
-	return core.DoJSON(s.runtime, ctx, operation("create", "POST"), core.Request{Scope: s.scope, Path: "/servers", Body: raw, Validate: func() error { return err }}, decodeOne(""))
+	if r.ReturnReservationID != nil && *r.ReturnReservationID {
+		err = types.NewError(types.InvalidArgument)
+	}
+	op, versionErr := createOperation(r.Microversion)
+	if err == nil {
+		err = versionErr
+	}
+	return core.DoJSON(s.runtime, ctx, op, core.Request{Scope: s.scope, Path: "/servers", Body: raw, Validate: func() error { return err }}, decodeCreatedServer)
 }
 
 func (s *Servers) Iterate(filters servers.ListOpts, options pagination.Options) (*pagination.Iterator[Server], error) {
@@ -347,6 +447,12 @@ type CreateAndWaitResult struct {
 }
 
 func (s *Servers) CreateAndWait(ctx context.Context, r CreateRequest) (CreateAndWaitResult, error) {
+	if r.Options.Min > 1 || r.Options.Max > 1 {
+		rawErr := types.NewError(types.InvalidArgument)
+		op, _ := createOperation(r.Microversion)
+		result, e := core.DoJSON(s.runtime, ctx, op, core.Request{Scope: s.scope, Path: "/servers", Validate: func() error { return rawErr }}, decodeOne(""))
+		return CreateAndWaitResult{Create: result}, e
+	}
 	created, e := s.Create(ctx, r)
 	out := CreateAndWaitResult{Create: created}
 	if e != nil {

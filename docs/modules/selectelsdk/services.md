@@ -203,3 +203,9 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### Nova catalog и server create
+
+Flavor reads, SSH key lifecycle и source-confirmed create до Selectel microversion
+2.93 описаны в [compute contract](compute.md). Server list/get/delete сохраняют
+свои partial ограничения; общий Nova inventory не объявляется полным.
