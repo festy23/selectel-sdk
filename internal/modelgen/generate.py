@@ -11,6 +11,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "federations": ("federations", {
+        "models.FederationPreview": "Preview",
+        "models.Certificate": "Certificate",
+        "models.CreateCertificateRequest": "CreateCertificateRequest",
+        "models.ModifyCertificateRequest": "UpdateCertificateRequest",
+        "models.GroupMapping": "GroupMapping",
+        "models.GroupMappingsRequest": "GroupMappingsRequest",
+        "models.GroupMappingsResponse": "GroupMappingsResponse",
+        "models.OIDCFederation": "OIDCFederation",
+        "models.CreateOIDCFederationRequest": "CreateOIDCRequest",
+        "models.UpdateOIDCFederationRequest": "UpdateOIDCRequest",
+        "models.Federation": "SAMLFederation",
+        "models.CreateFederationRequest": "CreateSAMLRequest",
+        "models.UpdateFederationRequest": "UpdateSAMLRequest",
+    }, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -35,7 +50,7 @@ CASES = {
     "registry_v1": ("craas", "registry.Registry", "V1Registry"),
     "audit": ("audit-logs", "LogResponse", "Event"),
 }
-ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "cni": "CNI", "cpu": "CPU", "vcpus": "VCPUs", "ram": "RAM", "api": "API", "x509": "X509"}
+ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "sso": "SSO", "jwks": "JWKS", "cni": "CNI", "cpu": "CPU", "vcpus": "VCPUs", "ram": "RAM", "api": "API", "x509": "X509"}
 
 
 def name(text):
@@ -49,6 +64,8 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
+    if package == "federations":
+        resource_roots = {"models.Federation", "models.OIDCFederation", "models.Certificate", "models.GroupMapping"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -70,7 +87,7 @@ for case, (family, initial, top_name) in CASES.items():
         if "$ref" in schema:
             reference = schema["$ref"].split("/")[-1]
             if reference not in pending:
-                pending[reference] = name(reference)
+                pending[reference] = name(reference.split(".")[-1] if package == "federations" else reference)
             referenced = resolve(definitions[reference])
             if referenced.get("properties"):
                 return pending[reference], False
@@ -78,6 +95,8 @@ for case, (family, initial, top_name) in CASES.items():
         schema = resolve(schema)
         kind = schema.get("type")
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
+            return "types.ProtectedValue", False
+        if package == "federations" and field in {"client_secret", "data"}:
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False
@@ -125,6 +144,8 @@ for case, (family, initial, top_name) in CASES.items():
             go_type, collection = field_type(value, type_name + field_name, wire)
             tag = "omitzero" if collection else "omitempty"
             if not collection:
+                if package == "federations" and value.get("nullable"):
+                    go_type = "types.Nullable[" + go_type + "]"
                 go_type = "*" + go_type
             fields.append(f'\t{field_name} {go_type} `json:"{wire},{tag}"`')
             if wire in schema.get("required", []):

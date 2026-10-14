@@ -189,3 +189,13 @@ complete. Resource names, tags, filters, URL query, headers, tokens, bodies
 Observer вызывается синхронно; callback не изменяет результат облачной операции.
 Вызывающая сторона отвечает за неблокирующий callback; его panic перехватывается
 и не меняет Receipt или result.
+
+## Documented public federation reads
+
+The source-defined SAML federation HEAD and preview GET operations declare
+`security:[]`. Their exact internal bindings skip credential lookup and auth
+headers while retaining the shared validation, endpoint, redirect, time/size
+budgets, safe-read retries and error handling. They are read-only, cataloged as
+`protocol_specific`, and cannot be selected to bypass authorization on another
+operation. OIDC HEAD and every federation mutation retain account IAM auth.
+See [federations.md](federations.md).

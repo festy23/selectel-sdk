@@ -1,0 +1,131 @@
+{
+  "operation_id": "federations.v1.saml_certificates.update",
+  "effect": "mutation",
+  "endpoint": {
+    "url": "https://api.selectel.ru",
+    "identity": "selectel-federations",
+    "generation": "v1",
+    "override_key": [
+      "federations",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "source_uri": "https://github.com/selectel/iam-go/blob/f104d9516f832b3ce7ee33840f3665aeaf8e8706/iam.go"
+  },
+  "request": {
+    "method": "PATCH",
+    "path": "/v1/federations/saml/{federation_id}/certificates/{certificate_id}",
+    "source_schema": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/patch",
+    "source_operation": {
+      "operationId": "updateSamlCertificate",
+      "summary": "Update SAML certificate data",
+      "description": "Partially updates the certificate name or description.",
+      "tags": [
+        "SAML certificates"
+      ],
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/federationIDPathParam"
+        },
+        {
+          "$ref": "#/components/parameters/certificateIDPathParam"
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/models.ModifyCertificateRequest"
+            },
+            "example": {
+              "name": "updated certificate name",
+              "description": "updated certificate description"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Certificate has been updated.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.Certificate"
+              },
+              "example": {
+                "id": "bcceb50a-e4a3-404f-8391-f319e40c1fd5",
+                "account_id": "242137",
+                "federation_id": "f9a51b33-9194-4d44-a959-43740b6334a4",
+                "name": "updated certificate name",
+                "description": "updated certificate description",
+                "not_before": "2023-06-23T11:26:48Z",
+                "not_after": "2033-06-23T11:28:28Z",
+                "fingerprint": "6A822A2645D9A18D1CC40D5B5BDA444AA579AF3B399AF77309ABD5222CC23FC0"
+              }
+            }
+          }
+        },
+        "401": {
+          "$ref": "#/components/responses/IAMUnauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/IAMForbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/IAMNotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/IAMInternalServerError"
+        }
+      }
+    },
+    "mapping_source": "federations/client.go",
+    "scope": "account",
+    "auth": "iam_account",
+    "identity": "exact scoped ResourceRef; nested resource parent required; no name adoption",
+    "optional_fields": "nil omitted; false/empty retained; explicit nullable fields distinguish null/value/absent",
+    "body": "all source schema properties; protected material only revealed for transport",
+    "query": {},
+    "validation": "Account view; scoped kind/endpoint/generation/parent; documented OIDC required fields, string/pattern/session bounds; group mappings max100 and ID bounds; certificate name/data required; optional null accepted only for declared OIDC fields"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/patch/responses",
+    "dto_source": "federations/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all declared properties with precise integers; server refs discarded",
+    "resource_ref": "create requires nonempty ID; account/federation/ID checked against scope and parent; accepted ID retained on malformed response",
+    "sensitive_fields": [
+      "response.data"
+    ]
+  },
+  "errors": {
+    "mutation_rejected_statuses": [
+      401,
+      403,
+      404
+    ],
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found; no deletion wait implied",
+    "transport_loss": "unknown_outcome after possible mutation transmission",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "malformed_accepted_response": "protocol_error; accepted receipt retained",
+    "foreign_response_id": "scope_mismatch; exact request refs preserved",
+    "message": "provider bodies discarded"
+  },
+  "retry": "bounded safe read; mutations single attempt, no replay",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable"
+  },
+  "recovery": {
+    "availability": "exact observation only; no adoption or inferred authorship"
+  },
+  "timeout": "shared CallTimeout/CollectionTimeout"
+}

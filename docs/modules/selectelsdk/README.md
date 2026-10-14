@@ -82,6 +82,7 @@ flowchart TD
 | [execution.md](execution.md) | Запросы, повторные попытки, receipts, ошибки, чувствительные значения |
 | [pagination.md](pagination.md) | Страницы, итераторы, ограничения и полнота |
 | [operations.md](operations.md) | Состояние, ожидание, восстановление исхода и отмена |
+| [federations.md](federations.md) | Federation lifecycle, certificates and group mappings |
 | [services.md](services.md) | Семейства API и контракт расширения покрытия |
 | [scenarios.md](scenarios.md) | Начальные сквозные операции |
 | [catalog.md](catalog.md) | Машинный каталог и правила учёта покрытия |

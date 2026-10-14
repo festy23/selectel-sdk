@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"federations":                  {"federations", "v1", "iam_account", true},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,29 +35,57 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
-	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
-	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
-	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
-	"craas GET /v2/registries":                                         "registry.v2.registries.list",
-	"balance GET /v3/balances":                                         "billing.v3.balances.get",
-	"balance-statistics GET /v1/cloud_billing/statistic/summary_stats": "billing.v1.statistics.summary",
-	"balance-statistics GET /v1/cloud_billing/statistic/consumption":   "billing.v1.statistics.consumption",
-	"audit-logs POST /v1/logs":                                         "audit.v1.logs.query",
-	"secrets-manager GET /v1/":                                         "secrets.v1.secrets.list",
-	"secrets-manager GET /v1/{secret_name}/versions":                   "secrets.v1.versions.list",
-	"secrets-manager GET /v1/{secret_name}":                            "secrets.v1.secrets.get",
-	"secrets-manager GET /v1/{secret_name}/versions/{version_id}":      "secrets.v1.versions.get",
-	"compute-nova GET /servers/detail":                                 "compute.v2_1.servers.list",
-	"compute-nova POST /servers":                                       "compute.v2_1.servers.create",
-	"compute-nova GET /servers/{server_id}":                            "compute.v2_1.servers.get",
-	"compute-nova DELETE /servers/{server_id}":                         "compute.v2_1.servers.delete",
-	"cloudwatch-logs POST /DescribeLogGroups":                          "logs.cloudwatch.log_groups.list",
-	"cloudwatch-logs POST /DescribeLogStreams":                         "logs.cloudwatch.log_streams.list",
-	"cloudwatch-logs POST /GetLogEvents":                               "logs.cloudwatch.events.get",
-	"cloudwatch-logs POST /FilterLogEvents":                            "logs.cloudwatch.events.filter",
-	"prometheus-metrics GET /prometheus/metrics":                       "metrics.prometheus.samples.scrape",
-	"prometheus-metrics GET /api/v1/query":                             "metrics.prometheus.samples.query",
-	"prometheus-metrics GET /api/v1/query_range":                       "metrics.prometheus.samples.query_range",
+	"federations DELETE /v1/federations/oidc/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}": "federations.v1.oidc_group_mappings.delete",
+	"federations HEAD /v1/federations/oidc/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}":   "federations.v1.oidc_group_mappings.exists",
+	"federations PUT /v1/federations/oidc/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}":    "federations.v1.oidc_group_mappings.put",
+	"federations PUT /v1/federations/oidc/{federation_id}/group-mappings":                                                   "federations.v1.oidc_group_mappings.replace",
+	"federations GET /v1/federations/oidc/{federation_id}/group-mappings":                                                   "federations.v1.oidc_group_mappings.list",
+	"federations DELETE /v1/federations/saml/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}": "federations.v1.saml_group_mappings.delete",
+	"federations HEAD /v1/federations/saml/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}":   "federations.v1.saml_group_mappings.exists",
+	"federations PUT /v1/federations/saml/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}":    "federations.v1.saml_group_mappings.put",
+	"federations PUT /v1/federations/saml/{federation_id}/group-mappings":                                                   "federations.v1.saml_group_mappings.replace",
+	"federations GET /v1/federations/saml/{federation_id}/group-mappings":                                                   "federations.v1.saml_group_mappings.list",
+	"federations DELETE /v1/federations/saml/{federation_id}/certificates/{certificate_id}":                                 "federations.v1.saml_certificates.delete",
+	"federations PATCH /v1/federations/saml/{federation_id}/certificates/{certificate_id}":                                  "federations.v1.saml_certificates.update",
+	"federations GET /v1/federations/saml/{federation_id}/certificates/{certificate_id}":                                    "federations.v1.saml_certificates.get",
+	"federations POST /v1/federations/saml/{federation_id}/certificates":                                                    "federations.v1.saml_certificates.create",
+	"federations GET /v1/federations/saml/{federation_id}/certificates":                                                     "federations.v1.saml_certificates.list",
+	"federations GET /v1/federations/{federation_id}/preview":                                                               "federations.v1.preview.get",
+	"federations HEAD /v1/federations/oidc/{federation_id}":                                                                 "federations.v1.oidc.exists",
+	"federations HEAD /v1/federations/saml/{federation_id}":                                                                 "federations.v1.saml.exists",
+	"federations DELETE /v1/federations/oidc/{federation_id}":                                                               "federations.v1.oidc.delete",
+	"federations PATCH /v1/federations/oidc/{federation_id}":                                                                "federations.v1.oidc.update",
+	"federations GET /v1/federations/oidc/{federation_id}":                                                                  "federations.v1.oidc.get",
+	"federations POST /v1/federations/oidc":                                                                                 "federations.v1.oidc.create",
+	"federations GET /v1/federations/oidc":                                                                                  "federations.v1.oidc.list",
+	"federations DELETE /v1/federations/saml/{federation_id}":                                                               "federations.v1.saml.delete",
+	"federations PATCH /v1/federations/saml/{federation_id}":                                                                "federations.v1.saml.update",
+	"federations GET /v1/federations/saml/{federation_id}":                                                                  "federations.v1.saml.get",
+	"federations POST /v1/federations/saml":                                                                                 "federations.v1.saml.create",
+	"federations GET /v1/federations/saml":                                                                                  "federations.v1.saml.list",
+	"cloud-projects-and-resources GET /v2/projects":                                                                         "projects.v2.projects.list",
+	"managed-kubernetes GET /v2/clusters":                                                                                   "mks.v2.clusters.list",
+	"managed-databases GET /datastores":                                                                                     "databases.v1.datastores.list",
+	"craas GET /v2/registries":                                                                                              "registry.v2.registries.list",
+	"balance GET /v3/balances":                                                                                              "billing.v3.balances.get",
+	"balance-statistics GET /v1/cloud_billing/statistic/summary_stats":                                                      "billing.v1.statistics.summary",
+	"balance-statistics GET /v1/cloud_billing/statistic/consumption":                                                        "billing.v1.statistics.consumption",
+	"audit-logs POST /v1/logs":                                                                                              "audit.v1.logs.query",
+	"secrets-manager GET /v1/":                                                                                              "secrets.v1.secrets.list",
+	"secrets-manager GET /v1/{secret_name}/versions":                                                                        "secrets.v1.versions.list",
+	"secrets-manager GET /v1/{secret_name}":                                                                                 "secrets.v1.secrets.get",
+	"secrets-manager GET /v1/{secret_name}/versions/{version_id}":                                                           "secrets.v1.versions.get",
+	"compute-nova GET /servers/detail":                                                                                      "compute.v2_1.servers.list",
+	"compute-nova POST /servers":                                                                                            "compute.v2_1.servers.create",
+	"compute-nova GET /servers/{server_id}":                                                                                 "compute.v2_1.servers.get",
+	"compute-nova DELETE /servers/{server_id}":                                                                              "compute.v2_1.servers.delete",
+	"cloudwatch-logs POST /DescribeLogGroups":                                                                               "logs.cloudwatch.log_groups.list",
+	"cloudwatch-logs POST /DescribeLogStreams":                                                                              "logs.cloudwatch.log_streams.list",
+	"cloudwatch-logs POST /GetLogEvents":                                                                                    "logs.cloudwatch.events.get",
+	"cloudwatch-logs POST /FilterLogEvents":                                                                                 "logs.cloudwatch.events.filter",
+	"prometheus-metrics GET /prometheus/metrics":                                                                            "metrics.prometheus.samples.scrape",
+	"prometheus-metrics GET /api/v1/query":                                                                                  "metrics.prometheus.samples.query",
+	"prometheus-metrics GET /api/v1/query_range":                                                                            "metrics.prometheus.samples.query_range",
 }
 
 func main() {
@@ -176,8 +205,9 @@ func generate() error {
 					effect = "read"
 				}
 				var sourceOperation struct {
-					Effect  string `json:"x-effect"`
-					Locator string `json:"x-operation-locator"`
+					Effect   string            `json:"x-effect"`
+					Locator  string            `json:"x-operation-locator"`
+					Security *[]map[string]any `json:"security"`
 				}
 				if err := json.Unmarshal(methods[method], &sourceOperation); err != nil {
 					return err
@@ -193,7 +223,7 @@ func generate() error {
 					"operation_id": id, "service": f.Service, "api_generation": generation, "resource": resource, "action": action, "effect": effect, "availability": "documented",
 					"source":    map[string]any{"uri": sourceURI, "revision": revision, "operation_locator": locator},
 					"go_method": nil, "input_type": nil, "output_type": nil, "input_schema_ref": pointer, "output_schema_ref": pointer + "/responses",
-					"scope_requirements": scope, "auth": map[string]any{"scheme": f.Mode, "audience": "selectel"},
+					"scope_requirements": scope, "auth": map[string]any{"scheme": operationAuth(f.Mode, sourceOperation.Security), "audience": "selectel"},
 					"endpoint_recipe_ref": nil, "request_binding_ref": nil, "response_binding_ref": nil, "error_binding_ref": pointer + "/responses", "replay_policy_ref": nil,
 					"pagination_contract_ref": nil, "wait_goals": []string{}, "recovery_contract_ref": nil, "sensitive_fields": []string{},
 					"parameter_support": map[string]any{"covered_schema_ref": nil, "excluded_variants": []string{}}, "limitations": []string{"No callable service binding"},
@@ -348,4 +378,11 @@ func slug(path string) string {
 		return "secrets"
 	}
 	return strings.Trim(s, "_")
+}
+
+func operationAuth(mode string, security *[]map[string]any) string {
+	if security != nil && len(*security) == 0 {
+		return "protocol_specific"
+	}
+	return mode
 }

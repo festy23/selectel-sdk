@@ -1,0 +1,120 @@
+{
+  "operation_id": "federations.v1.oidc_group_mappings.list",
+  "effect": "read",
+  "endpoint": {
+    "url": "https://api.selectel.ru",
+    "identity": "selectel-federations",
+    "generation": "v1",
+    "override_key": [
+      "federations",
+      "v1",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "source_uri": "https://github.com/selectel/iam-go/blob/f104d9516f832b3ce7ee33840f3665aeaf8e8706/iam.go"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v1/federations/oidc/{federation_id}/group-mappings",
+    "source_schema": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings/get",
+    "source_operation": {
+      "operationId": "listOidcGroupMappings",
+      "summary": "List OIDC group mappings",
+      "description": "Returns a list of group mappings for the specified OIDC federation.",
+      "tags": [
+        "OIDC group mappings"
+      ],
+      "parameters": [
+        {
+          "description": "Federation identifier.",
+          "in": "path",
+          "name": "federation_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of group mappings.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.GroupMappingsResponse"
+              },
+              "example": {
+                "group_mappings": [
+                  {
+                    "internal_group_id": "group-1",
+                    "external_group_id": "idp-admins"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "401": {
+          "$ref": "#/components/responses/IAMUnauthorized"
+        },
+        "403": {
+          "$ref": "#/components/responses/IAMForbidden"
+        },
+        "404": {
+          "$ref": "#/components/responses/IAMNotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/IAMInternalServerError"
+        }
+      }
+    },
+    "mapping_source": "federations/client.go",
+    "scope": "account",
+    "auth": "iam_account",
+    "identity": "exact scoped ResourceRef; nested resource parent required; no name adoption",
+    "optional_fields": "nil omitted; false/empty retained; explicit nullable fields distinguish null/value/absent",
+    "body": "all source schema properties; protected material only revealed for transport",
+    "query": {},
+    "validation": "Account view; scoped kind/endpoint/generation/parent; documented OIDC required fields, string/pattern/session bounds; group mappings max100 and ID bounds; certificate name/data required; optional null accepted only for declared OIDC fields"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings/get/responses",
+    "dto_source": "federations/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all declared properties with precise integers; server refs discarded",
+    "resource_ref": "create requires nonempty ID; account/federation/ID checked against scope and parent; accepted ID retained on malformed response",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mutation_rejected_statuses": [
+      401,
+      403,
+      404
+    ],
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found; no deletion wait implied",
+    "transport_loss": "unknown_outcome after possible mutation transmission",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "malformed_accepted_response": "protocol_error; accepted receipt retained",
+    "foreign_response_id": "scope_mismatch; exact request refs preserved",
+    "message": "provider bodies discarded"
+  },
+  "retry": "bounded safe read; mutations single attempt, no replay",
+  "pagination": {
+    "shape": "single response",
+    "limits": "MaxItems/MaxPages, MaxJSONBytes and shared CollectionTimeout",
+    "continuation": "bound replay cursor and skip; collection not snapshot consistent"
+  },
+  "wait": {
+    "goals": [],
+    "availability": "unavailable"
+  },
+  "recovery": {
+    "availability": "exact observation only; no adoption or inferred authorship"
+  },
+  "timeout": "shared CallTimeout/CollectionTimeout"
+}

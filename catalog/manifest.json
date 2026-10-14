@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "d43b6f1dad5d2e4caba364ded4de4a5a5e7d4cbf3a741c9ea1628ac3a8f81a85",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "b03d6f5dcd5fe0b59c73b0740de38bd7048a2c8842b843043f8b91c4f7886b82",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "96b449591f7c28e21ae67bd64b1de098c9fef4f54c5d790bff82a59dfdecfbb3",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "f81cf6f686279252aa513d252a5c6782f57d990fffa83b5d7c6dda04a3c20843",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +451,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "f3cac856b79229d53b9d43d6efbf4baab3eac3506e702d628b563a77826d666c",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +517,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "d3d66bb1b2e8c33301e0418015d5bbad0163135fd7efc045dd4e44d9abbeda5c",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +583,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "37bf99351217640bbe2f0cd20c36d1cc2bb675561d1cc36033d8e82028daa0a1",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +649,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "6cbca56525299e94786fc8c66624b4e393448e3cc8166edee0bc9b904b183020",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2167,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "6fdd23c661448b439c1d0e606ac2c55248aa9e6c07614c52017f17b395ccc150",
       "level": "offline"
     },
     "wait_goals": []
@@ -4981,6 +4981,1587 @@
     "wait_goals": []
   },
   {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc.create.json": "f070bc411c2b8964181bb96f7ec3251edc0289dfd4f6ec112f663058df767c79"
+    },
+    "contract_revision": "45903eeac73dda1ac9633b5751e6393347dfb4110fd96e9428988f07eee955ee",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc.create.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc.create.json#/errors",
+    "go_method": "federations.OIDC.Create",
+    "implementation": {
+      "binding": "federations.OIDC.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc/post",
+    "input_type": "federations.CreateOIDCRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc.create",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc/post/responses",
+    "output_type": "federations.OIDCFederation",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc.create.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc.create.json#/request",
+    "resource": "oidc",
+    "response_binding_ref": "contracts/federations.v1.oidc.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "request.client_secret"
+    ],
+    "service": "federations",
+    "source": {
+      "operation_locator": "POST /v1/federations/oidc",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "45903eeac73dda1ac9633b5751e6393347dfb4110fd96e9428988f07eee955ee",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "711d133d4f5f153d664c118481c371364cde19e26de577fee968b1a2420a67c7",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc.delete.json": "c47d56a02a68586d502b796b73936cecaab724ecaaea13c94336feffdbdc8e59"
+    },
+    "contract_revision": "a0ec14f0b0fd90218222ab288164ff37efa8349cbd2e845c8606fa38670f6771",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc.delete.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc.delete.json#/errors",
+    "go_method": "federations.OIDC.Delete",
+    "implementation": {
+      "binding": "federations.OIDC.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/delete",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc.delete",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc.delete.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc.delete.json#/request",
+    "resource": "oidc",
+    "response_binding_ref": "contracts/federations.v1.oidc.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "DELETE /v1/federations/oidc/{federation_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "a0ec14f0b0fd90218222ab288164ff37efa8349cbd2e845c8606fa38670f6771",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "d823bb49628b2816aa4b0f5ce5947c121513ebf77a8767d64092173986305f39",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "exists",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc.exists.json": "d8d00635f00ca7fa9728dfafe07e3c41673d9ff4456924971fe20fbd65668a45"
+    },
+    "contract_revision": "d3a34f02af3fdaaf0aaaa40a5c3bc73ac264eb5f8c1218df0a44befcf423a59f",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc.exists.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc.exists.json#/errors",
+    "go_method": "federations.OIDC.Exists",
+    "implementation": {
+      "binding": "federations.OIDC.Exists",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/head",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc.exists",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/head/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/head",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc.exists.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc.exists.json#/request",
+    "resource": "oidc",
+    "response_binding_ref": "contracts/federations.v1.oidc.exists.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "HEAD /v1/federations/oidc/{federation_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "d3a34f02af3fdaaf0aaaa40a5c3bc73ac264eb5f8c1218df0a44befcf423a59f",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "567a0284005a0a29b100f5719df71a3068724bbdae166a768a739c90cf3bdedf",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc.get.json": "67f985dd6640774471c10e0b2213bef27ce031e46cac787f7028c92cbcf79059"
+    },
+    "contract_revision": "f38c8caa76f5a3c49920309e5d131c7ec30985165f69c534c67882629884c193",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc.get.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc.get.json#/errors",
+    "go_method": "federations.OIDC.Get",
+    "implementation": {
+      "binding": "federations.OIDC.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/get",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc.get",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/get/responses",
+    "output_type": "federations.OIDCFederation",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc.get.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc.get.json#/request",
+    "resource": "oidc",
+    "response_binding_ref": "contracts/federations.v1.oidc.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/oidc/{federation_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "f38c8caa76f5a3c49920309e5d131c7ec30985165f69c534c67882629884c193",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "30dc95330ebc32ac7885f2b340f35b86135ba9776aabf0b4cb65e6cdea36f10c",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc.list.json": "ea000ba4903d261f5c282693fdb6e7c74469fa8112603cd563b3ec48d42787aa"
+    },
+    "contract_revision": "02c9f915d9825575477b8bcd375c0250d8573449ddbb187876d23d57eca75094",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc.list.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc.list.json#/errors",
+    "go_method": "federations.OIDC.ListPage",
+    "implementation": {
+      "binding": "federations.OIDC.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc/get",
+    "input_type": "pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc.list",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc/get/responses",
+    "output_type": "pagination.Page[federations.OIDCFederation]",
+    "pagination_contract_ref": "contracts/federations.v1.oidc.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc.list.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc.list.json#/request",
+    "resource": "oidc",
+    "response_binding_ref": "contracts/federations.v1.oidc.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/oidc",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "02c9f915d9825575477b8bcd375c0250d8573449ddbb187876d23d57eca75094",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "9919b8625694c70eb569bded30c6f28a777b2365c197bb7ed8a65dc15681f77b",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc.update.json": "7559fff6aa568da1aeb7c494584faa0a5b17d46cfc23ae946ad24d80303e7eaf"
+    },
+    "contract_revision": "1bef1ba91b5c7f0bb71c22f40c6b03a964fc3fecec208f9bf3b31594ddd5d50c",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc.update.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc.update.json#/errors",
+    "go_method": "federations.OIDC.Update",
+    "implementation": {
+      "binding": "federations.OIDC.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/patch",
+    "input_type": "federations.UpdateOIDCRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc.update",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/patch/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}/patch",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc.update.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc.update.json#/request",
+    "resource": "oidc",
+    "response_binding_ref": "contracts/federations.v1.oidc.update.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "request.client_secret"
+    ],
+    "service": "federations",
+    "source": {
+      "operation_locator": "PATCH /v1/federations/oidc/{federation_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "1bef1ba91b5c7f0bb71c22f40c6b03a964fc3fecec208f9bf3b31594ddd5d50c",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "13eb281d3950ab0d972cd2573bfcdb0e5bc42f08d07ee25435bce123de2b291c",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc_group_mappings.delete.json": "651c9e28757abcc5c5bef4e1ff37aab153679d2fd1a633f257be95feae716d04"
+    },
+    "contract_revision": "b65941f0b246c57caa3b03c5c910f039717e76d3c0abf3ac18fd2e1908a2e57e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc_group_mappings.delete.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc_group_mappings.delete.json#/errors",
+    "go_method": "federations.GroupMappings.Delete",
+    "implementation": {
+      "binding": "federations.GroupMappings.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/delete",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc_group_mappings.delete",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc_group_mappings.delete.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc_group_mappings.delete.json#/request",
+    "resource": "oidc_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.oidc_group_mappings.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "DELETE /v1/federations/oidc/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "b65941f0b246c57caa3b03c5c910f039717e76d3c0abf3ac18fd2e1908a2e57e",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "2606049fd39d4361dc123df45242fdfbecfe2a6653f86ff5a3ff48042d69face",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "exists",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc_group_mappings.exists.json": "6bf29937df37219513a590fcf2f8e3ee5303d0a8d5eb45665a862254aa7b7397"
+    },
+    "contract_revision": "158b18474c0713a5a428e54b32040f0e8e4957ac15b267588aaae56a3068ebd9",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc_group_mappings.exists.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc_group_mappings.exists.json#/errors",
+    "go_method": "federations.GroupMappings.Exists",
+    "implementation": {
+      "binding": "federations.GroupMappings.Exists",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/head",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc_group_mappings.exists",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/head/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/head",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc_group_mappings.exists.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc_group_mappings.exists.json#/request",
+    "resource": "oidc_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.oidc_group_mappings.exists.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "HEAD /v1/federations/oidc/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "158b18474c0713a5a428e54b32040f0e8e4957ac15b267588aaae56a3068ebd9",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "80911f12fb75992fc920ab38f9b62a2ce6b0616b3966b18182bba91ec5c81d95",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc_group_mappings.list.json": "18e76e85596d22694eea839189a5eef329c2b8c25dd7c9bf485af1aab5392304"
+    },
+    "contract_revision": "1db46b0a10c2945172304baa2f2f7bd44929ccbb70c71897ec89dafbf2e43cbe",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc_group_mappings.list.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc_group_mappings.list.json#/errors",
+    "go_method": "federations.GroupMappings.ListPage",
+    "implementation": {
+      "binding": "federations.GroupMappings.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings/get",
+    "input_type": "types.ResourceRef,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc_group_mappings.list",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings/get/responses",
+    "output_type": "pagination.Page[federations.GroupMapping]",
+    "pagination_contract_ref": "contracts/federations.v1.oidc_group_mappings.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc_group_mappings.list.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc_group_mappings.list.json#/request",
+    "resource": "oidc_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.oidc_group_mappings.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/oidc/{federation_id}/group-mappings",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "1db46b0a10c2945172304baa2f2f7bd44929ccbb70c71897ec89dafbf2e43cbe",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "cd3132186db4fee36158e0413fdf28630e7e5496950927659a3bb0e15893b845",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "put",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc_group_mappings.put.json": "c5529bd5ac719a507b67e943a91432044fa27306eece82542ce0c64ff667bbb7"
+    },
+    "contract_revision": "8019c5258d03de93528d05968b21586a94b6db1ef8eab52a0003ab40f2fba0ec",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc_group_mappings.put.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc_group_mappings.put.json#/errors",
+    "go_method": "federations.GroupMappings.Put",
+    "implementation": {
+      "binding": "federations.GroupMappings.Put",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/put",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc_group_mappings.put",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/put/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc_group_mappings.put.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc_group_mappings.put.json#/request",
+    "resource": "oidc_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.oidc_group_mappings.put.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "PUT /v1/federations/oidc/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "8019c5258d03de93528d05968b21586a94b6db1ef8eab52a0003ab40f2fba0ec",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "a80e7458a1c575099846e72e96c97228b25bec001594145e1f760feaadb5a57f",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.oidc_group_mappings.replace.json": "1e2efe4729bff96a583ba001322a697337411d1bdf4d183df35a2c15d09e7825"
+    },
+    "contract_revision": "b050e73ab4c5dbb68d9fca643e54d7527685acfdefd75d31a7e96ab3802ae07f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.oidc_group_mappings.replace.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.oidc_group_mappings.replace.json#/errors",
+    "go_method": "federations.GroupMappings.Replace",
+    "implementation": {
+      "binding": "federations.GroupMappings.Replace",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings/put",
+    "input_type": "federations.GroupMappingsRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.oidc_group_mappings.replace",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings/put/responses",
+    "output_type": "federations.GroupMappingsResponse",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1oidc~1{federation_id}~1group-mappings/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.oidc_group_mappings.replace.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.oidc_group_mappings.replace.json#/request",
+    "resource": "oidc_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.oidc_group_mappings.replace.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "PUT /v1/federations/oidc/{federation_id}/group-mappings",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "b050e73ab4c5dbb68d9fca643e54d7527685acfdefd75d31a7e96ab3802ae07f",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "b8557c468005d16286837254c2b191cf40bb7bea50d6eb046f57855951865e44",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "protocol_specific"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.preview.get.json": "422cbb6c6537efe363ec7e30fdca398739aeef1d6ad0200ad539bc6ce6f51f43"
+    },
+    "contract_revision": "2c22ac66b46d83546e5146831ef52b69adabda0c88f158c69e92824175676d9c",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.preview.get.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.preview.get.json#/errors",
+    "go_method": "federations.V1Client.Preview",
+    "implementation": {
+      "binding": "federations.V1Client.Preview",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1{federation_id}~1preview/get",
+    "input_type": "string",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.preview.get",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1{federation_id}~1preview/get/responses",
+    "output_type": "federations.Preview",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1{federation_id}~1preview/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.preview.get.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.preview.get.json#/request",
+    "resource": "preview",
+    "response_binding_ref": "contracts/federations.v1.preview.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/{federation_id}/preview",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "2c22ac66b46d83546e5146831ef52b69adabda0c88f158c69e92824175676d9c",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "dcaabbabf716ddddee6169f1f8c2d9f107bb101fd1e293cb921ecb5bca0f7ae6",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml.create.json": "50b5c6d24b1a4a005a769a52967065e8b77ecf3fe576c2dcf2690fcfa179e74c"
+    },
+    "contract_revision": "9e75e89c51e49415a4ff59f5a35e9d2e180c11fab2368a867946645f8a3dbe74",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml.create.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml.create.json#/errors",
+    "go_method": "federations.SAML.Create",
+    "implementation": {
+      "binding": "federations.SAML.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml/post",
+    "input_type": "federations.CreateSAMLRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml.create",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml/post/responses",
+    "output_type": "federations.SAMLFederation",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml.create.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml.create.json#/request",
+    "resource": "saml",
+    "response_binding_ref": "contracts/federations.v1.saml.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "POST /v1/federations/saml",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "9e75e89c51e49415a4ff59f5a35e9d2e180c11fab2368a867946645f8a3dbe74",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "e20364dcc0875576da46ef8be9b1508cc2658b40fe441cb033c2b1ca8da57bdb",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml.delete.json": "6194a08b7b0623006d03c850d620e06fc64983761885346e99b49825e58cd03b"
+    },
+    "contract_revision": "49330f48111c23ec1b53cc0d24e93ec59ef5a02405f501a61803574c36d7bea7",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml.delete.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml.delete.json#/errors",
+    "go_method": "federations.SAML.Delete",
+    "implementation": {
+      "binding": "federations.SAML.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/delete",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml.delete",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml.delete.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml.delete.json#/request",
+    "resource": "saml",
+    "response_binding_ref": "contracts/federations.v1.saml.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "DELETE /v1/federations/saml/{federation_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "49330f48111c23ec1b53cc0d24e93ec59ef5a02405f501a61803574c36d7bea7",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "78e6919c96086e32de95caabdbcac452faab8c04947e7f5d252f0232ae16fc99",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "exists",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "protocol_specific"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml.exists.json": "f601a8f825cdc258d4599a711818e059573c168132caac44c396d87ffd223888"
+    },
+    "contract_revision": "b4d35e3bb24e7356cd9d08f6e46acbf683ee2df1f66c505d4fba1f63d2168604",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml.exists.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml.exists.json#/errors",
+    "go_method": "federations.SAML.Exists",
+    "implementation": {
+      "binding": "federations.SAML.Exists",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/head",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml.exists",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/head/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/head",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml.exists.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml.exists.json#/request",
+    "resource": "saml",
+    "response_binding_ref": "contracts/federations.v1.saml.exists.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "HEAD /v1/federations/saml/{federation_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "b4d35e3bb24e7356cd9d08f6e46acbf683ee2df1f66c505d4fba1f63d2168604",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "299d1383205af66f9ffbe6690a1b46d2cbe6f66355f82a316445ee66e3fb5542",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml.get.json": "16e4a1a12ba8e635b6476f7a6ca755c6ea54cb5cb22a9a86e4285e6abc7498f4"
+    },
+    "contract_revision": "189d0957a8c5925692b47b1c702854730a231f20717f4a51d73c4feec1087301",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml.get.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml.get.json#/errors",
+    "go_method": "federations.SAML.Get",
+    "implementation": {
+      "binding": "federations.SAML.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/get",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml.get",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/get/responses",
+    "output_type": "federations.SAMLFederation",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml.get.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml.get.json#/request",
+    "resource": "saml",
+    "response_binding_ref": "contracts/federations.v1.saml.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/saml/{federation_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "189d0957a8c5925692b47b1c702854730a231f20717f4a51d73c4feec1087301",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "275e99296f34a803fa8993bddcb857759ca608080da51689b8ed151a2a3be2ca",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml.list.json": "f819a7663d7a261369f030dd1a833ce38f4a9b9bfc97960c245a0f56f18a3d87"
+    },
+    "contract_revision": "0fb65c9d80b954193c869f6459d5ce8b91329f3a31dba0279033ffc19568e62e",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml.list.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml.list.json#/errors",
+    "go_method": "federations.SAML.ListPage",
+    "implementation": {
+      "binding": "federations.SAML.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml/get",
+    "input_type": "pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml.list",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml/get/responses",
+    "output_type": "pagination.Page[federations.SAMLFederation]",
+    "pagination_contract_ref": "contracts/federations.v1.saml.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml.list.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml.list.json#/request",
+    "resource": "saml",
+    "response_binding_ref": "contracts/federations.v1.saml.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/saml",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "0fb65c9d80b954193c869f6459d5ce8b91329f3a31dba0279033ffc19568e62e",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "4569863ace7240de0d0ba22739f33ad11f6926a6ca89d200cfd11a517c1c2c3d",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml.update.json": "c843cfad47595bfdf3b55367978940cabdec6b1f8f1729624717d3ad3f69a540"
+    },
+    "contract_revision": "6e7e443f5bdef34b95b3f99f335598c5528b0c5fd968066c9ba330d1c1d26eb9",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml.update.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml.update.json#/errors",
+    "go_method": "federations.SAML.Update",
+    "implementation": {
+      "binding": "federations.SAML.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/patch",
+    "input_type": "federations.UpdateSAMLRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml.update",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/patch/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}/patch",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml.update.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml.update.json#/request",
+    "resource": "saml",
+    "response_binding_ref": "contracts/federations.v1.saml.update.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "PATCH /v1/federations/saml/{federation_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "6e7e443f5bdef34b95b3f99f335598c5528b0c5fd968066c9ba330d1c1d26eb9",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "955b9650dab09bea991840b5edbf7321f5a599613afa1b2dda63ab5b367eee64",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_certificates.create.json": "29821c3dc42ff26f677f133953ae851dc57c1816734e208a176daecce38a09e5"
+    },
+    "contract_revision": "dd7dc458e74820a9a395c24970fe4d309ade00b14039269371402e27af60fd3f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_certificates.create.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_certificates.create.json#/errors",
+    "go_method": "federations.Certificates.Create",
+    "implementation": {
+      "binding": "federations.Certificates.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates/post",
+    "input_type": "federations.CreateCertificateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_certificates.create",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates/post/responses",
+    "output_type": "federations.Certificate",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_certificates.create.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_certificates.create.json#/request",
+    "resource": "saml_certificates",
+    "response_binding_ref": "contracts/federations.v1.saml_certificates.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "response.data",
+      "request.data"
+    ],
+    "service": "federations",
+    "source": {
+      "operation_locator": "POST /v1/federations/saml/{federation_id}/certificates",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "dd7dc458e74820a9a395c24970fe4d309ade00b14039269371402e27af60fd3f",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "6a5f2b8181f1f5b779b6554e2c1dfbf7bb81989ea17782f7c27bb4ad7a1ab32b",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_certificates.delete.json": "f71d7f28085e2b17fbe85a2736dc0078c4e536af9506330c17b31885edff4939"
+    },
+    "contract_revision": "d0ad72876763802151cc5893f382b3bbbb44958a7ad9fa75fabefcd2433ba35f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_certificates.delete.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_certificates.delete.json#/errors",
+    "go_method": "federations.Certificates.Delete",
+    "implementation": {
+      "binding": "federations.Certificates.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/delete",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_certificates.delete",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_certificates.delete.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_certificates.delete.json#/request",
+    "resource": "saml_certificates",
+    "response_binding_ref": "contracts/federations.v1.saml_certificates.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "DELETE /v1/federations/saml/{federation_id}/certificates/{certificate_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "d0ad72876763802151cc5893f382b3bbbb44958a7ad9fa75fabefcd2433ba35f",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "27468b2d3c52e7550e37bd199f87f060dd3aeb957a05f04477f1079150f93560",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_certificates.get.json": "445392b3bcd16fc4901f1327e27c4c19aeef1bcf0d06c72b33c60333ec8f39cb"
+    },
+    "contract_revision": "ae6483ef946ea6e88554ac529ec71b625f73466a2e2d4dcc5bf1329d7a20fd3b",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_certificates.get.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_certificates.get.json#/errors",
+    "go_method": "federations.Certificates.Get",
+    "implementation": {
+      "binding": "federations.Certificates.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/get",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_certificates.get",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/get/responses",
+    "output_type": "federations.Certificate",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_certificates.get.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_certificates.get.json#/request",
+    "resource": "saml_certificates",
+    "response_binding_ref": "contracts/federations.v1.saml_certificates.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "response.data"
+    ],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/saml/{federation_id}/certificates/{certificate_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "ae6483ef946ea6e88554ac529ec71b625f73466a2e2d4dcc5bf1329d7a20fd3b",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "f4a6088329874524d4dff8808b7d089e1513d43bb9fc3718a0ff0253444b079d",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_certificates.list.json": "941ef80a1e38817d08712c24797b09a1cacad07d08ffdb5465e6362c9b9a8831"
+    },
+    "contract_revision": "a0ae4486f5a7158ced9cec69be6a51c27091db5520994a7d241acb689623185a",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_certificates.list.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_certificates.list.json#/errors",
+    "go_method": "federations.Certificates.ListPage",
+    "implementation": {
+      "binding": "federations.Certificates.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates/get",
+    "input_type": "types.ResourceRef,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_certificates.list",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates/get/responses",
+    "output_type": "pagination.Page[federations.Certificate]",
+    "pagination_contract_ref": "contracts/federations.v1.saml_certificates.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_certificates.list.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_certificates.list.json#/request",
+    "resource": "saml_certificates",
+    "response_binding_ref": "contracts/federations.v1.saml_certificates.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "response.data"
+    ],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/saml/{federation_id}/certificates",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "a0ae4486f5a7158ced9cec69be6a51c27091db5520994a7d241acb689623185a",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "eccc494fe76f347a5b1caaa74ebec32d7b0af1980a975057010fb99503dc498b",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_certificates.update.json": "54292ed3b350b5dc8b8a061c6f5c5663120b38937f31ef0e13ca3a7a9b54dd2e"
+    },
+    "contract_revision": "39f0b69f52ea010d6290c751f010b9fe770aaa04801989a50a1841cc8d6bed1f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_certificates.update.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_certificates.update.json#/errors",
+    "go_method": "federations.Certificates.Update",
+    "implementation": {
+      "binding": "federations.Certificates.Update",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/patch",
+    "input_type": "federations.UpdateCertificateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_certificates.update",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/patch/responses",
+    "output_type": "federations.Certificate",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates~1{certificate_id}/patch",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_certificates.update.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_certificates.update.json#/request",
+    "resource": "saml_certificates",
+    "response_binding_ref": "contracts/federations.v1.saml_certificates.update.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "response.data"
+    ],
+    "service": "federations",
+    "source": {
+      "operation_locator": "PATCH /v1/federations/saml/{federation_id}/certificates/{certificate_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "39f0b69f52ea010d6290c751f010b9fe770aaa04801989a50a1841cc8d6bed1f",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "9e0bd9094cea6608e3f01ec8da576574464bec53a9ef161d253fd61aa59362df",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_group_mappings.delete.json": "b1b7916b39d02bf2e747235bdb1f5f2fdf917919be411ed25a76c6f260845e85"
+    },
+    "contract_revision": "8644d7ab55412c01a3c2d790bf091bc0d93ed69133e988a15bf60ba6705516bf",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_group_mappings.delete.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_group_mappings.delete.json#/errors",
+    "go_method": "federations.GroupMappings.Delete",
+    "implementation": {
+      "binding": "federations.GroupMappings.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/delete",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_group_mappings.delete",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_group_mappings.delete.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_group_mappings.delete.json#/request",
+    "resource": "saml_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.saml_group_mappings.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "DELETE /v1/federations/saml/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "8644d7ab55412c01a3c2d790bf091bc0d93ed69133e988a15bf60ba6705516bf",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "bdfecea0e5fe501eb7273a4516bd6a3e6c219cac4ce260a64bd21fb2fee3c506",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "exists",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_group_mappings.exists.json": "9b748241416ecad47db50de69a0cb5ec04d3415abf6ebc016154d64309602357"
+    },
+    "contract_revision": "6e857de7a7526ec4b7f03449926e51f8aeb085f45c334a584c12acdc9255fcd0",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_group_mappings.exists.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_group_mappings.exists.json#/errors",
+    "go_method": "federations.GroupMappings.Exists",
+    "implementation": {
+      "binding": "federations.GroupMappings.Exists",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/head",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_group_mappings.exists",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/head/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/head",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_group_mappings.exists.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_group_mappings.exists.json#/request",
+    "resource": "saml_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.saml_group_mappings.exists.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "HEAD /v1/federations/saml/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "6e857de7a7526ec4b7f03449926e51f8aeb085f45c334a584c12acdc9255fcd0",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "9025d96e37a5816c5408833f8342a21909ae55e7fc37d3896c0ec6a9865a3407",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_group_mappings.list.json": "0a368916f592d4f70b43bd7e92c2b204502ad0ab92558bbdea4cdbea9e174b48"
+    },
+    "contract_revision": "b29f698856d7c55a6f65e33a7b83510e1359d7223adc08fa252b5ed58e29fe46",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_group_mappings.list.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_group_mappings.list.json#/errors",
+    "go_method": "federations.GroupMappings.ListPage",
+    "implementation": {
+      "binding": "federations.GroupMappings.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings/get",
+    "input_type": "types.ResourceRef,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_group_mappings.list",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings/get/responses",
+    "output_type": "pagination.Page[federations.GroupMapping]",
+    "pagination_contract_ref": "contracts/federations.v1.saml_group_mappings.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_group_mappings.list.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_group_mappings.list.json#/request",
+    "resource": "saml_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.saml_group_mappings.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "GET /v1/federations/saml/{federation_id}/group-mappings",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "b29f698856d7c55a6f65e33a7b83510e1359d7223adc08fa252b5ed58e29fe46",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "2c5a2b46b750e2ebc16e6caf8b9f89592c4b1eb39fad3860f10bef380f061e25",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "put",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_group_mappings.put.json": "dca0ae3d62888623b2be6b5400cc083c797dda32089db51e5f2d8cccac58de95"
+    },
+    "contract_revision": "84d2471d734b43a917a625fe18c3a1257eae3a37d44f9b06909a5fa17527f676",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_group_mappings.put.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_group_mappings.put.json#/errors",
+    "go_method": "federations.GroupMappings.Put",
+    "implementation": {
+      "binding": "federations.GroupMappings.Put",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/put",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_group_mappings.put",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/put/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings~1{group_id}~1external-groups~1{external_group_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_group_mappings.put.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_group_mappings.put.json#/request",
+    "resource": "saml_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.saml_group_mappings.put.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "PUT /v1/federations/saml/{federation_id}/group-mappings/{group_id}/external-groups/{external_group_id}",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "84d2471d734b43a917a625fe18c3a1257eae3a37d44f9b06909a5fa17527f676",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "c2f38f4d3e5efb7783a833009ec5a5a9cbb6e0e09d68ac33b7f5cae563660ba2",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/federations.v1.saml_group_mappings.replace.json": "6e20e38d458bd8dd388c4a9d5c99373cf5ab2372571619c9bc2dad4fa84cebaa"
+    },
+    "contract_revision": "2bccb893fbac415ceafdacebc721fa588965eab57e238bbadca0d76758ab27e3",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/federations.v1.saml_group_mappings.replace.json#/endpoint",
+    "error_binding_ref": "contracts/federations.v1.saml_group_mappings.replace.json#/errors",
+    "go_method": "federations.GroupMappings.Replace",
+    "implementation": {
+      "binding": "federations.GroupMappings.Replace",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings/put",
+    "input_type": "federations.GroupMappingsRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "federations.v1.saml_group_mappings.replace",
+    "output_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings/put/responses",
+    "output_type": "federations.GroupMappingsResponse",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1group-mappings/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/federations.v1.saml_group_mappings.replace.json#/retry",
+    "request_binding_ref": "contracts/federations.v1.saml_group_mappings.replace.json#/request",
+    "resource": "saml_group_mappings",
+    "response_binding_ref": "contracts/federations.v1.saml_group_mappings.replace.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "federations",
+    "source": {
+      "operation_locator": "PUT /v1/federations/saml/{federation_id}/group-mappings",
+      "revision": "e329539a3036cb0746afdeb7e97079c9d087a82a0f621488bc1a179bdd319753",
+      "uri": "https://docs.selectel.ru/api/federations.json"
+    },
+    "verification": {
+      "contract_revision": "2bccb893fbac415ceafdacebc721fa588965eab57e238bbadca0d76758ab27e3",
+      "evidence_ref": "federations_management_test.go",
+      "implementation_revision": "36b740e0a25b2bcbc02964471e16f9ca638f00138c8759db72be8828cbb4e2fa",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
     "action": "filter",
     "api_generation": "cloudwatch",
     "auth": {
@@ -5044,7 +6625,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "6ae3c0630281bc04bbf60da945b8a8ff0f0b24f899c1a83abdc8de235d7440e5",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +6695,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "ca7d07bca0ba6d4b6fcda381755a4f5de396198c4a6992f64d143073733e9b81",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +6762,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "9da1c1bde0258dfddc3b87130e3fe591926a5bea076a42b0cbbaf029a8f0c970",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +6829,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "4cd567c2baa89295accbf07d237fba3c48ca2bf4ae5ca645db2011c7cdc96842",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +6895,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "cb416451eaaeaae0614e8179b5e079c904175301ebbcdfa0fc6ed9f6acc52134",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +6961,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "d28377a65ce0a761f442eb40491eda31d9abd8f573948c9f9c7227bef2b2e80e",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +7026,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "266d3ba62df7bb4524c8360b015e9ba5f02de5fbcc12fa65b2b9c2f51da10140",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +7083,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "93df8b77e124fc90377c31059ffdfd672700a168e40ee2ebc1c7fd6c42f21aca",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +7142,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "143d5c71cc84af1603152bb54dde02efc969eb80f577015c69b6f4a3cb227f33",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +7201,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "3be15c85d9aa1cb6c831d7cc502d2d51771870347fe7ee5a21edabefd465e95c",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +7262,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "835bee88f54a7f8c54d237c2ddda73950ba8a3ec00c72d6c87193def6573dd3f",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +7321,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "450e374241e4e30c01cd939a23dca12fcf4e917876d15b8a4ce48cab4a8a6188",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +7380,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "1fe9a083e46d327ff3a78f56fbf66fb1944140e7fdbd8e67739739036612ebc0",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +7441,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "2a8828fc02a8d68f8a8d79829ee874f7f29181c547fb4be465c7ed0531bed2b7",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +7502,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "f354acb7673d869825f821fbae33bcf608775166a84622d6f850faa9cf8f8747",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +7559,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "4d1d0d0fb766248761975611d4e31da8ee445c7fcbceaf1d82811b3e2c44c99b",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +7616,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "7b9a4528eb8dd9a63b09bcc3233d49fbb278dc0f113e0ae44744c7dffe4f5ce3",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +7677,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "0a8bff69c2fcacb886148851c7f7a9fe80334bdb5b888c7c9357ed916049e424",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +7736,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "54bb437b5186a2dc55804d4f3567d78f8857b5587c6112549f7009b70a2c1eb4",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +7793,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "cac5c10da7620068e1e26000ab72abde7fc216626070a42df144af5ac9fe3e24",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +7852,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "bea610faf590be09c8f7ee546c11f699d4958c51f590689510c94b3e86ccf418",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +7911,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "1eb1791d1a5c8ad478c412c8e54825ba0c9ad513bed7b8ea224483d8d9d063d7",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +7968,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "7c469489dc7ed7226788a16b663d49f0e61e0968106cac9431da33eaadeba621",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +8025,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "808c2e0d131375d85d1ada98147d2596d656a15a0e4cfb48b1d5387edec07801",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +8084,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "73c9b5912ac6674fccc5d686f148a3d0294fdfd049e9cbb1823254a86ba00a6e",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +8141,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "6e91234ac4a045cfb55fc70a45cacf58ddae359c9796992c5365498049c7f479",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +8198,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "ee6b88da4e3a4d0b0c0471ad62742da8a0bd1c475b8c3ea5e286017727998455",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +8255,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "f9f96a646940813dc17640264529df87cd914d04538a321926874cab4ed95f79",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +8312,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "0ae0fd69f8678fcfaa83e5958881f8feacb776879b3296c1be5a3f8deeffb576",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +8369,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "28454199e0fc205158e35967bc4ee97f11e87b7b62e0adf4775de103951bce63",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +8431,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "672638d6d1a4752ded5aecafd21f1fc9367ec6649a97dc9e8db0b189df978f1b",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +8493,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "d339618407757aa2ea23e0124d8951b8c88baefd56d510346647980a6ed17eeb",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +8554,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "214ea8db2ac69ae2e43016c2e3f3bca219770f812c573c35ec294b12e4036379",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +8615,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "14c6a1f0356578fc35d8a467e458f650a5dc2f3d14997939c5f74cee40533733",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +8674,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "7fed961310aa0af336839c24eb79f680dfe3f92bcae7401094f91159704c00ad",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +8731,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "b84fde168cf2bce3ec2bae9171fa693135a1d45a1a913bdc7c13aa9806d1c253",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +9476,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "d27172558a37275da3f2f5bf66fa5cf29ab3f7a0d1dd0abc11bd137061dbc859",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +9532,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "ed7c2be6ebd7d8489417bcbb84ddfc3ed0efef82bb842acc9cd09cd8ed856bd3",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +9588,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "945a002c7bdb90338d9d0cdc99f602b43c84e8dcf1d72f1776b1176ec3f9a8a2",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +9644,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "5507ff49817aaaa549b64c93ea9a28255a8523c34016a18d807764bed6df6fd3",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +9700,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "2b17676b37d44876fec69fc137781e0fece589006607541f8c6a9ee17ab26cab",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +10128,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "ca080683b9fae4800a9c9c56a8b4a875389f1421eeaa72fee08f98f8a9aa0356",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +10185,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "fbf353334757c56f8d6cc0e547832e0bc8890e5679dad676cbde48568084c14a",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +10242,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "8c46a687e75ebf6dbae9d39c105fad103ac60852879cf46f20a5fb6f071ec923",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +10299,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "edbeac5a06010714a4c9790f5707c2edce2a3eb19200e933ac519c623c6bb611",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +11166,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "1f6ca83e758520ff1882537b77f54e010d2e378beb361958772bb9742d6688b5",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +11765,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "4acb5203cb3530eb6eda9e7eccf90bd7e359c0ea572d3a0859e9d39fc67f43ba",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +11822,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "8e30e51b65d6d215aba5bde5dd10aa5f583a72f753c6d0c521a66f3ae3955a72",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +11881,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "80a9352b50cc8982e0da36663b103fafcff1eefe6c90e8001fb41bbf9eac329b",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +11938,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "5a8c8645a5c9ea460e728e63b9ab480b943d8f1af303a4cde8f25443dfde3c5b",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +11995,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "e94d0e7ae4b2ebf12f39aa6b3101ba76988aebcd440084c246064e241c5c38a5",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +12054,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "db75e8b47edf70eeb674561716b8fb2cd0c60b5264084dde45d11d34104073da",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +12113,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "4429465dca87295a4a8027a2236fa979e3ee14d1c6a320c4b66325614ce9de7f",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +12170,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "f533b3d88d0eb230b3cc9e5440a5d7318b5a2d4a0e232619f1aff5bae09b8cd1",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +12227,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "fec9d82b637c90fd9477989ea5daa97cd77f7f695ea068cd637d716b8e9aff27",
       "level": "offline"
     },
     "wait_goals": []

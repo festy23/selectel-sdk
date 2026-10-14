@@ -203,3 +203,8 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+## Federation management
+
+Account-scoped SAML/OIDC v1, certificates and group mappings follow
+[federations.md](federations.md), including the two documented public reads.
