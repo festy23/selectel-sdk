@@ -34,10 +34,20 @@ func xmlListing(raw []byte, rootKind, owner string) ([]map[string]json.RawMessag
 		if e != nil {
 			return nil, types.NewError(types.ProtocolError)
 		}
-		switch tok.(type) {
+		switch element := tok.(type) {
 		case xml.Directive:
 			return nil, types.NewError(types.ProtocolError)
 		case xml.StartElement:
+			// DecodeElement matches struct tags by local name, so validate the whole
+			// bounded document before it can map namespaced children or attributes.
+			if element.Name.Space != "" {
+				return nil, types.NewError(types.ProtocolError)
+			}
+			for _, attribute := range element.Attr {
+				if attribute.Name.Space != "" || (attribute.Name.Local == "xmlns" && attribute.Value != "") {
+					return nil, types.NewError(types.ProtocolError)
+				}
+			}
 			depth++
 			if depth > 16 {
 				return nil, types.NewError(types.ResponseLimit)

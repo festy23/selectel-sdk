@@ -778,3 +778,39 @@ func TestSwiftCurrentPlainNamesWithoutDelimiterHaveExactRefsAndAbsentStats(t *te
 		})
 	}
 }
+
+func TestSwiftCurrentXMLRejectsNamespacesBeforeIdentityMapping(t *testing.T) {
+	for _, objects := range []bool{false, true} {
+		t.Run(fmt.Sprint(objects), func(t *testing.T) {
+			root, owner, row := "account", "test-project", "container"
+			if objects {
+				root, owner, row = "container", "bucket", "object"
+			}
+			for label, content := range map[string]string{
+				"declared-child":        `<` + row + ` xmlns:x="urn:foreign"><x:name>other-name</x:name></` + row + `>`,
+				"undeclared-child":      `<` + row + `><x:name>other-name</x:name></` + row + `>`,
+				"known-field-attribute": `<` + row + `><name xml:lang="en">other-name</name></` + row + `>`,
+				"subdir-attribute":      `<subdir xmlns:x="urn:foreign" x:name="directory/"/>`,
+			} {
+				t.Run(label, func(t *testing.T) {
+					c := inventoryClient(t, func(*http.Request) (*http.Response, error) {
+						return inventoryReply(200, `<`+root+` name="`+owner+`">`+content+`</`+root+`>`), nil
+					}, 0)
+					svc := regionalView(t, c, "ru-1").Swift()
+					if objects {
+						b, _ := svc.Bucket("bucket")
+						out, e := svc.Objects(context.Background(), b, swift.ListOptions{Format: swift.ListXML}, pagination.Options{MaxPages: 1})
+						if types.ErrorCode(e) != types.ProtocolError || len(out.Items) != 0 {
+							t.Fatal("namespaced object metadata became identity", e)
+						}
+					} else {
+						out, e := svc.Buckets(context.Background(), swift.ListOptions{Format: swift.ListXML}, pagination.Options{MaxPages: 1})
+						if types.ErrorCode(e) != types.ProtocolError || len(out.Items) != 0 {
+							t.Fatal("namespaced container metadata became identity", e)
+						}
+					}
+				})
+			}
+		})
+	}
+}
