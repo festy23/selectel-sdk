@@ -1,0 +1,246 @@
+{
+  "operation_id": "billing.v2.billing_transactions.list",
+  "effect": "read",
+  "endpoint": {
+    "url": null,
+    "generation": "v2",
+    "override_key": [
+      "billing",
+      "v2",
+      "exact account scope"
+    ],
+    "redirects": "reject",
+    "requirement": "Explicit Config.EndpointOverrides required; absent => endpoint_unavailable before credentials/I/O",
+    "evidence": "contracts/billing-endpoint-evidence.json",
+    "evidence_sha256": "c003fb551dd72803049aee7c65447883b948301049216b1b517fa4dc3ea02a3e"
+  },
+  "auth": {
+    "scheme": "static_token",
+    "alternatives": [],
+    "audience": "selectel",
+    "headers": {
+      "X-Token": "explicit static token; never switch to IAM for static-only API",
+      "X-Auth-Token": "IAM account only where source supports it"
+    }
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v2/billing/transactions",
+    "source_schema": "sources/billing-transactions.json#/paths/~1v2~1billing~1transactions/get",
+    "source_operation": {
+      "summary": "List transactions",
+      "description": "The transaction history shows all transactions that affected the account balance.",
+      "operationId": "listTransactions",
+      "tags": [
+        "Transactions"
+      ],
+      "parameters": [
+        {
+          "name": "created_from",
+          "in": "query",
+          "required": true,
+          "description": "Start of the period in ISO 8601 format.",
+          "schema": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "example": "2025-09-01T00:00:00"
+        },
+        {
+          "name": "created_to",
+          "in": "query",
+          "required": true,
+          "description": "End of the period in ISO 8601 format.",
+          "schema": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "example": "2025-09-11T23:59:59"
+        },
+        {
+          "name": "balances",
+          "in": "query",
+          "required": false,
+          "description": "Comma-separated list of balance types to filter (e.g., main, bonus).",
+          "schema": {
+            "type": "string"
+          },
+          "example": "main,bonus"
+        },
+        {
+          "name": "offset",
+          "in": "query",
+          "required": false,
+          "description": "Offset for pagination.",
+          "schema": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "example": 0
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": true,
+          "description": "Number of records per page.",
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500
+          },
+          "example": 200
+        },
+        {
+          "name": "without_removed",
+          "in": "query",
+          "required": false,
+          "description": "Exclude removed transactions if true.",
+          "schema": {
+            "type": "boolean"
+          },
+          "example": true
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of transactions.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionsResponse"
+              },
+              "example": {
+                "status": "success",
+                "data": [
+                  {
+                    "user_id": 100500,
+                    "transaction_type": "withdraw",
+                    "description": {
+                      "en": "Payment for service"
+                    },
+                    "public_description": {
+                      "en": "Payment for service"
+                    },
+                    "balance": "bonus",
+                    "dir": "outgoing",
+                    "created": "2025-09-11T12:50:13.621617",
+                    "price": -210000,
+                    "state": "PAID",
+                    "id_meta": {
+                      "id": [
+                        700000001,
+                        700000002
+                      ],
+                      "billing": "seido",
+                      "service_id": 1018,
+                      "service_name": "Dedicated server CL02",
+                      "service_name_en": "Dedicated server CL02"
+                    },
+                    "transaction_group": "withdraw",
+                    "server_meta": {
+                      "en": {
+                        "operation": "Payment for service",
+                        "service": "Dedicated server CL02 11111111-1111-4111-8111-111111111111",
+                        "full_name": "Payment for service Dedicated server CL02 11111111-1111-4111-8111-111111111111"
+                      },
+                      "main_resource_uuid": "11111111-1111-4111-8111-111111111111",
+                      "server_id": null,
+                      "equip_id": 0,
+                      "service_id": null,
+                      "service_type": 38,
+                      "service_sub_type": 1
+                    },
+                    "reason_for_debt": null,
+                    "date_payment_must_made": null,
+                    "jurbrand_key": "selectel_russia"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponse"
+              },
+              "example": {
+                "status": "error",
+                "message": "Missing required parameter: limit"
+              }
+            }
+          }
+        },
+        "401": {
+          "$ref": "#/components/responses/UnauthorizedError"
+        },
+        "500": {
+          "$ref": "#/components/responses/InternalServerError"
+        }
+      }
+    },
+    "scope": "account only; project/location view rejected before I/O",
+    "mapping_source": "billing/transactions.go",
+    "query": {
+      "created_from": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved",
+      "created_to": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved",
+      "balances": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved",
+      "offset": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved",
+      "limit": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved",
+      "without_removed": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved"
+    },
+    "body": null,
+    "validation": "Published provider enum, year2020..2030/month1..12, locale ru/en, date-time offset or source example timezone-free form, transactions limit1..500 and arbitrary-precision nonnegative offset; no defaults added"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/billing-transactions.json#/paths/~1v2~1billing~1transactions/get/responses",
+    "dto_source": "billing/transactions_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All source fields, recursive report objects and integer/string project IDs retained. Exact Integer quantities; source money->Amount.Raw with unit kopeck, no inferred currency. ProviderTimestamp.Raw retained, UTC only when offset supplied. Names/descriptions/service context/debt reasons protected; optional null preserved with Nullable or formatter-safe OptionalText.",
+    "sensitive_fields": [
+      "name",
+      "description",
+      "public_description",
+      "service_name",
+      "full_name",
+      "reason_for_debt",
+      "jurbrand_key"
+    ],
+    "resource_ref": "none; billing project/object identifiers are billing metadata, never infrastructure adoption refs"
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated; no auth-audience/endpoint fallback",
+    "403": "permission_denied",
+    "429": "rate_limited within read budget",
+    "500": "provider_error within bounded read retries",
+    "malformed": "protocol_error",
+    "foreign_account": "scope_mismatch for report account_id",
+    "over_requested_page_limit": "response_limit with retained bounded prefix, no completion claim"
+  },
+  "retry": "bounded safe reads within CallTimeout; no endpoint/credential-scope fallback",
+  "pagination": {
+    "mode": "one caller-selected offset page; optional offset omitted when absent; required limit1..500",
+    "completion": "not inferred; source publishes no next/total/end metadata",
+    "budget": "MaxJSONBytes; excess returned rows truncated with response_limit"
+  },
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; financial read does not create/wait resources"
+  },
+  "recovery": {
+    "availability": "unavailable; safe read only"
+  },
+  "timeout": "CallTimeout and MaxJSONBytes; no unbounded buffering",
+  "limitations": [
+    "Caller must configure endpoint; source/server availability is not established"
+  ],
+  "source_example_compatibility": {
+    "ServerMeta.ru": "source schema requires ru but its own 200 example omits it; accept documented en-only example while keeping other required fields"
+  }
+}

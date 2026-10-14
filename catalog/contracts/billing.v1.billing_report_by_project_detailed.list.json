@@ -1,0 +1,428 @@
+{
+  "operation_id": "billing.v1.billing_report_by_project_detailed.list",
+  "effect": "read",
+  "endpoint": {
+    "url": null,
+    "generation": "v1",
+    "override_key": [
+      "billing",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject",
+    "requirement": "Explicit Config.EndpointOverrides required; absent => endpoint_unavailable before credentials/I/O",
+    "evidence": "contracts/billing-endpoint-evidence.json",
+    "evidence_sha256": "c003fb551dd72803049aee7c65447883b948301049216b1b517fa4dc3ea02a3e"
+  },
+  "auth": {
+    "scheme": "static_token",
+    "alternatives": [],
+    "audience": "selectel",
+    "headers": {
+      "X-Token": "explicit static token; never switch to IAM for static-only API",
+      "X-Auth-Token": "IAM account only where source supports it"
+    }
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v1/billing/report/by_project/detailed",
+    "source_schema": "sources/billing-reports.json#/paths/~1v1~1billing~1report~1by_project~1detailed/get",
+    "source_operation": {
+      "summary": "Get detailed project report",
+      "description": "Returns detailed project expense data for the specified month, including breakdowns by product, facility, and resource.",
+      "operationId": "getDetailedProjectReport",
+      "tags": [
+        "Project Reports"
+      ],
+      "parameters": [
+        {
+          "name": "year",
+          "in": "query",
+          "required": true,
+          "description": "Report year.",
+          "schema": {
+            "type": "integer",
+            "minimum": 2020,
+            "maximum": 2030
+          },
+          "example": 2025
+        },
+        {
+          "name": "month",
+          "in": "query",
+          "required": true,
+          "description": "Report month as a number from 1 to 12.",
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "example": 8
+        },
+        {
+          "name": "locale",
+          "in": "query",
+          "required": false,
+          "description": "Locale for names in the response.",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ru",
+              "en"
+            ]
+          },
+          "example": "ru"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Detailed report by projects.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectReportResponse"
+              },
+              "example": {
+                "status": "success",
+                "data": {
+                  "account_id": 12345,
+                  "agreement_id": 0,
+                  "locale": "ru",
+                  "project_ids": [],
+                  "year": 2025,
+                  "month": 8,
+                  "projects": [
+                    {
+                      "id": "proj-1",
+                      "name": "project-1",
+                      "paid_by_balance": [
+                        {
+                          "balance": "main",
+                          "value": 16000000
+                        },
+                        {
+                          "balance": "bonus",
+                          "value": 80000
+                        }
+                      ],
+                      "value": 36000,
+                      "products": [
+                        {
+                          "id": 21,
+                          "name": "S3",
+                          "paid_by_balance": [
+                            {
+                              "balance": "bonus",
+                              "value": 0
+                            }
+                          ],
+                          "value": 0,
+                          "objects": [
+                            {
+                              "id": "",
+                              "name": "",
+                              "type": "",
+                              "type_name": "",
+                              "service_name": null,
+                              "paid_by_balance": [
+                                {
+                                  "balance": "bonus",
+                                  "value": 0
+                                }
+                              ],
+                              "value": 0,
+                              "resources": [
+                                {
+                                  "id": "traffic-mb",
+                                  "name": "Outbound traffic (standard)",
+                                  "quantity": 22,
+                                  "unit": "MB",
+                                  "unit_name": "MB",
+                                  "paid_by_balance": [
+                                    {
+                                      "balance": "bonus",
+                                      "value": 0
+                                    }
+                                  ],
+                                  "value": 0,
+                                  "provision_start": "2025-08-18T15:00:00",
+                                  "provision_end": "2025-08-29T13:00:00"
+                                },
+                                {
+                                  "id": "traffic-req-put",
+                                  "name": "PUT, POST, COPY requests (standard)",
+                                  "quantity": 1,
+                                  "unit": "item",
+                                  "unit_name": "item",
+                                  "paid_by_balance": [
+                                    {
+                                      "balance": "bonus",
+                                      "value": 0
+                                    }
+                                  ],
+                                  "value": 0,
+                                  "provision_start": "2025-08-15T23:00:00",
+                                  "provision_end": "2025-08-15T23:00:00"
+                                },
+                                {
+                                  "id": "traffic-req-get",
+                                  "name": "GET and other requests (standard)",
+                                  "quantity": 923,
+                                  "unit": "item",
+                                  "unit_name": "item",
+                                  "paid_by_balance": [
+                                    {
+                                      "balance": "bonus",
+                                      "value": 0
+                                    }
+                                  ],
+                                  "value": 0,
+                                  "provision_start": "2025-08-01T16:00:00",
+                                  "provision_end": "2025-08-31T21:00:00"
+                                }
+                              ],
+                              "objects": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": 22,
+                          "name": "Cloud servers",
+                          "paid_by_balance": [
+                            {
+                              "balance": "bonus",
+                              "value": 36000
+                            }
+                          ],
+                          "value": 36000,
+                          "objects": [
+                            {
+                              "id": "11111111-1111-4111-8111-111111111111",
+                              "name": "203.0.113.10",
+                              "type": "network_floatingips",
+                              "type_name": "Public IP",
+                              "service_name": null,
+                              "paid_by_balance": [
+                                {
+                                  "balance": "bonus",
+                                  "value": 18000
+                                }
+                              ],
+                              "value": 18000,
+                              "resources": [
+                                {
+                                  "id": "network_floatingips",
+                                  "name": "Public IPs",
+                                  "quantity": 744,
+                                  "unit": "item",
+                                  "unit_name": "item",
+                                  "paid_by_balance": [
+                                    {
+                                      "balance": "bonus",
+                                      "value": 18000
+                                    }
+                                  ],
+                                  "value": 18000,
+                                  "provision_start": "2025-08-01T00:00:00",
+                                  "provision_end": "2025-08-31T23:00:00"
+                                }
+                              ],
+                              "objects": []
+                            },
+                            {
+                              "id": "22222222-2222-4222-8222-222222222222",
+                              "name": "198.51.100.20",
+                              "type": "network_floatingips",
+                              "type_name": "Public IP",
+                              "service_name": null,
+                              "paid_by_balance": [
+                                {
+                                  "balance": "bonus",
+                                  "value": 18000
+                                }
+                              ],
+                              "value": 18000,
+                              "resources": [
+                                {
+                                  "id": "network_floatingips",
+                                  "name": "Public IPs",
+                                  "quantity": 744,
+                                  "unit": "item",
+                                  "unit_name": "item",
+                                  "paid_by_balance": [
+                                    {
+                                      "balance": "bonus",
+                                      "value": 18000
+                                    }
+                                  ],
+                                  "value": 18000,
+                                  "provision_start": "2025-08-01T00:00:00",
+                                  "provision_end": "2025-08-31T23:00:00"
+                                }
+                              ],
+                              "objects": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "proj-2",
+                      "name": "project-2",
+                      "paid_by_balance": [
+                        {
+                          "balance": "bonus",
+                          "value": 18000
+                        }
+                      ],
+                      "value": 18000,
+                      "products": [
+                        {
+                          "id": 21,
+                          "name": "S3",
+                          "paid_by_balance": [
+                            {
+                              "balance": "bonus",
+                              "value": 0
+                            }
+                          ],
+                          "value": 0,
+                          "objects": [
+                            {
+                              "id": "",
+                              "name": "",
+                              "type": "",
+                              "type_name": "",
+                              "service_name": null,
+                              "paid_by_balance": [
+                                {
+                                  "balance": "bonus",
+                                  "value": 0
+                                }
+                              ],
+                              "value": 0,
+                              "resources": [
+                                {
+                                  "id": "traffic-mb",
+                                  "name": "Outbound traffic (standard)",
+                                  "quantity": 35,
+                                  "unit": "MB",
+                                  "unit_name": "MB",
+                                  "paid_by_balance": [
+                                    {
+                                      "balance": "bonus",
+                                      "value": 0
+                                    }
+                                  ],
+                                  "value": 0,
+                                  "provision_start": "2025-08-06T12:00:00",
+                                  "provision_end": "2025-08-29T13:00:00"
+                                },
+                                {
+                                  "id": "traffic-req-get",
+                                  "name": "GET and other requests (standard)",
+                                  "quantity": 1098,
+                                  "unit": "item",
+                                  "unit_name": "item",
+                                  "paid_by_balance": [
+                                    {
+                                      "balance": "bonus",
+                                      "value": 0
+                                    }
+                                  ],
+                                  "value": 0,
+                                  "provision_start": "2025-08-01T16:00:00",
+                                  "provision_end": "2025-08-31T21:00:00"
+                                }
+                              ],
+                              "objects": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "value": 62639000,
+                  "paid_by_balance": [
+                    {
+                      "balance": "bonus",
+                      "value": 62639000
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request. Fix the request and try again.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "$ref": "#/components/responses/UnauthorizedError"
+        },
+        "500": {
+          "$ref": "#/components/responses/InternalServerError"
+        }
+      }
+    },
+    "scope": "account only; project/location view rejected before I/O",
+    "mapping_source": "billing/report.go",
+    "query": {
+      "year": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved",
+      "month": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved",
+      "locale": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved"
+    },
+    "body": null,
+    "validation": "Published provider enum, year2020..2030/month1..12, locale ru/en, date-time offset or source example timezone-free form, transactions limit1..500 and arbitrary-precision nonnegative offset; no defaults added"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/billing-reports.json#/paths/~1v1~1billing~1report~1by_project~1detailed/get/responses",
+    "dto_source": "billing/report_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All source fields, recursive report objects and integer/string project IDs retained. Exact Integer quantities; source money->Amount.Raw with unit kopeck, no inferred currency. ProviderTimestamp.Raw retained, UTC only when offset supplied. Names/descriptions/service context/debt reasons protected; optional null preserved with Nullable or formatter-safe OptionalText.",
+    "sensitive_fields": [
+      "name",
+      "description",
+      "public_description",
+      "service_name",
+      "full_name",
+      "reason_for_debt",
+      "jurbrand_key"
+    ],
+    "resource_ref": "none; billing project/object identifiers are billing metadata, never infrastructure adoption refs"
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated; no auth-audience/endpoint fallback",
+    "403": "permission_denied",
+    "429": "rate_limited within read budget",
+    "500": "provider_error within bounded read retries",
+    "malformed": "protocol_error",
+    "foreign_account": "scope_mismatch for report account_id",
+    "over_requested_page_limit": "response_limit with retained bounded prefix, no completion claim"
+  },
+  "retry": "bounded safe reads within CallTimeout; no endpoint/credential-scope fallback",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; financial read does not create/wait resources"
+  },
+  "recovery": {
+    "availability": "unavailable; safe read only"
+  },
+  "timeout": "CallTimeout and MaxJSONBytes; no unbounded buffering",
+  "limitations": [
+    "Caller must configure endpoint; source/server availability is not established"
+  ],
+  "source_example_compatibility": null
+}

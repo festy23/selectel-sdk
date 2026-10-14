@@ -1,0 +1,463 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Transactions API",
+    "version": "v1.0",
+    "description": "Operations to retrieve account transactions."
+  },
+  "security": [
+    {
+      "static_token": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Transactions",
+      "description": "Operations with account transactions."
+    }
+  ],
+  "paths": {
+    "/v2/billing/transactions": {
+      "get": {
+        "summary": "List transactions",
+        "description": "The transaction history shows all transactions that affected the account balance.",
+        "operationId": "listTransactions",
+        "tags": [
+          "Transactions"
+        ],
+        "parameters": [
+          {
+            "name": "created_from",
+            "in": "query",
+            "required": true,
+            "description": "Start of the period in ISO 8601 format.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2025-09-01T00:00:00"
+          },
+          {
+            "name": "created_to",
+            "in": "query",
+            "required": true,
+            "description": "End of the period in ISO 8601 format.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2025-09-11T23:59:59"
+          },
+          {
+            "name": "balances",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated list of balance types to filter (e.g., main, bonus).",
+            "schema": {
+              "type": "string"
+            },
+            "example": "main,bonus"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Offset for pagination.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "example": 0
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "Number of records per page.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500
+            },
+            "example": 200
+          },
+          {
+            "name": "without_removed",
+            "in": "query",
+            "required": false,
+            "description": "Exclude removed transactions if true.",
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of transactions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                },
+                "example": {
+                  "status": "success",
+                  "data": [
+                    {
+                      "user_id": 100500,
+                      "transaction_type": "withdraw",
+                      "description": {
+                        "en": "Payment for service"
+                      },
+                      "public_description": {
+                        "en": "Payment for service"
+                      },
+                      "balance": "bonus",
+                      "dir": "outgoing",
+                      "created": "2025-09-11T12:50:13.621617",
+                      "price": -210000,
+                      "state": "PAID",
+                      "id_meta": {
+                        "id": [
+                          700000001,
+                          700000002
+                        ],
+                        "billing": "seido",
+                        "service_id": 1018,
+                        "service_name": "Dedicated server CL02",
+                        "service_name_en": "Dedicated server CL02"
+                      },
+                      "transaction_group": "withdraw",
+                      "server_meta": {
+                        "en": {
+                          "operation": "Payment for service",
+                          "service": "Dedicated server CL02 11111111-1111-4111-8111-111111111111",
+                          "full_name": "Payment for service Dedicated server CL02 11111111-1111-4111-8111-111111111111"
+                        },
+                        "main_resource_uuid": "11111111-1111-4111-8111-111111111111",
+                        "server_id": null,
+                        "equip_id": 0,
+                        "service_id": null,
+                        "service_type": 38,
+                        "service_sub_type": 1
+                      },
+                      "reason_for_debt": null,
+                      "date_payment_must_made": null,
+                      "jurbrand_key": "selectel_russia"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "error",
+                  "message": "Missing required parameter: limit"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "static_token": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Token",
+        "description": "Static token."
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Bad or expired token. You can reissue the token and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Server is not responding. Please try again later.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "LocalizedText": {
+        "type": "object",
+        "description": "Localized string with RU/EN variants.",
+        "properties": {
+          "ru": {
+            "type": "string",
+            "description": "Text in Russian."
+          },
+          "en": {
+            "type": "string",
+            "description": "Text in English."
+          }
+        },
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "ServerMetaLang": {
+        "type": "object",
+        "description": "Human-readable operation context in a specific language.",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Operation name (for example, Payment for service)."
+          },
+          "service": {
+            "type": "string",
+            "description": "Service or resource description."
+          },
+          "full_name": {
+            "type": "string",
+            "description": "Full human-readable operation description."
+          }
+        },
+        "required": [
+          "operation",
+          "service",
+          "full_name"
+        ]
+      },
+      "ServerMeta": {
+        "type": "object",
+        "description": "Service and resource context for the transaction.",
+        "properties": {
+          "ru": {
+            "$ref": "#/components/schemas/ServerMetaLang",
+            "description": "Operation details in Russian."
+          },
+          "en": {
+            "$ref": "#/components/schemas/ServerMetaLang",
+            "description": "Operation details in English."
+          },
+          "main_resource_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the main resource associated with the transaction."
+          },
+          "server_id": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Server ID, if applicable."
+          },
+          "equip_id": {
+            "type": "integer",
+            "description": "Equipment ID."
+          },
+          "service_id": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Service ID, if applicable."
+          },
+          "service_type": {
+            "type": "integer",
+            "description": "Service type."
+          },
+          "service_sub_type": {
+            "type": "integer",
+            "description": "Service subtype."
+          }
+        },
+        "required": [
+          "ru",
+          "en",
+          "main_resource_uuid",
+          "equip_id",
+          "service_type",
+          "service_sub_type"
+        ]
+      },
+      "TransactionIdMeta": {
+        "type": "object",
+        "description": "Identifiers and service info related to the transaction.",
+        "properties": {
+          "id": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "List of record identifiers."
+          },
+          "billing": {
+            "type": "string",
+            "description": "Billing type."
+          },
+          "service_id": {
+            "type": "integer",
+            "description": "Product identifier associated with the transaction."
+          },
+          "service_name": {
+            "type": "string",
+            "description": "Product name in Russian."
+          },
+          "service_name_en": {
+            "type": "string",
+            "description": "Product name in English."
+          }
+        },
+        "required": [
+          "id",
+          "billing"
+        ]
+      },
+      "Transaction": {
+        "type": "object",
+        "description": "Transaction record that affects the account balance.",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "description": "User identifier."
+          },
+          "transaction_type": {
+            "type": "string",
+            "description": "Transaction type (for example, withdraw, deposit)."
+          },
+          "description": {
+            "$ref": "#/components/schemas/LocalizedText",
+            "description": "Transaction description."
+          },
+          "public_description": {
+            "$ref": "#/components/schemas/LocalizedText",
+            "description": "Public transaction description."
+          },
+          "balance": {
+            "type": "string",
+            "description": "Balance type (for example, main, bonus)."
+          },
+          "dir": {
+            "type": "string",
+            "description": "Transaction direction: incoming or outgoing."
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Transaction creation date and time."
+          },
+          "price": {
+            "type": "integer",
+            "description": "Transaction amount in kopecks (can be negative)."
+          },
+          "state": {
+            "type": "string",
+            "description": "Transaction state (for example, PAID)."
+          },
+          "id_meta": {
+            "$ref": "#/components/schemas/TransactionIdMeta",
+            "description": "Additional metadata by identifiers."
+          },
+          "transaction_group": {
+            "type": "string",
+            "description": "Transaction group (for example, withdraw)."
+          },
+          "server_meta": {
+            "$ref": "#/components/schemas/ServerMeta",
+            "description": "Metadata of the product associated with the transaction."
+          },
+          "reason_for_debt": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reason for debt."
+          },
+          "date_payment_must_made": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Date."
+          },
+          "jurbrand_key": {
+            "type": "string",
+            "description": "Counterparty key."
+          }
+        },
+        "required": [
+          "user_id",
+          "transaction_type",
+          "description",
+          "public_description",
+          "balance",
+          "dir",
+          "created",
+          "price",
+          "state",
+          "id_meta",
+          "transaction_group",
+          "server_meta",
+          "jurbrand_key"
+        ]
+      },
+      "TransactionsResponse": {
+        "type": "object",
+        "description": "Top-level response for the list of transactions.",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success",
+            "description": "Response status (for example, success)."
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            },
+            "description": "List of transactions."
+          }
+        },
+        "required": [
+          "status",
+          "data"
+        ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Error response body.",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status (error)."
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code."
+          },
+          "message": {
+            "type": "string",
+            "description": "Error description."
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "message"
+        ]
+      }
+    }
+  }
+}

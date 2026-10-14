@@ -100,3 +100,5 @@ flowchart TD
 Полнота начальных сценариев и полное покрытие API учитываются раздельно по
 [catalog.md](catalog.md). Импорт SDK, наличие метода или успешный общий HTTP-запрос
 не подтверждают полное покрытие сервиса.
+
+Billing reads and explicit report endpoints: [Billing](billing.md).

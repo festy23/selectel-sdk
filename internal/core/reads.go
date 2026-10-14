@@ -90,3 +90,13 @@ func Ref(endpoint types.EndpointBinding, service, kind, id string) *types.Resour
 	}
 	return &types.ResourceRef{Scope: endpoint.Scope, Service: service, APIGeneration: endpoint.APIGeneration, Kind: kind, ID: id, EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
 }
+
+// ExplicitEndpoint requires a caller-selected binding when a published source
+// omits its server recipe. It performs no credential lookup or network I/O.
+func (r *Runtime) ExplicitEndpoint(service, generation string, scope types.Scope) (types.EndpointBinding, error) {
+	endpoint, ok := r.config.EndpointOverrides[types.EndpointKey{Service: service, APIGeneration: generation, Scope: scope}]
+	if !ok {
+		return types.EndpointBinding{}, types.NewError(types.EndpointUnavailable)
+	}
+	return endpoint, nil
+}
