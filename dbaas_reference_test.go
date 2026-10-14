@@ -2,6 +2,7 @@ package selectelsdk_test
 
 import (
 	"context"
+	"encoding"
 	"encoding/json"
 	"fmt"
 	"github.com/festy23/selectel-sdk/catalog"
@@ -258,5 +259,50 @@ func TestDatabaseUserSettingsPreserveOmittedNullAndProtectedValues(t *testing.T)
 	}
 	if strings.Contains(string(raw), "synthetic-private-choice") || strings.Contains(fmt.Sprintf("%+v", result), "synthetic-private-choice") {
 		t.Fatal("protected setting value disclosed")
+	}
+}
+
+func TestDatabaseNullableProtectedFieldsNeverFormatPayloadBytes(t *testing.T) {
+	const marker = "synthetic-private-bound"
+	c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+		return inventoryReply(200, `{"user-setting-parameters":[{"min":"synthetic-private-bound","max":"synthetic-private-bound","choices":["synthetic-private-bound"]}]}`), nil
+	}, 0)
+	result, err := regionalView(t, c, "ru-1").Databases().V1.UserSettingParameters.Collect(context.Background(), databases.UserSettingParameterListOptions{}, pagination.Options{})
+	if err != nil || len(result.Items) != 1 {
+		t.Fatal("reference missing", err)
+	}
+	value := result.Items[0]
+	decimal := strings.Trim(fmt.Sprintf("%v", []byte(marker)), "[]")
+	hexParts := make([]string, len(marker))
+	for i, b := range []byte(marker) {
+		hexParts[i] = fmt.Sprintf("0x%x", b)
+	}
+	hex := strings.Join(hexParts, ", ")
+	paths := map[string]any{"min-pointer": value.Min, "min-value": *value.Min, "max-pointer": value.Max, "max-value": *value.Max, "choices-pointer": value.Choices, "choices-value": *value.Choices, "nested-value": value, "nested-pointer": &value, "collection": result}
+	for name, path := range paths {
+		for _, verb := range []string{"%+v", "%#v"} {
+			output := fmt.Sprintf(verb, path)
+			if strings.Contains(output, marker) || strings.Contains(output, decimal) || strings.Contains(output, hex) {
+				t.Fatalf("%s %s exposed protected payload bytes", name, verb)
+			}
+		}
+	}
+
+	for name, path := range paths {
+		output, err := json.Marshal(path)
+		if err != nil || strings.Contains(string(output), marker) || strings.Contains(string(output), decimal) || strings.Contains(string(output), hex) {
+			t.Fatalf("%s JSON protection failed", name)
+		}
+	}
+	for name, path := range map[string]encoding.TextMarshaler{"min-pointer": value.Min, "min-value": *value.Min, "max-pointer": value.Max, "max-value": *value.Max, "choices-pointer": value.Choices, "choices-value": *value.Choices} {
+		output, err := path.MarshalText()
+		if err != nil || strings.Contains(string(output), marker) || strings.Contains(string(output), decimal) || strings.Contains(string(output), hex) || !strings.Contains(string(output), "[REDACTED]") {
+			t.Fatalf("%s text protection failed", name)
+		}
+	}
+
+	minimum, present := value.Min.Value()
+	if !present || string(minimum.Reveal()) != `"synthetic-private-bound"` {
+		t.Fatal("authorized reveal lost")
 	}
 }
