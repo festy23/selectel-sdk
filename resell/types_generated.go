@@ -5,6 +5,7 @@ package resell
 import (
 	"encoding/json"
 	"github.com/festy23/selectel-sdk/types"
+	"time"
 )
 
 type Account struct {
@@ -94,4 +95,203 @@ func (v *DNSInfo) UnmarshalJSON(raw []byte) error {
 	*v = DNSInfo(value)
 	v.normalize()
 	return nil
+}
+
+type Server struct {
+	ID      *string `json:"id,omitempty"`
+	Name    *string `json:"name,omitempty"`
+	Status  *string `json:"status,omitempty"`
+	Updated *string `json:"updated,omitempty"`
+}
+
+func (v Server) Validate() error {
+	return nil
+}
+func (v *Server) normalize() {
+}
+
+type Subnet struct {
+	Cidr      *string            `json:"cidr,omitempty"`
+	CreatedAt *string            `json:"created_at,omitempty"`
+	GatewayIP *string            `json:"gateway_ip,omitempty"`
+	ID        *types.Integer     `json:"id,omitempty"`
+	IPVersion *types.Integer     `json:"ip_version,omitempty"`
+	Name      *string            `json:"name,omitempty"`
+	NetworkID *string            `json:"network_id,omitempty"`
+	ProjectID *string            `json:"project_id,omitempty"`
+	Region    *string            `json:"region,omitempty"`
+	Servers   []Server           `json:"servers,omitzero"`
+	Status    *string            `json:"status,omitempty"`
+	SubnetID  *string            `json:"subnet_id,omitempty"`
+	UpdatedAt *string            `json:"updated_at,omitempty"`
+	Ref       *types.ResourceRef `json:"ref,omitempty"`
+}
+
+func (v Subnet) Validate() error {
+	for _, item := range v.Servers {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *Subnet) normalize() {
+	for i := range v.Servers {
+		v.Servers[i].normalize()
+	}
+}
+func (v *Subnet) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire Subnet
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = Subnet(value)
+	v.normalize()
+	return nil
+}
+
+type Traffic struct {
+	Domain *TrafficDomain `json:"domain,omitempty"`
+}
+
+func (v Traffic) Validate() error {
+	if v.Domain != nil {
+		if err := v.Domain.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *Traffic) normalize() {
+	if v.Domain != nil {
+		v.Domain.normalize()
+	}
+}
+func (v *Traffic) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire Traffic
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = Traffic(value)
+	v.normalize()
+	return nil
+}
+
+type TrafficDetail struct {
+	Start *time.Time     `json:"start,omitempty"`
+	Stop  *time.Time     `json:"stop,omitempty"`
+	Unit  *string        `json:"unit,omitempty"`
+	Value *types.Integer `json:"value,omitempty"`
+}
+
+func (v TrafficDetail) Validate() error {
+	return nil
+}
+func (v *TrafficDetail) normalize() {
+	if v.Start != nil {
+		instant := v.Start.UTC()
+		v.Start = &instant
+	}
+	if v.Stop != nil {
+		instant := v.Stop.UTC()
+		v.Stop = &instant
+	}
+}
+
+type TrafficDomain struct {
+	Paid     *TrafficDetail         `json:"paid,omitempty"`
+	Prepared *TrafficDomainPrepared `json:"prepared,omitempty"`
+	Used     *TrafficDomainUsed     `json:"used,omitempty"`
+}
+
+func (v TrafficDomain) Validate() error {
+	if v.Paid != nil {
+		if err := v.Paid.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Prepared != nil {
+		if err := v.Prepared.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Used != nil {
+		if err := v.Used.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *TrafficDomain) normalize() {
+	if v.Paid != nil {
+		v.Paid.normalize()
+	}
+	if v.Prepared != nil {
+		v.Prepared.normalize()
+	}
+	if v.Used != nil {
+		v.Used.normalize()
+	}
+}
+
+type TrafficDomainPrepared struct {
+	Start *time.Time     `json:"start,omitempty"`
+	Stop  *time.Time     `json:"stop,omitempty"`
+	Unit  *string        `json:"unit,omitempty"`
+	Value *types.Integer `json:"value,omitempty"`
+}
+
+func (v TrafficDomainPrepared) Validate() error {
+	return nil
+}
+func (v *TrafficDomainPrepared) normalize() {
+	if v.Start != nil {
+		instant := v.Start.UTC()
+		v.Start = &instant
+	}
+	if v.Stop != nil {
+		instant := v.Stop.UTC()
+		v.Stop = &instant
+	}
+}
+
+type TrafficDomainUsed struct {
+	Start *time.Time     `json:"start,omitempty"`
+	Stop  *time.Time     `json:"stop,omitempty"`
+	Unit  *string        `json:"unit,omitempty"`
+	Value *types.Integer `json:"value,omitempty"`
+}
+
+func (v TrafficDomainUsed) Validate() error {
+	return nil
+}
+func (v *TrafficDomainUsed) normalize() {
+	if v.Start != nil {
+		instant := v.Start.UTC()
+		v.Start = &instant
+	}
+	if v.Stop != nil {
+		instant := v.Stop.UTC()
+		v.Stop = &instant
+	}
 }

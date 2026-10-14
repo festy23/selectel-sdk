@@ -14,9 +14,14 @@ import (
 type Client struct {
 	runtime *core.Runtime
 	scope   types.Scope
+	Subnets *SubnetsClient
 }
 
-func Bind(r *core.Runtime, scope types.Scope) *Client { return &Client{runtime: r, scope: scope} }
+func Bind(r *core.Runtime, scope types.Scope) *Client {
+	c := &Client{runtime: r, scope: scope}
+	c.Subnets = &SubnetsClient{client: c}
+	return c
+}
 func (c *Client) Account(ctx context.Context, options types.CallOptions) (types.Result[Account], error) {
 	op := core.Operation{ID: "projects.v2.accounts.list", Service: "projects", APIGeneration: "v2", Method: "GET", Effect: "read", Auth: types.IAMAccount, EndpointID: "selectel-resell", FixedEndpoint: "https://api.selectel.ru/vpc/resell", Success: []int{200}}
 	validate := func() error {
@@ -68,4 +73,27 @@ func (c *Client) DNSCheck(ctx context.Context, hostname string, options types.Ca
 		return core.Decoded[DNSInfo]{Data: *envelope.Result}, nil
 	}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/v2/dnscheck/" + segment, Options: options, Validate: validate}, decode)
+}
+
+func (c *Client) Traffic(ctx context.Context, options types.CallOptions) (types.Result[Traffic], error) {
+	op := core.Operation{ID: "projects.v2.traffic.list", Service: "projects", APIGeneration: "v2", Method: "GET", Effect: "read", Auth: types.IAMAccount, EndpointID: "selectel-resell", FixedEndpoint: "https://api.selectel.ru/vpc/resell", Success: []int{200}}
+	validate := func() error {
+		if c.scope.ProjectID != "" || c.scope.Region != "" || c.scope.Pool != "" {
+			return types.NewError(types.ScopeMismatch)
+		}
+		return nil
+	}
+	decode := func(raw []byte, _ types.EndpointBinding) (core.Decoded[Traffic], error) {
+		var envelope struct {
+			Traffic *Traffic `json:"traffic"`
+		}
+		if json.Unmarshal(raw, &envelope) != nil || envelope.Traffic == nil {
+			return core.Decoded[Traffic]{}, types.NewError(types.ProtocolError)
+		}
+		if e := envelope.Traffic.Validate(); e != nil {
+			return core.Decoded[Traffic]{}, e
+		}
+		return core.Decoded[Traffic]{Data: *envelope.Traffic}, nil
+	}
+	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/v2/traffic", Options: options, Validate: validate}, decode)
 }

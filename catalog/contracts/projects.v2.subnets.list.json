@@ -1,0 +1,101 @@
+{
+  "operation_id": "projects.v2.subnets.list",
+  "effect": "read",
+  "endpoint": {
+    "generation": "v2",
+    "override_key": [
+      "projects",
+      "v2",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "url": "https://api.selectel.ru/vpc/resell",
+    "identity": "selectel-resell"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v2/subnets",
+    "source_schema": "sources/cloud-projects-and-resources.json#/paths/~1v2~1subnets/get",
+    "source_operation": {
+      "operationId": "listSubnets",
+      "parameters": [
+        {
+          "description": "Need extended info or not",
+          "in": "query",
+          "name": "detailed",
+          "required": false,
+          "type": "boolean"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/ListSubnetsResponse"
+          }
+        },
+        "401": {
+          "description": "Unauthorized"
+        }
+      },
+      "security": [
+        {
+          "iam_token_account_scoped": [],
+          "iam_token_project_scoped": []
+        }
+      ],
+      "summary": "Get list of subnets",
+      "tags": [
+        "Subnets"
+      ]
+    },
+    "mapping_source": "resell/subnets.go",
+    "scope": "account IAM only",
+    "identity": "immutable account scope; subnet allocation addressed by exact scoped ResourceRef, not Neutron subnet_id",
+    "path_fields": {},
+    "optional_fields": "no optional request fields",
+    "body": null,
+    "query": {
+      "detailed": "matching named request/filter field; absent omitted, false preserved"
+    },
+    "validation": "account scope; dates strict YYYY-MM-DD and end>=start; subnet ref kind=resell_subnet, same account/service/generation/endpoint, no parent"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/cloud-projects-and-resources.json#/paths/~1v2~1subnets/get/responses",
+    "dto_source": "resell/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all pinned response fields; exact Integer precision; RFC3339 UTC normalization; CSV preserved byte-for-byte under MaxJSONBytes limit; arbitrary schema and CSV protected from ordinary serialization",
+    "resource_ref": "allocation ID from Resell id, never subnet_id; scoped endpoint-bound ref; exact get rejects changed response ID",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for safe reads; mutation rejection only when documented",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible mutation transmission; exact request refs preserved",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and trustworthy provider IDs already extracted",
+    "message": "fixed SDK message; raw provider messages discarded",
+    "400": "provider_error",
+    "mutation_rejected_statuses": []
+  },
+  "retry": "bounded safe reads; mutation single attempt, never replay",
+  "pagination": {
+    "provider": "one fixed response; no continuation documented",
+    "limits": "pagination.Options, MaxItems and CollectionTimeout; truncation returns incomplete and resumable cursor"
+  },
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; provider CRUD binding does not imply a wait contract"
+  },
+  "recovery": {
+    "availability": "unavailable for root handle; exact Get is observational and does not prove authorship of unknown mutation"
+  },
+  "timeout": "CallTimeout; CollectionTimeout shared across list pages"
+}
