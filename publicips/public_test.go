@@ -272,3 +272,89 @@ func TestDirectExplicitNativeUpdateKeepsSDKNullGroups(t *testing.T) {
 		t.Fatalf("native update %+v %v", got, e)
 	}
 }
+
+func TestDirectOptionalDiagnosticsPreserveStatusHandling(t *testing.T) {
+	for _, status := range []int{401, 503, 403} {
+		t.Run(http.StatusText(status), func(t *testing.T) {
+			scope := types.Scope{AccountID: "account", ProjectID: "project", Region: "region", Pool: "pool"}
+			authCalls, calls := 0, 0
+			source := credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+				return credentials.Material{Identity: "synthetic", Revision: "1", Scheme: credentials.IAMPassword, Binding: scope, Audience: "selectel", Username: types.Protect([]byte("user")), Password: types.Protect([]byte("password"))}, nil
+			})
+			c, err := sdk.New(sdk.Config{AccountID: "account", Credentials: source, MaxJSONBytes: 512, ReadMaxAttempts: 2, RetryBaseDelay: time.Millisecond, RetryMaxDelay: time.Millisecond, EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{
+				{Service: "public_network", APIGeneration: "v1", Scope: scope}: {ID: "direct-endpoint", URL: "https://direct.test/public-net", Scope: scope, APIGeneration: "v1", Audience: "selectel"},
+			}, Transport: transport(func(r *http.Request) (*http.Response, error) {
+				if strings.HasSuffix(r.URL.Path, "auth/tokens") {
+					authCalls++
+					out := response(201, `{"token":{"expires_at":"2099-01-01T00:00:00Z","project":{"id":"project","domain":{"name":"account"}}}}`)
+					out.Header.Set("X-Subject-Token", "synthetic-token")
+					return out, nil
+				}
+				calls++
+				if calls == 1 {
+					return response(status, strings.Repeat("x", 2048)), nil
+				}
+				return response(200, `{"ports":[]}`), nil
+			})})
+			if err != nil {
+				t.Fatal(err)
+			}
+			p, err := c.Project("project")
+			if err != nil {
+				t.Fatal(err)
+			}
+			r, err := p.Location("region", "pool")
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = r.PublicIPs().DirectPorts.Collect(context.Background(), publicips.DirectPortListOptions{}, pagination.Options{})
+			if status == 403 {
+				var sdkErr *types.SDKError
+				if !errors.As(err, &sdkErr) || sdkErr.Code != types.PermissionDenied || sdkErr.ProviderCode != "" || calls != 1 {
+					t.Fatalf("status mapping: %v calls=%d", err, calls)
+				}
+			} else if err != nil || calls != 2 {
+				t.Fatalf("retry: %v calls=%d", err, calls)
+			}
+			wantAuth := 1
+			if status == 401 {
+				wantAuth = 2
+			}
+			if authCalls != wantAuth {
+				t.Fatalf("auth calls %d, want %d", authCalls, wantAuth)
+			}
+		})
+	}
+}
+
+func TestDirectWrappedErrorPreservesExactNumericCode(t *testing.T) {
+	c := client(t, func(*http.Request) (*http.Response, error) {
+		return response(400, `{"error":{"code":9007199254740993,"msg":"synthetic-private-detail"}}`), nil
+	})
+	got, err := c.DirectPorts.Create(context.Background(), publicips.DirectPortCreateSpec{}, types.CallOptions{})
+	var sdkErr *types.SDKError
+	if !errors.As(err, &sdkErr) || sdkErr.ProviderCode != "9007199254740993" || strings.Contains(err.Error(), "synthetic-private-detail") || got.Receipt == nil || got.Receipt.Outcome != types.Rejected {
+		t.Fatalf("wrapped diagnostic: %+v %v", got, err)
+	}
+}
+
+type diagnosticReader func([]byte) (int, error)
+
+func (f diagnosticReader) Read(p []byte) (int, error) { return f(p) }
+
+func TestDirectOptionalDiagnosticsPreserveCancellation(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	calls := 0
+	c := client(t, func(*http.Request) (*http.Response, error) {
+		calls++
+		out := response(503, "")
+		out.Body = io.NopCloser(diagnosticReader(func([]byte) (int, error) { cancel(); return 0, io.ErrUnexpectedEOF }))
+		return out, nil
+	})
+	_, err := c.DirectPorts.Collect(ctx, publicips.DirectPortListOptions{}, pagination.Options{})
+	var sdkErr *types.SDKError
+	if !errors.As(err, &sdkErr) || sdkErr.Code != types.Canceled || calls != 1 {
+		t.Fatalf("cancellation %v calls=%d", err, calls)
+	}
+}

@@ -121,7 +121,9 @@ Wait, dataplane readiness и root Resource/Resume здесь unavailable.
 
 400 следует shared ProviderError; 401/403/404/409/429 отображаются общим runtime.
 Direct error integer `code` сохраняется точно на read/rejected error через
-узкий compiled protocol decoder; `msg` и raw error body не выводятся. Unknown
+узкий compiled protocol decoder для `{code}` и `{error:{code}}`; `msg` и raw error body не выводятся.
+Необязательная диагностика при oversized/unreadable body не меняет HTTP status
+mapping, refresh credentials или bounded safe-read retry; отмена контекста сохраняется. Unknown
 mutation использует общие UnknownOutcome/CauseCode semantics. Resell400 с
 описанием Not found не превращается автоматически в точный NotFound.
 Foreign plugin/raw fields, tag/QoS/port-forwarding mutations не реализуются.
