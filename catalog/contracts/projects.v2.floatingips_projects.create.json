@@ -83,7 +83,8 @@
     "field_mapping": "All schema fields plus pinned SDK-only subnet vlan_id/vtep_ip_address and SSH-key region/regions. Integer precision retained; optional fields preserve absence. Provider injected refs discarded.",
     "resource_ref": "ID from Resell id (keypair name+user owner); exact endpoint/scope/generation; create extracts all trustworthy IDs before decoding fields; foreign project or duplicate allocation IDs rejected; no name lookup",
     "sensitive_fields": [],
-    "envelopes": "Subnets and floating IPs accept schema singular or SDK plural envelope, reject ambiguous both; licenses and keypairs use published arrays; all results retained, never first-only."
+    "envelopes": "Subnets and floating IPs accept schema singular or SDK plural envelope, reject ambiguous both; licenses and keypairs use published arrays; all results retained, never first-only.",
+    "identity_scan": "Scan every parsed response row before returning an identity error. Preserve all independently trustworthy scoped identities before and after malformed/foreign/duplicate rows; foreign identities never enter Receipt. Return the first row error after the scan. Allocation duplicates contribute one trusted identity and protocol_error; keypair per-region repeated name/owner identities remain valid and Receipt deduplicates them."
   },
   "errors": {
     "401": "unauthenticated",

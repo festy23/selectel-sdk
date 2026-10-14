@@ -74,22 +74,31 @@ func (c *KeypairsClient) Create(ctx context.Context, spec *KeypairSpec, options 
 		if json.Unmarshal(raw, &envelope) != nil || envelope.Keypair == nil {
 			return out, types.NewError(types.ProtocolError)
 		}
+		remember := func(code types.Code) {
+			if err == nil {
+				err = types.NewError(code)
+			}
+		}
 		for _, row := range envelope.Keypair {
 			var identity struct {
 				Name   *string `json:"name"`
 				UserID *string `json:"user_id"`
 			}
-			if json.Unmarshal(row, &identity) != nil {
-				return out, types.NewError(types.ProtocolError)
-			}
-			if identity.Name == nil || identity.UserID == nil || *identity.Name == "" || *identity.UserID == "" {
-				return out, types.NewError(types.ProtocolError)
+			if json.Unmarshal(row, &identity) != nil || identity.Name == nil || identity.UserID == nil || *identity.Name == "" || *identity.UserID == "" {
+				remember(types.ProtocolError)
+				continue
 			}
 			if spec != nil && (*identity.Name != *spec.Name || *identity.UserID != *spec.UserID) {
-				return out, types.NewError(types.ScopeMismatch)
+				remember(types.ScopeMismatch)
+				continue
 			}
+			// Repeated name/owner pairs are documented per-region variants.
+			// Retain their typed results; core deduplicates Receipt identities.
 			ref := keypairRef(endpoint, *identity.Name, *identity.UserID)
 			out.Refs = append(out.Refs, *ref)
+		}
+		if err != nil {
+			return out, err
 		}
 		out.Data = make([]Keypair, 0, len(envelope.Keypair))
 		for i, row := range envelope.Keypair {

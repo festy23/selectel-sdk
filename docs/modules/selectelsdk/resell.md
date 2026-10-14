@@ -41,9 +41,12 @@ parameters are range-checked; license quantity must be at least one when given.
 Request arrays and all returned allocations are retained, never first-only.
 
 Mutations return Receipt on accepted, rejected, not-sent and unknown outcomes.
-There is no mutation replay. Create extracts all trustworthy returned identities
-before decoding other fields so a malformed accepted response still preserves
-known refs. Foreign project/identity and duplicate allocation IDs are rejected.
+There is no mutation replay. Create scans every returned identity before decoding other fields, retaining
+independently trustworthy refs before and after an invalid row. The first row
+error is returned after the scan with the accepted Receipt and all known refs.
+Foreign project/owner identities never enter Receipt. Duplicate allocation IDs
+are rejected while retaining one trustworthy ref; repeated keypair name/owner
+identities remain valid region variants and Receipt deduplicates them.
 Exact Get/Delete use scoped endpoint-bound refs; unknown create never adopts an
 object by name. No allocation wait, readiness guarantee or root Resume handle is
 published; exact Get observes known refs without proving authorship.

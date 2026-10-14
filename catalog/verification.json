@@ -546,7 +546,7 @@
     ],
     "contract_revision": "f6b0324ffe416f58656996a5b6f977ca7e4d2f713ff36f52debaa3c03d784005",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
     "implementation_revision": "4fbfb769681283367dac908438d8b6bc06b5c42d4f0ae73401f5e7d219d40cf4",
     "level": "offline",
     "result": "passed"
@@ -558,7 +558,7 @@
     ],
     "contract_revision": "cc0ba8210e126541a097b6a0ef48d71a8bf5dc7072ce98808739231c7e5e5d82",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
     "implementation_revision": "b00a81f3fa78fb8b7ab9f72b67e35d0eaf5ca7f7d15e105264d34b44eda8adbc",
     "level": "offline",
     "result": "passed"
@@ -570,8 +570,8 @@
     ],
     "contract_revision": "c4d249e8f7a4358538fd0b72736963d8a0c015f6584b728de795e9ff36be0dd2",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "5b07035b4a85edc34e4240f051167d4c8a56a977af6b10ba0aca65b646e9b3b9",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "b3bd875ded4322d11c09d2e21e5450082daf97f94fa0c15c079c487109affd1c",
     "level": "offline",
     "result": "passed"
   },
@@ -582,8 +582,8 @@
     ],
     "contract_revision": "9bbfd3ae40413c2f4c18a208b365eb2df982dfe657c66c4197b0d5d188189b89",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "4f334c9d0c66ee3768068c31f43524e97602bf560d97b9c9972f901e59941f52",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "d8a7fb5e0227a54704b59f0e941c6905a33385c11b58df3850defd685e5cf047",
     "level": "offline",
     "result": "passed"
   },
@@ -594,8 +594,8 @@
     ],
     "contract_revision": "5484747172a6e504b5c48b40b1b5a03e0e31341f0b098afe39053e85471e349a",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "2aa597e3ae5006c83df6e304e5aeab01b9c206c3f96b0b445c4bfb18b26022e8",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "04ad0bcba1e4518c5f7e609d03686397ddaa26cf4b63d0fdb6ff26f051f3d4b0",
     "level": "offline",
     "result": "passed"
   },
@@ -604,10 +604,10 @@
       "go test -race ./...",
       "go vet ./..."
     ],
-    "contract_revision": "2b7685f2f434f3bd47a0e3db224ad9bd30482637ccefe1dfc8919aba17ae358a",
+    "contract_revision": "8dbc0a2da8ca477e8d0aebc5adb3944df6656747ffba3b7a4a0c3efc17cf5f87",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "1f247a9d0806d763f525de4f2ecd6f83a6c695620d929ff4d240b5cbc2f12f2e",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "6c8ef26230c5aac8706d404f8ec5ab8a0289366b33c292d222337bcdeaeee317",
     "level": "offline",
     "result": "passed"
   },
@@ -616,10 +616,10 @@
       "go test -race ./...",
       "go vet ./..."
     ],
-    "contract_revision": "e450ffa996cdceeeaf7ac02a8f39e9d3f50a32f22d2066e4a6b04ca6dcf82a2f",
+    "contract_revision": "a6cab097d2f649de1fc41c70432ee8ec2a1b47ccaa21950c5637ebd6bfff23af",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "7fbce736cda8095ab2677e6615130d9e55bc3515272ca821298753efd7beeb87",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "8db4d5ff288bdd21e85e469b0e1c0b62ac43093be5fa3700e3945373e06f3e9c",
     "level": "offline",
     "result": "passed"
   },
@@ -630,8 +630,8 @@
     ],
     "contract_revision": "facbeb3916b9f02fdcc963e91e26de8448f192bd43cf2cdfd949a2eecd81d2a0",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "73596717740e754b4dd70427565f2e8c260cb4047a5da8f3a2219b8cb867ac82",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "81f5498c15ce0093e1050b1357706bd3d62e3588aa6f06d59a66a51ac856bc81",
     "level": "offline",
     "result": "passed"
   },
@@ -642,8 +642,8 @@
     ],
     "contract_revision": "fe9811523d68856d128acf4c54dec4f25b9dfb03a53f170310fb7bdbcfb39c34",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "a9aa3d9d84f4a4d2254112d60cc77582b4eb38e52538d77786dc82a48260f83d",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "c1d6c3010745250238e7002465b3bd5152df45b75cd39ba29952b43a081bb7d7",
     "level": "offline",
     "result": "passed"
   },
@@ -654,8 +654,8 @@
     ],
     "contract_revision": "e2959b991d12a61c4abd999459c199ae40036ce7236d72ba92cf6371337dd1a4",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "8fcc6c443c828d5ee779d433b4e4139e6d9047010439ea12a6e2e9166dae3402",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "acdc9f1544e9cdedd80de8ebb331e73c3da9fcb5e8c7d26bb8a28edb56c2d21e",
     "level": "offline",
     "result": "passed"
   },
@@ -666,8 +666,8 @@
     ],
     "contract_revision": "107f1ba777fbe91fe1e17f681b683c2b6465c6d743bca70638382b45a82ab118",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "6cae0dcac8047edf17b8878e25cd24549b8c59272da470fcced4ba1fafa7aed4",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "8f05bbf5180ee8f9d18238ccb21b735eb372cfba855bec359df4efe31f173f2e",
     "level": "offline",
     "result": "passed"
   },
@@ -678,8 +678,8 @@
     ],
     "contract_revision": "4267d24b49cec87ed8b147645dd5898c2d5b543cb1a3c9428b7a72f0c3ae9e1b",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "1119672438af4b7b3c25e1fc512b3e26ee8f5b49e2032ff9111601f54e6b374e",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "13458fdf20fca2b1354433c26378a7f1779d45b0826146a82336150e80a89524",
     "level": "offline",
     "result": "passed"
   },
@@ -688,10 +688,10 @@
       "go test -race ./...",
       "go vet ./..."
     ],
-    "contract_revision": "ab645f3c62a308880ec96767b0dc043672202f0cb5614f133e40ac4222bfdc31",
+    "contract_revision": "28d1c9082e2ac2ddd9b53be126386911b7c49790addad7d6e2c514f785a2f054",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "0ccac1a48720fa6505629ec9deea5cd1d5b70a055cee283aa26949de185666fc",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "1239d456408c3c0b7594324d7ace4c585097080501923f4df1707a5d27218b77",
     "level": "offline",
     "result": "passed"
   },
@@ -762,8 +762,8 @@
     ],
     "contract_revision": "c9fcfb1f208902f56bc9e5467463a591e4753554c4dacbafbd9b30bb717f5d42",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "9772851e8e52cc7914dfa82807f54b1505ecd3998ad686603c46d9fb60489b96",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "f17afe081975daa756ffdb994c476626424c0a560e47a508e029fbc61e4e9a80",
     "level": "offline",
     "result": "passed"
   },
@@ -774,8 +774,8 @@
     ],
     "contract_revision": "23e53daeae48316ab4c2250cc8a8b530a6ddafb073dcc8c87ed622f10a78ad9e",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "2d9285418d4b035a943cf3b46d17f5f7d7eab1d18809210b7e2639da873b0f20",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "e7ae199fc6cecee5f0a1a752826d103ca7b6f55596bdc22463ca30f3e9b2c8ee",
     "level": "offline",
     "result": "passed"
   },
@@ -786,8 +786,8 @@
     ],
     "contract_revision": "5c8554a9b488ae1395e55a2157efff8e458412139c4abb5bc438f0db948ae5cd",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "1d9d724a309f72d84ee3bde089827bf21d52b2f49793c940ed9f33191cfb0d0d",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "4a74cedaa46e2ff3fb3de41964bb535d66096709351444906887c0a617fe45f2",
     "level": "offline",
     "result": "passed"
   },
@@ -796,10 +796,10 @@
       "go test -race ./...",
       "go vet ./..."
     ],
-    "contract_revision": "2a251b7984ee2f68023023a982c34563c63d6c423c88b06bba57e32360dd6d4d",
+    "contract_revision": "e0209cfaa6d707ec9c034ce79028d840b3a0c5956541c2de436f952fa6d60398",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "3eaf2f393df43548c5150de379595657ba7902029e6d64df32f914a1fa2f550e",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "065e1ca04cda986b6db4d1d0b2ca3e1cfed88e24efb0e9813094d2f4040bf80d",
     "level": "offline",
     "result": "passed"
   },
@@ -810,7 +810,7 @@
     ],
     "contract_revision": "58190b5ff14cc1ad9d7037a5eebb349ee605cb271e8d65045988208e924920a3",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
     "implementation_revision": "644d86fedc966c5735af80f5fcf43bac2f798fcc6c343d8566f9dc2c9202313f",
     "level": "offline",
     "result": "passed"
@@ -822,8 +822,8 @@
     ],
     "contract_revision": "404a0f00c676173d60ba80afa60e5b0f70de7d9c3a53ffd82fc20516f612fd84",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
-    "implementation_revision": "13bdce24b14f6790794d028790ca456d6d047b8ce13a5c120d6817adeb2e4853",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
+    "implementation_revision": "dd04c4c7ab2c43ec4d176d0c815c0cc4ae624e3e896f2077f38e6bb04c46e6c3",
     "level": "offline",
     "result": "passed"
   },
@@ -834,7 +834,7 @@
     ],
     "contract_revision": "1095c96e12ee8bf6fd2981e6856d230b55ae8328c94bb3a09b8dec5616c954f2",
     "evidence_ref": "resell_test.go",
-    "evidence_revision": "cd028341b881a14fac7903ca4fb0c7a29934eb4b69f1cfa86130767a12dde373",
+    "evidence_revision": "b8eb44cadd402365c143e986bdc4c0119023fa2d8ac8524384dfe7a94de0c92e",
     "implementation_revision": "aeca500e4e7a1876a57e9dc0021ab3896752e246208862f57807828aa8d52741",
     "level": "offline",
     "result": "passed"

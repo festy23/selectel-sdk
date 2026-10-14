@@ -77,38 +77,52 @@ func decodeAllocations[T any](singular, plural, kind, project string, numeric bo
 			return out, types.NewError(types.ProtocolError)
 		}
 		seen := map[string]bool{}
+		remember := func(code types.Code) {
+			if err == nil {
+				err = types.NewError(code)
+			}
+		}
 		for _, row := range rows {
 			var fields map[string]json.RawMessage
 			if json.Unmarshal(row, &fields) != nil || fields == nil {
-				return out, types.NewError(types.ProtocolError)
+				remember(types.ProtocolError)
+				continue
 			}
 			var id string
 			if numeric {
 				var n types.Integer
 				if json.Unmarshal(fields["id"], &n) != nil {
-					return out, types.NewError(types.ProtocolError)
+					remember(types.ProtocolError)
+					continue
 				}
 				id = n.String()
-			} else {
-				if json.Unmarshal(fields["id"], &id) != nil || id == "" {
-					return out, types.NewError(types.ProtocolError)
-				}
+			} else if json.Unmarshal(fields["id"], &id) != nil || id == "" {
+				remember(types.ProtocolError)
+				continue
 			}
-			if seen[id] {
-				return out, types.NewError(types.ProtocolError)
-			}
-			seen[id] = true
 			if p, ok := fields["project_id"]; ok && string(p) != "null" {
 				var actual string
 				if json.Unmarshal(p, &actual) != nil {
-					return out, types.NewError(types.ProtocolError)
+					remember(types.ProtocolError)
+					continue
 				}
 				if project != "" && actual != project {
-					return out, types.NewError(types.ScopeMismatch)
+					remember(types.ScopeMismatch)
+					continue
 				}
 			}
+			// Only a row with independently trustworthy scope and identity can
+			// reserve an ID. A foreign row cannot hide a later valid allocation.
+			if seen[id] {
+				remember(types.ProtocolError)
+				continue
+			}
+			seen[id] = true
 			ref := core.Ref(endpoint, "projects", kind, id)
 			out.Refs = append(out.Refs, *ref)
+		}
+		if err != nil {
+			return out, err
 		}
 		out.Data = make([]T, 0, len(rows))
 		for i, row := range rows {

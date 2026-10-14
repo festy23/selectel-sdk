@@ -412,3 +412,65 @@ func TestResellAllocationMutationsNeverReplayUnknownAndKeepRejection(t *testing.
 		}
 	}
 }
+
+func TestResellAcceptedAllocationsScanAllIdentitiesBeforeReportingRowErrors(t *testing.T) {
+	good := `{"id":42,"project_id":"target"}`
+	for _, tc := range []struct {
+		name, rows string
+		code       types.Code
+		ids        []string
+	}{
+		{"malformed before", `{"id":"bad"},` + good, types.ProtocolError, []string{"42"}},
+		{"malformed after", good + `,{"id":"bad"}`, types.ProtocolError, []string{"42"}},
+		{"foreign before same ID", `{"id":42,"project_id":"foreign"},` + good, types.ScopeMismatch, []string{"42"}},
+		{"foreign after", good + `,{"id":99,"project_id":"foreign"}`, types.ScopeMismatch, []string{"42"}},
+		{"duplicate before later good", `{"id":41,"project_id":"target"},{"id":41,"project_id":"target"},` + good, types.ProtocolError, []string{"41", "42"}},
+		{"duplicate after earlier good", good + `,{"id":41,"project_id":"target"},{"id":41,"project_id":"target"}`, types.ProtocolError, []string{"42", "41"}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			calls := 0
+			c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				return inventoryReply(200, `{"subnets":[`+tc.rows+`]}`), nil
+			}, 0)
+			out, e := c.Account().Resell().Subnets.Create(context.Background(), resell.SubnetCreateRequest{ProjectID: "target"}, types.CallOptions{})
+			if types.ErrorCode(e) != tc.code || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || calls != 1 || len(out.Receipt.ResourceRefs) != len(tc.ids) {
+				t.Fatalf("accepted refs lost: receipt=%+v err=%v", out.Receipt, e)
+			}
+			for i, id := range tc.ids {
+				if out.Receipt.ResourceRefs[i].ID != id || out.Receipt.ResourceRefs[i].Scope.AccountID != "test-account" {
+					t.Fatalf("wrong trusted ref %+v", out.Receipt.ResourceRefs[i])
+				}
+			}
+		})
+	}
+}
+
+func TestResellAcceptedKeypairsScanAllIdentitiesAndKeepRegionVariants(t *testing.T) {
+	good := `{"name":"key","user_id":"owner","region":"ru-2"}`
+	for _, tc := range []struct {
+		name, rows string
+		code       types.Code
+	}{
+		{"malformed before", `{"name":false,"user_id":"owner"},` + good, types.ProtocolError},
+		{"malformed after", good + `,{"name":"key","user_id":false}`, types.ProtocolError},
+		{"foreign before", `{"name":"key","user_id":"foreign"},` + good, types.ScopeMismatch},
+		{"foreign after", good + `,{"name":"foreign","user_id":"owner"}`, types.ScopeMismatch},
+		{"repeated region identities", good + `,{"name":"key","user_id":"owner","region":"ru-3"}`, ""},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			calls := 0
+			c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				return inventoryReply(200, `{"keypair":[`+tc.rows+`]}`), nil
+			}, 0)
+			out, e := c.Account().Resell().Keypairs.Create(context.Background(), &resell.KeypairSpec{Name: managementPtr("key"), UserID: managementPtr("owner"), PublicKey: managementPtr("synthetic-public-key")}, types.CallOptions{})
+			if types.ErrorCode(e) != tc.code || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || calls != 1 || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != "key" || out.Receipt.ResourceRefs[0].Parent.ID != "owner" {
+				t.Fatalf("accepted keypair refs lost: receipt=%+v err=%v", out.Receipt, e)
+			}
+			if tc.code == "" && (len(out.Data) != 2 || *out.Data[1].Region != "ru-3") {
+				t.Fatal("documented regional variants collapsed")
+			}
+		})
+	}
+}
