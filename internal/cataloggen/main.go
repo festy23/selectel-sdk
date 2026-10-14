@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"email-service":                {"email", "v1", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,26 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"email-service GET /quotas":                                        "email.v1.project_quotas.get",
+	"email-service GET /resources":                                     "email.v1.resources.list",
+	"email-service POST /resources":                                    "email.v1.resources.create",
+	"email-service DELETE /resources/{ses_id}":                         "email.v1.resources.delete",
+	"email-service GET /resources/{ses_id}":                            "email.v1.resources.get",
+	"email-service PUT /resources/{ses_id}":                            "email.v1.resources.rename",
+	"email-service GET /resources/{ses_id}/blist/report/fbl":           "email.v1.complaints.list",
+	"email-service GET /resources/{ses_id}/blist/report/non-delivery":  "email.v1.undelivered.list",
+	"email-service DELETE /resources/{ses_id}/domains":                 "email.v1.domains.unlink",
+	"email-service GET /resources/{ses_id}/domains":                    "email.v1.domains.list",
+	"email-service POST /resources/{ses_id}/domains":                   "email.v1.domains.link",
+	"email-service GET /resources/{ses_id}/domains/check":              "email.v1.domains.check",
+	"email-service GET /resources/{ses_id}/issue/status":               "email.v1.delivery_status.get",
+	"email-service POST /resources/{ses_id}/password":                  "email.v1.credentials.rotate",
+	"email-service GET /resources/{ses_id}/quotas":                     "email.v1.resource_quotas.get",
+	"email-service GET /resources/{ses_id}/statistics":                 "email.v1.statistics.get",
+	"email-service DELETE /resources/{ses_id}/stop-lists":              "email.v1.stop_lists.remove",
+	"email-service GET /resources/{ses_id}/stop-lists":                 "email.v1.stop_lists.search",
+	"email-service POST /resources/{ses_id}/stop-lists":                "email.v1.stop_lists.add",
+	"email-service POST /resources/{ses_id}/transfer":                  "email.v1.resources.transfer",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",

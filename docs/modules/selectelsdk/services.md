@@ -203,3 +203,9 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### Email Service v1
+
+See the [Email Service contract](mail.md) for typed management operations,
+protected SMTP credentials, exact scope, bounded telemetry, explicit endpoint
+requirements and the five source-limited partial variants.

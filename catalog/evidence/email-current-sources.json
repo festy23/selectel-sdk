@@ -1,0 +1,24 @@
+{
+  "schema_uri": "https://docs.selectel.ru/api/email-service.json",
+  "schema_sha256": "3fe98cb229d191e8424085cc48a8839b9985ce0c097fb49dd2bef45f736be9d5",
+  "baseline_checked_on": "2026-10-14",
+  "current_checked_on": "2026-10-15",
+  "source_drift": "same 20 operations and byte hash as additional API inventory baseline",
+  "api_page": "https://docs.selectel.ru/api/email-service/",
+  "endpoint_search": {
+    "sources": [
+      "https://docs.selectel.ru/api/email-service/",
+      "https://docs.selectel.ru/api/urls/",
+      "https://docs.selectel.ru/en/api/email-service/",
+      "https://docs.selectel.ru/email-service/about/about-email-service/"
+    ],
+    "result": "Swagger has no host/basePath/schemes/servers, API page publishes relative paths only; URL table contains no Email/Почтовый entry. Primary searches did not establish an API management host. SMTP relay host is a different protocol, never substituted. Exact explicit endpoint override is required; this is a search limitation, not proof no official endpoint exists."
+  },
+  "discrepancies": [
+    "Resource quota path /resources/{ses_id}/quotas omits ses_id parameters; SDK binds the explicit placeholder consistently with the documented path.",
+    "Four paginated list endpoints publish next_offset/cursor_next but no terminal-sentinel rule. SDK follows strictly advancing integers, preserves partial rows and rejects absence/nonprogress without asserting complete.",
+    "Statistics response has limit/next_offset but request supports date_from/date_to only: SDK does not invent limit/offset parameters or full-period completeness when next_offset is nonzero.",
+    "No mail-send HTTP endpoint is present in this 20-operation schema. SMTP sending is outside scope."
+  ],
+  "verification": "offline transport only; no live operations or external mail/contact"
+}
