@@ -117,5 +117,15 @@
         }
       }
     }
+  },
+  "origin_ref_contract": {
+    "service": "network",
+    "api_generation": "v2",
+    "provider_api": "OpenStack Neutron 2.0",
+    "source_uri": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli/",
+    "checked_at": "2026-10-14",
+    "scope": "Explicit account/project/region/pool; compatible region/pool through shared location validation",
+    "endpoint": "Caller-supplied exact ResourceRef endpoint is syntax-validated; no hostname derivation or origin request. Parent endpoint/service/generation identity must agree.",
+    "mapping_source": "Selectel native vpc-go pkg/v2 and registry service id network; no networking alias or other generation accepted"
   }
 }

@@ -148,7 +148,7 @@
       }
     },
     "mapping_source": "globalrouter/client.go, pages.go, mutations.go and headers.go",
-    "scope": "Account IAM; immutable account scope. Source service refs retain caller project/location/generation/endpoint separately; no inferred source adoption.",
+    "scope": "Account IAM; immutable account scope. AttachVPC origin must be service network, SDK generation v2 (Neutron2.0), selected network/subnet kind, same account, explicit nonempty project/region/pool, compatible location and exact validated endpoint. Source ancestor refs preserve service/generation/endpoint identity. Reject before credential lookup or HTTP; retain validated original ref separately.",
     "identity": "Existing Global Router resources addressed by exact typed refs. Creates for network/subnet/route require selected router/zone/network refs and reject conflicting body IDs.",
     "body": "All properties of generated source DTO; nil omitted, explicit empty strings/arrays preserved, protected fields revealed only at HTTP boundary. PUT uses published replacement endpoint; no PATCH inference. Native AttachVPC uses pinned supplemental DTO with original project_id and os_network_id/os_subnet_id.",
     "query": "All published parameters: typed current page/limit/sort/filter, router nested, directory show_groups/show_zones, explicit cascade/disconnect. No invented completion marker.",
@@ -163,7 +163,7 @@
     "dto_source": "globalrouter/types_generated.go",
     "generator_source": "internal/modelgen/generate.py",
     "field_mapping": "All published properties, including nested router/network/subnet/route and prefix_pool/directory structures. Optional pointers preserve omission; arbitrary-precision Integer counts/VLAN/VPN/quota; RFC3339 timestamps normalize UTC; response ref fields ignored.",
-    "resource_ref": "Account-scoped Global Router refs only for explicit IDs, exact endpoint and generation. Network/router, subnet/network and nested route parents retain confirmed same-service identities. Returned account and ancestor IDs checked. Source OS/service IDs remain typed metadata. AttachVPC checks returned project/source/zone identities before new ID adoption and retains original supplied source ref separately in Receipt, without changing its scope.",
+    "resource_ref": "Account-scoped Global Router refs only for explicit IDs, exact endpoint and generation. Network/router, subnet/network and nested route parents retain confirmed same-service identities. Returned account and ancestor IDs checked. Source OS/service IDs remain typed metadata. AttachVPC checks returned project/source/zone identities before new ID adoption and retains original supplied source ref separately in Receipt, without changing its scope. Mutation identity validation checks every available returned router_id/network_id/subnet_id against the exact selected ancestor chain before any new ref adoption; nested static-route subnet parent is not compared with router_id.",
     "sensitive_fields": [
       "name",
       "description",

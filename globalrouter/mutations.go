@@ -8,6 +8,7 @@ import (
 	"reflect"
 
 	"github.com/festy23/selectel-sdk/internal/core"
+	"github.com/festy23/selectel-sdk/internal/endpoints"
 	"github.com/festy23/selectel-sdk/types"
 )
 
@@ -96,6 +97,7 @@ func mutate[T any](c *Client, ctx context.Context, resource, kind, method string
 			AccountID *string `json:"account_id"`
 			RouterID  *string `json:"router_id"`
 			NetworkID *string `json:"network_id"`
+			SubnetID  *string `json:"subnet_id"`
 		}
 		if json.Unmarshal(raw, &identity) != nil {
 			return out, types.NewError(types.ProtocolError)
@@ -103,15 +105,21 @@ func mutate[T any](c *Client, ctx context.Context, resource, kind, method string
 		if identity.AccountID != nil && *identity.AccountID != c.scope.AccountID {
 			return out, types.NewError(types.ScopeMismatch)
 		}
-		if parent != nil {
-			actual := identity.RouterID
-			if parent.Kind == "network" {
+		for ancestor := parent; ancestor != nil; ancestor = ancestor.Parent {
+			var actual *string
+			switch ancestor.Kind {
+			case "router":
+				actual = identity.RouterID
+			case "network":
 				actual = identity.NetworkID
+			case "subnet":
+				actual = identity.SubnetID
 			}
-			if actual != nil && *actual != parent.ID {
+			if actual != nil && *actual != ancestor.ID {
 				return out, types.NewError(types.ScopeMismatch)
 			}
 		}
+
 		id := ""
 		if identity.ID != nil {
 			id = *identity.ID
@@ -275,11 +283,19 @@ func validateOrigin(c *Client, origin types.ResourceRef, kind string) error {
 	if e := origin.Validate(); e != nil {
 		return e
 	}
-	if origin.Kind != kind || origin.Service == "global_router" || origin.Scope.ProjectID == "" {
+	if origin.Kind != kind || origin.Service != "network" || origin.APIGeneration != "v2" || origin.Scope.ProjectID == "" || origin.Scope.Region == "" || origin.Scope.Pool == "" {
 		return types.NewError(types.InvalidArgument)
 	}
 	if origin.Scope.AccountID != c.scope.AccountID {
 		return types.NewError(types.ScopeMismatch)
+	}
+	if _, e := endpoints.Location(origin.Scope.Region, origin.Scope.Pool); e != nil {
+		return e
+	}
+	for ancestor := origin.Parent; ancestor != nil; ancestor = ancestor.Parent {
+		if ancestor.Service != origin.Service || ancestor.APIGeneration != origin.APIGeneration || ancestor.EndpointID != origin.EndpointID || ancestor.EndpointURL != origin.EndpointURL {
+			return types.NewError(types.ScopeMismatch)
+		}
 	}
 	return nil
 }

@@ -4989,9 +4989,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.networks.create.json": "68c8ecaddfaaa28010ab6d07940dc7894d967343cfa27775ffd20ebc5a1d5fdc"
+      "contracts/global_router.v1.networks.create.json": "8909be7d194b87ec2b0558d242d823baf5fe9ee291302b658653a081505a8058"
     },
-    "contract_revision": "ed2801499cfce0907e09f5416c02e88617ed38ac6a908b32840199335d7a815c",
+    "contract_revision": "1ebbb062271c5da3d7956d6ff2531f9e5fc368b258abaf2330639388ee27dc4f",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.networks.create.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.networks.create.json#/errors",
@@ -5034,9 +5034,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "ed2801499cfce0907e09f5416c02e88617ed38ac6a908b32840199335d7a815c",
+      "contract_revision": "1ebbb062271c5da3d7956d6ff2531f9e5fc368b258abaf2330639388ee27dc4f",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "9c22422b33ef00ed3876c5dd251e9c2daf0574ea58bbc8f4af3cd4e0e6b7f54f",
+      "implementation_revision": "2430c3ee4244f4a8cba6ed0b70413b0d0087d93d22de51df7de38e903ab79ce2",
       "level": "offline"
     },
     "wait_goals": []
@@ -5050,9 +5050,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.networks.delete.json": "8858c8e9a1197e9263af68a82771a6651b70d3b49c8ed82cc493d1923bf1fa18"
+      "contracts/global_router.v1.networks.delete.json": "6e1a1698aa0cd0c6863e25219af186a2a5bbb02163aea7a30f4d1717274b8a2e"
     },
-    "contract_revision": "b425427e03f9481c92229b4cecfb5b1231f1bf91e6017aa9efcb6589b70ee1dd",
+    "contract_revision": "bbfff46657fe63f8a43c96bfb2e1f0cd4a0fa79cede454911ce664b72bee8ee6",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.networks.delete.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.networks.delete.json#/errors",
@@ -5095,9 +5095,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "b425427e03f9481c92229b4cecfb5b1231f1bf91e6017aa9efcb6589b70ee1dd",
+      "contract_revision": "bbfff46657fe63f8a43c96bfb2e1f0cd4a0fa79cede454911ce664b72bee8ee6",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "90190419b5ad0938771e2ae46da3500df95d7f1af959a2354703f8563e6dedee",
+      "implementation_revision": "dba0805143865b8a466a9bf3d734685d3ef28b164993ecc5ca292df4292f666d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5111,9 +5111,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.networks.get.json": "a04f33ba40fba08dbf4e5296db40c89c118c45f00bb713a6a371e1ae0c40b330"
+      "contracts/global_router.v1.networks.get.json": "826cc72e1a8be0217db3e02b44d582e5b9c3392714cc4ab63e2d3d54e5341923"
     },
-    "contract_revision": "e57869a26a8eeb763574a73f57bf8d0fae0997a2dd1af9f830eef6c5ee36b4a5",
+    "contract_revision": "1af6da70a38a7b6bcaa70320359cfd58541f86ee8cdb5302465456e9a85fbb9a",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.networks.get.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.networks.get.json#/errors",
@@ -5156,9 +5156,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "e57869a26a8eeb763574a73f57bf8d0fae0997a2dd1af9f830eef6c5ee36b4a5",
+      "contract_revision": "1af6da70a38a7b6bcaa70320359cfd58541f86ee8cdb5302465456e9a85fbb9a",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "d504839e8528cf24ce493fb0b5caf7bf72dc40eb8cca2c64ed01539c8c5d18aa",
+      "implementation_revision": "39e26745e628f0dec9313bb0a35fe8e7e0d9fd1e59de64abc70fdd9b02efe53f",
       "level": "offline"
     },
     "wait_goals": []
@@ -5172,9 +5172,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.networks.list.json": "8afe78e4b2ffaf4282f5aee1a2102934711f394ab8e75a09f5c0c2a179037b60"
+      "contracts/global_router.v1.networks.list.json": "19f1984f772ea64ce1de02e777dbc0188afee61552d7a88d54ee99fc8958b5a7"
     },
-    "contract_revision": "097edd93ae38af3f7fc4d3935cda8e3021e291cd349e5cb92b545b20ef3999db",
+    "contract_revision": "4ad4552899a9619cf113566515a7523b07a631b8b26071d6bfd71065f84b54a7",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.networks.list.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.networks.list.json#/errors",
@@ -5217,9 +5217,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "097edd93ae38af3f7fc4d3935cda8e3021e291cd349e5cb92b545b20ef3999db",
+      "contract_revision": "4ad4552899a9619cf113566515a7523b07a631b8b26071d6bfd71065f84b54a7",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "aa82bb71702f37086eb30ae58692ae2cdbb7b966e9e88f8ecdd666a3d4a3e78e",
+      "implementation_revision": "ba94fb5a0d35d0e9257bf3c829ebd7500a8691c10105645a9a6d6342d35da54f",
       "level": "offline"
     },
     "wait_goals": []
@@ -5233,9 +5233,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.networks.replace.json": "54a90155fe67411dfe50bbb080b4753ce54f875396a728ef931f5f10c2f49f8a"
+      "contracts/global_router.v1.networks.replace.json": "22d63ee7de0f4d870384bd941b1af56b199c088bdff39b1b4cd06437a62f4ea0"
     },
-    "contract_revision": "85ccfa87868224fcdad0b6323935a6e2c4e02cd9a8f2f4cab8dc0afc6fa635d2",
+    "contract_revision": "bfbff8a90c1927fedd303726795e01f1fc1bc351d1ea5a9de6daaabfb58ed421",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.networks.replace.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.networks.replace.json#/errors",
@@ -5278,9 +5278,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "85ccfa87868224fcdad0b6323935a6e2c4e02cd9a8f2f4cab8dc0afc6fa635d2",
+      "contract_revision": "bfbff8a90c1927fedd303726795e01f1fc1bc351d1ea5a9de6daaabfb58ed421",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "d2e75695a97ed3a2a202350ebaae4b3c507ab773b506c9b77ed822813fb08f65",
+      "implementation_revision": "e6156b6610b0f90a3c2743451344dceee76619d3c1568a68638cd0fab56dedb8",
       "level": "offline"
     },
     "wait_goals": []
@@ -5294,9 +5294,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.quotas.list.json": "d0a3d3292d650036572fdc6a45c22bab19e9c7fcf731937f3dc0cf4d240353c6"
+      "contracts/global_router.v1.quotas.list.json": "adf3fc021df4756ce6e54a5aa3d8d24756a87b24591d1ad6ed9f7e472f180c64"
     },
-    "contract_revision": "dce52af54bacc629d5c828a16d50c1ff14eeed4f5fa5a3dbca33342b0e83541b",
+    "contract_revision": "9a5d7618553e1b6d0ace4cfb33416f1a86e32ba66e88e7d7875c3f0b1bc2349b",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.quotas.list.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.quotas.list.json#/errors",
@@ -5339,9 +5339,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "dce52af54bacc629d5c828a16d50c1ff14eeed4f5fa5a3dbca33342b0e83541b",
+      "contract_revision": "9a5d7618553e1b6d0ace4cfb33416f1a86e32ba66e88e7d7875c3f0b1bc2349b",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "9ee5bd0d5aeaa08d704404a5ed6618a3885ea1920dee89ce1e72c1105870b803",
+      "implementation_revision": "30dcd5ec7e45c53c7fe33fadd10030da0e0c53452f76f790aeb6632f450024e8",
       "level": "offline"
     },
     "wait_goals": []
@@ -5355,9 +5355,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.routers.create.json": "9fb7101eae031f32c4be8a59aae602ccb17f808cb1cc2ffa160c9be647d266d1"
+      "contracts/global_router.v1.routers.create.json": "d76162ced502b5f825e59491431da898cd151cf48b68325694c2ec0657060964"
     },
-    "contract_revision": "c6a5b8a5739af50dcd221b6de5fb76fc1f47f5d8c40cc52c6713415482292e54",
+    "contract_revision": "f11e6f2deef45beedfc7265160a74368e164f89945607de797c17eecc5c6c617",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.routers.create.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.routers.create.json#/errors",
@@ -5400,9 +5400,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "c6a5b8a5739af50dcd221b6de5fb76fc1f47f5d8c40cc52c6713415482292e54",
+      "contract_revision": "f11e6f2deef45beedfc7265160a74368e164f89945607de797c17eecc5c6c617",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "f69075dcd2623d9dec1ff816a91169d63c6b196ae83be3f58b9ef40f60f8ff1f",
+      "implementation_revision": "c69541a0f5828802abcf3aa6235282e1b9f64797ae1c08bc9945c93bc7e920b7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5416,9 +5416,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.routers.delete.json": "b52f755d1b3d7b3a7f745df3ce87e042ee771cfa85c7a9734cbd56fd36ac8429"
+      "contracts/global_router.v1.routers.delete.json": "47218bd93ec367696d8b4c15f378f230a2d7cac7b401c1a9a7cd2f7bb85bfea0"
     },
-    "contract_revision": "4414b577f40fbaa57179a73330ff38e110b179c59785db4fbf69c06067af12df",
+    "contract_revision": "ef3442772efacd41e3b06447e8d32db05b797772634d43936e7c28cc4d96e70f",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.routers.delete.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.routers.delete.json#/errors",
@@ -5461,9 +5461,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "4414b577f40fbaa57179a73330ff38e110b179c59785db4fbf69c06067af12df",
+      "contract_revision": "ef3442772efacd41e3b06447e8d32db05b797772634d43936e7c28cc4d96e70f",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "01c65fc059872968578f520cb1c82a373f07e9681c31ab0ddeb5036b979d980c",
+      "implementation_revision": "92a8c28249e16efd5ccfef648fed2a9da8bd77e297e3303ce233254175a07999",
       "level": "offline"
     },
     "wait_goals": []
@@ -5477,9 +5477,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.routers.get.json": "aa32b2d0da5ecbc1ed0665ec93eb6ff36795d8aac426fcbbac5bfe9ac6ed78d6"
+      "contracts/global_router.v1.routers.get.json": "a6598d123962c257ca19b384e415768e11b15e9767279a8358858cf31ee1e7d8"
     },
-    "contract_revision": "610716a1769e598710bad17b96c90ee0735eb95dd5ffa011d5ca1f4d3d1ec690",
+    "contract_revision": "0d6d2f6646be22877073b52d7e5e878133b6575886d15f03851eeef77668e261",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.routers.get.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.routers.get.json#/errors",
@@ -5522,9 +5522,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "610716a1769e598710bad17b96c90ee0735eb95dd5ffa011d5ca1f4d3d1ec690",
+      "contract_revision": "0d6d2f6646be22877073b52d7e5e878133b6575886d15f03851eeef77668e261",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "c52d16f2bf85204d079fb66e8c0b924c2a60a4f98fb46323e97e764159d44a39",
+      "implementation_revision": "313d4bae246a19bcd2d0c8704b03d79f3c698013684728c20f0ebc8ced5e8cff",
       "level": "offline"
     },
     "wait_goals": []
@@ -5538,9 +5538,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.routers.list.json": "58a8a3e840dfe31d9aca0fc3046bf1db31601183526846d9648e36885dd8e76c"
+      "contracts/global_router.v1.routers.list.json": "a6c7278a12b1b271732cc7e62e58b6a2bdb2a98394845eb3efec0a10cb2da135"
     },
-    "contract_revision": "e67940f64c1e290ae82b7f9fc14a071b99ba793bd8924aac7cbab7f58342ff31",
+    "contract_revision": "9611060928cfcd1e28bce0e203c78fe3e8818e169966c20392e6ea4b6767f679",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.routers.list.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.routers.list.json#/errors",
@@ -5583,9 +5583,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "e67940f64c1e290ae82b7f9fc14a071b99ba793bd8924aac7cbab7f58342ff31",
+      "contract_revision": "9611060928cfcd1e28bce0e203c78fe3e8818e169966c20392e6ea4b6767f679",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "782707d11b7fca56e4cc5b37f4107fc3655a3bc6d7178d6d850df32ee47639ab",
+      "implementation_revision": "de80a9b30355c64acb58eb78712dc744fbecdfda88b212ecffcd22706b5b3d0f",
       "level": "offline"
     },
     "wait_goals": []
@@ -5599,9 +5599,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.routers.replace.json": "d2612917cd938caa02e0c815bd70e855620fa3b9725d06119279e395b14f3a05"
+      "contracts/global_router.v1.routers.replace.json": "f8d5bc304c9fbc1475e108b32ac7de2f36428aa6c3600365a2b081b6081755bb"
     },
-    "contract_revision": "c7c54aabdb9abe89a82d05ef5602cc5fd246aa2432f5ba5c46cbd42e31ed253a",
+    "contract_revision": "a4e469f6bc461ad22a1d3218fdd991fc0f800e30560c87b1fdcae203e5c8323a",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.routers.replace.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.routers.replace.json#/errors",
@@ -5644,9 +5644,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "c7c54aabdb9abe89a82d05ef5602cc5fd246aa2432f5ba5c46cbd42e31ed253a",
+      "contract_revision": "a4e469f6bc461ad22a1d3218fdd991fc0f800e30560c87b1fdcae203e5c8323a",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "7ec868168699b52453b3fcc2f9d99fb935c8817aeec422090a8288efd07c00a2",
+      "implementation_revision": "1f32dc9b8ea2d350fd2ce5b7bbecb25f799263078ef4c08fa3ed7f500eb5dcbf",
       "level": "offline"
     },
     "wait_goals": []
@@ -5660,9 +5660,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.services.list.json": "1da9998defee63be0e5a451f0f4a8a0a2262be628a63ea249d7985e5d72cae99"
+      "contracts/global_router.v1.services.list.json": "f3eaf34f7a08591cb917a1280010f3ecd7057d0d4601d2ab880b25b68fe5e484"
     },
-    "contract_revision": "3f9ae3bb7af8b05b3631f301330fce14ff3c797048f2bb29c1dfe55eb5083b51",
+    "contract_revision": "04814b2f0b186ad9f939192107015b5822cdfbd420e81e7e99fc86b04ea801f7",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.services.list.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.services.list.json#/errors",
@@ -5705,9 +5705,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "3f9ae3bb7af8b05b3631f301330fce14ff3c797048f2bb29c1dfe55eb5083b51",
+      "contract_revision": "04814b2f0b186ad9f939192107015b5822cdfbd420e81e7e99fc86b04ea801f7",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "c8ef00434f26710b9c07fc2bc177f2abc9f9107d88c2ced0df3d0acfb9375e65",
+      "implementation_revision": "c65bcdc800955741250fadf726d4345ec29d7820c5c25334e44928ef6b52d3e3",
       "level": "offline"
     },
     "wait_goals": []
@@ -5721,9 +5721,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.static_routes.create.json": "4b295cb844c3ce3b335d40a6a0cebf12ca97dcd36a83d39ab0b5296f570106ca"
+      "contracts/global_router.v1.static_routes.create.json": "1ec9170ed092bad3e3892d16b3df1800092209df3f8ea3ca6d0850f8c1768326"
     },
-    "contract_revision": "10a3c6c35d093e349244f104ebab81a89bb56975f98bd2e93b3f84551b0a968e",
+    "contract_revision": "af37258d74504656e88035e7fe95d4904efedeb0a69ad5b17a262cf1366c6ead",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.create.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.static_routes.create.json#/errors",
@@ -5766,9 +5766,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "10a3c6c35d093e349244f104ebab81a89bb56975f98bd2e93b3f84551b0a968e",
+      "contract_revision": "af37258d74504656e88035e7fe95d4904efedeb0a69ad5b17a262cf1366c6ead",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "dda11eb74873b11fc6c572dcb2067e1b1e4bedb6f1a8128cf508e811036cb5df",
+      "implementation_revision": "f368537e1da27b08b1ba888ade5496be15bb545e674f222ff938cc26517e8cf2",
       "level": "offline"
     },
     "wait_goals": []
@@ -5782,9 +5782,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.static_routes.delete.json": "4022aaf5a95f19f9bbc1cfb76d22a61dc376bdf1e4dd93b2e664f4ec5cbead09"
+      "contracts/global_router.v1.static_routes.delete.json": "7b24ac8d6175962dc97906ac6529d953606c33e924cb058f78fe9c90bc86f1f9"
     },
-    "contract_revision": "7dae885b116e7404374d010e4491634103a4d0aaac010e04a4c723dc008a444c",
+    "contract_revision": "f54f3215889c54d36e512894724d6eeb241ca090bb81ef66dadc47f61aa6a53f",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.delete.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.static_routes.delete.json#/errors",
@@ -5827,9 +5827,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "7dae885b116e7404374d010e4491634103a4d0aaac010e04a4c723dc008a444c",
+      "contract_revision": "f54f3215889c54d36e512894724d6eeb241ca090bb81ef66dadc47f61aa6a53f",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "154328ac1b2c6107b8226ac3728dafe2a7f6b7858240966db6c0ce3ccf061367",
+      "implementation_revision": "ef997da8c5aa7763153ff75ca99ad02ea31ec191ed20f5064248b740cf3a3450",
       "level": "offline"
     },
     "wait_goals": []
@@ -5843,9 +5843,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.static_routes.get.json": "2aee6f203fa6155ff7e541d77d97c35610ecbb024e205174810aa94083bdb9a5"
+      "contracts/global_router.v1.static_routes.get.json": "3deff177d2fd95770731a9c6dde0caf7cb5a18bf01c2038aec1b9e0cab31155c"
     },
-    "contract_revision": "9af144b47b03b0ad72f7c679642a83083d7d84e9c09adea44541edb9b8a2807e",
+    "contract_revision": "830f5e07063101af52c5fd305c7abde12e9340a00807b08bb68923d0d795696d",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.get.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.static_routes.get.json#/errors",
@@ -5888,9 +5888,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "9af144b47b03b0ad72f7c679642a83083d7d84e9c09adea44541edb9b8a2807e",
+      "contract_revision": "830f5e07063101af52c5fd305c7abde12e9340a00807b08bb68923d0d795696d",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "8dc77d9dea87d57d4fcae5386f9d1abb5202ad40b368d5dc175d9c234eb9fcf2",
+      "implementation_revision": "c31717a3ca08fdbe573450dfaa4e3bf80c6b68e0fbb0b135dfafce45bd364ade",
       "level": "offline"
     },
     "wait_goals": []
@@ -5904,9 +5904,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.static_routes.list.json": "479d396807cfbf8c05f4a16d7cf8f6faee2b7b02c9f972eac1eb3ddf56e0d327"
+      "contracts/global_router.v1.static_routes.list.json": "2fdfe0cdf8b0ea298474c2dc97559408cc47643d21a20f0a0c898b77c6d4b65f"
     },
-    "contract_revision": "2e7c8b541234e38ddd612cd9ddd8b5c65a3fbbb015e046985cfc617aae910cdd",
+    "contract_revision": "e7104f5748eef2b72a5b3a73cfc36f56436c1f8c7e0304db11d19b4fb278d4f5",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.list.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.static_routes.list.json#/errors",
@@ -5949,9 +5949,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "2e7c8b541234e38ddd612cd9ddd8b5c65a3fbbb015e046985cfc617aae910cdd",
+      "contract_revision": "e7104f5748eef2b72a5b3a73cfc36f56436c1f8c7e0304db11d19b4fb278d4f5",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "801e6c68eaceac55366894220e75ecd698eed199278c63b7dd4a4736980e3f22",
+      "implementation_revision": "4ed30749ad2d35e998d3817f42950de3767f12dae7ffc0d1b062692ce9ea88aa",
       "level": "offline"
     },
     "wait_goals": []
@@ -5965,9 +5965,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.static_routes.replace.json": "c28301d1778a08bf400a12bb5ad930f131f582e4983ebdc3a6bd83e5cdbad2d1"
+      "contracts/global_router.v1.static_routes.replace.json": "e05eb519177001d2e259435b6c11d7551f2c7ebc2c1617b3ddd0302f174e0bca"
     },
-    "contract_revision": "ab6344812943a46a6f0397f4af4902a9f3b2a7ab444c72618c47ddf32b025272",
+    "contract_revision": "b39961d379c1505523634e1b563dede3c1bd5e4ebb3ba764c54cef7b7fb0218d",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.static_routes.replace.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.static_routes.replace.json#/errors",
@@ -6010,9 +6010,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "ab6344812943a46a6f0397f4af4902a9f3b2a7ab444c72618c47ddf32b025272",
+      "contract_revision": "b39961d379c1505523634e1b563dede3c1bd5e4ebb3ba764c54cef7b7fb0218d",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "4e418debb2ae13428a53f5d2dc39f2a2e526cd6a8a3f068b15b90056dcaab4e9",
+      "implementation_revision": "6ed1a3467318c58e9ac7c3f77dcb8d56f51e1d858ab166b309aba8cee62af365",
       "level": "offline"
     },
     "wait_goals": []
@@ -6026,9 +6026,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.subnets.create.json": "ca1f2f821ca855b5d0479c922c2d6ee2b360eb1517cfa2caf88a7f01483691b9"
+      "contracts/global_router.v1.subnets.create.json": "7c53c3063a9369071240250e11a3f9ab3a54762cc731ed26616c3da63cee60de"
     },
-    "contract_revision": "5be567daa9691004ae4cbcfef8f3aaf23a68a724afc3fc7a7ad921113a0726b0",
+    "contract_revision": "706e65f16460d9619ce4f1890045e19bd985d8482632aadf1af9b603b1c56df1",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.subnets.create.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.subnets.create.json#/errors",
@@ -6071,9 +6071,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "5be567daa9691004ae4cbcfef8f3aaf23a68a724afc3fc7a7ad921113a0726b0",
+      "contract_revision": "706e65f16460d9619ce4f1890045e19bd985d8482632aadf1af9b603b1c56df1",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "d7199ab91cf5b46d3cf135711ac78e92494949b56f06ecc802e9ab9db397bbba",
+      "implementation_revision": "973f9e0c8bef3036ecd394f9ef0285b0702bf031f0c49a1068ac360b96e8542e",
       "level": "offline"
     },
     "wait_goals": []
@@ -6087,9 +6087,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.subnets.delete.json": "266c5fa18432ec3d063822b4f796320c33a93c3066917c8cad1b6bbe0b8561b0"
+      "contracts/global_router.v1.subnets.delete.json": "785a864593f73ae6c726d7f83e9515e24e8f2cad0832fd5e17470ae1762480f2"
     },
-    "contract_revision": "d205012443b4d156987e4ff1ed39caf01c27ae26506a1a0a9b141a505f185f20",
+    "contract_revision": "700d3bdc7d0cb1da8ea4f149eaf1502ec7f554cf84def92427221e6837d39a4b",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.subnets.delete.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.subnets.delete.json#/errors",
@@ -6132,9 +6132,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "d205012443b4d156987e4ff1ed39caf01c27ae26506a1a0a9b141a505f185f20",
+      "contract_revision": "700d3bdc7d0cb1da8ea4f149eaf1502ec7f554cf84def92427221e6837d39a4b",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "8a30d6fa970d701e4a0cd4e07613193f92b92d2cd0f6625c8d563ce588d7cbc2",
+      "implementation_revision": "0630cb32a42463c4a42a67737271e6d87fe5413ff16b475b91071d92f3878c47",
       "level": "offline"
     },
     "wait_goals": []
@@ -6148,9 +6148,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.subnets.get.json": "13930eeec14d797c74b0a43230616682c6911cc914ee065dab31df091fc66dbd"
+      "contracts/global_router.v1.subnets.get.json": "7f00a55870da0c42ed87620fe85c068d459cd4ac653a3069731194cd5c638361"
     },
-    "contract_revision": "d1303ebae9d156fb0f44c8676f4d7d610da0f87cbde5445c1c2168da5d524b71",
+    "contract_revision": "c1aa0866d9a68b4032710d206494a6ac998bb6f3497e975436340938b2f1224c",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.subnets.get.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.subnets.get.json#/errors",
@@ -6193,9 +6193,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "d1303ebae9d156fb0f44c8676f4d7d610da0f87cbde5445c1c2168da5d524b71",
+      "contract_revision": "c1aa0866d9a68b4032710d206494a6ac998bb6f3497e975436340938b2f1224c",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "3526a02087a6af2777d540fab861e4b0fc663336b2bdc11451cb701b4b9baeb7",
+      "implementation_revision": "ffe755ca75de032cb0dd962ef4fc7f9eec8f4b72a7473abb9fc78f52e4f80c82",
       "level": "offline"
     },
     "wait_goals": []
@@ -6209,9 +6209,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.subnets.list.json": "fa41afa03b413e1bdb83e8b2522d5384d33dedbbdcc71ad8366d8981858dc55c"
+      "contracts/global_router.v1.subnets.list.json": "f35e88feb3da195bfef5a52a4cd48336a5f08a601e9b5e68200ae27b6c324626"
     },
-    "contract_revision": "fde56e4020f77886d951dbb1531c19c465aeaca4a6067829aff41877404da46d",
+    "contract_revision": "9f869e293a80f132d5954989d1f946e0ec7b773c6d52777a619e9c81d40c9dd5",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.subnets.list.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.subnets.list.json#/errors",
@@ -6254,9 +6254,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "fde56e4020f77886d951dbb1531c19c465aeaca4a6067829aff41877404da46d",
+      "contract_revision": "9f869e293a80f132d5954989d1f946e0ec7b773c6d52777a619e9c81d40c9dd5",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "a9cadd4f2e9325d0d8603d6b1f76f17b8088ed4511b6bdb88c4e0f600196c9da",
+      "implementation_revision": "8dc8615ff0430f73d56185aaceeba2186e221d78f000c472c7c60877c38a5671",
       "level": "offline"
     },
     "wait_goals": []
@@ -6270,9 +6270,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.subnets.replace.json": "02f214e03136037a4fd02f44834c9a3d9e992b047f81c59d222990c1715067a4"
+      "contracts/global_router.v1.subnets.replace.json": "0f8be69357d940a68d3587b365154b24e17e29d6d8d892b6d249269b108d6cf3"
     },
-    "contract_revision": "68f2cb2b5977afc5204c21ffbaa4ab4c1643bd8640fe414241524da31e0fc7c6",
+    "contract_revision": "a9b7a18f06b4dfeac68340fb13bc34382f0c6b5620f196748ad1dbfdcd55e868",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/global_router.v1.subnets.replace.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.subnets.replace.json#/errors",
@@ -6315,9 +6315,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "68f2cb2b5977afc5204c21ffbaa4ab4c1643bd8640fe414241524da31e0fc7c6",
+      "contract_revision": "a9b7a18f06b4dfeac68340fb13bc34382f0c6b5620f196748ad1dbfdcd55e868",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "38b8e2dee6c8fa0387bb2883311047aa1224f1d675c67147dcfa9a01d38d7d12",
+      "implementation_revision": "3d43ef6f5e9bedc76de613091fa653e8f287e368d9c3b78f11f22fa8f961f9cc",
       "level": "offline"
     },
     "wait_goals": []
@@ -6331,9 +6331,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.zone_groups.list.json": "819a557061a96e4867ba89431aef1898cadecfaa353453f34a9571a7104b9fb9"
+      "contracts/global_router.v1.zone_groups.list.json": "827dfff71b651bc73bed71a8354d145a8742c5c481631797f57e71232d505472"
     },
-    "contract_revision": "352c943f3b7ed4d00b93425d9964672ac62e3749154aa57bb6916588bb44103e",
+    "contract_revision": "ad2d8480ffe26177b036e2511f3ed6042edf58e843634a15c08c1d87edaf44c2",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.zone_groups.list.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.zone_groups.list.json#/errors",
@@ -6376,9 +6376,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "352c943f3b7ed4d00b93425d9964672ac62e3749154aa57bb6916588bb44103e",
+      "contract_revision": "ad2d8480ffe26177b036e2511f3ed6042edf58e843634a15c08c1d87edaf44c2",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "1929f40ab1691d988abf0a24cca3f3bf60e45f51f37e69eb42ccb4feae56f8c3",
+      "implementation_revision": "1d9e4504073a2f74ea5753ec81d432f3c88bf0fe757feb65330dd804135f5a0d",
       "level": "offline"
     },
     "wait_goals": []
@@ -6392,9 +6392,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/global_router.v1.zones.list.json": "fa5f2f1a1fdb8414fdf2e2bb921f38932666dfb4d05d7c2c03b55e9d4e1919d0"
+      "contracts/global_router.v1.zones.list.json": "f41d079ec7a7c992d7c57fc1eefe73a6778bd844dd8306bdef04e56b8b654174"
     },
-    "contract_revision": "f7252a2a927648dc30bed5febd1a1f96936fda77157844555d5e3a13b2d7617e",
+    "contract_revision": "03b04e6fc057a3008bfca68a59e53cbe6e54b6f9ac338fb0f47117fd61f075b3",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/global_router.v1.zones.list.json#/endpoint",
     "error_binding_ref": "contracts/global_router.v1.zones.list.json#/errors",
@@ -6437,9 +6437,9 @@
       "uri": "https://docs.selectel.ru/api/global-router.json"
     },
     "verification": {
-      "contract_revision": "f7252a2a927648dc30bed5febd1a1f96936fda77157844555d5e3a13b2d7617e",
+      "contract_revision": "03b04e6fc057a3008bfca68a59e53cbe6e54b6f9ac338fb0f47117fd61f075b3",
       "evidence_ref": "globalrouter_test.go",
-      "implementation_revision": "0494eeb54a625c8b1742ca2e7a08a91a4c8909feb10696e750ae720a9c0ac7a5",
+      "implementation_revision": "95690bea7205132de6c0a50ea0ede2e69ea745d50783ddde71a82acfbb5c1ab2",
       "level": "offline"
     },
     "wait_goals": []

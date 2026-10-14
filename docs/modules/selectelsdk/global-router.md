@@ -22,14 +22,21 @@ which is absent from current NetworkCreate/SubnetCreate schemas. The pinned
 [supplemental native source](../../../catalog/evidence/global-router-sdk-models.json)
 records this discrepancy at revision
 `f4e78a2c9d3435a9caa32f92a83910e9fab00fd4`. `Networks.AttachVPC` and
-`Subnets.AttachVPC` take explicit original service refs, preserving their
+`Subnets.AttachVPC` accept only explicit `network` service refs at SDK generation
+`v2` (Neutron 2.0), with the selected network/subnet kind, nonempty project,
+region and pool, compatible location, and validated explicit endpoint. Other
+services, aliases, generations and incomplete locations fail before credential
+lookup or HTTP. Source parent refs must preserve the same service, generation
+and endpoint identity. These methods preserve the original refs'
 project/location/generation/endpoint in the Receipt. They use the same POST
 operation bindings, without duplicating coverage. Current typed create DTOs
 also represent VLAN, inner VLAN, VMware VDC and source OS identifiers.
 
 Global Router refs use immutable account scope and preserve same-service
 router/network/subnet parents. Returned account and ancestor IDs are checked.
-Caller-selected source project, OS resource and zone IDs are checked before
+All available returned ancestor IDs are checked against the selected parent
+chain, including a nested route's subnet, network and router. Caller-selected
+source project, OS resource and zone IDs are checked before
 adopting a returned attachment ID. Other service IDs remain metadata; source
 refs are retained only when explicitly supplied by the caller. No name search,
 newly appeared resource adoption or fallback across service scopes occurs.
