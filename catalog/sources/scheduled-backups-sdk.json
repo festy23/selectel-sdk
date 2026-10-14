@@ -1,0 +1,413 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Pinned official SDK v2 wire variant",
+    "version": "v2"
+  },
+  "x-source-uri": "https://github.com/selectel/cloudbackup-go/tree/76292b3d4552165d97106dc6aa197c8cd7425233/pkg/v2",
+  "x-sdk-revision": "76292b3d4552165d97106dc6aa197c8cd7425233",
+  "x-source-files": {
+    "pkg/v2/plans.go": "package cloudbackup\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"strconv\"\n)\n\ntype PlansQuery struct {\n\tName       string\n\tVolumeName string\n\tLimit      int\n\tMarker     string\n}\n\nfunc (q *PlansQuery) queryParamsRaw() string {\n\tparams := url.Values{}\n\tif q == nil {\n\t\treturn params.Encode()\n\t}\n\n\tif q.Name != \"\" {\n\t\tparams.Add(\"name\", q.Name)\n\t}\n\n\tif q.VolumeName != \"\" {\n\t\tparams.Add(\"volume_name\", q.VolumeName)\n\t}\n\n\tif q.Limit != 0 {\n\t\tparams.Add(\"limit\", strconv.Itoa(q.Limit))\n\t}\n\n\tif q.Marker != \"\" {\n\t\tparams.Add(\"marker\", q.Marker)\n\t}\n\n\treturn params.Encode()\n}\n\nfunc (client *ServiceClient) Plans(ctx context.Context, q *PlansQuery) (*PlansResponse, *ResponseResult, error) {\n\tqueryParams := \"\"\n\tif qRaw := q.queryParamsRaw(); q != nil && qRaw != \"\" {\n\t\tqueryParams = \"?\" + qRaw\n\t}\n\n\tu := fmt.Sprintf(\"%s/plans/%s\", client.Endpoint, queryParams)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodGet, u, nil)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tresult := PlansResponse{}\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn &result, responseResult, nil\n}\n\nfunc (client *ServiceClient) Plan(ctx context.Context, planID string) (*Plan, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/plans/%s\", client.Endpoint, planID)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodGet, u, nil)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Plan\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) PlanCreate(ctx context.Context, req *Plan) (*Plan, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/plans/\", client.Endpoint)\n\n\tbody, err := json.Marshal(req)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodPost, u, bytes.NewReader(body))\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Plan\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) PlanUpdate(ctx context.Context, planID string, req *PlanUpdateRequest) (*Plan, *ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/plans/%s\", client.Endpoint, planID)\n\n\tbody, err := json.Marshal(req)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodPatch, u, bytes.NewReader(body))\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tvar result *Plan\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result, responseResult, nil\n}\n\nfunc (client *ServiceClient) PlanDelete(ctx context.Context, planID string) (*ResponseResult, error) {\n\tu := fmt.Sprintf(\"%s/plans/%s\", client.Endpoint, planID)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodDelete, u, nil)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn responseResult, responseResult.Err\n\t}\n\n\treturn responseResult, nil\n}\n",
+    "pkg/v2/plans.models.go": "package cloudbackup\n\ntype (\n\tPlan struct {\n\t\tBackupMode        string          `json:\"backup_mode\"`\n\t\tCreatedAt         string          `json:\"created_at,omitempty\"`\n\t\tID                string          `json:\"id,omitempty\"`\n\t\tFullBackupsAmount int             `json:\"full_backups_amount\"`\n\t\tName              string          `json:\"name\"`\n\t\tResources         []*PlanResource `json:\"resources\"`\n\t\tSchedulePattern   string          `json:\"schedule_pattern\"`\n\t\tScheduleType      string          `json:\"schedule_type\"`\n\t\tStatus            string          `json:\"status,omitempty\"`\n\t}\n\n\tPlanResource struct {\n\t\tID   string `json:\"id\"`\n\t\tName string `json:\"name\"`\n\t\tType string `json:\"type\"`\n\t}\n\n\tPlansResponse struct {\n\t\tPlans []*Plan `json:\"plans\"`\n\t\tTotal int     `json:\"total\"`\n\t}\n)\n\nconst (\n\tPlanStatusStarted   = \"started\"\n\tPlanStatusSuspended = \"suspended\"\n)\n\ntype PlanUpdateRequest struct {\n\tFullBackupsAmount int             `json:\"full_backups_amount\"`\n\tName              string          `json:\"name\"`\n\tResources         []*PlanResource `json:\"resources\"`\n\tSchedulePattern   string          `json:\"schedule_pattern\"`\n\tScheduleType      string          `json:\"schedule_type\"`\n}\n",
+    "pkg/v2/checkpoints.go": "package cloudbackup\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"strconv\"\n)\n\ntype (\n\tCheckpoint struct {\n\t\tID              string           `json:\"id\"`\n\t\tPlanID          string           `json:\"plan_id\"`\n\t\tCreatedAt       string           `json:\"created_at\"`\n\t\tStatus          string           `json:\"status\"`\n\t\tCheckpointItems []CheckpointItem `json:\"checkpoint_items\"`\n\t}\n\n\tCheckpointItem struct {\n\t\tID              string             `json:\"id\"`\n\t\tBackupID        string             `json:\"backup_id\"`\n\t\tChainID         string             `json:\"chain_id\"`\n\t\tCheckpointID    string             `json:\"checkpoint_id\"`\n\t\tCreatedAt       string             `json:\"created_at\"`\n\t\tBackupCreatedAt string             `json:\"backup_created_at\"`\n\t\tIsIncremental   bool               `json:\"is_incremental\"`\n\t\tStatus          string             `json:\"status\"`\n\t\tResource        CheckpointResource `json:\"resource\"`\n\t}\n\n\tCheckpointResource struct {\n\t\tID   string `json:\"id\"`\n\t\tName string `json:\"name\"`\n\t\tType string `json:\"type\"`\n\t}\n\n\tCheckpointsQuery struct {\n\t\tPlanName   string\n\t\tVolumeName string\n\t\tLimit      int\n\t\tMarker     string\n\t}\n\n\tCheckpointsResponse struct {\n\t\tCheckpoints []*Checkpoint `json:\"checkpoints\"`\n\t\tTotal       int           `json:\"total\"`\n\t}\n)\n\nfunc (q *CheckpointsQuery) queryParamsRaw() string {\n\tparams := url.Values{}\n\tif q == nil {\n\t\treturn params.Encode()\n\t}\n\n\tif q.PlanName != \"\" {\n\t\tparams.Add(\"plan_name\", q.PlanName)\n\t}\n\n\tif q.VolumeName != \"\" {\n\t\tparams.Add(\"volume_name\", q.VolumeName)\n\t}\n\n\tif q.Limit != 0 {\n\t\tparams.Add(\"limit\", strconv.Itoa(q.Limit))\n\t}\n\n\tif q.Marker != \"\" {\n\t\tparams.Add(\"marker\", q.Marker)\n\t}\n\n\treturn params.Encode()\n}\n\nfunc (client *ServiceClient) Checkpoints(ctx context.Context, q *CheckpointsQuery) (*CheckpointsResponse, *ResponseResult, error) {\n\tqueryParams := \"\"\n\tif qRaw := q.queryParamsRaw(); q != nil && qRaw != \"\" {\n\t\tqueryParams = \"?\" + qRaw\n\t}\n\n\tu := fmt.Sprintf(\"%s/checkpoints/%s\", client.Endpoint, queryParams)\n\n\tresponseResult, err := client.DoRequest(ctx, http.MethodGet, u, nil)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\tres := CheckpointsResponse{}\n\terr = responseResult.ExtractResult(&res)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn &res, responseResult, nil\n}\n"
+  },
+  "paths": {
+    "/plans/": {
+      "get": {
+        "operationId": "list",
+        "x-operation-locator": "official cloudbackup-go 76292b3d4552165d97106dc6aa197c8cd7425233 GET /plans/",
+        "responses": {
+          "200": {
+            "description": "Pinned SDK fixture status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SDKPlansPage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "volume_name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "marker",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "x-operation-locator": "official cloudbackup-go 76292b3d4552165d97106dc6aa197c8cd7425233 POST /plans/",
+        "responses": {
+          "201": {
+            "description": "Pinned SDK fixture status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SDKPlan"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SDKPlan",
+                "nullable": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plans/{plan_id}": {
+      "get": {
+        "operationId": "get",
+        "x-operation-locator": "official cloudbackup-go 76292b3d4552165d97106dc6aa197c8cd7425233 GET /plans/{plan_id}",
+        "responses": {
+          "200": {
+            "description": "Pinned SDK fixture status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SDKPlan"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "update",
+        "x-operation-locator": "official cloudbackup-go 76292b3d4552165d97106dc6aa197c8cd7425233 PATCH /plans/{plan_id}",
+        "responses": {
+          "200": {
+            "description": "Pinned SDK fixture status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SDKPlan"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SDKPlanUpdateSpec",
+                "nullable": true
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete",
+        "x-operation-locator": "official cloudbackup-go 76292b3d4552165d97106dc6aa197c8cd7425233 DELETE /plans/{plan_id}",
+        "responses": {
+          "204": {
+            "description": "Pinned SDK fixture status"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/checkpoints/": {
+      "get": {
+        "operationId": "list",
+        "x-operation-locator": "official cloudbackup-go 76292b3d4552165d97106dc6aa197c8cd7425233 GET /checkpoints/",
+        "responses": {
+          "200": {
+            "description": "Pinned SDK fixture status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SDKCheckpointsPage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "plan_name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "volume_name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "marker",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SDKResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "SDKPlan": {
+        "type": "object",
+        "properties": {
+          "backup_mode": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "full_backups_amount": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SDKResource"
+            }
+          },
+          "schedule_pattern": {
+            "type": "string"
+          },
+          "schedule_type": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "SDKCheckpoint": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "plan_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "checkpoint_items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SDKCheckpointItem"
+            }
+          }
+        }
+      },
+      "SDKCheckpointItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "backup_id": {
+            "type": "string"
+          },
+          "chain_id": {
+            "type": "string"
+          },
+          "checkpoint_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "backup_created_at": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "is_incremental": {
+            "type": "boolean"
+          },
+          "resource": {
+            "$ref": "#/components/schemas/SDKResource"
+          }
+        }
+      },
+      "SDKPlansPage": {
+        "type": "object",
+        "properties": {
+          "plans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SDKPlan"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "SDKCheckpointsPage": {
+        "type": "object",
+        "properties": {
+          "checkpoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SDKCheckpoint"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "SDKPlanUpdateSpec": {
+        "type": "object",
+        "properties": {
+          "full_backups_amount": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SDKResource"
+            }
+          },
+          "schedule_pattern": {
+            "type": "string"
+          },
+          "schedule_type": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1500 @@
+{
+  "components": {
+    "schemas": {
+      "APIErrorResponse": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "details": {
+            "additionalProperties": true,
+            "description": "Additional error information",
+            "nullable": true,
+            "type": "object"
+          },
+          "error_key": {
+            "description": "Unique error key",
+            "nullable": true,
+            "type": "string"
+          },
+          "message": {
+            "description": "Error message",
+            "type": "string"
+          },
+          "title": {
+            "description": "Error title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "code",
+          "title"
+        ],
+        "type": "object"
+      },
+      "BackupMode": {
+        "description": "Represent backup strategy for backup plan.\n\nAttributes:\n    full (str): full backup strategy, each backup will be full copy of volume\n    frequency (str): frequency backup strategy, each N backup is full backup, others are incremental",
+        "enum": [
+          "full",
+          "frequency"
+        ],
+        "type": "string"
+      },
+      "Checkpoint": {
+        "properties": {
+          "checkpoint_items": {
+            "description": "List of checkpoint items included",
+            "items": {
+              "$ref": "#/components/schemas/CheckpointItem"
+            },
+            "type": "array"
+          },
+          "created_at": {
+            "description": "A timestamp when the checkpoint was created",
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "description": "Checkpoint unique identifier",
+            "type": "string"
+          },
+          "plan_id": {
+            "description": "Backup plan identifier that generated this checkpoint",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CheckpointStatus",
+            "description": "Current status of the checkpoint"
+          }
+        },
+        "required": [
+          "id",
+          "created_at",
+          "plan_id",
+          "status",
+          "checkpoint_items"
+        ],
+        "type": "object"
+      },
+      "CheckpointItem": {
+        "properties": {
+          "backup_created_at": {
+            "description": "A timestamp when the backup was created in Cinder",
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "backup_id": {
+            "description": "Backup unique identifier in Cinder",
+            "nullable": true,
+            "type": "string"
+          },
+          "chain_id": {
+            "description": "Unique identifier of the incremental chain this checkpoint belongs to",
+            "nullable": true,
+            "type": "string"
+          },
+          "checkpoint_id": {
+            "description": "Associated checkpoint identifier",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "A timestamp when the item was created",
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "description": "Checkpoint item unique identifier",
+            "type": "string"
+          },
+          "is_incremental": {
+            "description": "Indicates whether this checkpoint is incremental",
+            "nullable": true,
+            "type": "boolean"
+          },
+          "resource": {
+            "$ref": "#/components/schemas/Resource",
+            "description": "Resource associated with this checkpoint item"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CheckpointItemStatus",
+            "description": "Current status of the checkpoint item"
+          }
+        },
+        "required": [
+          "id",
+          "checkpoint_id",
+          "created_at",
+          "status",
+          "resource"
+        ],
+        "type": "object"
+      },
+      "CheckpointItemStatus": {
+        "enum": [
+          "protecting",
+          "error",
+          "available",
+          "deleting",
+          "deleted",
+          "error-deleting",
+          "restoring",
+          null
+        ]
+      },
+      "CheckpointStatus": {
+        "enum": [
+          "protecting",
+          "error",
+          "available",
+          "deleting",
+          "deleted",
+          "error-deleting",
+          "copying",
+          "finished",
+          "wait_copying",
+          "restoring",
+          null
+        ]
+      },
+      "CreatePlanRequest": {
+        "properties": {
+          "backup_mode": {
+            "$ref": "#/components/schemas/BackupMode",
+            "description": "Backup mode used for this plan"
+          },
+          "description": {
+            "description": "Detailed plan description",
+            "type": "string"
+          },
+          "max_backups": {
+            "description": "Maximum number of backups to save in a full plan or full backups in a frequency plan",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Human-readable name of the plan",
+            "type": "string"
+          },
+          "resources": {
+            "description": "List of resources included in the plan",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            },
+            "type": "array"
+          },
+          "schedule_pattern": {
+            "description": "Backup scheduling pattern",
+            "format": "cron",
+            "type": "string"
+          },
+          "schedule_type": {
+            "$ref": "#/components/schemas/ScheduleType",
+            "description": "Backup scheduling type"
+          }
+        },
+        "required": [
+          "backup_mode",
+          "name",
+          "description",
+          "schedule_pattern",
+          "schedule_type",
+          "max_backups",
+          "resources"
+        ],
+        "type": "object"
+      },
+      "DeleteCheckpointResponse": {
+        "properties": {
+          "id": {
+            "description": "Checkpoint unique identifier",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CheckpointStatus",
+            "description": "Updated checkpoint status after deletion"
+          }
+        },
+        "required": [
+          "id",
+          "status"
+        ],
+        "type": "object"
+      },
+      "DeleteCheckpointsChainResponse": {
+        "properties": {
+          "deleted": {
+            "description": "List of checkpoints that were deleted.",
+            "items": {
+              "$ref": "#/components/schemas/Checkpoint"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "type": "object"
+      },
+      "GetCheckpointsResponse": {
+        "properties": {
+          "checkpoints": {
+            "description": "List of backup checkpoints",
+            "items": {
+              "$ref": "#/components/schemas/Checkpoint"
+            },
+            "type": "array"
+          },
+          "total": {
+            "description": "Total number of checkpoints available",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "checkpoints",
+          "total"
+        ],
+        "type": "object"
+      },
+      "GetPlansResponse": {
+        "properties": {
+          "plans": {
+            "description": "List of backup plans",
+            "items": {
+              "$ref": "#/components/schemas/Plan"
+            },
+            "type": "array"
+          },
+          "total": {
+            "description": "Total number of plans available",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "plans",
+          "total"
+        ],
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Plan": {
+        "properties": {
+          "backup_mode": {
+            "$ref": "#/components/schemas/BackupMode",
+            "description": "Backup mode used for this plan"
+          },
+          "created_at": {
+            "description": "A timestamp when the plan was created",
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "description": "Detailed plan description",
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique identifier of the plan",
+            "type": "string"
+          },
+          "max_backups": {
+            "description": "Maximum number of backups to save in a full plan or full backups in a frequency plan",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Human-readable name of the plan",
+            "type": "string"
+          },
+          "resources": {
+            "description": "List of resources included in the plan",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            },
+            "type": "array"
+          },
+          "schedule_pattern": {
+            "description": "Backup scheduling pattern",
+            "type": "string"
+          },
+          "schedule_type": {
+            "$ref": "#/components/schemas/ScheduleType",
+            "description": "Backup scheduling type"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PlanStatus",
+            "description": "Current status of the backup plan"
+          }
+        },
+        "required": [
+          "backup_mode",
+          "status",
+          "name",
+          "id",
+          "description",
+          "schedule_pattern",
+          "schedule_type",
+          "max_backups",
+          "resources",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "PlanStatus": {
+        "enum": [
+          "started",
+          "suspended"
+        ],
+        "type": "string"
+      },
+      "Resource": {
+        "properties": {
+          "id": {
+            "description": "UUID of the backed up resource",
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the backed up resource",
+            "nullable": true,
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ResourceType",
+            "description": "Type of the backed up resource",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type"
+        ],
+        "type": "object"
+      },
+      "ResourceType": {
+        "enum": [
+          "OS::Cinder::Volume"
+        ],
+        "type": "string"
+      },
+      "Restore": {
+        "properties": {
+          "checkpoint_id": {
+            "description": "Checkpoint identifier",
+            "type": "string"
+          },
+          "checkpoint_item_id": {
+            "description": "Checkpoint item identifier",
+            "type": "string"
+          },
+          "id": {
+            "description": "Restore entity identifier",
+            "type": "string"
+          },
+          "project_id": {
+            "description": "Project identifier",
+            "type": "string"
+          },
+          "resource_id": {
+            "description": "Resource identifier",
+            "type": "string"
+          },
+          "resource_type": {
+            "$ref": "#/components/schemas/ResourceType",
+            "description": "Resource type"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RestoreStatus",
+            "description": "Status of restore"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "checkpoint_id",
+          "checkpoint_item_id",
+          "status",
+          "resource_type",
+          "resource_id"
+        ],
+        "type": "object"
+      },
+      "RestoreRequest": {
+        "properties": {
+          "checkpoint_item_id": {
+            "description": "Checkpoint item identifier",
+            "type": "string"
+          },
+          "restore_name": {
+            "description": "New name for restored resource",
+            "type": "string"
+          }
+        },
+        "required": [
+          "checkpoint_item_id",
+          "restore_name"
+        ],
+        "type": "object"
+      },
+      "RestoreStatus": {
+        "enum": [
+          "success",
+          "fail",
+          "in_progress"
+        ],
+        "type": "string"
+      },
+      "ScheduleType": {
+        "enum": [
+          "calendar",
+          "crontab"
+        ],
+        "type": "string"
+      },
+      "UpdatePlanRequest-Input": {
+        "properties": {
+          "description": {
+            "description": "Detailed plan description",
+            "nullable": true,
+            "type": "string"
+          },
+          "max_backups": {
+            "description": "Maximum number of backups to save in a full plan or full backups in a frequency plan",
+            "nullable": true,
+            "type": "integer"
+          },
+          "name": {
+            "description": "Human-readable name of the plan",
+            "nullable": true,
+            "type": "string"
+          },
+          "resources": {
+            "description": "List of resources included in the plan",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "schedule_pattern": {
+            "description": "A valid cron expression",
+            "format": "cron",
+            "nullable": true,
+            "type": "string"
+          },
+          "schedule_type": {
+            "$ref": "#/components/schemas/ScheduleType",
+            "description": "Backup scheduling type",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/PlanStatus",
+            "description": "Status of the plan",
+            "nullable": true
+          }
+        },
+        "type": "object"
+      },
+      "UpdatePlanRequest-Output": {
+        "properties": {
+          "description": {
+            "description": "Detailed plan description",
+            "nullable": true,
+            "type": "string"
+          },
+          "max_backups": {
+            "description": "Maximum number of backups to save in a full plan or full backups in a frequency plan",
+            "nullable": true,
+            "type": "integer"
+          },
+          "name": {
+            "description": "Human-readable name of the plan",
+            "nullable": true,
+            "type": "string"
+          },
+          "resources": {
+            "description": "List of resources included in the plan",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "schedule_pattern": {
+            "description": "A valid cron expression",
+            "format": "cron",
+            "nullable": true,
+            "type": "string"
+          },
+          "schedule_type": {
+            "$ref": "#/components/schemas/ScheduleType",
+            "description": "Backup scheduling type",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/PlanStatus",
+            "description": "Status of the plan",
+            "nullable": true
+          }
+        },
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "iam_token_project_scoped": {
+        "description": "IAM token for project",
+        "in": "header",
+        "name": "X-Auth-Token",
+        "type": "apiKey"
+      }
+    }
+  },
+  "info": {
+    "description": "Managing checkpoints and backup plans, performing restore operations, and more",
+    "title": "Scheduled Backup API",
+    "version": "v2.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/{project_id}/checkpoints/": {
+      "delete": {
+        "description": "Deletes all backup checkpoints that match the specified chain UUID",
+        "operationId": "deleteBackupCheckpoints",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Chain UUID to filter checkpoints for deletion",
+            "in": "query",
+            "name": "chain_id",
+            "required": true,
+            "schema": {
+              "description": "Chain UUID to filter checkpoints for deletion",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCheckpointsChainResponse"
+                }
+              }
+            },
+            "description": "The list of checkpoints has been deleted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The checkpoints could not be deleted due to invalid parameters or their state."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to delete checkpoints for the specified project."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "No checkpoints matching the criteria have been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete backup checkpoints",
+        "tags": [
+          "Checkpoints"
+        ]
+      },
+      "get": {
+        "description": "Returns a paginated list of backup checkpoints for the specified project",
+        "operationId": "listBackupCheckpoints",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Specifies the maximum number of backup checkpoints to retrieve",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "description": "Specifies the maximum number of backup checkpoints to retrieve",
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Specifies the UUID of the last checkpoint retrieved in the previous request. Used for pagination",
+            "in": "query",
+            "name": "marker",
+            "required": false,
+            "schema": {
+              "description": "Specifies the UUID of the last checkpoint retrieved in the previous request. Used for pagination",
+              "nullable": true,
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filters the checkpoints by the specified volume name",
+            "in": "query",
+            "name": "volume_name",
+            "required": false,
+            "schema": {
+              "description": "Filters the checkpoints by the specified volume name",
+              "nullable": true,
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filters the checkpoints by the specified backup plan name",
+            "in": "query",
+            "name": "plan_name",
+            "required": false,
+            "schema": {
+              "description": "Filters the checkpoints by the specified backup plan name",
+              "nullable": true,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCheckpointsResponse"
+                }
+              }
+            },
+            "description": "A list of backup checkpoints has been retrieved."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to retrieve checkpoints for the specified project."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The checkpoint specified as a marker has not been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List backup checkpoints",
+        "tags": [
+          "Checkpoints"
+        ]
+      }
+    },
+    "/{project_id}/checkpoints/{checkpoint_id}": {
+      "delete": {
+        "description": "Deletes the specified backup checkpoint",
+        "operationId": "deleteBackupCheckpoint",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Unique identifier of the checkpoint to be deleted",
+            "in": "path",
+            "name": "checkpoint_id",
+            "required": true,
+            "schema": {
+              "description": "Unique identifier of the checkpoint to be deleted",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCheckpointResponse"
+                }
+              }
+            },
+            "description": "Checkpoint deleted successfully"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The checkpoint could not be deleted due to invalid parameters or its state."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to delete the checkpoint."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The checkpoint has not been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete backup checkpoint",
+        "tags": [
+          "Checkpoints"
+        ]
+      },
+      "get": {
+        "description": "Returns detailed information about the specified backup checkpoint",
+        "operationId": "getBackupCheckpoint",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Checkpoint unique identifier",
+            "in": "path",
+            "name": "checkpoint_id",
+            "required": true,
+            "schema": {
+              "description": "Checkpoint unique identifier",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Checkpoint"
+                }
+              }
+            },
+            "description": "The checkpoint has been retrieved."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to retrieve checkpoints for the specified project."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The checkpoint has not been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get backup checkpoint",
+        "tags": [
+          "Checkpoints"
+        ]
+      }
+    },
+    "/{project_id}/plans/": {
+      "get": {
+        "description": "Returns a paginated list of all backup plans for the specified project",
+        "operationId": "listBackupPlans",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Specifies the maximum number of backup plans to retrieve",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "description": "Specifies the maximum number of backup plans to retrieve",
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Specifies the UUID of the last backup plan retrieved in the previous request. Used for pagination.",
+            "in": "query",
+            "name": "marker",
+            "required": false,
+            "schema": {
+              "description": "Specifies the UUID of the last backup plan retrieved in the previous request. Used for pagination.",
+              "nullable": true,
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filters backup plans by the specified name",
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "description": "Filters backup plans by the specified name",
+              "nullable": true,
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filters backup plans by the specified volume name",
+            "in": "query",
+            "name": "volume_name",
+            "required": false,
+            "schema": {
+              "description": "Filters backup plans by the specified volume name",
+              "nullable": true,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlansResponse"
+                }
+              }
+            },
+            "description": "Returns a paginated list of backup plans."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to retrieve plans for the specified project."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The backup plan specified as a marker has not been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List backup plans",
+        "tags": [
+          "Plans"
+        ]
+      },
+      "post": {
+        "description": "Creates a backup plan to protect project resources using the provided configuration",
+        "operationId": "createBackupPlan",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            },
+            "description": "The backup plan has been created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The request could not be processed due to invalid input data."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to create a backup plan for the specified project."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Create backup plan",
+        "tags": [
+          "Plans"
+        ]
+      }
+    },
+    "/{project_id}/plans/{plan_id}": {
+      "delete": {
+        "description": "Deletes a backup plan by its unique identifier",
+        "operationId": "deleteBackupPlan",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Unique identifier of the backup plan",
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "description": "Unique identifier of the backup plan",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The backup plan has been deleted."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to delete the plan."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The plan has not been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete backup plan",
+        "tags": [
+          "Plans"
+        ]
+      },
+      "get": {
+        "description": "Returns information about the specified backup plan.",
+        "operationId": "getBackupPlan",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Unique identifier of the backup plan",
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "description": "Unique identifier of the backup plan",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            },
+            "description": "Returns information about the specified backup plan"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to retrieve the plan for the specified project."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The plan has not been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get backup plan",
+        "tags": [
+          "Plans"
+        ]
+      },
+      "patch": {
+        "description": "Updates one or more attributes of the specified backup plan",
+        "operationId": "updateBackupPlan",
+        "parameters": [
+          {
+            "description": "Project identifier in UUID format",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier in UUID format",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Unique identifier of the backup plan",
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "description": "Unique identifier of the backup plan",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlanRequest-Input"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdatePlanRequest-Output"
+                }
+              }
+            },
+            "description": "The backup plan has been updated."
+          },
+          "204": {
+            "description": "No changes have been applied because the submitted data matches the existing plan values."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The request could not be processed due to invalid input data."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The specified backup plan has not been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Update backup plan",
+        "tags": [
+          "Plans"
+        ]
+      }
+    },
+    "/{project_id}/restores/": {
+      "post": {
+        "description": "Creates a restore operation for recovering a resource from a backup checkpoint",
+        "operationId": "createRestoreOperation",
+        "parameters": [
+          {
+            "description": "Project identifier",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "Project identifier",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RestoreRequest",
+                "description": "Restore request details"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Restore"
+                }
+              }
+            },
+            "description": "The restore operation has been created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The restore operation could not be created due to invalid input data."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "You do not have permission to restore from the provided checkpoint."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIErrorResponse"
+                }
+              }
+            },
+            "description": "The specified checkpoint has not been found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Create restore operation",
+        "tags": [
+          "Restorations"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "View and delete checkpoints",
+      "name": "Checkpoints"
+    },
+    {
+      "description": "Create, update, and delete backup plans",
+      "name": "Plans"
+    },
+    {
+      "description": "Perform restore operations",
+      "name": "Restorations"
+    }
+  ]
+}

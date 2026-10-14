@@ -1,0 +1,156 @@
+{
+  "operation_id": "backups.v2.checkpoints.delete",
+  "effect": "mutation",
+  "endpoint": {
+    "generation": "v2",
+    "override_key": [
+      "backups",
+      "v2",
+      "exact scope"
+    ],
+    "redirects": "reject",
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "address": "Exact pool mapping in internal/endpoints/locations.go; 12 published pools, no inferred GIS-2 endpoint",
+    "recipe_source": "internal/endpoints/locations.go"
+  },
+  "request": {
+    "method": "DELETE",
+    "path": "/{project_id}/checkpoints/{checkpoint_id}",
+    "source_schema": "sources/scheduled-backups.json#/paths/~1{project_id}~1checkpoints~1{checkpoint_id}/delete",
+    "source_operation": {
+      "description": "Deletes the specified backup checkpoint",
+      "operationId": "deleteBackupCheckpoint",
+      "parameters": [
+        {
+          "description": "Project identifier in UUID format",
+          "in": "path",
+          "name": "project_id",
+          "required": true,
+          "schema": {
+            "description": "Project identifier in UUID format",
+            "type": "string"
+          }
+        },
+        {
+          "description": "Unique identifier of the checkpoint to be deleted",
+          "in": "path",
+          "name": "checkpoint_id",
+          "required": true,
+          "schema": {
+            "description": "Unique identifier of the checkpoint to be deleted",
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteCheckpointResponse"
+              }
+            }
+          },
+          "description": "Checkpoint deleted successfully"
+        },
+        "400": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIErrorResponse"
+              }
+            }
+          },
+          "description": "The checkpoint could not be deleted due to invalid parameters or its state."
+        },
+        "403": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIErrorResponse"
+              }
+            }
+          },
+          "description": "You do not have permission to delete the checkpoint."
+        },
+        "404": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIErrorResponse"
+              }
+            }
+          },
+          "description": "The checkpoint has not been found."
+        },
+        "422": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HTTPValidationError"
+              }
+            }
+          },
+          "description": "Validation Error"
+        }
+      },
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "summary": "Delete backup checkpoint",
+      "tags": [
+        "Checkpoints"
+      ]
+    },
+    "mapping_source": "backups/checkpoints.go",
+    "scope": "project IAM, explicit account/project/region/pool",
+    "identity": "Exact source variant and scoped ResourceRef; no lookup, adoption or variant fallback",
+    "path_fields": "Immutable project scope and escaped exact refs; SDK variant intentionally has no project prefix",
+    "body": "Generated typed DTO; nullable Optional distinguishes omission/null/value; protected strings revealed only at HTTP boundary; SDK omission matches native struct JSON encoding",
+    "query": "Only published keys; exact arbitrary precision integers; current limit >=1; SDK native zero/empty omission"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/scheduled-backups.json#/paths/~1{project_id}~1checkpoints~1{checkpoint_id}/delete/responses",
+    "dto_source": "backups/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "Every published property represented; exact integers, nullable status/resource/metadata and optional fields preserved; RFC3339 checked; no server-invented ref fields accepted",
+    "resource_ref": "Current plan/checkpoint/checkpoint_item/restore or separate sdk_plan/sdk_checkpoint; immutable endpoint/scope/generation; returned current restore IDs must match selected project/checkpoint/item before adoption; accepted trustworthy IDs retained before later decoding errors; chain scan retains all trustworthy IDs",
+    "sensitive_fields": [
+      "name",
+      "description",
+      "resource.name"
+    ]
+  },
+  "errors": {
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found for reads; rejection only when documented",
+    "5xx_mutation": "unknown_outcome; no replay",
+    "transport_loss": "unknown_outcome after possible transmission; exact input refs retained",
+    "malformed_accepted_response": "protocol_error; accepted Receipt with independently trustworthy refs retained",
+    "foreign_response_id": "scope_mismatch; no adoption",
+    "message": "Fixed SDK messages; provider body discarded",
+    "mutation_rejected_statuses": [
+      400,
+      403,
+      404,
+      422
+    ]
+  },
+  "retry": "Bounded reads; mutation single attempt, no replay",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; no published exact restore observation endpoint or readiness promise"
+  },
+  "recovery": {
+    "availability": "No root Resume or adoption; exact gets observe refs only"
+  },
+  "timeout": "CallTimeout and MaxJSONBytes bound each page/response",
+  "source_disposition": "Native SDK pinned 76292b3d4552165d97106dc6aa197c8cd7425233: SDKV2 paths and full_backups_amount differ from current project-prefixed schema max_backups. No live availability or withdrawal claim. Restore directly documented in current API and absent from native SDK."
+}
