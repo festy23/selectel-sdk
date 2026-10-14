@@ -21,12 +21,15 @@
     "mapping_source": "metrics/scrape.go",
     "numeric_precision": "integer/decimal literals and sample strings retained without float64",
     "sensitive_fields": [
-      "warnings",
+      "HELP annotations",
       "infos",
-      "HELP annotations"
+      "string result Value",
+      "warnings"
     ],
     "completeness": "bounded partial collection/prefix, never a successful full result on limit",
-    "provider_metadata": "resultType, typed scalar/string/series/histograms plus original sample timestamps"
+    "provider_metadata": "resultType, typed scalar/string/series/histograms plus original sample timestamps",
+    "string_result": "StringSample.Timestamp exact decimal, Value ProtectedValue explicit Reveal; null string rejected as ProtocolError. Numeric samples remain exact strings.",
+    "bounded_prefix": "response_limit and Complete=false retain decoded prefix and warnings/infos, namespace/evaluation/range metadata; no provider-wide completeness claim."
   },
   "errors": {
     "403": "permission_denied",
@@ -36,5 +39,15 @@
     "sample_limit": "response_limit, typed bounded prefix, complete false"
   },
   "retry": "bounded safe reads; each retry receives new signature when applicable",
-  "pagination": null
+  "pagination": null,
+  "source_reconciliation": {
+    "evidence": "catalog/evidence/metrics-read-sources.json",
+    "namespaces": [
+      "compute",
+      "dedicated",
+      "inference"
+    ],
+    "status": "partial retained; additional upstream methods/options/formats and Selectel remote_write ingestion remain unconfirmed",
+    "search_limit": "Current Selectel tool/get/directory pages plus targeted primary-domain search for query_range, timeout API and namespace POST; no inference from search absence or one error response."
+  }
 }

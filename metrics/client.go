@@ -48,7 +48,7 @@ type QueryData struct {
 	Type           string                 `json:"resultType"`
 	Series         []Series               `json:"series,omitzero"`
 	Scalar         *Sample                `json:"scalar,omitempty"`
-	String         *Sample                `json:"string,omitempty"`
+	String         *StringSample          `json:"string,omitempty"`
 	Warnings       []types.ProtectedValue `json:"warnings,omitzero"`
 	Infos          []types.ProtectedValue `json:"infos,omitzero"`
 	Complete       bool                   `json:"complete"`
@@ -69,9 +69,6 @@ type RangeRequest struct {
 	Step              time.Duration
 }
 
-func validNamespace(value string) bool {
-	return value == "compute" || value == "dedicated" || value == "inference"
-}
 func (c *Client) operation(id string) (core.Operation, error) {
 	return c.runtime.BindDocumented(core.Operation{ID: id, Service: "metrics", APIGeneration: "prometheus", Method: "GET", Effect: "read", Auth: types.Basic, RequireProject: true, RequireLocation: true, Success: []int{200}, Headers: http.Header{"Accept": {"application/json"}}}, c.scope)
 }
@@ -138,7 +135,7 @@ func (c *Client) QueryRange(ctx context.Context, r RangeRequest) (types.Result[Q
 func pair(raw json.RawMessage) (Sample, error) {
 	var parts []json.RawMessage
 	var out Sample
-	if json.Unmarshal(raw, &parts) != nil || len(parts) != 2 || json.Unmarshal(parts[0], &out.Timestamp) != nil || json.Unmarshal(parts[1], &out.Value) != nil {
+	if json.Unmarshal(raw, &parts) != nil || len(parts) != 2 || json.Unmarshal(parts[0], &out.Timestamp) != nil || json.Unmarshal(parts[1], &out.Value) != nil || string(parts[1]) == "null" {
 		return Sample{}, types.NewError(types.ProtocolError)
 	}
 	return out, nil
@@ -199,7 +196,7 @@ func (c *Client) queryDecoder(rangeQuery bool) core.Decoder[QueryData] {
 				}
 				out.Scalar = &v
 			} else {
-				out.String = &v
+				out.String = &StringSample{Timestamp: v.Timestamp, Value: types.Protect([]byte(v.Value))}
 			}
 			return core.Decoded[QueryData]{Data: out}, nil
 		}
