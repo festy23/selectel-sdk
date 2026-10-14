@@ -18,6 +18,7 @@ import (
 	"github.com/festy23/selectel-sdk/mks"
 	"github.com/festy23/selectel-sdk/operations"
 	"github.com/festy23/selectel-sdk/projects"
+	"github.com/festy23/selectel-sdk/publicips"
 	"github.com/festy23/selectel-sdk/registry"
 	"github.com/festy23/selectel-sdk/secrets"
 	"github.com/festy23/selectel-sdk/types"
@@ -175,4 +176,15 @@ func New(config Config) (*Client, error) {
 }
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
+}
+
+func (r RegionalClient) PublicIPs() *publicips.Client {
+	return publicips.Bind(r.client.runtime, r.client.scope)
+}
+
+func (a AccountClient) PublicIPAllocations() *publicips.Allocations {
+	return publicips.BindAllocations(a.client.runtime, a.client.scope)
+}
+func (p ProjectClient) PublicIPAllocations() *publicips.Allocations {
+	return publicips.BindAllocations(p.client.runtime, p.client.scope)
 }

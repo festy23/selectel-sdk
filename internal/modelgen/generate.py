@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "publicips": ("public-ip-models", {}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -47,8 +48,8 @@ for case, (family, initial, top_name) in CASES.items():
     package = "registry" if case == "registry_v1" else case
     doc = json.loads((ROOT / "catalog/sources" / (family + ".json")).read_text())
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
-    roots = initial if isinstance(initial, dict) else {initial: top_name}
-    resource_roots = set(roots)
+    roots = doc["x-generator-roots"] if package == "publicips" else initial if isinstance(initial, dict) else {initial: top_name}
+    resource_roots = set(doc["x-resource-roots"]) if package == "publicips" else set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -67,6 +68,10 @@ for case, (family, initial, top_name) in CASES.items():
         return schema
 
     def field_type(schema, type_name, field):
+        if package == "publicips" and schema.get("x-nullable"):
+            inner = dict(schema); inner.pop("x-nullable")
+            go_type, _ = field_type(inner, type_name, field)
+            return "types.Nullable[" + go_type + "]", False
         if "$ref" in schema:
             reference = schema["$ref"].split("/")[-1]
             if reference not in pending:
@@ -121,12 +126,14 @@ for case, (family, initial, top_name) in CASES.items():
         fields = []
         required = []
         for wire, value in sorted(properties.items()):
-            field_name = name(wire)
+            field_name = value.get("x-go-field-name", name(wire)) if package == "publicips" else name(wire)
             go_type, collection = field_type(value, type_name + field_name, wire)
             tag = "omitzero" if collection else "omitempty"
+            if package == "publicips" and value.get("x-wire-always"): tag = ""
             if not collection:
                 go_type = "*" + go_type
-            fields.append(f'\t{field_name} {go_type} `json:"{wire},{tag}"`')
+            tag_text = wire + ("," + tag if tag else "")
+            fields.append(f'\t{field_name} {go_type} `json:"{tag_text}"`')
             if wire in schema.get("required", []):
                 required.append(f"v.{field_name} == nil")
         if reference in resource_roots:
@@ -136,7 +143,7 @@ for case, (family, initial, top_name) in CASES.items():
         if required:
             code += "\tif " + " || ".join(required) + " { return types.NewError(types.ProtocolError) }\n"
         for wire, value in sorted(properties.items()):
-            field_name = name(wire)
+            field_name = value.get("x-go-field-name", name(wire)) if package == "publicips" else name(wire)
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
@@ -150,7 +157,7 @@ for case, (family, initial, top_name) in CASES.items():
         code += "\treturn nil\n}\n"
         code += f"func (v *{type_name}) normalize() {{\n"
         for wire, value in sorted(properties.items()):
-            field_name = name(wire)
+            field_name = value.get("x-go-field-name", name(wire)) if package == "publicips" else name(wire)
             value = resolve(value)
             reference_name = value.get("$ref", "").split("/")[-1]
             nested = resolve(definitions.get(reference_name, value))
@@ -168,7 +175,15 @@ for case, (family, initial, top_name) in CASES.items():
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'
-            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
+            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value);\n"
+            if package == "publicips":
+                for wire, prop in properties.items():
+                    if prop.get("x-nullable"):
+                        field = prop.get("x-go-field-name", name(wire))
+                        kind, _ = field_type(prop, type_name + field, wire)
+                        inner = kind[len("types.Nullable["):-1]
+                        code += f'if string(fields["{wire}"]) == "null" {{v.{field}=types.Null[{inner}]()}}\n'
+            code += "v.normalize(); return nil\n}\n"
         emitted[reference] = code
     filename = "v1_types_generated.go" if case == "registry_v1" else "types_generated.go"
     target = ROOT / package / filename

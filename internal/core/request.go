@@ -309,6 +309,35 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			providerError = types.NewError(code)
 			providerError.HTTPStatus = status
 		}
+		if op.ErrorProtocol == "public-network" {
+			// Optional diagnostic decoding never changes a documented rejection.
+			if out.Receipt != nil && containsStatus(op.Rejected, status) {
+				out.Receipt.Outcome = types.Rejected
+			}
+			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
+			if call.Err() != nil {
+				resp.Body.Close()
+				return out, types.ContextError(call.Err())
+			}
+			// Diagnostics are optional: unreadable or oversized payloads must not
+			// bypass status mapping, credential refresh, or safe-read retry.
+			providerError.ProviderCode = ""
+			if readErr == nil {
+				var wire struct {
+					Code  *types.Integer `json:"code"`
+					Error *struct {
+						Code *types.Integer `json:"code"`
+					} `json:"error"`
+				}
+				if json.Unmarshal(raw, &wire) == nil {
+					if wire.Code != nil {
+						providerError.ProviderCode = wire.Code.String()
+					} else if wire.Error != nil && wire.Error.Code != nil {
+						providerError.ProviderCode = wire.Error.Code.String()
+					}
+				}
+			}
+		}
 		if op.ErrorProtocol == "cloudwatch" {
 			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
 			if readErr != nil {

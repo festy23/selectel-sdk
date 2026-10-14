@@ -1,0 +1,50 @@
+{
+  "x-source-uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5/pkg/v2/floatingip",
+  "x-source-revision": "460f09b941de260160c68d1c9cac3ae792096bf5; gophercloud v2.13.0; neutron-lib 89dc650220244628ea78f58ea2771a2ca0c63a73",
+  "paths": {
+    "/v2.0/floatingips": {
+      "get": {
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "source-defined success"
+          }
+        }
+      },
+      "post": {
+        "operationId": "post",
+        "responses": {
+          "201": {
+            "description": "source-defined success"
+          }
+        }
+      }
+    },
+    "/v2.0/floatingips/{floatingip_id}": {
+      "get": {
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "source-defined success"
+          }
+        }
+      },
+      "put": {
+        "operationId": "put",
+        "responses": {
+          "200": {
+            "description": "source-defined success"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete",
+        "responses": {
+          "204": {
+            "description": "source-defined success"
+          }
+        }
+      }
+    }
+  }
+}

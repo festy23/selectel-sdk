@@ -1,0 +1,655 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Public Network API",
+    "version": "v1.0",
+    "description": "Managing public network resources: public ports (ports with direct public IP addresses)."
+  },
+  "security": [
+    {
+      "iam_token_project_scoped": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Public ports",
+      "description": "Managing public ports: creating, listing, getting, updating, and deleting public ports."
+    },
+    {
+      "name": "Project quotas",
+      "description": "Getting the quota for the `network_direct_public_ips` resource within a project."
+    }
+  ],
+  "paths": {
+    "/v1/public_ports": {
+      "get": {
+        "operationId": "listPublicPorts",
+        "summary": "List public ports",
+        "description": "Returns a list of public ports.",
+        "tags": [
+          "Public ports"
+        ],
+        "parameters": [
+          {
+            "name": "network_id",
+            "description": "Filters ports by network identifier.",
+            "required": false,
+            "in": "query",
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "description",
+            "description": "Filters ports by description.",
+            "required": false,
+            "in": "query",
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subnet",
+            "description": "Filters ports by network subnet CIDR.",
+            "required": false,
+            "in": "query",
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortListResponse"
+                }
+              }
+            },
+            "description": "List of public ports has been returned."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/BadOrExpiredTokenResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessForbiddenResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultResponse"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createPublicPort",
+        "summary": "Create public port",
+        "description": "Creates a new public port in a service network.",
+        "tags": [
+          "Public ports"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortDetailResponse"
+                }
+              }
+            },
+            "description": "Public port has been created."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/BadOrExpiredTokenResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessForbiddenResponse"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequestsResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultResponse"
+          }
+        }
+      }
+    },
+    "/v1/public_ports/{port_id}": {
+      "get": {
+        "operationId": "getPublicPort",
+        "summary": "Get public port",
+        "description": "Returns a public port by its identifier.",
+        "tags": [
+          "Public ports"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PortIDPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortDetailResponse"
+                }
+              }
+            },
+            "description": "Public port has been returned."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/BadOrExpiredTokenResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessForbiddenResponse"
+          },
+          "404": {
+            "description": "Public port has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultResponse"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updatePublicPort",
+        "summary": "Update public port",
+        "description": "Updates a public port by its identifier.  Allows changing the administrative state of the port (enable or disable) and the list of security groups assigned to the port.",
+        "tags": [
+          "Public ports"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PortIDPath"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortDetailResponse"
+                }
+              }
+            },
+            "description": "Public port has been updated."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/BadOrExpiredTokenResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessForbiddenResponse"
+          },
+          "404": {
+            "description": "Public port has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultResponse"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deletePublicPort",
+        "summary": "Delete public port",
+        "description": "Deletes a public port by its identifier.",
+        "tags": [
+          "Public ports"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PortIDPath"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Public port has been deleted."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/BadOrExpiredTokenResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessForbiddenResponse"
+          },
+          "404": {
+            "description": "Public port has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Public port is attached to a cloud server and cannot be deleted. Detach it first.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultResponse"
+          }
+        }
+      }
+    },
+    "/v1/projects/{project_id}/quotas": {
+      "get": {
+        "operationId": "getProjectQuotas",
+        "summary": "Get project quotas",
+        "description": "Returns quotas for direct public IP addresses for the project.",
+        "tags": [
+          "Project quotas"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProjectIDPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectQuotasResponse"
+                }
+              }
+            },
+            "description": "Project quotas have been returned."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/BadOrExpiredTokenResponse"
+          },
+          "403": {
+            "$ref": "#/components/responses/AccessForbiddenResponse"
+          },
+          "404": {
+            "description": "Project has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/DefaultResponse"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "iam_token_project_scoped": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Auth-Token",
+        "description": "IAM token for project"
+      }
+    },
+    "parameters": {
+      "PortIDPath": {
+        "name": "port_id",
+        "in": "path",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true,
+        "allowEmptyValue": false,
+        "allowReserved": false,
+        "description": "Public port identifier. This ID is the same as the corresponding OpenStack port ID."
+      },
+      "ProjectIDPath": {
+        "name": "project_id",
+        "in": "path",
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$",
+          "example": "df6f01408bef4878a2f32307684aa6f9"
+        },
+        "required": true,
+        "allowEmptyValue": false,
+        "allowReserved": false,
+        "description": "Project identifier in compact UUID format (no hyphens)."
+      }
+    },
+    "schemas": {
+      "PortCreateRequest": {
+        "title": "PortCreateRequest",
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 5000,
+            "description": "Public port description."
+          },
+          "admin_state_up": {
+            "type": "boolean",
+            "default": true,
+            "description": "Indicates whether the port administrative state is up."
+          },
+          "security_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 20,
+            "description": "List of security group identifiers to associate with the port. If not provided, the default security group is assigned."
+          }
+        }
+      },
+      "PortUpdateRequest": {
+        "title": "PortUpdateRequest",
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 5000,
+            "description": "Public port description."
+          },
+          "admin_state_up": {
+            "type": "boolean",
+            "description": "Indicates whether the port administrative state is up."
+          },
+          "security_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 1,
+            "maxItems": 20,
+            "description": "List of security group identifiers to associate with the port."
+          }
+        }
+      },
+      "PublicPort": {
+        "title": "PublicPort",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Public port identifier. This ID is the same as the corresponding OpenStack port ID."
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Project identifier that the port belongs to."
+          },
+          "network_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Network identifier that the port belongs to. This ID is the same as the corresponding OpenStack network ID."
+          },
+          "ip_address": {
+            "type": "string",
+            "format": "ipv4",
+            "description": "IP address assigned to the port."
+          },
+          "subnet": {
+            "type": "string",
+            "description": "CIDR of the associated subnet.",
+            "example": "10.10.10.0/24"
+          },
+          "gateway": {
+            "type": "string",
+            "format": "ipv4",
+            "description": "Gateway IP address of the associated subnet."
+          },
+          "security_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "List of security group identifiers associated with the port."
+          },
+          "admin_state_up": {
+            "type": "boolean",
+            "description": "Indicates whether the port administrative state is up."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the port creation."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the last port update."
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Public port description."
+          }
+        }
+      },
+      "PortListResponse": {
+        "title": "PortListResponse",
+        "type": "object",
+        "properties": {
+          "ports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicPort"
+            },
+            "description": "List of public ports."
+          }
+        }
+      },
+      "PortDetailResponse": {
+        "title": "PortDetailResponse",
+        "type": "object",
+        "properties": {
+          "port": {
+            "$ref": "#/components/schemas/PublicPort"
+          }
+        }
+      },
+      "QuotaItem": {
+        "title": "QuotaItem",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Quota value."
+          },
+          "used": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Current quota usage."
+          }
+        }
+      },
+      "ProjectQuotasResponse": {
+        "title": "ProjectQuotasResponse",
+        "type": "object",
+        "properties": {
+          "network_direct_public_ips": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuotaItem"
+            },
+            "description": "Quotas for direct public IP addresses."
+          }
+        }
+      },
+      "Error": {
+        "title": "Error",
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Machine-readable error code."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Human-readable error message."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/Error"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestResponse": {
+        "description": "Bad request. Fix the request and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BadOrExpiredTokenResponse": {
+        "description": "Bad or expired token. You can reissue the token and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "AccessForbiddenResponse": {
+        "description": "Access is forbidden. Make sure you have the required rights.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "TooManyRequestsResponse": {
+        "description": "Too many requests. Please try again later.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalServerErrorResponse": {
+        "description": "Something went wrong. Internal server error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "DefaultResponse": {
+        "description": "Unexpected error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-source-uri": "https://docs.selectel.ru/api/cloud-public-network.json",
+  "x-source-revision": "sha256:1d0a7c0ca8897a52ae0ccce966e3fbf04bc8d6189d8cfc22fdc7fbdab32b8a4f"
+}

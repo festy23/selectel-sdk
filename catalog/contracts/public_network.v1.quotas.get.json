@@ -1,0 +1,27 @@
+{
+  "operation_id": "public_network.v1.quotas.get",
+  "source": "sources/public-network.json#/paths/~1v1~1projects~1{project_id}~1quotas/get",
+  "endpoint": "exact project public-net-api catalog endpoint or override",
+  "auth": "IAM project with explicit location",
+  "request": {
+    "method": "GET",
+    "path": "/v1/projects/{project_id}/quotas",
+    "project_id": "immutable auth view project only"
+  },
+  "response": {
+    "status": 200,
+    "DTO": "publicips.DirectQuotas",
+    "numeric": "exact arbitrary-precision Integer, optional source counters remain absent"
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "code": "allowlisted exact numeric provider code, msg discarded"
+  },
+  "retry": "bounded safe read",
+  "pagination": null,
+  "wait": null,
+  "recovery": null
+}

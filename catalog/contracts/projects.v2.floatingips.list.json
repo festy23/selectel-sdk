@@ -1,0 +1,65 @@
+{
+  "operation_id": "projects.v2.floatingips.list",
+  "effect": "read",
+  "source": {
+    "primary": "sources/cloud-projects-and-resources.json",
+    "snapshots": "sources/public-ip-models.json#x-upstream-assets"
+  },
+  "endpoint": {
+    "generation": "v2",
+    "source": "fixed https://api.selectel.ru/vpc/resell or exact override",
+    "redirects": "reject"
+  },
+  "auth": {
+    "scope": "account view; explicit project view allowed for Get/Create/Delete only",
+    "hidden_fallback": false
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v2/floatingips",
+    "schema": "sources/public-ip-models.json#/definitions/Allocation",
+    "DTO": "publicips/types_generated.go",
+    "optional": "nil omitted, false/empty preserved; nullable wrappers distinguish null/value/absence",
+    "identity": "exact scoped service/generation/kind/endpoint refs; no implicit cross-API conversion or name lookup",
+    "constraints": "quantity positive int32, explicit target project; project auth cannot target another project"
+  },
+  "response": {
+    "success": [
+      200
+    ],
+    "mapping": "complete source-bound typed model; provider ref field discarded; identity extracted before other-field validation",
+    "owner": "source project is metadata in account and Neutron reads; Neutron Ref.Scope is caller auth view; direct read owner remains metadata; Create checks known target owner; native explicit project filter is checked separately",
+    "timestamps": "direct RFC3339 normalized UTC; Neutron and Resell provider strings kept raw without invented offset",
+    "allocation_create_union": null
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "conflict",
+    "429": "rate_limited",
+    "numeric_code": "no undocumented provider-text classification",
+    "mutation_outcome": "documented rejection statuses retain Rejected receipt; ambiguous transmission/5xx are UnknownOutcome; never replay",
+    "malformed_success": "Accepted receipt and trustworthy IDs retained; protocol_error/scope_mismatch/incomplete as appropriate"
+  },
+  "retry": "bounded safe reads; mutations single attempt",
+  "pagination": {
+    "shape": "documented complete provider array; local bounded replay/skip only, no invented remote pagination",
+    "cursor": "exact scope/endpoint/generation/filters/contract revision",
+    "limits": "MaxItems, MaxPages, PageSize, CollectionTimeout and MaxJSONBytes",
+    "consistency": "best_effort"
+  },
+  "wait": {
+    "availability": "unavailable; acknowledgement is not dataplane readiness"
+  },
+  "recovery": {
+    "availability": "root Resource/Resume unavailable; request parent/association refs are context, not proof of created identity; no replay, name lookup or adoption of newly appeared resources"
+  },
+  "excluded_variants": [
+    "arbitrary foreign plugin/raw fields",
+    "Neutron tag/QoS/port-forwarding mutation extensions",
+    "implicit allocation-to-Neutron/direct-to-Neutron ref conversion"
+  ],
+  "source_inventory_complete": false
+}

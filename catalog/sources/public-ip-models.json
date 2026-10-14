@@ -1,0 +1,582 @@
+{
+  "x-source-uri": "https://docs.selectel.ru/api/cloud-public-network.json",
+  "x-source-revision": "sha256:1d0a7c0ca8897a52ae0ccce966e3fbf04bc8d6189d8cfc22fdc7fbdab32b8a4f",
+  "x-generator-roots": {
+    "PublicPort": "DirectPort",
+    "PortCreateRequest": "DirectPortCreateSpec",
+    "PortUpdateRequest": "DirectPortUpdateSpec",
+    "QuotaItem": "DirectQuotaItem",
+    "ProjectQuotasResponse": "DirectQuotas",
+    "DirectPortNativeCreateSpec": "DirectPortNativeCreateSpec",
+    "AllocationNativeSpec": "AllocationNativeSpec",
+    "DirectPortNativeUpdateSpec": "DirectPortNativeUpdateSpec",
+    "Allocation": "Allocation",
+    "AllocationSpec": "AllocationSpec",
+    "AllocationLoadBalancer": "AllocationLoadBalancer",
+    "AllocationServer": "AllocationServer",
+    "FloatingIP": "FloatingIP",
+    "FloatingIPCreateSpec": "FloatingIPCreateSpec",
+    "FloatingIPUpdateSpec": "FloatingIPUpdateSpec"
+  },
+  "x-resource-roots": [
+    "PublicPort",
+    "Allocation",
+    "FloatingIP"
+  ],
+  "definitions": {
+    "PortCreateRequest": {
+      "title": "PortCreateRequest",
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 5000,
+          "description": "Public port description.",
+          "x-go-field-name": "Description",
+          "x-nullable": true
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "default": true,
+          "description": "Indicates whether the port administrative state is up.",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "security_group_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "maxItems": 20,
+          "description": "List of security group identifiers to associate with the port. If not provided, the default security group is assigned.",
+          "x-go-field-name": "SecurityGroupIDs"
+        }
+      }
+    },
+    "PortUpdateRequest": {
+      "title": "PortUpdateRequest",
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "nullable": true,
+          "maxLength": 5000,
+          "description": "Public port description.",
+          "x-go-field-name": "Description",
+          "x-nullable": true
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "description": "Indicates whether the port administrative state is up.",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "security_group_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 1,
+          "maxItems": 20,
+          "description": "List of security group identifiers to associate with the port.",
+          "x-go-field-name": "SecurityGroupIDs"
+        }
+      }
+    },
+    "PublicPort": {
+      "title": "PublicPort",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Public port identifier. This ID is the same as the corresponding OpenStack port ID.",
+          "x-go-field-name": "ID"
+        },
+        "project_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Project identifier that the port belongs to.",
+          "x-go-field-name": "ProjectID"
+        },
+        "network_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Network identifier that the port belongs to. This ID is the same as the corresponding OpenStack network ID.",
+          "x-go-field-name": "NetworkID"
+        },
+        "ip_address": {
+          "type": "string",
+          "format": "ipv4",
+          "description": "IP address assigned to the port.",
+          "x-go-field-name": "IPAddress"
+        },
+        "subnet": {
+          "type": "string",
+          "description": "CIDR of the associated subnet.",
+          "example": "10.10.10.0/24",
+          "x-go-field-name": "Subnet"
+        },
+        "gateway": {
+          "type": "string",
+          "format": "ipv4",
+          "description": "Gateway IP address of the associated subnet.",
+          "x-go-field-name": "Gateway"
+        },
+        "security_group_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": "List of security group identifiers associated with the port.",
+          "x-go-field-name": "SecurityGroupIDs"
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "description": "Indicates whether the port administrative state is up.",
+          "x-go-field-name": "AdminStateUp"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the port creation.",
+          "x-go-field-name": "CreatedAt"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last port update.",
+          "x-go-field-name": "UpdatedAt"
+        },
+        "description": {
+          "type": "string",
+          "nullable": true,
+          "description": "Public port description.",
+          "x-go-field-name": "Description",
+          "x-nullable": true
+        }
+      }
+    },
+    "PortListResponse": {
+      "title": "PortListResponse",
+      "type": "object",
+      "properties": {
+        "ports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/PublicPort"
+          },
+          "description": "List of public ports.",
+          "x-go-field-name": "Ports"
+        }
+      }
+    },
+    "PortDetailResponse": {
+      "title": "PortDetailResponse",
+      "type": "object",
+      "properties": {
+        "port": {
+          "$ref": "#/components/schemas/PublicPort",
+          "x-go-field-name": "Port"
+        }
+      }
+    },
+    "QuotaItem": {
+      "title": "QuotaItem",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Quota value.",
+          "x-go-field-name": "Value"
+        },
+        "used": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Current quota usage.",
+          "x-go-field-name": "Used"
+        }
+      }
+    },
+    "ProjectQuotasResponse": {
+      "title": "ProjectQuotasResponse",
+      "type": "object",
+      "properties": {
+        "network_direct_public_ips": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/QuotaItem"
+          },
+          "description": "Quotas for direct public IP addresses.",
+          "x-go-field-name": "NetworkDirectPublicIPs"
+        }
+      }
+    },
+    "Error": {
+      "title": "Error",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": "Machine-readable error code.",
+          "x-go-field-name": "Code"
+        },
+        "msg": {
+          "type": "string",
+          "description": "Human-readable error message.",
+          "x-go-field-name": "Msg"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "title": "ErrorResponse",
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/components/schemas/Error",
+          "x-go-field-name": "Error"
+        }
+      }
+    },
+    "DirectPortNativeCreateSpec": {
+      "type": "object",
+      "required": [
+        "project_id"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "security_group_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "SecurityGroupIDs",
+          "x-wire-always": true
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "x-go-field-name": "AdminStateUp"
+        }
+      }
+    },
+    "AllocationNativeSpec": {
+      "type": "object",
+      "required": [
+        "region"
+      ],
+      "properties": {
+        "region": {
+          "type": "string",
+          "x-go-field-name": "Region"
+        }
+      }
+    },
+    "DirectPortNativeUpdateSpec": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "security_group_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "SecurityGroupIDs",
+          "x-wire-always": true
+        },
+        "admin_state_up": {
+          "type": "boolean",
+          "x-go-field-name": "AdminStateUp"
+        }
+      }
+    },
+    "Allocation": {
+      "properties": {
+        "fixed_ip_address": {
+          "description": "Fixed ip address for floating IP, usually equal None",
+          "type": "string",
+          "x-nullable": true,
+          "x-go-field-name": "FixedIPAddress"
+        },
+        "floating_ip_address": {
+          "description": "Floating IP address",
+          "type": "string",
+          "x-go-field-name": "FloatingIPAddress"
+        },
+        "id": {
+          "description": "Floating IP unique identifier",
+          "type": "string",
+          "x-go-field-name": "ID"
+        },
+        "loadbalancer": {
+          "$ref": "#/definitions/AllocationLoadBalancer",
+          "x-go-field-name": "LoadBalancer"
+        },
+        "port_id": {
+          "description": "Unique identifier of port for floating IP is attached",
+          "type": "string",
+          "x-nullable": true,
+          "x-go-field-name": "PortID"
+        },
+        "project_id": {
+          "description": "Project unique identifier",
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "region": {
+          "description": "Region name for floating IP",
+          "type": "string",
+          "x-go-field-name": "Region"
+        },
+        "servers": {
+          "description": "Servers which connected to floating IP",
+          "items": {
+            "$ref": "#/definitions/AllocationServer"
+          },
+          "type": "array",
+          "x-go-field-name": "Servers"
+        },
+        "status": {
+          "description": "Status for floating IP",
+          "type": "string",
+          "x-go-field-name": "Status"
+        }
+      },
+      "type": "object"
+    },
+    "AllocationSpec": {
+      "properties": {
+        "ips": {
+          "description": "IP address for floating IP",
+          "type": "string",
+          "x-go-field-name": "IPs"
+        },
+        "quantity": {
+          "description": "Quantity of floating IPs",
+          "format": "int32",
+          "type": "integer",
+          "x-go-field-name": "Quantity"
+        },
+        "region": {
+          "description": "Region name for floating IP",
+          "type": "string",
+          "x-go-field-name": "Region"
+        }
+      },
+      "required": [
+        "quantity",
+        "region"
+      ],
+      "type": "object"
+    },
+    "AllocationLoadBalancer": {
+      "properties": {
+        "id": {
+          "description": "Load balancer unique identifier",
+          "type": "string",
+          "x-go-field-name": "ID"
+        },
+        "name": {
+          "description": "Load balancer name",
+          "type": "string",
+          "x-go-field-name": "Name"
+        }
+      },
+      "type": "object"
+    },
+    "AllocationServer": {
+      "properties": {
+        "id": {
+          "description": "Server unique identifier",
+          "type": "string",
+          "x-go-field-name": "ID"
+        },
+        "name": {
+          "description": "Server name",
+          "type": "string",
+          "x-go-field-name": "Name"
+        },
+        "status": {
+          "description": "Status for server",
+          "type": "string",
+          "x-go-field-name": "Status"
+        },
+        "updated": {
+          "description": "Last state update time in format: YYYY-MM-DDTHH:MM:SSZ",
+          "type": "string",
+          "x-go-field-name": "Updated"
+        }
+      },
+      "type": "object"
+    },
+    "FloatingIP": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-go-field-name": "ID"
+        },
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "floating_network_id": {
+          "type": "string",
+          "x-go-field-name": "FloatingNetworkID"
+        },
+        "floating_ip_address": {
+          "type": "string",
+          "x-go-field-name": "FloatingIPAddress"
+        },
+        "port_id": {
+          "type": "string",
+          "x-go-field-name": "PortID",
+          "x-nullable": true
+        },
+        "fixed_ip_address": {
+          "type": "string",
+          "x-go-field-name": "FixedIPAddress",
+          "x-nullable": true
+        },
+        "tenant_id": {
+          "type": "string",
+          "x-go-field-name": "TenantID"
+        },
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        },
+        "status": {
+          "type": "string",
+          "x-go-field-name": "Status"
+        },
+        "router_id": {
+          "type": "string",
+          "x-go-field-name": "RouterID",
+          "x-nullable": true
+        },
+        "created_at": {
+          "type": "string",
+          "x-go-field-name": "CreatedAt"
+        },
+        "updated_at": {
+          "type": "string",
+          "x-go-field-name": "UpdatedAt"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-field-name": "Tags"
+        },
+        "revision_number": {
+          "type": "integer",
+          "x-go-field-name": "RevisionNumber"
+        }
+      }
+    },
+    "FloatingIPCreateSpec": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "floating_ip_address": {
+          "type": "string",
+          "x-go-field-name": "FloatingIPAddress"
+        },
+        "fixed_ip_address": {
+          "type": "string",
+          "x-go-field-name": "FixedIPAddress"
+        },
+        "subnet_id": {
+          "type": "string",
+          "x-go-field-name": "SubnetID"
+        },
+        "tenant_id": {
+          "type": "string",
+          "x-go-field-name": "TenantID"
+        },
+        "project_id": {
+          "type": "string",
+          "x-go-field-name": "ProjectID"
+        }
+      }
+    },
+    "FloatingIPUpdateSpec": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "x-go-field-name": "Description"
+        },
+        "fixed_ip_address": {
+          "type": "string",
+          "x-go-field-name": "FixedIPAddress",
+          "x-nullable": true
+        }
+      }
+    }
+  },
+  "x-secondary-sources": {
+    "Resell API": "sources/cloud-projects-and-resources.json",
+    "Resell SDK": "https://github.com/selectel/go-selvpcclient/tree/79b0d0ff1d46ebfe7c50056f8c829e0d32349605",
+    "Direct SDK": "https://github.com/selectel/public-net-api-go/tree/75bee6c707a155bd1ff0514a35fe58c7cbbca7f6",
+    "endpoint/auth recipe": "https://github.com/selectel/terraform-provider-selectel/tree/cf33c549d0c910c137f4a51411f6d709eb2be7d4/selectel",
+    "Neutron compatible API": "https://github.com/openstack/neutron-lib/blob/89dc650220244628ea78f58ea2771a2ca0c63a73/api-ref/source/v2/floatingips.inc"
+  },
+  "x-snapshot-sha256": {
+    "go-selvpcclient-selvpcclient-resell-v2-floatingips-requests.go.txt": "b9cd487ba292e4ff1889f828674d76e34e16e805586add54b57fc1b7e04a389a",
+    "go-selvpcclient-selvpcclient-resell-v2-floatingips-requests_opts.go.txt": "f60d779c81203bdc51cf52f6ceead8eaf702bfe2d12ac68f63157367027b6d05",
+    "go-selvpcclient-selvpcclient-resell-v2-floatingips-schemas.go.txt": "6b5cc4d6da2702e7f028c5a4f279d744f1146997b1d226d5b9527210a1a6dc58",
+    "go-selvpcclient-selvpcclient-resell-v2-floatingips-testing-fixtures.go.txt": "cada0e56dd1be6612d978ec84f0987e5d2bc064003d5e6a060bb6ac896e49b83",
+    "go-selvpcclient-selvpcclient-resell-v2-servers-schemas.go.txt": "290c1cd4c555ca077295ebee87dc10be30fe3cd6639d8c6b9cc003c3fb4c3abc",
+    "gopher-floatingips-requests.go.txt": "8708ec37b410501bbdd85bb5c427a3a6a3db79d4ad78de135bf6e3f7b01e34ee",
+    "gopher-floatingips-results.go.txt": "7741afbd8aab1de0f9d89b8c20a8255770cb8a9422f38d6579dcc6bd1fee2076",
+    "gopher-floatingips-urls.go.txt": "f86ff40838a586d0672ef7148f854d86773761a07692136a3cb05b3da7d3f521",
+    "neutron-lib-floatingips.inc.txt": "3df4271bb7b15e6dd3f1bfc35526d7f542d25d14bca5446b38f81c83a1204949",
+    "public-net-api-go-README.md.txt": "520e2851e770e21a195397c9b904992968e12ccd4f99dc7ded420b3eb3c01622",
+    "public-net-api-go-pkg-v1-client.go.txt": "abb3b6db29e5041ab998cf8862f2af498443a7dd5d4c821525ccbd82c3f35726",
+    "public-net-api-go-pkg-v1-port.go.txt": "3f7ca308e58057dfafec95170a327681fa7cb07ab53009116863eff3c5e6c47b",
+    "public-net-api-go-pkg-v1-quota.go.txt": "48f27132fc4a856d3968879e02be6c6f6c82621c4d3a8f0a42a66a88302aec7f",
+    "public-network-openapi.json": "1d0a7c0ca8897a52ae0ccce966e3fbf04bc8d6189d8cfc22fdc7fbdab32b8a4f",
+    "terraform-public_net_api.go.txt": "1f359b0dc773b5b7e5960d1f5cc7c790ca5d6500363a62956d469c6afc19bae6",
+    "terraform-resource_selectel_vpc_public_port_v1.go.txt": "538643591e979acb441b37b68cbaaa285e24b2405d5e3d9a92499dea1d946bf3",
+    "terraform-service_types.go.txt": "628a594180aa2bad61dc89fc08969b5e70a4a739e05ad5f17bbfb21068cb580f",
+    "vpc-go-pkg-v2-floatingip-floatingip.go.txt": "388e5d936544e821cdb1bbcdfe2346d30c86403757b13bb43261079384f14757"
+  },
+  "x-upstream-assets": {
+    "go-selvpcclient-selvpcclient-resell-v2-floatingips-requests.go.txt": "package floatingips\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"strings\"\n\n\t\"github.com/google/go-querystring/query\"\n\n\t\"github.com/selectel/go-selvpcclient/v5/selvpcclient\"\n\tclientservices \"github.com/selectel/go-selvpcclient/v5/selvpcclient/clients/services\"\n)\n\nconst resourceURL = \"floatingips\"\n\n// Get returns a single floating ip by its id.\nfunc Get(client *selvpcclient.Client, id string) (*FloatingIP, *clientservices.ResponseResult, error) {\n\tendpoint, err := client.Resell.GetEndpoint()\n\tif err != nil {\n\t\treturn nil, nil, fmt.Errorf(\"failed to get endpoint, err: %w\", err)\n\t}\n\n\turl := strings.Join([]string{endpoint, resourceURL, id}, \"/\")\n\tresponseResult, err := client.Resell.Requests.Do(http.MethodGet, url, &clientservices.RequestOptions{\n\t\tOkCodes: []int{200},\n\t})\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\t// Extract a floating ip from the response body.\n\tvar result struct {\n\t\tFloatingIP *FloatingIP `json:\"floatingip\"`\n\t}\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result.FloatingIP, responseResult, nil\n}\n\n// List gets a list of floating ips in the current domain.\nfunc List(client *selvpcclient.Client, opts ListOpts) ([]*FloatingIP, *clientservices.ResponseResult, error) {\n\tendpoint, err := client.Resell.GetEndpoint()\n\tif err != nil {\n\t\treturn nil, nil, fmt.Errorf(\"failed to get endpoint, err: %w\", err)\n\t}\n\n\turl := strings.Join([]string{endpoint, resourceURL}, \"/\")\n\n\tqueryParams, err := query.Values(opts)\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\n\turl = strings.Join([]string{url, queryParams.Encode()}, \"?\")\n\n\tresponseResult, err := client.Resell.Requests.Do(http.MethodGet, url, &clientservices.RequestOptions{\n\t\tOkCodes: []int{200},\n\t})\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\t// Extract floating ips from the response body.\n\tvar result struct {\n\t\tFloatingIPs []*FloatingIP `json:\"floatingips\"`\n\t}\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result.FloatingIPs, responseResult, nil\n}\n\n// Create requests a creation of the floating ip in the specified project.\nfunc Create(client *selvpcclient.Client, projectID string, createOpts FloatingIPOpts) (*FloatingIP, *clientservices.ResponseResult, error) {\n\tendpoint, err := client.Resell.GetEndpoint()\n\tif err != nil {\n\t\treturn nil, nil, fmt.Errorf(\"failed to get endpoint, err: %w\", err)\n\t}\n\n\ttype requestBody struct {\n\t\tFloatingIPs []FloatingIPOpts `json:\"floatingips\"`\n\t}\n\n\turl := strings.Join([]string{endpoint, resourceURL, \"projects\", projectID}, \"/\")\n\tresponseResult, err := client.Resell.Requests.Do(http.MethodPost, url, &clientservices.RequestOptions{\n\t\tJSONBody: &requestBody{\n\t\t\tFloatingIPs: []FloatingIPOpts{createOpts},\n\t\t},\n\t\tOkCodes: []int{200},\n\t})\n\tif err != nil {\n\t\treturn nil, nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\treturn nil, responseResult, responseResult.Err\n\t}\n\n\t// Extract floating ips from the response body.\n\tvar result struct {\n\t\tFloatingIPs []*FloatingIP `json:\"floatingips\"`\n\t}\n\terr = responseResult.ExtractResult(&result)\n\tif err != nil {\n\t\treturn nil, responseResult, err\n\t}\n\n\treturn result.FloatingIPs[0], responseResult, nil\n}\n\n// Delete deletes a single floating ip by its id.\nfunc Delete(client *selvpcclient.Client, id string) (*clientservices.ResponseResult, error) {\n\tendpoint, err := client.Resell.GetEndpoint()\n\tif err != nil {\n\t\treturn nil, fmt.Errorf(\"failed to get endpoint, err: %w\", err)\n\t}\n\n\turl := strings.Join([]string{endpoint, resourceURL, id}, \"/\")\n\tresponseResult, err := client.Resell.Requests.Do(http.MethodDelete, url, &clientservices.RequestOptions{\n\t\tOkCodes: []int{204},\n\t})\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\tif responseResult.Err != nil {\n\t\terr = responseResult.Err\n\t}\n\treturn responseResult, err\n}\n",
+    "go-selvpcclient-selvpcclient-resell-v2-floatingips-requests_opts.go.txt": "package floatingips\n\n// FloatingIPOpts represents options for the floating ips Create request.\ntype FloatingIPOpts struct {\n\t// Region represents an Identity service region of where the floating ips should reside.\n\tRegion string `json:\"region\"`\n}\n\n// ListOpts represents options for the floating ips List request.\ntype ListOpts struct {\n\tDetailed bool `url:\"detailed\"`\n}\n",
+    "go-selvpcclient-selvpcclient-resell-v2-floatingips-schemas.go.txt": "package floatingips\n\nimport \"github.com/selectel/go-selvpcclient/v5/selvpcclient/resell/v2/servers\"\n\n// FloatingIP represents a single Resell Floating IP.\ntype FloatingIP struct {\n\t// FloatingIPAddress represents IP address.\n\tFloatingIPAddress string `json:\"floating_ip_address\"`\n\n\t// ID is a unique id of the floating ip.\n\tID string `json:\"id\"`\n\n\t// ProjectID represents an associated Identity service project.\n\tProjectID string `json:\"project_id\"`\n\n\t// PortID contains a Networking service uuid of the port to which floating ip is associated to.\n\tPortID string `json:\"port_id\"`\n\n\t// FixedIPAddress contains an IP address of the port to which floating ip is\n\t// associated to.\n\tFixedIPAddress string `json:\"fixed_ip_address\"`\n\n\t// Region represents an Identity service region of where the floating ip resides.\n\tRegion string `json:\"region\"`\n\n\t// Status represents a current status of the floating ip.\n\tStatus string `json:\"status\"`\n\n\t// Servers contains info about servers to which floating ip is associated to.\n\tServers []servers.Server `json:\"servers\"`\n\n\t// LoadBalancer contains info about load balancer to which floating ip is associated to.\n\tLoadBalancer *LoadBalancer `json:\"loadbalancer\"`\n}\n\n// LoadBalancer represents a Load Balancer.\ntype LoadBalancer struct {\n\t// ID is a unique id of the load balancer.\n\tID string `json:\"id\"`\n\n\t// Name is a human-readable name of the load balancer.\n\tName string `json:\"name\"`\n}\n",
+    "go-selvpcclient-selvpcclient-resell-v2-floatingips-testing-fixtures.go.txt": "package testing\n\nimport (\n\t\"time\"\n\n\t\"github.com/selectel/go-selvpcclient/v5/selvpcclient/resell/v2/floatingips\"\n\t\"github.com/selectel/go-selvpcclient/v5/selvpcclient/resell/v2/servers\"\n)\n\n// TestGetFloatingIPResponseRaw represents a raw response from the Get request.\nconst TestGetFloatingIPResponseRaw = `\n{\n    \"floatingip\": {\n        \"fixed_ip_address\": \"10.0.0.4\",\n        \"floating_ip_address\": \"203.0.113.11\",\n        \"id\": \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n        \"port_id\": \"f7376dd2-c70f-4465-a5a8-e1a89b665d30\",\n        \"project_id\": \"49338ac045f448e294b25d013f890317\",\n        \"region\": \"ru-3\",\n        \"servers\": [\n            {\n                \"id\": \"253b680c-89f6-4c85-afbf-c9a67c92d3fe\",\n                \"name\": \"Node00\",\n                \"status\": \"ACTIVE\",\n                \"updated\": \"2018-02-20T22:02:21Z\"\n            }\n        ],\n        \"status\": \"ACTIVE\"\n    }\n}\n`\n\n// TestGetFloatingIPResponseWithLBRaw represents a raw response from the Get request.\nconst TestGetFloatingIPResponseWithLBRaw = `\n{\n    \"floatingip\": {\n        \"fixed_ip_address\": \"10.0.0.4\",\n        \"floating_ip_address\": \"203.0.113.11\",\n        \"id\": \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n        \"port_id\": \"f7376dd2-c70f-4465-a5a8-e1a89b665d30\",\n        \"project_id\": \"49338ac045f448e294b25d013f890317\",\n        \"region\": \"ru-3\",\n        \"servers\": [],\n        \"loadbalancer\": {\n            \"id\": \"febbc3ea-0b03-4e7a-bf04-9f1caca8df3d\",\n            \"name\": \"Sheila\"\n        }, \n        \"status\": \"ACTIVE\"\n    }\n}\n`\n\nvar floatingIPServerTimeStamp, _ = time.Parse(time.RFC3339, \"2018-02-20T22:02:21Z\")\n\n// TestGetFloatingIPResponse represents an unmarshalled TestGetFloatingIPResponseRaw.\nvar TestGetFloatingIPResponse = &floatingips.FloatingIP{\n\tFloatingIPAddress: \"203.0.113.11\",\n\tID:                \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n\tProjectID:         \"49338ac045f448e294b25d013f890317\",\n\tPortID:            \"f7376dd2-c70f-4465-a5a8-e1a89b665d30\",\n\tFixedIPAddress:    \"10.0.0.4\",\n\tRegion:            \"ru-3\",\n\tStatus:            \"ACTIVE\",\n\tServers: []servers.Server{\n\t\t{\n\t\t\tID:      \"253b680c-89f6-4c85-afbf-c9a67c92d3fe\",\n\t\t\tName:    \"Node00\",\n\t\t\tStatus:  \"ACTIVE\",\n\t\t\tUpdated: floatingIPServerTimeStamp,\n\t\t},\n\t},\n}\n\n// TestGetFloatingIPResponseWithLB represents an unmarshalled TestGetFloatingIPResponseWithLBRaw.\nvar TestGetFloatingIPResponseWithLB = &floatingips.FloatingIP{\n\tFloatingIPAddress: \"203.0.113.11\",\n\tID:                \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n\tProjectID:         \"49338ac045f448e294b25d013f890317\",\n\tPortID:            \"f7376dd2-c70f-4465-a5a8-e1a89b665d30\",\n\tFixedIPAddress:    \"10.0.0.4\",\n\tRegion:            \"ru-3\",\n\tStatus:            \"ACTIVE\",\n\tServers:           []servers.Server{},\n\tLoadBalancer: &floatingips.LoadBalancer{\n\t\tID:   \"febbc3ea-0b03-4e7a-bf04-9f1caca8df3d\",\n\t\tName: \"Sheila\",\n\t},\n}\n\n// TestListFloatingIPsResponseRaw represents a raw response from the List request.\nconst TestListFloatingIPsResponseRaw = `\n{\n    \"floatingips\": [\n        {\n            \"floating_ip_address\": \"203.0.113.11\",\n            \"id\": \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n            \"project_id\": \"49338ac045f448e294b25d013f890317\",\n            \"region\": \"ru-2\",\n            \"status\": \"ACTIVE\"\n        },\n        {\n            \"floating_ip_address\": \"203.0.113.12\",\n            \"id\": \"94425a6e-19cd-412d-9710-ff40b34a78f4\",\n            \"project_id\": \"9c97bdc75295493096cf5edcb8c37933\",\n            \"region\": \"ru-1\",\n            \"status\": \"DOWN\"\n        },\n        {\n            \"floating_ip_address\": \"203.0.113.13\",\n            \"id\": \"8233f12e-c47e-4f1c-953a-1ecd322a7119\",\n            \"project_id\": \"9c97bdc75295493096cf5edcb8c37933\",\n            \"region\": \"ru-3\",\n            \"status\": \"ACTIVE\"\n        }\n    ]\n}\n`\n\n// TestListFloatingIPsSingleResponseRaw represents a raw response with a single floating ip from the List request.\nconst TestListFloatingIPsSingleResponseRaw = `\n{\n    \"floatingips\": [\n        {\n            \"floating_ip_address\": \"203.0.113.11\",\n            \"id\": \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n            \"project_id\": \"49338ac045f448e294b25d013f890317\",\n            \"region\": \"ru-2\",\n            \"status\": \"ACTIVE\"\n        }\n    ]\n}\n`\n\n// TestListFloatingIPsSingleResponse represents the unmarshalled TestListFloatingIPsSingleResponseRaw response.\nvar TestListFloatingIPsSingleResponse = []*floatingips.FloatingIP{\n\t{\n\t\tFloatingIPAddress: \"203.0.113.11\",\n\t\tID:                \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n\t\tProjectID:         \"49338ac045f448e294b25d013f890317\",\n\t\tRegion:            \"ru-2\",\n\t\tStatus:            \"ACTIVE\",\n\t},\n}\n\n// TestCreateFloatingIPOptsRaw represents marshalled options for the Create request.\nconst TestCreateFloatingIPOptsRaw = `\n{\n    \"floatingips\": [\n        {\n            \"region\": \"ru-2\"\n        }\n    ]\n}\n`\n\n// TestCreateFloatingIPOpts represent options for the Create request.\nvar TestCreateFloatingIPOpts = floatingips.FloatingIPOpts{\n\tRegion: \"ru-2\",\n}\n\n// TestCreateFloatingIPResponseRaw represents a raw response from the Create request.\nconst TestCreateFloatingIPResponseRaw = `\n{\n    \"floatingips\": [\n        {\n            \"floating_ip_address\": \"203.0.113.11\",\n            \"id\": \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n            \"project_id\": \"49338ac045f448e294b25d013f890317\",\n            \"region\": \"ru-2\",\n            \"status\": \"DOWN\"\n        }\n    ]\n}\n`\n\n// TestCreateFloatingIPResponse represents the unmarshalled TestCreateFloatingIPResponseRaw response.\nvar TestCreateFloatingIPResponse = &floatingips.FloatingIP{\n\tFloatingIPAddress: \"203.0.113.11\",\n\tID:                \"5232d5f3-4950-454b-bd41-78c5295622cd\",\n\tProjectID:         \"49338ac045f448e294b25d013f890317\",\n\tRegion:            \"ru-2\",\n\tStatus:            \"DOWN\",\n}\n\n// TestManyFloatingIPsInvalidResponseRaw represents a raw invalid response with several floating ips.\nconst TestManyFloatingIPsInvalidResponseRaw = `\n{\n    \"floatingips\": [\n        {\n            \"id\": 123\n        }\n    ]\n}\n`\n\n// TestSingleFloatingIPInvalidResponseRaw represents a raw invalid response with a single floating ip.\nconst TestSingleFloatingIPInvalidResponseRaw = `\n{\n    \"floatingip\": {\n        \"id\": 123\n    }\n}\n`\n",
+    "go-selvpcclient-selvpcclient-resell-v2-servers-schemas.go.txt": "package servers\n\nimport (\n\t\"time\"\n)\n\n// Server represents a simple server entity that is used by some other packages of\n// the go-selvpcclient.\ntype Server struct {\n\t// ID is a unique id of the server.\n\tID string `json:\"id\"`\n\n\t// Name is a human-readable name of the server.\n\tName string `json:\"name\"`\n\n\t// Status represents a current status of the server.\n\tStatus string `json:\"status\"`\n\n\t// Updated contains the ISO-8601 timestamp of when the state of the server\n\t// last changed.\n\tUpdated time.Time `json:\"updated\"`\n}\n",
+    "gopher-floatingips-requests.go.txt": "package floatingips\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/gophercloud/gophercloud/v2\"\n\t\"github.com/gophercloud/gophercloud/v2/pagination\"\n)\n\n// ListOptsBuilder allows extensions to add additional parameters to the\n// List request.\ntype ListOptsBuilder interface {\n\tToFloatingIPListQuery() (string, error)\n}\n\n// ListOpts allows the filtering and sorting of paginated collections through\n// the API. Filtering is achieved by passing in struct field values that map to\n// the floating IP attributes you want to see returned. SortKey allows you to\n// sort by a particular network attribute. SortDir sets the direction, and is\n// either `asc' or `desc'. Marker and Limit are used for pagination.\ntype ListOpts struct {\n\tID                string `q:\"id\"`\n\tDescription       string `q:\"description\"`\n\tFloatingNetworkID string `q:\"floating_network_id\"`\n\tPortID            string `q:\"port_id\"`\n\tFixedIP           string `q:\"fixed_ip_address\"`\n\tFloatingIP        string `q:\"floating_ip_address\"`\n\tTenantID          string `q:\"tenant_id\"`\n\tProjectID         string `q:\"project_id\"`\n\tLimit             int    `q:\"limit\"`\n\tMarker            string `q:\"marker\"`\n\tSortKey           string `q:\"sort_key\"`\n\tSortDir           string `q:\"sort_dir\"`\n\tRouterID          string `q:\"router_id\"`\n\tStatus            string `q:\"status\"`\n\tTags              string `q:\"tags\"`\n\tTagsAny           string `q:\"tags-any\"`\n\tNotTags           string `q:\"not-tags\"`\n\tNotTagsAny        string `q:\"not-tags-any\"`\n\tRevisionNumber    *int   `q:\"revision_number\"`\n}\n\n// ToNetworkListQuery formats a ListOpts into a query string.\nfunc (opts ListOpts) ToFloatingIPListQuery() (string, error) {\n\tq, err := gophercloud.BuildQueryString(opts)\n\treturn q.String(), err\n}\n\n// List returns a Pager which allows you to iterate over a collection of\n// floating IP resources. It accepts a ListOpts struct, which allows you to\n// filter and sort the returned collection for greater efficiency.\nfunc List(c *gophercloud.ServiceClient, opts ListOptsBuilder) pagination.Pager {\n\turl := rootURL(c)\n\tif opts != nil {\n\t\tquery, err := opts.ToFloatingIPListQuery()\n\t\tif err != nil {\n\t\t\treturn pagination.Pager{Err: err}\n\t\t}\n\t\turl += query\n\t}\n\treturn pagination.NewPager(c, url, func(r pagination.PageResult) pagination.Page {\n\t\treturn FloatingIPPage{pagination.LinkedPageBase{PageResult: r}}\n\t})\n}\n\n// CreateOptsBuilder allows extensions to add additional parameters to the\n// Create request.\ntype CreateOptsBuilder interface {\n\tToFloatingIPCreateMap() (map[string]any, error)\n}\n\n// CreateOpts contains all the values needed to create a new floating IP\n// resource. The only required fields are FloatingNetworkID and PortID which\n// refer to the external network and internal port respectively.\ntype CreateOpts struct {\n\tDescription       string `json:\"description,omitempty\"`\n\tFloatingNetworkID string `json:\"floating_network_id\" required:\"true\"`\n\tFloatingIP        string `json:\"floating_ip_address,omitempty\"`\n\tPortID            string `json:\"port_id,omitempty\"`\n\tFixedIP           string `json:\"fixed_ip_address,omitempty\"`\n\tSubnetID          string `json:\"subnet_id,omitempty\"`\n\tTenantID          string `json:\"tenant_id,omitempty\"`\n\tProjectID         string `json:\"project_id,omitempty\"`\n}\n\n// ToFloatingIPCreateMap allows CreateOpts to satisfy the CreateOptsBuilder\n// interface\nfunc (opts CreateOpts) ToFloatingIPCreateMap() (map[string]any, error) {\n\treturn gophercloud.BuildRequestBody(opts, \"floatingip\")\n}\n\n// Create accepts a CreateOpts struct and uses the values provided to create a\n// new floating IP resource. You can create floating IPs on external networks\n// only. If you provide a FloatingNetworkID which refers to a network that is\n// not external (i.e. its `router:external' attribute is False), the operation\n// will fail and return a 400 error.\n//\n// If you do not specify a FloatingIP address value, the operation will\n// automatically allocate an available address for the new resource. If you do\n// choose to specify one, it must fall within the subnet range for the external\n// network - otherwise the operation returns a 400 error. If the FloatingIP\n// address is already in use, the operation returns a 409 error code.\n//\n// You can associate the new resource with an internal port by using the PortID\n// field. If you specify a PortID that is not valid, the operation will fail and\n// return 404 error code.\n//\n// You must also configure an IP address for the port associated with the PortID\n// you have provided - this is what the FixedIP refers to: an IP fixed to a\n// port. Because a port might be associated with multiple IP addresses, you can\n// use the FixedIP field to associate a particular IP address rather than have\n// the API assume for you. If you specify an IP address that is not valid, the\n// operation will fail and return a 400 error code. If the PortID and FixedIP\n// are already associated with another resource, the operation will fail and\n// returns a 409 error code.\nfunc Create(ctx context.Context, c *gophercloud.ServiceClient, opts CreateOptsBuilder) (r CreateResult) {\n\tb, err := opts.ToFloatingIPCreateMap()\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\tresp, err := c.Post(ctx, rootURL(c), b, &r.Body, nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// Get retrieves a particular floating IP resource based on its unique ID.\nfunc Get(ctx context.Context, c *gophercloud.ServiceClient, id string) (r GetResult) {\n\tresp, err := c.Get(ctx, resourceURL(c, id), &r.Body, nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// UpdateOptsBuilder allows extensions to add additional parameters to the\n// Update request.\ntype UpdateOptsBuilder interface {\n\tToFloatingIPUpdateMap() (map[string]any, error)\n}\n\n// UpdateOpts contains the values used when updating a floating IP resource. The\n// only value that can be updated is which internal port the floating IP is\n// linked to. To associate the floating IP with a new internal port, provide its\n// ID. To disassociate the floating IP from all ports, provide an empty string.\ntype UpdateOpts struct {\n\tDescription *string `json:\"description,omitempty\"`\n\tPortID      *string `json:\"port_id,omitempty\"`\n\tFixedIP     string  `json:\"fixed_ip_address,omitempty\"`\n\n\t// RevisionNumber implements extension:standard-attr-revisions. If != \"\" it\n\t// will set revision_number=%s. If the revision number does not match, the\n\t// update will fail.\n\tRevisionNumber *int `json:\"-\" h:\"If-Match\"`\n}\n\n// ToFloatingIPUpdateMap allows UpdateOpts to satisfy the UpdateOptsBuilder\n// interface\nfunc (opts UpdateOpts) ToFloatingIPUpdateMap() (map[string]any, error) {\n\tb, err := gophercloud.BuildRequestBody(opts, \"floatingip\")\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tif m := b[\"floatingip\"].(map[string]any); m[\"port_id\"] == \"\" {\n\t\tm[\"port_id\"] = nil\n\t}\n\n\treturn b, nil\n}\n\n// Update allows floating IP resources to be updated. Currently, the only way to\n// \"update\" a floating IP is to associate it with a new internal port, or\n// disassociated it from all ports. See UpdateOpts for instructions of how to\n// do this.\nfunc Update(ctx context.Context, c *gophercloud.ServiceClient, id string, opts UpdateOptsBuilder) (r UpdateResult) {\n\tb, err := opts.ToFloatingIPUpdateMap()\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\th, err := gophercloud.BuildHeaders(opts)\n\tif err != nil {\n\t\tr.Err = err\n\t\treturn\n\t}\n\tfor k := range h {\n\t\tif k == \"If-Match\" {\n\t\t\th[k] = fmt.Sprintf(\"revision_number=%s\", h[k])\n\t\t}\n\t}\n\tresp, err := c.Put(ctx, resourceURL(c, id), b, &r.Body, &gophercloud.RequestOpts{\n\t\tMoreHeaders: h,\n\t\tOkCodes:     []int{200},\n\t})\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n\n// Delete will permanently delete a particular floating IP resource. Please\n// ensure this is what you want - you can also disassociate the IP from existing\n// internal ports.\nfunc Delete(ctx context.Context, c *gophercloud.ServiceClient, id string) (r DeleteResult) {\n\tresp, err := c.Delete(ctx, resourceURL(c, id), nil)\n\t_, r.Header, r.Err = gophercloud.ParseResponse(resp, err)\n\treturn\n}\n",
+    "gopher-floatingips-results.go.txt": "package floatingips\n\nimport (\n\t\"encoding/json\"\n\t\"time\"\n\n\t\"github.com/gophercloud/gophercloud/v2\"\n\t\"github.com/gophercloud/gophercloud/v2/pagination\"\n)\n\n// FloatingIP represents a floating IP resource. A floating IP is an external\n// IP address that is mapped to an internal port and, optionally, a specific\n// IP address on a private network. In other words, it enables access to an\n// instance on a private network from an external network. For this reason,\n// floating IPs can only be defined on networks where the `router:external'\n// attribute (provided by the external network extension) is set to True.\ntype FloatingIP struct {\n\t// ID is the unique identifier for the floating IP instance.\n\tID string `json:\"id\"`\n\n\t// Description for the floating IP instance.\n\tDescription string `json:\"description\"`\n\n\t// FloatingNetworkID is the UUID of the external network where the floating\n\t// IP is to be created.\n\tFloatingNetworkID string `json:\"floating_network_id\"`\n\n\t// FloatingIP is the address of the floating IP on the external network.\n\tFloatingIP string `json:\"floating_ip_address\"`\n\n\t// PortID is the UUID of the port on an internal network that is associated\n\t// with the floating IP.\n\tPortID string `json:\"port_id\"`\n\n\t// FixedIP is the specific IP address of the internal port which should be\n\t// associated with the floating IP.\n\tFixedIP string `json:\"fixed_ip_address\"`\n\n\t// TenantID is the project owner of the floating IP. Only admin users can\n\t// specify a project identifier other than its own.\n\tTenantID string `json:\"tenant_id\"`\n\n\t// UpdatedAt and CreatedAt contain ISO-8601 timestamps of when the state of\n\t// the floating ip last changed, and when it was created.\n\tUpdatedAt time.Time `json:\"-\"`\n\tCreatedAt time.Time `json:\"-\"`\n\n\t// ProjectID is the project owner of the floating IP.\n\tProjectID string `json:\"project_id\"`\n\n\t// Status is the condition of the API resource.\n\tStatus string `json:\"status\"`\n\n\t// RouterID is the ID of the router used for this floating IP.\n\tRouterID string `json:\"router_id\"`\n\n\t// Tags optionally set via extensions/attributestags\n\tTags []string `json:\"tags\"`\n\n\t// RevisionNumber optionally set via extensions/standard-attr-revisions\n\tRevisionNumber int `json:\"revision_number\"`\n}\n\nfunc (r *FloatingIP) UnmarshalJSON(b []byte) error {\n\ttype tmp FloatingIP\n\n\t// Support for older neutron time format\n\tvar s1 struct {\n\t\ttmp\n\t\tCreatedAt gophercloud.JSONRFC3339NoZ `json:\"created_at\"`\n\t\tUpdatedAt gophercloud.JSONRFC3339NoZ `json:\"updated_at\"`\n\t}\n\n\terr := json.Unmarshal(b, &s1)\n\tif err == nil {\n\t\t*r = FloatingIP(s1.tmp)\n\t\tr.CreatedAt = time.Time(s1.CreatedAt)\n\t\tr.UpdatedAt = time.Time(s1.UpdatedAt)\n\n\t\treturn nil\n\t}\n\n\t// Support for newer neutron time format\n\tvar s2 struct {\n\t\ttmp\n\t\tCreatedAt time.Time `json:\"created_at\"`\n\t\tUpdatedAt time.Time `json:\"updated_at\"`\n\t}\n\n\terr = json.Unmarshal(b, &s2)\n\tif err != nil {\n\t\treturn err\n\t}\n\n\t*r = FloatingIP(s2.tmp)\n\tr.CreatedAt = time.Time(s2.CreatedAt)\n\tr.UpdatedAt = time.Time(s2.UpdatedAt)\n\n\treturn nil\n}\n\ntype commonResult struct {\n\tgophercloud.Result\n}\n\n// Extract will extract a FloatingIP resource from a result.\nfunc (r commonResult) Extract() (*FloatingIP, error) {\n\tvar s FloatingIP\n\terr := r.ExtractInto(&s)\n\treturn &s, err\n}\n\nfunc (r commonResult) ExtractInto(v any) error {\n\treturn r.ExtractIntoStructPtr(v, \"floatingip\")\n}\n\n// CreateResult represents the result of a create operation. Call its Extract\n// method to interpret it as a FloatingIP.\ntype CreateResult struct {\n\tcommonResult\n}\n\n// GetResult represents the result of a get operation. Call its Extract\n// method to interpret it as a FloatingIP.\ntype GetResult struct {\n\tcommonResult\n}\n\n// UpdateResult represents the result of an update operation. Call its Extract\n// method to interpret it as a FloatingIP.\ntype UpdateResult struct {\n\tcommonResult\n}\n\n// DeleteResult represents the result of an update operation. Call its\n// ExtractErr method to determine if the request succeeded or failed.\ntype DeleteResult struct {\n\tgophercloud.ErrResult\n}\n\n// FloatingIPPage is the page returned by a pager when traversing over a\n// collection of floating IPs.\ntype FloatingIPPage struct {\n\tpagination.LinkedPageBase\n}\n\n// NextPageURL is invoked when a paginated collection of floating IPs has\n// reached the end of a page and the pager seeks to traverse over a new one.\n// In order to do this, it needs to construct the next page's URL.\nfunc (r FloatingIPPage) NextPageURL() (string, error) {\n\tvar s struct {\n\t\tLinks []gophercloud.Link `json:\"floatingips_links\"`\n\t}\n\terr := r.ExtractInto(&s)\n\tif err != nil {\n\t\treturn \"\", err\n\t}\n\treturn gophercloud.ExtractNextURL(s.Links)\n}\n\n// IsEmpty checks whether a FloatingIPPage struct is empty.\nfunc (r FloatingIPPage) IsEmpty() (bool, error) {\n\tif r.StatusCode == 204 {\n\t\treturn true, nil\n\t}\n\n\tis, err := ExtractFloatingIPs(r)\n\treturn len(is) == 0, err\n}\n\n// ExtractFloatingIPs accepts a Page struct, specifically a FloatingIPPage\n// struct, and extracts the elements into a slice of FloatingIP structs. In\n// other words, a generic collection is mapped into a relevant slice.\nfunc ExtractFloatingIPs(r pagination.Page) ([]FloatingIP, error) {\n\tvar s struct {\n\t\tFloatingIPs []FloatingIP `json:\"floatingips\"`\n\t}\n\terr := (r.(FloatingIPPage)).ExtractInto(&s)\n\treturn s.FloatingIPs, err\n}\n\nfunc ExtractFloatingIPsInto(r pagination.Page, v any) error {\n\treturn r.(FloatingIPPage).ExtractIntoSlicePtr(v, \"floatingips\")\n}\n",
+    "gopher-floatingips-urls.go.txt": "package floatingips\n\nimport \"github.com/gophercloud/gophercloud/v2\"\n\nconst resourcePath = \"floatingips\"\n\nfunc rootURL(c *gophercloud.ServiceClient) string {\n\treturn c.ServiceURL(resourcePath)\n}\n\nfunc resourceURL(c *gophercloud.ServiceClient, id string) string {\n\treturn c.ServiceURL(resourcePath, id)\n}\n",
+    "neutron-lib-floatingips.inc.txt": "==========================\nFloating IPs (floatingips)\n==========================\n\nDNS integration\n===============\n\nThe ``dns-integration`` extension adds the ``dns_name`` and ``dns_domain``\nattributes to floating IPs allowing them to be specified at creation time.\nThe data in these attributes will be published in an external DNS service\nwhen Neutron is configured to integrate with such a service.\n\nFloating IP port details\n========================\n\nThe ``fip-port-details`` extension adds the ``port_details`` attribute to\nfloating IPs. The value of this attribute contains information of the\nassociated port.\n\nFloating IP port forwardings\n============================\n\nThe ``expose-port-forwarding-in-fip`` extension adds the ``port_forwardings``\nattribute to floating IPs. The value of this attribute contains the\ninformation of associated port forwarding resources.\n\nQoS extension\n=============\n\nThe :ref:`QoS <quality-of-service>` extension (``qos``) makes it possible to\ndefine QoS policies and associate these to the ports by introducing the\n``qos_policy_id`` attribute. The policies should be created before they are\nassociated to the floating IPs.\n\nQoS network policy\n==================\n\nThe ``qos-fip`` extension adds the read only parameter\n``qos_network_policy_id`` to the floating IP responses. This parameter contains\nthe QoS policy ID of the network where this floating IP is allocated.\n\nResource timestamps\n===================\n\nThe ``standard-attr-timestamp`` extension adds the ``created_at`` and\n``updated_at`` attributes to all resources that have standard attributes.\n\nTag extension\n=============\n\nThe ``standard-attr-tag`` adds Tag support for resources with\nstandard attributes by adding the ``tags`` attribute\nallowing consumers to associate tags with resources.\n\nList floating IPs\n=================\n\n.. rest_method::  GET /v2.0/floatingips\n\nLists floating IPs visible to the user.\n\nDefault policy settings return only the floating IPs owned by the user's\nproject, unless the user has admin role.\n\nThis example request lists floating IPs in JSON format:\n\n::\n\n   GET /v2.0/floatingips\n   Accept: application/json\n\nUse the ``fields`` query parameter to control which fields are\nreturned in the response body. Additionally, you can filter results\nby using query string parameters. For information, see `Filtering\nand Column Selection <https://wiki.openstack.org/wiki/Neutron/APIv2\n-specification#Filtering_and_Column_Selection>`__.\n\nNormal response codes: 200\n\nError response codes: 401\n\nRequest\n-------\n\n.. rest_parameters:: parameters.yaml\n\n   - id: id-query\n   - router_id: floatingip-router_id-query\n   - status: floatingip-status-query\n   - tenant_id: project_id-query\n   - project_id: project_id-query\n   - revision_number: revision_number-query\n   - description: description-query\n   - floating_network_id: floating_network_id-query\n   - fixed_ip_address: floatingip-fixed_ip_address-query\n   - floating_ip_address: floating_ip_address-query\n   - port_id: floatingip-port_id-query\n   - sort_dir: sort_dir\n   - sort_key: floatingip-sort_key\n   - tags: tags-query\n   - tags-any: tags-any-query\n   - not-tags: not-tags-query\n   - not-tags-any: not-tags-any-query\n   - fields: fields\n\nResponse Parameters\n-------------------\n\n.. rest_parameters:: parameters.yaml\n\n   - floatingips: floatingips\n   - id: floatingip-id\n   - router_id: floatingip-router_id\n   - status: floatingip-status\n   - tenant_id: project_id\n   - project_id: project_id\n   - created_at: created_at_resource\n   - updated_at: updated_at_resource\n   - revision_number: revision_number\n   - description: description\n   - dns_domain: dns_domain\n   - dns_name: dns_name\n   - port_details: floating_port_details\n   - qos_network_policy_id: qos_network_policy_id-floatingip-response\n   - qos_policy_id: qos_policy_id-floatingip-response\n   - floating_network_id: floating_network_id\n   - fixed_ip_address: floatingip-fixed_ip_address\n   - floating_ip_address: floating_ip_address\n   - port_id: floatingip-port_id\n   - tags: tags\n   - port_forwardings: floatingip-port_forwardings\n\nResponse Example\n----------------\n\n.. literalinclude:: samples/floatingips/floating-ips-list-response.json\n   :language: javascript\n\nCreate floating IP\n==================\n\n.. rest_method::  POST /v2.0/floatingips\n\nCreates a floating IP, and, if you specify port information, associates the floating IP with an internal port.\n\nTo associate the floating IP with an internal port, specify the\nport ID attribute in the request body. If you do not specify a\nport ID in the request, you can issue a PUT request instead of a\nPOST request.\n\nDefault policy settings enable only administrative users to set\nfloating IP addresses and some non-administrative users might\nrequire a floating IP address. If you do not specify a floating IP\naddress in the request, the operation automatically allocates one.\n\nBy default, this operation associates the floating IP address with\na single fixed IP address that is configured on an OpenStack\nNetworking port. If a port has multiple IP addresses, you must\nspecify the ``fixed_ip_address`` attribute in the request body to\nassociate a fixed IP address with the floating IP address.\n\nYou can create floating IPs on only external networks. When you\ncreate a floating IP, you must specify the ID of the network on\nwhich you want to create the floating IP. Alternatively, you can\ncreate a floating IP on a subnet in the external network, based on\nthe costs and quality of that subnet.\n\nYou must configure an IP address with the internal OpenStack\nNetworking port that is associated with the floating IP address.\n\nThe operation returns the ``Bad Request (400)`` response code for one of\nreasons:\n\n  - The network is not external, such as ``router:external=False``.\n\n  - The internal OpenStack Networking port is not associated with the\n    floating IP address.\n\n  - The requested floating IP address does not fall in the subnet\n    range for the external network.\n\n  - The fixed IP address is not valid.\n\nIf the port ID is not valid, this operation returns ``404`` response code.\n\nThe operation returns the ``Conflict (409)`` response code for one of\nreasons:\n\n  - The requested floating IP address is already in use.\n\n  - The internal OpenStack Networking port and fixed IP address are\n    already associated with another floating IP.\n\n  - The external DNS service recordset quota exceeds the limit.\n\nNormal response codes: 201\n\nError response codes: 400, 401, 404, 409\n\nRequest\n-------\n\n.. rest_parameters:: parameters.yaml\n\n   - floatingip: floatingip\n   - tenant_id: project_id\n   - project_id: project_id\n   - floating_network_id: floating_network_id\n   - fixed_ip_address: floatingip-fixed_ip_address-request\n   - floating_ip_address: floating_ip_address-request\n   - port_id: floatingip-port_id-post-request\n   - subnet_id: floatingip-subnet_id\n   - description: description-request\n   - dns_domain: dns_domain-request\n   - dns_name: dns_name-request\n   - qos_policy_id: qos_policy_id-floatingip-request\n\nRequest Example\n---------------\n\n.. literalinclude:: samples/floatingips/floatingip-create-request.json\n   :language: javascript\n\nResponse Parameters\n-------------------\n\n.. rest_parameters:: parameters.yaml\n\n   - floatingip: floatingip\n   - router_id: floatingip-router_id\n   - status: floatingip-status\n   - description: description\n   - dns_domain: dns_domain\n   - dns_name: dns_name\n   - port_details: floating_port_details\n   - tenant_id: project_id\n   - created_at: created_at_resource\n   - updated_at: updated_at_resource\n   - revision_number: revision_number\n   - project_id: project_id\n   - floating_network_id: floating_network_id\n   - fixed_ip_address: floatingip-fixed_ip_address\n   - floating_ip_address: floating_ip_address\n   - port_id: floatingip-port_id\n   - id: floatingip-id\n   - tags: tags\n   - port_forwardings: floatingip-port_forwardings\n   - qos_network_policy_id: qos_network_policy_id-floatingip-response\n   - qos_policy_id: qos_policy_id-floatingip-response\n\nResponse Example\n----------------\n\n.. literalinclude:: samples/floatingips/floatingip-create-response.json\n   :language: javascript\n\nShow floating IP details\n========================\n\n.. rest_method::  GET /v2.0/floatingips/{floatingip_id}\n\nShows details for a floating IP.\n\nUse the ``fields`` query parameter to control which fields are\nreturned in the response body. For information, see `Filtering and\nColumn Selection <http://specs.openstack.org/openstack /neutron-\nspecs/specs/api/networking_general_api_information.html #filtering-\nand-column-selection>`__.\n\nThis example request shows details for a floating IP in JSON\nformat. This example also filters the result by the\n``fixed_ip_address`` and ``floating_ip_address`` fields.\n\n::\n\n   GET /v2.0/floatingips/{floatingip_id}?fields=fixed_ip_address\n   &\n   fields=floating_ip_address\n   Accept: application/json\n\nNormal response codes: 200\n\nError response codes: 401, 403, 404\n\nRequest\n-------\n\n.. rest_parameters:: parameters.yaml\n\n   - floatingip_id: floatingip-id-path\n\nResponse Parameters\n-------------------\n\n.. rest_parameters:: parameters.yaml\n\n   - floatingip: floatingip\n   - router_id: floatingip-router_id\n   - status: floatingip-status\n   - description: description\n   - dns_domain: dns_domain\n   - dns_name: dns_name\n   - port_details: floating_port_details\n   - tenant_id: project_id\n   - created_at: created_at_resource\n   - updated_at: updated_at_resource\n   - revision_number: revision_number\n   - project_id: project_id\n   - floating_network_id: floating_network_id\n   - fixed_ip_address: floatingip-fixed_ip_address\n   - floating_ip_address: floating_ip_address\n   - port_id: floatingip-port_id\n   - id: floatingip-id\n   - tags: tags\n   - port_forwardings: floatingip-port_forwardings\n   - qos_network_policy_id: qos_network_policy_id-floatingip-response\n   - qos_policy_id: qos_policy_id-floatingip-response\n\nResponse Example\n----------------\n\n.. literalinclude:: samples/floatingips/floatingip-show-response.json\n   :language: javascript\n\nUpdate floating IP\n==================\n\n.. rest_method::  PUT /v2.0/floatingips/{floatingip_id}\n\nUpdates a floating IP and its association with an internal port.\n\nThe association process is the same as the process for the create\nfloating IP operation.\n\nTo disassociate a floating IP from a port, set the ``port_id``\nattribute to null or omit it from the request body.\n\nThis example updates a floating IP:\n\n::\n\n   PUT /v2.0/floatingips/{floatingip_id} Accept: application/json\n\nDepending on the request body that you submit, this request\nassociates a port with or disassociates a port from a floating IP.\n\nNormal response codes: 200\n\nError response codes: 400, 401, 404, 409, 412\n\nRequest\n-------\n\n.. rest_parameters:: parameters.yaml\n\n   - floatingip: floatingip\n   - floatingip_id: floatingip-id-path\n   - port_id: floatingip-port_id-put-request\n   - fixed_ip_address: floatingip-fixed_ip_address-request\n   - description: description-request\n\nRequest Example\n---------------\n\n.. literalinclude:: samples/floatingips/floatingip-update-request.json\n   :language: javascript\n\nRequest Example (disassociate)\n------------------------------\n\n.. literalinclude:: samples/floatingips/floatingip-disassociate-request.json\n   :language: javascript\n\nResponse Parameters\n-------------------\n\n.. rest_parameters:: parameters.yaml\n\n   - floatingip: floatingip\n   - router_id: floatingip-router_id\n   - status: floatingip-status\n   - tenant_id: project_id\n   - project_id: project_id\n   - floating_network_id: floating_network_id\n   - fixed_ip_address: floatingip-fixed_ip_address\n   - floating_ip_address: floating_ip_address\n   - port_id: floatingip-port_id\n   - id: floatingip-id\n   - created_at: created_at_resource\n   - updated_at: updated_at_resource\n   - revision_number: revision_number\n   - description: description\n   - dns_domain: dns_domain\n   - dns_name: dns_name\n   - port_details: floating_port_details\n   - tags: tags\n   - port_forwardings: floatingip-port_forwardings\n   - qos_network_policy_id: qos_network_policy_id-floatingip-response\n   - qos_policy_id: qos_policy_id-floatingip-response\n\nResponse Example\n----------------\n\n.. literalinclude:: samples/floatingips/floatingip-update-response.json\n   :language: javascript\n\nResponse Example (disassociate)\n-------------------------------\n\n.. literalinclude:: samples/floatingips/floatingip-disassociate-response.json\n   :language: javascript\n\nDelete floating IP\n==================\n\n.. rest_method::  DELETE /v2.0/floatingips/{floatingip_id}\n\nDeletes a floating IP and, if present, its associated port.\n\nThis example deletes a floating IP:\n\n::\n\n   DELETE /v2.0/floatingips/{floatingip_id} Accept: application/json\n\nNormal response codes: 204\n\nError response codes: 401, 404, 412\n\nRequest\n-------\n\n.. rest_parameters:: parameters.yaml\n\n   - floatingip_id: floatingip-id-path\n\nResponse\n--------\n\nThere is no body content for the response of a successful DELETE request.\n",
+    "public-net-api-go-README.md.txt": "# public-net-api-go\n\nGo SDK for the Selectel Cloud Public Net API service for managing networking resources - direct public IP addresses (which are represented as public ports).\n\nFor example, it is used the [Selectel Terraform Provider](https://github.com/selectel/terraform-provider-selectel).\n\n## Getting started\n\n### Installation\n\nYou can install needed `public-net-api-go` packages via `go get` command:\n\n```bash\ngo get github.com/selectel/public-net-api-go\n```\n\n## Authentication\n\nTo work with the Selectel Public Net API you first need to:\n\n* Create a Selectel account: [registration page](https://my.selectel.ru/registration).\n* Create a project in Selectel Cloud Platform [projects](https://my.selectel.ru/vpc/projects).\n* Retrieve a Keystone token for your project via API or [go-selvpcclient](https://github.com/selectel/go-selvpcclient).\n\n## Endpoints\n\nYou can find available endpoints [here](https://docs.selectel.ru/en/api/urls/).\n\n## Usage example\n\n```go\npackage main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"log\"\n\n\tpublicnetapi \"github.com/selectel/public-net-api-go/pkg/v1\"\n)\n\nfunc main() {\n\tcfg := &publicnetapi.Config{\n\t\tAuthToken: \"...\",\n\t\tURL:       \"https://ru-3.cloud.api.selcloud.ru/public-net/\",\n\t}\n\n\tclient, err := publicnetapi.NewPublicNetAPIClient(cfg)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\tports, err := client.ListPorts(context.Background(), nil)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\tfor _, port := range ports {\n\t\tfmt.Printf(\"Port %s: %s\\n\", port.ID, port.IPAddress)\n\t}\n}\n```\n\n## Supported operations\n\n* **Port** \u2014 List, Get, Create, Update, Delete\n* **Project quotas** \u2014 Get\n",
+    "public-net-api-go-pkg-v1-client.go.txt": "package v1\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"encoding/json\"\n\t\"errors\"\n\t\"io\"\n\t\"net\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"time\"\n\n\t\"github.com/selectel/public-net-api-go/internal/utils\"\n)\n\nconst (\n\txAuthHeader     = \"X-Auth-Token\"\n\tuserAgentHeader = \"User-Agent\"\n\n\tdefaultHTTPTimeout           = 120\n\tdefaultDialTimeout           = 60\n\tdefaultKeepaliveTimeout      = 60\n\tdefaultMaxIdleConns          = 100\n\tdefaultIdleConnTimeout       = 100\n\tdefaultTLSHandshakeTimeout   = 60\n\tdefaultExpectContinueTimeout = 1\n)\n\nvar moduleUserAgent = \"public-net-api-go/\" + utils.ModuleVersion\n\ntype HTTPClient interface {\n\tDo(*http.Request) (*http.Response, error)\n}\n\ntype Config struct {\n\tURL        string\n\tAuthToken  string\n\tHTTPClient HTTPClient\n\tUserAgent  string\n}\n\ntype PublicNetAPIClient struct {\n\tcfg *Config\n}\n\nfunc defaultHTTPClient() *http.Client {\n\treturn &http.Client{\n\t\tTimeout: defaultHTTPTimeout * time.Second,\n\t\tTransport: &http.Transport{\n\t\t\tProxy: http.ProxyFromEnvironment,\n\t\t\tDialContext: (&net.Dialer{\n\t\t\t\tTimeout:   defaultDialTimeout * time.Second,\n\t\t\t\tKeepAlive: defaultKeepaliveTimeout * time.Second,\n\t\t\t}).DialContext,\n\t\t\tMaxIdleConns:          defaultMaxIdleConns,\n\t\t\tIdleConnTimeout:       defaultIdleConnTimeout * time.Second,\n\t\t\tTLSHandshakeTimeout:   defaultTLSHandshakeTimeout * time.Second,\n\t\t\tExpectContinueTimeout: defaultExpectContinueTimeout * time.Second,\n\t\t},\n\t}\n}\n\nfunc NewPublicNetAPIClient(cfg *Config) (*PublicNetAPIClient, error) {\n\tif cfg == nil {\n\t\treturn nil, newClientErr(errors.New(\"config is nil\"))\n\t}\n\tif cfg.URL == \"\" {\n\t\treturn nil, newClientErr(errors.New(\"url is required\"))\n\t}\n\tif cfg.AuthToken == \"\" {\n\t\treturn nil, newClientErr(errors.New(\"auth token is required\"))\n\t}\n\n\thttpClient := cfg.HTTPClient\n\tif httpClient == nil {\n\t\thttpClient = defaultHTTPClient()\n\t}\n\n\tbaseURL, err := url.JoinPath(cfg.URL, \"v1\")\n\tif err != nil {\n\t\treturn nil, newClientErr(err)\n\t}\n\n\treturn &PublicNetAPIClient{\n\t\tcfg: &Config{\n\t\t\tURL:        baseURL,\n\t\t\tAuthToken:  cfg.AuthToken,\n\t\t\tHTTPClient: httpClient,\n\t\t\tUserAgent:  cfg.UserAgent,\n\t\t},\n\t}, nil\n}\n\nfunc (client *PublicNetAPIClient) makeRequest(\n\tctx context.Context,\n\tmethod, path string,\n\tbody any,\n\tquery url.Values,\n) (*http.Request, error) {\n\treqURL, err := url.JoinPath(client.cfg.URL, path)\n\tif err != nil {\n\t\treturn nil, newClientErr(err)\n\t}\n\tif len(query) > 0 {\n\t\treqURL += \"?\" + query.Encode()\n\t}\n\n\tvar payload io.Reader\n\tif body != nil {\n\t\tbody, err := json.Marshal(body)\n\t\tif err != nil {\n\t\t\treturn nil, newClientErr(err)\n\t\t}\n\t\tpayload = bytes.NewReader(body)\n\t}\n\n\treq, err := http.NewRequestWithContext(ctx, method, reqURL, payload)\n\tif err != nil {\n\t\treturn nil, newClientErr(err)\n\t}\n\treq.Header.Set(xAuthHeader, client.cfg.AuthToken)\n\n\tif body != nil {\n\t\treq.Header.Set(\"Content-Type\", \"application/json\")\n\t}\n\n\tuserAgent := moduleUserAgent\n\tif client.cfg.UserAgent != \"\" {\n\t\tuserAgent = client.cfg.UserAgent + \" \" + userAgent\n\t}\n\treq.Header.Add(userAgentHeader, userAgent)\n\n\treturn req, nil\n}\n\nfunc (client *PublicNetAPIClient) processAPIError(response *http.Response) error {\n\tdata, err := io.ReadAll(response.Body)\n\tif err != nil {\n\t\treturn newClientErr(err)\n\t}\n\n\tapiErr := &APIErr{raw: data, Code: response.StatusCode}\n\twrap := errWrapper{Err: apiErr}\n\n\t_ = json.Unmarshal(data, &wrap)\n\n\treturn apiErr\n}\n\nfunc (client *PublicNetAPIClient) unmarshalResponse(response *http.Response, target any) error {\n\tdata, err := io.ReadAll(response.Body)\n\tif err != nil {\n\t\treturn newClientErr(err)\n\t}\n\n\terr = json.Unmarshal(data, target)\n\tif err != nil {\n\t\treturn newClientErr(err)\n\t}\n\n\treturn nil\n}\n\nfunc (client *PublicNetAPIClient) doRequest(req *http.Request, expectedCode int, target any) error {\n\tres, err := client.cfg.HTTPClient.Do(req)\n\tif err != nil {\n\t\treturn newTransportErr(err)\n\t}\n\tdefer res.Body.Close()\n\n\tif res.StatusCode != expectedCode {\n\t\treturn client.processAPIError(res)\n\t}\n\n\tif target != nil {\n\t\treturn client.unmarshalResponse(res, target)\n\t}\n\n\treturn nil\n}\n",
+    "public-net-api-go-pkg-v1-port.go.txt": "package v1\n\nimport (\n\t\"context\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"path\"\n\t\"time\"\n)\n\ntype portResponse struct {\n\tPort *Port `json:\"port\"`\n}\n\ntype portsListResponse struct {\n\tPorts []*Port `json:\"ports\"`\n}\n\ntype Port struct {\n\tID               string    `json:\"id\"`\n\tProjectID        string    `json:\"project_id\"`\n\tNetworkID        string    `json:\"network_id\"`\n\tIPAddress        string    `json:\"ip_address\"`\n\tCreatedAt        time.Time `json:\"created_at\"`\n\tUpdatedAt        time.Time `json:\"updated_at\"`\n\tDescription      *string   `json:\"description\"`\n\tSubnet           string    `json:\"subnet\"`\n\tGateway          string    `json:\"gateway\"`\n\tSecurityGroupIDs []string  `json:\"security_group_ids\"`\n\tAdminStateUp     bool      `json:\"admin_state_up\"`\n}\n\ntype PortCreateDTO struct {\n\tProjectID        string   `json:\"project_id\"`\n\tDescription      *string  `json:\"description,omitempty\"`\n\tSecurityGroupIDs []string `json:\"security_group_ids\"`\n\tAdminStateUp     *bool    `json:\"admin_state_up,omitempty\"`\n}\n\ntype PortUpdateDTO struct {\n\tDescription      *string  `json:\"description,omitempty\"`\n\tSecurityGroupIDs []string `json:\"security_group_ids\"`\n\tAdminStateUp     *bool    `json:\"admin_state_up,omitempty\"`\n}\n\ntype PortsQuery struct {\n\tProjectID   string\n\tNetworkID   string\n\tDescription string\n}\n\nfunc (q *PortsQuery) toValues() url.Values {\n\tif q == nil {\n\t\treturn nil\n\t}\n\tvals := url.Values{}\n\n\tif q.ProjectID != \"\" {\n\t\tvals.Set(\"project_id\", q.ProjectID)\n\t}\n\tif q.NetworkID != \"\" {\n\t\tvals.Set(\"network_id\", q.NetworkID)\n\t}\n\tif q.Description != \"\" {\n\t\tvals.Set(\"description\", q.Description)\n\t}\n\n\treturn vals\n}\n\ntype PortDeleteQuery struct {\n\tForce bool\n}\n\nfunc (q *PortDeleteQuery) toValues() url.Values {\n\tif q == nil {\n\t\treturn nil\n\t}\n\tvals := url.Values{}\n\n\tif q.Force {\n\t\tvals.Set(\"force\", \"true\")\n\t}\n\n\treturn vals\n}\n\nfunc (client *PublicNetAPIClient) ListPorts(\n\tctx context.Context,\n\tquery *PortsQuery,\n) ([]*Port, error) {\n\treq, err := client.makeRequest(ctx, http.MethodGet, \"/public_ports\", nil, query.toValues())\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tports := &portsListResponse{}\n\n\terr = client.doRequest(req, http.StatusOK, ports)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn ports.Ports, nil\n}\n\nfunc (client *PublicNetAPIClient) GetPort(\n\tctx context.Context,\n\tportID string,\n) (*Port, error) {\n\treqPath := path.Join(\"/public_ports\", portID)\n\treq, err := client.makeRequest(ctx, http.MethodGet, reqPath, nil, nil)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tport := &portResponse{}\n\n\terr = client.doRequest(req, http.StatusOK, port)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn port.Port, nil\n}\n\nfunc (client *PublicNetAPIClient) CreatePort(\n\tctx context.Context,\n\tdto *PortCreateDTO,\n) (*Port, error) {\n\treq, err := client.makeRequest(ctx, http.MethodPost, \"/public_ports\", dto, nil)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tport := &portResponse{}\n\n\terr = client.doRequest(req, http.StatusCreated, port)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn port.Port, nil\n}\n\nfunc (client *PublicNetAPIClient) UpdatePort(\n\tctx context.Context,\n\tportID string,\n\tdto *PortUpdateDTO,\n) (*Port, error) {\n\treqPath := path.Join(\"/public_ports\", portID)\n\treq, err := client.makeRequest(ctx, http.MethodPatch, reqPath, dto, nil)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tport := &portResponse{}\n\n\terr = client.doRequest(req, http.StatusOK, port)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn port.Port, nil\n}\n\nfunc (client *PublicNetAPIClient) DeletePort(\n\tctx context.Context,\n\tportID string,\n\tquery *PortDeleteQuery,\n) error {\n\treqPath := path.Join(\"/public_ports\", portID)\n\treq, err := client.makeRequest(ctx, http.MethodDelete, reqPath, nil, query.toValues())\n\tif err != nil {\n\t\treturn err\n\t}\n\n\treturn client.doRequest(req, http.StatusNoContent, nil)\n}\n",
+    "public-net-api-go-pkg-v1-quota.go.txt": "package v1\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"net/http\"\n\t\"path\"\n)\n\ntype Quota struct {\n\tValue int `json:\"value\"`\n\tUsed  int `json:\"used\"`\n}\n\ntype ProjectQuotasResponse struct {\n\tNetworkDirectPublicIPs []Quota `json:\"network_direct_public_ips\"`\n}\n\nfunc (client *PublicNetAPIClient) GetQuotas(\n\tctx context.Context,\n\tprojectID string,\n) (*ProjectQuotasResponse, error) {\n\tif projectID == \"\" {\n\t\treturn nil, newClientErr(errors.New(\"project id is required\"))\n\t}\n\n\treqPath := path.Join(\"/projects\", projectID, \"quotas\")\n\treq, err := client.makeRequest(ctx, http.MethodGet, reqPath, nil, nil)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tquotas := &ProjectQuotasResponse{}\n\n\terr = client.doRequest(req, http.StatusOK, quotas)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn quotas, nil\n}\n",
+    "terraform-public_net_api.go.txt": "package selectel\n\nimport (\n\t\"fmt\"\n\t\"time\"\n\n\t\"github.com/hashicorp/go-retryablehttp\"\n\t\"github.com/hashicorp/terraform-plugin-sdk/v2/diag\"\n\t\"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema\"\n\tpublicnetapi \"github.com/selectel/public-net-api-go/pkg/v1\"\n)\n\nconst (\n\tdefaultTimeout      = 150 * time.Second\n\tdefaultRetryWaitMin = time.Second //nolint: revive\n\tdefaultRetryWaitMax = 5 * time.Second\n\tdefaultRetryMax     = 2\n)\n\nfunc getPublicNetAPIClient(\n\td *schema.ResourceData,\n\tmeta any,\n) (*publicnetapi.PublicNetAPIClient, diag.Diagnostics) {\n\tconfig := meta.(*Config)\n\tprojectID := d.Get(\"project_id\").(string)\n\tregion := d.Get(\"region\").(string)\n\n\tselectelVPCClient, err := config.GetSelVPCClientWithProjectScope(projectID)\n\tif err != nil {\n\t\treturn nil, diag.FromErr(\n\t\t\tfmt.Errorf(\"failed to get project-scope Selectel VPC client (project_id=%s): %w\", projectID, err),\n\t\t)\n\t}\n\n\tendpoint, err := selectelVPCClient.Catalog.GetEndpoint(PublicNetAPI, region)\n\tif err != nil {\n\t\treturn nil, diag.FromErr(\n\t\t\tfmt.Errorf(\n\t\t\t\t\"failed to get endpoint for %s (region=%s, project_id=%s): %w\",\n\t\t\t\tPublicNetAPI,\n\t\t\t\tregion,\n\t\t\t\tprojectID,\n\t\t\t\terr,\n\t\t\t),\n\t\t)\n\t}\n\n\tif endpoint.URL == \"\" {\n\t\treturn nil, diag.FromErr(\n\t\t\tfmt.Errorf(\n\t\t\t\t\"empty endpoint URL returned for %s (region=%s, project_id=%s)\",\n\t\t\t\tPublicNetAPI,\n\t\t\t\tregion,\n\t\t\t\tprojectID,\n\t\t\t),\n\t\t)\n\t}\n\n\tretryClient := retryablehttp.NewClient()\n\tretryClient.Logger = nil\n\tretryClient.RetryWaitMin = defaultRetryWaitMin\n\tretryClient.RetryWaitMax = defaultRetryWaitMax\n\tretryClient.RetryMax = defaultRetryMax\n\tretryClient.HTTPClient.Timeout = defaultTimeout\n\n\tcfg := &publicnetapi.Config{\n\t\tURL:        endpoint.URL,\n\t\tAuthToken:  selectelVPCClient.GetXAuthToken(),\n\t\tHTTPClient: retryClient.StandardClient(),\n\t\tUserAgent:  config.UserAgent,\n\t}\n\n\tclient, err := publicnetapi.NewPublicNetAPIClient(cfg)\n\tif err != nil {\n\t\treturn nil, diag.FromErr(fmt.Errorf(\"failed to initialize %s client: %w\", PublicNetAPI, err))\n\t}\n\n\treturn client, nil\n}\n",
+    "terraform-resource_selectel_vpc_public_port_v1.go.txt": "package selectel\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"log\"\n\t\"net/http\"\n\n\t\"github.com/hashicorp/terraform-plugin-sdk/v2/diag\"\n\t\"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema\"\n\tpublicnetapi \"github.com/selectel/public-net-api-go/pkg/v1\"\n\t\"github.com/terraform-providers/terraform-provider-selectel/selectel/internal/schemaconfig\"\n)\n\nvar publicPortDocs = resourceDocs{Name: \"public port\"}\n\nfunc resourceVPCPublicPortV1() *schema.Resource {\n\treturn &schema.Resource{\n\t\tCreateContext: resourceVPCPublicPortV1Create,\n\t\tReadContext:   resourceVPCPublicPortV1Read,\n\t\tUpdateContext: resourceVPCPublicPortV1Update,\n\t\tDeleteContext: resourceVPCPublicPortV1Delete,\n\t\tImporter: &schema.ResourceImporter{\n\t\t\tStateContext: resourceVPCPublicPortV1ImportState,\n\t\t},\n\t\tIdentity: &schema.ResourceIdentity{\n\t\t\tSchemaFunc: func() map[string]*schema.Schema {\n\t\t\t\treturn publicPortDocs.identitySchemaByID(exampleResourceID, publicPortIDFromControlPanel, publicPortRegionFromControlPanel)\n\t\t\t},\n\t\t},\n\t\tDescription: \"Creates and manages a direct public IP address (public port) in VPC using the v1 public API. \" +\n\t\t\t\"For more information about direct public IP addresses, see the [official Selectel documentation](https://docs.selectel.ru/en/cloud-servers/cloud-networks/direct-public-ip-addresses).\",\n\t\tSchema: publicPortDocs.withDocsHints(map[string]*schema.Schema{\n\t\t\t\"id\":         publicPortDocs.idResourceSchema(),\n\t\t\t\"region\":     publicPortDocs.regionResourceSchema(),\n\t\t\t\"project_id\": publicPortDocs.projectIDResourceSchema(),\n\t\t\t\"network_id\": {\n\t\t\t\tType:        schema.TypeString,\n\t\t\t\tComputed:    true,\n\t\t\t\tDescription: \"Unique identifier of the service network from which the public port is allocated.\",\n\t\t\t},\n\t\t\t\"ip_address\": {\n\t\t\t\tType:        schema.TypeString,\n\t\t\t\tComputed:    true,\n\t\t\t\tDescription: \"Direct public IP address assigned to the public port.\",\n\t\t\t},\n\t\t\t\"description\": {\n\t\t\t\tType:        schema.TypeString,\n\t\t\t\tOptional:    true,\n\t\t\t\tDefault:     \"\",\n\t\t\t\tDescription: \"Description of the public port.\",\n\t\t\t},\n\t\t\t\"subnet\": {\n\t\t\t\tType:        schema.TypeString,\n\t\t\t\tComputed:    true,\n\t\t\t\tDescription: \"CIDR of the subnet from which the public port IP address is allocated.\",\n\t\t\t},\n\t\t\t\"gateway\": {\n\t\t\t\tType:        schema.TypeString,\n\t\t\t\tComputed:    true,\n\t\t\t\tDescription: \"IP address of the subnet gateway.\",\n\t\t\t},\n\t\t\t\"admin_state_up\": {\n\t\t\t\tType:        schema.TypeBool,\n\t\t\t\tOptional:    true,\n\t\t\t\tDefault:     true,\n\t\t\t\tDescription: \"Specifies if the port is administratively up.\",\n\t\t\t},\n\t\t\t\"security_group_ids\": {\n\t\t\t\tType:     schema.TypeList,\n\t\t\t\tOptional: true,\n\t\t\t\tComputed: true,\n\t\t\t\tElem: &schema.Schema{\n\t\t\t\t\tType: schema.TypeString,\n\t\t\t\t},\n\t\t\t\tMaxItems: 20,\n\t\t\t\tDescription: \"Unique identifiers of security groups associated with the public port. \" +\n\t\t\t\t\t\"If not specified, the port gets the default security group of the project. \" +\n\t\t\t\t\tsecGroupIDFromResource,\n\t\t\t},\n\t\t}),\n\t}\n}\n\nfunc resourceVPCPublicPortV1Create(\n\tctx context.Context,\n\td *schema.ResourceData,\n\tmeta any,\n) diag.Diagnostics {\n\tclient, diagErr := getPublicNetAPIClient(d, meta)\n\tif diagErr != nil {\n\t\treturn diagErr\n\t}\n\n\tdto := &publicnetapi.PortCreateDTO{ProjectID: d.Get(\"project_id\").(string)}\n\n\tdescription := d.Get(\"description\").(string)\n\tdto.Description = &description\n\n\tadminStateUp := d.Get(\"admin_state_up\").(bool)\n\tdto.AdminStateUp = &adminStateUp\n\n\tif schemaconfig.IsSet(d, \"security_group_ids\") {\n\t\tdto.SecurityGroupIDs = expandStringList(d.Get(\"security_group_ids\").([]any))\n\t}\n\n\tlog.Print(msgCreate(objectPublicPort, dto))\n\n\tport, err := client.CreatePort(ctx, dto)\n\tif err != nil {\n\t\treturn diag.FromErr(errCreatingObject(objectPublicPort, err))\n\t}\n\n\td.SetId(port.ID)\n\tfillVPCPublicPortData(port, d)\n\n\treturn nil\n}\n\nfunc resourceVPCPublicPortV1Read(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {\n\tclient, diagErr := getPublicNetAPIClient(d, meta)\n\tif diagErr != nil {\n\t\treturn diagErr\n\t}\n\n\tlog.Print(msgGet(objectPublicPort, d.Id()))\n\n\tport, err := client.GetPort(ctx, d.Id())\n\tif err != nil {\n\t\tif isNotFound(err) {\n\t\t\td.SetId(\"\")\n\n\t\t\treturn nil\n\t\t}\n\n\t\treturn diag.FromErr(errGettingObject(objectPublicPort, d.Id(), err))\n\t}\n\n\tfillVPCPublicPortData(port, d)\n\n\treturn nil\n}\n\nfunc resourceVPCPublicPortV1Update(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {\n\tif !d.HasChanges(\"description\", \"admin_state_up\", \"security_group_ids\") {\n\t\treturn nil\n\t}\n\n\tclient, diagErr := getPublicNetAPIClient(d, meta)\n\tif diagErr != nil {\n\t\treturn diagErr\n\t}\n\n\tdto := publicnetapi.PortUpdateDTO{}\n\n\tif d.HasChange(\"description\") {\n\t\tdescription := d.Get(\"description\").(string)\n\t\tdto.Description = &description\n\t}\n\n\tif d.HasChange(\"admin_state_up\") {\n\t\tadminStateUp := d.Get(\"admin_state_up\").(bool)\n\t\tdto.AdminStateUp = &adminStateUp\n\t}\n\n\tif d.HasChange(\"security_group_ids\") {\n\t\tsecurityGroupIDsVal := d.Get(\"security_group_ids\")\n\t\tif securityGroupIDsVal != nil {\n\t\t\tdto.SecurityGroupIDs = expandStringList(securityGroupIDsVal.([]any))\n\t\t}\n\t}\n\n\tlog.Print(msgUpdate(objectPublicPort, d.Id(), dto))\n\n\tport, err := client.UpdatePort(ctx, d.Id(), &dto)\n\tif err != nil {\n\t\treturn diag.FromErr(errUpdatingObject(objectPublicPort, d.Id(), err))\n\t}\n\n\tfillVPCPublicPortData(port, d)\n\n\treturn nil\n}\n\nfunc resourceVPCPublicPortV1Delete(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {\n\tclient, diagErr := getPublicNetAPIClient(d, meta)\n\tif diagErr != nil {\n\t\treturn diagErr\n\t}\n\n\tlog.Print(msgDelete(objectPublicPort, d.Id()))\n\n\terr := client.DeletePort(ctx, d.Id(), nil)\n\tif err != nil {\n\t\tif isNotFound(err) {\n\t\t\treturn nil\n\t\t}\n\n\t\treturn diag.FromErr(errDeletingObject(objectPublicPort, d.Id(), err))\n\t}\n\n\treturn nil\n}\n\nfunc resourceVPCPublicPortV1ImportState(\n\t_ context.Context,\n\td *schema.ResourceData,\n\tmeta any,\n) ([]*schema.ResourceData, error) {\n\tif err := importProjectRegion(d, meta); err != nil {\n\t\treturn nil, err\n\t}\n\n\treturn []*schema.ResourceData{d}, nil\n}\n\nfunc fillVPCPublicPortData(port *publicnetapi.Port, d *schema.ResourceData) {\n\t_ = d.Set(\"project_id\", port.ProjectID)\n\t_ = d.Set(\"network_id\", port.NetworkID)\n\t_ = d.Set(\"ip_address\", port.IPAddress)\n\t_ = d.Set(\"description\", port.Description)\n\t_ = d.Set(\"subnet\", port.Subnet)\n\t_ = d.Set(\"gateway\", port.Gateway)\n\t_ = d.Set(\"admin_state_up\", port.AdminStateUp)\n\t_ = d.Set(\"security_group_ids\", port.SecurityGroupIDs)\n\n\tsetProjectRegionIdentity(d)\n}\n\nfunc expandStringList(raw []any) []string {\n\tresult := make([]string, len(raw))\n\n\tfor i, v := range raw {\n\t\tresult[i] = v.(string)\n\t}\n\n\treturn result\n}\n\nfunc isNotFound(err error) bool {\n\tvar apiErr *publicnetapi.APIErr\n\n\treturn errors.As(err, &apiErr) &&\n\t\tapiErr.Code == http.StatusNotFound\n}\n",
+    "terraform-service_types.go.txt": "package selectel\n\nconst (\n\tPrivateDNS         = \"private-dns\"\n\tDBaaS              = \"managed-database\"\n\tDBaaSv2            = \"managed-database-v2\"\n\tMKS                = \"managed-kubernetes\"\n\tCRaaS              = \"container-registry\"\n\tIAM                = \"iam\"\n\tSecretsManager     = \"secrets-manager\"\n\tCertificateManager = \"certificate-manager\"\n\tDNSv2              = \"dnsv2\"\n\tCRaaSV2            = \"container-registry-v2\"\n\tDataProtectV2      = \"data-protectv2\"\n\tGlobalRouter       = \"global-router\"\n\tPublicNetAPI       = \"public-net-api\"\n\tBlockStorage       = \"volumev3\"\n)\n",
+    "vpc-go-pkg-v2-floatingip-floatingip.go.txt": "package floatingip\n\nimport (\n\t\"context\"\n\t\"net/http\"\n\t\"net/url\"\n\n\t\"github.com/selectel/vpc-go/internal/api\"\n\n\tvpc \"github.com/selectel/vpc-go/pkg/v2\"\n)\n\nconst collectionPath = \"/v2.0/floatingips\"\n\ntype FloatingIP struct {\n\tID                string  `json:\"id\"`\n\tFloatingIPAddress string  `json:\"floating_ip_address\"`\n\tPortID            *string `json:\"port_id\"`\n\tFixedIPAddress    *string `json:\"fixed_ip_address\"`\n\tStatus            string  `json:\"status\"`\n}\n\ntype UpdateRequest struct {\n\tPortID         *vpc.Optional[string] `json:\"port_id,omitempty\"`\n\tFixedIPAddress *vpc.Optional[string] `json:\"fixed_ip_address,omitempty\"`\n}\n\ntype envelope struct {\n\tFloatingIP FloatingIP `json:\"floatingip\"`\n}\ntype listEnvelope struct {\n\tFloatingIPs []FloatingIP   `json:\"floatingips\"`\n\tLinks       []api.PageLink `json:\"floatingips_links\"`\n}\n\nfunc Get(ctx context.Context, client *vpc.Client, id string) (*FloatingIP, error) {\n\tvar result envelope\n\terr := api.Request(ctx, client, http.MethodGet, resourcePath(id), nil, nil, &result,\n\t\thttp.StatusOK)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &result.FloatingIP, nil\n}\n\nfunc Update(ctx context.Context, client *vpc.Client, id string, request UpdateRequest) (*FloatingIP, error) {\n\tvar result envelope\n\terr := api.Request(ctx, client, http.MethodPut, resourcePath(id), nil,\n\t\tstruct {\n\t\t\tFloatingIP UpdateRequest `json:\"floatingip\"`\n\t\t}{FloatingIP: request}, &result,\n\t\thttp.StatusOK)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn &result.FloatingIP, nil\n}\n\nfunc List(ctx context.Context, client *vpc.Client, options vpc.ListOptions) ([]FloatingIP, error) {\n\treturn api.WalkPages(ctx, options.Values(), func(ctx context.Context, q url.Values) (api.Page[FloatingIP], error) {\n\t\tvar result listEnvelope\n\t\terr := api.Request(ctx, client, http.MethodGet, collectionPath, q, nil, &result, http.StatusOK)\n\t\treturn api.Page[FloatingIP]{Items: result.FloatingIPs, NextLink: api.NextPageLink(result.Links)}, err\n\t})\n}\n\nfunc resourcePath(id string) string { return collectionPath + \"/\" + url.PathEscape(id) }\n"
+  }
+}

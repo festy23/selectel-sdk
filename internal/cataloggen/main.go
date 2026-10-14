@@ -21,6 +21,9 @@ type family struct {
 }
 
 var families = map[string]family{
+	"neutron-floating-ips":         {"network", "v2", "iam_project", false},
+	"public-ip-models":             {"public_network", "v1", "iam_project", false},
+	"public-network":               {"public_network", "v1", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +37,17 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"neutron-floating-ips GET /v2.0/floatingips":                       "network.v2.floatingips.list",
+	"neutron-floating-ips POST /v2.0/floatingips":                      "network.v2.floatingips.create",
+	"neutron-floating-ips GET /v2.0/floatingips/{floatingip_id}":       "network.v2.floatingips.get",
+	"neutron-floating-ips PUT /v2.0/floatingips/{floatingip_id}":       "network.v2.floatingips.update",
+	"neutron-floating-ips DELETE /v2.0/floatingips/{floatingip_id}":    "network.v2.floatingips.delete",
+	"public-network GET /v1/public_ports":                              "public_network.v1.direct_ports.list",
+	"public-network POST /v1/public_ports":                             "public_network.v1.direct_ports.create",
+	"public-network GET /v1/public_ports/{port_id}":                    "public_network.v1.direct_ports.get",
+	"public-network PATCH /v1/public_ports/{port_id}":                  "public_network.v1.direct_ports.update",
+	"public-network DELETE /v1/public_ports/{port_id}":                 "public_network.v1.direct_ports.delete",
+	"public-network GET /v1/projects/{project_id}/quotas":              "public_network.v1.quotas.get",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
