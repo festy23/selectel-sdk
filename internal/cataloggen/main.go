@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"quota-management":             {"quotas", "v1", "iam_project", true},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,9 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"quota-management GET /v1/projects/{projectID}/quotas":             "quotas.v1.quotas.get",
+	"quota-management PATCH /v1/projects/{projectID}/quotas":           "quotas.v1.quotas.update",
+	"quota-management GET /v1/projects/{projectID}/limits":             "quotas.v1.limits.get",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
@@ -233,6 +237,11 @@ func generate() error {
 						row["recovery_contract_ref"] = b.ContractRef + "#/recovery"
 					}
 					row["limitations"] = []string{"Verification does not establish live availability"}
+				}
+				if name == "quota-management" {
+					row["scope_requirements"] = []string{"account", "project", "region", "pool"}
+					row["auth"] = map[string]any{"scheme": f.Mode, "audience": "selectel", "alternatives": []string{"iam_account"}}
+					row["limitations"] = []string{"Verification does not establish live availability", "No documented quota-exceeded numeric code; protected provider messages are never classified", "No wait or root recovery Handle contract"}
 				}
 				canonical, err := json.Marshal(row)
 				if err != nil {

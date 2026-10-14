@@ -114,6 +114,11 @@ HTTP 400 у Get/Delete означает not_found по официальному 
 операций; у Create/Update он означает provider_error. Наличие названия проекта
 не разрешает поиск для восстановления исхода Create.
 
+### Quota Management
+
+Regional project-scoped `Quotas().V1.Get/Limits/Update` используют отдельные
+[контракты квот](quotas.md). Resell quotas остаются частью `Projects.Get`.
+
 ### Container Registry v1/v2
 
 `Registry.V1.Registries` предоставляет Create/Get/Delete и ListPage/Iterate/Collect.

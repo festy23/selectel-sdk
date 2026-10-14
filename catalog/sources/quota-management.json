@@ -1,0 +1,356 @@
+{
+  "definitions": {
+    "common.Error": {
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/types.ResourceError"
+          },
+          "type": "array"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "common.ErrorResponse": {
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/common.Error"
+        }
+      },
+      "type": "object"
+    },
+    "limits.Limit": {
+      "properties": {
+        "value": {
+          "type": "integer"
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "limits.Response": {
+      "properties": {
+        "quotas": {
+          "additionalProperties": {
+            "items": {
+              "$ref": "#/definitions/limits.Limit"
+            },
+            "type": "array"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "quotas.GetResponse": {
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/common.Error"
+        },
+        "quotas": {
+          "$ref": "#/definitions/types.QuotasGet"
+        }
+      },
+      "type": "object"
+    },
+    "quotas.SetResponse": {
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/common.Error"
+        },
+        "quotas": {
+          "$ref": "#/definitions/types.QuotasSet"
+        }
+      },
+      "type": "object"
+    },
+    "types.QuotaGet": {
+      "properties": {
+        "used": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "integer"
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "types.QuotaSet": {
+      "properties": {
+        "value": {
+          "type": "integer"
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "types.QuotasGet": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/definitions/types.QuotaGet"
+        },
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "types.QuotasSet": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/definitions/types.QuotaSet"
+        },
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "types.ResourceError": {
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "types.UserQuotas": {
+      "properties": {
+        "quotas": {
+          "$ref": "#/definitions/types.QuotasSet"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "Managing project quotas and limits",
+    "title": "Quota Management API",
+    "version": "v1.0.0"
+  },
+  "paths": {
+    "/v1/projects/{projectID}/limits": {
+      "get": {
+        "operationId": "getProjectLimitsV1",
+        "parameters": [
+          {
+            "description": "Project ID",
+            "in": "path",
+            "name": "projectID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "description": "filter by resources",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "resource",
+            "type": "array"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/limits.Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/common.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/common.ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          },
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get project limits",
+        "tags": [
+          "Limits"
+        ]
+      }
+    },
+    "/v1/projects/{projectID}/quotas": {
+      "get": {
+        "operationId": "getProjectQuotasV1",
+        "parameters": [
+          {
+            "description": "project ID",
+            "in": "path",
+            "name": "projectID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "description": "filter by resources",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "resource",
+            "type": "array"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/quotas.GetResponse"
+            }
+          },
+          "207": {
+            "description": "Multi-Status",
+            "schema": {
+              "$ref": "#/definitions/quotas.GetResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/common.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/common.ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          },
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get project quotas",
+        "tags": [
+          "Quotas"
+        ]
+      },
+      "patch": {
+        "operationId": "setProjectQuotasV1",
+        "parameters": [
+          {
+            "description": "Project ID",
+            "in": "path",
+            "name": "projectID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Quotas data",
+            "in": "body",
+            "name": "quotasData",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/types.UserQuotas"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/quotas.SetResponse"
+            }
+          },
+          "207": {
+            "description": "Multi-Status",
+            "schema": {
+              "$ref": "#/definitions/quotas.SetResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/common.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/common.ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          },
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Set project quotas",
+        "tags": [
+          "Quotas"
+        ]
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "iam_token_account_scoped": {
+      "description": "IAM token for account",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    },
+    "iam_token_project_scoped": {
+      "description": "IAM token for project",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0"
+}
