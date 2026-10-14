@@ -203,3 +203,59 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### ClickHouse DBaaS v2
+
+`Databases().V2.ClickHouse.Datastores` предоставляет 11 операций закреплённого
+официального SDK: Create/Get/ListPage/Iterate/Collect, Update/Delete,
+UpdatePassword, UpdateSecurityGroups, EnableLogging/DisableLogging, Configure
+и SettingsPage/IterateSettings/Settings. DTO находятся в отдельном пакете
+`databases/clickhouse`; методы не используют DBaaS v1 request или response DTO.
+
+[Source artifact](../../../catalog/sources/dbaas-clickhouse-v2.json) закрепляет
+revision `1e051e332ba3e5fc8690f27128be34f7fe2caa0d`, определения всех полей,
+валидацию официального SDK и wire/status fixtures. Create передаёт Name,
+TypeID, SubnetID, защищённый Password, NodeGroups и явно заданные optional Config,
+LogPlatform и SecurityGroups без defaults. NodeGroups сохраняет Name/Role/Flavor/
+NodeCount и optional Weight/HasPublicIPs; проверяются DATA/KEEPER и требования
+FIXED/FLEXIBLE flavor официального SDK. Числа представлены точным Integer.
+Config является защищённым JSON object: схема не задаёт закрытый список ключей,
+поэтому SDK не выдумывает свойства произвольной конфигурации.
+
+Create принимает 201 и требует ID; accepted Receipt сохраняется при malformed
+success. Остальные изменения возвращают 200 с direct datastore либо 204 без
+тела для Delete/DisableLogging. Все изменения сохраняют исходный exact ref,
+receipt и неизвестный исход; replay отсутствует. HTTP 400/401/403/404 отображаются
+общим runtime в provider_error/unauthenticated/permission_denied/not_found.
+SDK generic error не является доказательством отказа от применения изменения.
+Get выполняет exact observation и отклоняет чужой project/ID; ref требует точного
+scope, generation, endpoint и kind `clickhouse_datastore`. Get не доказывает
+авторство неизвестного изменения; wait/recovery contract не объявлен.
+
+List и Settings обходят single provider envelope с общими лимитами и cursor
+replay/skip. Settings сохраняет весь parameter DTO, nullable min/max/choices/
+invalid_values/default_value и absent/false значения. DefaultValue защищён;
+явное раскрытие требует Value(), затем Reveal(). Nullable использует защиту
+форматирования/MarshalText из shared fix `4534c4e` (PR #80); реализация остальных
+операций PR #80 и DBaaS v1 lifecycle PR #78 не включена в эту ветку.
+
+Все вызовы требуют IAM project token и immutable project/location scope.
+Опубликованный пример dbaas-go README закрепляет default endpoint ru-2
+`https://ru-2.dbaas.selcloud.ru/v2`. Для остальных pools нужен явный scoped
+EndpointOverride; адреса v2 не выводятся автоматически из v1 URL map.
+Verification остаётся offline; node/shard group mutations принадлежат отдельной
+задаче #20, и полный DBaaS API inventory не объявлен завершённым.
+
+Пример в уже созданном scoped клиенте:
+
+```go
+regional, err := project.Location("", "ru-2")
+if err != nil { return err }
+service := regional.Databases().V2.ClickHouse.Datastores
+parameters, err := service.Settings(ctx, pagination.Options{MaxItems: 100})
+if err != nil { return err } // incomplete сохраняет Items/NextCursor
+_ = parameters.Items
+state, err := service.Get(ctx, exactClickHouseRef)
+if err != nil { return err }
+_ = state.Data.Status // provider status; не утверждение SQL readiness
+```

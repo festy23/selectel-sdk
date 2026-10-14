@@ -1,0 +1,84 @@
+{
+  "operation_id": "databases.v2.clickhouse.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/dbaas-go/blob/1e051e332ba3e5fc8690f27128be34f7fe2caa0d/README.md",
+    "recipe_source": "internal/endpoints/locations.go",
+    "generation": "v2",
+    "documented_pool": "ru-2; others require exact explicit EndpointOverride; not inferred from v1",
+    "base_includes": "/v2",
+    "scope": "IAM project token; immutable account/project/location",
+    "redirects": "reject"
+  },
+  "request": {
+    "source_schema": "sources/dbaas-clickhouse-v2.json#/paths/~1datastores~1clickhouse/get",
+    "source_operation": {
+      "operationId": "GetDatastoreList",
+      "x-operation-locator": "clickhouse.DatastoreService.GetDatastoreList",
+      "x-sdk-action": "list",
+      "parameters": [],
+      "responses": {
+        "200": {
+          "schema": {
+            "properties": {
+              "datastores": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/DatastoreResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "databases/clickhouse/client.go",
+    "dto_source": "databases/clickhouse/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "fields": "all SDK fields projected; absent optional fields omitted; explicit zero/false/empty preserved",
+    "protected_inputs": "password/new_password/config revealed only by private wire serializer",
+    "validation": "SDK validate constraints and exact scoped generation refs before network"
+  },
+  "response": {
+    "source_schema": {
+      "200": {
+        "schema": {
+          "properties": {
+            "datastores": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DatastoreResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "databases/clickhouse/client.go",
+    "dto_source": "databases/clickhouse/types_generated.go",
+    "fields": "all pinned SDK response fields generated; exact numbers; raw provider timestamps without invented timezone",
+    "sensitive_fields": [
+      "config",
+      "default_value"
+    ],
+    "scope_checks": "project and exact ID mismatch rejected; SDK Ref cannot be injected",
+    "create": "ID required; accepted receipt retained on malformed success"
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "malformed": "protocol_error",
+    "scope": "scope_mismatch",
+    "transport_after_dispatch": "unknown_outcome receipt; mutation never replayed",
+    "rejection_proof": "not_proven; no outcome inference from SDK generic error"
+  },
+  "retry": "bounded safe reads; mutations never replayed",
+  "pagination": {
+    "shape": "single provider envelope, bounded replay+skip continuation; best_effort consistency"
+  },
+  "wait": "unavailable; exact Get is observation, not attribution",
+  "recovery": "unavailable; exact known references retained, no name lookup",
+  "verification": "offline only; no live cloud availability claim"
+}

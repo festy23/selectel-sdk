@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"dbaas-clickhouse-v2":          {"databases", "v2", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,18 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"dbaas-clickhouse-v2 GET /datastores/clickhouse":                                "databases.v2.clickhouse.list",
+	"dbaas-clickhouse-v2 POST /datastores/clickhouse":                               "databases.v2.clickhouse.create",
+	"dbaas-clickhouse-v2 GET /datastores/clickhouse/{datastore_id}":                 "databases.v2.clickhouse.get",
+	"dbaas-clickhouse-v2 PATCH /datastores/clickhouse/{datastore_id}":               "databases.v2.clickhouse.update",
+	"dbaas-clickhouse-v2 DELETE /datastores/clickhouse/{datastore_id}":              "databases.v2.clickhouse.delete",
+	"dbaas-clickhouse-v2 PATCH /datastores/clickhouse/{datastore_id}/password":      "databases.v2.clickhouse.password",
+	"dbaas-clickhouse-v2 PUT /datastores/clickhouse/{datastore_id}/security-groups": "databases.v2.clickhouse.security_groups",
+	"dbaas-clickhouse-v2 PUT /datastores/clickhouse/{datastore_id}/log-platform":    "databases.v2.clickhouse.enable_logging",
+	"dbaas-clickhouse-v2 DELETE /datastores/clickhouse/{datastore_id}/log-platform": "databases.v2.clickhouse.disable_logging",
+	"dbaas-clickhouse-v2 PUT /datastores/clickhouse/{datastore_id}/config":          "databases.v2.clickhouse.configure",
+	"dbaas-clickhouse-v2 GET /datastores/clickhouse/configuration-parameters":       "databases.v2.clickhouse.settings",
+
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
