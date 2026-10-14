@@ -7164,9 +7164,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.networks.create.json": "ec15ca00f0b04e54d6cd85e574d52fc62f6ae9098e00a1a7d10e06e966649a71"
+      "contracts/network.v2.networks.create.json": "6a8cb3bfd80bcf63631cab9ce7102099e5c61936027596f5ac5bfaa1ec0feb79"
     },
-    "contract_revision": "311c3ecb76f6aad419b6963298b20fd539cbb22d99cac099aefe4c0b79d636cb",
+    "contract_revision": "68d0ca72db07ca43a968d53f6b8cd9f92459ee9bbcb6f94d07138f5102a6ffaa",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.networks.create.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.networks.create.json#/errors",
@@ -7201,13 +7201,13 @@
     "service": "network",
     "source": {
       "operation_locator": "POST /v2.0/networks",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "311c3ecb76f6aad419b6963298b20fd539cbb22d99cac099aefe4c0b79d636cb",
+      "contract_revision": "68d0ca72db07ca43a968d53f6b8cd9f92459ee9bbcb6f94d07138f5102a6ffaa",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "6bf2df537528b27a4d00e8bcd7d8d5396b3646b97338298689cef714e424cbdd",
+      "implementation_revision": "b91278d5a48793ffe7c49b408e6dd843f19a0ee2262492b3fdf3cd2f4c321aed",
       "level": "offline"
     },
     "wait_goals": []
@@ -7221,9 +7221,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.networks.delete.json": "d8013f6f23941ccd2f591dfe88b910660ab721817e63af20ad862fc4f19058d8"
+      "contracts/network.v2.networks.delete.json": "47ba5524871d12f6843e2d6abd01d2e4b35519528f6c1378a7fb183977671994"
     },
-    "contract_revision": "a6a8c9d433a056af162e81a488baed4e84b61d53ed9c2cab19e91ab1cfa02582",
+    "contract_revision": "0609b9c0dc4594080df4e1f7cc1614e6ebc206e4aca18ed74a4d4e6b79ddd812",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.networks.delete.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.networks.delete.json#/errors",
@@ -7258,13 +7258,13 @@
     "service": "network",
     "source": {
       "operation_locator": "DELETE /v2.0/networks/{network_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "a6a8c9d433a056af162e81a488baed4e84b61d53ed9c2cab19e91ab1cfa02582",
+      "contract_revision": "0609b9c0dc4594080df4e1f7cc1614e6ebc206e4aca18ed74a4d4e6b79ddd812",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "0946b9dbe4d9adcd5bc1347c5a7934f383f01aa3e9125af8fc6dfdea1293043f",
+      "implementation_revision": "1d68096c1c1400323080f59e10c16c45fb6ae2ab0e8b95141d72b4a553d6745b",
       "level": "offline"
     },
     "wait_goals": []
@@ -7278,9 +7278,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.networks.get.json": "ea8df85f4bf743b93a1a426d96e5b66e0d7b33f1427d8620ddcbf3edfe76df0a"
+      "contracts/network.v2.networks.get.json": "806547cfaa7317e64520bcf7fa25e3d1272c1bd1d6d0fc2d8111c64f35cb0fee"
     },
-    "contract_revision": "96acac526806adaca0a3e139289216300d7482222db0f7c6095e33b8f5d0f398",
+    "contract_revision": "a68d91ba7c004b9946465f3cc6135e53a8dbaa730332521bf76058c4f1a8695a",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/network.v2.networks.get.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.networks.get.json#/errors",
@@ -7315,13 +7315,13 @@
     "service": "network",
     "source": {
       "operation_locator": "GET /v2.0/networks/{network_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "96acac526806adaca0a3e139289216300d7482222db0f7c6095e33b8f5d0f398",
+      "contract_revision": "a68d91ba7c004b9946465f3cc6135e53a8dbaa730332521bf76058c4f1a8695a",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "cf22dea7018993ab2c0371dcfee2e3dfc9768390667f321c67935a6a35180833",
+      "implementation_revision": "3623eb9dbd366481f9d54a8fe45250f2021dc6d2f3e7cdd6ac373009fcdf24be",
       "level": "offline"
     },
     "wait_goals": []
@@ -7335,9 +7335,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.networks.list.json": "12bfecba19d736f6ceb72629c753948bab31773d994da50a534a7558241d4775"
+      "contracts/network.v2.networks.list.json": "df6bd04834e47ba30844ba04aa6d6d8ebaffd01485a3f79d4608e43ca6d8f52b"
     },
-    "contract_revision": "80e22df20936f481d68683b6de78ef43be18091c38691f08b370f6d810b1c6ea",
+    "contract_revision": "907600f46be248989f6577d8cd69fa37e69d7902db4bd007f1bf56a85fdedf50",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/network.v2.networks.list.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.networks.list.json#/errors",
@@ -7372,13 +7372,13 @@
     "service": "network",
     "source": {
       "operation_locator": "GET /v2.0/networks",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "80e22df20936f481d68683b6de78ef43be18091c38691f08b370f6d810b1c6ea",
+      "contract_revision": "907600f46be248989f6577d8cd69fa37e69d7902db4bd007f1bf56a85fdedf50",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "4bc97ad581f337d1789207303bd9449868bdb0eafa4639b7a2282717650be886",
+      "implementation_revision": "1dc8d13c1c55b69793ef898de56e4603cc539ba25c46373741df328730b278af",
       "level": "offline"
     },
     "wait_goals": []
@@ -7392,9 +7392,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.networks.update.json": "916f1fad8119110bfacf4372fd32963fd7f0b8a5909f66f7f8fa5c4e7d9e5014"
+      "contracts/network.v2.networks.update.json": "5364c9886595e9bf4d77ba1c7c83c71cab9bbe99b9263d98762abe2868ec430c"
     },
-    "contract_revision": "e2e5438b8b9ceb48f99b58cfc3d1c4e08bafc565bb26ffbc34884b06ccf1c8cb",
+    "contract_revision": "a17e9b7cf4cbe8ac685adf66f95ba2cc9725a47d2f9b33712daceeb75e10a008",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.networks.update.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.networks.update.json#/errors",
@@ -7429,13 +7429,13 @@
     "service": "network",
     "source": {
       "operation_locator": "PUT /v2.0/networks/{network_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "e2e5438b8b9ceb48f99b58cfc3d1c4e08bafc565bb26ffbc34884b06ccf1c8cb",
+      "contract_revision": "a17e9b7cf4cbe8ac685adf66f95ba2cc9725a47d2f9b33712daceeb75e10a008",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "478857be947f656c25518158e061115e029465dfd4c8c634d5c32013b8a1580e",
+      "implementation_revision": "fc7b0c77869c0aa93cc028608d1a961972f5232ec9e9e26ce6a73b5ea7313f47",
       "level": "offline"
     },
     "wait_goals": []
@@ -7449,9 +7449,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.ports.create.json": "d4ffa65b2fea57c756602490d8cb22430263e92de17ea313d86c3439f3435d42"
+      "contracts/network.v2.ports.create.json": "d55fe1141d42baeef6762dca92faa256e03888dbe3bbd42f88d5481a23f9728c"
     },
-    "contract_revision": "bbc7d965d19c980432c0e3da32b996d7bd0f5b1c972215a1117eb4e9b2ce11a0",
+    "contract_revision": "259555b1f429248e4c7ed8e318392e8d68d9054424305af91577ec9302265b2b",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.ports.create.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.ports.create.json#/errors",
@@ -7486,13 +7486,13 @@
     "service": "network",
     "source": {
       "operation_locator": "POST /v2.0/ports",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "bbc7d965d19c980432c0e3da32b996d7bd0f5b1c972215a1117eb4e9b2ce11a0",
+      "contract_revision": "259555b1f429248e4c7ed8e318392e8d68d9054424305af91577ec9302265b2b",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "f82e13f3198a28d680123b10fca5bcb26ab1af1f16c8cb169f2254c5955e642c",
+      "implementation_revision": "e17d66ab5709bece60d93560210653c838f92bdbe009847ce576aef291711ec7",
       "level": "offline"
     },
     "wait_goals": []
@@ -7506,9 +7506,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.ports.delete.json": "e3b0fac05cf0d0e53e4f82eaea3d2d641495942ada8c3bbb7b879430ff92d71f"
+      "contracts/network.v2.ports.delete.json": "d1d5115197d407abb409e1eddbe5fc61c8bc86316b636e639d947ad965c571bd"
     },
-    "contract_revision": "ecb46cf2648c0535b1da42f9797cde555c772dfb31dbc91318379b494cd44f18",
+    "contract_revision": "acb6ec3ace2b09cacaac045b5525bf58667233b7a28984136bab2d1f8791cf23",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.ports.delete.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.ports.delete.json#/errors",
@@ -7543,13 +7543,13 @@
     "service": "network",
     "source": {
       "operation_locator": "DELETE /v2.0/ports/{port_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "ecb46cf2648c0535b1da42f9797cde555c772dfb31dbc91318379b494cd44f18",
+      "contract_revision": "acb6ec3ace2b09cacaac045b5525bf58667233b7a28984136bab2d1f8791cf23",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "a7c0425a3ab70f098cc6e2ae288dfbaa5bba74dd4c30c435ba93cd3c72d61e3c",
+      "implementation_revision": "2a44ed9a58972fa2ffe991de99408a211ffdbcca8fecfc359b4bde1f84e31ec4",
       "level": "offline"
     },
     "wait_goals": []
@@ -7563,9 +7563,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.ports.get.json": "4bc1aca2a24a32a66fe6cdb4e0cdc5a369684129c8322bca30af9f8fc10ba4ed"
+      "contracts/network.v2.ports.get.json": "734ce16f99d7ecb30efd1286c8583166586b311c1495837779c89d487d9f7d95"
     },
-    "contract_revision": "d6d7d00f4ae0fc99a3947eb45cd74bbfe2d5560ef6b759b715b1c5f7c4aaf940",
+    "contract_revision": "ac04905f484d58f87ca20fba686c26995d71e8fd6712088e8ebbbc30e364e723",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/network.v2.ports.get.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.ports.get.json#/errors",
@@ -7600,13 +7600,13 @@
     "service": "network",
     "source": {
       "operation_locator": "GET /v2.0/ports/{port_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "d6d7d00f4ae0fc99a3947eb45cd74bbfe2d5560ef6b759b715b1c5f7c4aaf940",
+      "contract_revision": "ac04905f484d58f87ca20fba686c26995d71e8fd6712088e8ebbbc30e364e723",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "49a5b5705047d497307cccd21e5f3f1877558b2c8209e58f20024cfcb7691e69",
+      "implementation_revision": "f5e9b70c5340fdafc20fa4990f2c07f75fe5183bf679cd272d276777820e81c3",
       "level": "offline"
     },
     "wait_goals": []
@@ -7620,9 +7620,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.ports.list.json": "9ca3e0ba6dcce56cbbd37ee036ca73ed39ffcd2ab22d800088c09e629d14d913"
+      "contracts/network.v2.ports.list.json": "29357a849754e807104f903a70ad9e62a5a40b8f998903b1d3d115720b3cd77c"
     },
-    "contract_revision": "171f8fd2cc385ff3ab3da7e43383e8d07270a3a3ed7d0474a1aea7a214ad9469",
+    "contract_revision": "cd31daeff785310f1625299464afdc4b3385151250bc8c9b5dfb07bd7faf2100",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/network.v2.ports.list.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.ports.list.json#/errors",
@@ -7657,13 +7657,13 @@
     "service": "network",
     "source": {
       "operation_locator": "GET /v2.0/ports",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "171f8fd2cc385ff3ab3da7e43383e8d07270a3a3ed7d0474a1aea7a214ad9469",
+      "contract_revision": "cd31daeff785310f1625299464afdc4b3385151250bc8c9b5dfb07bd7faf2100",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "ef950eb9cc1b3044357e7e2b72e5211085db34c2c8ebb782a78fcc10c1f87cc9",
+      "implementation_revision": "b3fb0ab1ed41f3c67f14b8808d9ddd016b4b5fcd356eb3bfe1934d32dbc51b24",
       "level": "offline"
     },
     "wait_goals": []
@@ -7677,9 +7677,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.ports.update.json": "2cfb5de2734fc4c95b011bb7ca42d6ed84023c7e2350926f7ab4a8bb971d55a0"
+      "contracts/network.v2.ports.update.json": "b1f3833ed58f5045bb5193163b649911bf7cc6b89b3cc3e8944f9354cd57e1a5"
     },
-    "contract_revision": "4dc07cb0e48ded4cf19d9a2bdcb3ee43df7601450941bb287b27a0415881ce1a",
+    "contract_revision": "746cdb1ba118f91c9808e66f9eb610b45aadbefa2035beb247b508628b7cd7ec",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.ports.update.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.ports.update.json#/errors",
@@ -7714,13 +7714,13 @@
     "service": "network",
     "source": {
       "operation_locator": "PUT /v2.0/ports/{port_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "4dc07cb0e48ded4cf19d9a2bdcb3ee43df7601450941bb287b27a0415881ce1a",
+      "contract_revision": "746cdb1ba118f91c9808e66f9eb610b45aadbefa2035beb247b508628b7cd7ec",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "275a02630797e0328981d2e7cc21394321c5f02e5e3a70486ac1cc6a108e352b",
+      "implementation_revision": "c76352346806435aa2ca6caf7e0d6f494c0d3d71fabd7b3a2b4a7c1c1764e72e",
       "level": "offline"
     },
     "wait_goals": []
@@ -7734,9 +7734,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.subnets.create.json": "37b7393c525d8ff018c3661bd0b73e2ea31501c8ccfd0fdae9fb8f075803b16d"
+      "contracts/network.v2.subnets.create.json": "d0a5604a8ac2e48031df46708e533b3d57d5a3bb1a5e5c3750ed94858dfddccc"
     },
-    "contract_revision": "e06dda5d4f419be35f5a8ab37d27b2fc24ce4af582fabc031bd834f4d0c89017",
+    "contract_revision": "f09548891163b2029ee6df45286a4dbf25a4f11b2fc7d64b7a310c644d11eb74",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.subnets.create.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.subnets.create.json#/errors",
@@ -7771,13 +7771,13 @@
     "service": "network",
     "source": {
       "operation_locator": "POST /v2.0/subnets",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "e06dda5d4f419be35f5a8ab37d27b2fc24ce4af582fabc031bd834f4d0c89017",
+      "contract_revision": "f09548891163b2029ee6df45286a4dbf25a4f11b2fc7d64b7a310c644d11eb74",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "7959ccfe7d2c261c093020f13863c6309ecc9cc84b1875bb424110b62d691141",
+      "implementation_revision": "397879c561286664e6674701e2ae28d9059971dfb0976c0e4eb0c2a2235aede8",
       "level": "offline"
     },
     "wait_goals": []
@@ -7791,9 +7791,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.subnets.delete.json": "95a2bf5942bc8aea5c8646ffbe8eb265889cd70138a44b72b4e0e7b9c5127611"
+      "contracts/network.v2.subnets.delete.json": "706359462ab5a25ca5f8dba4280bfd86f6a33a1252d701c8c06847055e1c22a8"
     },
-    "contract_revision": "8d40bb1bf80543c7846eac85b83be6c6a33d4f6164278e195585b11b8f492321",
+    "contract_revision": "d1ad8833dccfe16d39b286fd768191bfe801f9685e2190e803cf312cd839ab08",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.subnets.delete.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.subnets.delete.json#/errors",
@@ -7828,13 +7828,13 @@
     "service": "network",
     "source": {
       "operation_locator": "DELETE /v2.0/subnets/{subnet_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "8d40bb1bf80543c7846eac85b83be6c6a33d4f6164278e195585b11b8f492321",
+      "contract_revision": "d1ad8833dccfe16d39b286fd768191bfe801f9685e2190e803cf312cd839ab08",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "c50ee445bedc9da18f041649e7319cbe10d7463d5507fd72a326d9d32cdf25aa",
+      "implementation_revision": "bf93e40289c03f17ab5fd81a90a1b77d34fc37310bad9d1ef32a944ab5e6affa",
       "level": "offline"
     },
     "wait_goals": []
@@ -7848,9 +7848,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.subnets.get.json": "f1955f399d67b45484072f9109a7a070a3e8145b3b40d4afd30d6294989d7154"
+      "contracts/network.v2.subnets.get.json": "dce46a115f86b40291db1df502a8959a9de2924ae7cce626342a1ee09c4d2bc4"
     },
-    "contract_revision": "db109ef2b3cd3ba10cb0e02a7643a01c74ddd0ac7c36f7142c5774818d163124",
+    "contract_revision": "f07903fb8db05d8a25ca159e3cf1218e1a86533b74040f258a04ccc74482aeb3",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/network.v2.subnets.get.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.subnets.get.json#/errors",
@@ -7885,13 +7885,13 @@
     "service": "network",
     "source": {
       "operation_locator": "GET /v2.0/subnets/{subnet_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "db109ef2b3cd3ba10cb0e02a7643a01c74ddd0ac7c36f7142c5774818d163124",
+      "contract_revision": "f07903fb8db05d8a25ca159e3cf1218e1a86533b74040f258a04ccc74482aeb3",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "c57f846a167e8db2e3ad5c28aea24c6450d9dd3ae2fceb4acf03dc597cc0a4e4",
+      "implementation_revision": "ab90f00e9f6732db403fa2f7b0845ce13ad4ebc9b8ed5570a61bfcceaf82ad53",
       "level": "offline"
     },
     "wait_goals": []
@@ -7905,9 +7905,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.subnets.list.json": "6d50c378d1a4aabe423c8e32dfee4af21079ac65b8ee19b914cb087d24df97f2"
+      "contracts/network.v2.subnets.list.json": "f2c6c1ac9791e45951661d62304b037f03560927d5a633032d07e1b1a63b20e9"
     },
-    "contract_revision": "381a19df6110aad33fe4f74c6ecb6ee25cbb2f6704e41c6bd3aa87aff575d11c",
+    "contract_revision": "ba49c1f13d33924d3a8257fba499100bbbc330b286416cbe6266750bfe3ab00c",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/network.v2.subnets.list.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.subnets.list.json#/errors",
@@ -7942,13 +7942,13 @@
     "service": "network",
     "source": {
       "operation_locator": "GET /v2.0/subnets",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "381a19df6110aad33fe4f74c6ecb6ee25cbb2f6704e41c6bd3aa87aff575d11c",
+      "contract_revision": "ba49c1f13d33924d3a8257fba499100bbbc330b286416cbe6266750bfe3ab00c",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "1202b22d53bb22c9f53d29505fee9ef660d1ff118fa583374881466ddd7a4252",
+      "implementation_revision": "34f5590b3b3e96fc1aadcba2fcc0cc393bd29f83b7ce5e5e5a6335cbe7d2c187",
       "level": "offline"
     },
     "wait_goals": []
@@ -7962,9 +7962,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/network.v2.subnets.update.json": "7fbcb38fa7e0f211fbd09522175440a95c74c9a8c3d87d40800ef51d69c54640"
+      "contracts/network.v2.subnets.update.json": "a6b80c8c15ad161b47ae421b9ffa550fb1a491a999216ac211f058d306a565cf"
     },
-    "contract_revision": "df76603a48a865311aa95add370a8a53be7cf60ad75e6e1d07c5c4709279a30a",
+    "contract_revision": "911677c9faa8c3ffa600661d5905e7493e3b12ab7b661b3a453a3a17e6d4d9fb",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/network.v2.subnets.update.json#/endpoint",
     "error_binding_ref": "contracts/network.v2.subnets.update.json#/errors",
@@ -7999,13 +7999,13 @@
     "service": "network",
     "source": {
       "operation_locator": "PUT /v2.0/subnets/{subnet_id}",
-      "revision": "fcb34e6ba8428c790f0c477bb63c4bf3896403b32ed36aca8ec071141144d754",
+      "revision": "e2555894fc8b8ebce236da0bb972e0653d071a3d193a7d402f5b204ab49fb0e0",
       "uri": "https://github.com/selectel/vpc-go/tree/460f09b941de260160c68d1c9cac3ae792096bf5"
     },
     "verification": {
-      "contract_revision": "df76603a48a865311aa95add370a8a53be7cf60ad75e6e1d07c5c4709279a30a",
+      "contract_revision": "911677c9faa8c3ffa600661d5905e7493e3b12ab7b661b3a453a3a17e6d4d9fb",
       "evidence_ref": "network/core_test.go",
-      "implementation_revision": "f4ff5f4cfbe6ada63f9dcf3f6a9f3aca14fb949e672e766629761a35f00fb713",
+      "implementation_revision": "047c71d86479a294449adaa5b4cae1222f8fec6887c7125f12b8ec2e70e51038",
       "level": "offline"
     },
     "wait_goals": []

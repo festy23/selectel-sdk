@@ -22,7 +22,8 @@ shared network сохраняет исходный auth scope. Её можно �
 
 Create принимает source-only Spec; `SubnetCreateRequest.Network` и
 `PortCreateRequest.Network` задают точную network ref, из неё передаётся
-`network_id`. Явные owner aliases должны совпадать между собой, но могут
+`network_id`. Request parent в Receipt — известный контекст, не доказательство
+identity созданного child без подтверждённого response ID. Явные owner aliases должны совпадать между собой, но могут
 отличаться от auth project: IAM view при этом не меняется, права проверяет
 провайдер. При отсутствии owner ожидается проект токена. Response aliases
 проверяются на согласованность. Reads и updates не приравнивают owner к scope.
@@ -36,11 +37,24 @@ Create принимает source-only Spec; `SubnetCreateRequest.Network` и
 
 Generated DTO включают все поля трёх resource-моделей pinned vpc-go; Request
 Spec включают поля соответствующих CreateRequest/UpdateRequest и стандартные
-owner aliases/shared из Gophercloud. Дополнительные plugin поля не принимаются
+owner aliases/shared/MAC update из Gophercloud. Подтверждённые
+[документацией Selectel network arguments](https://docs.selectel.ru/terraform/openstack-provider-reference/networking-neutron/resources/openstack_networking_network_v2/)
+MTU, router:external, vlan_transparent и QoS policy ID передаются явно;
+[port QoS policy ID](https://docs.selectel.ru/terraform/openstack-provider-reference/networking-neutron/resources/openstack_networking_port_v2/)
+также типизирован. Для QoS сохраняются omitted/null/value; null удаляет явную
+policy. Наличие typed conditional поля не обещает deployment extension или
+права: провайдер проверяет net-mtu-writable, external, vlan-transparent и qos.
+MTU для приватных сетей Selectel документирован до 8500 Б. SDK не использует
+этот частный лимит для произвольной shared/external network без доказанной
+классификации ресурса. Дополнительные plugin поля не принимаются
 через map или raw bypass. В частности исключены physical `provider:*`, VIF
 `binding:*`, subnet pools/segments, bulk mutations, `propagate_uplink_status`,
-`value_specs`; tag mutations относятся к другой capability. Это не заявление
-полного покрытия Neutron: inventory_complete=false, coverage_ratio=null.
+`value_specs`; tag mutations относятся к другой capability. Запись port_security_enabled исключена по
+[прямому ограничению Selectel](https://docs.selectel.ru/cloud-servers/cloud-networks/about-networks/#traffic-filtering-port-security):
+в новых сетях фильтрацию нельзя выключить, а в старых нельзя включить. Это
+не вывод из отсутствующего поля SDK. Поддержка provider-segments и binding
+плагинов не следует из общей Terraform reference и не эмулируется.
+Это не заявление полного покрытия Neutron: inventory_complete=false, coverage_ratio=null.
 
 Nil опускает optional поле; false, пустая строка и пустой
 slice передают исходное значение. Slice `nil` опускается, slice `[]` передаётся.

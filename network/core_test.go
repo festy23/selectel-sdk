@@ -343,3 +343,58 @@ func TestPortUpdatePreservesMACAndNullableDHCPOption(t *testing.T) {
 		t.Fatalf("nullable %+v %v", got, e)
 	}
 }
+
+func TestNetworkWritableMTUAndExternalPreserveSourceValues(t *testing.T) {
+	c := client(t, func(r *http.Request) (*http.Response, error) {
+		var body map[string]map[string]json.RawMessage
+		json.NewDecoder(r.Body).Decode(&body)
+		if string(body["network"]["mtu"]) != "8500" || string(body["network"]["router:external"]) != "false" {
+			t.Fatalf("confirmed extension values %s", body["network"])
+		}
+		status := 200
+		if r.Method == "POST" {
+			status = 201
+		}
+		return reply(status, `{"network":{"id":"n","mtu":8500,"router:external":false}}`), nil
+	})
+	mtu, _ := types.ParseInteger("8500")
+	off := false
+	got, e := c.Networks.Create(context.Background(), network.NetworkCreateSpec{MTU: &mtu, RouterExternal: &off}, types.CallOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = c.Networks.Update(context.Background(), network.NetworkUpdateRequest{Ref: *got.Data.Ref, Spec: network.NetworkUpdateSpec{MTU: &mtu, RouterExternal: &off}}, types.CallOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+}
+
+func TestConditionalQOSAndVLANFieldsRemainExplicit(t *testing.T) {
+	c := client(t, func(r *http.Request) (*http.Response, error) {
+		var body map[string]map[string]json.RawMessage
+		json.NewDecoder(r.Body).Decode(&body)
+		if strings.Contains(r.URL.Path, "networks") {
+			if string(body["network"]["vlan_transparent"]) != "false" || string(body["network"]["qos_policy_id"]) != `"policy"` {
+				t.Fatal("network conditional fields omitted")
+			}
+			return reply(201, `{"network":{"id":"n","qos_policy_id":"policy","vlan_transparent":false}}`), nil
+		}
+		if string(body["port"]["qos_policy_id"]) != "null" {
+			t.Fatal("explicit policy removal omitted")
+		}
+		return reply(200, `{"port":{"id":"p","network_id":"n","qos_policy_id":null,"qos_network_policy_id":"policy"}}`), nil
+	})
+	off := false
+	created, e := c.Networks.Create(context.Background(), network.NetworkCreateSpec{VLANTransparent: &off, QoSPolicyID: types.Value("policy")}, types.CallOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	ref := *created.Data.Ref
+	ref.Kind = "port"
+	ref.ID = "p"
+	ref.Parent = created.Data.Ref
+	got, e := c.Ports.Update(context.Background(), network.PortUpdateRequest{Ref: ref, Spec: network.PortUpdateSpec{QoSPolicyID: types.Null[string]()}}, types.CallOptions{})
+	if e != nil || got.Data.QoSPolicyID == nil || got.Data.QoSNetworkPolicyID == nil {
+		t.Fatalf("policy metadata %+v %v", got, e)
+	}
+}

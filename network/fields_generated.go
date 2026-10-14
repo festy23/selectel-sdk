@@ -18,6 +18,7 @@ const (
 	NetworkFieldName                  NetworkField = "name"
 	NetworkFieldPortSecurityEnabled   NetworkField = "port_security_enabled"
 	NetworkFieldProjectID             NetworkField = "project_id"
+	NetworkFieldQoSPolicyID           NetworkField = "qos_policy_id"
 	NetworkFieldRevisionNumber        NetworkField = "revision_number"
 	NetworkFieldRouterExternal        NetworkField = "router:external"
 	NetworkFieldShared                NetworkField = "shared"
@@ -26,11 +27,12 @@ const (
 	NetworkFieldTags                  NetworkField = "tags"
 	NetworkFieldTenantID              NetworkField = "tenant_id"
 	NetworkFieldUpdatedAt             NetworkField = "updated_at"
+	NetworkFieldVLANTransparent       NetworkField = "vlan_transparent"
 )
 
 func validNetworkField(v NetworkField) bool {
 	switch v {
-	case NetworkFieldAdminStateUp, NetworkFieldAvailabilityZoneHints, NetworkFieldAvailabilityZones, NetworkFieldBlocked, NetworkFieldCreatedAt, NetworkFieldDescription, NetworkFieldDNSDomain, NetworkFieldID, NetworkFieldIsDNSEnabled, NetworkFieldIsPublic, NetworkFieldMTU, NetworkFieldName, NetworkFieldPortSecurityEnabled, NetworkFieldProjectID, NetworkFieldRevisionNumber, NetworkFieldRouterExternal, NetworkFieldShared, NetworkFieldStatus, NetworkFieldSubnets, NetworkFieldTags, NetworkFieldTenantID, NetworkFieldUpdatedAt:
+	case NetworkFieldAdminStateUp, NetworkFieldAvailabilityZoneHints, NetworkFieldAvailabilityZones, NetworkFieldBlocked, NetworkFieldCreatedAt, NetworkFieldDescription, NetworkFieldDNSDomain, NetworkFieldID, NetworkFieldIsDNSEnabled, NetworkFieldIsPublic, NetworkFieldMTU, NetworkFieldName, NetworkFieldPortSecurityEnabled, NetworkFieldProjectID, NetworkFieldQoSPolicyID, NetworkFieldRevisionNumber, NetworkFieldRouterExternal, NetworkFieldShared, NetworkFieldStatus, NetworkFieldSubnets, NetworkFieldTags, NetworkFieldTenantID, NetworkFieldUpdatedAt, NetworkFieldVLANTransparent:
 		return true
 	}
 	return false
@@ -90,6 +92,8 @@ const (
 	PortFieldNetworkID           PortField = "network_id"
 	PortFieldPortSecurityEnabled PortField = "port_security_enabled"
 	PortFieldProjectID           PortField = "project_id"
+	PortFieldQoSNetworkPolicyID  PortField = "qos_network_policy_id"
+	PortFieldQoSPolicyID         PortField = "qos_policy_id"
 	PortFieldRevisionNumber      PortField = "revision_number"
 	PortFieldSecurityGroups      PortField = "security_groups"
 	PortFieldStatus              PortField = "status"
@@ -100,7 +104,7 @@ const (
 
 func validPortField(v PortField) bool {
 	switch v {
-	case PortFieldAdminStateUp, PortFieldAllowedAddressPairs, PortFieldBlocked, PortFieldCreatedAt, PortFieldDescription, PortFieldDeviceID, PortFieldDeviceOwner, PortFieldDHCPBlocked, PortFieldDNSName, PortFieldExtraDHCPOptions, PortFieldFixedIPs, PortFieldID, PortFieldMACAddress, PortFieldName, PortFieldNetworkID, PortFieldPortSecurityEnabled, PortFieldProjectID, PortFieldRevisionNumber, PortFieldSecurityGroups, PortFieldStatus, PortFieldTags, PortFieldTenantID, PortFieldUpdatedAt:
+	case PortFieldAdminStateUp, PortFieldAllowedAddressPairs, PortFieldBlocked, PortFieldCreatedAt, PortFieldDescription, PortFieldDeviceID, PortFieldDeviceOwner, PortFieldDHCPBlocked, PortFieldDNSName, PortFieldExtraDHCPOptions, PortFieldFixedIPs, PortFieldID, PortFieldMACAddress, PortFieldName, PortFieldNetworkID, PortFieldPortSecurityEnabled, PortFieldProjectID, PortFieldQoSNetworkPolicyID, PortFieldQoSPolicyID, PortFieldRevisionNumber, PortFieldSecurityGroups, PortFieldStatus, PortFieldTags, PortFieldTenantID, PortFieldUpdatedAt:
 		return true
 	}
 	return false

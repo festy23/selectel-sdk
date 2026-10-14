@@ -22,7 +22,9 @@
       "subnet pools, segments and routed provider networks",
       "port binding/propagate_uplink_status/value_specs",
       "tag mutations (separate capability)",
-      "bulk create/update/delete"
+      "bulk create/update/delete",
+      "provider-segments conditional physical plugin variants",
+      "port_security_enabled writes: Selectel explicitly disallows toggling traffic filtering"
     ]
   },
   "response": {

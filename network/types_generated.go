@@ -8,14 +8,18 @@ import (
 )
 
 type NetworkCreateSpec struct {
-	AdminStateUp          *bool    `json:"admin_state_up,omitempty"`
-	AvailabilityZoneHints []string `json:"availability_zone_hints,omitzero"`
-	Description           *string  `json:"description,omitempty"`
-	DNSDomain             *string  `json:"dns_domain,omitempty"`
-	Name                  *string  `json:"name,omitempty"`
-	ProjectID             *string  `json:"project_id,omitempty"`
-	Shared                *bool    `json:"shared,omitempty"`
-	TenantID              *string  `json:"tenant_id,omitempty"`
+	AdminStateUp          *bool                   `json:"admin_state_up,omitempty"`
+	AvailabilityZoneHints []string                `json:"availability_zone_hints,omitzero"`
+	Description           *string                 `json:"description,omitempty"`
+	DNSDomain             *string                 `json:"dns_domain,omitempty"`
+	MTU                   *types.Integer          `json:"mtu,omitempty"`
+	Name                  *string                 `json:"name,omitempty"`
+	ProjectID             *string                 `json:"project_id,omitempty"`
+	QoSPolicyID           *types.Nullable[string] `json:"qos_policy_id,omitempty"`
+	RouterExternal        *bool                   `json:"router:external,omitempty"`
+	Shared                *bool                   `json:"shared,omitempty"`
+	TenantID              *string                 `json:"tenant_id,omitempty"`
+	VLANTransparent       *bool                   `json:"vlan_transparent,omitempty"`
 }
 
 func (v NetworkCreateSpec) Validate() error {
@@ -39,34 +43,39 @@ func (v *NetworkCreateSpec) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = NetworkCreateSpec(value)
+	if string(fields["qos_policy_id"]) == "null" {
+		v.QoSPolicyID = types.Null[string]()
+	}
 	v.normalize()
 	return nil
 }
 
 type Network struct {
-	AdminStateUp          *bool              `json:"admin_state_up,omitempty"`
-	AvailabilityZoneHints []string           `json:"availability_zone_hints,omitzero"`
-	AvailabilityZones     []string           `json:"availability_zones,omitzero"`
-	Blocked               *bool              `json:"blocked,omitempty"`
-	CreatedAt             *string            `json:"created_at,omitempty"`
-	Description           *string            `json:"description,omitempty"`
-	DNSDomain             *string            `json:"dns_domain,omitempty"`
-	ID                    *string            `json:"id,omitempty"`
-	IsDNSEnabled          *bool              `json:"is_dns_enabled,omitempty"`
-	IsPublic              *bool              `json:"is_public,omitempty"`
-	MTU                   *types.Integer     `json:"mtu,omitempty"`
-	Name                  *string            `json:"name,omitempty"`
-	PortSecurityEnabled   *bool              `json:"port_security_enabled,omitempty"`
-	ProjectID             *string            `json:"project_id,omitempty"`
-	RevisionNumber        *types.Integer     `json:"revision_number,omitempty"`
-	RouterExternal        *bool              `json:"router:external,omitempty"`
-	Shared                *bool              `json:"shared,omitempty"`
-	Status                *string            `json:"status,omitempty"`
-	Subnets               []string           `json:"subnets,omitzero"`
-	Tags                  []string           `json:"tags,omitzero"`
-	TenantID              *string            `json:"tenant_id,omitempty"`
-	UpdatedAt             *string            `json:"updated_at,omitempty"`
-	Ref                   *types.ResourceRef `json:"ref,omitempty"`
+	AdminStateUp          *bool                   `json:"admin_state_up,omitempty"`
+	AvailabilityZoneHints []string                `json:"availability_zone_hints,omitzero"`
+	AvailabilityZones     []string                `json:"availability_zones,omitzero"`
+	Blocked               *bool                   `json:"blocked,omitempty"`
+	CreatedAt             *string                 `json:"created_at,omitempty"`
+	Description           *string                 `json:"description,omitempty"`
+	DNSDomain             *string                 `json:"dns_domain,omitempty"`
+	ID                    *string                 `json:"id,omitempty"`
+	IsDNSEnabled          *bool                   `json:"is_dns_enabled,omitempty"`
+	IsPublic              *bool                   `json:"is_public,omitempty"`
+	MTU                   *types.Integer          `json:"mtu,omitempty"`
+	Name                  *string                 `json:"name,omitempty"`
+	PortSecurityEnabled   *bool                   `json:"port_security_enabled,omitempty"`
+	ProjectID             *string                 `json:"project_id,omitempty"`
+	QoSPolicyID           *types.Nullable[string] `json:"qos_policy_id,omitempty"`
+	RevisionNumber        *types.Integer          `json:"revision_number,omitempty"`
+	RouterExternal        *bool                   `json:"router:external,omitempty"`
+	Shared                *bool                   `json:"shared,omitempty"`
+	Status                *string                 `json:"status,omitempty"`
+	Subnets               []string                `json:"subnets,omitzero"`
+	Tags                  []string                `json:"tags,omitzero"`
+	TenantID              *string                 `json:"tenant_id,omitempty"`
+	UpdatedAt             *string                 `json:"updated_at,omitempty"`
+	VLANTransparent       *bool                   `json:"vlan_transparent,omitempty"`
+	Ref                   *types.ResourceRef      `json:"ref,omitempty"`
 }
 
 func (v Network) Validate() error {
@@ -90,16 +99,23 @@ func (v *Network) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = Network(value)
+	if string(fields["qos_policy_id"]) == "null" {
+		v.QoSPolicyID = types.Null[string]()
+	}
 	v.normalize()
 	return nil
 }
 
 type NetworkUpdateSpec struct {
-	AdminStateUp *bool   `json:"admin_state_up,omitempty"`
-	Description  *string `json:"description,omitempty"`
-	DNSDomain    *string `json:"dns_domain,omitempty"`
-	Name         *string `json:"name,omitempty"`
-	Shared       *bool   `json:"shared,omitempty"`
+	AdminStateUp    *bool                   `json:"admin_state_up,omitempty"`
+	Description     *string                 `json:"description,omitempty"`
+	DNSDomain       *string                 `json:"dns_domain,omitempty"`
+	MTU             *types.Integer          `json:"mtu,omitempty"`
+	Name            *string                 `json:"name,omitempty"`
+	QoSPolicyID     *types.Nullable[string] `json:"qos_policy_id,omitempty"`
+	RouterExternal  *bool                   `json:"router:external,omitempty"`
+	Shared          *bool                   `json:"shared,omitempty"`
+	VLANTransparent *bool                   `json:"vlan_transparent,omitempty"`
 }
 
 func (v NetworkUpdateSpec) Validate() error {
@@ -123,6 +139,9 @@ func (v *NetworkUpdateSpec) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = NetworkUpdateSpec(value)
+	if string(fields["qos_policy_id"]) == "null" {
+		v.QoSPolicyID = types.Null[string]()
+	}
 	v.normalize()
 	return nil
 }
@@ -172,6 +191,7 @@ type PortCreateSpec struct {
 	MACAddress          *string                  `json:"mac_address,omitempty"`
 	Name                *string                  `json:"name,omitempty"`
 	ProjectID           *string                  `json:"project_id,omitempty"`
+	QoSPolicyID         *types.Nullable[string]  `json:"qos_policy_id,omitempty"`
 	SecurityGroups      []string                 `json:"security_groups,omitzero"`
 	TenantID            *string                  `json:"tenant_id,omitempty"`
 }
@@ -221,6 +241,9 @@ func (v *PortCreateSpec) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = PortCreateSpec(value)
+	if string(fields["qos_policy_id"]) == "null" {
+		v.QoSPolicyID = types.Null[string]()
+	}
 	v.normalize()
 	return nil
 }
@@ -307,6 +330,8 @@ type Port struct {
 	NetworkID           *string                  `json:"network_id,omitempty"`
 	PortSecurityEnabled *bool                    `json:"port_security_enabled,omitempty"`
 	ProjectID           *string                  `json:"project_id,omitempty"`
+	QoSNetworkPolicyID  *types.Nullable[string]  `json:"qos_network_policy_id,omitempty"`
+	QoSPolicyID         *types.Nullable[string]  `json:"qos_policy_id,omitempty"`
 	RevisionNumber      *types.Integer           `json:"revision_number,omitempty"`
 	SecurityGroups      []string                 `json:"security_groups,omitzero"`
 	Status              *string                  `json:"status,omitempty"`
@@ -361,6 +386,12 @@ func (v *Port) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = Port(value)
+	if string(fields["qos_policy_id"]) == "null" {
+		v.QoSPolicyID = types.Null[string]()
+	}
+	if string(fields["qos_network_policy_id"]) == "null" {
+		v.QoSNetworkPolicyID = types.Null[string]()
+	}
 	v.normalize()
 	return nil
 }
@@ -413,6 +444,7 @@ type PortUpdateSpec struct {
 	FixedIPs            []PortFixedIP               `json:"fixed_ips,omitzero"`
 	MACAddress          *string                     `json:"mac_address,omitempty"`
 	Name                *string                     `json:"name,omitempty"`
+	QoSPolicyID         *types.Nullable[string]     `json:"qos_policy_id,omitempty"`
 	SecurityGroups      []string                    `json:"security_groups,omitzero"`
 }
 
@@ -461,6 +493,9 @@ func (v *PortUpdateSpec) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = PortUpdateSpec(value)
+	if string(fields["qos_policy_id"]) == "null" {
+		v.QoSPolicyID = types.Null[string]()
+	}
 	v.normalize()
 	return nil
 }

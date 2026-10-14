@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build the source-bound Neutron core subset from local pinned SDK snapshots."""
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -54,6 +55,17 @@ for variant in ("CreateRequest", "UpdateRequest"):
 
 definitions["port.UpdateRequest"]["properties"]["mac_address"] = {"type": "string", "x-go-field-name": "MACAddress"}
 
+for variant in ("CreateRequest", "UpdateRequest"):
+    definitions["network." + variant]["properties"]["mtu"] = {"type": "integer", "x-go-field-name": "MTU"}
+    definitions["network." + variant]["properties"]["router:external"] = {"type": "boolean", "x-go-field-name": "RouterExternal"}
+
+for resource in ("network", "port"):
+    for variant in (resource.title(), "CreateRequest", "UpdateRequest"):
+        definitions[resource + "." + variant]["properties"]["qos_policy_id"] = {"type": "string", "x-nullable": True, "x-go-field-name": "QoSPolicyID"}
+for variant in ("Network", "CreateRequest", "UpdateRequest"):
+    definitions["network." + variant]["properties"]["vlan_transparent"] = {"type": "boolean", "x-go-field-name": "VLANTransparent"}
+definitions["port.Port"]["properties"]["qos_network_policy_id"] = {"type": "string", "x-nullable": True, "x-go-field-name": "QoSNetworkPolicyID"}
+
 paths = {}
 for resource in ("network", "subnet", "port"):
     root = "/v2.0/" + resource + "s"
@@ -69,7 +81,17 @@ doc = {
     "x-source-revision": REVISION,
     "x-api-reference": "https://docs.openstack.org/api-ref/network/v2/",
     "x-generator-roots": roots,
+    "x-compatible-api-revision": "openstack/neutron-lib 3.0.0 89dc650220244628ea78f58ea2771a2ca0c63a73 (Zed API reference)",
+    "x-snapshot-sha256": {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(ASSETS.glob("*.txt"))},
     "x-upstream-asset-uris": {
+        **{f"neutron-lib-{name}.inc.txt": f"https://github.com/openstack/neutron-lib/blob/89dc650220244628ea78f58ea2771a2ca0c63a73/api-ref/source/v2/{name}.inc" for name in ("networks", "ports", "subnets")},
+        **{f"gopher-ext-{extension}-{name}.txt": f"https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/extensions/{extension}/{name}" for extension in ("mtu", "external", "vlantransparent") for name in ("requests.go", "results.go")},
+        **{f"gopher-ext-qos-policies-{name}.txt": f"https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/extensions/qos/policies/{name}" for name in ("requests.go", "results.go")},
+        "selectel-private-networks.md.txt": "https://docs.selectel.ru/cloud-servers/cloud-networks/private-networks-and-subnets.md",
+        "selectel-about-networks.md.txt": "https://docs.selectel.ru/cloud-servers/cloud-networks/about-networks.md",
+        "selectel-ports.md.txt": "https://docs.selectel.ru/cloud-servers/cloud-networks/ports.md",
+        "selectel-network-reference.md.txt": "https://docs.selectel.ru/terraform/openstack-provider-reference/networking-neutron/resources/openstack_networking_network_v2.md",
+        "selectel-port-reference.md.txt": "https://docs.selectel.ru/terraform/openstack-provider-reference/networking-neutron/resources/openstack_networking_port_v2.md",
         **{f"vpc-{resource}.go.txt": f"https://github.com/selectel/vpc-go/blob/{REVISION}/pkg/v2/{resource}/{resource}.go" for resource in ("network", "subnet", "port")},
         **{f"gopher-{plural}-{name}.txt": f"https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/{plural}/{name}" for plural in ("networks", "subnets", "ports") for name in ("requests.go", "results.go", "urls.go")},
         **{f"vpc-internal-api-{name}.go.txt": f"https://github.com/selectel/vpc-go/blob/{REVISION}/internal/api/{name}.go" for name in ("client", "errors", "pagination")},
@@ -114,7 +136,7 @@ for resource in ('network', 'subnet', 'port'):
                         'owner': 'project_id/tenant_id select explicit target owner on create, aliases must agree; omission uses token project. Shared/accessible reads preserve provider owner as metadata and retain caller scope in refs.',
                         'headers': 'optional If-Match revision_number=<exact nonnegative Integer> on update/delete',
                         'query': 'repeated typed known field filters, fields projection, sort_key/sort_dir pairs, page_reverse; pagination owns limit/marker',
-                        'excluded_variants': ['arbitrary plugin extension bodies/filters', 'provider:* physical network fields', 'binding:* host/VIF fields', 'subnet pools, segments and routed provider networks', 'port binding/propagate_uplink_status/value_specs', 'tag mutations (separate capability)', 'bulk create/update/delete']},
+                        'excluded_variants': ['arbitrary plugin extension bodies/filters', 'provider:* physical network fields', 'binding:* host/VIF fields', 'subnet pools, segments and routed provider networks', 'port binding/propagate_uplink_status/value_specs', 'tag mutations (separate capability)', 'bulk create/update/delete', 'provider-segments conditional physical plugin variants', 'port_security_enabled writes: Selectel explicitly disallows toggling traffic filtering']},
             'response': {'successful_statuses': [201 if action == 'create' else 204 if action == 'delete' else 200], 'dto_source': 'network/types_generated.go',
                          'fields': 'all pinned Selectel vpc-go resource response fields plus standard tenant_id alias, no synthetic ownership or timestamp offset',
                          'resource_ref': 'ID must be nonempty for full responses; subnet/port network_id binds exact parent in same auth view. Projection may omit identity/parent and then list Ref is nil; exact Get retains request identity. Provider ref field discarded.',
