@@ -19,6 +19,7 @@ import (
 	"github.com/festy23/selectel-sdk/operations"
 	"github.com/festy23/selectel-sdk/projects"
 	"github.com/festy23/selectel-sdk/registry"
+	"github.com/festy23/selectel-sdk/resell"
 	"github.com/festy23/selectel-sdk/secrets"
 	"github.com/festy23/selectel-sdk/types"
 )
@@ -176,3 +177,5 @@ func New(config Config) (*Client, error) {
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
 }
+
+func (a AccountClient) Resell() *resell.Client { return resell.Bind(a.client.runtime, a.client.scope) }

@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "resell": ("cloud-projects-and-resources", {"Account": "Account", "Result": "DNSInfo"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -48,7 +49,7 @@ for case, (family, initial, top_name) in CASES.items():
     doc = json.loads((ROOT / "catalog/sources" / (family + ".json")).read_text())
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
-    resource_roots = set(roots)
+    resource_roots = set() if package == "resell" else set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
