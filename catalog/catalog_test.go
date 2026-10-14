@@ -18,7 +18,7 @@ func TestOfflineCatalogIsImmutableAndDoesNotOverclaim(t *testing.T) {
 		if i > 0 && all[i-1].OperationID >= r.OperationID {
 			t.Fatal("unordered or duplicate ids")
 		}
-		if r.Implementation.Status != "unimplemented" && ((r.Service != "billing" && r.Service != "secrets" && r.Service != "compute" && r.Service != "projects" && r.Service != "mks" && r.Service != "databases" && r.Service != "registry" && r.Service != "audit" && r.Service != "logs" && r.Service != "metrics") || (r.Verification.Level != "offline" && r.Verification.Level != "none")) {
+		if r.Implementation.Status != "unimplemented" && ((r.Service != "billing" && r.Service != "secrets" && r.Service != "compute" && r.Service != "projects" && r.Service != "mks" && r.Service != "databases" && r.Service != "opensearch_data" && r.Service != "registry" && r.Service != "audit" && r.Service != "logs" && r.Service != "metrics") || (r.Verification.Level != "offline" && r.Verification.Level != "none")) {
 			t.Fatal("unverified service overclaimed")
 		}
 	}

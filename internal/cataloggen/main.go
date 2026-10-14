@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+ "opensearch-settings": {"opensearch_data", "opensearch_2_18", "basic", false},
 	"dbaas-opensearch-v2":          {"databases", "v2", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
@@ -35,6 +36,8 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+ "opensearch-settings GET /_cluster/settings":"opensearch_data.opensearch_2_18.cluster_settings.get",
+ "opensearch-settings PUT /_cluster/settings":"opensearch_data.opensearch_2_18.cluster_settings.update",
 	"dbaas-opensearch-v2 GET /datastores/opensearch":                                "databases.v2.opensearch.list",
 	"dbaas-opensearch-v2 POST /datastores/opensearch":                               "databases.v2.opensearch.create",
 	"dbaas-opensearch-v2 GET /datastores/opensearch/{datastore_id}":                 "databases.v2.opensearch.get",

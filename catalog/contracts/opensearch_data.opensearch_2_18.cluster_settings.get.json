@@ -1,0 +1,77 @@
+{
+  "operation_id": "opensearch_data.opensearch_2_18.cluster_settings.get",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/managed-databases/opensearch/connect-to-cluster/",
+    "generation": "opensearch_2_18",
+    "recipe": "explicit EndpointOverride(opensearch_data, opensearch_2_18, exact account/project/region/pool scope), HTTPS root cluster node endpoint with caller TLS/CA transport; no DBaaS URL inference",
+    "auth": "Basic with explicit protected engine username/password CredentialSource, never IAM token",
+    "scope": "caller-declared cluster endpoint and credential binding; response has no project field and does not prove cloud ownership"
+  },
+  "request": {
+    "source_schema": "sources/opensearch-settings.json#/paths/~1_cluster~1settings/get",
+    "source_operation": {
+      "parameters": [
+        {
+          "name": "flat_settings",
+          "in": "query",
+          "type": "boolean"
+        },
+        {
+          "name": "include_defaults",
+          "in": "query",
+          "type": "boolean"
+        },
+        {
+          "name": "cluster_manager_timeout",
+          "in": "query",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "schema": {
+            "$ref": "#/definitions/GetResponse"
+          }
+        }
+      }
+    },
+    "mapping_source": "databases/opensearchsettings/client.go",
+    "dto_source": "databases/opensearchsettings/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "parameters": "all documented query pointers; omitted vs explicit false/empty retained; no server defaults inserted",
+    "fields": "exact Selectel12 options, typed flat fields; protected JSON scalar numbers/string/boolean/null preserved unchanged; persistent/transient separate; null resets exact key only",
+    "excluded_variants": [
+      "nested update syntax (equivalent flat keys supported)",
+      "wildcard reset",
+      "non-Selectel-supported setting keys"
+    ],
+    "private_disclosure": "protected values revealed only into outgoing resource request; JSON/text/fmt of public DTO stays protected"
+  },
+  "response": {
+    "schema": "GetResponse",
+    "mapping_source": "databases/opensearchsettings/client.go",
+    "fields": "all persistent/transient/defaults objects retained as ProtectedJSON including unknown provider fields and exact numbers; acknowledged boolean retained on PUT even false",
+    "required": "persistent/transient objects; PUT acknowledged; malformed success retains accepted receipt",
+    "sensitive_fields": [
+      "persistent",
+      "transient",
+      "defaults"
+    ],
+    "numbers": "raw JSON bytes, no float64 conversion"
+  },
+  "errors": {
+    "400": "provider_error (no proven rejection receipt)",
+    "401": "unauthenticated (no IAM refresh/fallback)",
+    "403": "permission_denied",
+    "404": "not_found",
+    "malformed": "protocol_error",
+    "transport_lost": "unknown_outcome with receipt for PUT; never replay",
+    "diagnostics": "raw provider settings/auth/error payload excluded"
+  },
+  "retry": "bounded safe GET; PUT never replayed, no documented replay guarantee",
+  "pagination": null,
+  "wait": "unavailable; acknowledged false is preserved, does not establish effective configuration",
+  "recovery": "unavailable; exact Get is observation without attribution, no automatic replay",
+  "verification": "offline only; not full OpenSearch protocol coverage"
+}

@@ -4,6 +4,7 @@ package opensearch
 import (
 	"context"
 	"encoding/json"
+	"github.com/festy23/selectel-sdk/databases/opensearchsettings"
 	"github.com/festy23/selectel-sdk/internal/core"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
@@ -12,14 +13,17 @@ import (
 	"strings"
 )
 
-type Client struct{ Datastores *Datastores }
+type Client struct {
+	Datastores *Datastores
+	Settings   *opensearchsettings.Client
+}
 type Datastores struct {
 	runtime *core.Runtime
 	scope   types.Scope
 }
 
 func Bind(r *core.Runtime, s types.Scope) *Client {
-	return &Client{Datastores: &Datastores{runtime: r, scope: s}}
+	return &Client{Settings: opensearchsettings.Bind(r, s), Datastores: &Datastores{runtime: r, scope: s}}
 }
 
 var uuidPattern = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
