@@ -203,3 +203,9 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+## IAM v1 management
+
+Account-scoped users, service users, groups and membership follow [iam.md](iam.md).
+IAM management is separate from authentication; cataloged roles and S3 credentials
+remain explicit follow-up capabilities.
