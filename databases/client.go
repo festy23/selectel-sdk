@@ -3,13 +3,18 @@ package databases
 
 import (
 	"context"
+	"github.com/festy23/selectel-sdk/databases/opensearch"
 	"github.com/festy23/selectel-sdk/internal/core"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
 	"net/url"
 )
 
-type Client struct{ V1 V1Client }
+type Client struct {
+	V1 V1Client
+	V2 V2Client
+}
+type V2Client struct{ OpenSearch *opensearch.Client }
 type V1Client struct{ Datastores *Datastores }
 type Datastores struct {
 	runtime *core.Runtime
@@ -30,7 +35,7 @@ type ListOptions struct {
 }
 
 func Bind(r *core.Runtime, scope types.Scope) *Client {
-	return &Client{V1: V1Client{Datastores: &Datastores{runtime: r, scope: scope}}}
+	return &Client{V2: V2Client{OpenSearch: opensearch.Bind(r, scope)}, V1: V1Client{Datastores: &Datastores{runtime: r, scope: scope}}}
 }
 func (c *Datastores) Iterate(f ListOptions, o pagination.Options) (*pagination.Iterator[Datastore], error) {
 	op, e := c.runtime.BindDocumented(core.Operation{ID: "databases.v1.datastores.list", Service: "databases", APIGeneration: "v1", Method: "GET", Effect: "read", Auth: types.IAMProject, RequireProject: true, RequireLocation: true, Success: []int{200}}, c.scope)

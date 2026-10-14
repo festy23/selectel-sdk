@@ -6,12 +6,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gophercloud/gophercloud/v2/openstack/compute/v2/servers"
 	sdk "github.com/festy23/selectel-sdk"
 	"github.com/festy23/selectel-sdk/compute"
 	"github.com/festy23/selectel-sdk/credentials"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
+	"github.com/gophercloud/gophercloud/v2/openstack/compute/v2/servers"
 	"io"
 	"net/http"
 	"strings"
@@ -108,6 +108,16 @@ func TestCreateWaitDeleteAndResume(t *testing.T) {
 	if strings.Contains(string(raw), "synthetic-private-result") || strings.Contains(fmt.Sprintf("%+v", r), "synthetic-private-result") {
 		t.Fatal("password disclosed")
 	}
+
+	generic, e := c.Resource(r.Create.Data.Ref)
+	if e != nil {
+		t.Fatal("generic compute Resource dispatch failed", e)
+	}
+	observation, e := generic.Status(context.Background())
+	if e != nil || observation.ProviderState != "ACTIVE" {
+		t.Fatal("generic compute observation failed", e)
+	}
+
 	deletedResult, e := s.Delete(context.Background(), r.Create.Data.Ref)
 	if e != nil {
 		t.Fatal(e)

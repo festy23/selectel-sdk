@@ -21,6 +21,8 @@ type family struct {
 }
 
 var families = map[string]family{
+ "opensearch-settings": {"opensearch_data", "opensearch_2_18", "basic", false},
+	"dbaas-opensearch-v2":          {"databases", "v2", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +36,18 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+ "opensearch-settings GET /_cluster/settings":"opensearch_data.opensearch_2_18.cluster_settings.get",
+ "opensearch-settings PUT /_cluster/settings":"opensearch_data.opensearch_2_18.cluster_settings.update",
+	"dbaas-opensearch-v2 GET /datastores/opensearch":                                "databases.v2.opensearch.list",
+	"dbaas-opensearch-v2 POST /datastores/opensearch":                               "databases.v2.opensearch.create",
+	"dbaas-opensearch-v2 GET /datastores/opensearch/{datastore_id}":                 "databases.v2.opensearch.get",
+	"dbaas-opensearch-v2 PATCH /datastores/opensearch/{datastore_id}":               "databases.v2.opensearch.update",
+	"dbaas-opensearch-v2 DELETE /datastores/opensearch/{datastore_id}":              "databases.v2.opensearch.delete",
+	"dbaas-opensearch-v2 PATCH /datastores/opensearch/{datastore_id}/password":      "databases.v2.opensearch.password",
+	"dbaas-opensearch-v2 PUT /datastores/opensearch/{datastore_id}/security-groups": "databases.v2.opensearch.security_groups",
+	"dbaas-opensearch-v2 PUT /datastores/opensearch/{datastore_id}/log-platform":    "databases.v2.opensearch.enable_logging",
+	"dbaas-opensearch-v2 DELETE /datastores/opensearch/{datastore_id}/log-platform": "databases.v2.opensearch.disable_logging",
+
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",

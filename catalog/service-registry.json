@@ -302,5 +302,16 @@
     "id": "kms",
     "inventory_complete": false,
     "source_uris": []
+  },
+  {
+    "availability": "documented",
+    "id": "opensearch_data",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/en/managed-databases/opensearch/supported-operations/",
+      "https://docs.selectel.ru/en/managed-databases/opensearch/connect-to-cluster/",
+      "https://docs.opensearch.org/2.18/api-reference/cluster-api/cluster-settings/",
+      "https://docs.opensearch.org/2.18/install-and-configure/configuring-opensearch/index/"
+    ]
   }
 ]

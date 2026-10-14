@@ -84,6 +84,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
+	if ref.Service == "databases" && ref.APIGeneration == "v2" && ref.Kind == "opensearch_datastore" {
+		return databases.Bind(c.runtime, ref.Scope).V2.OpenSearch.Datastores.Resource(ref)
+	}
 	return c.mksHandle(ref, nil)
 }
 func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
@@ -118,6 +121,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if ref.Service == "compute" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, &receipt)
+	}
+	if ref.Service == "databases" && ref.APIGeneration == "v2" && ref.Kind == "opensearch_datastore" {
+		return databases.Bind(c.runtime, ref.Scope).V2.OpenSearch.Datastores.Resume(receipt)
 	}
 	return c.mksHandle(ref, &receipt)
 }

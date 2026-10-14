@@ -23,6 +23,7 @@ Service ID является стабильным именем пакета и к
 | `private_dns` | [Приватный DNS](https://docs.selectel.ru/api/private-dns/) | private-dns-go / HTTP |
 | `mks` | [Текущий v2](https://docs.selectel.ru/api/managed-kubernetes/), [legacy v1](https://docs.selectel.ru/api/managed-kubernetes-legacy/) | HTTP v2; mks-go v1 |
 | `databases` | [Managed databases](https://docs.selectel.ru/api/managed-databases/) | dbaas-go / HTTP; поколения разделены по engine |
+| `opensearch_data` | [Selectel supported OpenSearch protocol](https://docs.selectel.ru/en/managed-databases/opensearch/supported-operations/) | Explicit cluster endpoint + Basic engine credentials; OpenSearch 2.18 subset |
 | `registry` | [Реестры, репозитории, токены](https://docs.selectel.ru/api/craas/) | craas-go / HTTP |
 | `registry_data` | [OCI distribution](https://github.com/opencontainers/distribution-spec) в Selectel | Protocol adapter; отдельный от registry management |
 | `s3` | [S3 subset Selectel](https://docs.selectel.ru/api/object-storage-s3/) | AWS SDK Go v2 |
@@ -203,3 +204,145 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### OpenSearch DBaaS v2 и engine settings
+
+`Databases().V2.OpenSearch.Datastores` предоставляет девять source-bound SDK
+операций: Create/Get/ListPage/Iterate/Collect, Update/Delete, UpdatePassword,
+UpdateSecurityGroups и EnableLogging/DisableLogging. Отдельные generated DTO
+находятся в `databases/opensearch`; ClickHouse и DBaaS v1 DTO/endpoints не
+подставляются. [Pinned source](../../../catalog/sources/dbaas-opensearch-v2.json)
+содержит SDK revision `1e051e332ba3e5fc8690f27128be34f7fe2caa0d`, definitions,
+validate source, wire/status fixtures, hashes и Apache license.
+
+Create сохраняет все Name/TypeID/SubnetID/Password/NodeGroups и optional
+LogPlatform/SecurityGroups. Password и NewPassword защищены вне приватной wire
+границы. Роли OpenSearch — DATA/MANAGER/DASHBOARD; KEEPER не принимается.
+NodeGroups сохраняет Name/Role/Flavor/NodeCount/HasPublicIPs; FIXED/FLEXIBLE
+flavor ограничения берутся из собственного SDK. NodeCount/resources сохраняют
+точные Integer. UpdateSecurityGroups требует непустой массив UUID согласно
+OpenSearch validator; поведение ClickHouse clearing не переносится.
+
+Create принимает 201 с достоверным ID; остальные изменения принимают 200 с
+DatastoreResponse либо 204 без тела для Delete/DisableLogging. Accepted receipt
+сохраняется при malformed success, unknown mutation не повторяется. Known refs
+требуют exact account/project/location, v2 generation, OpenSearch kind, endpoint
+и ID; foreign project/response ID отклоняются. List имеет bounded prefix и
+single-response replay/skip cursor. Errors/retries/protected diagnostics задаёт
+общий runtime. SDK generic error не устанавливает rejection proof.
+
+Root Client.Resource/Resume и scoped service Resource/Resume создают observation
+handle по exact ref. Status использует classification succeeded/failed/pending/
+unknown. Malformed schema/call ID/operation ID/revision/outcome receipts дают
+invalid_argument; genuine scope/generation/endpoint mismatch — scope_mismatch.
+Resume валидирует
+operation/contract revision/scope/generation/endpoint/known ref и не ищет
+новый кластер по имени. Create без достоверного ID не восстанавливается через
+Resume. Goal `opensearch.active` означает provider status ACTIVE, не engine
+health/SQL readiness/применение настроек. Pending/failure states закреплены
+SDK constants; неизвестный status остаётся state_unknown. Goal
+`opensearch.deleted` требует exact Get 404, статус DELETED ещё не доказывает
+отсутствие. Receipt Wait доступен для Create и Delete; прочие изменения не
+объявляют readiness goal. Get не является доказательством авторства изменения.
+Default v2 endpoint документирован SDK README только для ru-2; другие pools
+требуют explicit scoped override. Evidence остаётся offline.
+
+#### OpenSearch engine settings
+
+`Databases().V2.OpenSearch.Settings` предоставляет Get/Update отдельного
+OpenSearch 2.18 protocol `/_cluster/settings`, не DBaaS v2 `/config`.
+[Source artifact](../../../catalog/sources/opensearch-settings.json) закрепляет
+current Selectel supported operations/connect/version docs, upstream 2.18 API,
+persistent/transient semantics и server 2.18.0 validation/null-removal code с
+URI/content hashes. Published Managed DB JSON `/v1` не используется как источник
+выдуманных OpenSearch config endpoints.
+
+GetOptions содержит flat_settings/include_defaults/cluster_manager_timeout;
+UpdateOptions — flat_settings/cluster_manager_timeout/timeout. Pointer nil
+опускается, explicit false/empty передаётся. Server defaults не вставляются SDK;
+provider time units не преобразуются в локальный call timeout.
+
+UpdateRequest имеет Persistent/Transient с generated SettingsValues: ровно 12
+[Selectel-supported options](https://docs.selectel.ru/en/managed-databases/opensearch/supported-operations/).
+DTO использует flat keys и защищённые JSON scalars number/string/boolean/null;
+unit strings и числовые literals передаются без float64 conversion. Native
+per-setting value/range validation принадлежит OpenSearch. Nil field опускается,
+Nullable null сбрасывает только exact key; zero/false/value сохраняются. Ни
+object/array injection в scalar, ни wildcard setting keys не допускаются;
+expanded input syntax не предоставляется, все разрешённые keys выражаются flat
+формой. Empty update отклоняется до network по upstream validation.
+Persistent сохраняется после restart, transient очищается при restart и имеет
+более высокий precedence. Неявного копирования между namespaces нет.
+
+GetResponse сохраняет Persistent/Transient/optional Defaults целиком как
+ProtectedJSON, включая unknown provider fields, nested/flat shape и точные числа.
+UpdateResponse сохраняет acknowledged, в том числе false, и оба returned
+namespace objects. Caller-directed Value()+Reveal() является явной границей
+раскрытия; ordinary JSON/text/fmt redacted. Shared Nullable formatting protection
+взята из `4534c4e`/PR #80 с regression tests; v1 service implementation не включена.
+HTTP 200 mutation сохраняет accepted Receipt даже при malformed result;
+acknowledged=false не объявляется подтверждением effective configuration.
+Lost response сохраняет unknown Receipt и не вызывает replay. Wait/recovery
+для settings не документированы; Get является отдельным observation без
+доказательства авторства неизвестного изменения.
+
+Endpoint и credentials задаются вызывающим кодом явно. Config.EndpointOverrides
+key: service `opensearch_data`, generation `opensearch_2_18`, exact immutable
+account/project/region/pool Scope. Binding URL — HTTPS root endpoint ноды кластера,
+например private IP:9200, без userinfo/query/fragment/base path; ID выбирается
+caller для этого endpoint. CredentialSource обслуживает Basic AuthRequest для
+`opensearch_data`, возвращая protected engine username/password с project binding;
+IAM token/DBaaS endpoint не подставляются. Selectel документирует private-IP TLS
+и cluster CA; caller передаёт transport с соответствующим trusted CA. SDK не
+отключает TLS verification и не извлекает скрытый password из control plane.
+Scope/endpoint binding является явным утверждением caller: engine response не
+содержит project ID и сам по себе не доказывает cloud ownership. Для разных
+clusters в одном project/location создаются отдельные immutable clients с
+собственными endpoint/credential bindings.
+
+HTTP 400/401/403/404 сохраняют provider_error/unauthenticated/permission_denied/
+not_found; Basic 401 не запускает IAM refresh/fallback. Raw settings/auth/error
+body не попадает в diagnostics/Observer. Config budgets/MaxJSONBytes, bounded
+safe-read retries и cancellation остаются общими. Эти два protocol bindings
+покрывают settings часть #21; полный OpenSearch protocol inventory и live
+проверенность не заявлены. Node-group mutations остаются в #22.
+
+Пример в уже созданном scoped клиенте:
+
+```go
+regional, err := project.Location("", "ru-2")
+if err != nil { return err }
+service := regional.Databases().V2.OpenSearch.Datastores
+handle, err := service.Resume(savedReceipt)
+if err != nil { return err }
+observed, err := handle.Status(ctx)
+if err != nil { return err }
+_ = observed.Ref // exact OpenSearch v2 reference
+```
+
+Пример отдельного settings binding (engineCredentialSource обслуживает только
+Basic requests этого service/scope; clusterCATransport задаёт trusted CA):
+
+```go
+key := types.EndpointKey{Service: "opensearch_data", APIGeneration: "opensearch_2_18", Scope: scope}
+client, err := sdk.New(sdk.Config{
+    AccountID: scope.AccountID, Credentials: engineCredentialSource,
+    Transport: clusterCATransport,
+    EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{key: {
+        ID: exactClusterEndpointID, URL: clusterNodeHTTPSURL, Scope: scope,
+        APIGeneration: "opensearch_2_18", Audience: "selectel",
+    }},
+})
+if err != nil { return err }
+project, err := client.Project(scope.ProjectID)
+if err != nil { return err }
+regional, err := project.Location(scope.Region, scope.Pool)
+if err != nil { return err }
+settings := regional.Databases().V2.OpenSearch.Settings
+reset := types.Null[types.ProtectedJSON]()
+result, err := settings.Update(ctx, opensearchsettings.UpdateRequest{
+    Transient: &opensearchsettings.SettingsValues{ActionAutoCreateIndex: reset},
+}, opensearchsettings.UpdateOptions{})
+if err != nil { return err } // result.Receipt сохраняется и при unknown
+_ = result.Data.Acknowledged
+```
