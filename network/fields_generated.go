@@ -38,6 +38,46 @@ func validNetworkField(v NetworkField) bool {
 	return false
 }
 
+type NetworkFilter string
+
+const (
+	NetworkFilterAdminStateUp          NetworkFilter = "admin_state_up"
+	NetworkFilterAvailabilityZoneHints NetworkFilter = "availability_zone_hints"
+	NetworkFilterAvailabilityZones     NetworkFilter = "availability_zones"
+	NetworkFilterBlocked               NetworkFilter = "blocked"
+	NetworkFilterCreatedAt             NetworkFilter = "created_at"
+	NetworkFilterDescription           NetworkFilter = "description"
+	NetworkFilterDNSDomain             NetworkFilter = "dns_domain"
+	NetworkFilterID                    NetworkFilter = "id"
+	NetworkFilterIsDNSEnabled          NetworkFilter = "is_dns_enabled"
+	NetworkFilterIsPublic              NetworkFilter = "is_public"
+	NetworkFilterMTU                   NetworkFilter = "mtu"
+	NetworkFilterName                  NetworkFilter = "name"
+	NetworkFilterNotTags               NetworkFilter = "not-tags"
+	NetworkFilterNotTagsAny            NetworkFilter = "not-tags-any"
+	NetworkFilterPortSecurityEnabled   NetworkFilter = "port_security_enabled"
+	NetworkFilterProjectID             NetworkFilter = "project_id"
+	NetworkFilterQoSPolicyID           NetworkFilter = "qos_policy_id"
+	NetworkFilterRevisionNumber        NetworkFilter = "revision_number"
+	NetworkFilterRouterExternal        NetworkFilter = "router:external"
+	NetworkFilterShared                NetworkFilter = "shared"
+	NetworkFilterStatus                NetworkFilter = "status"
+	NetworkFilterSubnets               NetworkFilter = "subnets"
+	NetworkFilterTags                  NetworkFilter = "tags"
+	NetworkFilterTagsAny               NetworkFilter = "tags-any"
+	NetworkFilterTenantID              NetworkFilter = "tenant_id"
+	NetworkFilterUpdatedAt             NetworkFilter = "updated_at"
+	NetworkFilterVLANTransparent       NetworkFilter = "vlan_transparent"
+)
+
+func validNetworkFilter(v NetworkFilter) bool {
+	switch v {
+	case NetworkFilterAdminStateUp, NetworkFilterAvailabilityZoneHints, NetworkFilterAvailabilityZones, NetworkFilterBlocked, NetworkFilterCreatedAt, NetworkFilterDescription, NetworkFilterDNSDomain, NetworkFilterID, NetworkFilterIsDNSEnabled, NetworkFilterIsPublic, NetworkFilterMTU, NetworkFilterName, NetworkFilterNotTags, NetworkFilterNotTagsAny, NetworkFilterPortSecurityEnabled, NetworkFilterProjectID, NetworkFilterQoSPolicyID, NetworkFilterRevisionNumber, NetworkFilterRouterExternal, NetworkFilterShared, NetworkFilterStatus, NetworkFilterSubnets, NetworkFilterTags, NetworkFilterTagsAny, NetworkFilterTenantID, NetworkFilterUpdatedAt, NetworkFilterVLANTransparent:
+		return true
+	}
+	return false
+}
+
 type SubnetField string
 
 const (
@@ -72,6 +112,43 @@ func validSubnetField(v SubnetField) bool {
 	return false
 }
 
+type SubnetFilter string
+
+const (
+	SubnetFilterAllocationPools SubnetFilter = "allocation_pools"
+	SubnetFilterBlocked         SubnetFilter = "blocked"
+	SubnetFilterCIDR            SubnetFilter = "cidr"
+	SubnetFilterCreatedAt       SubnetFilter = "created_at"
+	SubnetFilterDescription     SubnetFilter = "description"
+	SubnetFilterDNSNameservers  SubnetFilter = "dns_nameservers"
+	SubnetFilterEnableDHCP      SubnetFilter = "enable_dhcp"
+	SubnetFilterGatewayIP       SubnetFilter = "gateway_ip"
+	SubnetFilterHostRoutes      SubnetFilter = "host_routes"
+	SubnetFilterID              SubnetFilter = "id"
+	SubnetFilterIPVersion       SubnetFilter = "ip_version"
+	SubnetFilterIPv6AddressMode SubnetFilter = "ipv6_address_mode"
+	SubnetFilterIPv6RAMode      SubnetFilter = "ipv6_ra_mode"
+	SubnetFilterName            SubnetFilter = "name"
+	SubnetFilterNetworkID       SubnetFilter = "network_id"
+	SubnetFilterNotTags         SubnetFilter = "not-tags"
+	SubnetFilterNotTagsAny      SubnetFilter = "not-tags-any"
+	SubnetFilterProjectID       SubnetFilter = "project_id"
+	SubnetFilterRevisionNumber  SubnetFilter = "revision_number"
+	SubnetFilterServiceTypes    SubnetFilter = "service_types"
+	SubnetFilterTags            SubnetFilter = "tags"
+	SubnetFilterTagsAny         SubnetFilter = "tags-any"
+	SubnetFilterTenantID        SubnetFilter = "tenant_id"
+	SubnetFilterUpdatedAt       SubnetFilter = "updated_at"
+)
+
+func validSubnetFilter(v SubnetFilter) bool {
+	switch v {
+	case SubnetFilterAllocationPools, SubnetFilterBlocked, SubnetFilterCIDR, SubnetFilterCreatedAt, SubnetFilterDescription, SubnetFilterDNSNameservers, SubnetFilterEnableDHCP, SubnetFilterGatewayIP, SubnetFilterHostRoutes, SubnetFilterID, SubnetFilterIPVersion, SubnetFilterIPv6AddressMode, SubnetFilterIPv6RAMode, SubnetFilterName, SubnetFilterNetworkID, SubnetFilterNotTags, SubnetFilterNotTagsAny, SubnetFilterProjectID, SubnetFilterRevisionNumber, SubnetFilterServiceTypes, SubnetFilterTags, SubnetFilterTagsAny, SubnetFilterTenantID, SubnetFilterUpdatedAt:
+		return true
+	}
+	return false
+}
+
 type PortField string
 
 const (
@@ -83,6 +160,7 @@ const (
 	PortFieldDeviceID            PortField = "device_id"
 	PortFieldDeviceOwner         PortField = "device_owner"
 	PortFieldDHCPBlocked         PortField = "dhcp_blocked"
+	PortFieldDNSAssignment       PortField = "dns_assignment"
 	PortFieldDNSName             PortField = "dns_name"
 	PortFieldExtraDHCPOptions    PortField = "extra_dhcp_opts"
 	PortFieldFixedIPs            PortField = "fixed_ips"
@@ -104,7 +182,48 @@ const (
 
 func validPortField(v PortField) bool {
 	switch v {
-	case PortFieldAdminStateUp, PortFieldAllowedAddressPairs, PortFieldBlocked, PortFieldCreatedAt, PortFieldDescription, PortFieldDeviceID, PortFieldDeviceOwner, PortFieldDHCPBlocked, PortFieldDNSName, PortFieldExtraDHCPOptions, PortFieldFixedIPs, PortFieldID, PortFieldMACAddress, PortFieldName, PortFieldNetworkID, PortFieldPortSecurityEnabled, PortFieldProjectID, PortFieldQoSNetworkPolicyID, PortFieldQoSPolicyID, PortFieldRevisionNumber, PortFieldSecurityGroups, PortFieldStatus, PortFieldTags, PortFieldTenantID, PortFieldUpdatedAt:
+	case PortFieldAdminStateUp, PortFieldAllowedAddressPairs, PortFieldBlocked, PortFieldCreatedAt, PortFieldDescription, PortFieldDeviceID, PortFieldDeviceOwner, PortFieldDHCPBlocked, PortFieldDNSAssignment, PortFieldDNSName, PortFieldExtraDHCPOptions, PortFieldFixedIPs, PortFieldID, PortFieldMACAddress, PortFieldName, PortFieldNetworkID, PortFieldPortSecurityEnabled, PortFieldProjectID, PortFieldQoSNetworkPolicyID, PortFieldQoSPolicyID, PortFieldRevisionNumber, PortFieldSecurityGroups, PortFieldStatus, PortFieldTags, PortFieldTenantID, PortFieldUpdatedAt:
+		return true
+	}
+	return false
+}
+
+type PortFilter string
+
+const (
+	PortFilterAdminStateUp        PortFilter = "admin_state_up"
+	PortFilterAllowedAddressPairs PortFilter = "allowed_address_pairs"
+	PortFilterBlocked             PortFilter = "blocked"
+	PortFilterCreatedAt           PortFilter = "created_at"
+	PortFilterDescription         PortFilter = "description"
+	PortFilterDeviceID            PortFilter = "device_id"
+	PortFilterDeviceOwner         PortFilter = "device_owner"
+	PortFilterDHCPBlocked         PortFilter = "dhcp_blocked"
+	PortFilterDNSName             PortFilter = "dns_name"
+	PortFilterExtraDHCPOptions    PortFilter = "extra_dhcp_opts"
+	PortFilterFixedIPs            PortFilter = "fixed_ips"
+	PortFilterID                  PortFilter = "id"
+	PortFilterMACAddress          PortFilter = "mac_address"
+	PortFilterName                PortFilter = "name"
+	PortFilterNetworkID           PortFilter = "network_id"
+	PortFilterNotTags             PortFilter = "not-tags"
+	PortFilterNotTagsAny          PortFilter = "not-tags-any"
+	PortFilterPortSecurityEnabled PortFilter = "port_security_enabled"
+	PortFilterProjectID           PortFilter = "project_id"
+	PortFilterQoSNetworkPolicyID  PortFilter = "qos_network_policy_id"
+	PortFilterQoSPolicyID         PortFilter = "qos_policy_id"
+	PortFilterRevisionNumber      PortFilter = "revision_number"
+	PortFilterSecurityGroups      PortFilter = "security_groups"
+	PortFilterStatus              PortFilter = "status"
+	PortFilterTags                PortFilter = "tags"
+	PortFilterTagsAny             PortFilter = "tags-any"
+	PortFilterTenantID            PortFilter = "tenant_id"
+	PortFilterUpdatedAt           PortFilter = "updated_at"
+)
+
+func validPortFilter(v PortFilter) bool {
+	switch v {
+	case PortFilterAdminStateUp, PortFilterAllowedAddressPairs, PortFilterBlocked, PortFilterCreatedAt, PortFilterDescription, PortFilterDeviceID, PortFilterDeviceOwner, PortFilterDHCPBlocked, PortFilterDNSName, PortFilterExtraDHCPOptions, PortFilterFixedIPs, PortFilterID, PortFilterMACAddress, PortFilterName, PortFilterNetworkID, PortFilterNotTags, PortFilterNotTagsAny, PortFilterPortSecurityEnabled, PortFilterProjectID, PortFilterQoSNetworkPolicyID, PortFilterQoSPolicyID, PortFilterRevisionNumber, PortFilterSecurityGroups, PortFilterStatus, PortFilterTags, PortFilterTagsAny, PortFilterTenantID, PortFilterUpdatedAt:
 		return true
 	}
 	return false

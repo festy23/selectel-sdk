@@ -62,8 +62,16 @@ GatewayIP использует `types.Null[string]()` для JSON null; nullable
 value сохраняет null удаления. Integer не проходит через float64. CreatedAt и
 UpdatedAt остаются исходными строками, без добавления отсутствующего timezone.
 
+Port.DNSAssignment — read-only список PortDNSAssignment с IPAddress, Hostname,
+FQDN из DNS integration; он также доступен через PortFieldDNSAssignment projection.
+
 Typed `NetworkFilters`/`SubnetFilters`/`PortFilters` принимают Filters, Fields,
-SortKeys/SortDirs и PageReverse. Повторные значения фильтра сохраняются
+SortKeys/SortDirs и PageReverse. Filters использует отдельные generated
+NetworkFilter/SubnetFilter/PortFilter selectors из source attributes и pinned
+ListOpts tag queries, включая
+Tags, TagsAny, NotTags, NotTagsAny. Fields и SortKeys используют response Field
+selectors; tag-фильтры не являются полями projection/sort. Это read-фильтры,
+независимые от исключённых tag mutations. Повторные значения фильтра сохраняются
 (OR одного поля, AND разных); пустое значение не теряется. Fields не расширяется
 скрытыми ID/owner/parent. Если проекция не содержит identity/parent, list DTO
 имеет nil Ref. Exact Get сохраняет request ref даже при проекции без ID;
@@ -86,7 +94,9 @@ Receipt сохраняется на любой ошибке mutation. Неодн
 даёт UnknownOutcome без replay. Malformed accepted body оставляет Accepted;
 достоверный извлечённый ID сохраняется даже при ошибке другого поля.
 
-400/401/403/404/409 отображаются общим runtime; 412 остаётся ProviderError.
+400 отображается в ProviderError согласно общему runtime; local argument
+validation даёт InvalidArgument до HTTP. 401/403/404/409 отображаются общим
+runtime; 412 остаётся ProviderError.
 Provider message/detail не попадают в диагностику. Неподтверждённые машинные
 коды не классифицируются по тексту. Wait, root Resource/Resume и доказательство
 авторства неизвестной mutation не предоставляются. Exact Get лишь наблюдает

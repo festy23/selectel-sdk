@@ -14,7 +14,7 @@
     "scope": "explicit IAM project/location auth view, never inferred from resource project_id",
     "owner": "project_id/tenant_id select explicit target owner on create, aliases must agree; omission uses token project. Shared/accessible reads preserve provider owner as metadata and retain caller scope in refs.",
     "headers": "optional If-Match revision_number=<exact nonnegative Integer> on update/delete",
-    "query": "repeated typed known field filters, fields projection, sort_key/sort_dir pairs, page_reverse; pagination owns limit/marker",
+    "query": "generated source-model attribute filters plus pinned Gophercloud tag query selectors, including tags/tags-any/not-tags/not-tags-any; separate generated response projection/sort selectors; repeated values preserved; pagination owns limit/marker",
     "excluded_variants": [
       "arbitrary plugin extension bodies/filters",
       "provider:* physical network fields",
@@ -32,13 +32,13 @@
       200
     ],
     "dto_source": "network/types_generated.go",
-    "fields": "all pinned Selectel vpc-go resource response fields plus standard tenant_id alias, no synthetic ownership or timestamp offset",
+    "fields": "all pinned Selectel vpc-go resource response fields plus source-bound tenant_id/QoS/VLAN and read-only port dns_assignment (ip_address, hostname, fqdn); no synthetic ownership or timestamp offset",
     "resource_ref": "ID must be nonempty for full responses; subnet/port network_id binds exact parent in same auth view. Projection may omit identity/parent and then list Ref is nil; exact Get retains request identity. Provider ref field discarded.",
     "source_timestamps": "raw strings, preserving fractional digits and absent timezone",
     "sensitive_fields": []
   },
   "errors": {
-    "400": "invalid_argument",
+    "400": "provider_error",
     "401": "unauthenticated",
     "403": "permission_denied",
     "404": "not_found",

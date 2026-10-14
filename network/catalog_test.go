@@ -1,6 +1,7 @@
 package network_test
 
 import (
+	"encoding/json"
 	"github.com/festy23/selectel-sdk/catalog"
 	"testing"
 )
@@ -22,5 +23,23 @@ func TestNetworkCatalogCoversOnlyConfirmedCoreSubset(t *testing.T) {
 	}
 	if c.Summary().InventoryComplete || c.Summary().CoverageRatio != nil {
 		t.Fatal("invented complete inventory")
+	}
+}
+
+func TestNetworkHTTP400ContractMatchesSharedRuntime(t *testing.T) {
+	c := catalog.Default()
+	for _, resource := range []string{"networks", "subnets", "ports"} {
+		for _, action := range []string{"create", "list", "get", "update", "delete"} {
+			raw, e := c.Artifact("contracts/network.v2." + resource + "." + action + ".json")
+			if e != nil {
+				t.Fatal(e)
+			}
+			var contract struct {
+				Errors map[string]string `json:"errors"`
+			}
+			if json.Unmarshal(raw, &contract) != nil || contract.Errors["400"] != "provider_error" {
+				t.Fatalf("400 contract %s/%s: %s", resource, action, raw)
+			}
+		}
 	}
 }

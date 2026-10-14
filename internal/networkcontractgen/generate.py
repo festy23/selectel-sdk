@@ -66,6 +66,16 @@ for variant in ("Network", "CreateRequest", "UpdateRequest"):
     definitions["network." + variant]["properties"]["vlan_transparent"] = {"type": "boolean", "x-go-field-name": "VLANTransparent"}
 definitions["port.Port"]["properties"]["qos_network_policy_id"] = {"type": "string", "x-nullable": True, "x-go-field-name": "QoSNetworkPolicyID"}
 
+# dns_assignment is read-only: Selectel port reference, pinned Neutron DNS
+# integration contract, and pinned Gophercloud DNS response fixtures.
+definitions["port.DNSAssignment"] = {"type": "object", "properties": {
+    "ip_address": {"type": "string", "x-go-field-name": "IPAddress"},
+    "hostname": {"type": "string", "x-go-field-name": "Hostname"},
+    "fqdn": {"type": "string", "x-go-field-name": "FQDN"},
+}}
+roots["port.DNSAssignment"] = "PortDNSAssignment"
+definitions["port.Port"]["properties"]["dns_assignment"] = {"type": "array", "items": {"$ref": "#/definitions/port.DNSAssignment"}, "x-go-field-name": "DNSAssignment"}
+
 paths = {}
 for resource in ("network", "subnet", "port"):
     root = "/v2.0/" + resource + "s"
@@ -84,6 +94,8 @@ doc = {
     "x-compatible-api-revision": "openstack/neutron-lib 3.0.0 89dc650220244628ea78f58ea2771a2ca0c63a73 (Zed API reference)",
     "x-snapshot-sha256": {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(ASSETS.glob("*.txt"))},
     "x-upstream-asset-uris": {
+        "gopher-ext-dns-results.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/extensions/dns/results.go",
+        "gopher-ext-dns-fixtures_test.go.txt": "https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/extensions/dns/testing/fixtures_test.go",
         **{f"neutron-lib-{name}.inc.txt": f"https://github.com/openstack/neutron-lib/blob/89dc650220244628ea78f58ea2771a2ca0c63a73/api-ref/source/v2/{name}.inc" for name in ("networks", "ports", "subnets")},
         **{f"gopher-ext-{extension}-{name}.txt": f"https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/extensions/{extension}/{name}" for extension in ("mtu", "external", "vlantransparent") for name in ("requests.go", "results.go")},
         **{f"gopher-ext-qos-policies-{name}.txt": f"https://github.com/gophercloud/gophercloud/blob/v2.13.0/openstack/networking/v2/extensions/qos/policies/{name}" for name in ("requests.go", "results.go")},
@@ -112,6 +124,17 @@ for resource in ('network', 'subnet', 'port'):
     fields += [')', 'func valid' + title + 'Field(v ' + title + 'Field) bool { switch v {']
     constants = [title + 'Field' + prop['x-go-field-name'] for wire, prop in sorted(definitions[resource + '.' + title]['properties'].items())]
     fields += ['case ' + ', '.join(constants) + ': return true', '}; return false }', '']
+    query_source = (ASSETS / f"gopher-{resource}s-requests.go.txt").read_text()
+    list_opts = re.search(r"type ListOpts struct \{\n(.*?)^\}", query_source, re.M | re.S).group(1)
+    # Preserve the existing source-model attribute filters; add explicit query
+    # selectors separately. Do not import excluded subnet-pool/segment plugins.
+    filters = {wire: prop['x-go-field-name'] for wire, prop in definitions[resource + '.' + title]['properties'].items() if wire != 'dns_assignment'}
+    tag_filters = {"tags", "tags-any", "not-tags", "not-tags-any"}
+    filters.update({wire: field for field, wire in re.findall(r'^\s*(\w+).*`q:"([^",]+)', list_opts, re.M) if wire in tag_filters})
+    fields += ['type ' + title + 'Filter string', 'const (']
+    fields += [title + 'Filter' + field + ' ' + title + 'Filter = ' + json.dumps(wire) for wire, field in sorted(filters.items())]
+    fields += [')', 'func valid' + title + 'Filter(v ' + title + 'Filter) bool { switch v {']
+    fields += ['case ' + ', '.join(title + 'Filter' + field for wire, field in sorted(filters.items())) + ': return true', '}; return false }', '']
 (ROOT / 'network/fields_generated.go').write_text('\n'.join(fields))
 
 # Bindings/contracts are SDK-owned artifacts, regenerated with the source DTOs.
@@ -135,13 +158,13 @@ for resource in ('network', 'subnet', 'port'):
                         'scope': 'explicit IAM project/location auth view, never inferred from resource project_id',
                         'owner': 'project_id/tenant_id select explicit target owner on create, aliases must agree; omission uses token project. Shared/accessible reads preserve provider owner as metadata and retain caller scope in refs.',
                         'headers': 'optional If-Match revision_number=<exact nonnegative Integer> on update/delete',
-                        'query': 'repeated typed known field filters, fields projection, sort_key/sort_dir pairs, page_reverse; pagination owns limit/marker',
+                        'query': 'generated source-model attribute filters plus pinned Gophercloud tag query selectors, including tags/tags-any/not-tags/not-tags-any; separate generated response projection/sort selectors; repeated values preserved; pagination owns limit/marker',
                         'excluded_variants': ['arbitrary plugin extension bodies/filters', 'provider:* physical network fields', 'binding:* host/VIF fields', 'subnet pools, segments and routed provider networks', 'port binding/propagate_uplink_status/value_specs', 'tag mutations (separate capability)', 'bulk create/update/delete', 'provider-segments conditional physical plugin variants', 'port_security_enabled writes: Selectel explicitly disallows toggling traffic filtering']},
             'response': {'successful_statuses': [201 if action == 'create' else 204 if action == 'delete' else 200], 'dto_source': 'network/types_generated.go',
-                         'fields': 'all pinned Selectel vpc-go resource response fields plus standard tenant_id alias, no synthetic ownership or timestamp offset',
+                         'fields': 'all pinned Selectel vpc-go resource response fields plus source-bound tenant_id/QoS/VLAN and read-only port dns_assignment (ip_address, hostname, fqdn); no synthetic ownership or timestamp offset',
                          'resource_ref': 'ID must be nonempty for full responses; subnet/port network_id binds exact parent in same auth view. Projection may omit identity/parent and then list Ref is nil; exact Get retains request identity. Provider ref field discarded.',
                          'source_timestamps': 'raw strings, preserving fractional digits and absent timezone', 'sensitive_fields': []},
-            'errors': {'400': 'invalid_argument', '401': 'unauthenticated', '403': 'permission_denied', '404': 'not_found', '409': 'conflict', '412': 'provider_error; revision precondition failure',
+            'errors': {'400': 'provider_error', '401': 'unauthenticated', '403': 'permission_denied', '404': 'not_found', '409': 'conflict', '412': 'provider_error; revision precondition failure',
                        'messages': 'fixed SDK diagnostics; raw Neutron message/detail discarded; no undocumented machine-code classification',
                        'malformed_success': 'protocol_error or scope_mismatch; Accepted mutation receipt retains trustworthy identity when extracted',
                        'ambiguous_mutation': 'unknown_outcome with retained receipt and no replay'},

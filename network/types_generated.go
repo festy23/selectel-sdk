@@ -248,6 +248,37 @@ func (v *PortCreateSpec) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type PortDNSAssignment struct {
+	FQDN      *string `json:"fqdn,omitempty"`
+	Hostname  *string `json:"hostname,omitempty"`
+	IPAddress *string `json:"ip_address,omitempty"`
+}
+
+func (v PortDNSAssignment) Validate() error {
+	return nil
+}
+func (v *PortDNSAssignment) normalize() {
+}
+func (v *PortDNSAssignment) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire PortDNSAssignment
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = PortDNSAssignment(value)
+	v.normalize()
+	return nil
+}
+
 type PortExtraDHCPOption struct {
 	IPVersion *types.Integer `json:"ip_version,omitempty"`
 	Name      *string        `json:"opt_name,omitempty"`
@@ -321,6 +352,7 @@ type Port struct {
 	DeviceID            *string                  `json:"device_id,omitempty"`
 	DeviceOwner         *string                  `json:"device_owner,omitempty"`
 	DHCPBlocked         *bool                    `json:"dhcp_blocked,omitempty"`
+	DNSAssignment       []PortDNSAssignment      `json:"dns_assignment,omitzero"`
 	DNSName             *string                  `json:"dns_name,omitempty"`
 	ExtraDHCPOptions    []PortExtraDHCPOption    `json:"extra_dhcp_opts,omitzero"`
 	FixedIPs            []PortFixedIP            `json:"fixed_ips,omitzero"`
@@ -347,6 +379,11 @@ func (v Port) Validate() error {
 			return err
 		}
 	}
+	for _, item := range v.DNSAssignment {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
 	for _, item := range v.ExtraDHCPOptions {
 		if err := item.Validate(); err != nil {
 			return err
@@ -362,6 +399,9 @@ func (v Port) Validate() error {
 func (v *Port) normalize() {
 	for i := range v.AllowedAddressPairs {
 		v.AllowedAddressPairs[i].normalize()
+	}
+	for i := range v.DNSAssignment {
+		v.DNSAssignment[i].normalize()
 	}
 	for i := range v.ExtraDHCPOptions {
 		v.ExtraDHCPOptions[i].normalize()

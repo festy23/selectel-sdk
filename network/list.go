@@ -14,24 +14,24 @@ import (
 
 // Selection preserves repeated filters (OR) and distinct fields (AND). Owner
 // filters select provider-visible resources; they never change authorization.
-type Selection[F ~string] struct {
+type Selection[F ~string, P ~string] struct {
 	Filters     map[F][]string
-	Fields      []F
-	SortKeys    []F
+	Fields      []P
+	SortKeys    []P
 	SortDirs    []string
 	PageReverse *bool
 }
-type NetworkFilters = Selection[NetworkField]
-type SubnetFilters = Selection[SubnetField]
-type PortFilters = Selection[PortField]
+type NetworkFilters = Selection[NetworkFilter, NetworkField]
+type SubnetFilters = Selection[SubnetFilter, SubnetField]
+type PortFilters = Selection[PortFilter, PortField]
 
-func selectionQuery[F ~string](s Selection[F], valid func(F) bool) (url.Values, error) {
-	q, e := fieldQuery(s.Fields, valid)
+func selectionQuery[F ~string, P ~string](s Selection[F, P], validFilter func(F) bool, validField func(P) bool) (url.Values, error) {
+	q, e := fieldQuery(s.Fields, validField)
 	if e != nil {
 		return nil, e
 	}
 	for f, values := range s.Filters {
-		if !valid(f) || len(values) == 0 {
+		if !validFilter(f) || len(values) == 0 {
 			return nil, types.NewError(types.InvalidArgument)
 		}
 		q[string(f)] = append([]string(nil), values...)
@@ -40,7 +40,7 @@ func selectionQuery[F ~string](s Selection[F], valid func(F) bool) (url.Values, 
 		return nil, types.NewError(types.InvalidArgument)
 	}
 	for i, f := range s.SortKeys {
-		if !valid(f) || (s.SortDirs[i] != "asc" && s.SortDirs[i] != "desc") {
+		if !validField(f) || (s.SortDirs[i] != "asc" && s.SortDirs[i] != "desc") {
 			return nil, types.NewError(types.InvalidArgument)
 		}
 		q.Add("sort_key", string(f))
@@ -51,8 +51,8 @@ func selectionQuery[F ~string](s Selection[F], valid func(F) bool) (url.Values, 
 	}
 	return q, nil
 }
-func iterate[T model, F ~string](runtime *core.Runtime, scope types.Scope, kind string, s Selection[F], valid func(F) bool, setRef func(*T, *types.ResourceRef), options pagination.Options) (*pagination.Iterator[T], error) {
-	values, e := selectionQuery(s, valid)
+func iterate[T model, F ~string, P ~string](runtime *core.Runtime, scope types.Scope, kind string, s Selection[F, P], validFilter func(F) bool, validField func(P) bool, setRef func(*T, *types.ResourceRef), options pagination.Options) (*pagination.Iterator[T], error) {
+	values, e := selectionQuery(s, validFilter, validField)
 	if e != nil {
 		return nil, e
 	}
@@ -134,7 +134,7 @@ func iterate[T model, F ~string](runtime *core.Runtime, scope types.Scope, kind 
 }
 
 func (n *Networks) Iterate(f NetworkFilters, o pagination.Options) (*pagination.Iterator[Network], error) {
-	return iterate(n.runtime, n.scope, "network", f, validNetworkField, func(v *Network, r *types.ResourceRef) { v.Ref = r }, o)
+	return iterate(n.runtime, n.scope, "network", f, validNetworkFilter, validNetworkField, func(v *Network, r *types.ResourceRef) { v.Ref = r }, o)
 }
 func (n *Networks) Collect(ctx context.Context, f NetworkFilters, o pagination.Options) (pagination.Collection[Network], error) {
 	it, e := n.Iterate(f, o)
@@ -152,7 +152,7 @@ func (n *Networks) ListPage(ctx context.Context, f NetworkFilters, o pagination.
 }
 
 func (n *Subnets) Iterate(f SubnetFilters, o pagination.Options) (*pagination.Iterator[Subnet], error) {
-	return iterate(n.runtime, n.scope, "subnet", f, validSubnetField, func(v *Subnet, r *types.ResourceRef) { v.Ref = r }, o)
+	return iterate(n.runtime, n.scope, "subnet", f, validSubnetFilter, validSubnetField, func(v *Subnet, r *types.ResourceRef) { v.Ref = r }, o)
 }
 func (n *Subnets) Collect(ctx context.Context, f SubnetFilters, o pagination.Options) (pagination.Collection[Subnet], error) {
 	it, e := n.Iterate(f, o)
@@ -170,7 +170,7 @@ func (n *Subnets) ListPage(ctx context.Context, f SubnetFilters, o pagination.Op
 }
 
 func (n *Ports) Iterate(f PortFilters, o pagination.Options) (*pagination.Iterator[Port], error) {
-	return iterate(n.runtime, n.scope, "port", f, validPortField, func(v *Port, r *types.ResourceRef) { v.Ref = r }, o)
+	return iterate(n.runtime, n.scope, "port", f, validPortFilter, validPortField, func(v *Port, r *types.ResourceRef) { v.Ref = r }, o)
 }
 func (n *Ports) Collect(ctx context.Context, f PortFilters, o pagination.Options) (pagination.Collection[Port], error) {
 	it, e := n.Iterate(f, o)

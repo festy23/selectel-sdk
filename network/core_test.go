@@ -214,7 +214,7 @@ func TestNetworkListPreservesAccessibleSelectionAndBoundedCursor(t *testing.T) {
 		}
 		return reply(200, `{"networks":[{"id":"b","project_id":"project"}],"networks_links":[]}`), nil
 	})
-	f := network.NetworkFilters{Filters: map[network.NetworkField][]string{network.NetworkFieldName: {"", "shared"}}, SortKeys: []network.NetworkField{network.NetworkFieldName}, SortDirs: []string{"asc"}}
+	f := network.NetworkFilters{Filters: map[network.NetworkFilter][]string{network.NetworkFilterName: {"", "shared"}}, SortKeys: []network.NetworkField{network.NetworkFieldName}, SortDirs: []string{"asc"}}
 	got, e := c.Networks.Collect(context.Background(), f, pagination.Options{PageSize: 2, MaxItems: 1})
 	if types.ErrorCode(e) != types.Incomplete || got.Complete || got.NextCursor == nil || len(got.Items) != 1 || got.Items[0].Ref.Scope.ProjectID != "project" {
 		t.Fatalf("bounded %+v %v", got, e)
@@ -223,7 +223,7 @@ func TestNetworkListPreservesAccessibleSelectionAndBoundedCursor(t *testing.T) {
 	if e != nil || !resumed.Complete || len(resumed.Items) != 1 || *resumed.Items[0].ID != "b" || calls != 2 {
 		t.Fatalf("resume %+v %v", resumed, e)
 	}
-	f.Filters[network.NetworkFieldName] = []string{"changed"}
+	f.Filters[network.NetworkFilterName] = []string{"changed"}
 	_, e = c.Networks.Iterate(f, pagination.Options{Cursor: got.NextCursor})
 	if types.ErrorCode(e) != types.ScopeMismatch {
 		t.Fatal("cursor not bound to selection", e)
@@ -396,5 +396,73 @@ func TestConditionalQOSAndVLANFieldsRemainExplicit(t *testing.T) {
 	got, e := c.Ports.Update(context.Background(), network.PortUpdateRequest{Ref: ref, Spec: network.PortUpdateSpec{QoSPolicyID: types.Null[string]()}}, types.CallOptions{})
 	if e != nil || got.Data.QoSPolicyID == nil || got.Data.QoSNetworkPolicyID == nil {
 		t.Fatalf("policy metadata %+v %v", got, e)
+	}
+}
+
+func TestTagReadFiltersPreserveExactWireAcrossCoreResources(t *testing.T) {
+	c := client(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.RawQuery != "limit=100&not-tags=red&not-tags-any=green%2Cblue&tags=one%2Ctwo&tags-any=red%2Cblue&tags-any=" {
+			t.Fatalf("tag query %s", r.URL.RawQuery)
+		}
+		plural := strings.TrimPrefix(r.URL.Path, "/v2.0/")
+		return reply(200, `{"`+plural+`":[]}`), nil
+	})
+	ctx := context.Background()
+	_, e := c.Networks.ListPage(ctx, network.NetworkFilters{Filters: map[network.NetworkFilter][]string{"tags": {"one,two"}, "tags-any": {"red,blue", ""}, "not-tags": {"red"}, "not-tags-any": {"green,blue"}}}, pagination.Options{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = c.Subnets.ListPage(ctx, network.SubnetFilters{Filters: map[network.SubnetFilter][]string{"tags": {"one,two"}, "tags-any": {"red,blue", ""}, "not-tags": {"red"}, "not-tags-any": {"green,blue"}}}, pagination.Options{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = c.Ports.ListPage(ctx, network.PortFilters{Filters: map[network.PortFilter][]string{"tags": {"one,two"}, "tags-any": {"red,blue", ""}, "not-tags": {"red"}, "not-tags-any": {"green,blue"}}}, pagination.Options{})
+	if e != nil {
+		t.Fatal(e)
+	}
+}
+
+func TestTagFilterSelectorsAreNotProjectionOrSortFields(t *testing.T) {
+	c := client(t, func(*http.Request) (*http.Response, error) {
+		t.Fatal("filter-only selector reached provider")
+		return nil, nil
+	})
+	_, e := c.Networks.ListPage(context.Background(), network.NetworkFilters{Fields: []network.NetworkField{network.NetworkField(network.NetworkFilterTagsAny)}}, pagination.Options{})
+	if types.ErrorCode(e) != types.InvalidArgument {
+		t.Fatal(e)
+	}
+	_, e = c.Subnets.ListPage(context.Background(), network.SubnetFilters{SortKeys: []network.SubnetField{network.SubnetField(network.SubnetFilterNotTags)}, SortDirs: []string{"asc"}}, pagination.Options{})
+	if types.ErrorCode(e) != types.InvalidArgument {
+		t.Fatal(e)
+	}
+}
+func TestPortDNSAssignmentProjectionPreservesTypedSourceFields(t *testing.T) {
+	c := client(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.RawQuery != "fields=dns_assignment&limit=100" {
+			t.Fatal(r.URL.RawQuery)
+		}
+		return reply(200, `{"ports":[{"dns_assignment":[{"ip_address":"10.0.0.7","hostname":"app","fqdn":"app.example."}]}]}`), nil
+	})
+	got, e := c.Ports.ListPage(context.Background(), network.PortFilters{Fields: []network.PortField{network.PortFieldDNSAssignment}}, pagination.Options{})
+	if e != nil || len(got.Items) != 1 || len(got.Items[0].DNSAssignment) != 1 || got.Items[0].Ref != nil {
+		t.Fatalf("dns projection %+v %v", got, e)
+	}
+	dns := got.Items[0].DNSAssignment[0]
+	if dns.IPAddress == nil || *dns.IPAddress != "10.0.0.7" || dns.Hostname == nil || *dns.Hostname != "app" || dns.FQDN == nil || *dns.FQDN != "app.example." {
+		t.Fatalf("dns fields %+v", dns)
+	}
+}
+
+func TestNetworkHTTP400UsesSharedProviderErrorAndRejectedReceipt(t *testing.T) {
+	c := client(t, func(*http.Request) (*http.Response, error) {
+		return reply(400, `{"NeutronError":{"type":"BadRequest","message":"private-provider-details"}}`), nil
+	})
+	got, e := c.Networks.Create(context.Background(), network.NetworkCreateSpec{}, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProviderError || got.Receipt == nil || got.Receipt.Outcome != types.Rejected || got.Receipt.Attempts != 1 || strings.Contains(e.Error(), "private-provider-details") {
+		t.Fatalf("400 mutation %+v %v", got, e)
+	}
+	_, e = c.Ports.ListPage(context.Background(), network.PortFilters{}, pagination.Options{})
+	if types.ErrorCode(e) != types.ProviderError {
+		t.Fatalf("400 read %v", e)
 	}
 }
