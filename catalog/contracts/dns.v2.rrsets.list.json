@@ -1,0 +1,191 @@
+{
+  "operation_id": "dns.v2.rrsets.list",
+  "source_revision": "0658efafdfba61ca7c0da4ec5ad3a20d848c4695d3a44f598c809ea56b769177",
+  "endpoint": "global https://api.selectel.ru/domains/v2 or exact explicit override; no location",
+  "auth": "iam_project X-Auth-Token, no account/static-token fallback",
+  "request": {
+    "method": "GET",
+    "path": "/zones/{zone_id}/rrset",
+    "schema": null,
+    "native_management_variant": null,
+    "parameters": [
+      {
+        "name": "zone_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Zone identifier.",
+          "title": "Zone Id"
+        },
+        "description": "Zone identifier."
+      },
+      {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of items to return in response. Used for pagination.",
+          "default": 1000,
+          "title": "Limit"
+        },
+        "description": "Maximum number of items to return in response. Used for pagination."
+      },
+      {
+        "name": "offset",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of items to skip. Used for pagination.",
+          "default": 0,
+          "title": "Offset"
+        },
+        "description": "Number of items to skip. Used for pagination."
+      },
+      {
+        "name": "sort_by",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/RRSetSortingOptions"
+          },
+          "description": "Sorting criteria for the results.",
+          "default": [
+            "name.ascend"
+          ],
+          "title": "Sort By"
+        },
+        "description": "Sorting criteria for the results."
+      },
+      {
+        "name": "rrset_types",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Filter record sets by the specified type.",
+          "title": "Rrset Types"
+        },
+        "description": "Filter record sets by the specified type."
+      },
+      {
+        "name": "name",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "description": "Filter record sets by the specified name.",
+          "title": "Name"
+        },
+        "description": "Filter record sets by the specified name."
+      },
+      {
+        "name": "search",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "description": "Search record sets that contain search value in name or in content of any included record.",
+          "title": "Search"
+        },
+        "description": "Search record sets that contain search value in name or in content of any included record."
+      },
+      {
+        "name": "managed_by",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Filter record sets by the identifier of the web resource that manages them.",
+          "title": "Managed By"
+        },
+        "description": "Filter record sets by the identifier of the web resource that manages them."
+      }
+    ],
+    "scope": "caller auth view, provider project_id owner metadata, owner transfer never adopts new scope"
+  },
+  "response": {
+    "source": {
+      "200": {
+        "description": "List of zone record sets.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RRSetPaginationResponse"
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized. Please check authorization in request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The zone has not been found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "422": {
+        "description": "Validation error. Fix the request and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Server is not responding. Please try again later.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "sensitive_fields": [
+      "records[].content"
+    ],
+    "mapping": "source generated DTO, exact Integer TTL/count, optional booleans and raw timestamp strings, validated identity retained independently from malformed unrelated fields"
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found in saved scope",
+    "409": "conflict",
+    "422": "invalid_argument",
+    "500": "provider_error for reads, unknown for sent mutations",
+    "provider_text": "discarded; no text-based classification"
+  },
+  "retry": "bounded safe reads; mutations no replay; source-documented4xx rejected only",
+  "shared_provenance": "reviewed379458e receipt-only recovery/revision-before-validation; reviewed8351f2f service exact endpoint pinning and identity-first decoding pattern, no unmerged service feature code",
+  "recovery": "exact refs/pinned endpoint only; known receipts conclusive without I/O; unknown never inferred by name/adopted",
+  "pagination": "source next_offset 0/current or null/pinnedSDK terminates; positive provider offsets strictly advance; count retained as reported_count, no invented total; bounded cursor semantics include endpoint URL and private query digest",
+  "wait": "existence/absence observation only, no DNS propagation claim"
+}
