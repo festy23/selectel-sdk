@@ -1,0 +1,168 @@
+{
+  "operation_id": "billing.v1.cloud_billing_statistic_projects.list",
+  "effect": "read",
+  "endpoint": {
+    "url": "https://api.selectel.ru",
+    "generation": "v1",
+    "override_key": [
+      "billing",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject",
+    "requirement": "Pinned existing billing endpoint or exact explicit override",
+    "evidence": "existing billing endpoint contract"
+  },
+  "auth": {
+    "scheme": "iam_account",
+    "alternatives": [
+      "static_token"
+    ],
+    "audience": "selectel",
+    "headers": {
+      "X-Token": "explicit static token; never switch to IAM for static-only API",
+      "X-Auth-Token": "IAM account only where source supports it"
+    }
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v1/cloud_billing/statistic/projects",
+    "source_schema": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1projects/get",
+    "source_operation": {
+      "tags": [
+        "Get statistics"
+      ],
+      "summary": "Get billing statistics for projects",
+      "description": "Get billing statistics for projects by provider keys",
+      "operationId": "getBillingStatistics",
+      "security": [
+        {
+          "static_token": []
+        },
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "parameters": [
+        {
+          "name": "provider_keys",
+          "in": "query",
+          "description": "Provider keys to filter statistics by",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "vpc",
+                "serverless",
+                "mks",
+                "dbaas",
+                "storage",
+                "cdn",
+                "vmware",
+                "craas",
+                "ones",
+                "mobfarm",
+                "ses"
+              ]
+            }
+          },
+          "style": "form",
+          "explode": true
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Successful response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "8c37009d-99b2-4f94-adda-7c6e7e0c2b69"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "name_project"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized. Invalid X-Auth-Token or X-Token header value"
+        },
+        "403": {
+          "description": "Forbidden. The request is not allowed for the user"
+        },
+        "500": {
+          "description": "Internal Server Error"
+        }
+      }
+    },
+    "scope": "account only; project/location view rejected before I/O",
+    "mapping_source": "billing/statistics.go",
+    "query": {
+      "provider_keys": "matching typed request field; nil optional omitted; explicit zero/false/empty retained; repeated provider_keys preserved"
+    },
+    "body": null,
+    "validation": "Published provider enum, year2020..2030/month1..12, locale ru/en, date-time offset or source example timezone-free form, transactions limit1..500 and arbitrary-precision nonnegative offset; no defaults added"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1projects/get/responses",
+    "dto_source": "billing/statistics_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All source fields, recursive report objects and integer/string project IDs retained. Exact Integer quantities; source money->Amount.Raw with unit kopeck, no inferred currency. ProviderTimestamp.Raw retained, UTC only when offset supplied. Names/descriptions/service context/debt reasons protected; optional null preserved with Nullable or formatter-safe OptionalText.",
+    "sensitive_fields": [
+      "name",
+      "description",
+      "public_description",
+      "service_name",
+      "full_name",
+      "reason_for_debt",
+      "jurbrand_key"
+    ],
+    "resource_ref": "none; billing project/object identifiers are billing metadata, never infrastructure adoption refs"
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated; no auth-audience/endpoint fallback",
+    "403": "permission_denied",
+    "429": "rate_limited within read budget",
+    "500": "provider_error within bounded read retries",
+    "malformed": "protocol_error",
+    "foreign_account": "scope_mismatch for report account_id",
+    "over_requested_page_limit": "response_limit with retained bounded prefix, no completion claim"
+  },
+  "retry": "bounded safe reads within CallTimeout; no endpoint/credential-scope fallback",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; financial read does not create/wait resources"
+  },
+  "recovery": {
+    "availability": "unavailable; safe read only"
+  },
+  "timeout": "CallTimeout and MaxJSONBytes; no unbounded buffering",
+  "limitations": [],
+  "source_example_compatibility": null
+}

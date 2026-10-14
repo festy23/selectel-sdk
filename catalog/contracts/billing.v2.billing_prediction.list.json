@@ -1,0 +1,123 @@
+{
+  "operation_id": "billing.v2.billing_prediction.list",
+  "effect": "read",
+  "endpoint": {
+    "url": "https://api.selectel.ru",
+    "generation": "v2",
+    "override_key": [
+      "billing",
+      "v2",
+      "exact account scope"
+    ],
+    "redirects": "reject",
+    "requirement": "Pinned existing billing endpoint or exact explicit override",
+    "evidence": "existing billing endpoint contract"
+  },
+  "auth": {
+    "scheme": "iam_account",
+    "alternatives": [
+      "static_token"
+    ],
+    "audience": "selectel",
+    "headers": {
+      "X-Token": "explicit static token; never switch to IAM for static-only API",
+      "X-Auth-Token": "IAM account only where source supports it"
+    }
+  },
+  "request": {
+    "method": "GET",
+    "path": "/v2/billing/prediction",
+    "source_schema": "sources/balance.json#/paths/~1v2~1billing~1prediction/get",
+    "source_operation": {
+      "tags": [
+        "Get billing prediction"
+      ],
+      "summary": "Get billing prediction",
+      "description": "Returns the estimated time that the remaining balance will last in hours..",
+      "security": [
+        {
+          "static_token": []
+        },
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Successful response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "primary": {
+                        "type": "integer",
+                        "example": 100
+                      },
+                      "storage": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vmware": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vpc": {
+                        "type": "integer",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "scope": "account only; project/location view rejected before I/O",
+    "mapping_source": "billing/prediction.go",
+    "query": {},
+    "body": null,
+    "validation": "Published provider enum, year2020..2030/month1..12, locale ru/en, date-time offset or source example timezone-free form, transactions limit1..500 and arbitrary-precision nonnegative offset; no defaults added"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "schema_ref": "sources/balance.json#/paths/~1v2~1billing~1prediction/get/responses",
+    "dto_source": "billing/prediction_types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "All source fields, recursive report objects and integer/string project IDs retained. Exact Integer quantities; source money->Amount.Raw with unit kopeck, no inferred currency. ProviderTimestamp.Raw retained, UTC only when offset supplied. Names/descriptions/service context/debt reasons protected; optional null preserved with Nullable or formatter-safe OptionalText.",
+    "sensitive_fields": [],
+    "resource_ref": "none; billing project/object identifiers are billing metadata, never infrastructure adoption refs"
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated; no auth-audience/endpoint fallback",
+    "403": "permission_denied",
+    "429": "rate_limited within read budget",
+    "500": "provider_error within bounded read retries",
+    "malformed": "protocol_error",
+    "foreign_account": "scope_mismatch for report account_id",
+    "over_requested_page_limit": "response_limit with retained bounded prefix, no completion claim"
+  },
+  "retry": "bounded safe reads within CallTimeout; no endpoint/credential-scope fallback",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "availability": "unavailable; financial read does not create/wait resources"
+  },
+  "recovery": {
+    "availability": "unavailable; safe read only"
+  },
+  "timeout": "CallTimeout and MaxJSONBytes; no unbounded buffering",
+  "limitations": [],
+  "source_example_compatibility": null
+}

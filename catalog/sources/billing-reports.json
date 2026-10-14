@@ -1,0 +1,719 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Reports API",
+    "version": "v1.0",
+    "description": "Reports with project-level consumption and expenses."
+  },
+  "security": [
+    {
+      "static_token": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Project Reports",
+      "description": "Reports grouped by projects."
+    }
+  ],
+  "paths": {
+    "/v1/billing/report/by_project/detailed": {
+      "get": {
+        "summary": "Get detailed project report",
+        "description": "Returns detailed project expense data for the specified month, including breakdowns by product, facility, and resource.",
+        "operationId": "getDetailedProjectReport",
+        "tags": [
+          "Project Reports"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "description": "Report year.",
+            "schema": {
+              "type": "integer",
+              "minimum": 2020,
+              "maximum": 2030
+            },
+            "example": 2025
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "description": "Report month as a number from 1 to 12.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "example": 8
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "description": "Locale for names in the response.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ru",
+                "en"
+              ]
+            },
+            "example": "ru"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed report by projects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectReportResponse"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "account_id": 12345,
+                    "agreement_id": 0,
+                    "locale": "ru",
+                    "project_ids": [],
+                    "year": 2025,
+                    "month": 8,
+                    "projects": [
+                      {
+                        "id": "proj-1",
+                        "name": "project-1",
+                        "paid_by_balance": [
+                          {
+                            "balance": "main",
+                            "value": 16000000
+                          },
+                          {
+                            "balance": "bonus",
+                            "value": 80000
+                          }
+                        ],
+                        "value": 36000,
+                        "products": [
+                          {
+                            "id": 21,
+                            "name": "S3",
+                            "paid_by_balance": [
+                              {
+                                "balance": "bonus",
+                                "value": 0
+                              }
+                            ],
+                            "value": 0,
+                            "objects": [
+                              {
+                                "id": "",
+                                "name": "",
+                                "type": "",
+                                "type_name": "",
+                                "service_name": null,
+                                "paid_by_balance": [
+                                  {
+                                    "balance": "bonus",
+                                    "value": 0
+                                  }
+                                ],
+                                "value": 0,
+                                "resources": [
+                                  {
+                                    "id": "traffic-mb",
+                                    "name": "Outbound traffic (standard)",
+                                    "quantity": 22,
+                                    "unit": "MB",
+                                    "unit_name": "MB",
+                                    "paid_by_balance": [
+                                      {
+                                        "balance": "bonus",
+                                        "value": 0
+                                      }
+                                    ],
+                                    "value": 0,
+                                    "provision_start": "2025-08-18T15:00:00",
+                                    "provision_end": "2025-08-29T13:00:00"
+                                  },
+                                  {
+                                    "id": "traffic-req-put",
+                                    "name": "PUT, POST, COPY requests (standard)",
+                                    "quantity": 1,
+                                    "unit": "item",
+                                    "unit_name": "item",
+                                    "paid_by_balance": [
+                                      {
+                                        "balance": "bonus",
+                                        "value": 0
+                                      }
+                                    ],
+                                    "value": 0,
+                                    "provision_start": "2025-08-15T23:00:00",
+                                    "provision_end": "2025-08-15T23:00:00"
+                                  },
+                                  {
+                                    "id": "traffic-req-get",
+                                    "name": "GET and other requests (standard)",
+                                    "quantity": 923,
+                                    "unit": "item",
+                                    "unit_name": "item",
+                                    "paid_by_balance": [
+                                      {
+                                        "balance": "bonus",
+                                        "value": 0
+                                      }
+                                    ],
+                                    "value": 0,
+                                    "provision_start": "2025-08-01T16:00:00",
+                                    "provision_end": "2025-08-31T21:00:00"
+                                  }
+                                ],
+                                "objects": []
+                              }
+                            ]
+                          },
+                          {
+                            "id": 22,
+                            "name": "Cloud servers",
+                            "paid_by_balance": [
+                              {
+                                "balance": "bonus",
+                                "value": 36000
+                              }
+                            ],
+                            "value": 36000,
+                            "objects": [
+                              {
+                                "id": "11111111-1111-4111-8111-111111111111",
+                                "name": "203.0.113.10",
+                                "type": "network_floatingips",
+                                "type_name": "Public IP",
+                                "service_name": null,
+                                "paid_by_balance": [
+                                  {
+                                    "balance": "bonus",
+                                    "value": 18000
+                                  }
+                                ],
+                                "value": 18000,
+                                "resources": [
+                                  {
+                                    "id": "network_floatingips",
+                                    "name": "Public IPs",
+                                    "quantity": 744,
+                                    "unit": "item",
+                                    "unit_name": "item",
+                                    "paid_by_balance": [
+                                      {
+                                        "balance": "bonus",
+                                        "value": 18000
+                                      }
+                                    ],
+                                    "value": 18000,
+                                    "provision_start": "2025-08-01T00:00:00",
+                                    "provision_end": "2025-08-31T23:00:00"
+                                  }
+                                ],
+                                "objects": []
+                              },
+                              {
+                                "id": "22222222-2222-4222-8222-222222222222",
+                                "name": "198.51.100.20",
+                                "type": "network_floatingips",
+                                "type_name": "Public IP",
+                                "service_name": null,
+                                "paid_by_balance": [
+                                  {
+                                    "balance": "bonus",
+                                    "value": 18000
+                                  }
+                                ],
+                                "value": 18000,
+                                "resources": [
+                                  {
+                                    "id": "network_floatingips",
+                                    "name": "Public IPs",
+                                    "quantity": 744,
+                                    "unit": "item",
+                                    "unit_name": "item",
+                                    "paid_by_balance": [
+                                      {
+                                        "balance": "bonus",
+                                        "value": 18000
+                                      }
+                                    ],
+                                    "value": 18000,
+                                    "provision_start": "2025-08-01T00:00:00",
+                                    "provision_end": "2025-08-31T23:00:00"
+                                  }
+                                ],
+                                "objects": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "id": "proj-2",
+                        "name": "project-2",
+                        "paid_by_balance": [
+                          {
+                            "balance": "bonus",
+                            "value": 18000
+                          }
+                        ],
+                        "value": 18000,
+                        "products": [
+                          {
+                            "id": 21,
+                            "name": "S3",
+                            "paid_by_balance": [
+                              {
+                                "balance": "bonus",
+                                "value": 0
+                              }
+                            ],
+                            "value": 0,
+                            "objects": [
+                              {
+                                "id": "",
+                                "name": "",
+                                "type": "",
+                                "type_name": "",
+                                "service_name": null,
+                                "paid_by_balance": [
+                                  {
+                                    "balance": "bonus",
+                                    "value": 0
+                                  }
+                                ],
+                                "value": 0,
+                                "resources": [
+                                  {
+                                    "id": "traffic-mb",
+                                    "name": "Outbound traffic (standard)",
+                                    "quantity": 35,
+                                    "unit": "MB",
+                                    "unit_name": "MB",
+                                    "paid_by_balance": [
+                                      {
+                                        "balance": "bonus",
+                                        "value": 0
+                                      }
+                                    ],
+                                    "value": 0,
+                                    "provision_start": "2025-08-06T12:00:00",
+                                    "provision_end": "2025-08-29T13:00:00"
+                                  },
+                                  {
+                                    "id": "traffic-req-get",
+                                    "name": "GET and other requests (standard)",
+                                    "quantity": 1098,
+                                    "unit": "item",
+                                    "unit_name": "item",
+                                    "paid_by_balance": [
+                                      {
+                                        "balance": "bonus",
+                                        "value": 0
+                                      }
+                                    ],
+                                    "value": 0,
+                                    "provision_start": "2025-08-01T16:00:00",
+                                    "provision_end": "2025-08-31T21:00:00"
+                                  }
+                                ],
+                                "objects": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    "value": 62639000,
+                    "paid_by_balance": [
+                      {
+                        "balance": "bonus",
+                        "value": 62639000
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "static_token": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Token",
+        "description": "Static token."
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Bad or expired token. You can reissue the token and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Server is not responding. Please try again later.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "BalancePayment": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "string",
+            "description": "Balance type, for example main or bonus."
+          },
+          "value": {
+            "type": "integer",
+            "description": "Amount in kopecks."
+          }
+        },
+        "required": [
+          "balance",
+          "value"
+        ]
+      },
+      "Resource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Resource identifier (can be empty)."
+          },
+          "name": {
+            "type": "string",
+            "description": "Resource name."
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "Number of resource units."
+          },
+          "unit": {
+            "type": "string",
+            "description": "System designation of the unit of measurement (for example, MB, item)."
+          },
+          "unit_name": {
+            "type": "string",
+            "description": "Human-readable name of the unit of measurement."
+          },
+          "paid_by_balance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalancePayment"
+            },
+            "description": "List of payments for the resource by different balances."
+          },
+          "value": {
+            "type": "integer",
+            "description": "Resource cost in minor currency units."
+          },
+          "provision_start": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Resource provision start time."
+          },
+          "provision_end": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Resource provision end time."
+          }
+        },
+        "required": [
+          "name",
+          "quantity",
+          "unit",
+          "unit_name",
+          "paid_by_balance",
+          "value"
+        ]
+      },
+      "ProductObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Object identifier (can be empty)."
+          },
+          "name": {
+            "type": "string",
+            "description": "Object name."
+          },
+          "type": {
+            "type": "string",
+            "nullable": true,
+            "description": "System object type (for example, network_floatingips)."
+          },
+          "type_name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Human-readable object type name."
+          },
+          "service_name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Product name."
+          },
+          "paid_by_balance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalancePayment"
+            },
+            "description": "Object payment by balances."
+          },
+          "value": {
+            "type": "integer",
+            "description": "Object cost in kopecks."
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            },
+            "description": "List of resources related to the object."
+          },
+          "objects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductObject"
+            },
+            "description": "Child objects."
+          }
+        },
+        "required": [
+          "name",
+          "paid_by_balance",
+          "value",
+          "resources",
+          "objects"
+        ]
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Product identifier."
+          },
+          "name": {
+            "type": "string",
+            "description": "Product name."
+          },
+          "paid_by_balance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalancePayment"
+            },
+            "description": "Product payment by balances."
+          },
+          "value": {
+            "type": "integer",
+            "description": "Product cost in kopecks."
+          },
+          "objects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductObject"
+            },
+            "description": "List of objects related to the product."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "paid_by_balance",
+          "value",
+          "objects"
+        ]
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Project identifier (string or number)."
+          },
+          "name": {
+            "type": "string",
+            "description": "Project name."
+          },
+          "paid_by_balance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalancePayment"
+            },
+            "description": "Project payment by balances."
+          },
+          "value": {
+            "type": "integer",
+            "description": "Project cost in kopecks."
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            },
+            "description": "List of project products."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "paid_by_balance",
+          "value",
+          "products"
+        ]
+      },
+      "ProjectReportData": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "integer",
+            "description": "Account ID to which the report relates."
+          },
+          "agreement_id": {
+            "type": "integer",
+            "description": "Agreement ID, if applicable."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "ru",
+              "en"
+            ],
+            "description": "Locale for names in the report (ru or en)."
+          },
+          "project_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of project identifiers for which the report is built."
+          },
+          "year": {
+            "type": "integer",
+            "description": "Report year."
+          },
+          "month": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12,
+            "description": "Report month (1-12)."
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            },
+            "description": "List of projects with details."
+          },
+          "value": {
+            "type": "integer",
+            "description": "Total amount for all projects in the report in kopecks."
+          },
+          "paid_by_balance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalancePayment"
+            },
+            "description": "Total amount by balances for all projects in kopecks."
+          }
+        },
+        "required": [
+          "account_id",
+          "agreement_id",
+          "locale",
+          "project_ids",
+          "year",
+          "month",
+          "projects"
+        ]
+      },
+      "ProjectReportResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status, for example success."
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProjectReportData",
+            "description": "Main report data."
+          }
+        },
+        "required": [
+          "status",
+          "data"
+        ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "message"
+        ]
+      }
+    }
+  }
+}

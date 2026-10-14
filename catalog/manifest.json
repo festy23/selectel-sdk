@@ -57,7 +57,71 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "798d8df515c07404ee93cf8869e845bd75f06edf337f508db82fb6385cb074c0",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/billing.v1.billing_report_by_project_detailed.list.json": "6a714d7f60945979ba58e7f51c3f9b8b0c0a00406fc7bf6909cf66176be78aee"
+    },
+    "contract_revision": "e531f94b888be85eae4fcb291f52eba9e7669d98d07c5ef5fe3a82446a0ad43d",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/billing.v1.billing_report_by_project_detailed.list.json#/endpoint",
+    "error_binding_ref": "contracts/billing.v1.billing_report_by_project_detailed.list.json#/errors",
+    "go_method": "billing.Client.DetailedReport",
+    "implementation": {
+      "binding": "billing.Client.DetailedReport",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/billing-reports.json#/paths/~1v1~1billing~1report~1by_project~1detailed/get",
+    "input_type": "billing.ReportRequest, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "billing.v1.billing_report_by_project_detailed.list",
+    "output_schema_ref": "sources/billing-reports.json#/paths/~1v1~1billing~1report~1by_project~1detailed/get/responses",
+    "output_type": "types.Result[billing.DetailedReportResponse]",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/billing-reports.json#/paths/~1v1~1billing~1report~1by_project~1detailed/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/billing.v1.billing_report_by_project_detailed.list.json#/retry",
+    "request_binding_ref": "contracts/billing.v1.billing_report_by_project_detailed.list.json#/request",
+    "resource": "billing_report_by_project_detailed",
+    "response_binding_ref": "contracts/billing.v1.billing_report_by_project_detailed.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "public_description",
+      "service_name",
+      "full_name",
+      "reason_for_debt",
+      "jurbrand_key"
+    ],
+    "service": "billing",
+    "source": {
+      "operation_locator": "GET /v1/billing/report/by_project/detailed",
+      "revision": "f150bfa2951e3115425c28fc2d9c61682b47b202d88bc75872365e6705a96f16",
+      "uri": "https://docs.selectel.ru/api/billing-reports.json"
+    },
+    "verification": {
+      "contract_revision": "e531f94b888be85eae4fcb291f52eba9e7669d98d07c5ef5fe3a82446a0ad43d",
+      "evidence_ref": "billing/client_test.go",
+      "implementation_revision": "49e04cef03cebf5a2e3da8a4dc6c5f296fa9a438094fd7ac6670b579a8492357",
       "level": "offline"
     },
     "wait_goals": []
@@ -70,37 +134,48 @@
       "scheme": "iam_account"
     },
     "availability": "documented",
-    "contract_revision": "bb7ee0213c1e6708bdb6ce76b183d8965494aac706c6260732b9c78e6c6f5971",
+    "contract_artifact_revisions": {
+      "contracts/billing.v1.cloud_billing_statistic_objects.list.json": "644380466e57dae0191add3ad388e6adcfcdb7a1494ce9a18108f98d091fbca7"
+    },
+    "contract_revision": "25474b0c4fcdf4f6763ac19d5cdc201f84c65b812aa8af68133940459d03137a",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1objects/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/billing.v1.cloud_billing_statistic_objects.list.json#/endpoint",
+    "error_binding_ref": "contracts/billing.v1.cloud_billing_statistic_objects.list.json#/errors",
+    "go_method": "billing.Client.Objects",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "billing.Client.Objects",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1objects/get",
-    "input_type": null,
+    "input_type": "billing.ObjectsRequest, types.CallOptions",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "billing.v1.cloud_billing_statistic_objects.list",
     "output_schema_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1objects/get/responses",
-    "output_type": null,
+    "output_type": "types.Result[billing.ObjectsResponse]",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1objects/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/billing.v1.cloud_billing_statistic_objects.list.json#/retry",
+    "request_binding_ref": "contracts/billing.v1.cloud_billing_statistic_objects.list.json#/request",
     "resource": "cloud_billing_statistic_objects",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/billing.v1.cloud_billing_statistic_objects.list.json#/response",
     "scope_requirements": [
       "account"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "public_description",
+      "service_name",
+      "full_name",
+      "reason_for_debt",
+      "jurbrand_key"
+    ],
     "service": "billing",
     "source": {
       "operation_locator": "GET /v1/cloud_billing/statistic/objects",
@@ -108,10 +183,10 @@
       "uri": "https://docs.selectel.ru/api/balance-statistics.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "25474b0c4fcdf4f6763ac19d5cdc201f84c65b812aa8af68133940459d03137a",
+      "evidence_ref": "billing/client_test.go",
+      "implementation_revision": "32e52015437d6d8bb06dc5bcbcf662f6e11de27420e65fe3decc9735b100893a",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -123,37 +198,48 @@
       "scheme": "iam_account"
     },
     "availability": "documented",
-    "contract_revision": "c5cf9bd18b66c6059c46d7331912cd3635cd0abda5f6992aef969df4eeb688ac",
+    "contract_artifact_revisions": {
+      "contracts/billing.v1.cloud_billing_statistic_projects.list.json": "e684af16a9d1a44f8d536711a262ea72c02b37d61e23e4593918f3b5ff5d0122"
+    },
+    "contract_revision": "c2c957268693983bf199ed3f0638606e5f4f9b42ac16b357153eaf54275f9026",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1projects/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/billing.v1.cloud_billing_statistic_projects.list.json#/endpoint",
+    "error_binding_ref": "contracts/billing.v1.cloud_billing_statistic_projects.list.json#/errors",
+    "go_method": "billing.Client.Projects",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "billing.Client.Projects",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1projects/get",
-    "input_type": null,
+    "input_type": "billing.ProjectsRequest, types.CallOptions",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "billing.v1.cloud_billing_statistic_projects.list",
     "output_schema_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1projects/get/responses",
-    "output_type": null,
+    "output_type": "types.Result[billing.ProjectsResponse]",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/balance-statistics.json#/paths/~1v1~1cloud_billing~1statistic~1projects/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/billing.v1.cloud_billing_statistic_projects.list.json#/retry",
+    "request_binding_ref": "contracts/billing.v1.cloud_billing_statistic_projects.list.json#/request",
     "resource": "cloud_billing_statistic_projects",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/billing.v1.cloud_billing_statistic_projects.list.json#/response",
     "scope_requirements": [
       "account"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "public_description",
+      "service_name",
+      "full_name",
+      "reason_for_debt",
+      "jurbrand_key"
+    ],
     "service": "billing",
     "source": {
       "operation_locator": "GET /v1/cloud_billing/statistic/projects",
@@ -161,10 +247,10 @@
       "uri": "https://docs.selectel.ru/api/balance-statistics.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "c2c957268693983bf199ed3f0638606e5f4f9b42ac16b357153eaf54275f9026",
+      "evidence_ref": "billing/client_test.go",
+      "implementation_revision": "832f6a9a74aad988c6113b2915f9bef373aa0d08f1119aa576bbf7fcf956f31d",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -219,7 +305,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "c3b34c72afc993b918b182258be0ebbacb67bf6738e5bed4c57909952760c4df",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +361,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "c8eea756ca3601adb8474090e8b0ce7f71889a93f0aa60c8f74a4b2745febf2e",
       "level": "offline"
     },
     "wait_goals": []
@@ -288,33 +374,36 @@
       "scheme": "iam_account"
     },
     "availability": "documented",
-    "contract_revision": "7bff7ebbe987c137ea85472f991d685c712d999f85f657446809a286de250677",
+    "contract_artifact_revisions": {
+      "contracts/billing.v2.billing_prediction.list.json": "0a3465c80f39da7ec9b4c5f9cdec9254614758fe8158ce7dc358a23388906495"
+    },
+    "contract_revision": "cf9975a5a452fa2b6ea402c6610bf3a822aedd65e6a4e83675a5c38878dd1f62",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/balance.json#/paths/~1v2~1billing~1prediction/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/billing.v2.billing_prediction.list.json#/endpoint",
+    "error_binding_ref": "contracts/billing.v2.billing_prediction.list.json#/errors",
+    "go_method": "billing.Client.Prediction",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "billing.Client.Prediction",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/balance.json#/paths/~1v2~1billing~1prediction/get",
-    "input_type": null,
+    "input_type": "types.CallOptions",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "billing.v2.billing_prediction.list",
     "output_schema_ref": "sources/balance.json#/paths/~1v2~1billing~1prediction/get/responses",
-    "output_type": null,
+    "output_type": "types.Result[billing.PredictionResponse]",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/balance.json#/paths/~1v2~1billing~1prediction/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/billing.v2.billing_prediction.list.json#/retry",
+    "request_binding_ref": "contracts/billing.v2.billing_prediction.list.json#/request",
     "resource": "billing_prediction",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/billing.v2.billing_prediction.list.json#/response",
     "scope_requirements": [
       "account"
     ],
@@ -326,10 +415,74 @@
       "uri": "https://docs.selectel.ru/api/balance.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "cf9975a5a452fa2b6ea402c6610bf3a822aedd65e6a4e83675a5c38878dd1f62",
+      "evidence_ref": "billing/client_test.go",
+      "implementation_revision": "802c9b05ce98b3895881b5fb494ce9bda8feedebf49fbe49209e7123fd4eac34",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/billing.v2.billing_transactions.list.json": "6a2c10b71e83625cd9b8bcb6255764150f2f76f4d81b319ae04dd5057d0fefdc"
+    },
+    "contract_revision": "a743ff3d174c8cf3f85c6ebb109cb5a335c01633cd2bbfd9318d7fce8a742605",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/billing.v2.billing_transactions.list.json#/endpoint",
+    "error_binding_ref": "contracts/billing.v2.billing_transactions.list.json#/errors",
+    "go_method": "billing.Client.TransactionsPage",
+    "implementation": {
+      "binding": "billing.Client.TransactionsPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/billing-transactions.json#/paths/~1v2~1billing~1transactions/get",
+    "input_type": "billing.TransactionsRequest, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "billing.v2.billing_transactions.list",
+    "output_schema_ref": "sources/billing-transactions.json#/paths/~1v2~1billing~1transactions/get/responses",
+    "output_type": "types.Result[billing.TransactionsResponse]",
+    "pagination_contract_ref": "contracts/billing.v2.billing_transactions.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/billing-transactions.json#/paths/~1v2~1billing~1transactions/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/billing.v2.billing_transactions.list.json#/retry",
+    "request_binding_ref": "contracts/billing.v2.billing_transactions.list.json#/request",
+    "resource": "billing_transactions",
+    "response_binding_ref": "contracts/billing.v2.billing_transactions.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "name",
+      "description",
+      "public_description",
+      "service_name",
+      "full_name",
+      "reason_for_debt",
+      "jurbrand_key"
+    ],
+    "service": "billing",
+    "source": {
+      "operation_locator": "GET /v2/billing/transactions",
+      "revision": "153e2240ff0ef0b30188e09563c4ba0a33b9ae8d512bd1e793b3dd5f012a0c7e",
+      "uri": "https://docs.selectel.ru/api/billing-transactions.json"
+    },
+    "verification": {
+      "contract_revision": "a743ff3d174c8cf3f85c6ebb109cb5a335c01633cd2bbfd9318d7fce8a742605",
+      "evidence_ref": "billing/client_test.go",
+      "implementation_revision": "78de606c2891bb6ac658b17ae7b6bc8fa630004e305762b299617c251b68a820",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -384,7 +537,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "b44fbc9f909d6c82620b01b78e8df0451cf630c34f7dd29bfe8478c1d1830023",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +604,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "4f8c79442d68f052db5baca1602e9db5ae94d49c94ea5458466cd7a9b34b3f45",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +670,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "17f832b3b18c5c0f2c63e37f38383512fbf7c5b21f0e05f43dc24ee9db1ec682",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +736,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "ca3813a6e0adcf9b3e7d6a3925cb469826b5fc5dbfc768d0776b31a9f2b60e8b",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +802,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "171c1a34bafb5b8c47e99b760070b68a063e1ed28accff50cfcd1f791dca82c9",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2320,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "573c814c5a24bb27742beb535a9e6ea3adc07cb9b8591d4b40f1448eb49bc59d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5044,7 +5197,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "85747d4c20d0ba2775dcdc9c6fa8ac48eb44c24a4161119053a8ba10ca5ac694",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +5267,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "8e4bc3388c40b05aa2cfbc4bb9cac8eed9df8190591c60d89692f9ff0969bab6",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +5334,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "b1fc88bdc340d22379f83e61a3f7dc4f6a08e83ceffff3c9c722cb8e5053df0d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +5401,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "d694f4cf1e4eafd331b67d7d2fae374de4e485f088d80204ccb2d34b9c76085f",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +5467,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "607f4efb325ebabf2b73a9203ee410c4ceab99d1c4e2653d9c8420465005c278",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +5533,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "c0ff26fa6dc54476227dd619037797268e037e9815db70a7ba4c9231a5fbd4f8",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +5598,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "ce0821df4d7301fd3a7fd3fa1c83d57caccda2f6ad086c7a723a4736f85d0b1b",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +5655,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "b6a12ccd951c625a290e1dee9fe1e95bcfb5770894178350afc0d9e7c125b143",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +5714,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "a127fac3711e2f584c0aba74337cc08038462a48b39ba1347530d6a004f64670",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +5773,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "436ba6c40483e141f7baef5d4d0238bfb06de29ac1cbb744a4bcb9219e3cf6f0",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +5834,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "6e142588205585eb1d34352ed6c311770764732363832d05658d640614f681e7",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +5893,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "fc088eb417d0ffdf3b50f7876f9b2b0e6d60bb11ee3ea94651ec249a690761bb",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +5952,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "ba24d9e6db3bcb6455716f138d3f4219231c9ffe898d552ea1c8d3ec09253062",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +6013,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "12033e9d94e5bda33a364ab241115c0e5bea9ebe6e177d8a0037c150d78a2a69",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +6074,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "5e0cc995aafa08a2fe19a7e5b44c6d05b6358f8c31b177cc9b293f6152b5a6e7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +6131,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "44434282b5f049c1b01bcdb631e683d8c173647642c989df2e0ab4ef111a3869",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +6188,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "4bee22ef8bf95ceeb5a1eb52f2235b598b4caa41f37f1cc89e60974351ee1e6b",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +6249,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "8295ab46ac7244ca4caddcdc9b171f39084a1f2554a854cb29661486acce1125",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +6308,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "172986b434141528e9dfce65380c2a0f588a4d5942c4567f24e5ff5a11aed41b",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +6365,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "a7b21b46deaa90b4f55a9390eb55cce2d1158ab04c57df300b539571531dcb3f",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +6424,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "6774392cd3b312b7dc195732a3f07c66cf47aff2d87c38cfd09377afaf10b587",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +6483,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "a15214691f22537f0f464dec962cb14b2b216cc8cdbeef3619d39d033e1ad24f",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +6540,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "de234569b40e577b5cd0bc9e52bc20c1ba24cc321ac0454a12bb9e468c7322d5",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +6597,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "b5a43728b36ef14a22348fb71b290c9bbfe5cd9176acddfd3c7baceb7cd2e7e1",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +6656,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "d9846c15037cb1d4b6d3151d5824ba9b2f27496658772b7c60d9f36d885c2963",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +6713,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "331881f5d17dd17dcd2b22c61732bf13ab338f4fb7aff7dd1125d5808cb489ca",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +6770,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "9ec4e6eed23167a9af2bc9421b46d97534011f996a3d337dc17a7d85bfd81bed",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +6827,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "d72ff99d34c75c05007122dd710461fb7a22f2bb059b03baadd5a50670da9d31",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +6884,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "eaf038bb2803c7148b389cb163f273b71f210dc858bd85849e29d69d807527a3",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +6941,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "1e261f0a81d02a3ddb0b44345dcc4cd982170c00cd92ac158de3c10decab5641",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +7003,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "87940ec611a9bf1ac3ff8f5a330cbe59146d76aac9af5e636da0dba44d556431",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +7065,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "e5355e96d75382d69ce1d05afcde350cb57f2c2c8506f06735496fb7618cfdda",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +7126,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "f80a53dee8d54c6eaa6e0aa9a784206214b67abb4ae5ca932d210b031da11ab4",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +7187,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "83194055e6de55cd7c6a44e66b267dffc435082934dad595e3449e0cec6c8f94",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +7246,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "0e588c048ff55cfdc90e5dc4189b1bfbf3e6692bc11ffaa21306a6793499e2c0",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +7303,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "3e2bba6169957625b840d792dfbbcad14cb3f7ed6549d76d771ca341a454b789",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +8048,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "8315fe3f73105b6cfe5b53fc37c41eb1d52d89c5a8266b89a67903e6fdd63f8c",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +8104,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "46f52791cfa1292f58925ad11b133f6f685e1ed5b642643f3c5a9f4554baa40e",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +8160,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "b558c79f60b996cfee8d7b254df13fe0214cbb7fa588a8cff8b4b00162137a78",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +8216,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "0ce0d81acc04739a9e3f5113f2bb87d0ccc0ff7de7f7fa8dfcc3beeb5c29f793",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +8272,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "8f34d29f83b00a98bc1a3bb36e264a9624298267a217ed384df825a814dde344",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +8700,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "83e7eee3687060ae5723a62ab01e93854459ae10c09176b13264834db85e2188",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +8757,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "ed21d67d34c727b062a56a12e5b850cbce2fa5ed66a039ebf12de0a53e085c89",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +8814,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "2bf273b013fb26dff57dae7677dd1a5ad9711978f9dd1946cdacb176b1600dc6",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +8871,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "e6689269349cfa7cad45abdd763d62e204a496e63ad4113370fa5b339440d0c8",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +9738,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "af2af5ed105c3be7a6fddc8c62bec432f459cda69419d43afdf5fa2057637fcd",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +10337,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "110552f1d125b56a0cf745cc7726deb06ed4de613c4b20bbb57fb62bcac53c82",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +10394,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "92d3499ea85265b6951133bfc297c3e8a9d4cbc6ecfcb267e3808a0001b5ec80",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +10453,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "bf0c2e50ff45b7160dda3183a904314068ae3c80bde7887103ae6eb89a750822",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +10510,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "38c9e759d3e053e72cb2cd84b15265975085fd6545a5a05904711601ff613916",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +10567,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "0b311a6cfaa3acc63dd6d362aa1dc5cd75701fbf903a0b89c4271bafc9211599",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +10626,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "4c65846f08ddb46f80cc136ab173b812fbc00b00661cf5e85844a1447cd0f82c",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +10685,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "89ddab04ee67da528b66b4055fcba7ef1c0307389ed016ad01169ea5149dbe0e",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +10742,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "cba4c855848c10ad558471978a0d1dfe3b3f749a140b9769d4e37fe75a7981b6",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +10799,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "7f28864acaab666cf278d79fde51e3c798b3672c21dda8dbab7b36f3b2a56488",
       "level": "offline"
     },
     "wait_goals": []

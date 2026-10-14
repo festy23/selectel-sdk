@@ -21,8 +21,10 @@ type family struct {
 }
 
 var families = map[string]family{
-	"balance":                      {"billing", "v3", "iam_account", false},
-	"balance-statistics":           {"billing", "v1", "iam_account", false},
+	"billing-reports":              {"billing", "v1", "static_token", true},
+	"billing-transactions":         {"billing", "v2", "static_token", true},
+	"balance":                      {"billing", "v3", "iam_account", true},
+	"balance-statistics":           {"billing", "v1", "iam_account", true},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
 	"craas":                        {"registry", "v2", "iam_project", true},
 	"managed-databases":            {"databases", "v1", "iam_project", false},

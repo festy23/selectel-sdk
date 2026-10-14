@@ -1,0 +1,21 @@
+{
+  "checked_on": "2026-10-14",
+  "sources": [
+    {
+      "uri": "https://docs.selectel.ru/api/billing-reports/",
+      "html_sha256": "441c53c3d4d0b02e95a47d16c82729751b32816cedbc7b643c7486856f031dd7",
+      "findings": "Rendered official API page and HTML contain operation path but no api.selectel.ru server or cURL example; published schema omits servers/host.",
+      "schema_uri": "https://docs.selectel.ru/api/billing-reports.json",
+      "schema_sha256": "f150bfa2951e3115425c28fc2d9c61682b47b202d88bc75872365e6705a96f16"
+    },
+    {
+      "uri": "https://docs.selectel.ru/api/billing-transactions/",
+      "html_sha256": "4b362cdc5968f43f9b4c7a4c8e7a56431eaaa269b346c6f10cf9d50e87be8a93",
+      "findings": "Rendered official API page and HTML contain operation path but no api.selectel.ru server or cURL example; published schema omits servers/host.",
+      "schema_uri": "https://docs.selectel.ru/api/billing-transactions.json",
+      "schema_sha256": "153e2240ff0ef0b30188e09563c4ba0a33b9ae8d512bd1e793b3dd5f012a0c7e"
+    }
+  ],
+  "official_sdk_search": "Reviewed the official SDK clones from the 2026-10-14 inventory; no report/transactions endpoint binding found. This is a bounded search, not proof of provider unavailability.",
+  "disposition": "Require exact caller-supplied Config.EndpointOverrides; no guessed host and no unauthenticated/live probe."
+}
