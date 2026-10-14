@@ -95,7 +95,9 @@ Shared receipt-only validation/revision handling derives from reviewed commit
 `379458e`; endpoint pinning and identity-first patterns derive from reviewed
 `8351f2f`. No unrelated unmerged service code is included.
 
-Wait goals are only zone.present/zone.absent and rrset.present/rrset.absent.
+A successful exact GET reports ProviderState `present` and shared Classification
+`succeeded`; this establishes resource existence only. Wait goals are only
+zone.present/zone.absent and rrset.present/rrset.absent.
 They describe exact GET existence or scoped 404. Comment, state, protection,
 owner and RRSet updates have no receipt-bound convergence goal. No wait claims
 DNS propagation, delegation, resolver cache expiry, service readiness or global

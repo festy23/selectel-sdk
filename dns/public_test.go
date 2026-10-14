@@ -497,3 +497,36 @@ func TestProtectedRecordsDoNotDiscloseEncodedBytes(t *testing.T) {
 		}
 	}
 }
+
+func TestHandleStatusUsesSharedClassificationForZoneAndRRSetExistence(t *testing.T) {
+	root, _ := clients(t, func(r *http.Request) (*http.Response, error) {
+		if strings.HasSuffix(r.URL.Path, "/rrset/rr") {
+			return response(200, `{"id":"rr","zone_id":"zone","name":"example.test.","ttl":60,"type":"TXT","records":[]}`), nil
+		}
+		return response(200, `{"id":"zone","name":"example.test.","project_id":"p"}`), nil
+	})
+	zone := types.ResourceRef{Scope: types.Scope{AccountID: "a", ProjectID: "p"}, Service: "dns", APIGeneration: "v2", Kind: "zone", ID: "zone", EndpointID: "dns", EndpointURL: "https://dns.test/v2"}
+	rr := zone
+	rr.Kind = "rrset"
+	rr.ID = "rr"
+	rr.Parent = &zone
+	for _, ref := range []types.ResourceRef{zone, rr} {
+		t.Run(ref.Kind, func(t *testing.T) {
+			h, e := root.Resource(ref)
+			if e != nil {
+				t.Fatal(e)
+			}
+			status, e := h.Status(context.Background())
+			if e != nil || status.ProviderState != "present" || status.Classification != "succeeded" {
+				t.Fatalf("state=%q classification=%q error=%v", status.ProviderState, status.Classification, e)
+			}
+			waited, e := h.Wait(context.Background(), ref.Kind+".present")
+			if e != nil || !waited.Complete || waited.Last.Classification != "succeeded" {
+				t.Fatal(e)
+			}
+			if _, e = h.Wait(context.Background(), "dns.propagated"); types.ErrorCode(e) != types.CapabilityUnavailable {
+				t.Fatal(e)
+			}
+		})
+	}
+}

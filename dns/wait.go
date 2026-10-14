@@ -45,7 +45,7 @@ func (c *Client) Handle(ref types.ResourceRef, receipt *types.Receipt) (*operati
 		if e != nil {
 			return operations.Observation{}, e
 		}
-		return operations.Observation{Ref: ref, ProviderState: "present", Classification: "present", ObservedAt: meta.ObservedAt, Metadata: meta}, nil
+		return operations.Observation{Ref: ref, ProviderState: "present", Classification: "succeeded", ObservedAt: meta.ObservedAt, Metadata: meta}, nil
 	}, goals)
 }
 func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
