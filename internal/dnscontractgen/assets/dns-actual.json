@@ -1,0 +1,1833 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DNS API",
+    "description": "Managing DNS hosting zones and their resource record sets (RRSets) (actual). All zone and record set names are considered fully qualified domain names (FQDNs) and must end with a dot",
+    "version": "v2.0.0"
+  },
+  "paths": {
+    "/zones": {
+      "post": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "Create zone",
+        "description": "Creates zone using the provided attributes.",
+        "operationId": "createZone",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateZoneForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New zone has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoneResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A zone with the same IP already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "Retrieve account zones information",
+        "description": "Returns a paginated list of zones.\nBy default, the maximum number of zones returned in the response is 1000.\n\nTo work with a larger number of zones, you need to use the\nlimit and offset parameters.",
+        "operationId": "listZones",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of items to return in response. Used for pagination.",
+              "default": 1000,
+              "title": "Limit"
+            },
+            "description": "Maximum number of items to return in response. Used for pagination."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of items to skip. Used for pagination.",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of items to skip. Used for pagination."
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filter zones by the specified name.",
+              "title": "Filter"
+            },
+            "description": "Filter zones by the specified name."
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZonesSortingOptions"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Sorting criteria for the results.",
+              "default": [
+                "name.ascend"
+              ],
+              "title": "Sort By"
+            },
+            "description": "Sorting criteria for the results."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of zones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZonePaginationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zones/{zone_id}": {
+      "delete": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "Delete zone",
+        "description": "Deletes zone by its unique identifier.",
+        "operationId": "deleteZone",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The zone has been deleted."
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The zone was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cannot be deleted. Zone is managed by web resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The zone is protected from deletion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "Retrieve specified zone information",
+        "description": "Returns information about a specified zone.",
+        "operationId": "getZone",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Zone object has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoneResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The zone was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "Update specified zone",
+        "description": "Updates the comment of the specified zone.",
+        "operationId": "updateZone",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateZoneForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The zone has been updated."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zones/{zone_id}/state": {
+      "patch": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "Update zone state",
+        "description": "Disables or enables zone maintenance.",
+        "operationId": "toggleZoneState",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZoneStatusForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The state has been updated."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zones/{zone_id}/owner": {
+      "put": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "Change zone owner",
+        "description": "Transfers zone to another project.",
+        "operationId": "changeZoneOwner",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeProjectIdForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The owner has been changed."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zones/{zone_id}/protection": {
+      "patch": {
+        "tags": [
+          "Zones"
+        ],
+        "summary": "Set zone protection from deletion",
+        "description": "Enables or disables zone protection from deletion.",
+        "operationId": "toggleZoneProtection",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZoneProtectionForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The zone protection has been enabled or disabled."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zones/{zone_id}/rrset": {
+      "get": {
+        "tags": [
+          "RRSets"
+        ],
+        "summary": "List zone record sets",
+        "description": "Returns a list of record sets in the zone.",
+        "operationId": "listZoneRrsets",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of items to return in response. Used for pagination.",
+              "default": 1000,
+              "title": "Limit"
+            },
+            "description": "Maximum number of items to return in response. Used for pagination."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of items to skip. Used for pagination.",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Number of items to skip. Used for pagination."
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RRSetSortingOptions"
+              },
+              "description": "Sorting criteria for the results.",
+              "default": [
+                "name.ascend"
+              ],
+              "title": "Sort By"
+            },
+            "description": "Sorting criteria for the results."
+          },
+          {
+            "name": "rrset_types",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Filter record sets by the specified type.",
+              "title": "Rrset Types"
+            },
+            "description": "Filter record sets by the specified type."
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filter record sets by the specified name.",
+              "title": "Name"
+            },
+            "description": "Filter record sets by the specified name."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Search record sets that contain search value in name or in content of any included record.",
+              "title": "Search"
+            },
+            "description": "Search record sets that contain search value in name or in content of any included record."
+          },
+          {
+            "name": "managed_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Filter record sets by the identifier of the web resource that manages them.",
+              "title": "Managed By"
+            },
+            "description": "Filter record sets by the identifier of the web resource that manages them."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of zone record sets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RRSetPaginationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Please check authorization in request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The zone has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "RRSets"
+        ],
+        "summary": "Create record set",
+        "description": "Creates record set in specified zone.",
+        "operationId": "createRrset",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RRSetCreateForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The record set has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RRSetSchemaResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Please check authorization in request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The zone has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zones/{zone_id}/rrset/{rrset_id}": {
+      "delete": {
+        "tags": [
+          "RRSets"
+        ],
+        "summary": "Delete record set",
+        "description": "Deletes a record set by its unique identifier.",
+        "operationId": "deleteRrset",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          },
+          {
+            "name": "rrset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Record set identifier.",
+              "title": "Rrset Id"
+            }
+          },
+          {
+            "name": "X-Managed-By",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Identifier of the web resource that manages record set.",
+              "title": "X-Managed-By"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The record set has been deleted."
+          },
+          "401": {
+            "description": "Unauthorized. Please check authorization in request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The record set was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "RRSets"
+        ],
+        "summary": "Get record set",
+        "description": "Returns information about the specified record set.",
+        "operationId": "getRrset",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          },
+          {
+            "name": "rrset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Record set identifier.",
+              "title": "Rrset Id"
+            },
+            "description": "Record set identifier."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The record set has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RRSetSchemaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Please check authorization in request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The record set was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "RRSets"
+        ],
+        "summary": "Update record set",
+        "description": "Updates one or more attributes of the specified record set.",
+        "operationId": "updateRrset",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "zone_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Zone identifier.",
+              "title": "Zone Id"
+            },
+            "description": "Zone identifier."
+          },
+          {
+            "name": "rrset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Record set identifier.",
+              "title": "Rrset Id"
+            }
+          },
+          {
+            "name": "X-Managed-By",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "description": "Identifier of the web resource that manages record set.",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Managed-By"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RRSetUpdateForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The record set has been updated."
+          },
+          "401": {
+            "description": "Unauthorized. Please check authorization in request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The record set was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AllowedRecordTypes": {
+        "type": "string",
+        "enum": [
+          "A",
+          "AAAA",
+          "ALIAS",
+          "CAA",
+          "CNAME",
+          "DNAME",
+          "HTTPS",
+          "MX",
+          "NS",
+          "SOA",
+          "SRV",
+          "SVCB",
+          "SSHFP",
+          "TXT"
+        ],
+        "title": "AllowedRecordTypes"
+      },
+      "ChangeProjectIdForm": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Project Id",
+            "description": "New project id."
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id"
+        ],
+        "title": "ChangeProjectIdForm"
+      },
+      "CreateZoneForm": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The domain name for the new zone."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "CreateZoneForm"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error",
+            "description": "Text of the error."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Description of the error."
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location",
+            "description": "Location of the error."
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "RRSetCreateForm": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the record set."
+          },
+          "ttl": {
+            "type": "integer",
+            "maximum": 604800,
+            "minimum": 60,
+            "title": "Ttl",
+            "description": "Time-to-live (TTL) for the records, in seconds. Controls how long DNS resolvers cache these records."
+          },
+          "type": {
+            "$ref": "#/components/schemas/AllowedRecordTypes",
+            "description": "The DNS record type (e.g., A, AAAA, MX, TXT, CNAME)."
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/Records"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Records",
+            "description": "List of DNS records in this record set."
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Optional comment."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "ttl",
+          "type",
+          "records"
+        ],
+        "title": "RRSetCreateForm"
+      },
+      "RRSetPaginationResponse": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "next_offset": {
+            "type": "integer",
+            "title": "Next Offset"
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/RRSetSchemaResponse"
+            },
+            "type": "array",
+            "title": "Result"
+          }
+        },
+        "type": "object",
+        "required": [
+          "count",
+          "next_offset",
+          "result"
+        ],
+        "title": "RRSetPaginationResponse"
+      },
+      "RRSetSchemaResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id",
+            "description": "The unique identifier of the record set."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The DNS name of the record set."
+          },
+          "ttl": {
+            "type": "integer",
+            "title": "Ttl",
+            "description": "Time-to-live (TTL) for the records, in seconds. Controls how long DNS resolvers cache these records."
+          },
+          "type": {
+            "$ref": "#/components/schemas/AllowedRecordTypes",
+            "description": "The DNS record type (e.g., A, AAAA, MX, TXT, CNAME)."
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/Records"
+            },
+            "type": "array",
+            "title": "Records",
+            "description": "List of DNS records in this record set."
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "An optional comment or note about this record set."
+          },
+          "managed_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Managed By",
+            "description": "The identifier of the web resource that manages this record set (if applicable)."
+          },
+          "zone_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Zone Id",
+            "description": "The id of the zone this record set belongs to."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "ttl",
+          "type",
+          "records",
+          "zone_id"
+        ],
+        "title": "RRSetSchemaResponse"
+      },
+      "RRSetSortingOptions": {
+        "type": "string",
+        "enum": [
+          "type.ascend",
+          "type.descend",
+          "name.ascend",
+          "name.descend"
+        ],
+        "title": "RRSetSortingOptions"
+      },
+      "RRSetUpdateForm": {
+        "properties": {
+          "ttl": {
+            "type": "integer",
+            "maximum": 604800,
+            "minimum": 60,
+            "title": "Ttl",
+            "description": "New time-to-live (TTL) for the records, in seconds."
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/Records"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Records",
+            "description": "The updated list of records."
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "Updated comment."
+          }
+        },
+        "type": "object",
+        "required": [
+          "ttl",
+          "records"
+        ],
+        "title": "RRSetUpdateForm"
+      },
+      "Records": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "The content of the DNS record."
+          },
+          "disabled": {
+            "type": "boolean",
+            "title": "Disabled",
+            "description": "Indicates whether the record is disabled.",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "Records"
+      },
+      "UpdateZoneForm": {
+        "properties": {
+          "comment": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Comment",
+            "description": "A new comment to associate with the zone."
+          }
+        },
+        "type": "object",
+        "required": [
+          "comment"
+        ],
+        "title": "UpdateZoneForm"
+      },
+      "ZonePaginationResponse": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "next_offset": {
+            "type": "integer",
+            "title": "Next Offset"
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/ZoneResponse"
+            },
+            "type": "array",
+            "title": "Result"
+          }
+        },
+        "type": "object",
+        "required": [
+          "count",
+          "next_offset",
+          "result"
+        ],
+        "title": "ZonePaginationResponse"
+      },
+      "ZoneProtectionForm": {
+        "properties": {
+          "protected": {
+            "type": "boolean",
+            "title": "Protected",
+            "description": "If True, the zone is protected from deletion."
+          }
+        },
+        "type": "object",
+        "required": [
+          "protected"
+        ],
+        "title": "ZoneProtectionForm"
+      },
+      "ZoneResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id",
+            "description": "The unique identifier of the DNS zone."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The domain name of the zone."
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "description": "The project ID that owns this zone."
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "Timestamp when the zone was created."
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "Timestamp when the zone was last updated."
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment",
+            "description": "An optional comment about the zone."
+          },
+          "disabled": {
+            "type": "boolean",
+            "title": "Disabled",
+            "description": "Indicates whether the zone is currently disabled.",
+            "default": false
+          },
+          "protected": {
+            "type": "boolean",
+            "title": "Protected",
+            "description": "Indicates whether the zone is protected from deletion.",
+            "default": false
+          },
+          "delegation_checked_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delegation Checked At",
+            "description": "Timestamp of the last attempt to verify DNS delegation."
+          },
+          "last_delegated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Delegated At",
+            "description": "Timestamp of the last successful DNS delegation."
+          },
+          "last_check_status": {
+            "type": "boolean",
+            "title": "Last Check Status",
+            "description": "Indicates whether the last delegation check was successful (True = success).",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "project_id"
+        ],
+        "title": "ZoneResponse"
+      },
+      "ZoneStatusForm": {
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "title": "Disabled",
+            "description": "New disabled status for the zone."
+          }
+        },
+        "type": "object",
+        "required": [
+          "disabled"
+        ],
+        "title": "ZoneStatusForm"
+      },
+      "ZonesSortingOptions": {
+        "type": "string",
+        "enum": [
+          "name.ascend",
+          "name.descend",
+          "created_at.ascend",
+          "created_at.descend",
+          "updated_at.ascend",
+          "updated_at.descend"
+        ],
+        "title": "ZonesSortingOptions"
+      }
+    },
+    "securitySchemes": {
+      "iam_token_project_scoped": {
+        "type": "apiKey",
+        "description": "IAM token for project",
+        "in": "header",
+        "name": "X-Auth-Token"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "RRSets",
+      "description": "Managing DNS resource record sets (RRSets) within a DNS zone including creation, update, deletion."
+    },
+    {
+      "name": "Zones",
+      "description": "Managing DNS zones including creation, update, deletion, and ownership transfer."
+    }
+  ]
+}

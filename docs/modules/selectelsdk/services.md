@@ -203,3 +203,11 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### Public DNS v2
+
+`ProjectClient.DNS` exposes the 13 pinned current DNS operations through Zones
+and RRSets, with explicit comment/state/protection/owner actions, full replacement
+record arrays, exact parent refs, bounded offsets and protected content. See
+[the public DNS contract](dns.md) for native management-field wire variants,
+current IAM project authorization and limits of existence/absence observation.

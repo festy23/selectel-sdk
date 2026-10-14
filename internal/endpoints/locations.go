@@ -43,6 +43,9 @@ var addresses = map[string]map[string]string{
 }
 
 func Resolve(service, generation string, scope types.Scope) (types.EndpointBinding, error) {
+	if service == "dns" && generation == "v2" {
+		return types.EndpointBinding{ID: "selectel-dns-v2", URL: "https://api.selectel.ru/domains/v2", Scope: scope, APIGeneration: generation, Audience: "selectel"}, nil
+	}
 	key := service + "." + generation
 	u := addresses[key][scope.Pool]
 	if u == "" {
