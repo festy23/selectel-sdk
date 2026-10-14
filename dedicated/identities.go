@@ -88,9 +88,6 @@ func scanResultRefs(raw json.RawMessage, scope types.Scope, endpoint types.Endpo
 						}
 						continue
 					}
-					if ref.Parent == nil && *primary != "" && *primary != *id {
-						ref.Parent = core.Ref(endpoint, "dedicated", "resource", *primary)
-					}
 				}
 			}
 		}

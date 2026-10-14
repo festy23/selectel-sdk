@@ -127,14 +127,23 @@ func TestDedicatedOSInstallPreservesProtectedNullableInputAndNativePartitionMap(
 		if json.Unmarshal(body["partitions_config"], &partitions) != nil || partitions["root"] == nil || partitions["*"] != nil {
 			t.Fatal("native partition shape silently wrapped")
 		}
+		var node map[string]json.RawMessage
+		_ = json.Unmarshal(partitions["root"], &node)
+		if string(node["name"]) != `"synthetic-partition-name"` {
+			t.Fatal("protected map value not revealed at wire boundary")
+		}
 		return inventoryReply(200, `{"task_id":"install1","result":{"arch":"x86_64","os_template":"ubuntu","version":"24.04","userhostname":"host","password":null,"reinstall":1,"partitions_config":{"root":{"type":"filesystem","fstype":"ext4","mount":"/"}}}}`), nil
 	}, 0)
 	ref := types.ResourceRef{Scope: c.Account().Scope(), Service: "dedicated", APIGeneration: "v2", Kind: "resource", ID: "r1", EndpointID: "selectel-dedicated.v2:global", EndpointURL: "https://api.selectel.ru/servers/v2"}
-	spec := dedicated.OSConfigInput{Arch: managementPtr("x86_64"), OsTemplate: managementPtr("ubuntu"), Version: managementPtr("24.04"), Userhostname: managementPtr(types.Protect([]byte("host"))), CloudInitUserData: dedicated.Value(types.Protect([]byte("synthetic-sensitive-userdata"))), PartitionsConfig: dedicated.NativePartitions(map[string]dedicated.PartitionsConfigNodeModel{"root": {Type: managementPtr("filesystem"), Fstype: managementPtr("ext4"), Mount: managementPtr("/")}})}
+	spec := dedicated.OSConfigInput{Arch: managementPtr("x86_64"), OsTemplate: managementPtr("ubuntu"), Version: managementPtr("24.04"), Userhostname: managementPtr(types.Protect([]byte("host"))), CloudInitUserData: dedicated.Value(types.Protect([]byte("synthetic-sensitive-userdata"))), PartitionsConfig: dedicated.NativePartitions(map[string]dedicated.PartitionsConfigNodeModel{"root": {Type: managementPtr("filesystem"), Fstype: managementPtr("ext4"), Mount: managementPtr("/"), Name: managementPtr(types.Protect([]byte("synthetic-partition-name")))}})}
 	for _, pattern := range []string{"%v", "%+v", "%#v"} {
 		if fmt.Sprintf(pattern, spec.CloudInitUserData) != "[REDACTED]" {
 			t.Fatal("nullable wrapper leaked bytes")
 		}
+	}
+	rawDiagnostic, _ := json.Marshal(spec)
+	if strings.Contains(string(rawDiagnostic), "synthetic-partition-name") || strings.Contains(fmt.Sprintf("%#v", spec.PartitionsConfig), "synthetic-partition-name") {
+		t.Fatal("partition diagnostic leaked")
 	}
 	out, e := c.Account().Dedicated().InstallServerOSConfiguration(context.Background(), ref, spec, types.CallOptions{})
 	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Data.TaskRef.ID != "install1" {
@@ -251,7 +260,7 @@ func TestDedicatedResourceCancellationWaitIsNonRenewingNotHardwareAbsence(t *tes
 
 func TestDedicatedOSWaitDoesNotSucceedForUnknownInstallFlag(t *testing.T) {
 	c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
-		return inventoryReply(200, `{"task_id":"read1","result":{"arch":"x86_64","os_template":"ubuntu","version":"24.04","userhostname":"host","password":null,"reinstall":7}}`), nil
+		return inventoryReply(200, `{"task_id":"read1","result":{"arch":"x86_64","os_template":"ubuntu","version":"24.04","userhostname":"host","password":null,"reinstall":7,"is_processing":false}}`), nil
 	}, 0)
 	ref := types.ResourceRef{Scope: c.Account().Scope(), Service: "dedicated", APIGeneration: "v2", Kind: "resource", ID: "r1", EndpointID: "selectel-dedicated.v2:global", EndpointURL: "https://api.selectel.ru/servers/v2"}
 	handle, e := c.Account().Dedicated().OSHandle(ref, nil)
@@ -302,8 +311,109 @@ func TestDedicatedExistingResourceParentIsRetainedAndForeignParentRejected(t *te
 				if e != nil || out.Data.Data.Result.Ref.Parent == nil || out.Data.Data.Result.Ref.Parent.ID != "primary1" {
 					t.Fatal("existing exact parent lost", e)
 				}
-			} else if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt.Outcome != types.Accepted || out.Receipt.ResourceRefs[0].Parent.ID != "primary1" {
+			} else if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt.Outcome != types.Accepted || out.Receipt.ResourceRefs[0].Parent.ID != "primary1" || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.ResourceRefs[1].ID != "update1" {
 				t.Fatal("foreign returned parent adopted", e)
+			}
+		})
+	}
+}
+
+func TestDedicatedPrimaryUUIDIsMetadataWithoutCallerParent(t *testing.T) {
+	for _, project := range []bool{false, true} {
+		for _, list := range []bool{false, true} {
+			t.Run(fmt.Sprintf("project=%v/list=%v", project, list), func(t *testing.T) {
+				c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+					row := strings.TrimSuffix(dedicatedResourceFixture, "}") + `,"primary_uuid":"owner-resource"}`
+					if list {
+						row = "[" + row + "]"
+					}
+					return inventoryReply(200, `{"task_id":"t1","result":`+row+`}`), nil
+				}, 0)
+				svc := c.Account().Dedicated()
+				scope := c.Account().Scope()
+				if project {
+					svc = projectView(t, c).Dedicated()
+					scope = projectView(t, c).Scope()
+				}
+				if list {
+					out, e := svc.ListResources(context.Background(), dedicated.ListResourcesQuery{}, types.CallOptions{})
+					if e != nil || out.Data.Data.Result[0].Ref.Parent != nil || out.Data.Data.Result[0].PrimaryUUID == nil || *out.Data.Data.Result[0].PrimaryUUID != "owner-resource" {
+						t.Fatal("inferred list parent", e)
+					}
+				} else {
+					ref := types.ResourceRef{Scope: scope, Service: "dedicated", APIGeneration: "v2", Kind: "resource", ID: "r1", EndpointID: "selectel-dedicated.v2:global", EndpointURL: "https://api.selectel.ru/servers/v2"}
+					out, e := svc.GetResourceDetails(context.Background(), ref, types.CallOptions{})
+					if e != nil || out.Data.Data.Result.Ref.Parent != nil || out.Data.Data.Result.PrimaryUUID == nil || *out.Data.Data.Result.PrimaryUUID != "owner-resource" {
+						t.Fatal("inferred get parent", e)
+					}
+				}
+			})
+		}
+	}
+}
+
+func TestDedicatedHandleStatusAndMandatoryGoalFields(t *testing.T) {
+	cases := []struct {
+		kind, fields, state, classification string
+		invalid                             bool
+	}{
+		{"power", `"power_state":"power on","target_power_state":""`, "power on", "succeeded", false},
+		{"power", `"power_state":"power off","target_power_state":"power on"`, "power off->power on", "pending", false},
+		{"power", `"power_state":"provider-new","target_power_state":""`, "provider-new", "unknown", false},
+		{"power", `"power_state":"power on"`, "", "", true},
+		{"power", `"power_state":"power on","target_power_state":null`, "", "", true},
+		{"power", `"target_power_state":""`, "", "", true},
+		{"os", `"reinstall":0,"is_processing":false`, "0", "succeeded", false},
+		{"os", `"reinstall":0,"is_processing":true`, "processing", "pending", false},
+		{"os", `"reinstall":7,"is_processing":false`, "7", "unknown", false},
+		{"os", `"reinstall":0`, "", "", true},
+		{"os", `"reinstall":0,"is_processing":null`, "", "", true},
+		{"os", `"is_processing":false`, "", "", true},
+		{"resource", `active`, "active", "succeeded", false},
+		{"resource", `deploy`, "deploy", "pending", false},
+		{"resource", `blocked`, "blocked", "failed", false},
+		{"resource", `expiring`, "expiring", "succeeded", false},
+		{"resource", `provider-new`, "provider-new", "unknown", false},
+	}
+	for i, tc := range cases {
+		t.Run(fmt.Sprint(i), func(t *testing.T) {
+			c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+				result := `{"driver_status":{` + tc.fields + `}}`
+				if tc.kind == "os" {
+					result = `{"arch":"x86_64","os_template":"ubuntu","version":"24.04","userhostname":"host","password":null,` + tc.fields + `}`
+				}
+				if tc.kind == "resource" {
+					result = strings.Replace(dedicatedResourceFixture, `"state":"active"`, `"state":"`+tc.fields+`"`, 1)
+				}
+				return inventoryReply(200, `{"task_id":"read1","result":`+result+`}`), nil
+			}, 0)
+			svc := c.Account().Dedicated()
+			ref := types.ResourceRef{Scope: c.Account().Scope(), Service: "dedicated", APIGeneration: "v2", Kind: "resource", ID: "r1", EndpointID: "selectel-dedicated.v2:global", EndpointURL: "https://api.selectel.ru/servers/v2"}
+			h, e := svc.PowerHandle(ref, nil)
+			goal := "dedicated.power.on"
+			if tc.kind == "os" {
+				h, e = svc.OSHandle(ref, nil)
+				goal = "dedicated.os.installation_finished"
+			}
+			if tc.kind == "resource" {
+				h, e = svc.ResourceHandle(ref, nil)
+			}
+			if e != nil {
+				t.Fatal(e)
+			}
+			out, e := h.Status(context.Background())
+			if tc.invalid {
+				if types.ErrorCode(e) != types.ProtocolError {
+					t.Fatal("missing goal field accepted", e)
+				}
+				waited, e := h.Wait(context.Background(), goal)
+				if types.ErrorCode(e) != types.ProtocolError || waited.Complete {
+					t.Fatal("partial observation completed", e)
+				}
+				return
+			}
+			if e != nil || out.ProviderState != tc.state || out.Classification != tc.classification {
+				t.Fatalf("status state=%q classification=%q error=%v", out.ProviderState, out.Classification, e)
 			}
 		})
 	}

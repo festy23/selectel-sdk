@@ -82,7 +82,14 @@ stable physical power on/off; resource active or non-renewing; OS reinstall0
 with no processing. These goals do not establish application readiness,
 password usability or an observed reboot cycle. Unknown receipts remain
 indeterminate; observation does not prove authorship of an unknown write.
-Missing required goal fields and unknown flag values do not become success, and task404 is not completion.
+Both power_state and target_power_state must be present and non-null; stable power
+requires an explicit empty target. OS reinstall and is_processing must both be
+present and non-null; installed requires reinstall0 with explicit false processing.
+Missing/null goal fields return ProtocolError; unknown flag values do not become
+success. Status classifications are pending/succeeded/failed/unknown according
+to these field semantics, retaining unknown raw ProviderState. A resource may
+satisfy one named goal while another remains pending (active versus non-renewing).
+Task404 is not completion.
 Root Resume is not implemented for this service.
 
 Offline tests use real public Client/scoped methods, synthetic credentials and

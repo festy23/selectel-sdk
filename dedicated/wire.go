@@ -59,6 +59,24 @@ func wireValue(v reflect.Value) (any, error) {
 			out[key] = value
 		}
 		return out, nil
+	case reflect.Map:
+		if v.Type().Key().Kind() != reflect.String {
+			return nil, types.NewError(types.InvalidArgument)
+		}
+		out := map[string]any{}
+		iter := v.MapRange()
+		for iter.Next() {
+			key := iter.Key().String()
+			if !utf8.ValidString(key) {
+				return nil, types.NewError(types.InvalidArgument)
+			}
+			value, e := wireValue(iter.Value())
+			if e != nil {
+				return nil, e
+			}
+			out[key] = value
+		}
+		return out, nil
 	case reflect.Slice, reflect.Array:
 		out := make([]any, v.Len())
 		for i := 0; i < v.Len(); i++ {
