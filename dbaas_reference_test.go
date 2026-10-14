@@ -2,11 +2,14 @@ package selectelsdk_test
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"github.com/festy23/selectel-sdk/catalog"
 	"github.com/festy23/selectel-sdk/databases"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
 	"net/http"
+	"strings"
 	"testing"
 )
 
@@ -79,8 +82,12 @@ func TestDatabaseUserSettingsUseSDKDocumentedSeparateReference(t *testing.T) {
 		return inventoryReply(200, `{"user-setting-parameters":[{"id":"20d7bcf4-f8d6-4bf6-b8f6-46cb440a87f4","name":"statement_timeout","type":"int","min":0,"max":900719925474099312345,"default_value":"0","unit":"ms","apply_mechanism":"guc","choices":null,"is_available_for_customer":true}]}`), nil
 	}, 0)
 	result, err := regionalView(t, c, "ru-1").Databases().V1.UserSettingParameters.Collect(context.Background(), databases.UserSettingParameterListOptions{DatastoreID: &datastore}, pagination.Options{})
-	if err != nil || string(result.Items[0].Max.Reveal()) != "900719925474099312345" || *result.Items[0].ApplyMechanism != "guc" {
+	if err != nil || result.Items[0].Max == nil || *result.Items[0].ApplyMechanism != "guc" {
 		t.Fatal(result, err)
+	}
+	maximum, present := result.Items[0].Max.Value()
+	if !present || string(maximum.Reveal()) != "900719925474099312345" {
+		t.Fatal("protected constraint precision lost")
 	}
 }
 
@@ -189,5 +196,67 @@ func TestDatabaseReferenceCatalogContainsEightCompleteBindings(t *testing.T) {
 				t.Fatal("missing complete offline binding", id, capability, err)
 			}
 		}
+	}
+}
+
+func TestDatabaseUserSettingsPreserveOmittedNullAndProtectedValues(t *testing.T) {
+	c := inventoryClient(t, func(r *http.Request) (*http.Response, error) {
+		return inventoryReply(200, `{"user-setting-parameters":[{"id":"omitted"},{"id":"null","min":null,"max":null,"choices":null},{"id":"values","min":0,"max":false,"choices":[null,"synthetic-private-choice"]},{"id":"empty","choices":[]}]}`), nil
+	}, 0)
+	result, err := regionalView(t, c, "ru-1").Databases().V1.UserSettingParameters.Collect(context.Background(), databases.UserSettingParameterListOptions{}, pagination.Options{})
+	if err != nil || len(result.Items) != 4 {
+		t.Fatal("reference result missing", err)
+	}
+
+	omitted, nulls, values := result.Items[0], result.Items[1], result.Items[2]
+	if omitted.Min != nil || omitted.Max != nil || omitted.Choices != nil || nulls.Min == nil || nulls.Max == nil || nulls.Choices == nil {
+		t.Fatal("field presence collapsed")
+	}
+	if _, valid := nulls.Min.Value(); valid {
+		t.Fatal("null minimum became value")
+	}
+	if _, valid := nulls.Max.Value(); valid {
+		t.Fatal("null maximum became value")
+	}
+	if _, valid := nulls.Choices.Value(); valid {
+		t.Fatal("null choices became value")
+	}
+	minimum, valid := values.Min.Value()
+	if !valid || string(minimum.Reveal()) != "0" {
+		t.Fatal("zero minimum changed")
+	}
+	maximum, valid := values.Max.Value()
+	if !valid || string(maximum.Reveal()) != "false" {
+		t.Fatal("false maximum changed")
+	}
+	choices, valid := values.Choices.Value()
+	if !valid || len(choices) != 2 || string(choices[0].Reveal()) != "null" || string(choices[1].Reveal()) != `"synthetic-private-choice"` {
+		t.Fatal("explicit choices reveal changed")
+	}
+
+	raw, err := json.Marshal(result.Items)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var items []map[string]json.RawMessage
+	if json.Unmarshal(raw, &items) != nil {
+		t.Fatal("invalid safe JSON")
+	}
+	for _, field := range []string{"min", "max", "choices"} {
+		if _, present := items[0][field]; present {
+			t.Fatal("omitted field inserted", field)
+		}
+		if string(items[1][field]) != "null" {
+			t.Fatal("explicit null collapsed", field, string(items[1][field]))
+		}
+		if _, present := items[2][field]; !present {
+			t.Fatal("value field omitted", field)
+		}
+	}
+	if string(items[3]["choices"]) != "[]" {
+		t.Fatal("empty choices collapsed")
+	}
+	if strings.Contains(string(raw), "synthetic-private-choice") || strings.Contains(fmt.Sprintf("%+v", result), "synthetic-private-choice") {
+		t.Fatal("protected setting value disclosed")
 	}
 }

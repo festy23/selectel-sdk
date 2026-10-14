@@ -85,11 +85,16 @@
         "default_value": {
           "type": "string"
         },
-        "min": {},
-        "max": {},
+        "min": {
+          "x-sdk-preserve-null": true
+        },
+        "max": {
+          "x-sdk-preserve-null": true
+        },
         "choices": {
           "type": "array",
-          "items": {}
+          "items": {},
+          "x-sdk-preserve-null": true
         },
         "is_available_for_customer": {
           "type": "boolean"
@@ -106,7 +111,7 @@
     "success_statuses": [
       200
     ],
-    "field_mapping": "all source properties; optional fields preserve absence; provider SDK ref discarded",
+    "field_mapping": "all source properties; optional fields preserve absence; min/max/choices preserve omitted/null/value through *Nullable; provider SDK ref discarded",
     "scope_checks": "Get rejects returned ID differing from requested ID when present",
     "numbers": "Integer/Primitive retain decimal literals without float64; SDK any constraints use ProtectedJSON preserving arbitrary JSON at explicit Reveal boundary",
     "units": "provider unit verbatim; flavor ram MB and disk GB per source descriptions; no conversion",

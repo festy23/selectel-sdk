@@ -8,18 +8,18 @@ import (
 )
 
 type UserSettingParameter struct {
-	ApplyMechanism         *string               `json:"apply_mechanism,omitempty"`
-	CanBeEmpty             *bool                 `json:"can_be_empty,omitempty"`
-	Choices                []types.ProtectedJSON `json:"choices,omitzero"`
-	DefaultValue           *string               `json:"default_value,omitempty"`
-	ID                     *string               `json:"id,omitempty"`
-	IsAvailableForCustomer *bool                 `json:"is_available_for_customer,omitempty"`
-	IsChangeable           *bool                 `json:"is_changeable,omitempty"`
-	Max                    *types.ProtectedJSON  `json:"max,omitempty"`
-	Min                    *types.ProtectedJSON  `json:"min,omitempty"`
-	Name                   *string               `json:"name,omitempty"`
-	Type                   *string               `json:"type,omitempty"`
-	Unit                   *string               `json:"unit,omitempty"`
+	ApplyMechanism         *string                                `json:"apply_mechanism,omitempty"`
+	CanBeEmpty             *bool                                  `json:"can_be_empty,omitempty"`
+	Choices                *types.Nullable[[]types.ProtectedJSON] `json:"choices,omitempty"`
+	DefaultValue           *string                                `json:"default_value,omitempty"`
+	ID                     *string                                `json:"id,omitempty"`
+	IsAvailableForCustomer *bool                                  `json:"is_available_for_customer,omitempty"`
+	IsChangeable           *bool                                  `json:"is_changeable,omitempty"`
+	Max                    *types.Nullable[types.ProtectedJSON]   `json:"max,omitempty"`
+	Min                    *types.Nullable[types.ProtectedJSON]   `json:"min,omitempty"`
+	Name                   *string                                `json:"name,omitempty"`
+	Type                   *string                                `json:"type,omitempty"`
+	Unit                   *string                                `json:"unit,omitempty"`
 }
 
 func (v UserSettingParameter) Validate() error {
@@ -41,6 +41,24 @@ func (v *UserSettingParameter) UnmarshalJSON(raw []byte) error {
 	var value wire
 	if json.Unmarshal(clean, &value) != nil {
 		return types.NewError(types.ProtocolError)
+	}
+	if raw, present := fields["choices"]; present {
+		value.Choices = new(types.Nullable[[]types.ProtectedJSON])
+		if json.Unmarshal(raw, value.Choices) != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	if raw, present := fields["max"]; present {
+		value.Max = new(types.Nullable[types.ProtectedJSON])
+		if json.Unmarshal(raw, value.Max) != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	if raw, present := fields["min"]; present {
+		value.Min = new(types.Nullable[types.ProtectedJSON])
+		if json.Unmarshal(raw, value.Min) != nil {
+			return types.NewError(types.ProtocolError)
+		}
 	}
 	*v = UserSettingParameter(value)
 	v.normalize()

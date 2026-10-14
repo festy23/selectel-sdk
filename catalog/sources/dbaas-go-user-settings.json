@@ -41,11 +41,16 @@
         "default_value": {
           "type": "string"
         },
-        "min": {},
-        "max": {},
+        "min": {
+          "x-sdk-preserve-null": true
+        },
+        "max": {
+          "x-sdk-preserve-null": true
+        },
         "choices": {
           "type": "array",
-          "items": {}
+          "items": {},
+          "x-sdk-preserve-null": true
         },
         "is_available_for_customer": {
           "type": "boolean"

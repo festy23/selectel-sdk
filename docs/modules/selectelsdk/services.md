@@ -230,7 +230,10 @@ datastore_id и сохраняет apply_mechanism/is_available_for_customer. З
 [source artifact](../../../catalog/sources/dbaas-go-user-settings.json) содержит
 revision, hashes и source evidence. Произвольные SDK `any` в min/max/choices
 представлены ProtectedJSON: точное JSON доступно через явный Reveal, обычная
-сериализация и форматирование защищены. DefaultValue остаётся строкой SDK.
+сериализация и форматирование защищены. DefaultValue остаётся строкой SDK. Min/Max и Choices представлены указателями
+на Nullable: nil означает отсутствие поля, Value возвращает false для explicit
+null и true для заданного значения. Для Min/Max заданное значение — ProtectedJSON;
+для Choices — массив ProtectedJSON. Пустой массив сохраняется отдельно от null.
 
 List возвращает один provider array и применяет общие ограничения
 [pagination](pagination.md). Локальный limit возвращает incomplete и cursor

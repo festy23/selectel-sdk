@@ -128,6 +128,9 @@ for case, (family, initial, top_name) in CASES.items():
         for wire, value in sorted(properties.items()):
             field_name = name(wire)
             go_type, collection = field_type(value, type_name + field_name, wire)
+            if value.get("x-sdk-preserve-null"):
+                go_type = "types.Nullable[" + go_type + "]"
+                collection = False
             tag = "omitzero" if collection else "omitempty"
             if not collection:
                 go_type = "*" + go_type
@@ -173,7 +176,12 @@ for case, (family, initial, top_name) in CASES.items():
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'
-            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
+            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n"
+            for wire, field_schema in sorted(properties.items()):
+                if field_schema.get("x-sdk-preserve-null"):
+                    inner, _ = field_type(field_schema, type_name + name(wire), wire)
+                    code += f'\tif raw, present := fields["{wire}"]; present {{ value.{name(wire)} = new(types.Nullable[{inner}]); if json.Unmarshal(raw, value.{name(wire)}) != nil {{ return types.NewError(types.ProtocolError) }} }}\n'
+            code += f"\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
         emitted[reference] = code
     filename = "settings_types_generated.go" if case == "databases_settings" else ("v1_types_generated.go" if case == "registry_v1" else "types_generated.go")
     target = ROOT / package / filename
