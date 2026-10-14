@@ -39,6 +39,8 @@ type Operation struct {
 	ErrorCodes                             map[int]types.Code
 	Headers                                http.Header
 	SigV4Service, ErrorProtocol            string
+	// EndpointVersionPrefix is a compiled protocol prefix already present in some catalog URLs.
+	EndpointVersionPrefix string
 }
 type Request struct {
 	Scope              types.Scope
@@ -50,6 +52,9 @@ type Request struct {
 	PinnedEndpoint     *types.EndpointBinding
 	ExpectedEndpointID string
 	Validate           func() error
+	// TargetRefs binds caller-selected identity keys after endpoint resolution;
+	// compiled adapters provide a pure builder, never a lookup or creation proof.
+	TargetRefs func(types.EndpointBinding) []types.ResourceRef
 }
 type Decoded[T any] struct {
 	Data         T
@@ -72,6 +77,13 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			return out, idErr
 		}
 		out.Receipt = &types.Receipt{SchemaVersion: 1, CallID: id, OperationID: op.ID, Scope: in.Scope, Outcome: types.NotSent, Recovery: "unavailable", ResourceRefs: []types.ResourceRef{}}
+		// Local validation failures still return a revision-bound terminal receipt.
+		if r != nil {
+			if capability, e := r.catalog.Describe(op.ID); e == nil {
+				out.Receipt.ContractRevision = capability.ContractRevision
+			}
+		}
+
 	}
 	defer func() {
 		out.Metadata.ObservedAt = time.Now().UTC()
@@ -192,6 +204,22 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		copy := endpoint
 		out.Receipt.Endpoint = &copy
 	}
+	if in.TargetRefs != nil {
+		if out.Receipt == nil || len(in.Refs) != 0 {
+			return out, types.NewError(types.InvalidArgument)
+		}
+		targets := in.TargetRefs(endpoint)
+		if len(targets) != 1 {
+			return out, types.NewError(types.InvalidArgument)
+		}
+		for _, ref := range targets {
+			if ref.Validate() != nil || ref.Scope != in.Scope || ref.Service != op.Service || ref.APIGeneration != op.APIGeneration || ref.EndpointID != endpoint.ID || ref.EndpointURL != endpoint.URL {
+				return out, types.NewError(types.ScopeMismatch)
+			}
+		}
+		out.Receipt.ResourceRefs = cloneRefs(targets)
+		out.Receipt.Recovery = "resource"
+	}
 	maxAttempts := uint(1)
 	if op.Effect == "read" {
 		maxAttempts = r.config.ReadMaxAttempts
@@ -201,7 +229,11 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		if call.Err() != nil {
 			return out, types.ContextError(call.Err())
 		}
-		u, parseErr := url.Parse(strings.TrimRight(endpoint.URL, "/") + in.Path)
+		path := in.Path
+		if op.EndpointVersionPrefix != "" && strings.HasSuffix(strings.TrimRight(endpoint.URL, "/"), op.EndpointVersionPrefix) && strings.HasPrefix(path, op.EndpointVersionPrefix+"/") {
+			path = strings.TrimPrefix(path, op.EndpointVersionPrefix)
+		}
+		u, parseErr := url.Parse(strings.TrimRight(endpoint.URL, "/") + path)
 		if parseErr != nil {
 			return out, types.NewError(types.InvalidArgument)
 		}

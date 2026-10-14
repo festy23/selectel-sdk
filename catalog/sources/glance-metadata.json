@@ -1,0 +1,133 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Selectel Glance metadata/membership confirmed subset",
+    "version": "2.16"
+  },
+  "x-source-uri": "https://github.com/selectel/images-go/tree/ace640b1fd6a1bc13cf3c8d7be7a77c9777a3362",
+  "x-source-revision": "ace640b1fd6a1bc13cf3c8d7be7a77c9777a3362",
+  "x-secondary-sources": [
+    "https://docs.selectel.ru/en/cloud-servers/tools/openstack-cli/about-openstack-cli/",
+    "https://docs.selectel.ru/en/terraform/openstack-provider-reference/images-glance/resources/openstack_images_image_access_v2/",
+    "https://docs.selectel.ru/en/terraform/openstack-provider-reference/images-glance/resources/openstack_images_image_access_accept_v2/",
+    "https://docs.openstack.org/api-ref/image/v2/",
+    "https://github.com/openstack/glance/blob/d45b7c26af2963bb811c5596a42be10cb75c0685/glance/api/v2/images.py"
+  ],
+  "x-shared-code-provenance": {
+    "receipt_recovery": "379458e4f658b1216137fea4acce5dae6027d320 reviewed diff only; no Cinder service code",
+    "timestamp": "e54ee7a reviewed NovaTime semantics reused",
+    "quota_error": "QuotaExceeded constant from reviewed379458e types/errors.go; 413 mapping from pinned images-go transport, distinct from Cinder decoder"
+  },
+  "x-local-snapshots": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "README.md": "572ee122cb2cf432ddd7d55934d346b5d665084366d085987f091e3dd51cd71b",
+    "glance-images.py.txt": "1c6c742590c455afb1ffb8456db4081a20a44e82db93a7b0aa09c0d45b603880",
+    "image_requests.go.txt": "15f54510d84a28a88118958fe36e7b9e1a47c8d1a5713f4bd6dd97377a02da36",
+    "image_requests_opts.go.txt": "ed32e2374b4aca12795f5132557049164592d2b19111fd35be97b21641881b0c",
+    "image_schemas.go.txt": "f49973eb70d7ac1992d08c98b09974425e02a238bd5c84f65317686f273e7c22",
+    "member_requests.go.txt": "6bebadf2c98124b5a1eb4a5ffee8d210183c1c17c26dca6a968d45770a5948c0",
+    "member_schemas.go.txt": "ef46dba54819455ef5af9c29fb52cd1e55acd2a8f397ab68a0dd9718367438df",
+    "transport_client.go.txt": "b9b870d0e2ffa8cc44cbefe77af2a66513353e592e9dd7a1e0ecedec724ae4ea",
+    "transport_errors.go.txt": "51a89316ede989d0707cc453ad27dad045609daf1c80b6fd22eb0eac0221fb4a"
+  },
+  "paths": {
+    "/v2/images": {
+      "post": {
+        "operationId": "images.v2.images.create",
+        "summary": "Client.Create",
+        "responses": {
+          "201": {
+            "description": "Image"
+          }
+        }
+      },
+      "get": {
+        "operationId": "images.v2.images.list",
+        "summary": "Client.ListPage",
+        "responses": {
+          "200": {
+            "description": "Image"
+          }
+        }
+      }
+    },
+    "/v2/images/{image_id}": {
+      "get": {
+        "operationId": "images.v2.images.get",
+        "summary": "Client.Get",
+        "responses": {
+          "200": {
+            "description": "Image"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "images.v2.images.update",
+        "summary": "Client.Update",
+        "responses": {
+          "200": {
+            "description": "Image"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "images.v2.images.delete",
+        "summary": "Client.Delete",
+        "responses": {
+          "204": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/v2/images/{image_id}/members": {
+      "post": {
+        "operationId": "images.v2.members.create",
+        "summary": "Members.Create",
+        "responses": {
+          "200": {
+            "description": "Member"
+          }
+        }
+      },
+      "get": {
+        "operationId": "images.v2.members.list",
+        "summary": "Members.Collect",
+        "responses": {
+          "200": {
+            "description": "Member"
+          }
+        }
+      }
+    },
+    "/v2/images/{image_id}/members/{member_id}": {
+      "get": {
+        "operationId": "images.v2.members.get",
+        "summary": "Members.Get",
+        "responses": {
+          "200": {
+            "description": "Member"
+          }
+        }
+      },
+      "put": {
+        "operationId": "images.v2.members.update",
+        "summary": "Members.Update",
+        "responses": {
+          "200": {
+            "description": "Member"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "images.v2.members.delete",
+        "summary": "Members.Delete",
+        "responses": {
+          "204": {
+            "description": "Empty"
+          }
+        }
+      }
+    }
+  }
+}

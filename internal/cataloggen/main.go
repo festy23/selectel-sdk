@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"glance-metadata":              {"images", "v2", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,13 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"glance-metadata POST /v2/images/{image_id}/members":               "images.v2.members.create",
+	"glance-metadata GET /v2/images/{image_id}/members":                "images.v2.members.list",
+	"glance-metadata GET /v2/images/{image_id}/members/{member_id}":    "images.v2.members.get",
+	"glance-metadata PUT /v2/images/{image_id}/members/{member_id}":    "images.v2.members.update",
+	"glance-metadata DELETE /v2/images/{image_id}/members/{member_id}": "images.v2.members.delete",
+
+	"glance-metadata PATCH /v2/images/{image_id}":                      "images.v2.images.update",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
@@ -167,6 +175,9 @@ func generate() error {
 				scope := []string{"account"}
 				if f.Mode == "iam_project" {
 					scope = append(scope, "project")
+				}
+				if name == "glance-metadata" {
+					scope = append(scope, "region", "pool")
 				}
 				if f.Mode == "s3_sigv4" || f.Mode == "basic" {
 					scope = append(scope, "project", "region", "pool")

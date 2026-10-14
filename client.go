@@ -11,6 +11,7 @@ import (
 	"github.com/festy23/selectel-sdk/catalog"
 	"github.com/festy23/selectel-sdk/compute"
 	"github.com/festy23/selectel-sdk/databases"
+	"github.com/festy23/selectel-sdk/images"
 	"github.com/festy23/selectel-sdk/internal/endpoints"
 	"github.com/festy23/selectel-sdk/inventory"
 	"github.com/festy23/selectel-sdk/logs"
@@ -81,6 +82,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Scope.AccountID != c.scope.AccountID {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
+	if ref.Service == "images" && ref.APIGeneration == "v2" {
+		return images.Bind(c.runtime, ref.Scope).Handle(ref, nil)
+	}
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
@@ -103,6 +107,12 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
 	}
+	if capability.Effect != "mutation" {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if len(receipt.ResourceRefs) == 0 && receipt.ProviderOperationRef == nil && receipt.Outcome != types.Unknown {
+		return operations.BindReceipt(c.runtime, &receipt)
+	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)
 	}
@@ -115,6 +125,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if capability.Effect != "mutation" || capability.APIGeneration != ref.APIGeneration {
 		return nil, types.NewError(types.InvalidArgument)
+	}
+	if ref.Service == "images" {
+		return images.Bind(c.runtime, ref.Scope).Handle(ref, &receipt)
 	}
 	if ref.Service == "compute" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, &receipt)
@@ -176,3 +189,5 @@ func New(config Config) (*Client, error) {
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
 }
+
+func (r RegionalClient) Images() *images.Client { return images.Bind(r.client.runtime, r.client.scope) }
