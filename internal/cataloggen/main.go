@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"dedicated":                    {"dedicated", "v2", "iam_account", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -172,7 +173,7 @@ func generate() error {
 					scope = append(scope, "project", "region", "pool")
 				}
 				effect := "mutation"
-				if method == "get" || method == "head" || method == "options" || name == "audit-logs" {
+				if method == "get" || method == "head" || method == "options" || name == "audit-logs" || (name == "dedicated" && strings.HasPrefix(path, "/service/") && strings.Contains(path, "/billing")) {
 					effect = "read"
 				}
 				var sourceOperation struct {

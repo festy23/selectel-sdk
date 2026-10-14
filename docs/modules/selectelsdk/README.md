@@ -77,6 +77,7 @@ flowchart TD
 
 | Документ | Содержание |
 |---|---|
+| [dedicated.md](dedicated.md) | Dedicated V2 lifecycle и provider field waits |
 | [interface.md](interface.md) | Пакеты, общие типы, сервисные методы и совместимость |
 | [access.md](access.md) | Credentials, scope, авторизация, endpoints |
 | [execution.md](execution.md) | Запросы, повторные попытки, receipts, ошибки, чувствительные значения |

@@ -7,7 +7,7 @@
     "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
     "evidence_ref": "inventory_reads_test.go",
     "evidence_revision": "5db10ff3d099bf125991717ee8e22700cfe40c8d57e272a4fb28741a0cf58ab0",
-    "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+    "implementation_revision": "d22985183df4fb636e9b93d474d149f6109e12eb0c6c21e8fb7b707cfe4769b3",
     "level": "offline",
     "result": "passed"
   },
@@ -19,7 +19,7 @@
     "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
     "evidence_ref": "billing/client_test.go",
     "evidence_revision": "7d998c0da9fd2aa31033db8d3a62113656be852b9885a84f3dc230144311bf8c",
-    "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+    "implementation_revision": "983916e8ac8fe8d6dc7b2f651c27f161c704e57a6198493f0962952c9ef6cec6",
     "level": "offline",
     "result": "passed"
   },
@@ -31,7 +31,7 @@
     "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
     "evidence_ref": "billing/client_test.go",
     "evidence_revision": "7d998c0da9fd2aa31033db8d3a62113656be852b9885a84f3dc230144311bf8c",
-    "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+    "implementation_revision": "a5f10bd044140e20af3508bd0d8f93d05b884e71b1759c5adefb2ae34fbdbac2",
     "level": "offline",
     "result": "passed"
   },
@@ -43,7 +43,7 @@
     "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
     "evidence_ref": "billing/client_test.go",
     "evidence_revision": "7d998c0da9fd2aa31033db8d3a62113656be852b9885a84f3dc230144311bf8c",
-    "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+    "implementation_revision": "d1247483c3cb4b3296207c139871274e6a38483e6887084679eeca96c3bea30f",
     "level": "offline",
     "result": "passed"
   },
@@ -55,7 +55,7 @@
     "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
     "evidence_ref": "compute/servers_test.go",
     "evidence_revision": "3ada6e2f247e55ef1de91f5d8708e5d307cb5447dbb1a9704655ce1997cc3118",
-    "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+    "implementation_revision": "e9568b3dbfaa8b10f0dcdbac232dc3ca0e5897aeecd352222951d8f467c650a0",
     "level": "offline",
     "result": "passed"
   },
@@ -67,7 +67,7 @@
     "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
     "evidence_ref": "compute/servers_test.go",
     "evidence_revision": "3ada6e2f247e55ef1de91f5d8708e5d307cb5447dbb1a9704655ce1997cc3118",
-    "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+    "implementation_revision": "385d62863860db850b3ed9a7b78db7174c68b7b00a089719131d00ffd49644cb",
     "level": "offline",
     "result": "passed"
   },
@@ -79,7 +79,7 @@
     "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
     "evidence_ref": "compute/servers_test.go",
     "evidence_revision": "3ada6e2f247e55ef1de91f5d8708e5d307cb5447dbb1a9704655ce1997cc3118",
-    "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+    "implementation_revision": "db18e979e1edcd360236de8a3d55e17a57b87958d9e8186fb95a451c642e7af3",
     "level": "offline",
     "result": "passed"
   },
@@ -91,7 +91,7 @@
     "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
     "evidence_ref": "compute/servers_test.go",
     "evidence_revision": "3ada6e2f247e55ef1de91f5d8708e5d307cb5447dbb1a9704655ce1997cc3118",
-    "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+    "implementation_revision": "90e01ce2d3a8c31d3ce3cbf0ce94c0b7a8b003313b72d7626f7936ff73a3581a",
     "level": "offline",
     "result": "passed"
   },
@@ -103,7 +103,667 @@
     "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
     "evidence_ref": "inventory_reads_test.go",
     "evidence_revision": "5db10ff3d099bf125991717ee8e22700cfe40c8d57e272a4fb28741a0cf58ab0",
-    "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+    "implementation_revision": "3597eb5e6829ebd6e903236e0ce78222c73c5a75eb50a9d56da1204424cd8eb4",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_device.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "e9d1675c5044a2646622f4256d075f421bea59edc0940dd3d307711a3d325f21",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "33703a2c5221fe1c6a9fd734879f12addc65e046f6d1e76e8fa055906371d9ed",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_device.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "94aeeffd2818f66594c158a2f03c356cd1e6bf94d5270d1d51b1d76cd805e636",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "797663830ccda5878948c49b308e6c8e2e1a7bb2d655b1082b34109ca14ff1c0",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_os.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "7a3ac2bf1e69624c804b39c491a12fdc5551eb6c3b3aac99e1715f072a2ffc0d",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "ee527c75205a1bc6ae2220fcdb49e341732aaf2241f316cd18b4a6f221c09f0d",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_os.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "f156d971eb222eda10383a35cbbd4cc6ec616186b9eceea1aecfd9f82814b60f",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "e2b8ce8bb4d22e728a7153aaa65d909eb1e349ad7c8cff810f760a571bc006dd",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_os.update": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "da77c1bc6242c93e0b924b72cf1c68edcb2ac97c850c57619c9f84cd3a685f4c",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "b18215f64db439581e86c0455bef01188b0ba24bd57d1f5f503d704df747c837",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_os_password.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "926610268d2708ba41ca692ef7ab58a80d52c3a1ab873aefc4bd03ba5c6e62d5",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "183672b6ee48dfc20db0ce248d463c25a8ebaa53c8784372b961f11174916d2c",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_template_custom_os_image.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "98924c4d4c8bd7ff74bee9ad80895499e2b95ec860be2f7a8d59c0c231928a0a",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "960f68581d79928624e45469e85c8f230c1923b3d36babdd167497243ea8d523",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_template_custom_os_image.delete": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "fb0720047535f87f9caa27c36c3b50ce369f5c97ab774536054ed5c7394319be",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "fe791b94ecd8d10df36236d2b8f2b05d9a7817f7533df89ea380077b0d97883a",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_template_custom_os_image.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "d43e3424b14766e5351a5d9fb55ab74d391797bea460f502dcb85691be4b424f",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "4082394024c347a423465d21db640d89294404b0bdee64e814da67367ea3501b",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_template_custom_os_image.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "696b09604c9e5bd9ab885244b157d67b2f83f5c0db1a9e2b46c8e89c9814e20e",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "e296e654ef25a4eb2d6a94577dd642fbce0e7f64b7f3eb600bd20b3612f60405",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_template_custom_os_image.replace": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "56d56209779c5b56aa0960fd7ee37a64221df630934a77105a92207400a3e845",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "fee4e27323243c830e075d7eace0312d2ffe9fa915d785a0577eb483e15c1031",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_template_device.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "42e8bd4d79fbbb3cef0bd4b4b4f27da8193cfe6da61281a9acf473963b1dd669",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "641f431e1253ceb3ba085acdc7ba23b3b3bf018194219a4b1a77096cf27b8398",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_template_os.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "db7f3082381a0e3d2f7bae6e5d1a07ce4f1a8433cd974f6063e3e13ba58094e7",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "26e9d8bdf7b35692df371ec84de8b119bd59959854df8422aac168f4f2f80e3e",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.boot_template_os_new.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "4c0b786d8cd5ff1c611d6f02f2b181d9e8252f6d233b0babd92d9607e255d0c1",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "ed41044a533d67720be889dc4a50fbb80c91ef06bd9e7ad6adaff8f330fdb8c1",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.dashboard_health.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "34400e7b97bfed3bdbb594e91b0ee57c2f5fb9a7d4057f173b59e18dac91037d",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "e2d2d6385b7ac0c90d7f93959b2cb9697f940e07dad4380ce9c6381c10179d6b",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.dashboard_maintenance.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "37ba6f0b6b639d9328513ad9c4a3856b0c386e935a1edf654269fd3ebbb0ebba",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "f330e72f9a0f624f130061bc0223b491c4155878eb9ed0882fdd881768e22f0b",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.dashboard_task.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "9c50648c0d3d45f8ad637783726baa47ac45c774628124cf7bb5160136101067",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "18672907f71cb0872056c230a1754ede24b13a49de464413a35ef95262eb07fa",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.location.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "be7edb8839bbaf0daa209bf7f8a5130720587024c31be8441b0b5e70f1c26e99",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "38a8c2d53bf2dabdf78f604eeb6f04d3ee5799f2090310490c35531d5e0725a2",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.location.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "e5195387417ccdbf25be881de615b88fff000bcda6d8769ca81001eeb2aa19b6",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "2ff43ed2142e8f622e78acb55b487f00d3d4c21cd94a998310dd47d5cabcb0f3",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.plan.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "06c561b1f36735960dce21e1044911685c1b89b01e8825b4988671d7d993dfdc",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "c927c220e126079684ce9d91f60f76973030386f3b6cf51b9744f347c0e6a2fc",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.plan.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "509c40ac53b9f3e3d865143a7db028afeee3bd83c4e2b66f57b1c5016bed38df",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "b8fbc7c1603c6faf8972766656ad4ba7bda71a2037a5d0b70bee1d6cd36c071c",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.power.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "3280e6ec314b442f938e857fd60a2ab03b502fe93ce3fd9eabb196a9cbb667aa",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "894c25f64a351cba7d39b4cdb9d0df3ed75de44b09bc8241c69ea82124092268",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.power.replace": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "6a6af3a78b5e454cb81cbd9e98802abadf64c339dbda7be98bdef6a853232e82",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "c7cc5ca3449f6cfd3e6568928a4014f5db31d0461c94021c5e1addc77d0f8a5e",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.power_console.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "582686e12889f8b4e760600b560399861963ed0b27618cc0da7fc8ecb3965d62",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "6f67a900ce3d96fe79ee9b1e32c85c953d2bc6e2af987afdc2e430cf2d179e5c",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.power_console.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "a2d90c9c800d05d1e0ca2ad79c1b651bc7622cc9f9bb18bce06683a85dbe169c",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "f6852ea0fc9ae174ce6cf9ea3c56e9d2612e6cf7093574fa1b99bce54d01b55d",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.power_reboot.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "f216d56d0dc29682b5e4897a0eb9b0dc6e6d6acfb324eb783ffe23a6b06de9a2",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "53cb1b8b13f509dd89b309005d38ebf6ea3d7fd2a875120b3d2a22ea2cd0c9e2",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "bbf90b45619f26a4d3f9d554c38fba51b6bc686702cd9327d3f951316a17ce72",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "5e67d61197d608ed406ce7452b676c392af0873131782e043316aabfb1bda650",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "7945ff250de29311738afdd20e99e6e46c3995ef844b56b90479b86b1ad3a3a2",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "521d0634434ba1dc2cd746a0b904aad09cae5635e7966c380d30b2feb5fede8d",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource.replace": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "44e223f399dd35f51cbc6b1ac53ee69f407a63609b00e255c157a7c8ea0075d8",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "dc1a830e20ce0dbf896bb1dfd289ca02c9f913e6874a5f53cf2cf481182bce8c",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_billing.delete": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "7b32d3966acf143d471d8083b8bb9596e530a87b90da3ea9ed96ede16942f2ac",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "ea8bd12c20b46b01962b2e68ae33dec9fa3e4b0368b35a9072f0fcb9fb1af739",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_billing.update": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "1f5a2a4862bfcadf2d814e30259fccf52082f8e2776100240d4284fb68d36726",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "28bd6d0b7143e71ce60dd2c6785194844dd7bc0cae38cd18527bf72f050a0cb5",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_billing_info.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "e052ba089aa2aa76ae2a3cdab059c2221a6b676d0edff19dc45e44af7f571a38",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "b9bef4abeea2353b81849a7b71e66ba9f44168b5d7d89c243558f3b22f41bef2",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_custom_billing.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "049e2f2207d65451e1e2427cf099ff8a9126b4cafe3bf2f509aa7af33e040de2",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "81516064e0973f77430a7dbe6bce6e10868d9ba7c270795ecaefcd9a30dd93de",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_info_custom.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "9837ccb0be6d19fad24819d38f2f233547d5eb90547949a610a399264d856705",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "06c079086ffd55c77af151b5e4ff514bdc97e010781fe35f6eabb8e6871ef348",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_info_server.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "c80d65380faa2fedbc098a29555f0a6f07c06cd9067109f99ec6057c6728a878",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "d591e39c824705a52967f6379bb87bc4ebfb345e801330efbde7488288aaf0fc",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_info_serverchip.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "181069f27f3a97455938dae52456d1e4b7747b5102680f79c839fa31766a0d27",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "d96d5a114df78834e58831195e5fe126030e1758121b7b4445102fdd51234e3a",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_order.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "b0a2c0143341ac813a62246f7c03c676d009865a5ffd5e9fb3641658e48aa40f",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "49992c29b2fd1d862abe7e1244f6223a54a064964f7191f023262cad9486ab0a",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_project.replace": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "ad0935f1d8aab3eb3c687212eab164f6176de17e491339f8a57ad2201e786962",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "a3493238204f1e725df02107345bdb9e8e3412aaec5abfa39fda6244e6510a4b",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_server_billing.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "50e3690de895da6f109390acdb8c4c67f20192ece2df0840a3466022d41158fb",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "b97c05bc0ed94e17c61c17318bdd3886d609e825fb161700f0004dd5d4dad2e0",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_serverchip_billing.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "963fac58c0d29ec3d483e9e38d65477811534ceeb68d97b94975205e76a8398a",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "529fe4cc396308b3cf6dddd07bf3187838bfc1346db833a2d87e017974983203",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_upgrade_custom.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "2b926113367e1b6cbc55166870ea1be090d32eac651e15bacf93891e073b3466",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "3d479009ceef01edef796dcaaffdfa726847e6eeaf051c011800e52dcd7cd26a",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.resource_upgrade_prebuilt.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "e22c31d6949e68373892bd11668ff5710f09e08b33b215afe63995e69a3ff10b",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "f2aa604b2ae54abc83be5052a3e4021545decfa0476b12bd2d7de42e32544bd4",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.result.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "ce184accaaa1ab88dd9eca04adcdf4847ccb6bc642ecfdf98daca14dc9792280",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "f5cecd8bce5b73975900e676a2139b81f1cb29be4799ebc6223052263282bcf4",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "259522b1444b2086bef21f57797d7a1e26c34a388ae0823b2869ef2af3285c3a",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "e5d313bddb38ab3c7ca75833479a1942caf7017c3b89b981d18f08cf276ab97b",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "f53cb5f8e4fffa2c3f84b8f05f8ec47173d6cbd43de13be933585508e1944b3c",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "7ff13921ec4a102c8c58f766757f36345ac4afe51806406ca61517cf7288da59",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_custom.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "b42c7ac31b8c3dd2a8047cbb9c31beafeb76500442077bcb50a113fe769c5b31",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "ad91243db41fec2d00c0584e791a41075939ffe89f87b5a36562a0ac02ea609f",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_custom.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "c53be6a422eeb507b947a6cca4d38bfb9b8f1f6415fa485963d4036ffe547f84",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "5308f505d041c5890316d976a81372f96ae409943899c9790c50de871fd30e77",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_custom_billing.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "54ddb173e5195d3b63e70128ffd31ce6f51be44258c742b70b407d9ba5d2fdf9",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "9cc576b6ae1acebbc1ab92648b3142916b593f68813ac21d91831ca9fd2fd3fd",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_custom_billing_upgrade.replace": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "7ff276c540b1c5464372243d90e49cc93dead7a790feea6402af46a1b23553e4",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "4919f666f457952450d8744d0fd5833f104b56a82cb5a6800c962754ff043f66",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_server.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "f464fcb4f3bae3f1fb8c2b05055448224ec5a91a2eb17c18924a64d375af9f59",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "b4a84a658a5f8f2595706839924c3c75e839bc83d98e66ffbe6794e6dd05ffd7",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_server.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "45a071fdeb94283f5c3b77f62cec3be661ea3aa369ca64a17c6676ff37a11033",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "69602e99e2e3134044f2efe79d742e1edcf1437bec0cbb2ba31e17245fa95ad0",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_server_billing.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "bc231bcad4279ca6068c155c2da471ff8f5a427bc940655adf7950e50d2f91f6",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "89725a48ade8db6ab53a4acf3cf6af817f53a3f890f8f8d840605d7ea6d12b5e",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_serverchip.get": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "7b5e323f655eb53d47b31b30690c18ddafb8943b513586416bbfe0363675069d",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "b17d774b58a44bf25f9d3640fa3fc0c59814008c4595f3879068c459ce9c9e4a",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_serverchip.list": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "52d5e11b58bb636f690d6d14a954af44d8d5e9c0b47b31a154eada665fe9cf6d",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "3bf5c5338a4c104499f3af6e57bd10b101991ab1d9a908d4fce8567e05f8377c",
+    "level": "offline",
+    "result": "passed"
+  },
+  "dedicated.v2.service_serverchip_billing.create": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "37807d8e762f7532ec5b24d205b2ff93e06f31fde9ab032769e13f8a5141cda6",
+    "evidence_ref": "dedicated_test.go",
+    "evidence_revision": "7e2f999d24e74f226505ef5596de2bf0e64cd7813b7f71c60d562bbd8cbb3c8c",
+    "implementation_revision": "9c2785d3c418f605589742f4c6b1322c103d09c478f54d4291a3e99ee92f20be",
     "level": "offline",
     "result": "passed"
   },
@@ -115,7 +775,7 @@
     "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
     "evidence_ref": "telemetry_test.go",
     "evidence_revision": "7df1be7a89d2f02501416a47e3993111b70f914d97e2d0b8249b9220042fa2f5",
-    "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+    "implementation_revision": "44cb2e578690d922b90c28392dcffea13df3307cd3b5366ff46fcc73da72480a",
     "level": "offline",
     "result": "passed"
   },
@@ -127,7 +787,7 @@
     "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
     "evidence_ref": "telemetry_test.go",
     "evidence_revision": "7df1be7a89d2f02501416a47e3993111b70f914d97e2d0b8249b9220042fa2f5",
-    "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+    "implementation_revision": "b74f8143169acac01eda234a194908a8b391ec21e1b178e264b2017bb70352d4",
     "level": "offline",
     "result": "passed"
   },
@@ -139,7 +799,7 @@
     "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
     "evidence_ref": "telemetry_test.go",
     "evidence_revision": "7df1be7a89d2f02501416a47e3993111b70f914d97e2d0b8249b9220042fa2f5",
-    "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+    "implementation_revision": "e1e160050a969db7975a0a6e5663c036f73aae16b31b5a166c071a34e398097e",
     "level": "offline",
     "result": "passed"
   },
@@ -151,7 +811,7 @@
     "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
     "evidence_ref": "telemetry_test.go",
     "evidence_revision": "7df1be7a89d2f02501416a47e3993111b70f914d97e2d0b8249b9220042fa2f5",
-    "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+    "implementation_revision": "edcb0da6d7cfbf929c2930c53bfb554d48a1d4bfc7f411d5540d934d025d3b90",
     "level": "offline",
     "result": "passed"
   },
@@ -163,7 +823,7 @@
     "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
     "evidence_ref": "telemetry_test.go",
     "evidence_revision": "7df1be7a89d2f02501416a47e3993111b70f914d97e2d0b8249b9220042fa2f5",
-    "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+    "implementation_revision": "679dacf8d473e1bf13ffe179d4958cec3b129854c675d116290f9a2e4bbf4621",
     "level": "offline",
     "result": "passed"
   },
@@ -175,7 +835,7 @@
     "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
     "evidence_ref": "telemetry_test.go",
     "evidence_revision": "7df1be7a89d2f02501416a47e3993111b70f914d97e2d0b8249b9220042fa2f5",
-    "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+    "implementation_revision": "c5c03e9c2f9919e65f9eba112a0348f380de15cae4f24592404112d94c3e015a",
     "level": "offline",
     "result": "passed"
   },
@@ -187,7 +847,7 @@
     "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
     "evidence_ref": "telemetry_test.go",
     "evidence_revision": "7df1be7a89d2f02501416a47e3993111b70f914d97e2d0b8249b9220042fa2f5",
-    "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+    "implementation_revision": "9395a08e235908ba6546992e43cde18acfb582fddedab1e5d4bef88741d5a256",
     "level": "offline",
     "result": "passed"
   },
@@ -199,7 +859,7 @@
     "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+    "implementation_revision": "fb44e61a08ec881e8c950a850ac1b689999c791267b2dcceb57e5316d87b6371",
     "level": "offline",
     "result": "passed"
   },
@@ -211,7 +871,7 @@
     "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+    "implementation_revision": "99ed090533a417348261aee0e0efeb7872f7bdfef98dcac6c64f4e9a6a06b823",
     "level": "offline",
     "result": "passed"
   },
@@ -223,7 +883,7 @@
     "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+    "implementation_revision": "d65a2653c399715ecfead2f2e8683fe4c69106183b316f95c972a8455b411cad",
     "level": "offline",
     "result": "passed"
   },
@@ -235,7 +895,7 @@
     "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+    "implementation_revision": "0617f3a65bcb16f42a9a047cb028616e7085df11780020ac3dc962ca8226d4a9",
     "level": "offline",
     "result": "passed"
   },
@@ -247,7 +907,7 @@
     "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "e6376d33ee8cd1e64fa1b1a3813d99beb551a7875a439c9d31767f98299be11a",
-    "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+    "implementation_revision": "0ac85ff331b4b89635634d0fed6a2b8eee16346d59cdb4cf35de78aa4e065a53",
     "level": "offline",
     "result": "passed"
   },
@@ -259,7 +919,7 @@
     "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+    "implementation_revision": "8d53ddf6cf9f3cbf8ed3fe6c139e4e5bb8474d6ae47e233cdf06a8be87555c68",
     "level": "offline",
     "result": "passed"
   },
@@ -271,7 +931,7 @@
     "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+    "implementation_revision": "587564254ecec2efe75787753527407772bf318e586bebebdd6937023c061d5f",
     "level": "offline",
     "result": "passed"
   },
@@ -283,7 +943,7 @@
     "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+    "implementation_revision": "9d1c682ea90598e8dcd094c8f2a383dd70072462066e0a9b0e50325dc243b84f",
     "level": "offline",
     "result": "passed"
   },
@@ -295,7 +955,7 @@
     "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+    "implementation_revision": "338d77a04698ecb838dede2020cc5089dba672aa8c252cb4adf1a764e37aa8eb",
     "level": "offline",
     "result": "passed"
   },
@@ -307,7 +967,7 @@
     "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+    "implementation_revision": "a1126904e7e4ebd3b02e91cf812e3ea2a54e585a73a62c5bb4aa59620c73f7a4",
     "level": "offline",
     "result": "passed"
   },
@@ -319,7 +979,7 @@
     "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+    "implementation_revision": "88d823d9a3e3b449f58c54cd886ea72a797a1b38a81857a165be1dce0c27b74e",
     "level": "offline",
     "result": "passed"
   },
@@ -331,7 +991,7 @@
     "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "e6376d33ee8cd1e64fa1b1a3813d99beb551a7875a439c9d31767f98299be11a",
-    "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+    "implementation_revision": "5b86dfdda76a607d4365b500b08aa3d624fdbb789650db3f87689d42d7085014",
     "level": "offline",
     "result": "passed"
   },
@@ -343,7 +1003,7 @@
     "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+    "implementation_revision": "5724d93ec6c6560d001537b6632698be715e15931a94b16e24f6ab162b97ea4d",
     "level": "offline",
     "result": "passed"
   },
@@ -355,7 +1015,7 @@
     "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+    "implementation_revision": "ced5c292a788beb0b1de91272666bb73f230fea3e3972cd7e5422c8318129d8a",
     "level": "offline",
     "result": "passed"
   },
@@ -367,7 +1027,7 @@
     "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+    "implementation_revision": "ebd30a0f024ce986603d67899d770c62ce89bb698cf3916331a90dc815dc2e51",
     "level": "offline",
     "result": "passed"
   },
@@ -379,7 +1039,7 @@
     "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+    "implementation_revision": "24fabfa9e2785e4feac37e5d53a7072816f3fa82830e0a378556e8b8ede9d7da",
     "level": "offline",
     "result": "passed"
   },
@@ -391,7 +1051,7 @@
     "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+    "implementation_revision": "98d6db5e495b8c6cabd85830a851d2eb5eccafb93531504fe87143898b7987f6",
     "level": "offline",
     "result": "passed"
   },
@@ -403,7 +1063,7 @@
     "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+    "implementation_revision": "1d0e3b13e0059f1d8b6c0431917942bb88004a8c466c2707bfd6b6f23b07a8ac",
     "level": "offline",
     "result": "passed"
   },
@@ -415,7 +1075,7 @@
     "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+    "implementation_revision": "920cb221ca23788cf834fdbb5369ef8a36dd62ca5fee726d3ccd75b0e209eb33",
     "level": "offline",
     "result": "passed"
   },
@@ -427,7 +1087,7 @@
     "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+    "implementation_revision": "0a5556145342278d8e5035130364c3cf93d6f17c96c879a39345564fb2568e26",
     "level": "offline",
     "result": "passed"
   },
@@ -439,7 +1099,7 @@
     "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+    "implementation_revision": "218e5fe91940b0047ce6b410aefc8a0ff6d55dced1c5eae5f26c8a65db24fbc9",
     "level": "offline",
     "result": "passed"
   },
@@ -451,7 +1111,7 @@
     "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+    "implementation_revision": "5ae636c766b43613af49f488fa817a614099db32557f9d5b8e77e8b965b7fdb0",
     "level": "offline",
     "result": "passed"
   },
@@ -463,7 +1123,7 @@
     "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+    "implementation_revision": "f0bd6768c72e819f0a6c872d31d8e77f61ba0d3ce32717c7c15c35e554c1210a",
     "level": "offline",
     "result": "passed"
   },
@@ -475,7 +1135,7 @@
     "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+    "implementation_revision": "351e612623b18038c98ac0c24f6eb309825d3af8a092b25e6a8bca259e602d61",
     "level": "offline",
     "result": "passed"
   },
@@ -487,7 +1147,7 @@
     "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "e6376d33ee8cd1e64fa1b1a3813d99beb551a7875a439c9d31767f98299be11a",
-    "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+    "implementation_revision": "edca4ba1c9e7231bebff4bdd99553796db29dded7244e13dadb0e151eccc9c44",
     "level": "offline",
     "result": "passed"
   },
@@ -499,7 +1159,7 @@
     "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+    "implementation_revision": "ca06924b4de9d38d537328d5448270ba2103e4f62af0213197e1e1c05d37a65d",
     "level": "offline",
     "result": "passed"
   },
@@ -511,7 +1171,7 @@
     "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+    "implementation_revision": "74f21a4149178293bb3fbe5521a2867ce36f8446f2a266d260c179e5c3464d42",
     "level": "offline",
     "result": "passed"
   },
@@ -523,7 +1183,7 @@
     "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+    "implementation_revision": "2bdcbafe51976b01f2d06a209bebf53a31f27048d91bd3236739d1467e19f4bc",
     "level": "offline",
     "result": "passed"
   },
@@ -535,7 +1195,7 @@
     "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
     "evidence_ref": "mks_management_test.go",
     "evidence_revision": "5a8002f2ae5e62cb27791af80690adf6edd547dc63d4dd66361d06f93a8db9e8",
-    "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+    "implementation_revision": "576ab19b0d8947f6721390e3ac29d79f965dbb395aee5647470e235b170103ab",
     "level": "offline",
     "result": "passed"
   },
@@ -547,7 +1207,7 @@
     "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
     "evidence_ref": "resource_management_test.go",
     "evidence_revision": "4b2c38f8d32657eec630dd70a43de1232ece3aaccb0557ca7b45deea9ea385ab",
-    "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+    "implementation_revision": "9f466712546465bcd58cf870db19afc9da98d22f20c0954fa11632a2116a69e5",
     "level": "offline",
     "result": "passed"
   },
@@ -559,7 +1219,7 @@
     "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
     "evidence_ref": "resource_management_test.go",
     "evidence_revision": "4b2c38f8d32657eec630dd70a43de1232ece3aaccb0557ca7b45deea9ea385ab",
-    "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+    "implementation_revision": "8c6aa7cf292dea772fc37b9f4618b6e7f4b4ab5316168bf1c4651ba32cd64b69",
     "level": "offline",
     "result": "passed"
   },
@@ -571,7 +1231,7 @@
     "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
     "evidence_ref": "resource_management_test.go",
     "evidence_revision": "4b2c38f8d32657eec630dd70a43de1232ece3aaccb0557ca7b45deea9ea385ab",
-    "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+    "implementation_revision": "945de91a167cb6497a1195b665e8f157b034929f80e9e1a290e798ad193ad2f1",
     "level": "offline",
     "result": "passed"
   },
@@ -583,7 +1243,7 @@
     "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
     "evidence_ref": "inventory_reads_test.go",
     "evidence_revision": "5db10ff3d099bf125991717ee8e22700cfe40c8d57e272a4fb28741a0cf58ab0",
-    "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+    "implementation_revision": "79ab9a77f698bbcc45770c3acddd1301b7ea7e4c53775382c922fea9657af4a0",
     "level": "offline",
     "result": "passed"
   },
@@ -595,7 +1255,7 @@
     "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
     "evidence_ref": "resource_management_test.go",
     "evidence_revision": "4b2c38f8d32657eec630dd70a43de1232ece3aaccb0557ca7b45deea9ea385ab",
-    "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+    "implementation_revision": "573fbe32ad52bdd9cfcf4f4d66e280fa5c725f12d453a24fc0af9b4493537683",
     "level": "offline",
     "result": "passed"
   },
@@ -607,7 +1267,7 @@
     "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
     "evidence_ref": "resource_management_test.go",
     "evidence_revision": "4b2c38f8d32657eec630dd70a43de1232ece3aaccb0557ca7b45deea9ea385ab",
-    "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+    "implementation_revision": "46fa865713ec70bf7191375efa5f9f776bfb6f8a96be87dbe4a97ee52733b0f0",
     "level": "offline",
     "result": "passed"
   },
@@ -619,7 +1279,7 @@
     "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
     "evidence_ref": "resource_management_test.go",
     "evidence_revision": "4b2c38f8d32657eec630dd70a43de1232ece3aaccb0557ca7b45deea9ea385ab",
-    "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+    "implementation_revision": "845deea6053b28783e12b7b689c7525eab3e7d17c9ccad190161ee072b77881d",
     "level": "offline",
     "result": "passed"
   },
@@ -631,7 +1291,7 @@
     "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
     "evidence_ref": "resource_management_test.go",
     "evidence_revision": "4b2c38f8d32657eec630dd70a43de1232ece3aaccb0557ca7b45deea9ea385ab",
-    "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+    "implementation_revision": "5f91792bca745d242b6f4d27070f62502736063be0cb29b7caf16663f9894418",
     "level": "offline",
     "result": "passed"
   },
@@ -643,7 +1303,7 @@
     "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
     "evidence_ref": "resource_management_test.go",
     "evidence_revision": "f35ea89dcd21810c2752df038ab0550456025b14ead35c12784616c585a5d419",
-    "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+    "implementation_revision": "4edb9722abf730aceac595a374ffcb22346f3b0ced0e4e7c4943d9d995ccf4b0",
     "level": "offline",
     "result": "passed"
   },
@@ -655,7 +1315,7 @@
     "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
     "evidence_ref": "inventory_reads_test.go",
     "evidence_revision": "5db10ff3d099bf125991717ee8e22700cfe40c8d57e272a4fb28741a0cf58ab0",
-    "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+    "implementation_revision": "017b5e8714aa36755526852a1fb7bf910efb85d3350a569f0645e994bf8a031b",
     "level": "offline",
     "result": "passed"
   },
@@ -667,7 +1327,7 @@
     "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+    "implementation_revision": "9b8bf5022beacc59c6f04ec542ee500306341e77ef7261cbed1044008f7d95e3",
     "level": "offline",
     "result": "passed"
   },
@@ -679,7 +1339,7 @@
     "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+    "implementation_revision": "f16820de913fc5c13288aa69360d7f07e30d5d69464f9d41fac7a68b18675e14",
     "level": "offline",
     "result": "passed"
   },
@@ -691,7 +1351,7 @@
     "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+    "implementation_revision": "fac5b39a5f0d55a28b543100150146fe1a3d97c416abbff0990e2ab1190d484f",
     "level": "offline",
     "result": "passed"
   },
@@ -703,7 +1363,7 @@
     "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+    "implementation_revision": "fd6685d245abd2ab936b64b6b83b1b239a4949853aee8faffdf5e477ef311a32",
     "level": "offline",
     "result": "passed"
   },
@@ -715,7 +1375,7 @@
     "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+    "implementation_revision": "9c65aa618a3d082095e13df53fda9a4ebac7bfdeed09819825f246be492ffe21",
     "level": "offline",
     "result": "passed"
   },
@@ -727,7 +1387,7 @@
     "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+    "implementation_revision": "d974ea1b1a0f8fb108a709cfce07c11be65a14235d66969b6948e50b03ec5b34",
     "level": "offline",
     "result": "passed"
   },
@@ -739,7 +1399,7 @@
     "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+    "implementation_revision": "1a813de53b5e887d305cdf05e8ab5a53dce3f1b2eef31e910d279b059329baf8",
     "level": "offline",
     "result": "passed"
   },
@@ -751,7 +1411,7 @@
     "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+    "implementation_revision": "ae9d8cde3888f7e270fd4de913849dae07059e1a541242f12f8a41afec1ce996",
     "level": "offline",
     "result": "passed"
   },
@@ -763,7 +1423,7 @@
     "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
     "evidence_ref": "secrets/client_test.go",
     "evidence_revision": "f368bed073cb4b9a3a96afce65c59f3ad54264bb25a195529be696fd1b8e74ac",
-    "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+    "implementation_revision": "727705af8f48135ccfa538acbba6a5ef2667b6c163d1daf4ae7d077de0a8729d",
     "level": "offline",
     "result": "passed"
   }
