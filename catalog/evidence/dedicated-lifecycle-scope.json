@@ -1,0 +1,1326 @@
+{
+  "source": "https://docs.selectel.ru/api/dedicated.json",
+  "purpose": "#57 lifecycle; #58 retains disks/network/SSH and remaining groups. No service-completeness claim.",
+  "operations": [
+    {
+      "operation_id": "dedicated.v2.boot_device.get",
+      "method": "GET",
+      "path": "/boot/device/{resource_uuid}",
+      "go_method": "GetServerBootDetails",
+      "body": null,
+      "response": "ResponseDevice",
+      "responses": {
+        "200": "ResponseDevice"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_device.create",
+      "method": "POST",
+      "path": "/boot/device/{resource_uuid}",
+      "go_method": "SetServerBootTemplate",
+      "body": "DeviceSet",
+      "response": "ResponseDevice",
+      "responses": {
+        "200": "ResponseDevice",
+        "202": "ResponseDevice"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_os.get",
+      "method": "GET",
+      "path": "/boot/os/{resource_uuid}",
+      "go_method": "GetServerOSDetails",
+      "body": null,
+      "response": "ResponseOSConfig",
+      "responses": {
+        "200": "ResponseOSConfig"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_os.update",
+      "method": "PATCH",
+      "path": "/boot/os/{resource_uuid}",
+      "go_method": "ReinstallOSConfiguration",
+      "body": "ReinstallInput",
+      "response": "ResponseOSConfig",
+      "responses": {
+        "200": "ResponseOSConfig",
+        "202": "ResponseOSConfig"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_os.create",
+      "method": "POST",
+      "path": "/boot/os/{resource_uuid}",
+      "go_method": "InstallServerOSConfiguration",
+      "body": "OSConfigInput",
+      "response": "ResponseOSConfig",
+      "responses": {
+        "200": "ResponseOSConfig"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_os_password.list",
+      "method": "GET",
+      "path": "/boot/os/{resource_uuid}/password",
+      "go_method": "GetServerOSPassword",
+      "body": null,
+      "response": "ResponseOSPassword",
+      "responses": {
+        "200": "ResponseOSPassword"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_template_custom_os_image.list",
+      "method": "GET",
+      "path": "/boot/template/custom_os_image",
+      "go_method": "ListCustomOSImages",
+      "body": null,
+      "response": "CustomOSImageListResponse",
+      "responses": {
+        "200": "CustomOSImageListResponse"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": "ListCustomOSImagesQuery",
+      "parameters": [
+        {
+          "description": "Search by UUID, `version_name`, or `family_type`.",
+          "in": "query",
+          "name": "search",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.boot_template_custom_os_image.create",
+      "method": "POST",
+      "path": "/boot/template/custom_os_image",
+      "go_method": "CreateCustomOSImage",
+      "body": "CustomOSImageCreateModel",
+      "response": "CustomOSImageDetailResponse",
+      "responses": {
+        "201": "CustomOSImageDetailResponse"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_template_custom_os_image.delete",
+      "method": "DELETE",
+      "path": "/boot/template/custom_os_image/{uuid}",
+      "go_method": "DeleteCustomOSImage",
+      "body": null,
+      "response": "CustomOSImageDetailModel",
+      "responses": {
+        "200": "CustomOSImageDetailModel"
+      },
+      "async_variant": false,
+      "kind": "custom_os_image",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_template_custom_os_image.get",
+      "method": "GET",
+      "path": "/boot/template/custom_os_image/{uuid}",
+      "go_method": "GetCustomOSImage",
+      "body": null,
+      "response": "CustomOSImageDetailResponse",
+      "responses": {
+        "200": "CustomOSImageDetailResponse"
+      },
+      "async_variant": false,
+      "kind": "custom_os_image",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_template_custom_os_image.replace",
+      "method": "PUT",
+      "path": "/boot/template/custom_os_image/{uuid}",
+      "go_method": "UpdateCustomOSImage",
+      "body": "CustomOSImageUpdateModel",
+      "response": "CustomOSImageDetailResponse",
+      "responses": {
+        "200": "CustomOSImageDetailResponse"
+      },
+      "async_variant": false,
+      "kind": "custom_os_image",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.boot_template_device.list",
+      "method": "GET",
+      "path": "/boot/template/device",
+      "go_method": "ListBootDeviceTemplates",
+      "body": null,
+      "response": "ResponseDeviceInfoList",
+      "responses": {
+        "200": "ResponseDeviceInfoList"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": "ListBootDeviceTemplatesQuery",
+      "parameters": [
+        {
+          "description": "Service unique identifier (UUID) used to filter available device templates.",
+          "in": "query",
+          "name": "service_uuid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.boot_template_os.list",
+      "method": "GET",
+      "path": "/boot/template/os",
+      "go_method": "ListOSTemplates",
+      "body": null,
+      "response": "ResponseOSTemplateList",
+      "responses": {
+        "200": "ResponseOSTemplateList"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": "ListOSTemplatesQuery",
+      "parameters": [
+        {
+          "description": "Location unique identifier (UUID) used to filter available operating system templates.",
+          "in": "query",
+          "name": "location_uuid",
+          "type": "string"
+        },
+        {
+          "description": "Service unique identifier (UUID) used to filter available operating system templates.",
+          "in": "query",
+          "name": "service_uuid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.boot_template_os_new.list",
+      "method": "GET",
+      "path": "/boot/template/os/new",
+      "go_method": "ListNewOSTemplates",
+      "body": null,
+      "response": "OSTemplateListNewResponse",
+      "responses": {
+        "200": "OSTemplateListNewResponse"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": "ListNewOSTemplatesQuery",
+      "parameters": [
+        {
+          "description": "Location unique identifier (UUID) used to filter available operating system templates.",
+          "in": "query",
+          "name": "location_uuid",
+          "type": "string"
+        },
+        {
+          "description": "Service unique identifier (UUID) used to filter available operating system templates.",
+          "in": "query",
+          "name": "service_uuid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.dashboard_health.list",
+      "method": "GET",
+      "path": "/dashboard/health",
+      "go_method": "GetApiHealth",
+      "body": null,
+      "response": "HealthInfoResponse",
+      "responses": {
+        "200": "HealthInfoResponse"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.dashboard_maintenance.list",
+      "method": "GET",
+      "path": "/dashboard/maintenance",
+      "go_method": "GetMaintenanceStatus",
+      "body": null,
+      "response": "MaintenanceStatusResponse",
+      "responses": {
+        "200": "MaintenanceStatusResponse"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.dashboard_task.list",
+      "method": "GET",
+      "path": "/dashboard/task",
+      "go_method": "ListActiveTasks",
+      "body": null,
+      "response": "ResultActiveTasks",
+      "responses": {
+        "200": "ResultActiveTasks"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.location.list",
+      "method": "GET",
+      "path": "/location",
+      "go_method": "ListLocations",
+      "body": null,
+      "response": "LocationResultListModel",
+      "responses": {
+        "200": "LocationResultListModel"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.location.get",
+      "method": "GET",
+      "path": "/location/{uuid}",
+      "go_method": "GetLocationDetails",
+      "body": null,
+      "response": "LocationResultModel",
+      "responses": {
+        "200": "LocationResultModel"
+      },
+      "async_variant": false,
+      "kind": "location",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.plan.list",
+      "method": "GET",
+      "path": "/plan",
+      "go_method": "ListPricePlans",
+      "body": null,
+      "response": "PricePlanResultListModel",
+      "responses": {
+        "200": "PricePlanResultListModel"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.plan.get",
+      "method": "GET",
+      "path": "/plan/{uuid}",
+      "go_method": "GetPricePlan",
+      "body": null,
+      "response": "PricePlanResultModel",
+      "responses": {
+        "200": "PricePlanResultModel"
+      },
+      "async_variant": false,
+      "kind": "plan",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.power.get",
+      "method": "GET",
+      "path": "/power/{resource_uuid}",
+      "go_method": "GetServerPowerState",
+      "body": null,
+      "response": "ResponsePowerStatus",
+      "responses": {
+        "200": "ResponsePowerStatus"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.power.replace",
+      "method": "PUT",
+      "path": "/power/{resource_uuid}",
+      "go_method": "SetServerPowerState",
+      "body": "PowerSwitchStatus",
+      "response": "ResponseBaseModel",
+      "responses": {
+        "200": "ResponseBaseModel"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.power_console.list",
+      "method": "GET",
+      "path": "/power/{resource_uuid}/console",
+      "go_method": "GetServerConsole",
+      "body": null,
+      "response": "ResponseConsole",
+      "responses": {
+        "200": "ResponseConsole"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.power_console.create",
+      "method": "POST",
+      "path": "/power/{resource_uuid}/console",
+      "go_method": "SetServerConsoleResolution",
+      "body": "ConsoleResolution",
+      "response": "ResponseBaseModel",
+      "responses": {
+        "200": "ResponseBaseModel"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.power_reboot.create",
+      "method": "POST",
+      "path": "/power/{resource_uuid}/reboot",
+      "go_method": "RebootServer",
+      "body": "PowerReboot",
+      "response": "ResponseBaseModel",
+      "responses": {
+        "200": "ResponseBaseModel"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource.list",
+      "method": "GET",
+      "path": "/resource",
+      "go_method": "ListResources",
+      "body": null,
+      "response": "ResourceResultListModel",
+      "responses": {
+        "200": "ResourceResultListModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "",
+      "path_key": null,
+      "query": "ListResourcesQuery",
+      "parameters": [
+        {
+          "description": "If true, filters servers ready to connect to the block storage via the local network.",
+          "in": "query",
+          "name": "blockstorage_local_connect_ready",
+          "type": "boolean"
+        },
+        {
+          "description": "If true, filters servers ready to connect to blockstorage.",
+          "in": "query",
+          "name": "blockstorage_connect_ready",
+          "type": "boolean"
+        },
+        {
+          "description": "Resource tag identifier.",
+          "in": "query",
+          "name": "resource_tag_id",
+          "type": "integer"
+        },
+        {
+          "description": "Maximum number of results per pagination page.",
+          "in": "query",
+          "name": "limit",
+          "type": "integer"
+        },
+        {
+          "description": "Pagination page number.",
+          "in": "query",
+          "name": "page",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.resource_billing_info.list",
+      "method": "GET",
+      "path": "/resource/billing/info",
+      "go_method": "GetClientBillingInformation",
+      "body": null,
+      "response": "ClientBillingInfoResultModel",
+      "responses": {
+        "200": "ClientBillingInfoResultModel"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_billing.delete",
+      "method": "DELETE",
+      "path": "/resource/billing/{uuid}",
+      "go_method": "CancelResource",
+      "body": "ResourceCancelModel",
+      "response": "ResponseBaseModel",
+      "responses": {
+        "200": "ResponseBaseModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "resource",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_billing.update",
+      "method": "PATCH",
+      "path": "/resource/billing/{uuid}",
+      "go_method": "RestoreResource",
+      "body": "ResourceRestoreModel",
+      "response": "ResourceResultModel",
+      "responses": {
+        "200": "ResourceResultModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "resource",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_custom_billing.create",
+      "method": "POST",
+      "path": "/resource/custom/billing",
+      "go_method": "CreateServerCustomResource",
+      "body": "ResourceStartServerCustomModel",
+      "response": "ResourceListResultModel",
+      "responses": {
+        "200": "ResourceListResultModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_order.get",
+      "method": "GET",
+      "path": "/resource/order/{year}",
+      "go_method": "ListOrdersByYear",
+      "body": null,
+      "response": "ResourceOrdersStatResultListModel",
+      "responses": {
+        "200": "ResourceOrdersStatResultListModel"
+      },
+      "async_variant": false,
+      "kind": "year",
+      "path_key": "year",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_server_billing.create",
+      "method": "POST",
+      "path": "/resource/server/billing",
+      "go_method": "CreateServerResource",
+      "body": "ResourceStartServerModel",
+      "response": "ResourceListResultModel",
+      "responses": {
+        "200": "ResourceListResultModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_serverchip_billing.create",
+      "method": "POST",
+      "path": "/resource/serverchip/billing",
+      "go_method": "CreateServerchipResource",
+      "body": "ResourceStartServerchipModel",
+      "response": "ResourceListResultModel",
+      "responses": {
+        "200": "ResourceListResultModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "",
+      "path_key": null,
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_project.replace",
+      "method": "PUT",
+      "path": "/resource/{resource_uuid}/project",
+      "go_method": "UpdateResourceProject",
+      "body": "ResourceUpdateProjectModel",
+      "response": "ResourceResultModel",
+      "responses": {
+        "200": "ResourceResultModel"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_upgrade_custom.create",
+      "method": "POST",
+      "path": "/resource/{resource_uuid}/upgrade/custom",
+      "go_method": "CreateCustomResourceUpgrade",
+      "body": "ResourceCustomUpgradeAddModel",
+      "response": "ResourceUpgradeResultModel",
+      "responses": {
+        "200": "ResourceUpgradeResultModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_upgrade_prebuilt.create",
+      "method": "POST",
+      "path": "/resource/{resource_uuid}/upgrade/prebuilt",
+      "go_method": "CreatePrebuiltResourceUpgrade",
+      "body": "ResourcePrebuiltUpgradeRequestModel",
+      "response": "ResourceResultModel",
+      "responses": {
+        "200": "ResourceResultModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "resource",
+      "path_key": "resource_uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource.get",
+      "method": "GET",
+      "path": "/resource/{uuid}",
+      "go_method": "GetResourceDetails",
+      "body": null,
+      "response": "ResourceResultModel",
+      "responses": {
+        "200": "ResourceResultModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "resource",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource.replace",
+      "method": "PUT",
+      "path": "/resource/{uuid}",
+      "go_method": "UpdateResource",
+      "body": "ResourceUpdateModel",
+      "response": "ResourceResultModel",
+      "responses": {
+        "200": "ResourceResultModel",
+        "202": "ResponseBaseModel"
+      },
+      "async_variant": true,
+      "kind": "resource",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_info_custom.list",
+      "method": "GET",
+      "path": "/resource/{uuid}/info/custom",
+      "go_method": "GetCustomResourceInformation",
+      "body": null,
+      "response": "ResourceCustomInfoResultModel",
+      "responses": {
+        "200": "ResourceCustomInfoResultModel"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_info_server.list",
+      "method": "GET",
+      "path": "/resource/{uuid}/info/server",
+      "go_method": "GetServerResourceInformation",
+      "body": null,
+      "response": "ResourceServerInfoResultModel",
+      "responses": {
+        "200": "ResourceServerInfoResultModel"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.resource_info_serverchip.list",
+      "method": "GET",
+      "path": "/resource/{uuid}/info/serverchip",
+      "go_method": "GetServerchipResourceInformation",
+      "body": null,
+      "response": "ResourceServerInfoResultModel",
+      "responses": {
+        "200": "ResourceServerInfoResultModel"
+      },
+      "async_variant": false,
+      "kind": "resource",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.result.get",
+      "method": "GET",
+      "path": "/result/{uuid}",
+      "go_method": "GetTask",
+      "body": null,
+      "response": "ResponseBaseAsyncModel",
+      "responses": {
+        "200": "ResponseBaseAsyncModel",
+        "303": "ResponseBaseAsyncModel"
+      },
+      "async_variant": false,
+      "kind": "task",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.service.list",
+      "method": "GET",
+      "path": "/service",
+      "go_method": "ListServices",
+      "body": null,
+      "response": "ResponseServiceListResult",
+      "responses": {
+        "200": "ResponseServiceListResult"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": "ListServicesQuery",
+      "parameters": [
+        {
+          "description": "Indicates whether the service is hidden from view.",
+          "in": "query",
+          "name": "is_hidden",
+          "type": "boolean"
+        },
+        {
+          "default": "created",
+          "description": "Field to sort results by.",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "in": "query",
+          "name": "sort",
+          "type": "string"
+        },
+        {
+          "default": "asc",
+          "description": "Order direction for sorting results.",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "in": "query",
+          "name": "order",
+          "type": "string"
+        },
+        {
+          "description": "If true, only editable services will be returned.",
+          "in": "query",
+          "name": "is_editable",
+          "type": "boolean"
+        },
+        {
+          "description": "If true, only primary services will be returned.",
+          "in": "query",
+          "name": "is_primary",
+          "type": "boolean"
+        },
+        {
+          "description": "Billing state of the service.",
+          "in": "query",
+          "name": "state",
+          "type": "string"
+        },
+        {
+          "description": "Service model type.",
+          "enum": [
+            "default",
+            "colocation",
+            "server",
+            "serverchip",
+            "custom",
+            "rack",
+            "network",
+            "equipment",
+            "firewall",
+            "port",
+            "network_equipment",
+            "service",
+            "software"
+          ],
+          "in": "query",
+          "name": "model",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.service_custom.list",
+      "method": "GET",
+      "path": "/service/custom",
+      "go_method": "ListCustomServers",
+      "body": null,
+      "response": "ResponseServerCustomListResult",
+      "responses": {
+        "200": "ResponseServerCustomListResult"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": "ListCustomServersQuery",
+      "parameters": [
+        {
+          "description": "Indicates whether the service is hidden from view.",
+          "in": "query",
+          "name": "is_hidden",
+          "type": "boolean"
+        },
+        {
+          "default": "created",
+          "description": "Field to sort results by.",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "in": "query",
+          "name": "sort",
+          "type": "string"
+        },
+        {
+          "default": "asc",
+          "description": "Order direction for sorting results.",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "in": "query",
+          "name": "order",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.service_custom.get",
+      "method": "GET",
+      "path": "/service/custom/{uuid}",
+      "go_method": "GetCustomServerDetails",
+      "body": null,
+      "response": "ResponseServerCustomResult",
+      "responses": {
+        "200": "ResponseServerCustomResult"
+      },
+      "async_variant": false,
+      "kind": "service_custom",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.service_custom_billing.create",
+      "method": "POST",
+      "path": "/service/custom/{uuid}/billing",
+      "go_method": "CalculateCustomBilling",
+      "body": "ServiceCustomBillingCheckModel",
+      "response": "ResponseServiceBillingResult",
+      "responses": {
+        "200": "ResponseServiceBillingResult"
+      },
+      "async_variant": false,
+      "kind": "service_custom",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.service_custom_billing_upgrade.replace",
+      "method": "PUT",
+      "path": "/service/custom/{uuid}/billing/upgrade",
+      "go_method": "CalculateCustomUpgradeBilling",
+      "body": "ServiceCustomUpgradeBillingCheckModel",
+      "response": "ResponseServiceCustomUpgradeBillingResult",
+      "responses": {
+        "200": "ResponseServiceCustomUpgradeBillingResult"
+      },
+      "async_variant": false,
+      "kind": "service_custom",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.service_server.list",
+      "method": "GET",
+      "path": "/service/server",
+      "go_method": "ListServers",
+      "body": null,
+      "response": "ResponseServerListResult",
+      "responses": {
+        "200": "ResponseServerListResult"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": "ListServersQuery",
+      "parameters": [
+        {
+          "description": "Indicates whether the service is hidden from view.",
+          "in": "query",
+          "name": "is_hidden",
+          "type": "boolean"
+        },
+        {
+          "description": "Billing state of the service.",
+          "in": "query",
+          "name": "state",
+          "type": "string"
+        },
+        {
+          "default": "created",
+          "description": "Field to sort results by.",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "in": "query",
+          "name": "sort",
+          "type": "string"
+        },
+        {
+          "default": "asc",
+          "description": "Order direction for sorting results.",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "in": "query",
+          "name": "order",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.service_server.get",
+      "method": "GET",
+      "path": "/service/server/{uuid}",
+      "go_method": "GetServerDetails",
+      "body": null,
+      "response": "ResponseServerResult",
+      "responses": {
+        "200": "ResponseServerResult"
+      },
+      "async_variant": false,
+      "kind": "service_server",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.service_server_billing.create",
+      "method": "POST",
+      "path": "/service/server/{uuid}/billing",
+      "go_method": "CalculateServerBilling",
+      "body": "ServiceBillingCheckModel",
+      "response": "ResponseServiceBillingResult",
+      "responses": {
+        "200": "ResponseServiceBillingResult"
+      },
+      "async_variant": false,
+      "kind": "service_server",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.service_serverchip.list",
+      "method": "GET",
+      "path": "/service/serverchip",
+      "go_method": "ListChipcoreServers",
+      "body": null,
+      "response": "ResponseServerListResult",
+      "responses": {
+        "200": "ResponseServerListResult"
+      },
+      "async_variant": false,
+      "kind": "",
+      "path_key": null,
+      "query": "ListChipcoreServersQuery",
+      "parameters": [
+        {
+          "description": "Indicates whether the service is hidden from view.",
+          "in": "query",
+          "name": "is_hidden",
+          "type": "boolean"
+        },
+        {
+          "default": "created",
+          "description": "Field to sort results by.",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "in": "query",
+          "name": "sort",
+          "type": "string"
+        },
+        {
+          "default": "asc",
+          "description": "Order direction for sorting results.",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "in": "query",
+          "name": "order",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "operation_id": "dedicated.v2.service_serverchip.get",
+      "method": "GET",
+      "path": "/service/serverchip/{uuid}",
+      "go_method": "GetChipcoreServerDetails",
+      "body": null,
+      "response": "ResponseServerResult",
+      "responses": {
+        "200": "ResponseServerResult"
+      },
+      "async_variant": false,
+      "kind": "service_serverchip",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.service_serverchip_billing.create",
+      "method": "POST",
+      "path": "/service/serverchip/{uuid}/billing",
+      "go_method": "CalculateServerchipBilling",
+      "body": "ServiceBillingCheckModel",
+      "response": "ResponseServiceBillingResult",
+      "responses": {
+        "200": "ResponseServiceBillingResult"
+      },
+      "async_variant": false,
+      "kind": "service_serverchip",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    },
+    {
+      "operation_id": "dedicated.v2.service.get",
+      "method": "GET",
+      "path": "/service/{uuid}",
+      "go_method": "GetServiceDetails",
+      "body": null,
+      "response": "ResponseServiceResult",
+      "responses": {
+        "200": "ResponseServiceResult"
+      },
+      "async_variant": false,
+      "kind": "service",
+      "path_key": "uuid",
+      "query": null,
+      "parameters": []
+    }
+  ],
+  "query_schemas": {
+    "ListCustomOSImagesQuery": {
+      "type": "object",
+      "properties": {
+        "search": {
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "ListBootDeviceTemplatesQuery": {
+      "type": "object",
+      "properties": {
+        "service_uuid": {
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "ListOSTemplatesQuery": {
+      "type": "object",
+      "properties": {
+        "location_uuid": {
+          "type": "string"
+        },
+        "service_uuid": {
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "ListNewOSTemplatesQuery": {
+      "type": "object",
+      "properties": {
+        "location_uuid": {
+          "type": "string"
+        },
+        "service_uuid": {
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "ListResourcesQuery": {
+      "type": "object",
+      "properties": {
+        "blockstorage_local_connect_ready": {
+          "type": "boolean"
+        },
+        "blockstorage_connect_ready": {
+          "type": "boolean"
+        },
+        "resource_tag_id": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    },
+    "ListServicesQuery": {
+      "type": "object",
+      "properties": {
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "sort": {
+          "default": "created",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "type": "string"
+        },
+        "order": {
+          "default": "asc",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "type": "string"
+        },
+        "is_editable": {
+          "type": "boolean"
+        },
+        "is_primary": {
+          "type": "boolean"
+        },
+        "state": {
+          "type": "string"
+        },
+        "model": {
+          "enum": [
+            "default",
+            "colocation",
+            "server",
+            "serverchip",
+            "custom",
+            "rack",
+            "network",
+            "equipment",
+            "firewall",
+            "port",
+            "network_equipment",
+            "service",
+            "software"
+          ],
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "ListCustomServersQuery": {
+      "type": "object",
+      "properties": {
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "sort": {
+          "default": "created",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "type": "string"
+        },
+        "order": {
+          "default": "asc",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "ListServersQuery": {
+      "type": "object",
+      "properties": {
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "state": {
+          "type": "string"
+        },
+        "sort": {
+          "default": "created",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "type": "string"
+        },
+        "order": {
+          "default": "asc",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "ListChipcoreServersQuery": {
+      "type": "object",
+      "properties": {
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "sort": {
+          "default": "created",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "type": "string"
+        },
+        "order": {
+          "default": "asc",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "type": "string"
+        }
+      },
+      "required": []
+    }
+  }
+}

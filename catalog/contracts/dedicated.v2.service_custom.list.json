@@ -1,0 +1,131 @@
+{
+  "operation_id": "dedicated.v2.service_custom.list",
+  "effect": "read",
+  "endpoint": {
+    "generation": "v2",
+    "address": "https://api.selectel.ru/servers/v2",
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "native_endpoint_source": "https://github.com/selectel/dedicated-go/blob/18e638040bc796f17fe2c9b323d5051bfefce5f9/README.md",
+    "override_key": [
+      "dedicated",
+      "v2",
+      "exact account or project scope"
+    ],
+    "redirects": "never follow; documented task303 decoded in-place with Location ignored",
+    "base_path_disposition": "Published Swagger basePath /client/v2 is descriptive. Official URL table/native SDK select /servers/v2 as actual endpoint. Operation paths appended once."
+  },
+  "request": {
+    "method": "GET",
+    "path": "/service/custom",
+    "source_schema": "sources/dedicated.json#/paths/~1service~1custom/get",
+    "source_operation": {
+      "description": "Returns a list of custom server services.",
+      "operationId": "listCustomServers",
+      "parameters": [
+        {
+          "description": "Indicates whether the service is hidden from view.",
+          "in": "query",
+          "name": "is_hidden",
+          "type": "boolean"
+        },
+        {
+          "default": "created",
+          "description": "Field to sort results by.",
+          "enum": [
+            "created",
+            "name"
+          ],
+          "in": "query",
+          "name": "sort",
+          "type": "string"
+        },
+        {
+          "default": "asc",
+          "description": "Order direction for sorting results.",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "in": "query",
+          "name": "order",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of custom server services.",
+          "schema": {
+            "$ref": "#/definitions/ResponseServerCustomListResult"
+          }
+        }
+      },
+      "summary": "List custom servers",
+      "tags": [
+        "Services"
+      ]
+    },
+    "mapping_source": "dedicated/methods_generated.go, client.go, wire.go, query.go; generated from explicit pinned lifecycle selection",
+    "auth": "AccountClient uses account IAM; ProjectClient uses project IAM. Both explicitly documented; no fallback/reauth on403.",
+    "scope": "Immutable caller view; exact resource/service/location/plan/image/task ref kind, service/generation/scope/endpoint checked. Project fields cannot collide with immutable project scope except explicit UpdateResourceProject.",
+    "parameters": "Every source body/query/path field represented by generated DTOs. Nil omitted; explicit false/empty/zero values survive. Optional[T] distinguishes omitted/null/value for published nullable fields. Query and body errors go through core finalizer before credentials/I/O.",
+    "partitions": "Published literal-* and native typed map are explicit PartitionConfiguration variants; no untyped request payload or retry fallback. Native evidence pinned separately.",
+    "effect": "Billing calculations are safe reads despite POST/PUT and never treated as orders; resource billing/order calls mutate.",
+    "sensitive_input": "Private encoder reveals protected fields only when forming HTTP body; diagnostic/JSON formatting redacts."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "status_schemas": {
+      "200": "ResponseServerCustomListResult"
+    },
+    "schema_ref": "sources/dedicated.json#/paths/~1service~1custom/get/responses",
+    "dto_source": "dedicated/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py + internal/dedicatedgen/generate.py",
+    "field_mapping": "All properties and composed allOf fields preserved; integer/decimal numbers exact, no float64/currency-unit conversion. Provider epochs remain exact integers. Declared schemaless results remain ProtectedJSON. Nullable fields preserve null. Source literal wildcard fields are retained; partition native map has direct SDK proof.",
+    "union": "core.DoJSONStatus selects HTTP202 generic ResponseBaseModel independently from typed200/201 schema, including identical payloads. Reply.HTTPStatus reports exact status; typed data is not readiness. Task303 is decoded without following Location. DeleteCustomOSImage has a direct, non-envelope source DTO and does not require task_id.",
+    "resource_ref": "Extract trustworthy task ID before later decoding. Scan all resource result IDs before typed field decoding; preserve independent trusted IDs after malformed/duplicate/foreign rows. Existing GET/PUT/PATCH refs must match UUID; POST create may return new IDs. Source project_uuid checked for project view. Directory refs use same call scope/endpoint. Injected ref fields ignored. Existing exact caller-supplied parent chains are cloned/preserved; a present primary_uuid must match an existing parent. Without an explicitly scoped parent, primary_uuid remains metadata and no parent owner scope is inferred.",
+    "project_transfer": "Project-scoped explicit transfer retains original request ref/receipt and typed target project metadata, verifies target UUID/project, and does not adopt a new scope or retain a stale Data.Ref. Account-scoped refs remain account view identities.",
+    "sensitive_fields": [
+      "password",
+      "cloud_init_user_data",
+      "cloud_init_meta_data",
+      "user_script",
+      "user_ssh_key",
+      "userhostname",
+      "login",
+      "url",
+      "name",
+      "config_name",
+      "user_desc",
+      "description",
+      "maintenance_reason",
+      "task.result"
+    ]
+  },
+  "errors": {
+    "401": "unauthenticated; no implicit auth mode change",
+    "403": "permission_denied; no fallback",
+    "404": "not_found for reads, task absence is not completion or proof of nonapplication",
+    "mutation_rejected_statuses": [],
+    "5xx_or_transport_mutation": "unknown_outcome with original exact refs; mutation never replayed",
+    "malformed_accepted_response": "protocol_error with accepted Receipt and already trustworthy task/resource IDs",
+    "foreign_identity": "scope_mismatch; no foreign resource adoption",
+    "message": "Fixed SDK errors; raw provider error bodies discarded"
+  },
+  "retry": "Bounded safe reads/calculations; mutations one attempt, no replay",
+  "pagination": {
+    "mode": "One provider response/page only; query page/limit when documented, envelope total/page/limit retained; no short-page or item_count completion inference",
+    "bounds": "CallTimeout and MaxJSONBytes"
+  },
+  "wait": {
+    "goals": [],
+    "source": "catalog/evidence/dedicated-wait-sources.json",
+    "meaning": "Named provider fields only: stable power on/off, resource active/non-renewing, OS reinstall flag0 with no processing. Not application readiness, reboot-cycle proof, or proof of unknown mutation authorship.",
+    "limitations": "Task status is free-form and terminal states/result schemas are unconfirmed; exact GetTask is supported but no task terminal waiter. HTTP202 order without resource IDs cannot bind resource wait until exact IDs are supplied/returned; no name lookup/adoption."
+  },
+  "recovery": {
+    "availability": "Dedicated explicit handles observe only exact refs. Unknown receipts stay indeterminate and never replay. Root Resume not claimed."
+  },
+  "timeout": "Shared core call budget, bounded read retries and response bytes; operations.Handle WaitTimeout/PollInterval plus caller context."
+}

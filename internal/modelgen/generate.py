@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+ "dedicated": ("dedicated", {"PowerSwitchStatus":"PowerSwitchStatus","ResponseBaseModel":"ResponseBaseModel","ResponsePowerStatus":"ResponsePowerStatus","ResponseBaseAsyncModel":"TaskStatus"},None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -39,8 +40,9 @@ ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "cni": "CNI", 
 
 
 def name(text):
+    if text=="*" and globals().get("package")=="dedicated":return "Wildcard"
     words = re.sub(r"([a-z])([A-Z])", r"\1_\2", text).split("_")
-    return "".join(ACRONYMS.get(w.lower(), w[:1].upper() + w[1:]) for w in words if w)
+    return "".join(("UUID" if w.lower()=="uuid" and globals().get("package")=="dedicated" else ACRONYMS.get(w.lower(), w[:1].upper() + w[1:])) for w in words if w)
 
 
 for case, (family, initial, top_name) in CASES.items():
@@ -48,7 +50,17 @@ for case, (family, initial, top_name) in CASES.items():
     doc = json.loads((ROOT / "catalog/sources" / (family + ".json")).read_text())
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
-    resource_roots = set(roots)
+    if package == "dedicated":
+        scope=json.loads((ROOT / "catalog/evidence/dedicated-lifecycle-scope.json").read_text())
+        definitions.update(scope["query_schemas"])
+        for op in scope["operations"]:
+            for ref in [op["body"],op["response"],op["query"],*op["responses"].values()]:
+                if ref:roots.setdefault(ref,ref)
+        roots["ResourceDetailModel"]="ResourceDetailModel"
+        roots["PartitionsConfigModel"]="PartitionsConfigModel"
+        roots["PartitionsConfigNodeModel"]="PartitionsConfigNodeModel"
+        resource_roots={"ResourceDetailModel"}
+    resource_roots = {"ResourceDetailModel","ResourceModel","LocationModel","PricePlanBaseModel","ServerViewModel","ServerCustomViewModel","ServiceView","ServiceBase","CustomOSImageDetailModel","ActiveTask"} if package == "dedicated" else set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -56,6 +68,15 @@ for case, (family, initial, top_name) in CASES.items():
     imports = {"types": "github.com/festy23/selectel-sdk/types", "json": "encoding/json"}
 
     def resolve(schema):
+        if package == "dedicated" and "allOf" in schema:
+            merged={k:v for k,v in schema.items() if k!="allOf"}
+            merged["properties"]=dict(schema.get("properties",{}));merged["required"]=list(schema.get("required",[]))
+            for part in schema["allOf"]:
+                part=resolve(definitions[part["$ref"].split("/")[-1]] if "$ref" in part else part)
+                merged["properties"].update(part.get("properties",{}));merged["required"].extend(part.get("required",[]))
+                for key,value in part.items():
+                    if key not in {"properties","required"}:merged.setdefault(key,value)
+            return merged
         if "allOf" in schema:
             merged = {"properties": dict(schema.get("properties", {})), "required": list(schema.get("required", []))}
             for part in schema["allOf"]:
@@ -67,6 +88,7 @@ for case, (family, initial, top_name) in CASES.items():
         return schema
 
     def field_type(schema, type_name, field):
+        if package=="dedicated" and field=="partitions_config":return "PartitionConfiguration",False
         if "$ref" in schema:
             reference = schema["$ref"].split("/")[-1]
             if reference not in pending:
@@ -77,6 +99,12 @@ for case, (family, initial, top_name) in CASES.items():
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
         kind = schema.get("type")
+        if package == "dedicated" and isinstance(kind,list):
+            candidates=[k for k in kind if k!="null"]
+            if len(candidates)!=1:raise ValueError("Unconfirmed union "+str(kind))
+            return field_type(dict(schema,type=candidates[0]),type_name,field)
+        if package == "dedicated" and kind == "string" and (field in {"name","config_name","user_desc","url"} or any(token in field for token in ["password","user_data","meta_data","user_script","ssh_key","userhostname","login","description","reason","token","private_key","public_key"])):
+            return "types.ProtectedValue",False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
@@ -120,9 +148,12 @@ for case, (family, initial, top_name) in CASES.items():
         properties = schema["properties"]
         fields = []
         required = []
+        nullable = []
         for wire, value in sorted(properties.items()):
             field_name = name(wire)
             go_type, collection = field_type(value, type_name + field_name, wire)
+            if package == "dedicated" and isinstance(resolve(value).get("type"),list) and "null" in resolve(value)["type"]:
+                go_type="Optional["+go_type+"]";collection=False;nullable.append((field_name,wire,go_type))
             tag = "omitzero" if collection else "omitempty"
             if not collection:
                 go_type = "*" + go_type
@@ -138,6 +169,7 @@ for case, (family, initial, top_name) in CASES.items():
         for wire, value in sorted(properties.items()):
             field_name = name(wire)
             value = resolve(value)
+            if field_name in {x[0] for x in nullable}:continue
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
             if resolve(nested).get("properties"):
@@ -152,6 +184,7 @@ for case, (family, initial, top_name) in CASES.items():
         for wire, value in sorted(properties.items()):
             field_name = name(wire)
             value = resolve(value)
+            if field_name in {x[0] for x in nullable}:continue
             reference_name = value.get("$ref", "").split("/")[-1]
             nested = resolve(definitions.get(reference_name, value))
             if nested.get("format") == "date-time":
@@ -164,11 +197,14 @@ for case, (family, initial, top_name) in CASES.items():
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or package == "dedicated":
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'
-            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
+            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n"
+            for field_name,wire,go_type in nullable:
+                code += f'\tif raw,present:=fields["{wire}"];present {{n:=new({go_type});if json.Unmarshal(raw,n)!=nil {{return types.NewError(types.ProtocolError)}};value.{field_name}=n}}\n'
+            code += f"\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
         emitted[reference] = code
     filename = "v1_types_generated.go" if case == "registry_v1" else "types_generated.go"
     target = ROOT / package / filename
