@@ -11,6 +11,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "iamcredentials": ("users-and-roles", {
+        "models.CreateCredentialRequest": "CreateRequest",
+        "models.CreateCredentialResponse": "CreatedCredential",
+        "models.CredentialWithUserInfo": "SearchedCredential",
+        "models.SearchCredentialsResponse": "SearchGroup",
+        "models.Credential": "Credential",
+    }, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -49,6 +56,8 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
+    if package == "iamcredentials":
+        resource_roots = {"models.CreateCredentialResponse", "models.Credential", "models.CredentialWithUserInfo"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -70,7 +79,7 @@ for case, (family, initial, top_name) in CASES.items():
         if "$ref" in schema:
             reference = schema["$ref"].split("/")[-1]
             if reference not in pending:
-                pending[reference] = name(reference)
+                pending[reference] = name(reference.split(".")[-1] if package == "iamcredentials" else reference)
             referenced = resolve(definitions[reference])
             if referenced.get("properties"):
                 return pending[reference], False
@@ -78,6 +87,8 @@ for case, (family, initial, top_name) in CASES.items():
         schema = resolve(schema)
         kind = schema.get("type")
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
+            return "types.ProtectedValue", False
+        if package == "iamcredentials" and field == "secret_key":
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False

@@ -11,6 +11,7 @@ import (
 	"github.com/festy23/selectel-sdk/catalog"
 	"github.com/festy23/selectel-sdk/compute"
 	"github.com/festy23/selectel-sdk/databases"
+	"github.com/festy23/selectel-sdk/iamcredentials"
 	"github.com/festy23/selectel-sdk/internal/endpoints"
 	"github.com/festy23/selectel-sdk/inventory"
 	"github.com/festy23/selectel-sdk/logs"
@@ -175,4 +176,8 @@ func New(config Config) (*Client, error) {
 }
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
+}
+
+func (a AccountClient) S3Credentials() *iamcredentials.Client {
+	return iamcredentials.Bind(a.client.runtime, a.client.scope)
 }

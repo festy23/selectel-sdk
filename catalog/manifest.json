@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "b2ec86494ec9c8f769158817eee42a17cb9ac70890aaf52fc144cf9f7c198c2d",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "647d90282363b8023aebbe9d9a4b4ad33dd5406f900cd44440e898c6712c0817",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "f8ca400e45fbe6bc820de2e538f637e0d07b1e2f3e4c1f934551194cce0b6903",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "ba41c453e40112784eb42ef494f476ba03ccc5c06069145dc66c49653e5e4b9c",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +451,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "bd992e37270e8371195645205f768d63f49fafd2baebd2dda0daeaa218688735",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +517,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "ccf7583eb891a115c2b3cdf273aea4cc67995564dda0856c0768252b99472773",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +583,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "5c5c20425acf43de9172db9ce79f2971ea761db2abf5a7f4ec2c7da5b2bbcc1b",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +649,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "50ec72951ab8e151bdc704492c761a0a551ebb298e36efdb403b7437789d31a8",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2167,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "a49f5b64331ccded43beea747e690a662777959e2390625699320fe847921668",
       "level": "offline"
     },
     "wait_goals": []
@@ -4981,6 +4981,2542 @@
     "wait_goals": []
   },
   {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "a3ffccff42572c9c278239d4658b55eee38aadfe9316744cf72ebe761e93f586",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.groups.create",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "POST /iam/v1/groups",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "4b7c9350da4651a28251c93f0010cf6ec41dda69a0b053f61d8ec3ab2fcf5131",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.groups.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/groups/{group_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "180e347cc8fded6d923bc2900bc5995893843b3723e19a8f8a04b45051db011e",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.groups.get",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/groups/{group_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "afd7736f7a985ad54e686cc420b595e54c49c65811b5bdb2fa07a2b91f027b9e",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.groups.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/groups",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "2d5515e8450f65cfbb5fd74f0ef476257e16a4139d4b5eaea6b0ef9bab479f49",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.groups.update",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PATCH /iam/v1/groups/{group_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "add",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "818140fca9c69aefae93453e693103ac38d865d98e0163d056af2ef445b456b0",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1users/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1users/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.groups_users.add",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1users/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "groups_users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PUT /iam/v1/groups/{group_id}/users",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "remove",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "509c39e6590ae05476bfa333b17a8124681a652c0e65b6ded02ae4724856cc57",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1users/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1users/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.groups_users.remove",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1users/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "groups_users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/groups/{group_id}/users",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "382823e9c5906ca618fdd432cc555ba0074cf717d560dec04d53265be4f52889",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1roles/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1roles/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_groups_roles.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1roles/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_groups_roles",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/groups/{group_id}/roles",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "89026553ba64f59f1eaa7cff634a447781ddc7f707e0f937605af5ed0efe3ec0",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1roles/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1roles/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_groups_roles.replace",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1groups~1{group_id}~1roles/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_groups_roles",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PUT /iam/v1/groups/{group_id}/roles",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "2e06ccda89e6fbac0a684578c46855ebd40c5b6570899b0e04468c4eaacb8d52",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1projects/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1projects/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_projects.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1projects/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_projects",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/projects",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "a3c8ee99ab8569153ae9dbee97dba4c0ed8ed04c0491810203d055209d112616",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1roles~1{role_id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1roles~1{role_id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_roles.get",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1roles~1{role_id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_roles",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/roles/{role_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "8a73d64ed5b63d3d6a649e391fcf91b917269a3b6281cb9669d53070f6caf06d",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1roles/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1roles/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_roles.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1roles/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_roles",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/roles",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_service_users_credentials.create.json": "d77d65527ce8126e326b35e4ea4850e4dbf47c7068ec616e47797a04daffbbcb"
+    },
+    "contract_revision": "3ddc7b0d370f0de8f09f0ffd7b34e44579428c0a92c0abd009219d122bf30a03",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_service_users_credentials.create.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_service_users_credentials.create.json#/errors",
+    "go_method": "iamcredentials.ServiceUsers.Create",
+    "implementation": {
+      "binding": "iamcredentials.ServiceUsers.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials/post",
+    "input_type": "iamcredentials.CreateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_service_users_credentials.create",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials/post/responses",
+    "output_type": "iamcredentials.CreatedCredential",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_service_users_credentials.create.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_service_users_credentials.create.json#/request",
+    "resource": "iam_service_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_service_users_credentials.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "secret_key"
+    ],
+    "service": "iam",
+    "source": {
+      "operation_locator": "POST /iam/v1/service_users/{user_id}/credentials",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "3ddc7b0d370f0de8f09f0ffd7b34e44579428c0a92c0abd009219d122bf30a03",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "8e12244af8e16d9afa588e75a24547860e11576e1edb3958c7c899949f623f06",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_service_users_credentials.delete.json": "f2402e04ec01eb3b2f18bb3539b9a7d73105690ba3295ffa70af122444c830fa"
+    },
+    "contract_revision": "d3fba497176454ed82f65c0a2adf3dc88648e3c4d8e8c0f351798c98c8d64d69",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_service_users_credentials.delete.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_service_users_credentials.delete.json#/errors",
+    "go_method": "iamcredentials.ServiceUsers.Delete",
+    "implementation": {
+      "binding": "iamcredentials.ServiceUsers.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials~1{access_key}/delete",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_service_users_credentials.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials~1{access_key}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials~1{access_key}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_service_users_credentials.delete.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_service_users_credentials.delete.json#/request",
+    "resource": "iam_service_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_service_users_credentials.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/service_users/{user_id}/credentials/{access_key}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "d3fba497176454ed82f65c0a2adf3dc88648e3c4d8e8c0f351798c98c8d64d69",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "15f9abb9c1592361f7fca03b650e6a727695873a5c40847e7ebd1aab7129eb98",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_service_users_credentials.list.json": "e285cc0d53376201d5cc9f5ca51b1ed4e56876b01803cd7a3a3c714bf84eea30"
+    },
+    "contract_revision": "a7faf969729ddb8524b648e92c0a20e6df01be5e967f607cb6fb424a90b99c80",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_service_users_credentials.list.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_service_users_credentials.list.json#/errors",
+    "go_method": "iamcredentials.ServiceUsers.SearchPage",
+    "implementation": {
+      "binding": "iamcredentials.ServiceUsers.SearchPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1credentials/get",
+    "input_type": "iamcredentials.SearchFilters,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_service_users_credentials.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1credentials/get/responses",
+    "output_type": "pagination.Page[iamcredentials.SearchedCredential]",
+    "pagination_contract_ref": "contracts/iam.v1.iam_service_users_credentials.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1credentials/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_service_users_credentials.list.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_service_users_credentials.list.json#/request",
+    "resource": "iam_service_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_service_users_credentials.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/service_users/credentials",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "a7faf969729ddb8524b648e92c0a20e6df01be5e967f607cb6fb424a90b99c80",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "a301aebe4df1d7caba6db5b3bcc97e446b1b71b914882fbd92625afc5974ab5b",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list_c90ef3c3",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_service_users_credentials.list_c90ef3c3.json": "f8d252af4f2eb42e16ca90891f72d6a782571555e243f72db3cfda9a1b198b2d"
+    },
+    "contract_revision": "ade78aabc5cd727bdf842a5044b83221e7aec82e7e6393b5dc13346c05084b97",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_service_users_credentials.list_c90ef3c3.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_service_users_credentials.list_c90ef3c3.json#/errors",
+    "go_method": "iamcredentials.ServiceUsers.ListPage",
+    "implementation": {
+      "binding": "iamcredentials.ServiceUsers.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials/get",
+    "input_type": "types.ResourceRef,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_service_users_credentials.list_c90ef3c3",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials/get/responses",
+    "output_type": "pagination.Page[iamcredentials.Credential]",
+    "pagination_contract_ref": "contracts/iam.v1.iam_service_users_credentials.list_c90ef3c3.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1credentials/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_service_users_credentials.list_c90ef3c3.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_service_users_credentials.list_c90ef3c3.json#/request",
+    "resource": "iam_service_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_service_users_credentials.list_c90ef3c3.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/service_users/{user_id}/credentials",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "ade78aabc5cd727bdf842a5044b83221e7aec82e7e6393b5dc13346c05084b97",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "192b07ce8d394513098af5cbee5ef74166dab351ad436d0c4f2b6b2a9fa0e4a0",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "c5cf2b6f085cb5bd425f33bbc57c1aafaea5c1908faff3b9b299f5121831d70e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1roles/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1roles/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_service_users_roles.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1roles/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_service_users_roles",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/service_users/{user_id}/roles",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "13903ebc46a4a2877364aa2741cb3382ae0fd63b2f642d072cc20fb08978b410",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1roles/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1roles/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_service_users_roles.replace",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1roles/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_service_users_roles",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PUT /iam/v1/service_users/{user_id}/roles",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "58f1c4ff65e357a1d11044c63086145e76bd0047d66db0cdb789e0847da2673d",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1access/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1access/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_users_access.create",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1access/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_users_access",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "POST /iam/v1/users/{user_id}/access",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_credentials.create.json": "1e1b5c3ba233d8118c1ad6355fcbcfc258009f49b311da4955c2008a06647949"
+    },
+    "contract_revision": "9ba55b691e7cfb08a23942d297ff3f8c21cc79e91cb960e5e73c752b17f76901",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_credentials.create.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_credentials.create.json#/errors",
+    "go_method": "iamcredentials.Users.Create",
+    "implementation": {
+      "binding": "iamcredentials.Users.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials/post",
+    "input_type": "iamcredentials.CreateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_credentials.create",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials/post/responses",
+    "output_type": "iamcredentials.CreatedCredential",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_credentials.create.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_credentials.create.json#/request",
+    "resource": "iam_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_credentials.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "secret_key"
+    ],
+    "service": "iam",
+    "source": {
+      "operation_locator": "POST /iam/v1/users/{user_id}/credentials",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "9ba55b691e7cfb08a23942d297ff3f8c21cc79e91cb960e5e73c752b17f76901",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "5f794edbc45f73d987f1bf728741478ce8a07c9ef7262131546f00aa6a85bc33",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_credentials.delete.json": "86c52576c22ac25cdabaf8d2ddf704a7166588bd49ad8b89d02cf8140ad2a47a"
+    },
+    "contract_revision": "e7fc5e3a890b13ecbf55a1f5e2c59138f4b15690f77ec7b4db811eb66e03d646",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_credentials.delete.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_credentials.delete.json#/errors",
+    "go_method": "iamcredentials.Users.Delete",
+    "implementation": {
+      "binding": "iamcredentials.Users.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials~1{access_key}/delete",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_credentials.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials~1{access_key}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials~1{access_key}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_credentials.delete.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_credentials.delete.json#/request",
+    "resource": "iam_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_credentials.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/users/{user_id}/credentials/{access_key}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "e7fc5e3a890b13ecbf55a1f5e2c59138f4b15690f77ec7b4db811eb66e03d646",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "623c06cc8caa6cf71b669292c87ed62de4150641de7feb46f1050822cff48a94",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_credentials.get.json": "c125431312198e39f19f5e5843802f8ade352b5f033863e649557244aa037f56"
+    },
+    "contract_revision": "f57d9cb429eab8562dd416c3c48e000fb47445ae3dafa16203e9cd704d46fa71",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_credentials.get.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_credentials.get.json#/errors",
+    "go_method": "iamcredentials.Users.Get",
+    "implementation": {
+      "binding": "iamcredentials.Users.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials~1{access_key}/get",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_credentials.get",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials~1{access_key}/get/responses",
+    "output_type": "iamcredentials.Credential",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials~1{access_key}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_credentials.get.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_credentials.get.json#/request",
+    "resource": "iam_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_credentials.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/users/{user_id}/credentials/{access_key}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "f57d9cb429eab8562dd416c3c48e000fb47445ae3dafa16203e9cd704d46fa71",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "5f0b8f4fb84849dd2846ee0368e6fa607c10ae0c94562d5bfe577ae2abcb67aa",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_credentials.list.json": "5ac58347b717cfc523480cce117da135bf4d622ed56b4438c7c22c081b5590c0"
+    },
+    "contract_revision": "f7c8150f745a285e43571a0fc89329d0fd45d5aa2db4bc5b98381a3079fe57ef",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_credentials.list.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_credentials.list.json#/errors",
+    "go_method": "iamcredentials.Users.SearchPage",
+    "implementation": {
+      "binding": "iamcredentials.Users.SearchPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1credentials/get",
+    "input_type": "iamcredentials.SearchFilters,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_credentials.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1credentials/get/responses",
+    "output_type": "pagination.Page[iamcredentials.SearchedCredential]",
+    "pagination_contract_ref": "contracts/iam.v1.iam_users_credentials.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1credentials/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_credentials.list.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_credentials.list.json#/request",
+    "resource": "iam_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_credentials.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/users/credentials",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "f7c8150f745a285e43571a0fc89329d0fd45d5aa2db4bc5b98381a3079fe57ef",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "8d587c96ef6fa21ec0218db0e1c5d3760ec337c30164cdb6237b919e75699ad9",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list_2138ba42",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_credentials.list_2138ba42.json": "2a66aada1ec3aca9aa76175f98c6e54ed32c42bcf96bac90f2ee54056289b985"
+    },
+    "contract_revision": "70441d81bdeef0b67c497230f15b11606f43966b1cc64e679d7a378d56fa47f0",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_credentials.list_2138ba42.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_credentials.list_2138ba42.json#/errors",
+    "go_method": "iamcredentials.Users.ListPage",
+    "implementation": {
+      "binding": "iamcredentials.Users.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials/get",
+    "input_type": "types.ResourceRef,pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_credentials.list_2138ba42",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials/get/responses",
+    "output_type": "pagination.Page[iamcredentials.Credential]",
+    "pagination_contract_ref": "contracts/iam.v1.iam_users_credentials.list_2138ba42.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1credentials/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_credentials.list_2138ba42.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_credentials.list_2138ba42.json#/request",
+    "resource": "iam_users_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_credentials.list_2138ba42.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/users/{user_id}/credentials",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "70441d81bdeef0b67c497230f15b11606f43966b1cc64e679d7a378d56fa47f0",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "faf0e2eea0dd98b0286dffd1f0df1e4fbc2e99f3c30551a79b4ebc37d8843e63",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_me_credentials.create.json": "87f887f3acb171ce5790ca7d5c8a0a5a4c12659c60e1b9b6f3ce566f58af5d38"
+    },
+    "contract_revision": "e8d301e8453d87b1c1942b879f7abb59051ec2816b009e063141e064bac58b26",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_me_credentials.create.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_me_credentials.create.json#/errors",
+    "go_method": "iamcredentials.Current.Create",
+    "implementation": {
+      "binding": "iamcredentials.Current.Create",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials/post",
+    "input_type": "iamcredentials.CreateRequest",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_me_credentials.create",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials/post/responses",
+    "output_type": "iamcredentials.CreatedCredential",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_me_credentials.create.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_me_credentials.create.json#/request",
+    "resource": "iam_users_me_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_me_credentials.create.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [
+      "secret_key"
+    ],
+    "service": "iam",
+    "source": {
+      "operation_locator": "POST /iam/v1/users/me/credentials",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "e8d301e8453d87b1c1942b879f7abb59051ec2816b009e063141e064bac58b26",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "668fa0440ba626742fcdee28d0ec54232b26f3ce166ed00ea3bf586a728387ab",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_me_credentials.delete.json": "15c0f86965aacfd08f9d608a8395dd026e6232f3e3a7cb10a32eb2fd0e2d1869"
+    },
+    "contract_revision": "f104bea1727a52c7b03a0865f26fb96a8ff76322e97973c24564de62de7bd499",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_me_credentials.delete.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_me_credentials.delete.json#/errors",
+    "go_method": "iamcredentials.Current.Delete",
+    "implementation": {
+      "binding": "iamcredentials.Current.Delete",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials~1{access_key}/delete",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_me_credentials.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials~1{access_key}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials~1{access_key}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_me_credentials.delete.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_me_credentials.delete.json#/request",
+    "resource": "iam_users_me_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_me_credentials.delete.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/users/me/credentials/{access_key}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "f104bea1727a52c7b03a0865f26fb96a8ff76322e97973c24564de62de7bd499",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "07246d4eac00e21fa04a5fe4d00a14987bb588768960932c01004041258b0d31",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_me_credentials.get.json": "955a77dae62db308fc58381294f22be7c37e974fe4e1fc18e7376a73811cb1f0"
+    },
+    "contract_revision": "74f89dab0d7e10a3932baf203176c1f454662b5837882069ab5d453d91b9a679",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_me_credentials.get.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_me_credentials.get.json#/errors",
+    "go_method": "iamcredentials.Current.Get",
+    "implementation": {
+      "binding": "iamcredentials.Current.Get",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials~1{access_key}/get",
+    "input_type": "types.ResourceRef",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_me_credentials.get",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials~1{access_key}/get/responses",
+    "output_type": "iamcredentials.Credential",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials~1{access_key}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_me_credentials.get.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_me_credentials.get.json#/request",
+    "resource": "iam_users_me_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_me_credentials.get.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/users/me/credentials/{access_key}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "74f89dab0d7e10a3932baf203176c1f454662b5837882069ab5d453d91b9a679",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "00db6c52d84fa06e6aa682ecf33a7019ecd135260135382d729414e6b37db4fa",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/iam.v1.iam_users_me_credentials.list.json": "4e0482d5505723676b31e55722c21a7d089dd6dfcb1e5d39d463165547168548"
+    },
+    "contract_revision": "011f498b45f547b93abb721a036fa745f0f2714164eb552742119adbef4d290f",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/iam.v1.iam_users_me_credentials.list.json#/endpoint",
+    "error_binding_ref": "contracts/iam.v1.iam_users_me_credentials.list.json#/errors",
+    "go_method": "iamcredentials.Current.ListPage",
+    "implementation": {
+      "binding": "iamcredentials.Current.ListPage",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials/get",
+    "input_type": "pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "iam.v1.iam_users_me_credentials.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials/get/responses",
+    "output_type": "pagination.Page[iamcredentials.Credential]",
+    "pagination_contract_ref": "contracts/iam.v1.iam_users_me_credentials.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1me~1credentials/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/iam.v1.iam_users_me_credentials.list.json#/retry",
+    "request_binding_ref": "contracts/iam.v1.iam_users_me_credentials.list.json#/request",
+    "resource": "iam_users_me_credentials",
+    "response_binding_ref": "contracts/iam.v1.iam_users_me_credentials.list.json#/response",
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/users/me/credentials",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": "011f498b45f547b93abb721a036fa745f0f2714164eb552742119adbef4d290f",
+      "evidence_ref": "s3_credentials_management_test.go",
+      "implementation_revision": "469ffbac3b1bf2bb5bc3241824ce7907117d5dd37d56bbe5df9bfef5d87c569f",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "183dfc1178978fdb4f0c233bec239f6873e57f0906e0729ed3233d31c41d059e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1roles/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1roles/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_users_roles.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1roles/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_users_roles",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/users/{user_id}/roles",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "f6b49e185f42488301de34dc136aa1e1d347369791048ed482c0355ae37e4bc6",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1roles/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1roles/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.iam_users_roles.replace",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1roles/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "iam_users_roles",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PUT /iam/v1/users/{user_id}/roles",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "1327ab127c0c5c282043c32bfc25bd4d301ff6de179e23ccda8690eb1633cbbe",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1me/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1me/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.me.get",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1me/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "me",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/me",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "d66a86e182f1d0159e0c4699ad0d26281fd9e5f8523651674d7a5c5ee2329416",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1me~1groups/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1me~1groups/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.me_groups.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1me~1groups/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "me_groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/me/groups",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "2dbeedb6cbc88b040ed79911a84cad6d24e56f4d1c3cbf5ff9423a923954e661",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.service_users.create",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "POST /iam/v1/service_users",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "ec20ef27a7b7620abc28784454e9fde67f2f132cd184d5359534588c0486e389",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.service_users.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/service_users/{user_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "1b278490633044785eb3beef5a83812408effbd7eff0bec767eb0925765cb4a4",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.service_users.get",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/service_users/{user_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "1777c62026e91444ef0e1e9e77f446e8d428cf3dd413634f95da69cc8241bc19",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.service_users.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/service_users",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "537fd71fa61a7b9780cfbc540883d053ff45696e5672ca701167204fca1c8195",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.service_users.update",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PATCH /iam/v1/service_users/{user_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "add",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "ad753aaa926afe110bc6e606b933b4d330ea9ba284a1942c9ac0bd451c8d90c5",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1groups/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1groups/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.service_users_groups.add",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1groups/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_users_groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PUT /iam/v1/service_users/{user_id}/groups",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "remove",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "726a7d3caa578cee93e9b892698f3acc35c1517b19aaa423464e17e8adbb7f27",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1groups/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1groups/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.service_users_groups.remove",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1service_users~1{user_id}~1groups/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_users_groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/service_users/{user_id}/groups",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "934faebb8f3d171f009db1cf3e1c95373b775d6e267ae01078f4decfef84faae",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.users.create",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "POST /iam/v1/users",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "7110a74b43832537575eef3460d48fe7fbec71bba3a2031fd0308a4ec60f71aa",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.users.delete",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/users/{user_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "d01dfd01886a343e997973ea1b5ae10280b4c860ffdf3088560eeb73037490f9",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.users.get",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/users/{user_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "18e56ad5a32f8525cb3fbd7b8f49225638eac531bce902cef372ac0385639c3d",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.users.list",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "GET /iam/v1/users",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "resend_invite",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "bd2c2dfe17f32815399bd504ff9ff919182cffd705e47ac695d4425296bb902c",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1resend_invite/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1resend_invite/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.users.resend_invite",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1resend_invite/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "POST /iam/v1/users/{user_id}/resend_invite",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "65a05ffde17325fa2a5248f66c284cf0881deb1c90f5070b19b6dee8c372b107",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.users.update",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "users",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PATCH /iam/v1/users/{user_id}",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "add",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "73be293aaef18acdf9e371ebfd03e9fa47ffef1598acb51c4407a4caf7e1083e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1groups/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1groups/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.users_groups.add",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1groups/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "users_groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "PUT /iam/v1/users/{user_id}/groups",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "remove",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_account"
+    },
+    "availability": "documented",
+    "contract_revision": "f9b3d4ea3e7a0beee364fe0f2874a9ff9e002dd8be6fdf9bf67d3d679d0e4c9e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1groups/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1groups/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "iam.v1.users_groups.remove",
+    "output_schema_ref": "sources/users-and-roles.json#/paths/~1iam~1v1~1users~1{user_id}~1groups/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "users_groups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "iam",
+    "source": {
+      "operation_locator": "DELETE /iam/v1/users/{user_id}/groups",
+      "revision": "fa530e79966e6ccc87cdf4badce280e67142186bb0483143b26c35d4bb931fa0",
+      "uri": "https://docs.selectel.ru/api/users-and-roles.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
     "action": "filter",
     "api_generation": "cloudwatch",
     "auth": {
@@ -5044,7 +7580,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "22d57efb9e1163d7b92a481047f02fcb4f19a75972cf284ebea89cf73da5fb5e",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +7650,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "e764c824eb6dcfde319453012ee92880fcdc8ee6aa134e766a354c58380befb1",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +7717,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "e08994be99f9b894bf900962783b70c5dbf38a48030ff993aeca6ee2ca1817b1",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +7784,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "53bf041f79a0f274462235f6c69e2b18f08054409ac41897742fdf02f2572677",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +7850,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "10dacbb41650a40e8923e9b9c9ba45f4a892b3e8215dab5851111d04f2e0c5a3",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +7916,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "741810e075a7fc7309f487a05523c036a86b0cbb3891f91553304094f8230fa7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +7981,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "dcdca36a37615b62671dbbcd899660543ad801913eea44d57e6edb58346aba84",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +8038,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "589b6e81186baae52836964815b105e646ea8e9aa1b3c5f95e3b9624de024aaa",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +8097,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "23b5018000764904c26f2c00f6cf5013a909fe9adc722cc7b0edcd31ed854c02",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +8156,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "9330622462412cb9dc6f79bda40ceff48899135cd08963f9cb71f687501172b9",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +8217,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "c6d49133553af9d9bce04aee16cdfbdab86ebba1de4bbdcd9690b2b0e9cf1ed1",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +8276,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "aec9a3f991076d37c669565b6272253c75be3ea527a07b58fa2dd85b80882207",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +8335,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "6a6e5e59978d8c6a632a4713e6a3f5be981407960a3754c8f031dde2f1b900db",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +8396,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "f80bc53c2e4012e84ddf9c53d9e189257d594b9126950a342690e87c3fbd817d",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +8457,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "c8dfafa6a394ecbc14ab08779417a463ff777b87e357b0df3753e65ce653584d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +8514,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "8445686e426721288d3092898c1fb1e86299e4fcdf716265ef1e4e474da741fa",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +8571,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "fca9e4d4fb0e0b5ac29677eeae95583bda097de0852d2647c0387cfef1d64f11",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +8632,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "3a78ca12c7823b7e645b77f044b19a9dd6143ee675e81da6edc0228e08e5acca",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +8691,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "d4e18d8a813dd15143b912936d0340c69c3568830b78f32318c1000aa160bb11",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +8748,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "13a56ab45d2029206217311277b4321e8dbcf12ad663c784ba620cbeba04c1a4",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +8807,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "19bc6e67152b9001294ab9d2c8da6e8617668263ae09fe070aff25e8e7c006ee",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +8866,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "c8ac60d1d8e7719236fa038a23ed9fd85a23c1217abf5477dbdfffd151e3ddd0",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +8923,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "6b6e6c53cfc76882033e15d5b0351fd5f2a6b547c23c2a59b0dc2cea3fe95f5e",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +8980,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "362ec4fd7653014ae45920a70f141ebfd8c1e1a3488253c8e2ed4fcd83a75730",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +9039,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "3d078ac17cf7eb8effed93acb2b176825a7aed80fc99ea63e3c3bb432fe93d6e",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +9096,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "1ef02220f289632f13a486cb9a0b5eb456642c8eb6d24813dbf1cdc8d3243505",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +9153,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "5c3741c6f0fb28d3d35ba6f68298930b2ffd0384996dcb4f1061edb96610b234",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +9210,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "a2e0bb4c9096c40d809307ca9b824938fb4aca2d911c8a9fb147abd072086558",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +9267,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "0981710f6f24b87d20c3a18650ab2df0c97a023263f662bf07dd77909f9d8480",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +9324,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "94c4115ea5fe61851dda8f186613746861fa21c222815dd87a7174090afdd243",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +9386,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "d3aec8a91f00641dd58f7830547a56f3bdeb9be55efabade1bb0612ab685c784",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +9448,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "2106a5ecc4196e484fb961c714c60bdfc7496927c862926424aefbd6f244d730",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +9509,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "2b9d35b5d476c78ab8467a62c7c6e49c2342f25fdb2d25153096ce9fa34eff1b",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +9570,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "bdff50a16f8e579a00b36edd07ef4df51a75b30d615398fee5dc2a08dd923ed3",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +9629,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "20d5d483ac5c958c31621278fd698e2f3897ec0d45fb4d2d66f6d2697386f699",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +9686,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "b72089853a2eaf1b2548f167bcbc79446d62c4c242b4d96a21f7809a6e9d8a1f",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +10431,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "edbc5c44fc3b6c6280f5a4d520e4694ff5a02b86b44e53c2372593d42fe25150",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +10487,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "593a2c44e4566059dcf1468b1552d70f2a82ea7755e19d29b48b53262636d2ac",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +10543,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "63b37455245fcb96a421bed80227d55cb799a7142e4e083eccca9ce16f37418c",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +10599,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "ad2a3ec03c1657c328097e59ad71f6dce660d112c1210bf26f71106878f0b642",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +10655,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "0cc6d72d8231ae8ba071b5729c22e2d15a59cd771bd17f0747c559115a2a5c9d",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +11083,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "ab532df639febf144529c651a29bdd7f923b5858f7a51358dbe78f3e3d7af8d8",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +11140,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "c09d6b7aaeadbd5b6f45ddc95b5187ebd1ec1dcdb2a65e0adc0eef08a802b82d",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +11197,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "228f59193a5d58104daf55a53c1f56f440c124985819461887c53fc7748d6eba",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +11254,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "7098747d3adea6e42a4e5236ee5773dda1e2f8195dd74deea08a2032c3f107a2",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +12121,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "a801aee31e03f22a7f75e3293a54c757cf4066e258c0feb79128b76759d12090",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +12720,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "f43e6f20d6389c9fe63706896ff957cf5f7665a66935d735e3620111fd4ef3d0",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +12777,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "0495b68aaa58e9fa4559f38544dae5317b5d976fceed705185f2feedb6837e54",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +12836,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "1ef3f21cffa01562eab87e0d8f6ea356408e41eb630b27940a1201ad3ebf4a0b",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +12893,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "da7ca806f31a5565ee91de9bb0bfc5543e2ba0093fe5fe7c51f2793dfd2edbcb",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +12950,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "b0f88a69ef08d1487fe49f9ba1a928a728bc3d5b7da6d02d50a4fcb63b9a6bd7",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +13009,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "d7dd143f4a7b68ec3b217011757a680c181f30a68905242b5eb7a5bea1638592",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +13068,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "0fb34b7d066fd1139f79fd9c0757a55eee7493be11d036d1bf8cb2a2ea90873e",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +13125,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "a8efe621c70b64a61b89d90e01ffad43678427ddf2fa4309238cba73eef118b8",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +13182,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "97435eb988705516650f162ed86095398d0ecdc46829454db7fd4f6b3ecefaea",
       "level": "offline"
     },
     "wait_goals": []

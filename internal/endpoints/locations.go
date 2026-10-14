@@ -43,6 +43,12 @@ var addresses = map[string]map[string]string{
 }
 
 func Resolve(service, generation string, scope types.Scope) (types.EndpointBinding, error) {
+	if service == "iam" && generation == "v1" {
+		if scope.ProjectID != "" || scope.Region != "" || scope.Pool != "" {
+			return types.EndpointBinding{}, types.NewError(types.ScopeMismatch)
+		}
+		return types.EndpointBinding{ID: "selectel-iam", URL: "https://api.selectel.ru", Scope: scope, APIGeneration: generation, Audience: "selectel"}, nil
+	}
 	key := service + "." + generation
 	u := addresses[key][scope.Pool]
 	if u == "" {

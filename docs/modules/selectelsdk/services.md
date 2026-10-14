@@ -203,3 +203,9 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+## IAM S3 credential management
+
+The account-scoped control-plane facade and explicit credential-change steps
+follow [s3-credentials.md](s3-credentials.md); they are separate from S3 transfers
+and runtime CredentialSource loading.
