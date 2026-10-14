@@ -39,6 +39,9 @@ type Operation struct {
 	ErrorCodes                             map[int]types.Code
 	Headers                                http.Header
 	SigV4Service, ErrorProtocol            string
+	// EndpointVersionPrefix is a compiled protocol prefix. Aliases preserve published base suffixes.
+	EndpointVersionPrefix  string
+	EndpointVersionAliases []string
 }
 type Request struct {
 	Scope              types.Scope
@@ -72,6 +75,13 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			return out, idErr
 		}
 		out.Receipt = &types.Receipt{SchemaVersion: 1, CallID: id, OperationID: op.ID, Scope: in.Scope, Outcome: types.NotSent, Recovery: "unavailable", ResourceRefs: []types.ResourceRef{}}
+		// Local validation failures still return a revision-bound terminal receipt.
+		if r != nil {
+			if capability, e := r.catalog.Describe(op.ID); e == nil {
+				out.Receipt.ContractRevision = capability.ContractRevision
+			}
+		}
+
 	}
 	defer func() {
 		out.Metadata.ObservedAt = time.Now().UTC()
@@ -201,7 +211,17 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		if call.Err() != nil {
 			return out, types.ContextError(call.Err())
 		}
-		u, parseErr := url.Parse(strings.TrimRight(endpoint.URL, "/") + in.Path)
+		path := in.Path
+		if op.EndpointVersionPrefix != "" && strings.HasPrefix(path, op.EndpointVersionPrefix+"/") {
+			suffixes := append([]string{op.EndpointVersionPrefix}, op.EndpointVersionAliases...)
+			for _, prefix := range suffixes {
+				if strings.HasSuffix(strings.TrimRight(endpoint.URL, "/"), prefix) {
+					path = strings.TrimPrefix(path, op.EndpointVersionPrefix)
+					break
+				}
+			}
+		}
+		u, parseErr := url.Parse(strings.TrimRight(endpoint.URL, "/") + path)
 		if parseErr != nil {
 			return out, types.NewError(types.InvalidArgument)
 		}

@@ -1,0 +1,34 @@
+{
+  "operation_id": "loadbalancers.v2.pools.create",
+  "source_revision": "4486d2416f600df15df1b5c98a676f898e2b1d42",
+  "endpoint": "Exact IAM public load-balancer endpoint selected by pool including /v2; no hostname inference",
+  "auth": "iam_project",
+  "request": {
+    "method": "POST",
+    "path": "/v2/lbaas/pools",
+    "DTO": "PoolCreate",
+    "scope": "caller authorization view; provider project_id remains owner metadata; every exact resource/parent request pins original endpoint ID+URL+scope+generation before target I/O",
+    "variants": "TLS/L7 request variants excluded to #41, never unsupported; core optional fields preserve presence; parent IDs injected from exact refs; member batch additive_only explicit, Replace convenience forces false"
+  },
+  "response": {
+    "statuses": [
+      201
+    ],
+    "DTO": "Pool",
+    "mapping": "identity and required parent relationships validated before remaining DTO; trustworthy refs retained on acknowledged malformed payload, invalid/foreign identity never adopted; source-bound generated core/full-inline model; provisioning and operating states independent; precise Integer/Number, nullable member monitoring fields, raw provider timestamp strings; ref from wire ignored"
+  },
+  "errors": {
+    "400": "provider_error",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found in caller view",
+    "409": "conflict",
+    "429": "rate_limited",
+    "malformed_success": "protocol_error with accepted receipt retained"
+  },
+  "retry": "bounded safe reads; mutation no replay; documented400/401/403/404/409 rejected; other unexpected statuses including429 remain unknown with sanitized cause",
+  "wait": "*.provisioned ACTIVE configuration (not operating ONLINE); *.absent exact404 only; no causal proof of failover or batch members",
+  "recovery": "known receipt conclusive without I/O, including no-ID; unknown exact ref only, indeterminate; no replay, name search or adoption",
+  "pagination": "limit/marker/page_reverse and strict same-endpoint next links, bounded prefix/cursor and filter/projection selectors; projected missing identity yields no ResourceRef",
+  "shared_provenance": "receipt-only recovery/revision-before-validation from reviewed379458e; compiled endpoint prefix from reviewedafaa6e9 extended with statically bound /v2.0 alias from pinned Octavia root_controller"
+}

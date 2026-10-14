@@ -1,0 +1,337 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Selectel Octavia lifecycle confirmed subset",
+    "version": "2.26"
+  },
+  "x-source-uri": "https://github.com/openstack/octavia/tree/4486d2416f600df15df1b5c98a676f898e2b1d42",
+  "x-source-revision": "4486d2416f600df15df1b5c98a676f898e2b1d42",
+  "x-sdk-revision": "0e61a3a3fc1f72a396a4e86785dd8b633d4c55fb",
+  "x-secondary-sources": [
+    "https://docs.selectel.ru/en/cloud-servers/tools/openstack-cli/about-openstack-cli/",
+    "https://docs.selectel.ru/en/terraform/openstack-provider-reference/lbaas-octavia/resources/openstack_lb_loadbalancer_v2/",
+    "https://docs.selectel.ru/en/terraform/openstack-provider-reference/lbaas-octavia/resources/openstack_lb_listener_v2/",
+    "https://docs.selectel.ru/en/terraform/openstack-provider-reference/lbaas-octavia/resources/openstack_lb_pool_v2/",
+    "https://docs.selectel.ru/en/cloud-servers/load-balancers/about-load-balancers/",
+    "https://docs.selectel.ru/en/cloud-servers/load-balancers/manage/failover/",
+    "https://github.com/gophercloud/gophercloud/tree/v2.13.0/openstack/loadbalancer/v2"
+  ],
+  "x-local-snapshots": {
+    "README.md": "edabdc739ea5c7ac4f924a667334474390bf8fa4368edfbc3a8f0347ff959fc6",
+    "common-constants.py.txt": "333d2122d695c4570d8480437665274b32065796e89d61a9616a2ca5e915a035",
+    "general.inc.txt": "ecc26a41dc492b868a8a86d03229bd121cbbaaa53020118c72f583e8663bed41",
+    "healthmonitor.inc.txt": "4722c5bcb3eff42083ec85f7643eaeab9c330992c8d7066c5b4814d3391a751e",
+    "listener.inc.txt": "57772b92eca289b71be77d6fbc974c0cf9a7fe688b65d94137d72d42adbfa957",
+    "listeners_requests.go.txt": "5fa2b5ab856ad0eb2db22cc94df452a17873657dc6dd563599bc16f6cb3b1a21",
+    "listeners_results.go.txt": "db2ac01ba652893ca870bd473671ccf3b3c3a9c02266fdf3cf0206e3684a6f21",
+    "listeners_urls.go.txt": "c4c01c7b16a1b0c6320d6d8794145310709ed01197c7c2ad2411321a592207a3",
+    "load_balancer.py.txt": "45e58cfb822443988989834b3d0de52e42a253d2f625657a466712efe59a6bd7",
+    "loadbalancer.inc.txt": "2afefca10f2fcf112e4c6d9298a772ce322c51da92125ece1fa0c8c324206621",
+    "loadbalancers_requests.go.txt": "32f893a65673b2b5c69e9fca5a7e04d82dcc9317d8869629421f2338a9785786",
+    "loadbalancers_results.go.txt": "47e5efcc3b7b6ff8db3c36e5362c2da6709ea5e3b170089fd0457215ddeda933",
+    "loadbalancers_urls.go.txt": "b9ddd3356d45026123dac7fa53f22d55000a9a283065727b315efb690594a497",
+    "member.inc.txt": "e4f611c3eb608cc446c275b51014dd27f26f75f44e41227ffe66816cab3b5cfc",
+    "monitors_requests.go.txt": "9f2af51cc7d87adf3cabde89b44bff48d2b96181848884204128a65880e5ce06",
+    "monitors_results.go.txt": "eaacdf2d04e45e8fec527a6c2ceafd57ca587cc0efa2ef4ac8e41764a5dc0b21",
+    "monitors_urls.go.txt": "1fb15421795b315e6b10e76f7db23cdb84ee897488571161dad35086b34fba3a",
+    "octavia-listener.py.txt": "c8939dd268c5831ec24dc7446e50d7898a4adb6303ad159a6cf10980591a89ee",
+    "octavia-load-balancer.py.txt": "c9bfa705357947514f2e42db06f1c7b2c89302b166d2415293defe6afc97349b",
+    "octavia-member.py.txt": "a2339a1c552278ea2187facea73f5fde3072188048c634eb1595b9229e7f7d61",
+    "octavia-monitor.py.txt": "2ef7898b968f3554fd8168aee34b001cf54fa6e1d73e550481ee04621a253a19",
+    "octavia-pool.py.txt": "53d8cee93506096570df002bfa959478e8cf5422a0ee319d3d60ed6305d7b5c5",
+    "parameters.yaml.txt": "95d6e678176b2405c3c97d1295137cef1f4f8a4536563f7ae5f481736786a76e",
+    "pool.inc.txt": "f20592c7f5ff856c6eff0e72499b58d2c0797a34699e6fc6a1619a872c791b3b",
+    "pools_requests.go.txt": "feea779bf1767d82a13686cbecd9f5278ad8cd12c30416f44ef1acdd464eadfd",
+    "pools_results.go.txt": "14c6ea3b0715f63c5858524ae7e7d66fe60b3104a3c1d4c98cc6cbe68902ad16",
+    "pools_urls.go.txt": "9b36f15be824e9aabb57dade5fb8fecac2feb94fe04468976795b42b82cb8a2f",
+    "root_controller.py.txt": "aeb5420e3e9e724b703e373ec9ddfda1a539fd8448d0cd4113d7d134326c5290"
+  },
+  "paths": {
+    "/v2/lbaas/loadbalancers": {
+      "post": {
+        "operationId": "loadbalancers.v2.loadbalancers.create",
+        "responses": {
+          "201": {
+            "description": "LoadBalancer"
+          }
+        }
+      },
+      "get": {
+        "operationId": "loadbalancers.v2.loadbalancers.list",
+        "responses": {
+          "200": {
+            "description": "LoadBalancer"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/loadbalancers/{loadbalancer_id}": {
+      "get": {
+        "operationId": "loadbalancers.v2.loadbalancers.get",
+        "responses": {
+          "200": {
+            "description": "LoadBalancer"
+          }
+        }
+      },
+      "put": {
+        "operationId": "loadbalancers.v2.loadbalancers.update",
+        "responses": {
+          "200": {
+            "description": "LoadBalancer"
+          },
+          "202": {
+            "description": "LoadBalancer"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "loadbalancers.v2.loadbalancers.delete",
+        "responses": {
+          "204": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/listeners": {
+      "post": {
+        "operationId": "loadbalancers.v2.listeners.create",
+        "responses": {
+          "201": {
+            "description": "Listener"
+          }
+        }
+      },
+      "get": {
+        "operationId": "loadbalancers.v2.listeners.list",
+        "responses": {
+          "200": {
+            "description": "Listener"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/listeners/{listener_id}": {
+      "get": {
+        "operationId": "loadbalancers.v2.listeners.get",
+        "responses": {
+          "200": {
+            "description": "Listener"
+          }
+        }
+      },
+      "put": {
+        "operationId": "loadbalancers.v2.listeners.update",
+        "responses": {
+          "200": {
+            "description": "Listener"
+          },
+          "202": {
+            "description": "Listener"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "loadbalancers.v2.listeners.delete",
+        "responses": {
+          "204": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/pools": {
+      "post": {
+        "operationId": "loadbalancers.v2.pools.create",
+        "responses": {
+          "201": {
+            "description": "Pool"
+          }
+        }
+      },
+      "get": {
+        "operationId": "loadbalancers.v2.pools.list",
+        "responses": {
+          "200": {
+            "description": "Pool"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/pools/{pool_id}": {
+      "get": {
+        "operationId": "loadbalancers.v2.pools.get",
+        "responses": {
+          "200": {
+            "description": "Pool"
+          }
+        }
+      },
+      "put": {
+        "operationId": "loadbalancers.v2.pools.update",
+        "responses": {
+          "200": {
+            "description": "Pool"
+          },
+          "202": {
+            "description": "Pool"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "loadbalancers.v2.pools.delete",
+        "responses": {
+          "204": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/healthmonitors": {
+      "post": {
+        "operationId": "loadbalancers.v2.healthmonitors.create",
+        "responses": {
+          "201": {
+            "description": "Monitor"
+          }
+        }
+      },
+      "get": {
+        "operationId": "loadbalancers.v2.healthmonitors.list",
+        "responses": {
+          "200": {
+            "description": "Monitor"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/healthmonitors/{healthmonitor_id}": {
+      "get": {
+        "operationId": "loadbalancers.v2.healthmonitors.get",
+        "responses": {
+          "200": {
+            "description": "Monitor"
+          }
+        }
+      },
+      "put": {
+        "operationId": "loadbalancers.v2.healthmonitors.update",
+        "responses": {
+          "200": {
+            "description": "Monitor"
+          },
+          "202": {
+            "description": "Monitor"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "loadbalancers.v2.healthmonitors.delete",
+        "responses": {
+          "204": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/pools/{pool_id}/members": {
+      "post": {
+        "operationId": "loadbalancers.v2.members.create",
+        "responses": {
+          "201": {
+            "description": "Member"
+          }
+        }
+      },
+      "get": {
+        "operationId": "loadbalancers.v2.members.list",
+        "responses": {
+          "200": {
+            "description": "Member"
+          }
+        }
+      },
+      "put": {
+        "operationId": "loadbalancers.v2.members.batch_update",
+        "responses": {
+          "202": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/pools/{pool_id}/members/{member_id}": {
+      "get": {
+        "operationId": "loadbalancers.v2.members.get",
+        "responses": {
+          "200": {
+            "description": "Member"
+          }
+        }
+      },
+      "put": {
+        "operationId": "loadbalancers.v2.members.update",
+        "responses": {
+          "200": {
+            "description": "Member"
+          },
+          "201": {
+            "description": "Member"
+          },
+          "202": {
+            "description": "Member"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "loadbalancers.v2.members.delete",
+        "responses": {
+          "204": {
+            "description": "Empty"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/loadbalancers/{loadbalancer_id}/stats": {
+      "get": {
+        "operationId": "loadbalancers.v2.loadbalancers.statistics",
+        "responses": {
+          "200": {
+            "description": "LoadBalancerStatisticsResponse"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/loadbalancers/{loadbalancer_id}/status": {
+      "get": {
+        "operationId": "loadbalancers.v2.loadbalancers.statuses",
+        "responses": {
+          "200": {
+            "description": "StatusResponse"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/listeners/{listener_id}/stats": {
+      "get": {
+        "operationId": "loadbalancers.v2.listeners.statistics",
+        "responses": {
+          "200": {
+            "description": "LoadBalancerStatisticsResponse"
+          }
+        }
+      }
+    },
+    "/v2/lbaas/loadbalancers/{loadbalancer_id}/failover": {
+      "put": {
+        "operationId": "loadbalancers.v2.loadbalancers.failover",
+        "responses": {
+          "202": {
+            "description": "Empty"
+          }
+        }
+      }
+    }
+  }
+}
