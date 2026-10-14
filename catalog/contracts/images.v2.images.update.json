@@ -1,0 +1,42 @@
+{
+  "operation_id": "images.v2.images.update",
+  "endpoint": "regional project IAM image endpoint root or /v2 suffix; compiled prefix de-dup preserves proxy and original exact saved endpoint",
+  "source_revision": "ace640b1fd6a1bc13cf3c8d7be7a77c9777a3362",
+  "auth": "iam_project",
+  "request": {
+    "method": "PATCH",
+    "path": "/v2/images/{image_id}",
+    "DTO": "[]Patch",
+    "patch": "add/replace/remove typed values at single decoded JSON pointer property; reject owner and readonly fields; property protection remains provider policy",
+    "scope": "caller auth view, owner is metadata, never adopt owner scope",
+    "list": "all pinned SDK filters plus source base comparisons, custom-property filters, created_at/updated_at and legacy sort_key/sort_dir; explicit empty tag remains tag= per pinned server (native helper omits it); forbid pagination/control override via custom property keys",
+    "create": "all SDK fields; API confirmed explicit nullable name/container/disk formats and explicit zero/false/empty arrays; flatten protected string custom properties"
+  },
+  "response": {
+    "status": 200,
+    "DTO": "Image",
+    "mapping": "complete pinned SDK image/member fields; exact optional Integer; timestamps preserve naive text and normalize legitimate instants UTC",
+    "sensitive_fields": [
+      "direct_url",
+      "locations",
+      "custom_properties"
+    ]
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found in scoped view",
+    "409": "conflict",
+    "413": "quota_exceeded by pinned Selectel images-go status rule (not provider-text inference)",
+    "406": "invalid_argument",
+    "415": "invalid_argument",
+    "429": "rate_limited",
+    "malformed_success": "protocol_error with accepted mutation receipt/trustworthy IDs preserved"
+  },
+  "retry": "safe reads bounded; mutations single transmission no replay",
+  "pagination": "strict next marker links, bounded prefix/cursor for images; member response nonpaginated bounded local replay",
+  "wait": "image.active/image.absent or member.accepted/member.absent exact-ref observation; unknown states never success",
+  "requested_id": "Create optional caller UUID validated before I/O, endpoint-bound pure internal target builder retains exact requested address on error, never creation proof; no BindDocumented API exists in baseline; no source/auth/HTTP callbacks",
+  "recovery": "known receipt conclusive including no-ID; unknown exact-ref GET indeterminate, no replay/name lookup/adoption"
+}

@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+"""Generate source-bound image metadata/member DTOs, contracts and catalog subset."""
+import json,re,hashlib,subprocess
+from pathlib import Path
+R=Path(__file__).resolve().parents[2];A=Path(__file__).parent/'assets';rev='ace640b1fd6a1bc13cf3c8d7be7a77c9777a3362'
+parts=[];reserved=[]
+for file,old,new in [('image_schemas.go.txt','baseView','Image'),('member_schemas.go.txt','View','Member')]:
+ body=re.search(r'type '+old+r' struct \{(.*?)\n\}',(A/file).read_text(),re.S)[1];fields=[]
+ for name,typ,wire in re.findall(r'(\w+)\s+(\[\]string|\w+(?:\.\w+)?)\s+`json:"([^" ,]+)"`',body):
+  if new=='Image':reserved.append(wire)
+  typ={'int':'types.Integer','int64':'types.Integer','time.Time':'Timestamp'}.get(typ,typ)
+  if wire=='direct_url':typ='types.ProtectedValue'
+  if typ!='[]string' and name not in ('ID','MemberID','ImageID','Status'):typ='*'+typ
+  fields.append(f' {name} {typ} `json:"{wire},omitempty"`')
+ if new=='Image':fields+=[' Properties types.ProtectedJSON `json:"properties"`',' Locations *types.ProtectedJSON `json:"locations,omitempty"`'];reserved.append('locations')
+ fields.append(' Ref *types.ResourceRef `json:"ref,omitempty"`');parts.append('type '+new+' struct {\n'+'\n'.join(fields)+'\n}')
+parts.append('''type CreateSpec struct {
+ Name *types.Nullable[string] `json:"name,omitempty"`
+ ID *string `json:"id,omitempty"`
+ Visibility *string `json:"visibility,omitempty"`
+ Protected *bool `json:"protected,omitempty"`
+ Hidden *bool `json:"os_hidden,omitempty"`
+ ContainerFormat *types.Nullable[string] `json:"container_format,omitempty"`
+ DiskFormat *types.Nullable[string] `json:"disk_format,omitempty"`
+ MinDisk *types.Integer `json:"min_disk,omitempty"`
+ MinRAM *types.Integer `json:"min_ram,omitempty"`
+ Tags *[]string `json:"tags,omitempty"`
+ Properties map[string]types.ProtectedValue `json:"properties,omitempty"`
+}''')
+(R/'images/types_generated.go').write_text('// Code generated from pinned Selectel images-go '+rev+'; DO NOT EDIT.\npackage images\nimport "github.com/festy23/selectel-sdk/types"\n'+'\n'.join(parts)+'\nvar baseKeys=map[string]bool{'+','.join(json.dumps(k)+':true' for k in reserved)+'}\n')
+subprocess.run(['gofmt','-w',str(R/'images/types_generated.go')],check=True)
+ops=[('images.create','POST','/v2/images','Client.Create','CreateSpec','Image',201),('images.get','GET','/v2/images/{image_id}','Client.Get','types.ResourceRef','Image',200),('images.update','PATCH','/v2/images/{image_id}','Client.Update','[]Patch','Image',200),('images.delete','DELETE','/v2/images/{image_id}','Client.Delete','types.ResourceRef','Empty',204),('images.list','GET','/v2/images','Client.ListPage','ListOptions','Image',200),('members.create','POST','/v2/images/{image_id}/members','Members.Create','types.ResourceRef,projectID','Member',200),('members.get','GET','/v2/images/{image_id}/members/{member_id}','Members.Get','types.ResourceRef','Member',200),('members.update','PUT','/v2/images/{image_id}/members/{member_id}','Members.Update','types.ResourceRef,status','Member',200),('members.delete','DELETE','/v2/images/{image_id}/members/{member_id}','Members.Delete','types.ResourceRef','Empty',204),('members.list','GET','/v2/images/{image_id}/members','Members.Collect','types.ResourceRef,pagination.Options','Member',200)]
+paths={};bindings=json.loads((R/'catalog/bindings.json').read_text())
+files=['client.go','generate.go','images/client.go','images/list.go','images/members.go','images/time.go','images/types_generated.go','images/wait.go','internal/core/request.go','operations/handle.go','internal/imagecontractgen/generate.py']
+files=sorted(set(files+['config.go','go.mod','go.sum']+[str(p.relative_to(R)) for directory in ['internal/core','internal/endpoints','types','credentials','operations','pagination'] for p in (R/directory).glob('*.go') if not p.name.endswith('_test.go')]))
+
+for suffix,method,path,func,inp,out,status in ops:
+ id='images.v2.'+suffix;paths.setdefault(path,{})[method.lower()]={'operationId':id,'summary':func,'responses':{str(status):{'description':out}}}
+ contract={'operation_id':id,'endpoint':'regional project IAM image endpoint root or /v2 suffix; compiled prefix de-dup preserves proxy and original exact saved endpoint','source_revision':rev,'auth':'iam_project','request':{'method':method,'path':path,'DTO':inp,'patch':'add/replace/remove typed values at single decoded JSON pointer property; reject owner and readonly fields; property protection remains provider policy','scope':'caller auth view, owner is metadata, never adopt owner scope','list':'all pinned SDK filters plus source base comparisons, custom-property filters, created_at/updated_at and legacy sort_key/sort_dir; explicit empty tag remains tag= per pinned server (native helper omits it); forbid pagination/control override via custom property keys','create':'all SDK fields; API confirmed explicit nullable name/container/disk formats and explicit zero/false/empty arrays; flatten protected string custom properties'},'response':{'status':status,'DTO':out,'mapping':'complete pinned SDK image/member fields; exact optional Integer; timestamps preserve naive text and normalize legitimate instants UTC','sensitive_fields':['direct_url','locations','custom_properties']},'errors':{'400':'invalid_argument','401':'unauthenticated','403':'permission_denied','404':'not_found in scoped view','409':'conflict','413':'quota_exceeded by pinned Selectel images-go status rule (not provider-text inference)','406':'invalid_argument','415':'invalid_argument','429':'rate_limited','malformed_success':'protocol_error with accepted mutation receipt/trustworthy IDs preserved'},'retry':'safe reads bounded; mutations single transmission no replay','pagination':'strict next marker links, bounded prefix/cursor for images; member response nonpaginated bounded local replay','wait':'image.active/image.absent or member.accepted/member.absent exact-ref observation; unknown states never success','requested_id':'Create optional caller UUID validated before I/O, endpoint-bound pure internal target builder retains exact requested address on error, never creation proof; no BindDocumented API exists in baseline; no source/auth/HTTP callbacks','recovery':'known receipt conclusive including no-ID; unknown exact-ref GET indeterminate, no replay/name lookup/adoption'}
+ (R/'catalog/contracts'/f'{id}.json').write_text(json.dumps(contract,indent=2)+'\n')
+ bindings[id]={'go_method':'images.'+func,'input_type':inp,'output_type':'images.'+out,'status':'partial' if suffix=='images.update' else 'implemented','contract_ref':f'contracts/{id}.json','files':files,'evidence_files':['images/public_test.go','images/lifecycle_test.go','images/catalog_test.go'],'evidence_ref':'images/public_test.go;images/lifecycle_test.go;images/catalog_test.go','covered_schema_ref':f'contracts/{id}.json#/request','excluded_variants':['Image data upload/import/tasks/download are tracked separately in #39; full upstream inventory is not claimed']+(['Admin owner transfer and configurable location/store mutations are excluded: generic SDK PatchOp is not evidence of Selectel permission/availability'] if suffix=='images.update' else []),'wait_goals':['image.active','image.absent'] if suffix.startswith('images.') else ['member.accepted','member.absent'],'recovery':method!='GET'}
+source={'openapi':'3.0.0','info':{'title':'Selectel Glance metadata/membership confirmed subset','version':'2.16'},'x-source-uri':'https://github.com/selectel/images-go/tree/'+rev,'x-source-revision':rev,'x-secondary-sources':['https://docs.selectel.ru/en/cloud-servers/tools/openstack-cli/about-openstack-cli/','https://docs.selectel.ru/en/terraform/openstack-provider-reference/images-glance/resources/openstack_images_image_access_v2/','https://docs.selectel.ru/en/terraform/openstack-provider-reference/images-glance/resources/openstack_images_image_access_accept_v2/','https://docs.openstack.org/api-ref/image/v2/','https://github.com/openstack/glance/blob/d45b7c26af2963bb811c5596a42be10cb75c0685/glance/api/v2/images.py'],'x-shared-code-provenance':{'receipt_recovery':'379458e4f658b1216137fea4acce5dae6027d320 reviewed diff only; no Cinder service code','timestamp':'e54ee7a reviewed NovaTime semantics reused','quota_error':'QuotaExceeded constant from reviewed379458e types/errors.go; 413 mapping from pinned images-go transport, distinct from Cinder decoder'},'x-local-snapshots':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(A.iterdir())},'paths':paths}
+(R/'catalog/sources/glance-metadata.json').write_text(json.dumps(source,indent=2)+'\n');(R/'catalog/bindings.json').write_text(json.dumps(bindings,indent=2)+'\n')
