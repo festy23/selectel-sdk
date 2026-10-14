@@ -318,6 +318,9 @@ func certificateRequest(scope types.Scope, ref types.ResourceRef, body []byte, o
 	return req
 }
 func validateCertificate(v Certificate, e types.EndpointBinding, parent types.ResourceRef) error {
+	if v.ID != nil && *v.ID == "" {
+		return types.NewError(types.ProtocolError)
+	}
 	if err := v.Validate(); err != nil {
 		return err
 	}
@@ -481,8 +484,27 @@ func (g *GroupMappings) Collect(ctx context.Context, parent types.ResourceRef, o
 	}
 	return it.Collect(ctx)
 }
+
+// groupMappingsBody projects public DTOs onto the provider's request schema.
+// Listed mappings also carry SDK refs, which are never provider request fields.
+func groupMappingsBody(in GroupMappingsRequest) ([]byte, error) {
+	type wireMapping struct {
+		InternalGroupID *string `json:"internal_group_id,omitempty"`
+		ExternalGroupID *string `json:"external_group_id,omitempty"`
+	}
+	var mappings []wireMapping
+	if in.GroupMappings != nil {
+		mappings = make([]wireMapping, len(in.GroupMappings))
+		for i, item := range in.GroupMappings {
+			mappings[i] = wireMapping{InternalGroupID: item.InternalGroupID, ExternalGroupID: item.ExternalGroupID}
+		}
+	}
+	return json.Marshal(struct {
+		GroupMappings []wireMapping `json:"group_mappings"`
+	}{GroupMappings: mappings})
+}
 func (g *GroupMappings) Replace(ctx context.Context, parent types.ResourceRef, in GroupMappingsRequest, o types.CallOptions) (types.Result[GroupMappingsResponse], error) {
-	body, e := json.Marshal(in)
+	body, e := groupMappingsBody(in)
 	if e != nil {
 		return types.Result[GroupMappingsResponse]{}, types.NewError(types.InvalidArgument)
 	}

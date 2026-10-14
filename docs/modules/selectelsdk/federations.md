@@ -56,8 +56,13 @@ mapping response at HTTP 200; OIDC acknowledges at HTTP 204 and returns no
 observed mapping data. `Put` adds one exact mapping, and `Delete` removes one.
 A mapping ref identifies external_group_id, with internal_group_id and federation
 as its parent chain. `Target` constructs this exact local ref without I/O.
+Reusing listed mappings as replace input sends only the two provider identifier
+fields; SDK refs, scope and endpoint metadata are excluded by the wire encoder.
 External IDs are escaped once as path segments; group mappings have a limit of
 100 items and the source's identifier bounds.
+
+An empty certificate ID yields `protocol_error` and an incomplete collection
+before constructing its parent-bound ref.
 
 Lists have one provider response and inherit MaxItems/MaxPages, MaxJSONBytes,
 CallTimeout and CollectionTimeout. Local truncation returns an incomplete prefix

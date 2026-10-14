@@ -447,3 +447,65 @@ func TestOIDCReadsExistenceAndDeleteRequireAccountToken(t *testing.T) {
 		t.Fatalf("wire %v", seen)
 	}
 }
+
+func TestCertificateListEmptyIDReturnsIncompleteProtocolError(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if strings.HasSuffix(r.URL.Path, "auth/tokens") {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"certificates":[{"id":"","account_id":"test-account","federation_id":"f1"}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	parent := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "federations", APIGeneration: "v1", Kind: "saml_federation", ID: "f1", EndpointID: "selectel-federations", EndpointURL: "https://api.selectel.ru"}
+	out, e := c.Account().Federations().V1.SAML.Certificates.Collect(context.Background(), parent, pagination.Options{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Complete || out.StopReason != "error" {
+		t.Fatalf("malformed list %+v %v", out, e)
+	}
+}
+
+func TestListedMappingsCanBeReplacedWithoutSendingSDKReferences(t *testing.T) {
+	for _, protocol := range []string{"saml", "oidc"} {
+		t.Run(protocol, func(t *testing.T) {
+			c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+				if strings.HasSuffix(r.URL.Path, "auth/tokens") {
+					return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+				}
+				status := 200
+				body := `{"group_mappings":[{"internal_group_id":"g1","external_group_id":"idp/team"}]}`
+				if r.Method == "PUT" {
+					var fields map[string][]map[string]json.RawMessage
+					if json.NewDecoder(r.Body).Decode(&fields) != nil {
+						t.Fatal("invalid replace JSON")
+					}
+					items := fields["group_mappings"]
+					if len(fields) != 1 || len(items) != 1 || len(items[0]) != 2 || string(items[0]["internal_group_id"]) != `"g1"` || string(items[0]["external_group_id"]) != `"idp/team"` {
+						t.Fatal("replace sent fields outside provider schema")
+					}
+					if protocol == "oidc" {
+						status = 204
+						body = ""
+					}
+				}
+				return &http.Response{StatusCode: status, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(body))}, nil
+			})})
+			if e != nil {
+				t.Fatal(e)
+			}
+			parent := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "federations", APIGeneration: "v1", Kind: protocol + "_federation", ID: "f1", EndpointID: "selectel-federations", EndpointURL: "https://api.selectel.ru"}
+			api := c.Account().Federations().V1.SAML.GroupMappings
+			if protocol == "oidc" {
+				api = c.Account().Federations().V1.OIDC.GroupMappings
+			}
+			listed, e := api.Collect(context.Background(), parent, pagination.Options{})
+			if e != nil || len(listed.Items) != 1 || listed.Items[0].Ref == nil {
+				t.Fatalf("list %+v %v", listed, e)
+			}
+			replaced, e := api.Replace(context.Background(), parent, federations.GroupMappingsRequest{GroupMappings: listed.Items}, types.CallOptions{})
+			if e != nil || replaced.Receipt == nil || replaced.Receipt.Outcome != types.Accepted {
+				t.Fatalf("replace %+v %v", replaced, e)
+			}
+		})
+	}
+}

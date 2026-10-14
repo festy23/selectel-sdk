@@ -102,7 +102,7 @@
     "auth": "iam_account",
     "identity": "exact scoped ResourceRef; nested resource parent required; no name adoption",
     "optional_fields": "nil omitted; false/empty retained; explicit nullable fields distinguish null/value/absent",
-    "body": "all source schema properties; protected material only revealed for transport",
+    "body": "Source-only projection: group_mappings array contains only internal_group_id and external_group_id. Response DTO Ref/scope/endpoint/parent metadata never reaches provider JSON. Explicit empty array retained.",
     "query": {},
     "validation": "Account view; scoped kind/endpoint/generation/parent; documented OIDC required fields, string/pattern/session bounds; group mappings max100 and ID bounds; certificate name/data required; optional null accepted only for declared OIDC fields"
   },

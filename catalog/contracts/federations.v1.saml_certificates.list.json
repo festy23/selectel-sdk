@@ -84,7 +84,7 @@
     "schema_ref": "sources/federations.json#/paths/~1v1~1federations~1saml~1{federation_id}~1certificates/get/responses",
     "dto_source": "federations/types_generated.go",
     "generator_source": "internal/modelgen/generate.py",
-    "field_mapping": "all declared properties with precise integers; server refs discarded",
+    "field_mapping": "all declared properties with precise integers; server refs discarded; empty certificate ID is protocol_error before constructing a nested ref, yielding an incomplete error collection",
     "resource_ref": "create requires nonempty ID; account/federation/ID checked against scope and parent; accepted ID retained on malformed response",
     "sensitive_fields": [
       "response.data"
