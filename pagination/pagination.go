@@ -42,12 +42,14 @@ type Page[T any] struct {
 
 // ProviderMetadata retains documented fields consumed by SDK pagination.
 type ProviderMetadata struct {
-	TotalCount      *types.Integer        `json:"totalCount,omitempty"`
-	PreviousToken   *types.ProtectedValue `json:"prev_cursor,omitempty"`
-	ReportedCount   *types.Integer        `json:"count,omitempty"`
-	ForwardToken    *types.ProtectedValue `json:"nextForwardToken,omitempty"`
-	BackwardToken   *types.ProtectedValue `json:"nextBackwardToken,omitempty"`
-	SearchedStreams []LogStreamStatus     `json:"searchedLogStreams,omitzero"`
+	OCIReferrersIndex *types.ProtectedJSON  `json:"oci_referrers_index,omitempty"`
+	OCIFiltersApplied *types.ProtectedValue `json:"oci_filters_applied,omitempty"`
+	TotalCount        *types.Integer        `json:"totalCount,omitempty"`
+	PreviousToken     *types.ProtectedValue `json:"prev_cursor,omitempty"`
+	ReportedCount     *types.Integer        `json:"count,omitempty"`
+	ForwardToken      *types.ProtectedValue `json:"nextForwardToken,omitempty"`
+	BackwardToken     *types.ProtectedValue `json:"nextBackwardToken,omitempty"`
+	SearchedStreams   []LogStreamStatus     `json:"searchedLogStreams,omitzero"`
 }
 type LogStreamStatus struct {
 	Name     *string `json:"logStreamName,omitempty"`
@@ -179,6 +181,37 @@ func (i *Iterator[T]) Next(ctx context.Context) (Page[T], error) {
 	page, err := i.fetch(ctx, input, size)
 	i.pages++
 	if err != nil {
+		// A typed source may return a validated prefix before a malformed row.
+		// Preserve only this view's bounded items, with a replay cursor that skips
+		// the delivered prefix; the source error remains terminal for this iterator.
+		if len(page.Items) > 0 {
+			if i.base.EndpointID == "" && i.plan.DynamicEndpoint {
+				i.base.EndpointID = page.Metadata.EndpointID
+			}
+			if page.Metadata.Scope != i.base.Scope || page.Metadata.EndpointID != i.base.EndpointID || page.Metadata.APIGeneration != i.base.APIGeneration {
+				i.terminal = types.NewError(types.ScopeMismatch)
+				return Page[T]{}, i.terminal
+			}
+			if i.skip > uint(len(page.Items)) {
+				i.terminal = types.NewError(types.ProtocolError)
+				return Page[T]{}, i.terminal
+			}
+			available := page.Items[i.skip:]
+			n := min(uint(len(available)), remaining)
+			cursor := i.base
+			cursor.WireCursor = input
+			cursor.Skip = i.skip + n
+			if i.sensitiveInput {
+				v := types.Protect([]byte(input))
+				cursor.Sensitive = true
+				cursor.SensitiveWire = &v
+				cursor.WireCursor = ""
+			}
+			i.last = &cursor
+			i.items += n
+			i.terminal = err
+			return Page[T]{Items: append([]T{}, available[:n]...), Metadata: page.Metadata, Provider: page.Provider, NextCursor: copyCursor(i.last)}, err
+		}
 		i.terminal = err
 		return Page[T]{Metadata: page.Metadata, NextCursor: copyCursor(i.last)}, err
 	}
@@ -258,7 +291,7 @@ func (i *Iterator[T]) Collect(ctx context.Context) (Collection[T], error) {
 	for {
 		page, err := i.Next(call)
 		out.Items = append(out.Items, page.Items...)
-		if page.Provider.TotalCount != nil || page.Provider.PreviousToken != nil || page.Provider.ReportedCount != nil || page.Provider.ForwardToken != nil || page.Provider.BackwardToken != nil || page.Provider.SearchedStreams != nil {
+		if page.Provider.OCIReferrersIndex != nil || page.Provider.OCIFiltersApplied != nil || page.Provider.TotalCount != nil || page.Provider.PreviousToken != nil || page.Provider.ReportedCount != nil || page.Provider.ForwardToken != nil || page.Provider.BackwardToken != nil || page.Provider.SearchedStreams != nil {
 			out.ProviderPages = append(out.ProviderPages, page.Provider)
 		}
 		if page.Metadata.EndpointID != "" {

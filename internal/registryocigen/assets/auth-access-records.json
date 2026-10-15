@@ -1,0 +1,29 @@
+{
+  "source_uri": "https://github.com/distribution/distribution/blob/f7d69d28c2e302f31d1f6ce8e193da58407225a7/registry/handlers/app.go#L969",
+  "source_sha256": "5d5fb21131495042f61c954eedd0544af078841032bf57718e38727fc8ea212a",
+  "source_function": "appendAccessRecords",
+  "method_actions": {
+    "GET": [
+      "pull"
+    ],
+    "HEAD": [
+      "pull"
+    ],
+    "POST": [
+      "pull",
+      "push"
+    ],
+    "PUT": [
+      "pull",
+      "push"
+    ],
+    "PATCH": [
+      "pull",
+      "push"
+    ],
+    "DELETE": [
+      "delete"
+    ]
+  },
+  "kind": "SDK-owned factual projection of pinned public Distribution implementation, not provider availability evidence"
+}

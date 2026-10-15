@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"registry-oci":                 {"registry_data", "oci_v1", "basic", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,21 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"registry-oci GET /v2/{name}/referrers/{digest}":                   "registry_data.oci_v1.referrers.list",
+	"registry-oci GET /v2/":                                            "registry_data.oci_v1.version.get",
+	"registry-oci GET /v2/{name}/tags/list":                            "registry_data.oci_v1.tags.list",
+	"registry-oci DELETE /v2/{name}/blobs/uploads/{reference}":         "registry_data.oci_v1.uploads.cancel_native",
+	"registry-oci PUT /v2/{name}/blobs/uploads/{reference}":            "registry_data.oci_v1.uploads.finalize",
+	"registry-oci PATCH /v2/{name}/blobs/uploads/{reference}":          "registry_data.oci_v1.uploads.append",
+	"registry-oci POST /v2/{name}/blobs/uploads/":                      "registry_data.oci_v1.uploads.start",
+	"registry-oci GET /v2/{name}/blobs/uploads/{reference}":            "registry_data.oci_v1.uploads.status",
+	"registry-oci HEAD /v2/{name}/blobs/{digest}":                      "registry_data.oci_v1.blobs.head",
+	"registry-oci DELETE /v2/{name}/blobs/{digest}":                    "registry_data.oci_v1.blobs.delete",
+	"registry-oci GET /v2/{name}/blobs/{digest}":                       "registry_data.oci_v1.blobs.get",
+	"registry-oci HEAD /v2/{name}/manifests/{reference}":               "registry_data.oci_v1.manifests.head",
+	"registry-oci PUT /v2/{name}/manifests/{reference}":                "registry_data.oci_v1.manifests.replace",
+	"registry-oci DELETE /v2/{name}/manifests/{reference}":             "registry_data.oci_v1.manifests.delete",
+	"registry-oci GET /v2/{name}/manifests/{reference}":                "registry_data.oci_v1.manifests.get",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
@@ -109,8 +125,10 @@ func generate() error {
 			return err
 		}
 		var spec struct {
-			Paths     map[string]map[string]json.RawMessage `json:"paths"`
-			SourceURI string                                `json:"x-source-uri"`
+			Paths             map[string]map[string]json.RawMessage `json:"paths"`
+			SourceURI         string                                `json:"x-source-uri"`
+			APIGeneration     string                                `json:"x-api-generation"`
+			ScopeRequirements []string                              `json:"x-scope-requirements"`
 		}
 		if err := json.Unmarshal(raw, &spec); err != nil {
 			return err
@@ -144,6 +162,9 @@ func generate() error {
 				if len(parts) > 0 && regexp.MustCompile(`^v[0-9]+$`).MatchString(parts[0]) {
 					generation = parts[0]
 				}
+				if spec.APIGeneration != "" {
+					generation = spec.APIGeneration
+				}
 				resource := slug(path)
 				action := map[string]string{"get": "get", "post": "create", "put": "replace", "patch": "update", "delete": "delete", "head": "head", "options": "options"}[method]
 				if method == "get" && !strings.HasSuffix(strings.TrimRight(path, "/"), "}") {
@@ -171,13 +192,17 @@ func generate() error {
 				if f.Mode == "s3_sigv4" || f.Mode == "basic" {
 					scope = append(scope, "project", "region", "pool")
 				}
+				if len(spec.ScopeRequirements) > 0 {
+					scope = append([]string(nil), spec.ScopeRequirements...)
+				}
 				effect := "mutation"
 				if method == "get" || method == "head" || method == "options" || name == "audit-logs" {
 					effect = "read"
 				}
 				var sourceOperation struct {
-					Effect  string `json:"x-effect"`
-					Locator string `json:"x-operation-locator"`
+					Effect    string `json:"x-effect"`
+					Locator   string `json:"x-operation-locator"`
+					SourceURI string `json:"x-source-uri"`
 				}
 				if err := json.Unmarshal(methods[method], &sourceOperation); err != nil {
 					return err
@@ -189,9 +214,13 @@ func generate() error {
 				if sourceOperation.Locator != "" {
 					locator = sourceOperation.Locator
 				}
+				operationSourceURI := sourceURI
+				if sourceOperation.SourceURI != "" {
+					operationSourceURI = sourceOperation.SourceURI
+				}
 				row := map[string]any{
 					"operation_id": id, "service": f.Service, "api_generation": generation, "resource": resource, "action": action, "effect": effect, "availability": "documented",
-					"source":    map[string]any{"uri": sourceURI, "revision": revision, "operation_locator": locator},
+					"source":    map[string]any{"uri": operationSourceURI, "revision": revision, "operation_locator": locator},
 					"go_method": nil, "input_type": nil, "output_type": nil, "input_schema_ref": pointer, "output_schema_ref": pointer + "/responses",
 					"scope_requirements": scope, "auth": map[string]any{"scheme": f.Mode, "audience": "selectel"},
 					"endpoint_recipe_ref": nil, "request_binding_ref": nil, "response_binding_ref": nil, "error_binding_ref": pointer + "/responses", "replay_policy_ref": nil,

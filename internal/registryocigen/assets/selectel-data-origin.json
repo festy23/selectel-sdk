@@ -1,0 +1,29 @@
+{
+  "kind": "SDK-owned factual projection, not a Selectel OpenAPI/document snapshot",
+  "retrieved": "2026-10-15",
+  "sources": [
+    {
+      "url": "https://docs.selectel.ru/en/craas/images/use-docker.md",
+      "retrieved_sha256": "62a1e923e7aae412f6aa72972a22b99c155bb28e2cef97183685b209469c810c"
+    },
+    {
+      "url": "https://docs.selectel.ru/en/craas/images/push-image.md",
+      "retrieved_sha256": "1206d3710bd6d2ef45808609f919e7d023a38cb74f9a896f4dab5ed4ef483734"
+    },
+    {
+      "url": "https://docs.selectel.ru/en/craas/images/pull-image.md",
+      "retrieved_sha256": "49f455ae0c15a9dd0343aa917fdd99b965d53fbbb2d7d5549e1ea35ce34ef384"
+    }
+  ],
+  "facts": {
+    "data_origin": "cr.selcloud.ru",
+    "image_address": "cr.selcloud.ru/<registry-name>/<image>:<tag>",
+    "login": "Saved registry token supplies username and password, distinct from management IAM",
+    "management_registry_id": "Not automatically interchangeable with registry name",
+    "not_published": [
+      "Bearer realm topology",
+      "optional OCI endpoint availability",
+      "offload trust relationship"
+    ]
+  }
+}
