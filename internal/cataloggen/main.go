@@ -168,6 +168,9 @@ func generate() error {
 				if f.Mode == "iam_project" {
 					scope = append(scope, "project")
 				}
+				if f.Service == "object_storage" {
+					scope = append(scope, "region", "pool")
+				}
 				if f.Mode == "s3_sigv4" || f.Mode == "basic" {
 					scope = append(scope, "project", "region", "pool")
 				}
