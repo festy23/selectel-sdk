@@ -516,6 +516,103 @@ func (v *ClusterState) normalize() {
 	}
 }
 
+type ClusterVolume struct {
+	CreatedAt *time.Time          `json:"createdAt,omitempty"`
+	ID        *string             `json:"id,omitempty"`
+	Spec      *ClusterVolumeSpec  `json:"spec,omitempty"`
+	State     *ClusterVolumeState `json:"state,omitempty"`
+	Ref       *types.ResourceRef  `json:"ref,omitempty"`
+}
+
+func (v ClusterVolume) Validate() error {
+	if v.Spec == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Spec != nil {
+		if err := v.Spec.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.State != nil {
+		if err := v.State.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterVolume) normalize() {
+	if v.CreatedAt != nil {
+		instant := v.CreatedAt.UTC()
+		v.CreatedAt = &instant
+	}
+	if v.Spec != nil {
+		v.Spec.normalize()
+	}
+	if v.State != nil {
+		v.State.normalize()
+	}
+}
+func (v *ClusterVolume) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ClusterVolume
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ClusterVolume(value)
+	v.normalize()
+	return nil
+}
+
+type ClusterVolumeSpec struct {
+	ClusterID *string          `json:"clusterId,omitempty"`
+	S3        *S3VolumeOptions `json:"s3,omitempty"`
+	Size      *string          `json:"size,omitempty"`
+	Type      *string          `json:"type,omitempty"`
+}
+
+func (v ClusterVolumeSpec) Validate() error {
+	if v.ClusterID == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.S3 != nil {
+		if err := v.S3.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Size != nil {
+		if _, err := strconv.ParseUint(*v.Size, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	return nil
+}
+func (v *ClusterVolumeSpec) normalize() {
+	if v.S3 != nil {
+		v.S3.normalize()
+	}
+}
+
+type ClusterVolumeState struct {
+	MountPath *types.ProtectedValue `json:"mountPath,omitempty"`
+	Reason    *types.ProtectedValue `json:"reason,omitempty"`
+	Status    *string               `json:"status,omitempty"`
+}
+
+func (v ClusterVolumeState) Validate() error {
+	return nil
+}
+func (v *ClusterVolumeState) normalize() {
+}
+
 type CreateClusterProxyRequest struct {
 	Spec *ClusterProxySpec `json:"spec,omitempty"`
 }
@@ -1693,6 +1790,52 @@ func (v *ListClusterProxiesResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type ListClusterVolumesResponse struct {
+	Cursor  *CursorResponse `json:"cursor,omitempty"`
+	Volumes []ClusterVolume `json:"volumes,omitzero"`
+}
+
+func (v ListClusterVolumesResponse) Validate() error {
+	if v.Cursor != nil {
+		if err := v.Cursor.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.Volumes {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListClusterVolumesResponse) normalize() {
+	if v.Cursor != nil {
+		v.Cursor.normalize()
+	}
+	for i := range v.Volumes {
+		v.Volumes[i].normalize()
+	}
+}
+func (v *ListClusterVolumesResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListClusterVolumesResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListClusterVolumesResponse(value)
+	v.normalize()
+	return nil
+}
+
 type ListClustersResponse struct {
 	Clusters []Cluster       `json:"clusters,omitzero"`
 	Cursor   *CursorResponse `json:"cursor,omitempty"`
@@ -1862,6 +2005,92 @@ func (v *MetricThresholdBreach) normalize() {
 	if v.Metric != nil {
 		v.Metric.normalize()
 	}
+}
+
+type MountClusterVolumeBody struct {
+	Spec *ClusterVolumeSpec `json:"spec,omitempty"`
+}
+
+func (v MountClusterVolumeBody) Validate() error {
+	if v.Spec == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Spec != nil {
+		if err := v.Spec.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *MountClusterVolumeBody) normalize() {
+	if v.Spec != nil {
+		v.Spec.normalize()
+	}
+}
+func (v *MountClusterVolumeBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire MountClusterVolumeBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = MountClusterVolumeBody(value)
+	v.normalize()
+	return nil
+}
+
+type MountClusterVolumeResponse struct {
+	Cluster *Cluster       `json:"cluster,omitempty"`
+	Volume  *ClusterVolume `json:"volume,omitempty"`
+}
+
+func (v MountClusterVolumeResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Volume != nil {
+		if err := v.Volume.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *MountClusterVolumeResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+	if v.Volume != nil {
+		v.Volume.normalize()
+	}
+}
+func (v *MountClusterVolumeResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire MountClusterVolumeResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = MountClusterVolumeResponse(value)
+	v.normalize()
+	return nil
 }
 
 type PatchClusterDomainResponse struct {
@@ -2300,6 +2529,23 @@ func (v *RestartClusterResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type S3VolumeOptions struct {
+	AccessKeyID     *types.ProtectedValue `json:"accessKeyId,omitempty"`
+	BucketName      *string               `json:"bucketName,omitempty"`
+	BucketPrefix    *string               `json:"bucketPrefix,omitempty"`
+	Region          *string               `json:"region,omitempty"`
+	SecretAccessKey *types.ProtectedValue `json:"secretAccessKey,omitempty"`
+}
+
+func (v S3VolumeOptions) Validate() error {
+	if v.BucketName == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *S3VolumeOptions) normalize() {
+}
+
 type ServiceConfig struct {
 	DefaultRegion *string           `json:"defaultRegion,omitempty"`
 	Endpoints     []ServiceEndpoint `json:"endpoints,omitzero"`
@@ -2456,6 +2702,43 @@ func (v *TransferClusterDomainResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type UnmountClusterVolumeResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v UnmountClusterVolumeResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *UnmountClusterVolumeResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *UnmountClusterVolumeResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire UnmountClusterVolumeResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = UnmountClusterVolumeResponse(value)
+	v.normalize()
+	return nil
+}
+
 type UpgradeClusterBody struct {
 	Platform *ClusterPlatform `json:"platform,omitempty"`
 }
@@ -2530,6 +2813,57 @@ func (v *UpgradeClusterResponse) UnmarshalJSON(raw []byte) error {
 	}
 	*v = UpgradeClusterResponse(value)
 	v.normalize()
+	return nil
+}
+
+type VerifyClusterVolumeSpecRequest struct {
+	Spec *ClusterVolumeSpec `json:"spec,omitempty"`
+}
+
+func (v VerifyClusterVolumeSpecRequest) Validate() error {
+	if v.Spec == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Spec != nil {
+		if err := v.Spec.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *VerifyClusterVolumeSpecRequest) normalize() {
+	if v.Spec != nil {
+		v.Spec.normalize()
+	}
+}
+func (v *VerifyClusterVolumeSpecRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire VerifyClusterVolumeSpecRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = VerifyClusterVolumeSpecRequest(value)
+	v.normalize()
+	return nil
+}
+
+type VerifyClusterVolumeSpecResponse struct{}
+
+func (v VerifyClusterVolumeSpecResponse) Validate() error { return nil }
+func (v *VerifyClusterVolumeSpecResponse) UnmarshalJSON(raw []byte) error {
+	var object map[string]json.RawMessage
+	if json.Unmarshal(raw, &object) != nil || object == nil {
+		return types.NewError(types.ProtocolError)
+	}
 	return nil
 }
 

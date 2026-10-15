@@ -1522,3 +1522,140 @@ func TestOneCDomainTransferRequiresAcknowledgedTargetBeforeRecovery(t *testing.T
 		})
 	}
 }
+
+func TestOneCVolumeSupportedRegionsIsBoundedFiniteSourceCollection(t *testing.T) {
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/volumes/supported-regions" {
+			t.Fatalf("volume regions %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"regions":["ru-1","ru-2"]}`))}, nil
+	}))
+	out, err := regional.ListVolumeSupportedRegions(context.Background(), pagination.Options{MaxItems: 1})
+	if types.ErrorCode(err) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0] != "ru-1" {
+		t.Fatalf("regions %+v %v", out, err)
+	}
+}
+
+func TestOneCVolumeVerificationForwardsProtectedCredentialsWithoutMounting(t *testing.T) {
+	calls := 0
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		raw, _ := io.ReadAll(r.Body)
+		var wire struct {
+			Spec struct {
+				ClusterID string `json:"clusterId"`
+				S3        struct {
+					AccessKeyID     string `json:"accessKeyId"`
+					SecretAccessKey string `json:"secretAccessKey"`
+				} `json:"s3"`
+			} `json:"spec"`
+		}
+		if r.Method != "POST" || r.URL.Path != "/v2/clusters/volumes/verify" || json.Unmarshal(raw, &wire) != nil || wire.Spec.ClusterID != "cluster-1" || wire.Spec.S3.SecretAccessKey != "synthetic-volume-secret" || wire.Spec.S3.AccessKeyID != "synthetic-volume-access" {
+			t.Fatalf("verify wire %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{}`))}, nil
+	}))
+	var spec onec.VerifyClusterVolumeSpecRequest
+	_ = json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1","type":"CLUSTER_VOLUME_TYPE_S3","s3":{"bucketName":"synthetic-bucket","accessKeyId":"synthetic-volume-access","secretAccessKey":"synthetic-volume-secret"}}}`), &spec)
+	safe, _ := json.Marshal(spec)
+	if strings.Contains(string(safe), "synthetic-volume-secret") || strings.Contains(fmt.Sprintf("%+v %#v", spec, spec), "synthetic-volume-secret") {
+		t.Fatal("volume credentials leaked")
+	}
+	out, err := regional.VerifyVolumeSpec(context.Background(), spec, types.CallOptions{})
+	if err != nil || out.Receipt != nil || calls != 1 {
+		t.Fatalf("verification %+v %v", out, err)
+	}
+}
+
+func TestOneCVolumeListPreservesExactSizeProtectedFieldsAndPartialCursor(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/volumes" {
+			t.Fatalf("volume list %s", r.URL)
+		}
+		payload := `{"volumes":[{"id":"volume-1","spec":{"clusterId":"cluster-1","size":"18446744073709551615","s3":{"bucketName":"synthetic-bucket","secretAccessKey":"synthetic-volume-secret"}},"state":{"status":"CLUSTER_VOLUME_STATUS_ACTIVE","reason":"synthetic-provider-detail","mountPath":"synthetic-private-path"}}],"cursor":{"next":"50","total":"1"}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	out, err := regional.ListClusterVolumes(context.Background(), cluster, pagination.Options{MaxPages: 1})
+	if types.ErrorCode(err) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0].Ref.Parent.ID != "cluster-1" || *out.Items[0].Spec.Size != "18446744073709551615" {
+		t.Fatalf("volume list %+v %v", out, err)
+	}
+	safe, _ := json.Marshal(out.Items[0])
+	if strings.Contains(string(safe), "synthetic-volume-secret") || strings.Contains(string(safe), "synthetic-provider-detail") || strings.Contains(string(safe), "synthetic-private-path") {
+		t.Fatal("volume output leaked")
+	}
+}
+
+func TestOneCVolumeMountPreservesAcceptedChildAndExactRecovery(t *testing.T) {
+	writes, reads := 0, 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path != "/v2/clusters/cluster-1/volumes" {
+			t.Fatalf("volume path %s", r.URL)
+		}
+		payload := `{"volume":{"id":"volume-1","spec":{"clusterId":"cluster-1","s3":{"bucketName":"synthetic-bucket","secretAccessKey":"synthetic-volume-secret"}},"state":{"status":"CLUSTER_VOLUME_STATUS_MOUNTING"}}}`
+		if r.Method == "POST" {
+			writes++
+			raw, _ := io.ReadAll(r.Body)
+			if !strings.Contains(string(raw), `"secretAccessKey":"synthetic-volume-secret"`) {
+				t.Fatal("mount lost explicit credential")
+			}
+		} else {
+			reads++
+			payload = `{"volumes":[{"id":"volume-1","spec":{"clusterId":"cluster-1"},"state":{"status":"CLUSTER_VOLUME_STATUS_ACTIVE"}}]}`
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	var spec onec.MountClusterVolumeBody
+	_ = json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1","s3":{"bucketName":"synthetic-bucket","secretAccessKey":"synthetic-volume-secret"}}}`), &spec)
+	out, err := regional.MountClusterVolume(context.Background(), cluster, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || len(out.Receipt.ResourceRefs) != 2 || out.Data.Volume.Ref.Parent.ID != "cluster-1" {
+		t.Fatalf("mount %+v %v", out, err)
+	}
+	h, err := c.Resume(*out.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	waited, err := h.Wait(context.Background(), "cluster_volume.active")
+	if err != nil || !waited.Complete || writes != 1 || reads != 1 {
+		t.Fatalf("volume ready %+v %v", waited, err)
+	}
+}
+
+func TestOneCVolumeUnmountWaitsForExactExplicitDeletedState(t *testing.T) {
+	reads := 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method == "DELETE" {
+			if r.URL.Path != "/v2/clusters/cluster-1/volumes/volume-1" {
+				t.Fatalf("unmount path %s", r.URL)
+			}
+			return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecClusterFixture))}, nil
+		}
+		reads++
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/volumes" {
+			t.Fatalf("unmount observation %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"volumes":[{"id":"volume-1","spec":{"clusterId":"cluster-1"},"state":{"status":"CLUSTER_VOLUME_STATUS_DELETED"}}]}`))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "cluster_volume"
+	ref.ID = "volume-1"
+	ref.Parent = &cluster
+	if _, err := c.Resource(ref); err != nil {
+		t.Fatal(err)
+	}
+	out, err := regional.UnmountClusterVolume(context.Background(), ref, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted {
+		t.Fatalf("unmount %+v %v", out, err)
+	}
+	h, err := c.Resume(*out.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = h.Wait(context.Background(), "cluster_volume.active")
+	if types.ErrorCode(err) != types.CapabilityUnavailable || reads != 0 {
+		t.Fatalf("unmount wrong goal %v", err)
+	}
+	waited, err := h.Wait(context.Background(), "cluster_volume.deleted")
+	if err != nil || !waited.Complete || reads != 1 {
+		t.Fatalf("unmount wait %+v %v", waited, err)
+	}
+}

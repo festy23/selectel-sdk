@@ -176,6 +176,10 @@ func generate() error {
 				if method == "get" || method == "head" || method == "options" || name == "audit-logs" {
 					effect = "read"
 				}
+				// Pinned OneC description: validates mount options before creating a volume.
+				if name == "1c-cloud" && method == "post" && path == "/clusters/volumes/verify" {
+					effect = "read"
+				}
 				var sourceOperation struct {
 					Effect  string `json:"x-effect"`
 					Locator string `json:"x-operation-locator"`

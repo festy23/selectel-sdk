@@ -284,14 +284,16 @@
       "path": "/clusters/volumes/supported-regions",
       "operation_id": "listClusterVolumeSupportedRegions",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_volumes_supported_regions.list"
     },
     {
       "method": "POST",
       "path": "/clusters/volumes/verify",
       "operation_id": "listClusterVolumeSpec",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_volumes_verify.create"
     },
     {
       "method": "GET",
@@ -440,21 +442,24 @@
       "path": "/clusters/{id}/volumes",
       "operation_id": "listClusterVolumes",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "partial",
+      "binding": "cloud_1c.v2.clusters_volumes.list"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/volumes",
       "operation_id": "mountClusterVolume",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_volumes.create"
     },
     {
       "method": "DELETE",
       "path": "/clusters/{id}/volumes/{volumeId}",
       "operation_id": "unmountClusterVolume",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_volumes.delete"
     },
     {
       "method": "GET",

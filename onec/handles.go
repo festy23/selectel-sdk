@@ -203,6 +203,8 @@ func receiptResourceKind(operationID string) string {
 		return "cluster"
 	case "cloud_1c.v2.datastores.create", "cloud_1c.v2.datastores.delete", "cloud_1c.v2.datastores.update", "cloud_1c.v2.datastores_resize.create":
 		return "datastore"
+	case "cloud_1c.v2.clusters_volumes.create", "cloud_1c.v2.clusters_volumes.delete":
+		return "cluster_volume"
 	case domainTransferOperation, "cloud_1c.v2.clusters_domains.create", "cloud_1c.v2.clusters_domains.update", "cloud_1c.v2.clusters_domains.delete":
 		return "cluster_domain"
 	case "cloud_1c.v2.cluster_proxies.create", "cloud_1c.v2.cluster_proxies.delete":

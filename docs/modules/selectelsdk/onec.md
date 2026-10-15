@@ -163,3 +163,16 @@ Resume принимает только точный граф original child + ta
 new child; потерянный ответ/old-only response не создаёт target ref и не даёт
 recovery. Independent decode errors сохраняют уже подтверждённый новый child.
 Ни повтор mutation, ни name/DNS lookup, ни adoption для восстановления не выполняются.
+
+Volume API: supported regions — finite bounded source array; VerifyVolumeSpec
+передаёт source body в POST verify, проверяет параметры до mount и имеет effect
+read, без mutation receipt. Это SDK-owned семантическое уточнение catalog generator
+по pinned description, а не изменение Swagger. Verify не выполняет mount.
+Mount/Unmount сохраняют точный child и caller parent, accepted receipts и
+не повторяют неизвестный исход. Status сканирует bounded native volumes list
+с единым CallTimeout и exact ID; ACTIVE/DELETED source states ограничены
+originating capability. Missing из partial list не доказывает unmount.
+Volumes list остаётся partial по unknown cursor terminal rule, uint64 size
+сохраняется строкой без округления. S3 accessKeyId/secretAccessKey, provider reason
+и mountPath защищены; source credential values раскрываются только в wire encoder.
+Состояние ACTIVE не доказывает права S3/приложения или доступность файлов.
