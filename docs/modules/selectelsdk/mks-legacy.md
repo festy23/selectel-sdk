@@ -3,7 +3,7 @@
 `Project(id).Location(region,pool).MKSLegacy()` selects MKS generation `v1`.
 It does not convert v2 refs or fall back between generations. Source inventory
 contains28 operations from the current published [legacy schema](https://docs.selectel.ru/api/managed-kubernetes-legacy.json).
-The current slice implements ListClusters/GetCluster, three configuration reads and CreateCluster/DeleteCluster; the remaining21 operations
+The current slice implements eleven operations: cluster list/get/create/update/delete, minor/patch upgrade, certificate rotation and three configuration reads; the remaining17 operations
 are unimplemented. Whole legacy inventory including DNS/storage is incomplete,
 coverage_ratio=null; published sources are not live deployment verification.
 
@@ -49,3 +49,10 @@ The narrow reviewed early ContractRevision fix from PR97 commit
 379458e4f658b1216137fea4acce5dae6027d320 (delta82121d740a2788930ce7c4934d449c35b096966d)
 is reused in internal/core/request.go; no volume feature code is included.
 Private wire rendering follows the existing baseline mks serializer.
+
+UpdateCluster, UpgradeMinorVersion and UpgradePatchVersion check exact returned
+cluster identity before adopting a ref, retaining caller receipt/ref on accepted
+foreign/malformed responses. RotateCertificates204 is only acceptance and does
+not invent a task. Optional false update fields are preserved. Generated opaque
+source-object fields reject scalar/null shapes rather than accepting arbitrary
+ProtectedJSON as a schema object.

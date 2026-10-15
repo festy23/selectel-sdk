@@ -1,0 +1,44 @@
+{
+  "operation_id": "mks.v1.clusters.replace",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "PUT",
+    "path": "/clusters/{cluster_id}",
+    "mapping": "Exact v1 caller cluster ref, generated SwaggerClusterUpdateStruct body.cluster, optional false/absence preserved. Validate nested objects and protected payloads before credentials/HTTP."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Generated DetailedCluster envelope. Require exact caller id/project/pool before trustworthy returned ref; retain caller receipt/ref on accepted malformed/foreign response. No operation ID, readiness or replay proof inferred.",
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ]
+  },
+  "errors": {
+    "mapping": "Source404 is Rejected; default unexpected status/transport outcome Unknown, safe SDK errors with no raw provider diagnostics. Local validation keeps revision-boundNotSent0attempts."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No causal replay proof or operation ref; caller may observe exact ref explicitly."
+  },
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio"
+  ]
+}

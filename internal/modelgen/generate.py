@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
- "mkslegacy": ("managed-kubernetes-legacy", {"Cluster":"Cluster", "ClusterDetailed":"DetailedCluster", "KubeVersion":"KubeVersion", "AvailableAdmissionControllers":"AdmissionControllers", "AvailableFeatureGates":"FeatureGates", "SwaggerClusterCreateStruct":"ClusterCreateSpec"},None),
+ "mkslegacy": ("managed-kubernetes-legacy", {"Cluster":"Cluster", "ClusterDetailed":"DetailedCluster", "KubeVersion":"KubeVersion", "AvailableAdmissionControllers":"AdmissionControllers", "AvailableFeatureGates":"FeatureGates", "SwaggerClusterCreateStruct":"ClusterCreateSpec", "SwaggerClusterUpdateStruct":"ClusterUpdateSpec"},None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -145,6 +145,8 @@ for case, (family, initial, top_name) in CASES.items():
             nested = definitions.get(ref, value)
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
+            elif package == "mkslegacy" and nested.get("type") == "object" and not nested.get("properties") and not nested.get("additionalProperties"):
+                code += f"\tif v.{field_name} != nil {{ var object map[string]json.RawMessage; if json.Unmarshal(v.{field_name}.Reveal(), &object) != nil || object == nil {{ return types.NewError(types.ProtocolError) }} }}\n"
             elif nested.get("type") == "array":
                 item = nested["items"]
                 item = definitions.get(item.get("$ref", "").split("/")[-1], item)

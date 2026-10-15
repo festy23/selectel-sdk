@@ -117,6 +117,12 @@ func (v Cluster) Validate() error {
 	if v.CNIType == nil {
 		return types.NewError(types.ProtocolError)
 	}
+	if v.AdditionalSoftware != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.AdditionalSoftware.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
 	if v.KubernetesOptions != nil {
 		if err := v.KubernetesOptions.Validate(); err != nil {
 			return err
@@ -189,6 +195,12 @@ type DetailedCluster struct {
 func (v DetailedCluster) Validate() error {
 	if v.CNIType == nil {
 		return types.NewError(types.ProtocolError)
+	}
+	if v.AdditionalSoftware != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.AdditionalSoftware.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
 	}
 	if v.CNICiliumSettings != nil {
 		if err := v.CNICiliumSettings.Validate(); err != nil {
@@ -463,6 +475,17 @@ func (v RegistryWithMeta) Validate() error {
 func (v *RegistryWithMeta) normalize() {
 }
 
+type SwaggerAuditLogs struct {
+	Enabled    *bool   `json:"enabled,omitempty"`
+	SecretName *string `json:"secret_name,omitempty"`
+}
+
+func (v SwaggerAuditLogs) Validate() error {
+	return nil
+}
+func (v *SwaggerAuditLogs) normalize() {
+}
+
 type ClusterCreateSpec struct {
 	AdditionalSoftware            *types.ProtectedJSON `json:"additional_software,omitempty"`
 	ClusterType                   *string              `json:"cluster_type,omitempty"`
@@ -485,6 +508,12 @@ type ClusterCreateSpec struct {
 func (v ClusterCreateSpec) Validate() error {
 	if v.KubeVersion == nil || v.Name == nil || v.Nodegroups == nil || v.Region == nil {
 		return types.NewError(types.ProtocolError)
+	}
+	if v.AdditionalSoftware != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.AdditionalSoftware.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
 	}
 	if v.CNICiliumSettings != nil {
 		if err := v.CNICiliumSettings.Validate(); err != nil {
@@ -532,4 +561,91 @@ func (v *ClusterCreateSpec) UnmarshalJSON(raw []byte) error {
 	*v = ClusterCreateSpec(value)
 	v.normalize()
 	return nil
+}
+
+type ClusterUpdateSpec struct {
+	EnableAutorepair              *bool                     `json:"enable_autorepair,omitempty"`
+	EnablePatchVersionAutoUpgrade *bool                     `json:"enable_patch_version_auto_upgrade,omitempty"`
+	KubernetesOptions             *SwaggerKubernetesOptions `json:"kubernetes_options,omitempty"`
+	MaintenanceWindowStart        *string                   `json:"maintenance_window_start,omitempty"`
+}
+
+func (v ClusterUpdateSpec) Validate() error {
+	if v.KubernetesOptions != nil {
+		if err := v.KubernetesOptions.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterUpdateSpec) normalize() {
+	if v.KubernetesOptions != nil {
+		v.KubernetesOptions.normalize()
+	}
+}
+func (v *ClusterUpdateSpec) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ClusterUpdateSpec
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ClusterUpdateSpec(value)
+	v.normalize()
+	return nil
+}
+
+type SwaggerKubernetesOptions struct {
+	AdmissionControllers    []string              `json:"admission_controllers,omitzero"`
+	AuditLogs               *SwaggerAuditLogs     `json:"audit_logs,omitempty"`
+	EnablePodSecurityPolicy *bool                 `json:"enable_pod_security_policy,omitempty"`
+	FeatureGates            []string              `json:"feature_gates,omitzero"`
+	OIDC                    *SwaggerOIDC          `json:"oidc,omitempty"`
+	X509CaCertificates      *types.ProtectedValue `json:"x509_ca_certificates,omitempty"`
+}
+
+func (v SwaggerKubernetesOptions) Validate() error {
+	if v.AuditLogs != nil {
+		if err := v.AuditLogs.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.OIDC != nil {
+		if err := v.OIDC.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *SwaggerKubernetesOptions) normalize() {
+	if v.AuditLogs != nil {
+		v.AuditLogs.normalize()
+	}
+	if v.OIDC != nil {
+		v.OIDC.normalize()
+	}
+}
+
+type SwaggerOIDC struct {
+	CaCerts       *types.ProtectedValue `json:"ca_certs,omitempty"`
+	ClientID      *string               `json:"client_id,omitempty"`
+	Enabled       *bool                 `json:"enabled,omitempty"`
+	GroupsClaim   *string               `json:"groups_claim,omitempty"`
+	IssuerURL     *types.ProtectedValue `json:"issuer_url,omitempty"`
+	ProviderName  *string               `json:"provider_name,omitempty"`
+	UsernameClaim *string               `json:"username_claim,omitempty"`
+}
+
+func (v SwaggerOIDC) Validate() error {
+	return nil
+}
+func (v *SwaggerOIDC) normalize() {
 }

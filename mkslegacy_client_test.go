@@ -212,3 +212,111 @@ func TestMKSLegacyDeleteAcknowledgementIsBodylessAcceptance(t *testing.T) {
 		t.Fatalf("delete %+v %v", out, e)
 	}
 }
+
+func TestMKSLegacyCreateRejectsScalarForSourceObjectBeforeIO(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) { calls++; return nil, io.ErrUnexpectedEOF })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	var software types.ProtectedJSON
+	_ = json.Unmarshal([]byte(`"synthetic-not-an-object"`), &software)
+	name, version, pool := "synthetic-cluster", "1.30.1", "ru-9"
+	out, e := v.MKSLegacy().CreateCluster(context.Background(), mkslegacy.ClusterCreateSpec{Name: &name, KubeVersion: &version, Region: &pool, Nodegroups: []mkslegacy.NodegroupCreate{}, AdditionalSoftware: &software}, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatalf("object %+v %v calls%d", out, e, calls)
+	}
+}
+
+func TestMKSLegacyUpdatePreservesExplicitFalseAndExactCallerIdentity(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "PUT" || string(raw) != `{"cluster":{"enable_autorepair":false}}` {
+			t.Fatalf("update %s %s", r.Method, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"cluster":{"id":"legacy-cluster","project_id":"test-project","region":"ru-9","cni_type":"CALICO"}}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	enabled := false
+	out, e := v.MKSLegacy().UpdateCluster(context.Background(), ref, mkslegacy.ClusterUpdateSpec{EnableAutorepair: &enabled}, types.CallOptions{})
+	if e != nil || out.Data.Ref == nil || *out.Data.Ref != ref || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 {
+		t.Fatalf("update %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyUpgradeMinorUsesNativeActionAndAcceptedExactRef(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v1/clusters/legacy-cluster/upgrade-minor-version" || len(raw) != 0 {
+			t.Fatalf("upgrade %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"cluster":{"id":"legacy-cluster","project_id":"test-project","region":"ru-9","cni_type":"CALICO","status":"PENDING_UPGRADE_MINOR_VERSION"}}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	out, e := v.MKSLegacy().UpgradeMinorVersion(context.Background(), ref, types.CallOptions{})
+	if e != nil || out.Data.Status == nil || *out.Data.Status != "PENDING_UPGRADE_MINOR_VERSION" || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Receipt.ProviderOperationRef != nil {
+		t.Fatalf("upgrade %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyUpgradePatchRejectsForeignAcceptedClusterIdentity(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.Method != "POST" || r.URL.Path != "/v1/clusters/legacy-cluster/upgrade-patch-version" {
+			t.Fatalf("patch %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"cluster":{"id":"foreign-cluster","project_id":"test-project","region":"ru-9","cni_type":"CALICO"}}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	out, e := v.MKSLegacy().UpgradePatchVersion(context.Background(), ref, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref || out.Data.Ref != nil {
+		t.Fatalf("patch %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyRotateCertificatesIsAcceptedWithoutInventedTask(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.Method != "POST" || r.URL.Path != "/v1/clusters/legacy-cluster/rotate-certs" {
+			t.Fatalf("rotate %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	out, e := v.MKSLegacy().RotateCertificates(context.Background(), ref, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Receipt.ProviderOperationRef != nil || len(out.Receipt.ResourceRefs) != 1 {
+		t.Fatalf("rotate %+v %v", out, e)
+	}
+}
