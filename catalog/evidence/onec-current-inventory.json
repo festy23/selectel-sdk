@@ -311,14 +311,14 @@
       "path": "/clusters/{id}",
       "operation_id": "patchCluster",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/config",
       "operation_id": "changeClusterConfig",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
@@ -402,14 +402,14 @@
       "path": "/clusters/{id}/resize",
       "operation_id": "resizeCluster",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/restart",
       "operation_id": "restartCluster",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
@@ -430,7 +430,7 @@
       "path": "/clusters/{id}/upgrade",
       "operation_id": "upgradeCluster",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",

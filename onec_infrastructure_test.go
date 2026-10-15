@@ -329,3 +329,141 @@ func TestOneCClusterObservationPreservesUnknownAndMissingStates(t *testing.T) {
 		})
 	}
 }
+
+func TestOneCClusterPatchSendsRawSpecWithExplicitFalseAndEmptyAllowList(t *testing.T) {
+	scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+	endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+	calls := 0
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		raw, _ := io.ReadAll(r.Body)
+		var body map[string]json.RawMessage
+		if r.Method != "PATCH" || r.URL.Path != "/v2/clusters/cluster-1" || json.Unmarshal(raw, &body) != nil || body["spec"] != nil || string(body["enableStorageAutoScaling"]) != "false" || !strings.Contains(string(body["config"]), `"webClientIpAllowList":[]`) {
+			t.Fatalf("patch wire %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"cluster":{"id":"cluster-1","projectId":"test-project","spec":` + string(raw) + `}}`))}, nil
+	})})
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, _ := c.Project("test-project")
+	regional, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "cluster", ID: "cluster-1", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+	var spec onec.ClusterSpec
+	if json.Unmarshal([]byte(`{"name":"test","platform":{},"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"},"enableStorageAutoScaling":false,"config":{"webClientIpAllowList":[]}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.OneC().PatchCluster(context.Background(), ref, spec, types.CallOptions{})
+	if err != nil || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Data.Cluster == nil || out.Data.Cluster.Spec.EnableStorageAutoScaling == nil || *out.Data.Cluster.Spec.EnableStorageAutoScaling || out.Data.Cluster.Spec.Config.WebClientIPAllowList == nil {
+		t.Fatalf("patch result %+v %v calls%d", out, err, calls)
+	}
+}
+
+const onecClusterFixture = `{"cluster":{"id":"cluster-1","projectId":"test-project","spec":{"name":"test","platform":{},"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}},"state":{"status":"CLUSTER_STATUS_ACTIVE"}}}`
+
+func onecRegionalFixture(t *testing.T, wire transportFunc) (*sdk.Client, *onec.Client, types.ResourceRef) {
+	t.Helper()
+	scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+	endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		return wire(r)
+	})})
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, _ := c.Project("test-project")
+	regional, _ := p.Location("spb", "ru-9")
+	return c, regional.OneC(), types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "cluster", ID: "cluster-1", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+}
+
+func TestOneCClusterRestartHasNoInventedRequestBody(t *testing.T) {
+	calls := 0
+	_, regional, ref := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v2/clusters/cluster-1/restart" || len(raw) != 0 {
+			t.Fatalf("restart wire %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecClusterFixture))}, nil
+	}))
+	out, err := regional.RestartCluster(context.Background(), ref, types.CallOptions{})
+	if err != nil || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("restart result %+v %v calls%d", out, err, calls)
+	}
+}
+
+func TestOneCClusterConfigChangeUsesDocumentedWrapperAndValues(t *testing.T) {
+	_, regional, ref := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v2/clusters/cluster-1/config" || string(raw) != `{"config":{"debugMode":false,"webClientIpAllowList":[],"webServerEnabled":false}}` {
+			t.Fatalf("config wire %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecClusterFixture))}, nil
+	}))
+	var spec onec.ChangeClusterConfigBody
+	if json.Unmarshal([]byte(`{"config":{"webServerEnabled":false,"debugMode":false,"webClientIpAllowList":[]}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.ChangeClusterConfig(context.Background(), ref, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("config result %+v %v", out, err)
+	}
+}
+
+func TestOneCSourceIntegerStringsAreValidatedBeforeMutationIO(t *testing.T) {
+	calls := 0
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecClusterFixture))}, nil
+	}))
+	var spec onec.CreateClusterRequest
+	if json.Unmarshal([]byte(`{"spec":{"name":"test","platform":{},"flavor":{"vCpu":"2.5","ramMb":"4096","diskGb":"20"}}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.CreateCluster(context.Background(), spec, types.CallOptions{})
+	if types.ErrorCode(err) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.ContractRevision == "" || calls != 0 {
+		t.Fatalf("source integer gate %+v %v calls%d", out, err, calls)
+	}
+}
+
+func TestOneCClusterResizePreservesSourceIntegerStrings(t *testing.T) {
+	_, regional, ref := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v2/clusters/cluster-1/resize" || string(raw) != `{"flavor":{"diskGb":"9007199254740993","ramMb":"4096","vCpu":"2"}}` {
+			t.Fatalf("resize wire %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecClusterFixture))}, nil
+	}))
+	var spec onec.ResizeClusterBody
+	if json.Unmarshal([]byte(`{"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"9007199254740993"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.ResizeCluster(context.Background(), ref, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("resize result %+v %v", out, err)
+	}
+}
+
+func TestOneCClusterUpgradeSendsExplicitPlatformVersion(t *testing.T) {
+	_, regional, ref := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v2/clusters/cluster-1/upgrade" || string(raw) != `{"platform":{"version":"8.3.synthetic"}}` {
+			t.Fatalf("upgrade wire %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecClusterFixture))}, nil
+	}))
+	var spec onec.UpgradeClusterBody
+	if json.Unmarshal([]byte(`{"platform":{"version":"8.3.synthetic"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.UpgradeCluster(context.Background(), ref, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("upgrade result %+v %v", out, err)
+	}
+}

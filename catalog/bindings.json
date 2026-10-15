@@ -4715,5 +4715,150 @@
       "cluster.deleted"
     ],
     "recovery": true
+  },
+  "cloud_1c.v2.clusters.update": {
+    "go_method": "onec.Client.PatchCluster",
+    "input_type": "types.ResourceRef, onec.ClusterSpec, types.CallOptions",
+    "output_type": "onec.PatchClusterResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters.update.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.clusters_restart.create": {
+    "go_method": "onec.Client.RestartCluster",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.RestartClusterResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_restart.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.clusters_config.create": {
+    "go_method": "onec.Client.ChangeClusterConfig",
+    "input_type": "types.ResourceRef, onec.ChangeClusterConfigBody, types.CallOptions",
+    "output_type": "onec.ChangeClusterConfigResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_config.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.clusters_resize.create": {
+    "go_method": "onec.Client.ResizeCluster",
+    "input_type": "types.ResourceRef, onec.ResizeClusterBody, types.CallOptions",
+    "output_type": "onec.ResizeClusterResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_resize.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.clusters_upgrade.create": {
+    "go_method": "onec.Client.UpgradeCluster",
+    "input_type": "types.ResourceRef, onec.UpgradeClusterBody, types.CallOptions",
+    "output_type": "onec.UpgradeClusterResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_upgrade.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster.active"
+    ],
+    "recovery": true
   }
 }

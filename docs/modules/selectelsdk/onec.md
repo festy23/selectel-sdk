@@ -49,3 +49,12 @@ UNSPECIFIED/неизвестный/missing/null status — unknown с исход
 Receipt-bound цели ограничены originating capability: Create → active,
 Delete → deleted. Unknown outcome остаётся indeterminate после наблюдения;
 наличие ресурса не доказывает авторство, mutation никогда не повторяется.
+
+Изменение cluster spec (`PatchCluster`), `ChangeClusterConfig`, `RestartCluster`,
+`ResizeCluster`, `UpgradeCluster` сохраняют точную ссылку и accepted Receipt.
+PATCH отправляет raw ClusterSpec; config/resize/upgrade используют документированные
+оболочки; restart не добавляет body. Generated validation проверяет int64/uint64
+строки до I/O без float conversion. `cluster.active` — только наблюдение ACTIVE,
+не причинное доказательство окончания restart или применения целевого flavor,
+version/config. Проверка прикладной готовности и сравнение желаемых параметров
+остаются отдельными действиями вызывающей стороны.

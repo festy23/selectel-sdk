@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
- "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse", "CreateClusterRequest":"CreateClusterRequest", "CreateClusterResponse":"CreateClusterResponse", "ListClustersResponse":"ListClustersResponse", "DeleteClusterResponse":"DeleteClusterResponse"}, None),
+ "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse", "CreateClusterRequest":"CreateClusterRequest", "CreateClusterResponse":"CreateClusterResponse", "ListClustersResponse":"ListClustersResponse", "DeleteClusterResponse":"DeleteClusterResponse", "PatchClusterResponse":"PatchClusterResponse", "RestartClusterResponse":"RestartClusterResponse", "ChangeClusterConfigBody":"ChangeClusterConfigBody", "ChangeClusterConfigResponse":"ChangeClusterConfigResponse", "ResizeClusterBody":"ResizeClusterBody", "ResizeClusterResponse":"ResizeClusterResponse", "UpgradeClusterBody":"UpgradeClusterBody", "UpgradeClusterResponse":"UpgradeClusterResponse"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -99,6 +99,8 @@ for case, (family, initial, top_name) in CASES.items():
         if kind == "boolean":
             return "bool", False
         if kind == "string":
+            if package == "onec" and schema.get("format") in {"int64", "uint64"}:
+                imports["strconv"] = "strconv"
             if schema.get("format") == "date-time":
                 imports["time"] = "time"
                 return "time.Time", False
@@ -143,6 +145,9 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
+            if package == "onec" and nested.get("type") == "string" and nested.get("format") in {"int64", "uint64"}:
+                parser = "ParseUint" if nested["format"] == "uint64" else "ParseInt"
+                code += f"\tif v.{field_name} != nil {{ if _, err := strconv.{parser}(*v.{field_name}, 10, 64); err != nil {{ return types.NewError(types.ProtocolError) }} }}\n"
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
             elif nested.get("type") == "array":

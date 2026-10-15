@@ -5,8 +5,86 @@ package onec
 import (
 	"encoding/json"
 	"github.com/festy23/selectel-sdk/types"
+	"strconv"
 	"time"
 )
+
+type ChangeClusterConfigBody struct {
+	Config *ClusterConfig `json:"config,omitempty"`
+}
+
+func (v ChangeClusterConfigBody) Validate() error {
+	if v.Config == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Config != nil {
+		if err := v.Config.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ChangeClusterConfigBody) normalize() {
+	if v.Config != nil {
+		v.Config.normalize()
+	}
+}
+func (v *ChangeClusterConfigBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ChangeClusterConfigBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ChangeClusterConfigBody(value)
+	v.normalize()
+	return nil
+}
+
+type ChangeClusterConfigResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v ChangeClusterConfigResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ChangeClusterConfigResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *ChangeClusterConfigResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ChangeClusterConfigResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ChangeClusterConfigResponse(value)
+	v.normalize()
+	return nil
+}
 
 type Cluster struct {
 	CreatedAt *time.Time         `json:"createdAt,omitempty"`
@@ -91,6 +169,21 @@ type ClusterFlavor struct {
 func (v ClusterFlavor) Validate() error {
 	if v.DiskGb == nil || v.RAMMb == nil || v.VCPU == nil {
 		return types.NewError(types.ProtocolError)
+	}
+	if v.DiskGb != nil {
+		if _, err := strconv.ParseInt(*v.DiskGb, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	if v.RAMMb != nil {
+		if _, err := strconv.ParseInt(*v.RAMMb, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	if v.VCPU != nil {
+		if _, err := strconv.ParseInt(*v.VCPU, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
 	}
 	return nil
 }
@@ -271,6 +364,16 @@ type CursorResponse struct {
 }
 
 func (v CursorResponse) Validate() error {
+	if v.Next != nil {
+		if _, err := strconv.ParseUint(*v.Next, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	if v.Total != nil {
+		if _, err := strconv.ParseUint(*v.Total, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
 	return nil
 }
 func (v *CursorResponse) normalize() {
@@ -527,6 +630,157 @@ func (v *MetricThresholdBreach) normalize() {
 	}
 }
 
+type PatchClusterResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v PatchClusterResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *PatchClusterResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *PatchClusterResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire PatchClusterResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = PatchClusterResponse(value)
+	v.normalize()
+	return nil
+}
+
+type ResizeClusterBody struct {
+	Flavor *ClusterFlavor `json:"flavor,omitempty"`
+}
+
+func (v ResizeClusterBody) Validate() error {
+	if v.Flavor == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Flavor != nil {
+		if err := v.Flavor.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ResizeClusterBody) normalize() {
+	if v.Flavor != nil {
+		v.Flavor.normalize()
+	}
+}
+func (v *ResizeClusterBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ResizeClusterBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ResizeClusterBody(value)
+	v.normalize()
+	return nil
+}
+
+type ResizeClusterResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v ResizeClusterResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ResizeClusterResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *ResizeClusterResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ResizeClusterResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ResizeClusterResponse(value)
+	v.normalize()
+	return nil
+}
+
+type RestartClusterResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v RestartClusterResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *RestartClusterResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *RestartClusterResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire RestartClusterResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = RestartClusterResponse(value)
+	v.normalize()
+	return nil
+}
+
 type ServiceEndpoint struct {
 	Endpoints []Endpoint `json:"endpoints,omitzero"`
 	Region    *string    `json:"region,omitempty"`
@@ -554,6 +808,11 @@ type StorageAutoScaling struct {
 }
 
 func (v StorageAutoScaling) Validate() error {
+	if v.ScaleUpThreshold != nil {
+		if _, err := strconv.ParseUint(*v.ScaleUpThreshold, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
 	return nil
 }
 func (v *StorageAutoScaling) normalize() {
@@ -570,4 +829,81 @@ func (v TimeOfDay) Validate() error {
 	return nil
 }
 func (v *TimeOfDay) normalize() {
+}
+
+type UpgradeClusterBody struct {
+	Platform *ClusterPlatform `json:"platform,omitempty"`
+}
+
+func (v UpgradeClusterBody) Validate() error {
+	if v.Platform == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Platform != nil {
+		if err := v.Platform.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *UpgradeClusterBody) normalize() {
+	if v.Platform != nil {
+		v.Platform.normalize()
+	}
+}
+func (v *UpgradeClusterBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire UpgradeClusterBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = UpgradeClusterBody(value)
+	v.normalize()
+	return nil
+}
+
+type UpgradeClusterResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v UpgradeClusterResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *UpgradeClusterResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *UpgradeClusterResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire UpgradeClusterResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = UpgradeClusterResponse(value)
+	v.normalize()
+	return nil
 }
