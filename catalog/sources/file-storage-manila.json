@@ -539,6 +539,57 @@
         "access_type",
         "access_to"
       ]
+    },
+    "ShareCreateRequest": {
+      "type": "object",
+      "properties": {
+        "share_proto": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "display_description": {
+          "type": "string"
+        },
+        "share_type": {
+          "type": "string"
+        },
+        "snapshot_id": {
+          "type": "string"
+        },
+        "share_group_id": {
+          "type": "string"
+        },
+        "share_network_id": {
+          "type": "string"
+        },
+        "availability_zone": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        },
+        "is_public": {
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "scheduler_hints": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "share_proto",
+        "size"
+      ]
     }
   },
   "x-selectel-snapshots": {

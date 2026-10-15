@@ -508,3 +508,61 @@ func TestFileStorageDenyRequiresExactRuleParentAndPreservesReceipt(t *testing.T)
 		t.Fatalf("deny %+v %v", out, e)
 	}
 }
+
+func TestFileStorageCreateShareKeepsRootIdentityAndExplicitSelections(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		var body struct {
+			Share map[string]json.RawMessage `json:"share"`
+		}
+		if json.Unmarshal(raw, &body) != nil || string(body.Share["size"]) != "9007199254740993" || string(body.Share["share_type"]) != `"type-1"` || string(body.Share["share_network_id"]) != `"network-1"` || string(body.Share["is_public"]) != "false" || string(body.Share["description"]) != `"synthetic-private-description"` {
+			t.Fatalf("create body %s", raw)
+		}
+		return &http.Response{StatusCode: 202, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"share":` + fileStorageShareJSON("created-share", "test-project") + `}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	network := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share_network", ID: "network-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	typ := network
+	typ.Kind = "share_type"
+	typ.ID = "type-1"
+	size, _ := types.ParseInteger("9007199254740993")
+	proto := "NFS"
+	public := false
+	description := types.Protect([]byte("synthetic-private-description"))
+	out, e := v.FileStorage().CreateShare(context.Background(), network, typ, filestorage.ShareCreateRequest{Size: &size, ShareProto: &proto, IsPublic: &public, Description: &description}, types.CallOptions{})
+	if e != nil || out.Data.Ref == nil || out.Data.Ref.ID != "created-share" || out.Data.Ref.Parent != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 3 {
+		t.Fatalf("create %+v %v", out, e)
+	}
+}
+
+func TestFileStorageCreateShareGatesUnconfirmedOriginVariantsBeforeIO(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) { calls++; return nil, io.ErrUnexpectedEOF })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	network := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share_network", ID: "network-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	typ := network
+	typ.Kind = "share_type"
+	typ.ID = "type-1"
+	size, _ := types.ParseInteger("50")
+	proto, snapshot := "NFS", "unconfirmed-snapshot"
+	out, e := v.FileStorage().CreateShare(context.Background(), network, typ, filestorage.ShareCreateRequest{Size: &size, ShareProto: &proto, SnapshotID: &snapshot}, types.CallOptions{})
+	if types.ErrorCode(e) != types.CapabilityUnavailable || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.Attempts != 0 || out.Receipt.ContractRevision == "" || calls != 0 {
+		t.Fatalf("variant %+v %v calls%d", out, e, calls)
+	}
+	typ.Scope.ProjectID = "foreign-project"
+	out, e = v.FileStorage().CreateShare(context.Background(), network, typ, filestorage.ShareCreateRequest{Size: &size, ShareProto: &proto}, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatalf("origin %+v %v", out, e)
+	}
+}

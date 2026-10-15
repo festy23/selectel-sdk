@@ -117,3 +117,12 @@ access_to и metadata раскрываются только в private wire rend
 wait goals отсутствуют: exact observation доступен явно через ListAccessRules,
 без автоматического replay. Upstream допускает driver-specific access types;
 Selectel guide подтверждает IP сценарий, остальные driver contracts не доказаны.
+
+CreateShare принимает явные same-generation share-network/type refs одного
+project/pool/endpoint; никакой parent не выводится из share_network_id. Pinned
+ShareCreateRequest содержит весь request field set; неподтверждённые snapshot,
+share-group и scheduler-hints варианты gated CapabilityUnavailable до I/O.
+Size сохраняется Integer в source единицах GiB; маркетинговые GB/TB не превращаются
+в выдуманный точный cap. Явные NFS/CIFS — wire protocols, не mount-version strings.
+Returned root id/project_id сохраняются до decode остальных полей; доступные
+network/type echoes должны совпасть с selections. Acceptance не означает ready.

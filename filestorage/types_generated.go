@@ -332,6 +332,63 @@ func (v *Share) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type ShareCreateRequest struct {
+	AvailabilityZone   *string               `json:"availability_zone,omitempty"`
+	Description        *types.ProtectedValue `json:"description,omitempty"`
+	DisplayDescription *types.ProtectedValue `json:"display_description,omitempty"`
+	DisplayName        *string               `json:"display_name,omitempty"`
+	IsPublic           *bool                 `json:"is_public,omitempty"`
+	Metadata           *types.ProtectedJSON  `json:"metadata,omitempty"`
+	Name               *string               `json:"name,omitempty"`
+	SchedulerHints     *types.ProtectedJSON  `json:"scheduler_hints,omitempty"`
+	ShareGroupID       *string               `json:"share_group_id,omitempty"`
+	ShareNetworkID     *string               `json:"share_network_id,omitempty"`
+	ShareProto         *string               `json:"share_proto,omitempty"`
+	ShareType          *string               `json:"share_type,omitempty"`
+	Size               *types.Integer        `json:"size,omitempty"`
+	SnapshotID         *string               `json:"snapshot_id,omitempty"`
+}
+
+func (v ShareCreateRequest) Validate() error {
+	if v.ShareProto == nil || v.Size == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Metadata != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.Metadata.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	if v.SchedulerHints != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.SchedulerHints.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	return nil
+}
+func (v *ShareCreateRequest) normalize() {
+}
+func (v *ShareCreateRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ShareCreateRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ShareCreateRequest(value)
+	v.normalize()
+	return nil
+}
+
 type ShareNetwork struct {
 	CreatedAt                      *string                               `json:"created_at,omitempty"`
 	Description                    *types.Nullable[types.ProtectedValue] `json:"description,omitempty"`

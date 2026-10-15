@@ -1,0 +1,48 @@
+{
+  "operation_id": "filestorage.v2_73.shares.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/shares",
+    "mapping": "body.share generated2.73 ShareCreateRequest. Explicit same-generation share_network/share_type refs set matching IDs, contradictory input rejected. Positive exact Integer size (upstream GiB), NFS/CIFS firstparty protocols; no guessed marketing TB conversion. snapshot/group/hints variants gated before I/O pending provider source, no inferred owners."
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      202
+    ],
+    "mapping": "Generated Share envelope. Independently scan root id/project_id before fields, require caller project, root parent nil. Available network/type echoes must match caller selections; receipt retains trustworthy created root on malformed/contradictory fields plus caller anchors. Accepted not readiness, unknown no replay/adoption.",
+    "sensitive_fields": [
+      "description",
+      "share_network_subnets.cidr",
+      "share_network_subnets.gateway"
+    ]
+  },
+  "errors": {
+    "mapping": "Safe shared status taxonomy, documented400/401/403/413quota/422 are Rejected;500/transport remain Unknown without replay. Local validation returns revision-bound NotSent0attempts/noCredentialHTTP. All accepted identities remain in receipt on decoding or association error."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No safe causal replay proof for network/defaultsubnet creation; no name lookup or adoption, caller may observe exact refs explicitly when supported."
+  },
+  "limitations": [
+    "Firstparty Neutron-backed networkcreation subset only; fulldeploymentinventory and2.74/2.75 unresolved under#70.",
+    "No automatic preflight quota reservation, quota increase, networking changes or readiness claim; provider413 rejection preserved.",
+    "Reviewed protected wire renderer from OneC PR106 adapted with explicit known Nullable primitive cases; unknown Nullable types failclosed. Reviewed PR97 earlyContractRevision fix reused without volume features.",
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability.",
+    "Snapshot/group/scheduler-hints variants require provider contract and return CapabilityUnavailable before I/O. Quota preflight/reservation and wait goals not implemented."
+  ]
+}
