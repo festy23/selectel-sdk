@@ -1,0 +1,40 @@
+{
+  "operation_id": "mobile_farm.v2.api_auth_tickets.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "explicit project IAM scope",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v2/auth/tickets",
+    "method": "POST",
+    "auth": "iam_project; no fallback",
+    "body": "none"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "GetTicketResponse required success boolean/description/ticket strings; preserves false distinctly from missing. Ticket and description protected; ticket is never a resource identifier or receipt ref. HTTP acceptance is not a device/control connection.",
+    "sensitive_fields": [
+      "response.ticket",
+      "response.description"
+    ]
+  },
+  "errors": {
+    "mapping": "Documented default ApiError mapped through shared safe status taxonomy, raw messages omitted; receipt retained on all errors, including missing project pre-I/O."
+  },
+  "retry": "No replay; one resource attempt on unknown outcome. Documented 4xx rejection statuses retain rejected receipt;500/transport/decode failures preserve uncertainty/acceptance as applicable.",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "Single-delivery ticket has no observation or replay proof; unknown returns receipt without fabricated refs."
+  }
+}

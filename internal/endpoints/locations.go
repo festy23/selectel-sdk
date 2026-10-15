@@ -43,6 +43,9 @@ var addresses = map[string]map[string]string{
 }
 
 func Resolve(service, generation string, scope types.Scope) (types.EndpointBinding, error) {
+	if service == "mobile_farm" && (generation == "v3" || generation == "v2") {
+		return types.EndpointBinding{ID: "selectel-mobile-farm:" + generation, URL: "https://api.selectel.ru/mobfarm", Scope: scope, APIGeneration: generation, Audience: "selectel"}, nil
+	}
 	key := service + "." + generation
 	u := addresses[key][scope.Pool]
 	if u == "" {

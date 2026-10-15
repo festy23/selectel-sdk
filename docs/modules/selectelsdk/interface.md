@@ -171,3 +171,7 @@ Major версии SDK, используемых в публичных DTO, вх
 Обновление dependency не может молча менять API generation или семантику.
 Версии MKS v1/v2, DNS v1/v2 и DB engine API предоставляются раздельно.
 Выбор legacy поколения является явным действием вызывающей стороны.
+
+`Catalog.Capability.Auth.Alternatives` — optional additive список других source-confirmed
+AuthMode. Отсутствие означает один перечисленный scheme. Альтернатива в каталоге
+не разрешает implicit scope/token fallback: scoped service выбирает режим явно.

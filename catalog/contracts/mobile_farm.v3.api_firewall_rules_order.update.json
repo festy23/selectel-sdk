@@ -1,0 +1,37 @@
+{
+  "operation_id": "mobile_farm.v3.api_firewall_rules_order.update",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "project IAM view only",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v3/firewall-rules/order",
+    "method": "PATCH",
+    "auth": "iam_project; no fallback",
+    "body": "Explicit caller refs mapped to ids array preserving order; full scope/service/generation/kind/root/endpoint validation and duplicate rejection before I/O"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Root FirewallRule array; scan every identity before independent decoding, retain all trustworthy project-scoped IDs; no inference about response order, full inventory or readiness",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Shared safe status taxonomy with documented400/401/403/404/409 as applicable; receipt on every mutation error including pre-I/O, no provider raw diagnostics."
+  },
+  "retry": "No replay; one resource attempt on unknown outcome. Documented 4xx rejection statuses retain rejected receipt;500/transport/decode failures preserve uncertainty/acceptance as applicable.",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No direct Get or causal proof; no implicit replay or lookup/adoption."
+  }
+}

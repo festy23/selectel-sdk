@@ -1,0 +1,37 @@
+{
+  "operation_id": "mobile_farm.v3.api_users_keys_adb.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "account IAM and explicit caller user ref; project view refuses before credentials/HTTP",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v3/users/{userId}/keys/adb",
+    "method": "GET",
+    "auth": "account IAM and explicit caller user ref; project view refuses before credentials/HTTP",
+    "body": null
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed ADBKey fingerprint/title with exact returned fingerprint ID; no inferred user owner. Explicit caller user parent retained only for user-admin path. Creation scans fingerprint before independent DTO fields; accepted receipt retains trustworthy ID on decode errors.204 must be bodyless.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Shared SDK status taxonomy, documented400/401/403/404/409 mapped as applicable; provider error message/body omitted; mutation receipt retained on all errors. Missing body/invalid source lengths before credential/HTTP yield revision-bound NotSent receipt."
+  },
+  "retry": "Bounded safe reads only",
+  "pagination": {
+    "provider": "Finite native root array with no page/limit parameters",
+    "local": "Bounded FixedIterator; truncation returns observed items and incomplete/SDK cursor"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

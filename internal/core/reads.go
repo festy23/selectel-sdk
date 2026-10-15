@@ -63,12 +63,16 @@ func FixedIterator[T any](r *Runtime, op Operation, request Request, semantic an
 	plan.FixedSize = true
 	fetch := func(ctx context.Context, _ string, _ uint) (pagination.SourcePage[T], error) {
 		decode := func(raw []byte, endpoint types.EndpointBinding) (Decoded[[]T], error) {
-			var envelope map[string]json.RawMessage
-			if json.Unmarshal(raw, &envelope) != nil {
-				return Decoded[[]T]{}, types.NewError(types.ProtocolError)
+			collection := raw
+			if field != "" {
+				var envelope map[string]json.RawMessage
+				if json.Unmarshal(raw, &envelope) != nil {
+					return Decoded[[]T]{}, types.NewError(types.ProtocolError)
+				}
+				collection = envelope[field]
 			}
 			var items []T
-			if json.Unmarshal(envelope[field], &items) != nil || items == nil {
+			if json.Unmarshal(collection, &items) != nil || items == nil {
 				return Decoded[[]T]{}, types.NewError(types.ProtocolError)
 			}
 			for i := range items {

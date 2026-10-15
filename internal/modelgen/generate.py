@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice", "AdbKey":"ADBKey", "CreateAdbKeyRequest":"CreateADBKeyRequest", "entity.ProxyTokenInfo":"ProxyTokenInfo", "entity.ProxyToken":"ProxyToken", "entity.CreateProxyTokenReq":"CreateProxyTokenRequest", "GetTicketResponse":"GetTicketResponse", "entity.DeviceRemoveBody":"DeviceRemoveRequest", "entity.DeviceReplaceBody":"DeviceReplaceRequest", "entity.DeviceSettingsChangeBody":"DeviceSettingsRequest", "entity.Order":"DeviceOrder", "entity.CreateOkResponse":"CreateDevicesResponse", "AddUserDeviceRequest":"AddUserDeviceRequest", "StartRemoteConnectResponse":"StartRemoteConnectResponse", "entity.Rule":"FirewallRule", "entity.FirewallRuleBodyReq":"FirewallRuleRequest", "entity.FirewallRulePriorityBodyReq":"FirewallRuleOrderRequest"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -51,6 +52,8 @@ for case, (family, initial, top_name) in CASES.items():
     resource_roots = set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
+    if package == "mobilefarm":
+        resource_roots = {"entity.Device", "entity.SmallDevice", "AdbKey", "entity.ProxyToken", "entity.ProxyTokenInfo", "entity.Rule"}
     pending = dict(roots)
     emitted = {}
     imports = {"types": "github.com/festy23/selectel-sdk/types", "json": "encoding/json"}
@@ -70,7 +73,7 @@ for case, (family, initial, top_name) in CASES.items():
         if "$ref" in schema:
             reference = schema["$ref"].split("/")[-1]
             if reference not in pending:
-                pending[reference] = name(reference)
+                pending[reference] = name(reference.rsplit(".",1)[-1]) if package=="mobilefarm" else name(reference)
             referenced = resolve(definitions[reference])
             if referenced.get("properties"):
                 return pending[reference], False
@@ -81,6 +84,10 @@ for case, (family, initial, top_name) in CASES.items():
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False
+        if package == "mobilefarm" and kind == "string" and (field in {"ticket", "token", "remoteConnectUrl", "publicKey", "channel", "operator", "reverseForwards"} or type_name.startswith("DeviceReverseForwards") or type_name.startswith("Phone") or type_name.startswith("Owner") or (field in {"message", "msg", "value", "description"} and ("Error" in type_name or type_name in {"SuccessDescription", "GetTicketResponseDescription"}))):
+            return "types.ProtectedValue", False
+        if package == "mobilefarm" and type_name.startswith("Battery") and kind in {"integer", "number"}:
+            return ("ProtectedInteger" if kind=="integer" else "ProtectedNumber"), False
         if kind == "array":
             inner, _ = field_type(schema["items"], type_name + "Item", "")
             return "[]" + inner, True
@@ -140,6 +147,17 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
+            if package == "mobilefarm" and nested.get("type") == "string" and nested.get("enum"):
+                invalid = " && ".join(f"*v.{field_name} != {json.dumps(choice)}" for choice in nested["enum"])
+                code += f"\tif v.{field_name} != nil && ({invalid}) {{ return types.NewError(types.ProtocolError) }}\n"
+            if package == "mobilefarm" and nested.get("type") == "string" and ("minLength" in nested or "maxLength" in nested):
+                imports["utf8"] = "unicode/utf8"
+                go_field_type, _ = field_type(value, type_name + field_name, wire)
+                length = f"utf8.RuneCount(v.{field_name}.Reveal())" if go_field_type == "types.ProtectedValue" else f"utf8.RuneCountInString(*v.{field_name})"
+                bounds = []
+                if "minLength" in nested: bounds.append(f"{length} < {nested['minLength']}")
+                if "maxLength" in nested: bounds.append(f"{length} > {nested['maxLength']}")
+                code += f"\tif v.{field_name} != nil && ({' || '.join(bounds)}) {{ return types.NewError(types.ProtocolError) }}\n"
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
             elif nested.get("type") == "array":
@@ -164,7 +182,7 @@ for case, (family, initial, top_name) in CASES.items():
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or (package == "mobilefarm" and reference in resource_roots):
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'

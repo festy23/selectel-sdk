@@ -59,9 +59,23 @@ type Decoded[T any] struct {
 }
 type Decoder[T any] func([]byte, types.EndpointBinding) (Decoded[T], error)
 
+// StatusDecoder binds status-specific response schemas without guessing from payload fields.
+type StatusDecoder[T any] func([]byte, types.EndpointBinding, int) (Decoded[T], error)
+
 // DoJSON applies one budget to validation, credentials, auth, requests and retries.
 // A positive acknowledgement is preserved even if decoding the body fails.
-func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode Decoder[T]) (out types.Result[T], err error) {
+func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode Decoder[T]) (types.Result[T], error) {
+	var adapter StatusDecoder[T]
+	if decode != nil {
+		adapter = func(raw []byte, endpoint types.EndpointBinding, _ int) (Decoded[T], error) {
+			return decode(raw, endpoint)
+		}
+	}
+	return DoJSONStatus(r, ctx, op, in, adapter)
+}
+
+// DoJSONStatus preserves DoJSON execution guarantees and selects the exact response schema by HTTP status.
+func DoJSONStatus[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode StatusDecoder[T]) (out types.Result[T], err error) {
 	started := time.Now().UTC()
 	out.Metadata = types.Metadata{Scope: in.Scope, APIGeneration: op.APIGeneration, RequestIDs: []string{}}
 	var attempt uint
@@ -72,6 +86,13 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			return out, idErr
 		}
 		out.Receipt = &types.Receipt{SchemaVersion: 1, CallID: id, OperationID: op.ID, Scope: in.Scope, Outcome: types.NotSent, Recovery: "unavailable", ResourceRefs: []types.ResourceRef{}}
+		// Local validation failures still return a revision-bound terminal receipt.
+		if r != nil {
+			if capability, e := r.catalog.Describe(op.ID); e == nil {
+				out.Receipt.ContractRevision = capability.ContractRevision
+			}
+		}
+
 	}
 	defer func() {
 		out.Metadata.ObservedAt = time.Now().UTC()
@@ -266,7 +287,7 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			if len(op.NoContentSuccess) > 0 && (len(bytes.TrimSpace(raw)) == 0) != containsStatus(op.NoContentSuccess, status) {
 				return out, types.NewError(types.ProtocolError)
 			}
-			decoded, decodeErr := decode(raw, endpoint)
+			decoded, decodeErr := decode(raw, endpoint, status)
 			if out.Receipt != nil {
 				for _, ref := range decoded.Refs {
 					if ref.Validate() != nil || ref.Scope != in.Scope || ref.Service != op.Service || ref.APIGeneration != op.APIGeneration || ref.EndpointID != endpoint.ID || ref.EndpointURL != endpoint.URL {
