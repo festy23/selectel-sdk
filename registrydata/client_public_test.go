@@ -13,6 +13,7 @@ import (
 	"github.com/festy23/selectel-sdk/types"
 	"io"
 	"net/http"
+	"reflect"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -1516,6 +1517,207 @@ func TestMonolithicAcceptedMalformedResponseOrWrongDigestRetainsRequestedAddress
 			out, err := c.Uploads.Monolithic(context.Background(), repo, digest, strings.NewReader(payload), 5, types.CallOptions{})
 			if err == nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.ResourceRefs[1].ID != digest.String() || (out.Data.Blob != nil && out.Data.Blob.DigestVerified) {
 				t.Fatal(out, err)
+			}
+		})
+	}
+}
+func TestMountExplicitFromAuthorizesOnlyExactRepositoriesAndDoesNotFallback(t *testing.T) {
+	const rawDigest = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	for _, status := range []int{201, 202} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				if r.URL.Path == "/v2/" {
+					out := response(401, "")
+					out.Header.Set("Www-Authenticate", `Bearer realm="https://cr.selcloud.ru/token",service="registry",scope="repository:foreign/admin:delete"`)
+					return out, nil
+				}
+				if r.URL.Path == "/token" {
+					if !reflect.DeepEqual(r.URL.Query()["scope"], []string{"repository:reg/repo:pull,push", "repository:source/images:pull"}) {
+						t.Fatal(r.URL.Query())
+					}
+					return response(200, `{"token":"synthetic-bearer"}`), nil
+				}
+				if r.Method != "POST" || r.URL.Path != "/v2/reg/repo/blobs/uploads/" || r.URL.Query().Get("mount") != rawDigest || r.URL.Query().Get("from") != "source/images" || r.Header.Get("Authorization") != "Bearer synthetic-bearer" || r.ContentLength != 0 {
+					t.Fatal(r.Method, r.URL, r.ContentLength)
+				}
+				out := response(status, "")
+				if status == 201 {
+					out.Header.Set("Location", "/v2/reg/repo/blobs/"+rawDigest)
+					out.Header.Set("Docker-Content-Digest", rawDigest)
+				} else {
+					out.Header.Set("Location", "/v2/reg/repo/blobs/uploads/session?_state=saved")
+				}
+				return out, nil
+			})
+			dest, _ := c.Repository("reg", "repo")
+			source, _ := c.Repository("source", "images")
+			digest, _ := registrydata.ParseDigest(rawDigest)
+			out, err := c.Uploads.Mount(context.Background(), dest, digest, registrydata.MountOptions{From: &source}, types.CallOptions{})
+			if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || calls != 3 {
+				t.Fatal(out, err, calls)
+			}
+			if status == 201 {
+				if out.Data.Blob == nil || out.Data.Blob.DigestVerified || out.Data.Blob.Address.ID != rawDigest || out.Data.Session != nil {
+					t.Fatal(out)
+				}
+			} else {
+				if out.Data.Session == nil || out.Data.Session.Ref.ID != "session" || out.Data.Blob != nil {
+					t.Fatal(out)
+				}
+			}
+		})
+	}
+}
+func TestMountInvalidSourceIsNotSentBeforeCredentials(t *testing.T) {
+	calls, lookups := 0, 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) { calls++; return nil, errors.New("unexpected HTTP") }, func(cfg *sdk.Config) {
+		cfg.Credentials = credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+			lookups++
+			return credentials.Material{}, errors.New("unexpected credentials")
+		})
+	})
+	dest, _ := c.Repository("reg", "repo")
+	source, _ := c.Repository("source", "images")
+	digest, _ := registrydata.ParseDigest("sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	for _, change := range []func(*types.ResourceRef){func(r *types.ResourceRef) { r.Parent = nil }, func(r *types.ResourceRef) { r.EndpointURL = "https://foreign.invalid" }, func(r *types.ResourceRef) { r.Scope.ProjectID = "other" }} {
+		bad := source
+		change(&bad)
+		out, err := c.Uploads.Mount(context.Background(), dest, digest, registrydata.MountOptions{From: &bad}, types.CallOptions{})
+		if err == nil || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 || lookups != 0 {
+			t.Fatal(out, err, calls, lookups)
+		}
+	}
+}
+func TestMountReceiptResumePreservesSourceCanonicalAddressAndUnknownNoReplay(t *testing.T) {
+	requested, _ := registrydata.ParseDigest("sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	canonical, _ := registrydata.ParseDigest("sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+	for _, named := range []bool{false, true} {
+		for _, status := range []int{201, 202, 500} {
+			t.Run(fmt.Sprintf("named=%v/status=%d", named, status), func(t *testing.T) {
+				posts := 0
+				root, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+					if r.URL.Path == "/v2/" {
+						return response(200, ""), nil
+					}
+					if r.Method == "HEAD" {
+						if r.URL.Path != "/v2/reg/repo/blobs/"+requested.String() {
+							t.Fatal(r.URL)
+						}
+						return response(200, ""), nil
+					}
+					posts++
+					if r.Method != "POST" {
+						t.Fatal(r.Method)
+					}
+					if r.URL.Query().Has("from") != named {
+						t.Fatal(r.URL)
+					}
+					out := response(status, "")
+					if status == 201 {
+						out.Header.Set("Docker-Content-Digest", canonical.String())
+						out.Header.Set("Location", "/v2/reg/repo/blobs/"+canonical.String())
+					}
+					if status == 202 {
+						out.Header.Set("Location", "/v2/reg/repo/blobs/uploads/session?_state=secret")
+					}
+					return out, nil
+				})
+				dest, _ := c.Repository("reg", "repo")
+				source, _ := c.Repository("source", "images")
+				opts := registrydata.MountOptions{}
+				if named {
+					opts.From = &source
+				}
+				out, err := c.Uploads.Mount(context.Background(), dest, requested, opts, types.CallOptions{})
+				if status == 500 {
+					if types.ErrorCode(err) != types.UnknownOutcome {
+						t.Fatal(err)
+					}
+				} else if err != nil {
+					t.Fatal(err)
+				}
+				if status == 201 && (out.Data.Blob == nil || out.Data.Blob.DigestVerified || out.Data.Blob.RequestedDigest != requested || out.Data.Blob.CanonicalDigest == nil || *out.Data.Blob.CanonicalDigest != canonical || out.Data.Blob.Address.ID != canonical.String()) {
+					t.Fatal(out)
+				}
+				h, err := root.Resume(*out.Receipt)
+				if err != nil {
+					t.Fatal(err)
+				}
+				recovered, err := h.Recover(context.Background())
+				if status == 500 {
+					if types.ErrorCode(err) != types.UnknownOutcome || recovered.ProofStatus != "indeterminate" || recovered.Observation == nil || recovered.Observation.Ref.ID != requested.String() {
+						t.Fatal(recovered, err)
+					}
+				} else if err != nil || recovered.ProofStatus != "conclusive" {
+					t.Fatal(recovered, err)
+				}
+				if posts != 1 {
+					t.Fatal(posts)
+				}
+			})
+		}
+	}
+}
+func TestMountRejectsForeignLocationAndPreservesProtectedResult(t *testing.T) {
+	digest, _ := registrydata.ParseDigest("sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	for _, variant := range []string{"protected", "foreign", "wrong-repository", "rejected"} {
+		t.Run(variant, func(t *testing.T) {
+			posts := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				posts++
+				out := response(201, "")
+				location := "/v2/reg/repo/blobs/" + digest.String() + "?signature=secret-mount"
+				if variant == "foreign" {
+					location = "https://foreign.invalid" + location
+				}
+				if variant == "wrong-repository" {
+					location = "/v2/reg/other/blobs/" + digest.String()
+				}
+				if variant == "rejected" {
+					out = response(403, `{"errors":[{"code":"DENIED","message":"secret-mount"}]}`)
+				}
+				out.Header.Set("Location", location)
+				return out, nil
+			})
+			dest, _ := c.Repository("reg", "repo")
+			out, err := c.Uploads.Mount(context.Background(), dest, digest, registrydata.MountOptions{}, types.CallOptions{})
+			if posts != 1 || out.Receipt == nil {
+				t.Fatal(posts, out, err)
+			}
+			if variant == "rejected" {
+				if out.Receipt.Outcome != types.Rejected || types.ErrorCode(err) != types.PermissionDenied {
+					t.Fatal(out, err)
+				}
+				return
+			}
+			if out.Receipt.Outcome != types.Accepted {
+				t.Fatal(out, err)
+			}
+			if variant != "protected" {
+				if err == nil || out.Data.Blob != nil {
+					t.Fatal(out, err)
+				}
+				return
+			}
+			if err != nil || out.Data.Blob == nil {
+				t.Fatal(out, err)
+			}
+			for _, value := range []any{out, out.Data, *out.Data.Blob, out.Data.Blob, &out.Data.Blob.Location} {
+				for _, format := range []string{"%v", "%+v", "%#v"} {
+					text := fmt.Sprintf(format, value)
+					if strings.Contains(text, "secret-mount") || strings.Contains(text, "115 101 99 114") || strings.Contains(text, "0x73, 0x65, 0x63") {
+						t.Fatal("protected mount Location exposed")
+					}
+				}
+				raw, _ := json.Marshal(value)
+				if strings.Contains(string(raw), "secret-mount") {
+					t.Fatal("protected JSON exposed")
+				}
 			}
 		})
 	}

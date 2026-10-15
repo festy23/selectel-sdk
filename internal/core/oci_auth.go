@@ -21,9 +21,18 @@ func ociScope(op Operation, in Request, endpoint types.EndpointBinding) (string,
 		return "", nil
 	}
 	monolithic := op.ID == "registry_data.oci_v1.uploads.start" && in.Query.Has("digest")
-	if op.Service != "registry_data" || op.APIGeneration != "oci_v1" || op.Auth != types.Basic || (((op.ID == "registry_data.oci_v1.uploads.finalize" || monolithic) && len(in.Refs) != 2) || (op.ID != "registry_data.oci_v1.uploads.finalize" && !monolithic && len(in.Refs) != 1)) {
+	mount := op.ID == "registry_data.oci_v1.uploads.start" && in.Query.Has("mount")
+	expectedRefs := 1
+	if op.ID == "registry_data.oci_v1.uploads.finalize" || monolithic || mount {
+		expectedRefs = 2
+	}
+	if mount && in.Query.Has("from") {
+		expectedRefs = 3
+	}
+	if op.Service != "registry_data" || op.APIGeneration != "oci_v1" || op.Auth != types.Basic || len(in.Refs) != expectedRefs {
 		return "", types.NewError(types.InvalidArgument)
 	}
+
 	ref := in.Refs[0]
 	if ref.Parent == nil || (ref.Parent.Parent == nil && op.ID != "registry_data.oci_v1.uploads.start" && op.ID != "registry_data.oci_v1.tags.list") {
 		return "", types.NewError(types.InvalidArgument)
@@ -41,7 +50,7 @@ func ociScope(op Operation, in Request, endpoint types.EndpointBinding) (string,
 			return "", types.NewError(types.ScopeMismatch)
 		}
 	}
-	if len(in.Refs) == 2 {
+	if len(in.Refs) >= 2 {
 		extra := in.Refs[1]
 		query, e := url.ParseQuery(in.OCISessionQuery)
 		if monolithic {
@@ -50,7 +59,22 @@ func ociScope(op Operation, in Request, endpoint types.EndpointBinding) (string,
 				return "", types.NewError(types.InvalidArgument)
 			}
 		}
-		if e != nil || extra.Kind != "blob" || extra.ID != query.Get("digest") || extra.Parent == nil || !reflect.DeepEqual(*extra.Parent, *repo) {
+		if mount {
+			query = in.Query
+			expectedQuery := 1
+			if query.Has("from") {
+				expectedQuery = 2
+			}
+			if len(query) != expectedQuery || len(query["mount"]) != 1 || in.OCISessionQuery != "" {
+				return "", types.NewError(types.InvalidArgument)
+			}
+		}
+		addressedDigest := query.Get("digest")
+		if mount {
+			addressedDigest = query.Get("mount")
+		}
+
+		if e != nil || extra.Kind != "blob" || extra.ID != addressedDigest || extra.Parent == nil || !reflect.DeepEqual(*extra.Parent, *repo) {
 			return "", types.NewError(types.InvalidArgument)
 		}
 		if extra.Scope != in.Scope || extra.Service != op.Service || extra.APIGeneration != op.APIGeneration || extra.EndpointID != endpoint.ID || extra.EndpointURL != endpoint.URL {
@@ -72,7 +96,26 @@ func ociScope(op Operation, in Request, endpoint types.EndpointBinding) (string,
 		if op.Method != "POST" || op.Effect != "mutation" || ref.Kind != "repository" || in.Path != "/v2/"+namespace+"/blobs/uploads/" {
 			return "", types.NewError(types.InvalidArgument)
 		}
-		return "repository:" + namespace + ":pull,push", nil
+		scope := "repository:" + namespace + ":pull,push"
+		if mount && len(in.Refs) == 3 {
+			source := in.Refs[2]
+			if source.Kind != "repository" || source.Parent == nil || source.Parent.Kind != "registry_namespace" || source.Parent.Parent != nil || len(in.Query["from"]) != 1 {
+				return "", types.NewError(types.InvalidArgument)
+			}
+			for _, part := range []types.ResourceRef{source, *source.Parent} {
+				if part.Scope != in.Scope || part.Service != op.Service || part.APIGeneration != op.APIGeneration || part.EndpointID != endpoint.ID || part.EndpointURL != endpoint.URL {
+					return "", types.NewError(types.ScopeMismatch)
+				}
+			}
+			sourceName := source.Parent.ID + "/" + source.ID
+			if !ociName.MatchString(sourceName) || sourceName != in.Query.Get("from") {
+				return "", types.NewError(types.InvalidArgument)
+			}
+			if sourceName != namespace {
+				scope += " repository:" + sourceName + ":pull"
+			}
+		}
+		return scope, nil
 	case "registry_data.oci_v1.uploads.cancel_native":
 		if op.Method != "DELETE" || op.Effect != "mutation" || ref.Kind != "upload" || in.Path != "/v2/"+namespace+"/blobs/uploads/"+url.PathEscape(ref.ID) {
 			return "", types.NewError(types.InvalidArgument)
@@ -224,7 +267,9 @@ func (r *Runtime) authorizeOCI(ctx context.Context, entry *authEntry, op Operati
 	}
 	query.Del("scope")
 	if scope != "" {
-		query.Set("scope", scope)
+		for _, access := range strings.Fields(scope) {
+			query.Add("scope", access)
+		}
 	}
 	realm.RawQuery = query.Encode()
 	if ctx.Err() != nil {

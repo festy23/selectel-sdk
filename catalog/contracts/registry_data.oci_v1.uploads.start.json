@@ -7,15 +7,15 @@
     "auth_commit": "f7d69d28c2e302f31d1f6ce8e193da58407225a7"
   },
   "endpoint": "cr.selcloud.ru documented Selectel data origin, /v2 separate from management /api; unsupported locations unavailable unless explicit override; exact refs pinned",
-  "auth": "explicit project-bound Basic snapshot; compiled preflight before any body transmission, Basic/Bearer negotiation within same budget; HTTPS same-origin realm only; nonempty advertised service and compiled exact repository/action scope; realm query permits only overwritten service/scope, never offline token/auth override. Tokens protected, redirects never followed. Auth endpoint404 is endpoint_unavailable, not content absence",
+  "auth": "explicit project-bound Basic snapshot; compiled preflight before any body transmission, Basic/Bearer negotiation within same budget; HTTPS same-origin realm only; nonempty advertised service and compiled exact repository/action scope; realm query permits only overwritten service/scope, never offline token/auth override. Tokens protected, redirects never followed. Auth endpoint404 is endpoint_unavailable, not content absence Explicit Mount requests only compiled destination pull,push plus optional exact named source pull; multiple scopes use repeated token query, never server-advertised escalation.",
   "request": {
     "method": "POST",
     "path": "/v2/{name}/blobs/uploads/",
     "mapping": "Exact repository for Start; exact session ref plus caller-held protected provider Location otherwise. Same-origin/same-repository path; critical query bytes preserved without normalization. Reserved existing digest query rejected. No offloaded Location follow or inferred session URL.",
-    "body": "Start has no body. Explicit Monolithic variant has digest query, Content-Type application/octet-stream and exact Content-Length caller stream, compiled preflight before body. No implicit PUT fallback or replay."
+    "body": "Start has no body. Explicit Monolithic variant has digest query, Content-Type application/octet-stream and exact Content-Length caller stream, compiled preflight before body. No implicit PUT fallback or replay. Mount has no body; mount exact digest and optional from typed same-endpoint/project source repository. Omitted from permits provider-selected cross-mount by digest without SDK lookup."
   },
   "response": {
-    "mapping": "Start requires202 exact session Location. Explicit Monolithic accepts201 exact requested blob Location plus local digest/length verification, or202 exact session Location with no blob completion/proof; union result requires caller-directed next action. Unknown retains requested blob address only, never creation proof.",
+    "mapping": "Start requires202 exact session Location. Explicit Monolithic accepts201 exact requested blob Location plus local digest/length verification, or202 exact session Location with no blob completion/proof; union result requires caller-directed next action. Unknown retains requested blob address only, never creation proof. Mount201 returns protected exact requested/canonical blob Location with no byte verification; Docker-Content-Digest may differ and is retained as unverified metadata. Mount202 returns protected session only, no upload fallback.",
     "sensitive_fields": [
       "location"
     ]
@@ -40,7 +40,6 @@
   "compatibility": "same-origin realm/query restrictions not a claim about undocumented Selectel topology; optional deletion/server availability untested; inventory incomplete",
   "remaining": {
     "confirmed_protocol_not_in_this_subset": [
-      "OCI mount/from upload variants",
       "OCI referrers API/artifactType pagination and manifest subject/referrers fallback workflow",
       "OCI optional chunk-min-length hint and additional response metadata",
       "Extended/multiple Link syntax; additional image formats/digest algorithms"

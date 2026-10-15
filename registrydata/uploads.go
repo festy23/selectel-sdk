@@ -2,6 +2,7 @@ package registrydata
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/festy23/selectel-sdk/internal/core"
 	"github.com/festy23/selectel-sdk/types"
 	"io"
@@ -345,5 +346,93 @@ func (c *Uploads) Monolithic(ctx context.Context, repo types.ResourceRef, digest
 		}
 		blob.DigestVerified = true
 		return out, nil
+	})
+}
+
+// Mount explicitly requests optional OCI cross-repository mounting. A202 returns
+// a session only; no upload fallback or source lookup is performed by the SDK.
+func (c *Uploads) Mount(ctx context.Context, dest types.ResourceRef, digest Digest, options MountOptions, call types.CallOptions) (types.Result[MountResult], error) {
+	op, bind := c.client.operation("registry_data.oci_v1.uploads.start")
+	op.Success = []int{201, 202}
+	requested := child(dest, "blob", digest.String())
+	refs := []types.ResourceRef{dest, requested}
+	query := url.Values{"mount": {digest.String()}}
+	var source *types.ResourceRef
+	if options.From != nil {
+		raw, _ := json.Marshal(options.From)
+		source = &types.ResourceRef{}
+		_ = json.Unmarshal(raw, source)
+		from := ""
+		if source.Parent != nil {
+			from = source.Parent.ID + "/" + source.ID
+		}
+		query.Set("from", from)
+		refs = append(refs, *source)
+	}
+	return core.DoResponse(c.client.runtime, ctx, op, core.Request{Scope: c.client.scope, Path: repositoryPath(dest) + "/blobs/uploads/", Query: query, Refs: refs, PinnedEndpoint: pin(dest), Options: call, Transfer: true, Validate: func() error {
+		if bind != nil {
+			return bind
+		}
+		if e := c.client.valid(dest, "repository"); e != nil {
+			return e
+		}
+		if _, e := ParseDigest(digest.String()); e != nil {
+			return e
+		}
+		if source != nil {
+			if e := c.client.valid(*source, "repository"); e != nil {
+				return e
+			}
+			if source.EndpointID != dest.EndpointID || source.EndpointURL != dest.EndpointURL {
+				return types.NewError(types.ScopeMismatch)
+			}
+		}
+		return nil
+	}}, func(_ context.Context, _ io.Reader, _ types.EndpointBinding, status int, h http.Header) (core.Decoded[MountResult], error) {
+		location, e := header(h, "Location", c.client.runtime.StructuredLimit())
+		if e != nil {
+			return core.Decoded[MountResult]{}, e
+		}
+		if status == 202 {
+			session, e := c.uploadLocation(location, dest, nil)
+			out := core.Decoded[MountResult]{}
+			if session.Ref.ID != "" {
+				out.Data.Session = &session
+				out.Refs = []types.ResourceRef{session.Ref}
+			}
+			return out, e
+		}
+		canonical := digest
+		var stated *Digest
+		text, e := header(h, "Docker-Content-Digest", c.client.runtime.StructuredLimit())
+		if e != nil {
+			return core.Decoded[MountResult]{}, e
+		}
+		if text != "" {
+			canonical, e = ParseDigest(text)
+			if e != nil {
+				return core.Decoded[MountResult]{}, types.NewError(types.ProtocolError)
+			}
+			stated = &canonical
+		}
+		base, _ := url.Parse(dest.EndpointURL)
+		target, e := url.Parse(location)
+		if e != nil || location == "" || target.User != nil || target.Fragment != "" || target.Opaque != "" {
+			return core.Decoded[MountResult]{}, types.NewError(types.ProtocolError)
+		}
+		requestURL, _ := url.Parse(strings.TrimRight(dest.EndpointURL, "/") + repositoryPath(dest) + "/blobs/uploads/")
+		target = requestURL.ResolveReference(target)
+		if !sameOrigin(base, target) {
+			return core.Decoded[MountResult]{}, types.NewError(types.ProtocolError)
+		}
+		prefix := strings.TrimRight(base.EscapedPath(), "/") + repositoryPath(dest) + "/blobs/"
+		address := requested
+		if target.EscapedPath() == prefix+url.PathEscape(canonical.String()) {
+			address = child(dest, "blob", canonical.String())
+		} else if target.EscapedPath() != prefix+url.PathEscape(digest.String()) {
+			return core.Decoded[MountResult]{}, types.NewError(types.ScopeMismatch)
+		}
+		blob := MountedBlob{Address: address, RequestedDigest: digest, CanonicalDigest: stated, Location: types.Protect([]byte(target.String()))}
+		return core.Decoded[MountResult]{Data: MountResult{Blob: &blob}, Refs: []types.ResourceRef{address}}, nil
 	})
 }

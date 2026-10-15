@@ -16,6 +16,20 @@ type BlobWriteResult struct {
 	DigestVerified bool                 `json:"digest_verified"`
 	Location       types.ProtectedValue `json:"location"`
 }
+type MountOptions struct {
+	From *types.ResourceRef `json:"from,omitempty"`
+}
+type MountedBlob struct {
+	Address         types.ResourceRef    `json:"address"`
+	RequestedDigest Digest               `json:"requested_digest"`
+	CanonicalDigest *Digest              `json:"canonical_digest,omitempty"`
+	DigestVerified  bool                 `json:"digest_verified"`
+	Location        types.ProtectedValue `json:"location"`
+}
+type MountResult struct {
+	Blob    *MountedBlob   `json:"blob,omitempty"`
+	Session *UploadSession `json:"session,omitempty"`
+}
 type MonolithicUploadResult struct {
 	Blob    *BlobWriteResult `json:"blob,omitempty"`
 	Session *UploadSession   `json:"session,omitempty"`

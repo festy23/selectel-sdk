@@ -374,7 +374,7 @@
     "/v2/{name}/blobs/uploads/": {
       "post": {
         "operationId": "registry_data.oci_v1.uploads.start",
-        "x-operation-locator": "OCI1.1.1 POST then PUT / end-4a",
+        "x-operation-locator": "OCI1.1.1 POST start / end-4a; optional monolithic / end-4b and mount / end-11",
         "parameters": [
           {
             "name": "name",
@@ -386,6 +386,22 @@
           },
           {
             "name": "digest",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mount",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
             "in": "query",
             "required": false,
             "schema": {
@@ -413,7 +429,7 @@
             "description": "source status 405"
           },
           "201": {
-            "description": "Optional explicit single-POST monolithic completion"
+            "description": "Optional explicit single-POST monolithic or mount completion"
           }
         },
         "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",

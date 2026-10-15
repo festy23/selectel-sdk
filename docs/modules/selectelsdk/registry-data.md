@@ -98,7 +98,7 @@ last equal to the last returned tag. Extensions, extra query and multiple Links
 are excluded. Invalid namespace/row/Link preserves an already validated bounded
 prefix and the original terminal error, without another request.
 
-Protocol-confirmed omissions retained under **#50**: mount/from variants; referrers/artifactType pagination and subject
+Protocol-confirmed omissions retained under **#50**: referrers/artifactType pagination and subject
 fallback workflow; optional chunk-min-length/other metadata; extended Link
 syntax and additional content formats/algorithms. These are not described as
 provider-unsupported. In particular Put sends exactly one manifest mutation;
@@ -162,7 +162,47 @@ The additional requested-blob auth proof is accepted only for the compiled start
 operation with exactly one digest query value matching that ref; no general
 caller-controlled auth bypass or cross-origin trust is introduced.
 
-Confirmed remaining protocol work remains owned by #50: mount/from, referrers and
+Confirmed remaining protocol work remains owned by #50: referrers and
 manifest-subject fallback, optional hints/metadata, extended Link forms and further
 formats/algorithms. Selectel optional variant availability and actual realm/offload
 topology still require #74 evidence; #75 retains partial acceptance qualifications.
+
+
+## Explicit optional mount/from
+
+`Uploads.Mount(ctx, destination, digest, MountOptions{From: &source}, options)`
+implements the optional OCI end-11 variant on the existing POST start binding.
+Both repository refs must have the same explicit project and data-plane endpoint;
+source ownership is not inferred. `From: nil` deliberately omits the optional
+source parameter and lets the provider decide whether a digest can be mounted;
+the SDK performs no lookup/adoption or background search.
+
+The request has no blob body. Before mutation, auth preflight requests exactly
+destination `pull,push` and, when different and explicitly supplied, source `pull`.
+The pinned token protocol represents multiple access entries using repeated
+`scope` query values. Source/destination/query/ref correspondence is compiled and
+validated; advertised challenge scope never grants or requests additional access.
+Foreign source endpoints/scopes and malformed parent chains fail before credential
+lookup or HTTP, and input source refs are deep snapshots.
+
+A201 result contains the Blob union arm with protected same-origin exact repository
+Location. The source permits Docker-Content-Digest to differ from the requested
+digest: CanonicalDigest preserves this unverified metadata and the accepted URL
+must address either the exact requested or exact reported canonical digest.
+DigestVerified is always false because mounting transfers no bytes for local
+verification. Requested and source addresses stay in the receipt; a distinct
+validated canonical destination address is additionally retained, not substituted
+as proof that an unknown mutation created content.
+
+A202 result contains only a protected Session at offset0. It never triggers an
+upload or hidden fallback. Receipts can contain destination repository, requested
+blob, optional source repository, and an accepted session/canonical blob. Resume
+validates each exact parent/scope/endpoint shape; unknown outcome observes only
+the requested destination blob and remains indeterminate without replay. Known
+receipts recover without I/O. Protected session query is saved separately by the
+caller for explicit continuation; receipt refs do not reconstruct it.
+
+Current Selectel mount availability is still unknown; this explicit protocol
+variant does not claim otherwise. Referrers/subject fallback, optional hints,
+extended Links and additional formats remain #50 work; topology/availability #74
+and final partial acceptance #75 remain open. All14 selected bindings stay partial.

@@ -88,7 +88,7 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	if len(receipt.ResourceRefs) == 0 && receipt.ProviderOperationRef == nil && receipt.Outcome != types.Unknown {
 		return operations.BindReceipt(c.runtime, &receipt)
 	}
-	if receipt.ProviderOperationRef != nil || receipt.Endpoint == nil || len(receipt.ResourceRefs) == 0 || len(receipt.ResourceRefs) > 3 || (len(receipt.ResourceRefs) == 3 && receipt.OperationID != "registry_data.oci_v1.uploads.start") {
+	if receipt.ProviderOperationRef != nil || receipt.Endpoint == nil || len(receipt.ResourceRefs) == 0 || len(receipt.ResourceRefs) > 4 || (len(receipt.ResourceRefs) > 2 && receipt.OperationID != "registry_data.oci_v1.uploads.start") {
 		return nil, types.NewError(types.RecoveryUnavailable)
 	}
 	ep := receipt.Endpoint
@@ -126,47 +126,73 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 			return nil, types.NewError(types.ScopeMismatch)
 		}
 	}
-	if len(receipt.ResourceRefs) >= 2 {
-		second := receipt.ResourceRefs[1]
-		parent := first
-		if receipt.OperationID == "registry_data.oci_v1.uploads.start" {
-			if second.Kind != "upload" && second.Kind != "blob" {
-				return nil, types.NewError(types.InvalidArgument)
-			}
-			if second.Kind == "blob" {
-				if _, e := ParseDigest(second.ID); e != nil {
-					return nil, e
-				}
-			}
-			if len(receipt.ResourceRefs) == 3 {
-				third := receipt.ResourceRefs[2]
-				if second.Kind != "blob" || third.Kind != "upload" || third.Parent == nil || !reflect.DeepEqual(*third.Parent, first) {
-					return nil, types.NewError(types.InvalidArgument)
-				}
-			}
-		} else if receipt.OperationID == "registry_data.oci_v1.uploads.finalize" {
-			if second.Kind != "blob" {
-				return nil, types.NewError(types.InvalidArgument)
-			}
-			parent = *first.Parent
-			if _, e := ParseDigest(second.ID); e != nil {
-				return nil, e
-			}
-		} else {
-			return nil, types.NewError(types.InvalidArgument)
+	if receipt.OperationID == "registry_data.oci_v1.uploads.start" {
+		primary, e := startReceiptPrimary(receipt.ResourceRefs)
+		if e != nil {
+			return nil, e
 		}
-		a, _ := json.Marshal(second.Parent)
-		b, _ := json.Marshal(parent)
-		if string(a) != string(b) {
-			return nil, types.NewError(types.ScopeMismatch)
-		}
+		return c.bindHandle(primary, &receipt)
 	}
 	primary := first
-	if receipt.OperationID == "registry_data.oci_v1.uploads.start" && (len(receipt.ResourceRefs) == 3 || (len(receipt.ResourceRefs) == 2 && receipt.ResourceRefs[1].Kind == "blob")) {
-		primary = receipt.ResourceRefs[len(receipt.ResourceRefs)-1]
+	if len(receipt.ResourceRefs) == 2 {
+		second := receipt.ResourceRefs[1]
+		if receipt.OperationID != "registry_data.oci_v1.uploads.finalize" || second.Kind != "blob" {
+			return nil, types.NewError(types.InvalidArgument)
+		}
+		if first.Parent == nil || second.Parent == nil || !reflect.DeepEqual(*second.Parent, *first.Parent) {
+			return nil, types.NewError(types.ScopeMismatch)
+		}
+		if _, e := ParseDigest(second.ID); e != nil {
+			return nil, e
+		}
+		primary = second
 	}
-	if receipt.OperationID == "registry_data.oci_v1.uploads.finalize" && len(receipt.ResourceRefs) == 2 {
-		primary = receipt.ResourceRefs[1]
-	}
+
 	return c.bindHandle(primary, &receipt)
+}
+
+// startReceiptPrimary validates the explicit variants of the same remote POST:
+// repository[,requested blob][,source repository][,accepted session/canonical blob].
+func startReceiptPrimary(refs []types.ResourceRef) (types.ResourceRef, error) {
+	first := refs[0]
+	if len(refs) == 1 {
+		return first, nil
+	}
+	second := refs[1]
+	if second.Parent == nil || !reflect.DeepEqual(*second.Parent, first) {
+		return types.ResourceRef{}, types.NewError(types.ScopeMismatch)
+	}
+	if len(refs) == 2 && second.Kind == "upload" {
+		return first, nil
+	} // original Start shape
+	if second.Kind != "blob" {
+		return types.ResourceRef{}, types.NewError(types.InvalidArgument)
+	}
+	if _, e := ParseDigest(second.ID); e != nil {
+		return types.ResourceRef{}, e
+	}
+	primary := second
+	remaining := refs[2:]
+	if len(remaining) > 0 && remaining[0].Kind == "repository" {
+		remaining = remaining[1:]
+	}
+	if len(remaining) > 1 {
+		return types.ResourceRef{}, types.NewError(types.InvalidArgument)
+	}
+	if len(remaining) == 1 {
+		accepted := remaining[0]
+		if accepted.Kind != "blob" && accepted.Kind != "upload" {
+			return types.ResourceRef{}, types.NewError(types.InvalidArgument)
+		}
+		if accepted.Parent == nil || !reflect.DeepEqual(*accepted.Parent, first) {
+			return types.ResourceRef{}, types.NewError(types.ScopeMismatch)
+		}
+		if accepted.Kind == "blob" {
+			if _, e := ParseDigest(accepted.ID); e != nil {
+				return types.ResourceRef{}, e
+			}
+		}
+		primary = accepted
+	}
+	return primary, nil
 }
