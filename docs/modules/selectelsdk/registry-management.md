@@ -45,7 +45,10 @@ optional short and initial offset. Short=true permits only name sorting. v2
 images support search and offset. Iterators snapshot filters and parent refs
 before cursor fingerprinting. v1 repository traversal ends on an empty array;
 v2 uses filteredCount, preserving totalCount and filteredCount as provider
-TotalCount and ReportedCount. No count proves a consistent mutable snapshot.
+TotalCount and ReportedCount. An empty v2 page at or beyond filteredCount is
+terminal, including when the count shrinks between calls. Empty pages before
+filteredCount remain incomplete; nonempty pages extending beyond it return
+protocol_error. No count proves a consistent mutable snapshot.
 Unpaginated images/tags/clusters use bounded fixed-page replay/skip cursors,
 without invented limit/offset parameters. Malformed rows retain the validated
 prefix with the original error and Complete=false; terminal Next does no I/O.

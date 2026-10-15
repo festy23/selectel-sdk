@@ -111,7 +111,7 @@ func offsetManagementList[T any](r *core.Runtime, scope types.Scope, id string, 
 					return core.Decoded[[]T]{}, types.NewError(types.ProtocolError)
 				}
 				all, ok := new(big.Int).SetString(total.String(), 10)
-				if !ok || all.Sign() < 0 || n.Cmp(all) > 0 || end.Cmp(n) > 0 {
+				if !ok || all.Sign() < 0 || n.Cmp(all) > 0 || (len(items) > 0 && end.Cmp(n) > 0) {
 					return core.Decoded[[]T]{}, types.NewError(types.ProtocolError)
 				}
 				if len(items) == 0 && offset.Cmp(n) < 0 {

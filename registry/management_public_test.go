@@ -672,3 +672,77 @@ func TestRegistryCurrentRepositoryListRejectsEmpty200(t *testing.T) {
 		t.Fatal(p, e, calls)
 	}
 }
+
+func TestRegistryV2EmptyPagesRespectOffsetAndShrinkingCounts(t *testing.T) {
+	for _, kind := range []string{"repositories", "images"} {
+		for _, tc := range []struct {
+			name, offset string
+			count        int
+			rows         string
+			code         types.Code
+			shrink       bool
+		}{
+			{name: "beyond_count", offset: "100", count: 10, rows: "[]"},
+			{name: "at_count", offset: "10", count: 10, rows: "[]"},
+			{name: "empty_before_count", offset: "5", count: 10, rows: "[]", code: types.Incomplete},
+			{name: "nonempty_overrun", offset: "100", count: 10, rows: `[{"name":"repo","digest":"sha256:one"}]`, code: types.ProtocolError},
+			{name: "count_shrinks_between_pages", offset: "0", count: 3, rows: `[{"name":"one","digest":"sha256:one"},{"name":"two","digest":"sha256:two"}]`, shrink: true},
+		} {
+			t.Run(kind+"/"+tc.name, func(t *testing.T) {
+				requests := 0
+				_, c := managementClient(t, func(r *http.Request) (*http.Response, error) {
+					if r.URL.Path == "/api/v2/registries" {
+						return managementResponse(200, `{"registries":[{"id":"reg","name":"r","createdAt":"2025-01-02T00:00:00Z","size":0,"status":"active"}],"totalCount":1}`), nil
+					}
+					requests++
+					expected := "/api/v2/registries/reg/repositories"
+					if kind == "images" {
+						expected += "/repo/images"
+					}
+					if r.URL.Path != expected {
+						t.Fatal(r.URL)
+					}
+					rows, count, offset := tc.rows, tc.count, tc.offset
+					if tc.shrink && requests == 2 {
+						rows, count, offset = "[]", 1, "2"
+					}
+					if r.URL.Query().Get("offset") != offset {
+						t.Fatal(r.URL)
+					}
+					return managementResponse(200, fmt.Sprintf(`{"%s":%s,"totalCount":%d,"filteredCount":%d}`, kind, rows, count, count)), nil
+				})
+				ctx := context.Background()
+				registries, e := c.V2.Registries.Collect(ctx, registry.ListOptions{}, pagination.Options{})
+				if e != nil {
+					t.Fatal(e)
+				}
+				parent := *registries.Items[0].Ref
+				offset, _ := types.ParseInteger(tc.offset)
+				check := func(complete bool, n int, counts []pagination.ProviderMetadata, e error) {
+					t.Helper()
+					if types.ErrorCode(e) != tc.code || complete != (tc.code == "") {
+						t.Fatal("completion", complete, n, e)
+					}
+					if tc.shrink {
+						if n != 2 || requests != 2 || len(counts) != 2 || counts[0].ReportedCount.String() != "3" || counts[1].ReportedCount.String() != "1" {
+							t.Fatal(n, requests, counts)
+						}
+					} else if requests != 1 {
+						t.Fatal(requests)
+					}
+				}
+				if kind == "repositories" {
+					out, e := c.V2.Repositories().Collect(ctx, parent, registry.RepositoryListOptions{Offset: &offset}, pagination.Options{PageSize: 2})
+					check(out.Complete, len(out.Items), out.ProviderPages, e)
+				} else {
+					repo, e := c.V2.Repositories().Ref(parent, "repo")
+					if e != nil {
+						t.Fatal(e)
+					}
+					out, e := c.V2.Images().Collect(ctx, repo, registry.ImageListOptions{Offset: &offset}, pagination.Options{PageSize: 2})
+					check(out.Complete, len(out.Items), out.ProviderPages, e)
+				}
+			})
+		}
+	}
+}

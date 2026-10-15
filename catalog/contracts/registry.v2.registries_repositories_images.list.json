@@ -109,7 +109,7 @@
   },
   "retry": "never replay mutation; bounded safe reads only",
   "pagination": {
-    "wire": "v1 repository offset+limit, empty array end; v2 repository/images offset+limit, filteredCount end, totalCount and filteredCount retained as TotalCount/ReportedCount",
+    "wire": "v1 repository offset+limit, empty array end; v2 repository/images offset+limit, empty page at/beyond filteredCount is terminal (including count shrink); empty before filteredCount incomplete; nonempty end beyond filteredCount protocol_error; totalCount and filteredCount retained as TotalCount/ReportedCount",
     "bounds": "shared MaxItems/MaxPages/response-size/CollectionTimeout; immutable original semantic request; validated prefix preserved on malformed row; incomplete never advertised complete"
   },
   "wait": {
