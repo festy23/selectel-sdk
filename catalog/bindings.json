@@ -4652,5 +4652,107 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "mks.v1.kubeversions.list": {
+    "go_method": "mkslegacy.Client.ListKubeVersions",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Collection[mkslegacy.KubeVersion]",
+    "contract_ref": "contracts/mks.v1.kubeversions.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mkslegacy/client.go",
+      "mkslegacy/types_generated.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/core/pagination.go",
+      "internal/endpoints/locations.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "pagination/pagination.go",
+      "catalog/sources/managed-kubernetes-legacy.json",
+      "types/protected.go",
+      "types/protected_json.go",
+      "types/contracts.go",
+      "types/errors.go",
+      "mkslegacy/configuration.go"
+    ],
+    "evidence_files": [
+      "mkslegacy_client_test.go",
+      "catalog/evidence/mks-legacy-source-reconciliation.json"
+    ],
+    "evidence_ref": "mkslegacy_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
+  },
+  "mks.v1.admission_controllers.list": {
+    "go_method": "mkslegacy.Client.ListAdmissionControllers",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Collection[mkslegacy.AdmissionControllers]",
+    "contract_ref": "contracts/mks.v1.admission_controllers.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mkslegacy/client.go",
+      "mkslegacy/types_generated.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/core/pagination.go",
+      "internal/endpoints/locations.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "pagination/pagination.go",
+      "catalog/sources/managed-kubernetes-legacy.json",
+      "types/protected.go",
+      "types/protected_json.go",
+      "types/contracts.go",
+      "types/errors.go",
+      "mkslegacy/configuration.go"
+    ],
+    "evidence_files": [
+      "mkslegacy_client_test.go",
+      "catalog/evidence/mks-legacy-source-reconciliation.json"
+    ],
+    "evidence_ref": "mkslegacy_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
+  },
+  "mks.v1.feature_gates.list": {
+    "go_method": "mkslegacy.Client.ListFeatureGates",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Collection[mkslegacy.FeatureGates]",
+    "contract_ref": "contracts/mks.v1.feature_gates.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mkslegacy/client.go",
+      "mkslegacy/types_generated.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/core/pagination.go",
+      "internal/endpoints/locations.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "pagination/pagination.go",
+      "catalog/sources/managed-kubernetes-legacy.json",
+      "types/protected.go",
+      "types/protected_json.go",
+      "types/contracts.go",
+      "types/errors.go",
+      "mkslegacy/configuration.go"
+    ],
+    "evidence_files": [
+      "mkslegacy_client_test.go",
+      "catalog/evidence/mks-legacy-source-reconciliation.json"
+    ],
+    "evidence_ref": "mkslegacy_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
   }
 }

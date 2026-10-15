@@ -19,6 +19,66 @@ func (v AuditLogs) Validate() error {
 func (v *AuditLogs) normalize() {
 }
 
+type AdmissionControllers struct {
+	KubeVersionMinor *string  `json:"KubeVersionMinor,omitempty"`
+	Names            []string `json:"Names,omitzero"`
+}
+
+func (v AdmissionControllers) Validate() error {
+	return nil
+}
+func (v *AdmissionControllers) normalize() {
+}
+func (v *AdmissionControllers) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire AdmissionControllers
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = AdmissionControllers(value)
+	v.normalize()
+	return nil
+}
+
+type FeatureGates struct {
+	KubeVersionMinor *string  `json:"KubeVersionMinor,omitempty"`
+	Names            []string `json:"Names,omitzero"`
+}
+
+func (v FeatureGates) Validate() error {
+	return nil
+}
+func (v *FeatureGates) normalize() {
+}
+func (v *FeatureGates) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire FeatureGates
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = FeatureGates(value)
+	v.normalize()
+	return nil
+}
+
 type CNICiliumSettings struct {
 	EnvoyDaemonset *bool `json:"envoy_daemonset,omitempty"`
 	HubbleRelay    *bool `json:"hubble_relay,omitempty"`
@@ -190,6 +250,36 @@ func (v *DetailedCluster) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = DetailedCluster(value)
+	v.normalize()
+	return nil
+}
+
+type KubeVersion struct {
+	IsDefault *bool   `json:"is_default,omitempty"`
+	Version   *string `json:"version,omitempty"`
+}
+
+func (v KubeVersion) Validate() error {
+	return nil
+}
+func (v *KubeVersion) normalize() {
+}
+func (v *KubeVersion) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire KubeVersion
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = KubeVersion(value)
 	v.normalize()
 	return nil
 }

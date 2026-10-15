@@ -71,3 +71,63 @@ func TestMKSLegacyGetRejectsV2RefBeforeIOAndKeepsExactV1Identity(t *testing.T) {
 		t.Fatalf("get %+v %v", out, e)
 	}
 }
+
+func TestMKSLegacyKubeVersionsKeepFalseAndLocalPartialBounds(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/v1/kubeversions" {
+			t.Fatalf("path %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"kube_versions":[{"version":"1.30.1","is_default":false},{"version":"1.31.1","is_default":true}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	out, e := v.MKSLegacy().ListKubeVersions(context.Background(), pagination.Options{MaxItems: 1})
+	if types.ErrorCode(e) != types.Incomplete || out.Complete || out.NextCursor == nil || len(out.Items) != 1 || out.Items[0].IsDefault == nil || *out.Items[0].IsDefault {
+		t.Fatalf("versions %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyAdmissionControllersKeepNativeCapitalizedFields(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"admission_controllers":[{"KubeVersionMinor":"1.30","Names":["synthetic-controller"]}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	out, e := v.MKSLegacy().ListAdmissionControllers(context.Background(), pagination.Options{})
+	if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].KubeVersionMinor == nil || *out.Items[0].KubeVersionMinor != "1.30" {
+		t.Fatalf("admission %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyFeatureGatesRemainSeparateConfigurationEndpoint(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/v1/feature-gates" {
+			t.Fatalf("path %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"feature_gates":[{"KubeVersionMinor":"1.30","Names":["synthetic-feature"]}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	out, e := v.MKSLegacy().ListFeatureGates(context.Background(), pagination.Options{})
+	if e != nil || !out.Complete || len(out.Items) != 1 || len(out.Items[0].Names) != 1 || out.Items[0].Names[0] != "synthetic-feature" {
+		t.Fatalf("gates %+v %v", out, e)
+	}
+}

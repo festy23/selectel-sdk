@@ -3,7 +3,7 @@
 `Project(id).Location(region,pool).MKSLegacy()` selects MKS generation `v1`.
 It does not convert v2 refs or fall back between generations. Source inventory
 contains28 operations from the current published [legacy schema](https://docs.selectel.ru/api/managed-kubernetes-legacy.json).
-The first slice implements ListClusters/GetCluster; the remaining26 operations
+The current slice implements ListClusters/GetCluster and three configuration reads; the remaining23 operations
 are unimplemented. Whole legacy inventory including DNS/storage is incomplete,
 coverage_ratio=null; published sources are not live deployment verification.
 
@@ -34,3 +34,7 @@ File Storage legacy resize remains #70/PR115 and is not duplicated here.
 No cloud resources, old credential auth endpoints or kubeconfigs were contacted.
 All tests use the public Client with synthetic credentials and only transport
 replacement. There are no v1 mutation/wait claims in this initial slice.
+
+ListKubeVersions, ListAdmissionControllers and ListFeatureGates expose bounded
+finite source arrays. Native capitalized KubeVersionMinor/Names fields are
+preserved; Names is an array, and no default configuration is invented.
