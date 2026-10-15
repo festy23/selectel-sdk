@@ -1,0 +1,35 @@
+{
+  "operation_id": "certificates.le_v1.certificates.issue",
+  "source": "lets-encrypt-certificates.json POST /issue; URL table excerpt",
+  "source_sha256": "e3e452c30d24bf5240c0edf410927f75027c7be417f21371c187d9bae2fb9a9a",
+  "endpoint": "https://api.selectel.ru/certs/le exact scoped endpoint",
+  "auth": "project scoped IAM X-Auth-Token",
+  "request": {
+    "method": "POST",
+    "path": "/issue",
+    "mapping": "required domains/name source fields; optional dnsv2 nil omitted, explicit false/true preserved; no implicit legacy migration or availability claim"
+  },
+  "response": {
+    "mapping": "200 Accepted; extract exact nonempty ID and matching project before remaining DTO; trusted ID retained after malformed unrelated metadata; protected error_description",
+    "sensitive_fields": [
+      "error_description"
+    ]
+  },
+  "errors": {
+    "shared": "normal HTTP mapping; discard raw provider text",
+    "rejected_statuses": [
+      400,
+      401,
+      403
+    ]
+  },
+  "retry": "never replay mutation after Unknown",
+  "pagination": null,
+  "recovery": "Root Resource/Resume validate exact scope/generation/kind/endpoint and receipt revision/effect. Unknown exact ID observation through bounded complete List stays indeterminate; never name adoption or replay. Known no-ref terminal receipts Recover conclusively without I/O; no resource state inferred.",
+  "wait": {
+    "goals": [
+      "active"
+    ],
+    "mapping": "active only active; creating/validating/issuing/renewing pending, error/invalid/deleted fail; deleted goal accepts deleted or absent in complete bounded list only. No DNS propagation or consumer application proof."
+  }
+}

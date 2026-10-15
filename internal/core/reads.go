@@ -33,6 +33,8 @@ func (r *Runtime) BindDocumented(op Operation, scope types.Scope) (Operation, er
 	var err error
 	if override, ok := r.config.EndpointOverrides[types.EndpointKey{Service: op.Service, APIGeneration: op.APIGeneration, Scope: scope}]; ok {
 		endpoint = override
+	} else if op.Service == "certificates" && op.APIGeneration == "le_v1" {
+		endpoint = types.EndpointBinding{ID: "selectel-certificates-le", URL: "https://api.selectel.ru/certs/le", Scope: scope, APIGeneration: op.APIGeneration, Audience: "selectel"}
 	} else if op.Service == "registry" {
 		endpoint, err = endpoints.Registry(scope, op.APIGeneration)
 	} else {

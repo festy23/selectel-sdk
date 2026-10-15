@@ -4585,5 +4585,99 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "certificates.le_v1.certificates.list": {
+    "go_method": "letsencrypt.List",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Iterator[letsencrypt.Certificate]",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.le_v1.certificates.list.json",
+    "covered_schema_ref": "contracts/certificates.le_v1.certificates.list.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "client.go",
+      "docs/modules/selectelsdk/letsencrypt.md",
+      "generate.go",
+      "internal/core/auth.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/letsencryptgen/assets/urls-excerpt.txt",
+      "internal/letsencryptgen/generate.py",
+      "letsencrypt/client.go",
+      "letsencrypt/handle.go",
+      "letsencrypt/types_generated.go",
+      "operations/handle.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "letsencrypt/client_public_test.go"
+    ],
+    "evidence_ref": "letsencrypt/client_public_test.go",
+    "recovery": false,
+    "wait_goals": []
+  },
+  "certificates.le_v1.certificates.issue": {
+    "go_method": "letsencrypt.Issue",
+    "input_type": "letsencrypt.IssueRequest, letsencrypt.IssueOptions, types.CallOptions",
+    "output_type": "letsencrypt.Certificate",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.le_v1.certificates.issue.json",
+    "covered_schema_ref": "contracts/certificates.le_v1.certificates.issue.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "client.go",
+      "docs/modules/selectelsdk/letsencrypt.md",
+      "generate.go",
+      "internal/core/auth.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/letsencryptgen/assets/urls-excerpt.txt",
+      "internal/letsencryptgen/generate.py",
+      "letsencrypt/client.go",
+      "letsencrypt/handle.go",
+      "letsencrypt/types_generated.go",
+      "operations/handle.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "letsencrypt/client_public_test.go"
+    ],
+    "evidence_ref": "letsencrypt/client_public_test.go",
+    "recovery": true,
+    "wait_goals": [
+      "active"
+    ]
+  },
+  "certificates.le_v1.certificates.delete": {
+    "go_method": "letsencrypt.Delete",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "struct{}",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.le_v1.certificates.delete.json",
+    "covered_schema_ref": "contracts/certificates.le_v1.certificates.delete.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "client.go",
+      "docs/modules/selectelsdk/letsencrypt.md",
+      "generate.go",
+      "internal/core/auth.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/letsencryptgen/assets/urls-excerpt.txt",
+      "internal/letsencryptgen/generate.py",
+      "letsencrypt/client.go",
+      "letsencrypt/handle.go",
+      "letsencrypt/types_generated.go",
+      "operations/handle.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "letsencrypt/client_public_test.go"
+    ],
+    "evidence_ref": "letsencrypt/client_public_test.go",
+    "recovery": true,
+    "wait_goals": [
+      "deleted"
+    ]
   }
 }

@@ -1,0 +1,34 @@
+{
+  "operation_id": "certificates.le_v1.certificates.delete",
+  "source": "lets-encrypt-certificates.json DELETE /{id}; URL table excerpt",
+  "source_sha256": "e3e452c30d24bf5240c0edf410927f75027c7be417f21371c187d9bae2fb9a9a",
+  "endpoint": "exact selected endpoint from caller ref",
+  "auth": "project scoped IAM",
+  "request": {
+    "method": "DELETE",
+    "path": "/{id}",
+    "mapping": "exact lets_encrypt_certificate reference; no name search or user_certificate ref reuse"
+  },
+  "response": {
+    "mapping": "204 Accepted, original exact reference retained",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "shared": "shared status mapping; provider error text discarded",
+    "rejected_statuses": [
+      400,
+      401,
+      403,
+      404
+    ]
+  },
+  "retry": "never replay unknown mutation",
+  "pagination": null,
+  "recovery": "Root Resource/Resume validate exact scope/generation/kind/endpoint and receipt revision/effect. Unknown exact ID observation through bounded complete List stays indeterminate; never name adoption or replay. Known no-ref terminal receipts Recover conclusively without I/O; no resource state inferred.",
+  "wait": {
+    "goals": [
+      "deleted"
+    ],
+    "mapping": "active only active; creating/validating/issuing/renewing pending, error/invalid/deleted fail; deleted goal accepts deleted or absent in complete bounded list only. No DNS propagation or consumer application proof."
+  }
+}

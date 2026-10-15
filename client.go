@@ -13,6 +13,7 @@ import (
 	"github.com/festy23/selectel-sdk/databases"
 	"github.com/festy23/selectel-sdk/internal/endpoints"
 	"github.com/festy23/selectel-sdk/inventory"
+	"github.com/festy23/selectel-sdk/letsencrypt"
 	"github.com/festy23/selectel-sdk/logs"
 	"github.com/festy23/selectel-sdk/metrics"
 	"github.com/festy23/selectel-sdk/mks"
@@ -42,6 +43,9 @@ func (c *Client) Project(id string) (ProjectClient, error) {
 		return ProjectClient{}, types.NewError(types.InvalidArgument)
 	}
 	return ProjectClient{client: &Client{runtime: c.runtime, scope: types.Scope{AccountID: c.scope.AccountID, ProjectID: id}}}, nil
+}
+func (p ProjectClient) LetsEncrypt() *letsencrypt.Client {
+	return letsencrypt.Bind(p.client.runtime, p.client.scope)
 }
 func (p ProjectClient) Scope() types.Scope { return p.client.scope }
 func (p ProjectClient) Secrets() *secrets.Client {
@@ -81,6 +85,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Scope.AccountID != c.scope.AccountID {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
+	if ref.Service == "certificates" && ref.APIGeneration == "le_v1" {
+		return letsencrypt.Bind(c.runtime, ref.Scope).Handle(ref, nil)
+	}
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
@@ -102,6 +109,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
+	}
+	if capability.Service == "certificates" && capability.APIGeneration == "le_v1" {
+		return letsencrypt.Bind(c.runtime, receipt.Scope).Resume(receipt)
 	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)
