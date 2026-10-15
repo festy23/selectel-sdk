@@ -122,3 +122,19 @@ Health metric values и thresholds возвращаются как source-bound
 format/JSON/Text безопасны; `Reveal()` — явная граница доступа вызывающего.
 Это распространяется на health metadata cluster/datastore и не превращает
 статус ACTIVE или threshold в доказательство прикладной готовности.
+
+Proxy API: network-sharing project ID — target metadata, а не owner scope;
+SDK не выполняет sharing и не меняет credentials/project. CreateClusterProxy
+требует явный cluster ref и совпадение spec.clusterId. Условие networkId при
+publicAccess=true следует тексту pinned source; при отсутствии subnetId SDK
+не ищет первый subnet, а сохраняет documented server default без подстановки.
+
+Get/Delete proxy сохраняют cluster parent только если его явно передали.
+Ни spec.clusterId, ни embedded Cluster из ответа не создают parent самостоятельно.
+Create сохраняет parent anchor и новый child; Resume выбирает один exact child,
+допуская только его записанных ancestors. Parent-only unknown receipt имеет
+recovery_unavailable и не вызывает list/name lookup/adoption. Accepted new ID
+сохраняется при независимом decode failure. Proxy ACTIVE/DELETED goals ограничены
+originating capability и не утверждают сетевую/прикладную готовность.
+Proxy list ограничен и сохраняет metadata/cursor, но остаётся partial из-за
+неизвестного terminal rule; только явный caller cluster filter становится parent.

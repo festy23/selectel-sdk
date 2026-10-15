@@ -891,3 +891,350 @@ func TestOneCDatastoreHealthTelemetryNumbersStayProtected(t *testing.T) {
 		}
 	}
 }
+
+func TestOneCNetworkSharingProjectIsTargetMetadataNotCallerScope(t *testing.T) {
+	calls := 0
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.Method != "GET" || r.URL.Path != "/v2/cluster-proxies/network-share/project" {
+			t.Fatalf("network sharing wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"projectId":"provider-service-project"}`))}, nil
+	}))
+	out, err := regional.GetProjectIDForNetworkSharing(context.Background(), types.CallOptions{})
+	if err != nil || calls != 1 || out.Data.ProjectID == nil || *out.Data.ProjectID != "provider-service-project" || out.Metadata.Scope != cluster.Scope {
+		t.Fatalf("sharing target %+v %v", out, err)
+	}
+}
+
+const onecProxyFixture = `{"clusterProxy":{"id":"proxy-1","projectId":"test-project","spec":{"clusterId":"cluster-1","publicAccess":false,"networkId":"network-1","subnetId":"subnet-1"},"state":{"status":"CLUSTER_PROXY_STATUS_ACTIVE"},"cluster":{"id":"cluster-1","projectId":"test-project","spec":{"name":"cluster","platform":{},"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}}}}}`
+
+func TestOneCProxyGetOnlyKeepsCallerProvidedClusterParent(t *testing.T) {
+	for _, provided := range []bool{false, true} {
+		t.Run(fmt.Sprint(provided), func(t *testing.T) {
+			_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+				if r.Method != "GET" || r.URL.Path != "/v2/cluster-proxies/proxy-1" {
+					t.Fatalf("proxy wire %s %s", r.Method, r.URL)
+				}
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecProxyFixture))}, nil
+			}))
+			ref := cluster
+			ref.Kind = "cluster_proxy"
+			ref.ID = "proxy-1"
+			if provided {
+				ref.Parent = &cluster
+			}
+			out, err := regional.GetClusterProxy(context.Background(), ref, types.CallOptions{})
+			if err != nil || out.Data.ClusterProxy == nil || out.Data.ClusterProxy.Ref == nil {
+				t.Fatalf("proxy %+v %v", out, err)
+			}
+			got := out.Data.ClusterProxy.Ref
+			if provided {
+				if got.Parent == nil || *got.Parent != cluster || out.Data.ClusterProxy.Cluster.Ref == nil || *out.Data.ClusterProxy.Cluster.Ref != cluster {
+					t.Fatal("caller parent lost")
+				}
+			} else if got.Parent != nil || out.Data.ClusterProxy.Cluster.Ref != nil {
+				t.Fatal("parent inferred from provider metadata")
+			}
+		})
+	}
+}
+
+func TestOneCProxyAncestorsAreValidatedBeforeIO(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		want types.Code
+	}{{"cycle", types.InvalidArgument}, {"service", types.ScopeMismatch}, {"generation", types.ScopeMismatch}, {"scope", types.ScopeMismatch}, {"endpoint", types.EndpointUnavailable}} {
+		t.Run(tc.name, func(t *testing.T) {
+			scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+			endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+			lookups, calls := 0, 0
+			c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(ctx context.Context, r types.AuthRequest) (credentials.Material, error) {
+				lookups++
+				return source().Lookup(ctx, r)
+			}), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(*http.Request) (*http.Response, error) { calls++; return nil, context.Canceled })})
+			if e != nil {
+				t.Fatal(e)
+			}
+			p, _ := c.Project("test-project")
+			regional, _ := p.Location("spb", "ru-9")
+			parent := types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "cluster", ID: "cluster-1", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+			ref := parent
+			ref.Kind = "cluster_proxy"
+			ref.ID = "proxy-1"
+			ref.Parent = &parent
+			switch tc.name {
+			case "cycle":
+				ref.Parent = &ref
+			case "service":
+				parent.Service = "compute"
+			case "generation":
+				parent.APIGeneration = "v1"
+			case "scope":
+				parent.Scope.ProjectID = "foreign-project"
+			case "endpoint":
+				parent.EndpointURL += "/foreign"
+			}
+			_, e = regional.OneC().GetClusterProxy(context.Background(), ref, types.CallOptions{})
+			if types.ErrorCode(e) != tc.want || lookups != 0 || calls != 0 {
+				t.Fatalf("ancestor gate %v lookups%d calls%d", e, lookups, calls)
+			}
+		})
+	}
+}
+
+func TestOneCProxyCreationRetainsExactParentAndResumesOnlyCreatedProxy(t *testing.T) {
+	writes, reads := 0, 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		switch r.Method {
+		case "POST":
+			writes++
+			raw, _ := io.ReadAll(r.Body)
+			if r.URL.Path != "/v2/cluster-proxies" || string(raw) != `{"spec":{"clusterId":"cluster-1","networkId":"network-1","publicAccess":false,"subnetId":"subnet-1"}}` {
+				t.Fatalf("create proxy wire %s %s", r.URL, raw)
+			}
+		case "GET":
+			reads++
+			if r.URL.Path != "/v2/cluster-proxies/proxy-1" {
+				t.Fatalf("proxy recovery read %s", r.URL)
+			}
+		default:
+			t.Fatalf("unexpected method%s", r.Method)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecProxyFixture))}, nil
+	}))
+	var spec onec.CreateClusterProxyRequest
+	if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1","publicAccess":false,"networkId":"network-1","subnetId":"subnet-1"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	accepted, err := regional.CreateClusterProxy(context.Background(), cluster, spec, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if accepted.Receipt == nil || accepted.Receipt.Outcome != types.Accepted || len(accepted.Receipt.ResourceRefs) != 2 || accepted.Data.ClusterProxy == nil || accepted.Data.ClusterProxy.Ref == nil || accepted.Data.ClusterProxy.Ref.Parent == nil || *accepted.Data.ClusterProxy.Ref.Parent != cluster {
+		t.Fatalf("created proxy %+v", accepted)
+	}
+	h, err := c.Resume(*accepted.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if h.Resource().Kind != "cluster_proxy" || h.Resource().ID != "proxy-1" || writes != 1 || reads != 0 {
+		t.Fatal("wrong recovery target or implicit I/O")
+	}
+	waited, err := h.Wait(context.Background(), "cluster_proxy.active")
+	if err != nil || !waited.Complete || writes != 1 || reads != 1 || waited.Receipt == nil || waited.Receipt.CallID != accepted.Receipt.CallID {
+		t.Fatalf("proxy wait %+v %v writes%d reads%d", waited, err, writes, reads)
+	}
+}
+
+func TestOneCProxyHandleRejectsUnrelatedExtraReceiptReferences(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecProxyFixture))}, nil
+	}))
+	var spec onec.CreateClusterProxyRequest
+	if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	accepted, err := regional.CreateClusterProxy(context.Background(), cluster, spec, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	receipt := *accepted.Receipt
+	receipt.ResourceRefs = append([]types.ResourceRef{}, receipt.ResourceRefs...)
+	extra := cluster
+	extra.Kind = "datastore"
+	extra.ID = "foreign-store"
+	receipt.ResourceRefs = append(receipt.ResourceRefs, extra)
+	_, err = regional.ClusterProxyHandle(*accepted.Data.ClusterProxy.Ref, &receipt)
+	if types.ErrorCode(err) != types.ScopeMismatch {
+		t.Fatalf("unrelated receipt reference accepted: %v", err)
+	}
+}
+
+func TestOneCUnknownProxyCreationKeepsParentWithoutAdoptingProxy(t *testing.T) {
+	calls := 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(*http.Request) (*http.Response, error) { calls++; return nil, io.ErrUnexpectedEOF }))
+	var spec onec.CreateClusterProxyRequest
+	if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.CreateClusterProxy(context.Background(), cluster, spec, types.CallOptions{})
+	if types.ErrorCode(err) != types.UnknownOutcome || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || out.Receipt.Attempts != 1 || out.Receipt.Recovery != "unavailable" || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != cluster || calls != 1 {
+		t.Fatalf("unknown proxy %+v %v calls%d", out, err, calls)
+	}
+	_, err = c.Resume(*out.Receipt)
+	if types.ErrorCode(err) != types.RecoveryUnavailable || calls != 1 {
+		t.Fatalf("parent substituted for unknown proxy: %v calls%d", err, calls)
+	}
+}
+
+func TestOneCAcceptedProxyIdentitySurvivesIndependentDecodeFailure(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(*http.Request) (*http.Response, error) {
+		payload := `{"clusterProxy":{"id":"proxy-1","projectId":"test-project","createdAt":"bad-time"}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	var spec onec.CreateClusterProxyRequest
+	if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.CreateClusterProxy(context.Background(), cluster, spec, types.CallOptions{})
+	if types.ErrorCode(err) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.Recovery != "resource" {
+		t.Fatalf("accepted proxy %+v %v", out, err)
+	}
+	found := false
+	for _, ref := range out.Receipt.ResourceRefs {
+		if ref.Kind == "cluster_proxy" && ref.ID == "proxy-1" && ref.Parent != nil && *ref.Parent == cluster {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("trustworthy accepted proxy ID lost")
+	}
+}
+
+func TestOneCProxyForeignIdentitiesNeverBecomeReceiptReferences(t *testing.T) {
+	for _, tc := range []struct{ name, old, new string }{
+		{"project", `"projectId":"test-project"`, `"projectId":"foreign-project"`},
+		{"spec-parent", `"clusterId":"cluster-1"`, `"clusterId":"foreign-cluster"`},
+		{"embedded-parent", `"id":"cluster-1"`, `"id":"foreign-cluster"`},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(strings.Replace(onecProxyFixture, tc.old, tc.new, 1)))}, nil
+			}))
+			var spec onec.CreateClusterProxyRequest
+			if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1"}}`), &spec) != nil {
+				t.Fatal("fixture")
+			}
+			out, err := regional.CreateClusterProxy(context.Background(), cluster, spec, types.CallOptions{})
+			if types.ErrorCode(err) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != cluster || out.Receipt.Recovery != "unavailable" {
+				t.Fatalf("foreign proxy identity %+v %v", out, err)
+			}
+		})
+	}
+}
+
+func TestOneCProxyDeletionReceiptAllowsOnlyDeletedGoal(t *testing.T) {
+	writes, reads := 0, 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path != "/v2/cluster-proxies/proxy-1" {
+			t.Fatalf("delete proxy path %s", r.URL)
+		}
+		state := "CLUSTER_PROXY_STATUS_DELETING"
+		switch r.Method {
+		case "DELETE":
+			writes++
+		case "GET":
+			reads++
+			state = "CLUSTER_PROXY_STATUS_DELETED"
+		default:
+			t.Fatalf("unexpected method%s", r.Method)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(strings.Replace(onecProxyFixture, "CLUSTER_PROXY_STATUS_ACTIVE", state, 1)))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "cluster_proxy"
+	ref.ID = "proxy-1"
+	ref.Parent = &cluster
+	accepted, err := regional.DeleteClusterProxy(context.Background(), ref, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if accepted.Receipt == nil || accepted.Receipt.Outcome != types.Accepted || len(accepted.Receipt.ResourceRefs) != 1 {
+		t.Fatalf("delete proxy %+v", accepted)
+	}
+	h, err := c.Resume(*accepted.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = h.Wait(context.Background(), "cluster_proxy.active")
+	if types.ErrorCode(err) != types.CapabilityUnavailable || reads != 0 || writes != 1 {
+		t.Fatalf("wrong proxy deletion goal %v", err)
+	}
+	waited, err := h.Wait(context.Background(), "cluster_proxy.deleted")
+	if err != nil || !waited.Complete || waited.Last == nil || waited.Last.ProviderState != "CLUSTER_PROXY_STATUS_DELETED" || reads != 1 || writes != 1 {
+		t.Fatalf("proxy deleted %+v %v", waited, err)
+	}
+}
+
+func TestOneCProxyListingUsesExplicitClusterFilterAsParent(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/cluster-proxies" || r.URL.Query().Get("clusterId") != "cluster-1" || r.URL.Query().Get("cursor.limit") != "1" {
+			t.Fatalf("proxy list wire %s %s", r.Method, r.URL)
+		}
+		payload := `{"clusterProxies":[{"id":"proxy-1","projectId":"test-project","spec":{"clusterId":"cluster-1","publicAccess":false}}],"cursor":{"next":"50","total":"2"}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	out, err := regional.ListClusterProxies(context.Background(), &cluster, pagination.Options{MaxItems: 1})
+	if types.ErrorCode(err) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.Parent == nil || *out.Items[0].Ref.Parent != cluster || out.NextCursor == nil || out.NextCursor.WireCursor != "50" {
+		t.Fatalf("proxy list %+v %v", out, err)
+	}
+}
+
+func TestOneCProxyCreationValidatesSourceConditionsAndParentBeforeIO(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		want types.Code
+	}{{"public-network", types.InvalidArgument}, {"cluster-id", types.ScopeMismatch}, {"parent-service", types.ScopeMismatch}, {"parent-generation", types.ScopeMismatch}, {"parent-endpoint", types.EndpointUnavailable}} {
+		t.Run(tc.name, func(t *testing.T) {
+			scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+			endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+			lookups, calls := 0, 0
+			c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(ctx context.Context, r types.AuthRequest) (credentials.Material, error) {
+				lookups++
+				return source().Lookup(ctx, r)
+			}), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(*http.Request) (*http.Response, error) { calls++; return nil, context.Canceled })})
+			if e != nil {
+				t.Fatal(e)
+			}
+			p, _ := c.Project("test-project")
+			regional, _ := p.Location("spb", "ru-9")
+			parent := types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "cluster", ID: "cluster-1", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+			var spec onec.CreateClusterProxyRequest
+			if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1"}}`), &spec) != nil {
+				t.Fatal("fixture")
+			}
+			switch tc.name {
+			case "public-network":
+				v := true
+				spec.Spec.PublicAccess = &v
+			case "cluster-id":
+				v := "other-cluster"
+				spec.Spec.ClusterID = &v
+			case "parent-service":
+				parent.Service = "compute"
+			case "parent-generation":
+				parent.APIGeneration = "v1"
+			case "parent-endpoint":
+				parent.EndpointURL += "/foreign"
+			}
+			out, e := regional.OneC().CreateClusterProxy(context.Background(), parent, spec, types.CallOptions{})
+			if types.ErrorCode(e) != tc.want || lookups != 0 || calls != 0 || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.ContractRevision == "" || out.Receipt.Attempts != 0 {
+				t.Fatalf("proxy local gate %+v %v lookups%d calls%d", out, e, lookups, calls)
+			}
+		})
+	}
+}
+
+func TestOneCProxyHandleDoesNotAcceptUndocumentedProviderOperationRef(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecProxyFixture))}, nil
+	}))
+	var spec onec.CreateClusterProxyRequest
+	if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.CreateClusterProxy(context.Background(), cluster, spec, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	receipt := *out.Receipt
+	undeclared := cluster
+	undeclared.Kind = "provider_task"
+	undeclared.ID = "undeclared-task"
+	receipt.ProviderOperationRef = &undeclared
+	_, err = regional.ClusterProxyHandle(*out.Data.ClusterProxy.Ref, &receipt)
+	if types.ErrorCode(err) != types.CapabilityUnavailable {
+		t.Fatalf("undeclared operation accepted: %v", err)
+	}
+}

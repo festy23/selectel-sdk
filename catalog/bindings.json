@@ -4600,7 +4600,8 @@
       "internal/core/auth.go",
       "internal/modelgen/generate.py",
       "catalog/sources/1c-cloud.json",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4628,7 +4629,9 @@
       "internal/core/pagination.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4655,7 +4658,9 @@
       "onec/handles.go",
       "operations/handle.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4685,7 +4690,10 @@
       "onec/lists.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/proxies.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4716,7 +4724,8 @@
       "onec/handles.go",
       "operations/handle.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4746,7 +4755,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4776,7 +4786,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4806,7 +4817,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4836,7 +4848,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4866,7 +4879,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4898,7 +4912,8 @@
       "internal/core/pagination.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4925,7 +4940,8 @@
       "internal/core/reads.go",
       "internal/core/pagination.go",
       "pagination/pagination.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4953,7 +4969,8 @@
       "internal/core/pagination.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4981,7 +4998,8 @@
       "internal/core/pagination.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5008,7 +5026,9 @@
       "internal/core/reads.go",
       "internal/core/pagination.go",
       "pagination/pagination.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5036,7 +5056,8 @@
       "internal/core/pagination.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5063,7 +5084,8 @@
       "onec/handles.go",
       "operations/handle.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5094,7 +5116,8 @@
       "onec/handles.go",
       "operations/handle.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5125,7 +5148,8 @@
       "onec/handles.go",
       "operations/handle.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5156,7 +5180,8 @@
       "onec/handles.go",
       "operations/handle.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5188,7 +5213,8 @@
       "internal/core/pagination.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5216,7 +5242,8 @@
       "internal/core/pagination.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5244,7 +5271,8 @@
       "internal/core/pagination.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5270,7 +5298,8 @@
       "onec/lists.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5300,7 +5329,8 @@
       "onec/lists.go",
       "pagination/pagination.go",
       "onec/datastores.go",
-      "onec/protected.go"
+      "onec/protected.go",
+      "onec/resume.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5309,6 +5339,164 @@
     "evidence_ref": "onec_infrastructure_test.go",
     "verification": "offline",
     "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get",
+    "excluded_variants": [
+      "Terminal cursor semantics absent from pinned primary contract"
+    ]
+  },
+  "cloud_1c.v2.cluster_proxies_network_share_project.list": {
+    "go_method": "onec.Client.GetProjectIDForNetworkSharing",
+    "input_type": "types.CallOptions",
+    "output_type": "onec.GetProjectIDForNetworkSharingResponse",
+    "contract_ref": "contracts/cloud_1c.v2.cluster_proxies_network_share_project.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.cluster_proxies.get": {
+    "go_method": "onec.Client.GetClusterProxy",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.GetClusterProxyResponse",
+    "contract_ref": "contracts/cloud_1c.v2.cluster_proxies.get.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.cluster_proxies.create": {
+    "go_method": "onec.Client.CreateClusterProxy",
+    "input_type": "types.ResourceRef, onec.CreateClusterProxyRequest, types.CallOptions",
+    "output_type": "onec.CreateClusterProxyResponse",
+    "contract_ref": "contracts/cloud_1c.v2.cluster_proxies.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster_proxy.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.cluster_proxies.delete": {
+    "go_method": "onec.Client.DeleteClusterProxy",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.DeleteClusterProxyResponse",
+    "contract_ref": "contracts/cloud_1c.v2.cluster_proxies.delete.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster_proxy.deleted"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.cluster_proxies.list": {
+    "go_method": "onec.Client.ListClusterProxies",
+    "input_type": "*types.ResourceRef, pagination.Options",
+    "output_type": "onec.ProxyListing",
+    "contract_ref": "contracts/cloud_1c.v2.cluster_proxies.list.json",
+    "status": "partial",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/lists.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/proxies.go",
+      "onec/resume.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies/get",
     "excluded_variants": [
       "Terminal cursor semantics absent from pinned primary contract"
     ]

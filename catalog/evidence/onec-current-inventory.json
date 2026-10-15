@@ -226,35 +226,36 @@
       "path": "/cluster-proxies",
       "operation_id": "listClusterProxies",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source"
     },
     {
       "method": "POST",
       "path": "/cluster-proxies",
       "operation_id": "createClusterProxy",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/cluster-proxies/network-share/project",
       "operation_id": "getProjectIDForNetworkSharing",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/cluster-proxies/{id}",
       "operation_id": "getClusterProxy",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "DELETE",
       "path": "/cluster-proxies/{id}",
       "operation_id": "deleteClusterProxy",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",

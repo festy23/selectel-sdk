@@ -1,0 +1,32 @@
+{
+  "operation_id": "cloud_1c.v2.cluster_proxies_network_share_project.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "exact caller regional project",
+    "path": "/cluster-proxies/network-share/project",
+    "query": {}
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed GetProjectIDForNetworkSharingResponse. projectId is the service target for caller-directed network sharing, not the authenticated owner; preserve it as metadata without changing scope or creating ResourceRefs",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

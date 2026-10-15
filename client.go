@@ -107,6 +107,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
 	}
+	if capability.Service == "cloud_1c" {
+		return onec.Bind(c.runtime, receipt.Scope).Resume(receipt)
+	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)
 	}
@@ -195,6 +198,8 @@ func (c *Client) onecHandle(ref types.ResourceRef, receipt *types.Receipt) (*ope
 		return service.ClusterHandle(ref, receipt)
 	case "datastore":
 		return service.DatastoreHandle(ref, receipt)
+	case "cluster_proxy":
+		return service.ClusterProxyHandle(ref, receipt)
 	default:
 		return nil, types.NewError(types.CapabilityUnavailable)
 	}

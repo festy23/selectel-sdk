@@ -1,0 +1,46 @@
+{
+  "operation_id": "cloud_1c.v2.cluster_proxies.delete",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/cluster-proxies/{id}",
+    "method": "DELETE",
+    "body": null,
+    "reference": "Exact caller cluster_proxy ref, optional explicitly supplied cluster parent; scope/generation/endpoint/ancestor validated before I/O"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed DeleteClusterProxyResponse, all identity/ancestor conflicts rejected; exact caller ref remains in accepted receipt on error; provider metadata never manufactures parent",
+    "sensitive_fields": [
+      "clusterProxy.cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "clusterProxy.cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
+    "number_protection": "Source JSON numbers are lexically validated and stored in onec.ProtectedNumber without precision conversion; formatting/JSON/Text redacts, Reveal is explicit"
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "no mutation replay on any unknown response",
+  "pagination": null,
+  "wait": {
+    "goals": [
+      "cluster_proxy.deleted"
+    ],
+    "source_states": "ClusterProxyStatus: DELETED succeeds, ERRORED fails, documented states including ACTIVE pending; no invented 404 deletion proof",
+    "limits": "Only provider state observation; no network-sharing, routing, reachability or application readiness assertion"
+  },
+  "recovery": {
+    "kind": "Exact created proxy ref plus only explicitly recorded matching ancestors; parent-only receipt cannot recover child; no replay/name lookup/list difference/adoption"
+  }
+}
