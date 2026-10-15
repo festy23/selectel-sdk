@@ -139,3 +139,33 @@ OperationContracts; отсутствие операций не делает не
 Срез #74 не завершён: полный canonical mapping всех официальных SDK и protocol
 operations, source drift и проверка public-method coverage требуют дальнейшей
 сверки. [Очередь пробелов](catalog-reconciliation.md) сохраняет владельцев.
+
+## Структурная проверка bindings
+
+`Audit().BindingChecks` перечисляет каждый callable binding с public method,
+файлом Go declaration, SHA-256 его bytes и `Issues`. Генератор разбирает Go AST
+пакетов, указанных bindings, без сети; evidence встроен в
+[public-methods.json](../../../catalog/contracts/public-methods.json).
+Проверяются existence exported receiver/method declaration и разрешимость
+input/output/endpoint/request/response/error/replay/covered-schema references
+в поставляемых JSON artifacts, включая JSON Pointer escapes и array indexes.
+Отсутствие declaration или reference отражается отдельной diagnostic code.
+Порядок checks/issues стабилен, результат не меняет implementation/verification.
+
+Это не доказательство Client reachability, соответствия сигнатуры DTO,
+маршрута/auth, runtime поведения или полного списка remote methods. Go AST
+собирается без build-tag selection; неоднозначные declarations завершают
+генерацию ошибкой, а platform-specific surface требует отдельной сверки.
+Helper declarations могут присутствовать в evidence, но не становятся API
+operations и не считаются отсутствующими remote bindings автоматически.
+
+Для нормализованных native excerpts без OpenAPI responses node (Nova) output
+reference указывает на существующий SDK-owned response mapping, включая empty
+204 contract. Primary source provenance остаётся прежним; schema shape не
+добавляется по догадке. Смена этих четырёх refs меняет contract revisions и
+сбрасывает прежнее verification до повторной offline проверки.
+
+Regression fixture меняет pinned source revision и stale binding локальной
+копии, регенерирует SDK и наблюдает verification/diagnostics через публичный
+Client. Подмены внутренних компонентов и cloud calls нет. Full canonical
+inventory и неразобранные source variants остаются открытыми в #74.

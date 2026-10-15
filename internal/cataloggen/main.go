@@ -87,6 +87,9 @@ func generate() error {
 	} else if !os.IsNotExist(err) {
 		return err
 	}
+	if err := methodEvidence(moduleRoot, dir, bindings); err != nil {
+		return err
+	}
 	var evidence map[string]verification
 	if raw, err := os.ReadFile(filepath.Join(dir, "verification.json")); err == nil {
 		if err := json.Unmarshal(raw, &evidence); err != nil {
@@ -176,8 +179,11 @@ func generate() error {
 					effect = "read"
 				}
 				var sourceOperation struct {
-					Effect  string `json:"x-effect"`
-					Locator string `json:"x-operation-locator"`
+					Effect             string          `json:"x-effect"`
+					Locator            string          `json:"x-operation-locator"`
+					Responses          json.RawMessage `json:"responses"`
+					NativeResponseType string          `json:"native_response_type"`
+					ResponseStatus     *int            `json:"response_status"`
 				}
 				if err := json.Unmarshal(methods[method], &sourceOperation); err != nil {
 					return err
@@ -221,6 +227,11 @@ func generate() error {
 						row["pagination_contract_ref"] = b.ContractRef + "#/pagination"
 					}
 					row["go_method"], row["input_type"], row["output_type"] = b.GoMethod, b.InputType, b.OutputType
+					// Normalized native excerpts carry DTO provenance, not an OpenAPI responses node.
+					// The SDK-owned response mapping is the resolvable output artifact in that case.
+					if len(sourceOperation.Responses) == 0 && (sourceOperation.NativeResponseType != "" || sourceOperation.ResponseStatus != nil) {
+						row["output_schema_ref"] = b.ContractRef + "#/response"
+					}
 					row["endpoint_recipe_ref"], row["request_binding_ref"], row["response_binding_ref"], row["error_binding_ref"], row["replay_policy_ref"] = b.ContractRef+"#/endpoint", b.ContractRef+"#/request", b.ContractRef+"#/response", b.ContractRef+"#/errors", b.ContractRef+"#/retry"
 					row["parameter_support"] = map[string]any{"covered_schema_ref": pointer, "excluded_variants": []string{}}
 					if b.CoveredSchemaRef != "" {

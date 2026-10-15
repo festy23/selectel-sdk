@@ -17,6 +17,7 @@ func main() {
 	}
 	fmt.Printf("catalog=ok operations=%d cloud_requests=0\n", len(operations))
 	audit := local.Audit()
+	fmt.Printf("binding_checks=%d (declaration/reference validation only)\n", len(audit.BindingChecks))
 	for _, source := range audit.Sources {
 		fmt.Printf("source=%s revision=%s pinned_operations=%d implemented=%d partial=%d missing_bindings=%d\n", source.URI, source.Revision, source.Documented, source.Implemented, source.Partial, len(source.UnimplementedIDs))
 	}

@@ -89,3 +89,42 @@ func TestCatalogAuditDoesNotDropDiscoveryPendingDenominator(t *testing.T) {
 		t.Fatal("discovery-pending KMS omitted from unknown denominator")
 	}
 }
+
+func TestCatalogAuditChecksBoundMethodDeclarationAndSchema(t *testing.T) {
+	c, err := sdk.New(sdk.Config{AccountID: "audit-account", Credentials: source()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	found := false
+	for _, check := range c.Catalog().Audit().BindingChecks {
+		if check.OperationID != "compute.v2_1.servers.create" {
+			continue
+		}
+		found = true
+		if check.GoMethod != "compute.Servers.Create" || check.MethodFile != "compute/servers.go" || len(check.MethodRevision) != 64 || len(check.Issues) != 0 {
+			t.Fatalf("binding declaration/schema unresolved: %+v", check)
+		}
+	}
+	if !found {
+		t.Fatal("bound operation omitted from structural audit")
+	}
+}
+
+func TestCatalogAuditChecksEveryCallableMappingWithoutPromotingCoverage(t *testing.T) {
+	c, err := sdk.New(sdk.Config{AccountID: "audit-account", Credentials: source()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	report := c.Catalog().Audit()
+	if len(report.BindingChecks) != 64 {
+		t.Fatalf("callable binding audit lost records: %d", len(report.BindingChecks))
+	}
+	for _, check := range report.BindingChecks {
+		if len(check.Issues) != 0 {
+			t.Errorf("%s: %v", check.OperationID, check.Issues)
+		}
+	}
+	if report.InventoryComplete || report.CoverageRatio != nil {
+		t.Fatal("structural checks promoted unknown coverage")
+	}
+}

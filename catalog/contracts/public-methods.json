@@ -1,0 +1,694 @@
+{
+  "audit.Client.Iterate": {
+    "file": "audit/client.go",
+    "revision": "de9a55ac4633e8e3855a547970bae7574ae56c6d9905dd0cbb96d9c20e0cba48"
+  },
+  "audit.Client.ListPage": {
+    "file": "audit/client.go",
+    "revision": "de9a55ac4633e8e3855a547970bae7574ae56c6d9905dd0cbb96d9c20e0cba48"
+  },
+  "audit.Client.Query": {
+    "file": "audit/client.go",
+    "revision": "de9a55ac4633e8e3855a547970bae7574ae56c6d9905dd0cbb96d9c20e0cba48"
+  },
+  "audit.Event.UnmarshalJSON": {
+    "file": "audit/types_generated.go",
+    "revision": "7dca4352afb602b8f59d834bcc69d70d573c02fcf229d7f2d9a9921447bfd132"
+  },
+  "audit.Event.Validate": {
+    "file": "audit/types_generated.go",
+    "revision": "7dca4352afb602b8f59d834bcc69d70d573c02fcf229d7f2d9a9921447bfd132"
+  },
+  "audit.RequestResponse.Validate": {
+    "file": "audit/types_generated.go",
+    "revision": "7dca4352afb602b8f59d834bcc69d70d573c02fcf229d7f2d9a9921447bfd132"
+  },
+  "audit.ResourceResponse.Validate": {
+    "file": "audit/types_generated.go",
+    "revision": "7dca4352afb602b8f59d834bcc69d70d573c02fcf229d7f2d9a9921447bfd132"
+  },
+  "audit.SubjectResponse.Validate": {
+    "file": "audit/types_generated.go",
+    "revision": "7dca4352afb602b8f59d834bcc69d70d573c02fcf229d7f2d9a9921447bfd132"
+  },
+  "billing.Client.Balances": {
+    "file": "billing/client.go",
+    "revision": "097666df4b4d6d4bd79afec598d1e4393ab6dccc2f4566ae5baa26fef3f4450f"
+  },
+  "billing.Client.Consumption": {
+    "file": "billing/client.go",
+    "revision": "097666df4b4d6d4bd79afec598d1e4393ab6dccc2f4566ae5baa26fef3f4450f"
+  },
+  "billing.Client.Summary": {
+    "file": "billing/client.go",
+    "revision": "097666df4b4d6d4bd79afec598d1e4393ab6dccc2f4566ae5baa26fef3f4450f"
+  },
+  "compute.CreateRequest.Format": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.CreateRequest.MarshalJSON": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.Servers.Collect": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.Servers.Create": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.Servers.CreateAndWait": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.Servers.Delete": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.Servers.Get": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.Servers.Handle": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.Servers.Iterate": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "compute.Servers.ListPage": {
+    "file": "compute/servers.go",
+    "revision": "523ce7f5d9e6e6f86422744c7a33a6307c3f4ce1666c4a8625fcd84f8d9b1181"
+  },
+  "databases.Datastore.UnmarshalJSON": {
+    "file": "databases/types_generated.go",
+    "revision": "0dff716e2253f954d837279e61bdb1ecf64ccd74e98b038308587118716cee30"
+  },
+  "databases.Datastore.Validate": {
+    "file": "databases/types_generated.go",
+    "revision": "0dff716e2253f954d837279e61bdb1ecf64ccd74e98b038308587118716cee30"
+  },
+  "databases.DatastoreFirewallRule.Validate": {
+    "file": "databases/types_generated.go",
+    "revision": "0dff716e2253f954d837279e61bdb1ecf64ccd74e98b038308587118716cee30"
+  },
+  "databases.DatastoreFlavor.Validate": {
+    "file": "databases/types_generated.go",
+    "revision": "0dff716e2253f954d837279e61bdb1ecf64ccd74e98b038308587118716cee30"
+  },
+  "databases.DatastoreInstance.Validate": {
+    "file": "databases/types_generated.go",
+    "revision": "0dff716e2253f954d837279e61bdb1ecf64ccd74e98b038308587118716cee30"
+  },
+  "databases.DatastoreLogPlatform.Validate": {
+    "file": "databases/types_generated.go",
+    "revision": "0dff716e2253f954d837279e61bdb1ecf64ccd74e98b038308587118716cee30"
+  },
+  "databases.DatastorePooler.Validate": {
+    "file": "databases/types_generated.go",
+    "revision": "0dff716e2253f954d837279e61bdb1ecf64ccd74e98b038308587118716cee30"
+  },
+  "databases.Datastores.Collect": {
+    "file": "databases/client.go",
+    "revision": "fad0431cc1744e4ffe0142c54ba9d1ad7c35148e9fda907a8d8f14c913e5f324"
+  },
+  "databases.Datastores.Iterate": {
+    "file": "databases/client.go",
+    "revision": "fad0431cc1744e4ffe0142c54ba9d1ad7c35148e9fda907a8d8f14c913e5f324"
+  },
+  "databases.Datastores.ListPage": {
+    "file": "databases/client.go",
+    "revision": "fad0431cc1744e4ffe0142c54ba9d1ad7c35148e9fda907a8d8f14c913e5f324"
+  },
+  "logs.Client.Events": {
+    "file": "logs/client.go",
+    "revision": "a846b41e47132b3ad95d24fb7177e592b74f4bc73a15c7570c62ed667d49eb88"
+  },
+  "logs.Client.Filter": {
+    "file": "logs/client.go",
+    "revision": "a846b41e47132b3ad95d24fb7177e592b74f4bc73a15c7570c62ed667d49eb88"
+  },
+  "logs.Client.Groups": {
+    "file": "logs/client.go",
+    "revision": "a846b41e47132b3ad95d24fb7177e592b74f4bc73a15c7570c62ed667d49eb88"
+  },
+  "logs.Client.IterateEvents": {
+    "file": "logs/client.go",
+    "revision": "a846b41e47132b3ad95d24fb7177e592b74f4bc73a15c7570c62ed667d49eb88"
+  },
+  "logs.Client.IterateFilter": {
+    "file": "logs/client.go",
+    "revision": "a846b41e47132b3ad95d24fb7177e592b74f4bc73a15c7570c62ed667d49eb88"
+  },
+  "logs.Client.IterateGroups": {
+    "file": "logs/client.go",
+    "revision": "a846b41e47132b3ad95d24fb7177e592b74f4bc73a15c7570c62ed667d49eb88"
+  },
+  "logs.Client.IterateStreams": {
+    "file": "logs/client.go",
+    "revision": "a846b41e47132b3ad95d24fb7177e592b74f4bc73a15c7570c62ed667d49eb88"
+  },
+  "logs.Client.Streams": {
+    "file": "logs/client.go",
+    "revision": "a846b41e47132b3ad95d24fb7177e592b74f4bc73a15c7570c62ed667d49eb88"
+  },
+  "metrics.Client.Query": {
+    "file": "metrics/client.go",
+    "revision": "5ad4e641a548e047b46c21d15249ad9f2bb14cf16ea4f6afb3f38bee50f6710e"
+  },
+  "metrics.Client.QueryRange": {
+    "file": "metrics/client.go",
+    "revision": "5ad4e641a548e047b46c21d15249ad9f2bb14cf16ea4f6afb3f38bee50f6710e"
+  },
+  "metrics.Client.Scrape": {
+    "file": "metrics/scrape.go",
+    "revision": "9635ee5afac69e981850f395bf75d0040f8f6a51ef7bc1a312b287d0294e2a3b"
+  },
+  "mks.AdmissionControllersList.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.AdmissionControllersList.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.AuditLogs.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.AvailableAdmissionControllers.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.AvailableFeatureGates.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.CNICiliumSettings.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.CloudNodegroupConfig.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Cluster.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Cluster.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.ClusterCreateSpec.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.ClusterCreateSpec.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.ClusterUpdateSpec.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.ClusterUpdateSpec.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Clusters.Collect": {
+    "file": "mks/client.go",
+    "revision": "db1a1d3ba2a6f7e6dcdf6a50ee16bfa7eaf3554bdf873ee187bee655ed8aea6f"
+  },
+  "mks.Clusters.Create": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.CreateAndWait": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.Delete": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.Get": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.Handle": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.Iterate": {
+    "file": "mks/client.go",
+    "revision": "db1a1d3ba2a6f7e6dcdf6a50ee16bfa7eaf3554bdf873ee187bee655ed8aea6f"
+  },
+  "mks.Clusters.Kubeconfig": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.ListPage": {
+    "file": "mks/client.go",
+    "revision": "db1a1d3ba2a6f7e6dcdf6a50ee16bfa7eaf3554bdf873ee187bee655ed8aea6f"
+  },
+  "mks.Clusters.Replace": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.RotateCertificates": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.Update": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.UpgradeMinorVersion": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Clusters.UpgradePatchVersion": {
+    "file": "mks/clusters.go",
+    "revision": "f12c998d2451ee0fecc76a2533b8204b0acdfac9b11cf021e9c0c907671cb0a8"
+  },
+  "mks.Configuration.AdmissionControllers": {
+    "file": "mks/integrations.go",
+    "revision": "66e8e2c02d24eca02cee5862fce7c888ddcb6aa8607e371bf0e3da3be6bf6c7b"
+  },
+  "mks.Configuration.FeatureGates": {
+    "file": "mks/integrations.go",
+    "revision": "66e8e2c02d24eca02cee5862fce7c888ddcb6aa8607e371bf0e3da3be6bf6c7b"
+  },
+  "mks.Configuration.KubernetesVersions": {
+    "file": "mks/integrations.go",
+    "revision": "66e8e2c02d24eca02cee5862fce7c888ddcb6aa8607e371bf0e3da3be6bf6c7b"
+  },
+  "mks.DedicatedNodegroupConfig.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.DetailedCluster.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.DetailedCluster.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.DetailedNodegroup.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.DetailedNodegroup.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.FeatureGatesList.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.FeatureGatesList.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.KubeVersion.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.KubeVersionsList.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.KubeVersionsList.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.KubernetesOptions.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Node.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Node.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Nodegroup.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Nodegroup.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupAdditionalInfo.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupCreateSpec.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupCreateSpec.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupListItem.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupListItem.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupResizeSpec.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupResizeSpec.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupTaint.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupUpdateSpec.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.NodegroupUpdateSpec.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Nodegroups.Collect": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodegroups.Create": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodegroups.Delete": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodegroups.Get": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodegroups.Handle": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodegroups.Iterate": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodegroups.ListPage": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodegroups.Replace": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodegroups.Resize": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodes.Delete": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodes.Get": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodes.Handle": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.Nodes.Reinstall": {
+    "file": "mks/nodegroups.go",
+    "revision": "a3b0203bf0210e4c08bddefe110e5f7fbe3f2d383294eb6ecaa5eaa22ecea926"
+  },
+  "mks.OIDC.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.RegistriesIntegration.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.RegistriesIntegration.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.RegistryIntegrationCreateSpec.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.RegistryIntegrationCreateSpec.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.RegistryIntegrationUpdateSpec.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.RegistryIntegrationUpdateSpec.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.RegistryIntegrations.Create": {
+    "file": "mks/integrations.go",
+    "revision": "66e8e2c02d24eca02cee5862fce7c888ddcb6aa8607e371bf0e3da3be6bf6c7b"
+  },
+  "mks.RegistryIntegrations.Delete": {
+    "file": "mks/integrations.go",
+    "revision": "66e8e2c02d24eca02cee5862fce7c888ddcb6aa8607e371bf0e3da3be6bf6c7b"
+  },
+  "mks.RegistryIntegrations.DeleteAll": {
+    "file": "mks/integrations.go",
+    "revision": "66e8e2c02d24eca02cee5862fce7c888ddcb6aa8607e371bf0e3da3be6bf6c7b"
+  },
+  "mks.RegistryIntegrations.Get": {
+    "file": "mks/integrations.go",
+    "revision": "66e8e2c02d24eca02cee5862fce7c888ddcb6aa8607e371bf0e3da3be6bf6c7b"
+  },
+  "mks.RegistryIntegrations.Replace": {
+    "file": "mks/integrations.go",
+    "revision": "66e8e2c02d24eca02cee5862fce7c888ddcb6aa8607e371bf0e3da3be6bf6c7b"
+  },
+  "mks.RegistryWithMeta.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Task.UnmarshalJSON": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Task.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.TaskErrorDetails.Validate": {
+    "file": "mks/types_generated.go",
+    "revision": "1bc3de76594f1dd5aa410288f3c88ec311694e84557e0e3e450b6129c3207b73"
+  },
+  "mks.Tasks.Collect": {
+    "file": "mks/tasks.go",
+    "revision": "7244e9676bd7c6f720845feeba756b17db5ba88b1dd4d91fa7e87e83ca1eee52"
+  },
+  "mks.Tasks.Get": {
+    "file": "mks/tasks.go",
+    "revision": "7244e9676bd7c6f720845feeba756b17db5ba88b1dd4d91fa7e87e83ca1eee52"
+  },
+  "mks.Tasks.Handle": {
+    "file": "mks/tasks.go",
+    "revision": "7244e9676bd7c6f720845feeba756b17db5ba88b1dd4d91fa7e87e83ca1eee52"
+  },
+  "mks.Tasks.Iterate": {
+    "file": "mks/tasks.go",
+    "revision": "7244e9676bd7c6f720845feeba756b17db5ba88b1dd4d91fa7e87e83ca1eee52"
+  },
+  "mks.Tasks.ListPage": {
+    "file": "mks/tasks.go",
+    "revision": "7244e9676bd7c6f720845feeba756b17db5ba88b1dd4d91fa7e87e83ca1eee52"
+  },
+  "projects.Client.Collect": {
+    "file": "projects/client.go",
+    "revision": "ddb84ccb413fdb2fcadcbee19124c9b514da555c996fcee47519eec12fc1450d"
+  },
+  "projects.Client.Create": {
+    "file": "projects/resources.go",
+    "revision": "063b3f707d4b8e540116b25aa7f6a3173298e47933eb81c7c3c17960f2bc0524"
+  },
+  "projects.Client.Delete": {
+    "file": "projects/resources.go",
+    "revision": "063b3f707d4b8e540116b25aa7f6a3173298e47933eb81c7c3c17960f2bc0524"
+  },
+  "projects.Client.Get": {
+    "file": "projects/resources.go",
+    "revision": "063b3f707d4b8e540116b25aa7f6a3173298e47933eb81c7c3c17960f2bc0524"
+  },
+  "projects.Client.Iterate": {
+    "file": "projects/client.go",
+    "revision": "ddb84ccb413fdb2fcadcbee19124c9b514da555c996fcee47519eec12fc1450d"
+  },
+  "projects.Client.ListPage": {
+    "file": "projects/client.go",
+    "revision": "ddb84ccb413fdb2fcadcbee19124c9b514da555c996fcee47519eec12fc1450d"
+  },
+  "projects.Client.Update": {
+    "file": "projects/resources.go",
+    "revision": "063b3f707d4b8e540116b25aa7f6a3173298e47933eb81c7c3c17960f2bc0524"
+  },
+  "projects.CreatedProject.UnmarshalJSON": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.CreatedProject.Validate": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.DetailedProject.UnmarshalJSON": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.DetailedProject.Validate": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.DetailedProjectTheme.Validate": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.Project.UnmarshalJSON": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.Project.Validate": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.QuotaResponse.Validate": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.UpdatedProject.UnmarshalJSON": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.UpdatedProject.Validate": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "projects.UpdatedProjectTheme.Validate": {
+    "file": "projects/types_generated.go",
+    "revision": "ab8b7abdc0bbaa8f2d78cf60779cbe44029a786dfaf61c18ebd0d6fb353c1b88"
+  },
+  "registry.Registries.Collect": {
+    "file": "registry/client.go",
+    "revision": "2b428ad5cf13e3858c1b032cc3c4cdc8f82b15fe9577fb02afe9f626eaedf1c4"
+  },
+  "registry.Registries.Iterate": {
+    "file": "registry/client.go",
+    "revision": "2b428ad5cf13e3858c1b032cc3c4cdc8f82b15fe9577fb02afe9f626eaedf1c4"
+  },
+  "registry.Registries.ListPage": {
+    "file": "registry/client.go",
+    "revision": "2b428ad5cf13e3858c1b032cc3c4cdc8f82b15fe9577fb02afe9f626eaedf1c4"
+  },
+  "registry.Registry.UnmarshalJSON": {
+    "file": "registry/types_generated.go",
+    "revision": "94ac396c17ab53a36821040ab249cbfb2ec4e8e2b1ea55f3755fe184f515bf5b"
+  },
+  "registry.Registry.Validate": {
+    "file": "registry/types_generated.go",
+    "revision": "94ac396c17ab53a36821040ab249cbfb2ec4e8e2b1ea55f3755fe184f515bf5b"
+  },
+  "registry.V1Registries.Collect": {
+    "file": "registry/v1.go",
+    "revision": "0d5c82de48300f7e46ca033cb3fc408b8f2d3df0d330e802814448f269d564a6"
+  },
+  "registry.V1Registries.Create": {
+    "file": "registry/v1.go",
+    "revision": "0d5c82de48300f7e46ca033cb3fc408b8f2d3df0d330e802814448f269d564a6"
+  },
+  "registry.V1Registries.Delete": {
+    "file": "registry/v1.go",
+    "revision": "0d5c82de48300f7e46ca033cb3fc408b8f2d3df0d330e802814448f269d564a6"
+  },
+  "registry.V1Registries.Get": {
+    "file": "registry/v1.go",
+    "revision": "0d5c82de48300f7e46ca033cb3fc408b8f2d3df0d330e802814448f269d564a6"
+  },
+  "registry.V1Registries.Iterate": {
+    "file": "registry/v1.go",
+    "revision": "0d5c82de48300f7e46ca033cb3fc408b8f2d3df0d330e802814448f269d564a6"
+  },
+  "registry.V1Registries.ListPage": {
+    "file": "registry/v1.go",
+    "revision": "0d5c82de48300f7e46ca033cb3fc408b8f2d3df0d330e802814448f269d564a6"
+  },
+  "registry.V1Registry.UnmarshalJSON": {
+    "file": "registry/v1_types_generated.go",
+    "revision": "b7746ac6549ba21407d6bc41ebe26e51ece46a28a33ab81b083abaec80231676"
+  },
+  "registry.V1Registry.Validate": {
+    "file": "registry/v1_types_generated.go",
+    "revision": "b7746ac6549ba21407d6bc41ebe26e51ece46a28a33ab81b083abaec80231676"
+  },
+  "secrets.Client.ActivateVersion": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.Create": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.CreateVersion": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.Delete": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.GetMetadata": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.IterateMetadata": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.ListMetadata": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.ListPage": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.ReadValue": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.ReadVersion": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  },
+  "secrets.Client.Update": {
+    "file": "secrets/client.go",
+    "revision": "d3ea7a1437feedb85327b432eef0b0167d6bd68979e92f3c749b046805ef6e41"
+  }
+}
