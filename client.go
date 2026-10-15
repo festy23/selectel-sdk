@@ -21,6 +21,7 @@ import (
 	"github.com/festy23/selectel-sdk/registry"
 	"github.com/festy23/selectel-sdk/secrets"
 	"github.com/festy23/selectel-sdk/types"
+	"github.com/festy23/selectel-sdk/vmware"
 )
 
 type Client struct {
@@ -65,8 +66,9 @@ func (r RegionalClient) MKS() *mks.Client { return mks.Bind(r.client.runtime, r.
 func (r RegionalClient) Databases() *databases.Client {
 	return databases.Bind(r.client.runtime, r.client.scope)
 }
-func (r RegionalClient) Scope() types.Scope { return r.client.scope }
-func (r RegionalClient) Logs() *logs.Client { return logs.Bind(r.client.runtime, r.client.scope) }
+func (r RegionalClient) Scope() types.Scope     { return r.client.scope }
+func (r RegionalClient) Logs() *logs.Client     { return logs.Bind(r.client.runtime, r.client.scope) }
+func (r RegionalClient) VMware() *vmware.Client { return vmware.Bind(r.client.runtime, r.client.scope) }
 func (r RegionalClient) Metrics() *metrics.Client {
 	return metrics.Bind(r.client.runtime, r.client.scope)
 }

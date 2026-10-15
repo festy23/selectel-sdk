@@ -1,0 +1,22 @@
+{
+  "inventory_complete": false,
+  "coverage_ratio": null,
+  "source_uris": [
+    "https://docs.selectel.ru/api/vmware/",
+    "https://developer.broadcom.com/xapis/vmware-cloud-director-api/36.3/"
+  ],
+  "api_version": "36.3 is the Selectel example version; deployed current non-deprecated versions must be explicitly observed, never assumed",
+  "selectel_examples": [
+    "GET /api/versions",
+    "POST /cloudapi/1.0.0/sessions/",
+    "DELETE /cloudapi/1.0.0/sessions/",
+    "GET /api/org/{orgId}",
+    "GET /api/query?type=orgVdc",
+    "GET /api/query?type=vm&fields=name,containerName&filter=isVAppTemplate==false",
+    "POST /api/vApp/vm-{vmId}/power/action/powerOn",
+    "POST /api/vApp/vm-{vmId}/power/action/powerOff"
+  ],
+  "confirmed_binding": "vmware.v36_3.versions.list",
+  "remaining": "Seven example operation contracts plus task/VM reads require exact version schema reconciliation; full Selectel-supported vApp/VM/network/storage inventory is unknown. Upstream reference explicitly includes tenant-inaccessible APIs; never use vendor count as deployment denominator. #68 remains owner; no full/closure claim.",
+  "raw_schema_limitation": "The version-specific versions.xsd link resolves to documentation shell; direct urllib vendor docs request returned403 while indexed primary reference is readable. Normalized schema is SDK-owned transcription, not claimed vendor OpenAPI/XSD download."
+}

@@ -1,0 +1,177 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Selectel-confirmed VMware entry operations, SDK-owned normalized contract",
+    "version": "v36_3"
+  },
+  "x-source-uri": "https://docs.selectel.ru/api/vmware/",
+  "x-source-uris": [
+    "https://docs.selectel.ru/api/vmware/",
+    "https://developer.broadcom.com/xapis/vmware-cloud-director-api/36.3/doc/types/SupportedVersionsType.html",
+    "https://developer.broadcom.com/xapis/vmware-cloud-director-api/36.3/doc/operations/GET-SupportedVersions.html"
+  ],
+  "x-inventory-complete": false,
+  "paths": {
+    "/api/versions": {
+      "get": {
+        "operationId": "versions",
+        "responses": {
+          "200": {
+            "description": "Confirmed for versions only; other operation response contracts require vendor version reconciliation",
+            "schema": {
+              "$ref": "#/definitions/SupportedVersions"
+            }
+          }
+        },
+        "x-operation-locator": "GET /api/versions"
+      }
+    },
+    "/cloudapi/1.0.0/sessions/": {
+      "post": {
+        "operationId": "login",
+        "responses": {
+          "default": {
+            "description": "Response contract not reconciled; no callable binding claimed"
+          }
+        },
+        "x-operation-locator": "POST /cloudapi/1.0.0/sessions/"
+      },
+      "delete": {
+        "operationId": "logout",
+        "responses": {
+          "default": {
+            "description": "Response contract not reconciled; no callable binding claimed"
+          }
+        },
+        "x-operation-locator": "DELETE /cloudapi/1.0.0/sessions/"
+      }
+    },
+    "/api/org/{orgId}": {
+      "get": {
+        "operationId": "organization",
+        "responses": {
+          "default": {
+            "description": "Response contract not reconciled; no callable binding claimed"
+          }
+        },
+        "x-operation-locator": "GET /api/org/{orgId}"
+      }
+    },
+    "/api/query?type=orgVdc": {
+      "get": {
+        "operationId": "vdc_query",
+        "responses": {
+          "default": {
+            "description": "Response contract not reconciled; no callable binding claimed"
+          }
+        },
+        "x-operation-locator": "GET /api/query?type=orgVdc"
+      }
+    },
+    "/api/query?type=vm&fields=name,containerName&filter=isVAppTemplate==false": {
+      "get": {
+        "operationId": "vm_query",
+        "responses": {
+          "default": {
+            "description": "Response contract not reconciled; no callable binding claimed"
+          }
+        },
+        "x-operation-locator": "GET /api/query?type=vm&fields=name,containerName&filter=isVAppTemplate==false"
+      }
+    },
+    "/api/vApp/vm-{vmId}/power/action/powerOn": {
+      "post": {
+        "operationId": "power_on",
+        "responses": {
+          "default": {
+            "description": "Response contract not reconciled; no callable binding claimed"
+          }
+        },
+        "x-operation-locator": "POST /api/vApp/vm-{vmId}/power/action/powerOn"
+      }
+    },
+    "/api/vApp/vm-{vmId}/power/action/powerOff": {
+      "post": {
+        "operationId": "power_off",
+        "responses": {
+          "default": {
+            "description": "Response contract not reconciled; no callable binding claimed"
+          }
+        },
+        "x-operation-locator": "POST /api/vApp/vm-{vmId}/power/action/powerOff"
+      }
+    }
+  },
+  "definitions": {
+    "MediaTypeMapping": {
+      "type": "object",
+      "properties": {
+        "mediaType": {
+          "type": "string",
+          "x-xml": "MediaType"
+        },
+        "complexTypeName": {
+          "type": "string",
+          "x-xml": "ComplexTypeName"
+        },
+        "schemaLocation": {
+          "type": "string",
+          "x-xml": "SchemaLocation"
+        }
+      }
+    },
+    "VersionInfo": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "x-xml": "Version"
+        },
+        "loginUrl": {
+          "type": "string",
+          "x-xml": "LoginUrl"
+        },
+        "providerLoginUrl": {
+          "type": "string",
+          "x-xml": "ProviderLoginUrl"
+        },
+        "deprecated": {
+          "type": "boolean",
+          "x-xml": "deprecated,attr"
+        },
+        "mediaTypeMapping": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MediaTypeMapping"
+          },
+          "x-xml": "MediaTypeMapping"
+        }
+      }
+    },
+    "SupportedVersions": {
+      "type": "object",
+      "x-xml": "SupportedVersions",
+      "x-namespace": "http://www.vmware.com/vcloud/versions",
+      "properties": {
+        "versionInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VersionInfo"
+          },
+          "x-xml": "VersionInfo"
+        },
+        "alphaVersion": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VersionInfo"
+          },
+          "x-xml": "AlphaVersion"
+        },
+        "schemaRoot": {
+          "type": "string",
+          "x-xml": "SchemaRoot"
+        }
+      }
+    }
+  }
+}

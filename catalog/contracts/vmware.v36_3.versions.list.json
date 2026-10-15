@@ -1,0 +1,34 @@
+{
+  "operation_id": "vmware.v36_3.versions.list",
+  "effect": "read",
+  "endpoint": {
+    "selection": "Exact explicit vmware/v36_3 scoped override; official Selectel region hosts are vcd.selectel.ru (SPB), vcd-msk.selectel.ru (MSK); no arbitrary LoginUrl follow-up",
+    "scope": "Explicit account/project/region; pool optional and never inferred; ownership not asserted by anonymous discovery",
+    "redirects": "reject"
+  },
+  "request": {
+    "path": "/api/versions",
+    "method": "GET",
+    "auth": "Compiled immutable anonymous discovery exception for this exact operation only; ProtocolSpecific remains gated elsewhere; no CredentialSource lookup or credentials sent",
+    "headers": {
+      "Accept": "text/xml"
+    }
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Source-bound generated SupportedVersions with VersionInfo/AlphaVersion/MediaTypeMapping/SchemaRoot; deprecated optional bool preserved, no active-version default; no implicit choice or authentication from returned URLs",
+    "sensitive_fields": [],
+    "xml": "Exact versions namespace at all elements, compiled children/attributes only, duplicate singleton fields rejected; no DTD/external entities or schemaLocation fetch; bounded core body size"
+  },
+  "errors": {
+    "mapping": "Shared bounded status/error handling; raw provider messages omitted; malformed XML/foreign namespaces/duplicate versions ProtocolError"
+  },
+  "retry": "Shared bounded safe read retry/context/CallTimeout; no auth retry material or alternate endpoint",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}
