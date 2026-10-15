@@ -1,0 +1,105 @@
+{
+  "operation_id": "object_storage.v2.log_exports.list",
+  "source_revision": "892af4f017c5e21aa9cb2647ce817700e43e675fd27096e7b2307f2104694d4c",
+  "source_operation": "logsList",
+  "method": "GET",
+  "path": "/v2/logs",
+  "auth": {
+    "mapping": "IAM project view; provider storage account belongs to selected project, not account IAM scope",
+    "schema_security": null,
+    "limitation": "authenticated SDK view only; omitted source security is not treated as proof of anonymous availability"
+  },
+  "endpoint": {
+    "mapping": "published Object Storage regional map; exact ref pins endpoint, no S3/Swift ref conversion",
+    "urls": {
+      "ru-1": "https://api.ru-1.storage.selcloud.ru",
+      "ru-3": "https://api.ru-3.storage.selcloud.ru",
+      "ru-6": "https://api.ru-6.storage.selcloud.ru",
+      "ru-7": "https://api.ru-7.storage.selcloud.ru",
+      "gis-1": "https://api.gis-1.storage.selcloud.ru",
+      "uz-2": "https://api.uz-2.srvstorage.uz",
+      "kz-1": "https://api.kz-1.srvstorage.uz"
+    },
+    "source": "https://docs.selectel.ru/api/urls/",
+    "snapshot_sha256": "72250b47c599ed2b734198b4b46b4c85517d4331c5324e668aef52149aef64b1"
+  },
+  "request": {
+    "mapping": "all generated source DTO properties; omitted/null/false/empty/integer precision preserved; protected filter object revealed only at typed request boundary",
+    "parameters": [
+      {
+        "description": "Limit",
+        "format": "uint64",
+        "in": "query",
+        "name": "limit",
+        "type": "integer"
+      },
+      {
+        "description": "Offset",
+        "format": "uint64",
+        "in": "query",
+        "name": "offset",
+        "type": "integer"
+      },
+      {
+        "description": "OrderBy",
+        "in": "query",
+        "name": "order_by",
+        "type": "string"
+      }
+    ],
+    "path_variables": [],
+    "body_models": [],
+    "defaults": "none invented; log iteration explicitly starts requested offset or zero"
+  },
+  "response": {
+    "mapping": "all source-defined fields in generated typed DTO; schemaless filters protected, provider timestamps raw; task identity extracted before full decode and checked against exact ref",
+    "source_responses": [
+      {
+        "$ref": "#/responses/LogsTasksListResponse"
+      },
+      {
+        "$ref": "#/responses/BadRequestError"
+      },
+      {
+        "$ref": "#/responses/UnauthorizedError"
+      },
+      {
+        "$ref": "#/responses/ForbiddenError"
+      },
+      {
+        "$ref": "#/responses/HttpError"
+      }
+    ],
+    "sensitive_fields": [
+      "task.data.filters"
+    ]
+  },
+  "errors": {
+    "mapping": "shared HTTP classification; source-documented 400/422 input failures override to invalid_argument, explicit 4xx source statuses are rejected proofs; provider messages not exposed",
+    "source": {
+      "200": {
+        "$ref": "#/responses/LogsTasksListResponse"
+      },
+      "400": {
+        "$ref": "#/responses/BadRequestError"
+      },
+      "401": {
+        "$ref": "#/responses/UnauthorizedError"
+      },
+      "403": {
+        "$ref": "#/responses/ForbiddenError"
+      },
+      "default": {
+        "$ref": "#/responses/HttpError"
+      }
+    }
+  },
+  "retry": "mutations never replay; safe GET retries remain bounded by common runtime",
+  "wait": "unavailable: no documented log export state enum/readiness predicate; exact Status is presence observation only",
+  "recovery": "known outcomes conclusive without I/O; unknown without task ID unavailable; known exact task GET remains indeterminate, never replay/list-name adoption",
+  "pagination": {
+    "mapping": "limit/uint64 offset/order_by; exact offset advances by wire item count; short page is not end, empty tasks array confirms end for best-effort traversal",
+    "limits": "SDK wire cap1000, explicit collection budgets and resumable offset/skip cursor; no snapshot guarantee",
+    "scope": "cursor includes project/location/contract revision/filter/initial offset and endpoint URL"
+  }
+}

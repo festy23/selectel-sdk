@@ -1,0 +1,109 @@
+{
+  "operation_id": "object_storage.v2.container_domains.delete",
+  "source_revision": "892af4f017c5e21aa9cb2647ce817700e43e675fd27096e7b2307f2104694d4c",
+  "source_operation": "containersDomainsDelete",
+  "method": "DELETE",
+  "path": "/v2/containers/{container_name}/domains",
+  "auth": {
+    "mapping": "IAM project view; provider storage account belongs to selected project, not account IAM scope",
+    "schema_security": [
+      {
+        "iam_token_project_scoped": []
+      }
+    ],
+    "limitation": null
+  },
+  "endpoint": {
+    "mapping": "published Object Storage regional map; exact ref pins endpoint, no S3/Swift ref conversion",
+    "urls": {
+      "ru-1": "https://api.ru-1.storage.selcloud.ru",
+      "ru-3": "https://api.ru-3.storage.selcloud.ru",
+      "ru-6": "https://api.ru-6.storage.selcloud.ru",
+      "ru-7": "https://api.ru-7.storage.selcloud.ru",
+      "gis-1": "https://api.gis-1.storage.selcloud.ru",
+      "uz-2": "https://api.uz-2.srvstorage.uz",
+      "kz-1": "https://api.kz-1.srvstorage.uz"
+    },
+    "source": "https://docs.selectel.ru/api/urls/",
+    "snapshot_sha256": "72250b47c599ed2b734198b4b46b4c85517d4331c5324e668aef52149aef64b1"
+  },
+  "request": {
+    "mapping": "all generated source DTO properties; omitted/null/false/empty/integer precision preserved; protected filter object revealed only at typed request boundary",
+    "parameters": [
+      {
+        "description": "Container Domains",
+        "in": "body",
+        "name": "ContainerDomainsDeleteBody",
+        "required": true,
+        "schema": {
+          "$ref": "#/definitions/ContainerDomainsDeleteBodySwagger"
+        }
+      }
+    ],
+    "path_variables": [
+      "container_name"
+    ],
+    "body_models": [
+      {
+        "$ref": "#/definitions/ContainerDomainsDeleteBodySwagger"
+      }
+    ],
+    "defaults": "none invented; log iteration explicitly starts requested offset or zero"
+  },
+  "response": {
+    "mapping": "all source-defined fields in generated typed DTO; schemaless filters protected, provider timestamps raw; task identity extracted before full decode and checked against exact ref",
+    "source_responses": [
+      {
+        "$ref": "#/responses/NoContentResponse"
+      },
+      {
+        "$ref": "#/responses/BadRequestError"
+      },
+      {
+        "$ref": "#/responses/UnauthorizedError"
+      },
+      {
+        "$ref": "#/responses/ForbiddenError"
+      },
+      {
+        "$ref": "#/responses/NotFoundError"
+      },
+      {
+        "$ref": "#/responses/ValidationError"
+      },
+      {
+        "$ref": "#/responses/HttpError"
+      }
+    ],
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "shared HTTP classification; source-documented 400/422 input failures override to invalid_argument, explicit 4xx source statuses are rejected proofs; provider messages not exposed",
+    "source": {
+      "204": {
+        "$ref": "#/responses/NoContentResponse"
+      },
+      "400": {
+        "$ref": "#/responses/BadRequestError"
+      },
+      "401": {
+        "$ref": "#/responses/UnauthorizedError"
+      },
+      "403": {
+        "$ref": "#/responses/ForbiddenError"
+      },
+      "404": {
+        "$ref": "#/responses/NotFoundError"
+      },
+      "422": {
+        "$ref": "#/responses/ValidationError"
+      },
+      "default": {
+        "$ref": "#/responses/HttpError"
+      }
+    }
+  },
+  "retry": "mutations never replay; safe GET retries remain bounded by common runtime",
+  "wait": "unavailable: no documented log export state enum/readiness predicate; exact Status is presence observation only",
+  "recovery": "known outcomes conclusive without I/O; exact container options observation is parent/address presence only, never proof of domain/options mutation; unknown quota without ref unavailable"
+}

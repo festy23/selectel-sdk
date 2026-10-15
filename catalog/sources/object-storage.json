@@ -1,0 +1,1627 @@
+{
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "definitions": {
+    "AccountInfo": {
+      "properties": {
+        "bytes_used": {
+          "description": "Total bytes used",
+          "example": 123321,
+          "format": "int64",
+          "type": "integer"
+        },
+        "containers_count": {
+          "description": "Total containers count",
+          "example": 123321,
+          "format": "int64",
+          "type": "integer"
+        },
+        "object_count": {
+          "description": "Total object count",
+          "example": 123321,
+          "format": "int64",
+          "type": "integer"
+        },
+        "quota_bytes": {
+          "description": "Quota set up by user, null value means quota does not exist",
+          "example": 123321,
+          "format": "uint64",
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/definitions/AccountStatus"
+        },
+        "storage_policies_stats": {
+          "additionalProperties": {
+            "$ref": "#/definitions/StoragePolicyStats"
+          },
+          "description": "Storage policies statistics, stats per storage type (policy) index",
+          "example": {
+            "policy-0": {
+              "bytes_used": 123,
+              "containers_count": 123,
+              "object_count": 123
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "AccountQuotaBodySwagger": {
+      "properties": {
+        "quota_bytes": {
+          "description": "Setting storage account max bytes used quota in bytes, null value means quota does not exist",
+          "example": 1024,
+          "format": "uint64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "AccountQuotas": {
+      "properties": {
+        "quota_bytes": {
+          "description": "Quota set up by user, null value means quota does not exist",
+          "example": 123321,
+          "format": "uint64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "AccountStatus": {
+      "type": "string"
+    },
+    "BucketPolicyPrincipal": {
+      "properties": {
+        "AWS": {
+          "example": [
+            "9caaea06a6d9400786bc842eb204734e"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CachePurge": {
+      "properties": {
+        "purged_count": {
+          "example": 64,
+          "format": "int64",
+          "type": "integer"
+        },
+        "rejected": {
+          "example": [
+            "https://example.com/path",
+            "https://example.com/path2"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CachePurgeBodySwagger": {
+      "properties": {
+        "urls": {
+          "example": [
+            "https://selectel.ru"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Certificate": {
+      "properties": {
+        "badge_status": {
+          "description": "Computed field, for render frontend cert status badge element",
+          "example": "pending"
+        },
+        "created_at": {
+          "example": "2019-05-14T06:00:00.000Z",
+          "type": "string"
+        },
+        "domains": {
+          "example": [
+            "*.example.com",
+            "example.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "error_message": {
+          "description": "Optional, computed field, for render frontend cert status badge popover with error describe",
+          "example": "error_message"
+        },
+        "expire_in_days": {
+          "description": "Optional, computed field, for render frontend cert expiration in days",
+          "example": 365,
+          "format": "int64",
+          "type": "integer"
+        },
+        "id": {
+          "example": "123e4567-e89b-12d3-a456-426614174000",
+          "type": "string"
+        },
+        "name": {
+          "example": "90486_cert",
+          "type": "string"
+        },
+        "not_after": {
+          "example": "2019-05-14T06:00:00.000Z",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CertificateCreateBodySwagger": {
+      "properties": {
+        "certificate": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "private_key": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerCORSBodySwagger": {
+      "properties": {
+        "name": {
+          "example": "some name",
+          "type": "string"
+        },
+        "rules": {
+          "items": {
+            "$ref": "#/definitions/ContainerCORSRuleSwagger"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerCORSRuleSwagger": {
+      "properties": {
+        "allowed_headers": {
+          "example": [
+            "x-amz-*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_methods": {
+          "example": [
+            "PUT",
+            "POST",
+            "GET"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_origins": {
+          "example": [
+            "https://example.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "expose_headers": {
+          "example": [
+            "Content-Length"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "max_age": {
+          "example": 600,
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "allowed_origins",
+        "allowed_methods"
+      ],
+      "type": "object"
+    },
+    "ContainerCors": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "rules": {
+          "items": {
+            "$ref": "#/definitions/ContainerCorsRule"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerCorsRule": {
+      "properties": {
+        "allowed_headers": {
+          "example": [
+            "x-amz-*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_methods": {
+          "example": [
+            "PUT",
+            "POST",
+            "GET"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "allowed_origins": {
+          "example": [
+            "https://selectel.ru"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "expose_headers": {
+          "example": [
+            "Content-Length"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "example": "something",
+          "type": "string"
+        },
+        "max_age": {
+          "example": 600,
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerDomains": {
+      "properties": {
+        "domains": {
+          "example": [
+            "test-domain.com",
+            "another-domain.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerDomainsAddBodySwagger": {
+      "properties": {
+        "domain_name": {
+          "example": "some.domain.com",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerDomainsDeleteBodySwagger": {
+      "properties": {
+        "domains": {
+          "example": [
+            "some.domain.com",
+            "another.domain.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerGeneralOptions": {
+      "properties": {
+        "cache_control": {
+          "example": "no-cache",
+          "type": "string"
+        },
+        "default_delete_after": {
+          "example": 3600,
+          "format": "uint64",
+          "type": "integer"
+        },
+        "type": {
+          "example": "private",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerGeneralOptionsBodySwagger": {
+      "properties": {
+        "cache_control": {
+          "description": "Setting cache control header value",
+          "example": "max-age=604800",
+          "type": "string"
+        },
+        "default_delete_after": {
+          "description": "Time delta in seconds to calculate X-Delete-At for all files uploaded to the container",
+          "example": 3600,
+          "format": "uint64",
+          "type": "integer"
+        },
+        "type": {
+          "description": "Setting container publicity enum[\"public\", \"private\", \"gallery\"]",
+          "example": "private",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerOptions": {
+      "properties": {
+        "general": {
+          "$ref": "#/definitions/ContainerGeneralOptions"
+        },
+        "quota": {
+          "$ref": "#/definitions/ContainerQuotaOptions"
+        },
+        "web": {
+          "$ref": "#/definitions/ContainerWebOptions"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerOptionsBodySwagger": {
+      "properties": {
+        "general": {
+          "$ref": "#/definitions/ContainerGeneralOptionsBodySwagger"
+        },
+        "quota": {
+          "$ref": "#/definitions/ContainerQuotaOptionsBodySwagger"
+        },
+        "web": {
+          "$ref": "#/definitions/ContainerWebOptionsBodySwagger"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerPolicy": {
+      "properties": {
+        "ID": {
+          "description": "Policy identificator.",
+          "example": "policy name",
+          "type": "string"
+        },
+        "Statement": {
+          "description": "Policy statement.",
+          "items": {
+            "$ref": "#/definitions/ContainerPolicyStatement"
+          },
+          "type": "array"
+        },
+        "Version": {
+          "description": "Policy version.",
+          "example": "2012-10-17",
+          "type": "string"
+        }
+      },
+      "title": "Container policy response fields.",
+      "type": "object"
+    },
+    "ContainerPolicyStatement": {
+      "properties": {
+        "Action": {
+          "description": "Policy actions or * for wildcard setup.",
+          "example": [
+            "s3:CreateBucket",
+            "s3:DeleteObject"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Condition": {
+          "additionalProperties": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object"
+          },
+          "description": "Policy statement conditions.",
+          "example": {
+            "IpAddress": {
+              "aws:SourceIp": [
+                "95.213.254.17"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "Effect": {
+          "description": "Policy effect Allow or Deny only.\nAllow Allow",
+          "enum": [
+            "Allow"
+          ],
+          "example": "Allow",
+          "type": "string"
+        },
+        "NotPrincipal": {
+          "$ref": "#/definitions/BucketPolicyPrincipal"
+        },
+        "Principal": {
+          "$ref": "#/definitions/BucketPolicyPrincipal"
+        },
+        "Resource": {
+          "description": "Policy target resources.",
+          "example": [
+            "arn:aws:s3:::policy-test"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Sid": {
+          "description": "Statement identificator.",
+          "example": "Statement example",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerQuotaOptions": {
+      "properties": {
+        "max_bytes_used": {
+          "example": 1024,
+          "format": "uint64",
+          "type": "integer"
+        },
+        "max_object_count": {
+          "example": 10,
+          "format": "uint64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerQuotaOptionsBodySwagger": {
+      "properties": {
+        "max_bytes_used": {
+          "description": "Setting container max bytes used quota in bytes",
+          "example": 1024,
+          "format": "uint64",
+          "type": "integer"
+        },
+        "max_object_count": {
+          "description": "Setting container max objects quota",
+          "example": 10,
+          "format": "uint64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerWebOptions": {
+      "properties": {
+        "error": {
+          "example": "error.html",
+          "type": "string"
+        },
+        "error_status_code": {
+          "example": 200,
+          "format": "uint64",
+          "type": "integer"
+        },
+        "index": {
+          "example": "index.html",
+          "type": "string"
+        },
+        "listing_css": {
+          "example": "style.css",
+          "type": "string"
+        },
+        "listing_enabled": {
+          "example": true,
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "ContainerWebOptionsBodySwagger": {
+      "properties": {
+        "error": {
+          "description": "Path to err page file into container",
+          "example": "error.html",
+          "type": "string"
+        },
+        "error_status_code": {
+          "description": "HTTP status code for error page serving enum[200, 404, 307]",
+          "example": 200,
+          "format": "uint64",
+          "type": "integer"
+        },
+        "index": {
+          "description": "Path to index file in container",
+          "example": "index.html",
+          "type": "string"
+        },
+        "listing_css": {
+          "description": "Setting web-listing custom style file",
+          "example": "style.css",
+          "type": "string"
+        },
+        "listing_enabled": {
+          "description": "Setting files web-listing enable options",
+          "example": true,
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "FieldErrorDescription": {
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "HTTPError": {
+      "properties": {
+        "code": {
+          "description": "HTTP status code",
+          "type": "string"
+        },
+        "message": {
+          "description": "Error message",
+          "example": "error description"
+        }
+      },
+      "type": "object"
+    },
+    "Hello": {
+      "properties": {
+        "current_project_exists": {
+          "description": "True when current token project exists in storage",
+          "example": false,
+          "type": "boolean"
+        },
+        "has_projects": {
+          "description": "True when client has any non-legacy project",
+          "example": false,
+          "type": "boolean"
+        },
+        "legacy_exists": {
+          "description": "True when client has legacy storage account that is not wiped",
+          "example": false,
+          "type": "boolean"
+        },
+        "legacy_storage_bytes_used": {
+          "description": "Legacy storage space consumption.",
+          "example": 512,
+          "format": "int64",
+          "type": "integer"
+        },
+        "legacy_storage_container_count": {
+          "description": "Legacy storage container count.",
+          "example": 64,
+          "format": "int64",
+          "type": "integer"
+        },
+        "new_client": {
+          "description": "True when the client is here for the first time (haven't had any projects nor legacy storage account before)",
+          "example": false,
+          "type": "boolean"
+        },
+        "remap_exists": {
+          "description": "True when client's legacy storage account has been remapped to some project",
+          "example": false,
+          "type": "boolean"
+        }
+      },
+      "title": "Hello response fields.",
+      "type": "object"
+    },
+    "LogsTask": {
+      "properties": {
+        "task": {
+          "properties": {
+            "created": {
+              "example": "2019-05-14T06:00:00.000Z",
+              "type": "string"
+            },
+            "data": {
+              "properties": {
+                "container": {
+                  "example": "target_container",
+                  "type": "string"
+                },
+                "delete_after": {
+                  "example": 3600,
+                  "format": "int64",
+                  "type": "integer"
+                },
+                "fields": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "filters": {
+                  "additionalProperties": {},
+                  "type": "object"
+                },
+                "provider": {
+                  "example": "storage_access",
+                  "type": "string"
+                },
+                "since": {
+                  "example": "2019-05-14T06:00:00.000Z",
+                  "type": "string"
+                },
+                "till": {
+                  "example": "2019-05-14T06:00:00.000Z",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "finished": {
+              "example": "2019-05-14T06:00:00.000Z",
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "response": {
+              "properties": {
+                "objects": {
+                  "example": [
+                    "3c9d2cf2-56f0-4ccb-9433-d47209739828/storage_access_20240919T00:00:00-20240926T19:30:00.log.zip",
+                    "4c0d3cf3-67f1-5ccb-0544-d58310840939/storage_access_20240926T00:00:00-20240930T20:40:00.log.zip"
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "type": {
+              "type": "string"
+            },
+            "updated": {
+              "example": "2019-05-14T06:00:00.000Z",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "LogsTaskBody": {
+      "properties": {
+        "data": {
+          "properties": {
+            "container": {
+              "type": "string"
+            },
+            "delete_after": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "fields": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "filters": {
+              "additionalProperties": {},
+              "type": "object"
+            },
+            "provider": {
+              "type": "string"
+            },
+            "since": {
+              "example": "2019-05-14T06:00:00.000Z",
+              "type": "string"
+            },
+            "till": {
+              "example": "2019-05-14T06:00:00.000Z",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "LogsTasksList": {
+      "properties": {
+        "tasks": {
+          "items": {
+            "$ref": "#/definitions/LogsTask"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PubDomain": {
+      "properties": {
+        "container": {
+          "example": "images",
+          "type": "string"
+        },
+        "uuid": {
+          "example": "82382b69-92e3-42cf-9b86-8e146fa58597",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "StoragePolicyStats": {
+      "properties": {
+        "bytes_used": {
+          "description": "Total bytes used",
+          "example": 123321,
+          "format": "int64",
+          "type": "integer"
+        },
+        "containers_count": {
+          "description": "Total containers count",
+          "example": 123321,
+          "format": "int64",
+          "type": "integer"
+        },
+        "object_count": {
+          "description": "Total object count",
+          "example": 123321,
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ValidationError": {
+      "properties": {
+        "code": {
+          "description": "HTTP status code",
+          "type": "string"
+        },
+        "message": {
+          "description": "Error message",
+          "example": "error description"
+        },
+        "params": {
+          "description": "Invalid parameters' name",
+          "items": {
+            "$ref": "#/definitions/FieldErrorDescription"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Vhost": {
+      "properties": {
+        "status": {
+          "description": "Current status of global bucket\navailable VhostAvailable\nunavailable VhostUnavailable\nconnected VhostConnected\nblacklisted VhostBlacklisted\nvhost_quota_exceeded VhostQuotaExceeded",
+          "enum": [
+            "available",
+            "unavailable",
+            "connected",
+            "blacklisted",
+            "vhost_quota_exceeded"
+          ],
+          "example": "available",
+          "type": "string available VhostAvailable unavailable VhostUnavailable connected VhostConnected blacklisted VhostBlacklisted vhost_quota_exceeded VhostQuotaExceeded"
+        }
+      },
+      "title": "Vhost response fields.",
+      "type": "object"
+    }
+  },
+  "info": {
+    "description": "Managing account information, container options and domains, creating log exports, and more.",
+    "title": "Object Storage API",
+    "version": "v2.1.0"
+  },
+  "paths": {
+    "/v2/account/info": {
+      "get": {
+        "description": "Returns general account information and containers statistics.",
+        "operationId": "accountInfo",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/AccountInfoResponse"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get account information and container statistics",
+        "tags": [
+          "Account"
+        ]
+      }
+    },
+    "/v2/account/quotas": {
+      "get": {
+        "description": "Return account quota of bytes.",
+        "operationId": "getAccountQuotas",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/AccountQuotasResponse"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get account quota information",
+        "tags": [
+          "Account"
+        ]
+      },
+      "put": {
+        "description": "Sets up account quotas of bytes.",
+        "operationId": "setAccountQuotas",
+        "parameters": [
+          {
+            "description": "Set up account quotas",
+            "in": "body",
+            "name": "Body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AccountQuotaBodySwagger"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/AccountQuotasResponse"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Set up account quotas",
+        "tags": [
+          "Account"
+        ]
+      }
+    },
+    "/v2/containers/{container_name}/domains": {
+      "delete": {
+        "description": "Deletes specified domains bound to container.",
+        "operationId": "containersDomainsDelete",
+        "parameters": [
+          {
+            "description": "Container Domains",
+            "in": "body",
+            "name": "ContainerDomainsDeleteBody",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ContainerDomainsDeleteBodySwagger"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/responses/NoContentResponse"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/responses/NotFoundError"
+          },
+          "422": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete container domains",
+        "tags": [
+          "Containers"
+        ]
+      },
+      "get": {
+        "description": "Retrieves domains bound to container.",
+        "operationId": "containersDomainsGet",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ContainerDomainsResponse"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/responses/NotFoundError"
+          },
+          "422": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get list of container domains",
+        "tags": [
+          "Containers"
+        ]
+      },
+      "put": {
+        "description": "Adds specified domain to container.",
+        "operationId": "containersDomainsAdd",
+        "parameters": [
+          {
+            "description": "Container Domains",
+            "in": "body",
+            "name": "ContainerDomainsAddBody",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ContainerDomainsAddBodySwagger"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/responses/NoContentResponse"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/responses/NotFoundError"
+          },
+          "409": {
+            "$ref": "#/responses/AlreadyExistsError"
+          },
+          "422": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Add a domain to container",
+        "tags": [
+          "Containers"
+        ]
+      }
+    },
+    "/v2/containers/{container_name}/domains/certs": {
+      "get": {
+        "description": "Retrieves domains and their certificates bound to container.",
+        "operationId": "containerDomainsAndCertsGet",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ContainerDomainsResponse"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/responses/NotFoundError"
+          },
+          "422": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get list of container domains and certificates",
+        "tags": [
+          "Containers"
+        ]
+      }
+    },
+    "/v2/containers/{container_name}/options": {
+      "get": {
+        "description": "Returns actual container options.",
+        "operationId": "containersOptionsGet",
+        "parameters": [
+          {
+            "description": "Container name",
+            "in": "path",
+            "name": "container_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ContainerOptionsResponse"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "422": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get container options",
+        "tags": [
+          "Containers"
+        ]
+      },
+      "put": {
+        "description": "Sets container options.",
+        "operationId": "containersOptionsSet",
+        "parameters": [
+          {
+            "description": "Container options",
+            "in": "body",
+            "name": "ContainerOptionsBody",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ContainerOptionsBodySwagger"
+            }
+          },
+          {
+            "description": "Container name",
+            "in": "path",
+            "name": "container_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ContainerOptionsResponse"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "422": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Set container options",
+        "tags": [
+          "Containers"
+        ]
+      }
+    },
+    "/v2/logs": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns a list of log tasks. A task is an asynchronous entity, its processing progress should be tracked.",
+        "operationId": "logsList",
+        "parameters": [
+          {
+            "description": "Limit",
+            "format": "uint64",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "Offset",
+            "format": "uint64",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "OrderBy",
+            "in": "query",
+            "name": "order_by",
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/LogsTasksListResponse"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "summary": "Get list of logs export tasks",
+        "tags": [
+          "Logs"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Creates new task and returns it. Task is async entity, and you need track processing progress.",
+        "operationId": "logsCreate",
+        "parameters": [
+          {
+            "description": "Log task body",
+            "in": "body",
+            "name": "LogsTaskBody",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LogsTaskBody"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/LogsTaskResponse"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Create new logs export tasks",
+        "tags": [
+          "Logs"
+        ]
+      }
+    },
+    "/v2/logs/{task_id}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns existing log export task by its ID.",
+        "operationId": "logsGet",
+        "parameters": [
+          {
+            "description": "Task ID",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/LogsTaskResponse"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "422": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Get existing logs export task",
+        "tags": [
+          "Logs"
+        ]
+      }
+    },
+    "/v2/logs/{task_id}/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Cancels existing log export task by its id.",
+        "operationId": "logsCancel",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/LogsTaskResponse"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/responses/ForbiddenError"
+          },
+          "422": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/responses/HttpError"
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Cancel log export task",
+        "tags": [
+          "Logs"
+        ]
+      }
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "responses": {
+    "AccountInfoResponse": {
+      "description": "Account stats",
+      "schema": {
+        "$ref": "#/definitions/AccountInfo"
+      }
+    },
+    "AccountQuotasResponse": {
+      "description": "Account quotas",
+      "schema": {
+        "$ref": "#/definitions/AccountQuotas"
+      }
+    },
+    "AlreadyExistsError": {
+      "description": "Conflict: returned when entity already exists",
+      "schema": {
+        "$ref": "#/definitions/HTTPError"
+      }
+    },
+    "BadRequestError": {
+      "description": "BadRequest: returned when input data is malformed",
+      "schema": {
+        "$ref": "#/definitions/HTTPError"
+      }
+    },
+    "CachePurgeResponse": {
+      "description": "Cache purge result",
+      "schema": {
+        "$ref": "#/definitions/CachePurge"
+      }
+    },
+    "CertificateListResponse": {
+      "description": "CertificateListResponseSwagger List of SSL certificates",
+      "schema": {
+        "items": {
+          "$ref": "#/definitions/Certificate"
+        },
+        "type": "array"
+      }
+    },
+    "CertificateResponse": {
+      "description": "CertificateResponseSwagger Single SSL certificate",
+      "schema": {
+        "$ref": "#/definitions/Certificate"
+      }
+    },
+    "CheckVhostResponse": {
+      "description": "CheckVhost response.",
+      "headers": {
+        "Body": {}
+      },
+      "schema": {
+        "$ref": "#/definitions/Vhost"
+      }
+    },
+    "ContainerCorsResponse": {
+      "description": "Container CORS",
+      "schema": {
+        "$ref": "#/definitions/ContainerCors"
+      }
+    },
+    "ContainerDomainsResponse": {
+      "description": "Container domains",
+      "schema": {
+        "$ref": "#/definitions/ContainerDomains"
+      }
+    },
+    "ContainerOptionsResponse": {
+      "description": "Container options",
+      "schema": {
+        "$ref": "#/definitions/ContainerOptions"
+      }
+    },
+    "ContainerPolicyResponse": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/ContainerPolicy"
+      }
+    },
+    "EntityTooLargeError": {
+      "description": "EntityTooLarge: returned when received entity is too large",
+      "schema": {
+        "$ref": "#/definitions/HTTPError"
+      }
+    },
+    "ForbiddenError": {
+      "description": "Forbidden: returned when performed operation is forbidden (insufficient rights)",
+      "schema": {
+        "$ref": "#/definitions/HTTPError"
+      }
+    },
+    "GenericDeleteResponse": {
+      "description": "Generic response for DELETE requests",
+      "schema": {
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "HelloResponse": {
+      "description": "Hello response",
+      "schema": {
+        "$ref": "#/definitions/Hello"
+      }
+    },
+    "HttpError": {
+      "description": "Generic HTTP error",
+      "schema": {
+        "$ref": "#/definitions/HTTPError"
+      }
+    },
+    "LogsTaskResponse": {
+      "description": "Log task info",
+      "schema": {
+        "$ref": "#/definitions/LogsTask"
+      }
+    },
+    "LogsTasksListResponse": {
+      "description": "Log task list",
+      "schema": {
+        "$ref": "#/definitions/LogsTasksList"
+      }
+    },
+    "NoContentResponse": {
+      "description": "Empty response"
+    },
+    "NotFoundError": {
+      "description": "NotFound: returned when entity not found",
+      "schema": {
+        "$ref": "#/definitions/HTTPError"
+      }
+    },
+    "PubdomainCreateResponse": {
+      "description": "Public domain create",
+      "schema": {
+        "$ref": "#/definitions/PubDomain"
+      }
+    },
+    "PubdomainsListResponse": {
+      "description": "Public domains",
+      "schema": {
+        "items": {
+          "$ref": "#/definitions/PubDomain"
+        },
+        "type": "array"
+      }
+    },
+    "TooManyRequestsError": {
+      "description": "TooManyRequests: returned when limit is reached",
+      "schema": {
+        "$ref": "#/definitions/HTTPError"
+      }
+    },
+    "UnauthorizedError": {
+      "description": "Unauthorized: returned when client authentication failed",
+      "schema": {
+        "$ref": "#/definitions/HTTPError"
+      }
+    },
+    "ValidationError": {
+      "description": "UnprocessableEntity: returned when input data validation fails",
+      "schema": {
+        "$ref": "#/definitions/ValidationError"
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "iam_token_project_scoped": {
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0"
+}
