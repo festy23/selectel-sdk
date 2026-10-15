@@ -203,6 +203,8 @@ func receiptResourceKind(operationID string) string {
 		return "cluster"
 	case "cloud_1c.v2.datastores.create", "cloud_1c.v2.datastores.delete", "cloud_1c.v2.datastores.update", "cloud_1c.v2.datastores_resize.create":
 		return "datastore"
+	case domainTransferOperation, "cloud_1c.v2.clusters_domains.create", "cloud_1c.v2.clusters_domains.update", "cloud_1c.v2.clusters_domains.delete":
+		return "cluster_domain"
 	case "cloud_1c.v2.cluster_proxies.create", "cloud_1c.v2.cluster_proxies.delete":
 		return "cluster_proxy"
 	default:
@@ -306,6 +308,40 @@ func (c *Client) ClusterProxyHandle(ref types.ResourceRef, receipt *types.Receip
 			}
 		}
 		return operations.Observation{Ref: ref, ProviderState: state, Classification: class, ObservedAt: result.Metadata.ObservedAt, Metadata: result.Metadata}, nil
+	}
+	return operations.Bind(c.runtime, ref, receipt, read, goals)
+}
+
+func (c *Client) bindChildHandle(ref types.ResourceRef, receipt *types.Receipt, read operations.Read, goals map[string]operations.Goal) (*operations.Handle, error) {
+	if receipt != nil {
+		if receipt.SchemaVersion != 1 || receipt.CallID == "" || receipt.OperationID == "" || receipt.ContractRevision == "" {
+			return nil, types.NewError(types.InvalidArgument)
+		}
+		cap, e := c.runtime.Catalog().Describe(receipt.OperationID)
+		if e != nil {
+			return nil, e
+		}
+		if cap.ContractRevision != receipt.ContractRevision || cap.Service != "cloud_1c" || cap.APIGeneration != "v2" || cap.Effect != "mutation" || receiptResourceKind(receipt.OperationID) != ref.Kind || receipt.ProviderOperationRef != nil {
+			return nil, types.NewError(types.CapabilityUnavailable)
+		}
+		if receipt.Scope != c.scope || receipt.Endpoint == nil || receipt.Endpoint.Scope != c.scope || receipt.Endpoint.ID != ref.EndpointID || receipt.Endpoint.URL != ref.EndpointURL || receipt.Endpoint.APIGeneration != "v2" || receipt.Endpoint.Audience != "selectel" {
+			return nil, types.NewError(types.ScopeMismatch)
+		}
+		if e := validateReceiptReferenceSet(*receipt, ref); e != nil {
+			return nil, e
+		}
+		switch receipt.Outcome {
+		case types.NotSent, types.Rejected, types.Accepted, types.Unknown:
+		default:
+			return nil, types.NewError(types.InvalidArgument)
+		}
+		allowed := map[string]operations.Goal{}
+		for _, id := range cap.WaitGoals {
+			if goal, ok := goals[id]; ok {
+				allowed[id] = goal
+			}
+		}
+		goals = allowed
 	}
 	return operations.Bind(c.runtime, ref, receipt, read, goals)
 }

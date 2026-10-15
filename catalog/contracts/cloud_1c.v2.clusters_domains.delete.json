@@ -1,0 +1,49 @@
+{
+  "operation_id": "cloud_1c.v2.clusters_domains.delete",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/{id}/domains/{domainId}",
+    "method": "DELETE",
+    "body": null,
+    "reference": "Exact child ref with required caller cluster parent; full scope/generation/endpoint/ancestor validation before I/O; no implicit DNS operations"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed DeleteClusterDomainResponse contains only optional parent cluster metadata; parent ACTIVE is not deletion evidence; exact child ref retained in accepted receipt on all errors",
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
+    "number_protection": "Source JSON numbers are lexically validated and stored in onec.ProtectedNumber without precision conversion; formatting/JSON/Text redacts, Reveal is explicit"
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "no mutation replay on any unknown response",
+  "pagination": null,
+  "wait": {
+    "goals": [
+      "cluster_domain.deleted"
+    ],
+    "status": "Native list pages matched only by exact acknowledged ID; stop immediately when observed, no name/position/new-resource lookup",
+    "budget": "One CallTimeout across status page scan, bounded native iterator limits, outer WaitTimeout/context retained",
+    "source_states": "Only exact child CLUSTER_DOMAIN_STATUS_DELETED succeeds; ERRORED fails; documented other states pending; unconfirmed/missing list item never proves absence",
+    "absence": "Unconfirmed terminal cursor and missing item never prove absence; incomplete returned instead of deletion success",
+    "limits": "No DNS/TLS handshake or application readiness claim"
+  },
+  "recovery": {
+    "kind": "Exact newly acknowledged domain ID with explicit caller parent, no inference from DNS/name/list differences; parent-only unknown cannot recover child"
+  }
+}

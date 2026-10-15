@@ -138,3 +138,28 @@ recovery_unavailable и не вызывает list/name lookup/adoption. Accepte
 originating capability и не утверждают сетевую/прикладную готовность.
 Proxy list ограничен и сохраняет metadata/cursor, но остаётся partial из-за
 неизвестного terminal rule; только явный caller cluster filter становится parent.
+
+Domain API сохраняет пять source operations: list остаётся partial из-за
+неизвестного terminal cursor rule; register/patch/delete/transfer возвращают
+типизированные envelopes. Custom TLS certificate/key защищены в DTO и раскрываются
+только в приватном wire encoder; строки source format byte/PEM передаются без
+самовольного преобразования. Register/transfer требуют предварительного DNS
+изменения вызывающей стороной; SDK DNS не меняет и доступность TLS не проверяет.
+
+Domain Status/Wait использует только native list и exact child ID с явным parent.
+Чтение нескольких страниц имеет единый CallTimeout и native page/item bounds.
+Наличие точного ID позволяет использовать наблюдение из частичной страницы;
+отсутствие ID не доказывает удаления. Только source DELETED завершает deleted goal;
+parent cluster ACTIVE не является подтверждением child readiness. Receipt goals
+ограничены operation capability. Missing/UNSPECIFIED/new states остаются unknown.
+`internal/core/reads.go` добавляет только read-only accessor `Runtime.CallTimeout`
+для общей границы status scan; существующая HTTP/auth/retry orchestration не меняется.
+
+Transfer требует отдельный explicit target cluster ref того же scope/endpoint и
+совпадающий targetClusterId. Receipt сохраняет исходный child и target anchor;
+новый child с тем же ID и target parent добавляется только по ответу провайдера.
+Возвращённый cluster может быть одним из двух явных anchors, но не чужим owner.
+Resume принимает только точный граф original child + target anchor + acknowledged
+new child; потерянный ответ/old-only response не создаёт target ref и не даёт
+recovery. Independent decode errors сохраняют уже подтверждённый новый child.
+Ни повтор mutation, ни name/DNS lookup, ни adoption для восстановления не выполняются.

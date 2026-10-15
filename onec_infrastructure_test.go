@@ -1238,3 +1238,287 @@ func TestOneCProxyHandleDoesNotAcceptUndocumentedProviderOperationRef(t *testing
 		t.Fatalf("undeclared operation accepted: %v", err)
 	}
 }
+
+func TestOneCDomainListingKeepsExplicitParentAndProtectedTLSWireStrings(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/domains" || r.URL.Query().Get("cursor.limit") != "1" {
+			t.Fatalf("domains wire %s %s", r.Method, r.URL)
+		}
+		payload := `{"clusterDomains":[{"id":"domain-1","spec":{"clusterId":"cluster-1","fqdn":"synthetic.example","autoIssuedCert":false,"zoneId":"caller-zone-metadata","customCert":{"certificate":"synthetic-cert-wire","key":"synthetic-key-wire"}},"state":{"status":"CLUSTER_DOMAIN_STATUS_ACTIVE","certExpiresAt":"2026-10-20T12:00:00+03:00"}}],"cursor":{"next":"10","total":"2"}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	out, err := regional.ListClusterDomains(context.Background(), cluster, pagination.Options{MaxItems: 1})
+	if types.ErrorCode(err) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.Parent == nil || *out.Items[0].Ref.Parent != cluster || string(out.Items[0].Spec.CustomCert.Certificate.Reveal()) != "synthetic-cert-wire" || string(out.Items[0].Spec.CustomCert.Key.Reveal()) != "synthetic-key-wire" || out.Items[0].State.CertExpiresAt.Location() != time.UTC {
+		t.Fatalf("domain list %+v %v", out, err)
+	}
+	raw, _ := json.Marshal(out)
+	diagnostic := fmt.Sprintf("%+v %#v %+v %#v %x", out, out, *out.Items[0].Spec.CustomCert.Key, *out.Items[0].Spec.CustomCert.Certificate, *out.Items[0].Spec.CustomCert.Key)
+	for _, marker := range []string{"synthetic-cert-wire", "synthetic-key-wire"} {
+		if strings.Contains(string(raw), marker) || strings.Contains(diagnostic, marker) || strings.Contains(diagnostic, fmt.Sprint([]byte(marker))) || strings.Contains(diagnostic, fmt.Sprintf("%x", []byte(marker))) {
+			t.Fatal("TLS material leaked")
+		}
+	}
+}
+
+func TestOneCDomainRegistrationRevealsTLSOnlyAtExplicitWireBoundary(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		var wire struct {
+			Spec struct {
+				ClusterID      string                            `json:"clusterId"`
+				AutoIssuedCert *bool                             `json:"autoIssuedCert"`
+				CustomCert     struct{ Certificate, Key string } `json:"customCert"`
+			} `json:"spec"`
+		}
+		if r.Method != "POST" || r.URL.Path != "/v2/clusters/cluster-1/domains" || json.Unmarshal(raw, &wire) != nil || wire.Spec.ClusterID != "cluster-1" || wire.Spec.AutoIssuedCert == nil || *wire.Spec.AutoIssuedCert || wire.Spec.CustomCert.Certificate != "synthetic-cert-wire" || wire.Spec.CustomCert.Key != "synthetic-key-wire" {
+			t.Fatalf("domain registration wire %s %s", r.Method, r.URL)
+		}
+		payload := strings.TrimSuffix(onecClusterFixture, "}") + `,"domain":{"id":"domain-1","spec":{"clusterId":"cluster-1","fqdn":"synthetic.example","autoIssuedCert":false,"customCert":{"certificate":"synthetic-cert-wire","key":"synthetic-key-wire"}},"state":{"status":"CLUSTER_DOMAIN_STATUS_CREATING"}}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	var spec onec.RegisterClusterDomainBody
+	if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1","fqdn":"synthetic.example","autoIssuedCert":false,"customCert":{"certificate":"synthetic-cert-wire","key":"synthetic-key-wire"}}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	safe, _ := json.Marshal(spec)
+	if strings.Contains(string(safe), "synthetic-key-wire") {
+		t.Fatal("request diagnostics exposed TLS")
+	}
+	out, err := regional.RegisterClusterDomain(context.Background(), cluster, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Data.Domain == nil || out.Data.Domain.Ref == nil || out.Data.Domain.Ref.Parent == nil || *out.Data.Domain.Ref.Parent != cluster || out.Data.Cluster == nil || out.Data.Cluster.Ref == nil || *out.Data.Cluster.Ref != cluster {
+		t.Fatalf("domain registration %+v %v", out, err)
+	}
+}
+
+func TestOneCDomainStatusScansOnlyForExactAcknowledgedID(t *testing.T) {
+	writes, reads := 0, 0
+	var readDeadline time.Time
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path != "/v2/clusters/cluster-1/domains" {
+			t.Fatalf("invented domain Get endpoint %s", r.URL)
+		}
+		var payload string
+		if r.Method == "POST" {
+			writes++
+			payload = strings.TrimSuffix(onecClusterFixture, "}") + `,"domain":{"id":"domain-1","spec":{"clusterId":"cluster-1","fqdn":"synthetic.example","autoIssuedCert":true},"state":{"status":"CLUSTER_DOMAIN_STATUS_CREATING"}}}`
+		} else if r.Method == "GET" {
+			reads++
+			deadline, ok := r.Context().Deadline()
+			if !ok {
+				t.Fatal("unbounded domain status")
+			}
+			if reads == 1 {
+				readDeadline = deadline
+			} else if !deadline.Equal(readDeadline) {
+				t.Fatal("status budget reset between native pages")
+			}
+			id, next := "other-domain", "50"
+			if reads == 2 {
+				if r.URL.Query().Get("cursor.cursor") != "50" {
+					t.Fatalf("domain continuation %s", r.URL)
+				}
+				id, next = "domain-1", "100"
+			}
+			payload = `{"clusterDomains":[{"id":"` + id + `","spec":{"clusterId":"cluster-1","fqdn":"synthetic.example"},"state":{"status":"CLUSTER_DOMAIN_STATUS_ACTIVE"}}],"cursor":{"next":"` + next + `","total":"2"}}`
+		} else {
+			t.Fatalf("unexpected method%s", r.Method)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	var spec onec.RegisterClusterDomainBody
+	if json.Unmarshal([]byte(`{"spec":{"clusterId":"cluster-1","fqdn":"synthetic.example","autoIssuedCert":true}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	accepted, err := regional.RegisterClusterDomain(context.Background(), cluster, spec, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	h, err := c.Resume(*accepted.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	waited, err := h.Wait(context.Background(), "cluster_domain.active")
+	if err != nil || !waited.Complete || waited.Last == nil || waited.Last.Ref.ID != "domain-1" || writes != 1 || reads != 2 {
+		t.Fatalf("exact domain status %+v %v writes%d reads%d", waited, err, writes, reads)
+	}
+}
+
+func TestOneCPartialDomainListNeverProvesDeletionOrAdoptsSameName(t *testing.T) {
+	c, _, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path != "/v2/clusters/cluster-1/domains" {
+			t.Fatalf("domain lookup %s", r.URL)
+		}
+		payload := `{"clusterDomains":[{"id":"other-domain","spec":{"clusterId":"cluster-1","fqdn":"synthetic.example"},"state":{"status":"CLUSTER_DOMAIN_STATUS_DELETED"}}]}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "cluster_domain"
+	ref.ID = "domain-1"
+	ref.Parent = &cluster
+	h, err := c.Resource(ref)
+	if err != nil {
+		t.Fatal(err)
+	}
+	out, err := h.Wait(context.Background(), "cluster_domain.deleted")
+	if types.ErrorCode(err) != types.Incomplete || out.Complete || out.Last != nil {
+		t.Fatalf("partial list deletion %+v %v", out, err)
+	}
+}
+
+func TestOneCDomainPatchUsesExactChildAndRawProtectedSpec(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		var wire map[string]json.RawMessage
+		if r.Method != "PATCH" || r.URL.Path != "/v2/clusters/cluster-1/domains/domain-1" || json.Unmarshal(raw, &wire) != nil || wire["spec"] != nil || string(wire["clusterId"]) != `"cluster-1"` || !strings.Contains(string(wire["customCert"]), `"key":"synthetic-renewed-key"`) {
+			t.Fatalf("domain patch wire %s %s", r.Method, r.URL)
+		}
+		payload := strings.TrimSuffix(onecClusterFixture, "}") + `,"domain":{"id":"domain-1","spec":` + string(raw) + `}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "cluster_domain"
+	ref.ID = "domain-1"
+	ref.Parent = &cluster
+	var spec onec.ClusterDomainSpec
+	if json.Unmarshal([]byte(`{"clusterId":"cluster-1","fqdn":"synthetic.example","autoIssuedCert":false,"customCert":{"certificate":"synthetic-renewed-cert","key":"synthetic-renewed-key"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.PatchClusterDomain(context.Background(), ref, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Data.Domain == nil || out.Data.Domain.Ref == nil || out.Data.Domain.Ref.Parent == nil || *out.Data.Domain.Ref.Parent != cluster {
+		t.Fatalf("patched domain %+v %v", out, err)
+	}
+}
+
+func TestOneCDomainDeletionDoesNotUseParentClusterAsCompletionProof(t *testing.T) {
+	writes, reads := 0, 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method == "DELETE" {
+			writes++
+			if r.URL.Path != "/v2/clusters/cluster-1/domains/domain-1" {
+				t.Fatalf("domain delete path %s", r.URL)
+			}
+			return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecClusterFixture))}, nil
+		}
+		reads++
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/domains" {
+			t.Fatalf("domain delete observation %s %s", r.Method, r.URL)
+		}
+		payload := `{"clusterDomains":[{"id":"domain-1","spec":{"clusterId":"cluster-1","fqdn":"synthetic.example"},"state":{"status":"CLUSTER_DOMAIN_STATUS_DELETED"}}]}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "cluster_domain"
+	ref.ID = "domain-1"
+	ref.Parent = &cluster
+	out, err := regional.DeleteClusterDomain(context.Background(), ref, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Data.Cluster == nil || out.Data.Cluster.Ref == nil || *out.Data.Cluster.Ref != cluster {
+		t.Fatalf("domain deletion %+v", out)
+	}
+	h, err := c.Resume(*out.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = h.Wait(context.Background(), "cluster_domain.active")
+	if types.ErrorCode(err) != types.CapabilityUnavailable || reads != 0 {
+		t.Fatalf("wrong delete goal %v reads%d", err, reads)
+	}
+	waited, err := h.Wait(context.Background(), "cluster_domain.deleted")
+	if err != nil || !waited.Complete || waited.Last == nil || waited.Last.Ref.ID != "domain-1" || reads != 1 || writes != 1 {
+		t.Fatalf("domain deletion wait %+v %v", waited, err)
+	}
+}
+
+func TestOneCDomainTransferRetainsBothLocationsAndRecoversOnlyAcknowledgedTarget(t *testing.T) {
+	reads := 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		payload := strings.TrimSuffix(onecClusterFixture, "}") + `,"domain":{"id":"domain-1","spec":{"clusterId":"cluster-2","fqdn":"synthetic.example"}}}`
+		if r.Method == "POST" {
+			raw, _ := io.ReadAll(r.Body)
+			if r.URL.Path != "/v2/clusters/cluster-1/domains/domain-1/transfer" || string(raw) != `{"targetClusterId":"cluster-2"}` {
+				t.Fatalf("transfer wire %s %s", r.URL, raw)
+			}
+		} else {
+			reads++
+			if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-2/domains" {
+				t.Fatalf("transfer observation %s", r.URL)
+			}
+			payload = `{"clusterDomains":[{"id":"domain-1","spec":{"clusterId":"cluster-2","fqdn":"synthetic.example"},"state":{"status":"CLUSTER_DOMAIN_STATUS_ACTIVE"}}]}`
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	// The supplied source and target are explicit references in the same scope.
+	target := cluster
+	target.ID = "cluster-2"
+	ref := cluster
+	ref.Kind = "cluster_domain"
+	ref.ID = "domain-1"
+	ref.Parent = &cluster
+	var spec onec.TransferClusterDomainBody
+	if err := json.Unmarshal([]byte(`{"targetClusterId":"cluster-2"}`), &spec); err != nil {
+		t.Fatal(err)
+	}
+	out, err := regional.TransferClusterDomain(context.Background(), ref, target, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 3 || out.Data.Domain.Ref.Parent.ID != "cluster-2" || out.Data.Cluster.Ref.ID != "cluster-1" {
+		t.Fatalf("transfer %+v %v", out, err)
+	}
+	h, err := c.Resume(*out.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	waited, err := h.Wait(context.Background(), "cluster_domain.active")
+	if err != nil || !waited.Complete || reads != 1 {
+		t.Fatalf("target wait %+v %v", waited, err)
+	}
+}
+
+func TestOneCDomainTransferRequiresAcknowledgedTargetBeforeRecovery(t *testing.T) {
+	for _, tc := range []struct {
+		name, payload string
+		lost          bool
+		code          types.Code
+		refs          int
+		recoverable   bool
+	}{
+		{name: "lost", lost: true, code: types.UnknownOutcome, refs: 2},
+		{name: "old owner only", payload: `{"domain":{"id":"domain-1","spec":{"clusterId":"cluster-1","fqdn":"synthetic.example"}}}`, refs: 2},
+		{name: "foreign owner", payload: `{"domain":{"id":"domain-1","spec":{"clusterId":"foreign","fqdn":"synthetic.example"}}}`, code: types.ScopeMismatch, refs: 2},
+		{name: "bad unrelated date", payload: `{"domain":{"id":"domain-1","spec":{"clusterId":"cluster-2","fqdn":"synthetic.example"},"createdAt":"not-a-date"}}`, code: types.ProtocolError, refs: 3, recoverable: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			writes := 0
+			c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+				writes++
+				if r.Method != "POST" {
+					t.Fatal("unrequested observation")
+				}
+				if tc.lost {
+					return nil, io.ErrUnexpectedEOF
+				}
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(tc.payload))}, nil
+			}))
+			target := cluster
+			target.ID = "cluster-2"
+			ref := cluster
+			ref.Kind = "cluster_domain"
+			ref.ID = "domain-1"
+			ref.Parent = &cluster
+			var spec onec.TransferClusterDomainBody
+			_ = json.Unmarshal([]byte(`{"targetClusterId":"cluster-2"}`), &spec)
+			out, err := regional.TransferClusterDomain(context.Background(), ref, target, spec, types.CallOptions{})
+			if types.ErrorCode(err) != tc.code || out.Receipt == nil || len(out.Receipt.ResourceRefs) != tc.refs || writes != 1 {
+				t.Fatalf("transfer %+v %v writes%d", out, err, writes)
+			}
+			_, err = c.Resume(*out.Receipt)
+			if tc.recoverable {
+				if err != nil {
+					t.Fatal(err)
+				}
+			} else if types.ErrorCode(err) != types.RecoveryUnavailable {
+				t.Fatalf("invented transfer recovery %v", err)
+			}
+		})
+	}
+}

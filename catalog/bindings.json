@@ -5422,7 +5422,9 @@
       "onec/datastores.go",
       "onec/protected.go",
       "onec/proxies.go",
-      "onec/resume.go"
+      "onec/resume.go",
+      "onec/domains.go",
+      "onec/wire.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5488,7 +5490,8 @@
       "onec/protected.go",
       "onec/resume.go",
       "onec/proxies.go",
-      "onec/resume.go"
+      "onec/resume.go",
+      "onec/domains.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5500,5 +5503,187 @@
     "excluded_variants": [
       "Terminal cursor semantics absent from pinned primary contract"
     ]
+  },
+  "cloud_1c.v2.clusters_domains.list": {
+    "go_method": "onec.Client.ListClusterDomains",
+    "input_type": "types.ResourceRef, pagination.Options",
+    "output_type": "onec.DomainListing",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_domains.list.json",
+    "status": "partial",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/lists.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/proxies.go",
+      "onec/resume.go",
+      "onec/domains.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains/get",
+    "excluded_variants": [
+      "Terminal cursor semantics absent from pinned primary contract"
+    ]
+  },
+  "cloud_1c.v2.clusters_domains.create": {
+    "go_method": "onec.Client.RegisterClusterDomain",
+    "input_type": "types.ResourceRef, onec.RegisterClusterDomainBody, types.CallOptions",
+    "output_type": "onec.RegisterClusterDomainResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_domains.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go",
+      "onec/domains.go",
+      "onec/wire.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster_domain.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.clusters_domains.update": {
+    "go_method": "onec.Client.PatchClusterDomain",
+    "input_type": "types.ResourceRef, onec.ClusterDomainSpec, types.CallOptions",
+    "output_type": "onec.PatchClusterDomainResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_domains.update.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go",
+      "onec/domains.go",
+      "onec/wire.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster_domain.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.clusters_domains.delete": {
+    "go_method": "onec.Client.DeleteClusterDomain",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.DeleteClusterDomainResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_domains.delete.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go",
+      "onec/domains.go",
+      "onec/wire.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster_domain.deleted"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.clusters_domains_transfer.create": {
+    "go_method": "onec.Client.TransferClusterDomain",
+    "input_type": "types.ResourceRef, types.ResourceRef, onec.TransferClusterDomainBody, types.CallOptions",
+    "output_type": "onec.TransferClusterDomainResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_domains_transfer.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go",
+      "onec/domains.go",
+      "onec/wire.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster_domain.active"
+    ],
+    "recovery": true
   }
 }

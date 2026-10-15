@@ -156,6 +156,111 @@ func (v ClusterConfig) Validate() error {
 func (v *ClusterConfig) normalize() {
 }
 
+type ClusterDomain struct {
+	CreatedAt *time.Time          `json:"createdAt,omitempty"`
+	ID        *string             `json:"id,omitempty"`
+	Spec      *ClusterDomainSpec  `json:"spec,omitempty"`
+	State     *ClusterDomainState `json:"state,omitempty"`
+	Ref       *types.ResourceRef  `json:"ref,omitempty"`
+}
+
+func (v ClusterDomain) Validate() error {
+	if v.Spec == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Spec != nil {
+		if err := v.Spec.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.State != nil {
+		if err := v.State.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterDomain) normalize() {
+	if v.CreatedAt != nil {
+		instant := v.CreatedAt.UTC()
+		v.CreatedAt = &instant
+	}
+	if v.Spec != nil {
+		v.Spec.normalize()
+	}
+	if v.State != nil {
+		v.State.normalize()
+	}
+}
+func (v *ClusterDomain) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ClusterDomain
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ClusterDomain(value)
+	v.normalize()
+	return nil
+}
+
+type ClusterDomainSpec struct {
+	AutoIssuedCert *bool        `json:"autoIssuedCert,omitempty"`
+	ClusterID      *string      `json:"clusterId,omitempty"`
+	CustomCert     *X509Keypair `json:"customCert,omitempty"`
+	Fqdn           *string      `json:"fqdn,omitempty"`
+	ZoneID         *string      `json:"zoneId,omitempty"`
+}
+
+func (v ClusterDomainSpec) Validate() error {
+	if v.ClusterID == nil || v.Fqdn == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.CustomCert != nil {
+		if err := v.CustomCert.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterDomainSpec) normalize() {
+	if v.CustomCert != nil {
+		v.CustomCert.normalize()
+	}
+}
+
+type ClusterDomainState struct {
+	CertExpiresAt *time.Time `json:"certExpiresAt,omitempty"`
+	Health        *Health    `json:"health,omitempty"`
+	Status        *string    `json:"status,omitempty"`
+}
+
+func (v ClusterDomainState) Validate() error {
+	if v.Health != nil {
+		if err := v.Health.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterDomainState) normalize() {
+	if v.CertExpiresAt != nil {
+		instant := v.CertExpiresAt.UTC()
+		v.CertExpiresAt = &instant
+	}
+	if v.Health != nil {
+		v.Health.normalize()
+	}
+}
+
 type ClusterFlavor struct {
 	Deprecated *bool   `json:"deprecated,omitempty"`
 	DiskGb     *string `json:"diskGb,omitempty"`
@@ -962,6 +1067,43 @@ func (v DatastoreType) Validate() error {
 func (v *DatastoreType) normalize() {
 }
 
+type DeleteClusterDomainResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v DeleteClusterDomainResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *DeleteClusterDomainResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *DeleteClusterDomainResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DeleteClusterDomainResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DeleteClusterDomainResponse(value)
+	v.normalize()
+	return nil
+}
+
 type DeleteClusterProxyResponse struct {
 	ClusterProxy *ClusterProxy `json:"clusterProxy,omitempty"`
 }
@@ -1459,6 +1601,52 @@ func (v *HealthIssue) normalize() {
 	}
 }
 
+type ListClusterDomainsResponse struct {
+	ClusterDomains []ClusterDomain `json:"clusterDomains,omitzero"`
+	Cursor         *CursorResponse `json:"cursor,omitempty"`
+}
+
+func (v ListClusterDomainsResponse) Validate() error {
+	for _, item := range v.ClusterDomains {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Cursor != nil {
+		if err := v.Cursor.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListClusterDomainsResponse) normalize() {
+	for i := range v.ClusterDomains {
+		v.ClusterDomains[i].normalize()
+	}
+	if v.Cursor != nil {
+		v.Cursor.normalize()
+	}
+}
+func (v *ListClusterDomainsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListClusterDomainsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListClusterDomainsResponse(value)
+	v.normalize()
+	return nil
+}
+
 type ListClusterProxiesResponse struct {
 	ClusterProxies []ClusterProxy  `json:"clusterProxies,omitzero"`
 	Cursor         *CursorResponse `json:"cursor,omitempty"`
@@ -1676,6 +1864,52 @@ func (v *MetricThresholdBreach) normalize() {
 	}
 }
 
+type PatchClusterDomainResponse struct {
+	Cluster *Cluster       `json:"cluster,omitempty"`
+	Domain  *ClusterDomain `json:"domain,omitempty"`
+}
+
+func (v PatchClusterDomainResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Domain != nil {
+		if err := v.Domain.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *PatchClusterDomainResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+	if v.Domain != nil {
+		v.Domain.normalize()
+	}
+}
+func (v *PatchClusterDomainResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire PatchClusterDomainResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = PatchClusterDomainResponse(value)
+	v.normalize()
+	return nil
+}
+
 type PatchClusterResponse struct {
 	Cluster *Cluster `json:"cluster,omitempty"`
 }
@@ -1760,6 +1994,92 @@ func (v Region) Validate() error {
 	return nil
 }
 func (v *Region) normalize() {
+}
+
+type RegisterClusterDomainBody struct {
+	Spec *ClusterDomainSpec `json:"spec,omitempty"`
+}
+
+func (v RegisterClusterDomainBody) Validate() error {
+	if v.Spec == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Spec != nil {
+		if err := v.Spec.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *RegisterClusterDomainBody) normalize() {
+	if v.Spec != nil {
+		v.Spec.normalize()
+	}
+}
+func (v *RegisterClusterDomainBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire RegisterClusterDomainBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = RegisterClusterDomainBody(value)
+	v.normalize()
+	return nil
+}
+
+type RegisterClusterDomainResponse struct {
+	Cluster *Cluster       `json:"cluster,omitempty"`
+	Domain  *ClusterDomain `json:"domain,omitempty"`
+}
+
+func (v RegisterClusterDomainResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Domain != nil {
+		if err := v.Domain.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *RegisterClusterDomainResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+	if v.Domain != nil {
+		v.Domain.normalize()
+	}
+}
+func (v *RegisterClusterDomainResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire RegisterClusterDomainResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = RegisterClusterDomainResponse(value)
+	v.normalize()
+	return nil
 }
 
 type ResizeClusterBody struct {
@@ -2058,6 +2378,84 @@ func (v TimeOfDay) Validate() error {
 func (v *TimeOfDay) normalize() {
 }
 
+type TransferClusterDomainBody struct {
+	TargetClusterID *string `json:"targetClusterId,omitempty"`
+}
+
+func (v TransferClusterDomainBody) Validate() error {
+	if v.TargetClusterID == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *TransferClusterDomainBody) normalize() {
+}
+func (v *TransferClusterDomainBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire TransferClusterDomainBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = TransferClusterDomainBody(value)
+	v.normalize()
+	return nil
+}
+
+type TransferClusterDomainResponse struct {
+	Cluster *Cluster       `json:"cluster,omitempty"`
+	Domain  *ClusterDomain `json:"domain,omitempty"`
+}
+
+func (v TransferClusterDomainResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Domain != nil {
+		if err := v.Domain.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *TransferClusterDomainResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+	if v.Domain != nil {
+		v.Domain.normalize()
+	}
+}
+func (v *TransferClusterDomainResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire TransferClusterDomainResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = TransferClusterDomainResponse(value)
+	v.normalize()
+	return nil
+}
+
 type UpgradeClusterBody struct {
 	Platform *ClusterPlatform `json:"platform,omitempty"`
 }
@@ -2133,4 +2531,18 @@ func (v *UpgradeClusterResponse) UnmarshalJSON(raw []byte) error {
 	*v = UpgradeClusterResponse(value)
 	v.normalize()
 	return nil
+}
+
+type X509Keypair struct {
+	Certificate *types.ProtectedValue `json:"certificate,omitempty"`
+	Key         *types.ProtectedValue `json:"key,omitempty"`
+}
+
+func (v X509Keypair) Validate() error {
+	if v.Certificate == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *X509Keypair) normalize() {
 }

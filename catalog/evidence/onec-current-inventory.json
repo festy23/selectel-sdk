@@ -326,35 +326,37 @@
       "path": "/clusters/{id}/domains",
       "operation_id": "listClusterDomains",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/domains",
       "operation_id": "registerClusterDomain",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "DELETE",
       "path": "/clusters/{id}/domains/{domainId}",
       "operation_id": "deleteClusterDomain",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "PATCH",
       "path": "/clusters/{id}/domains/{domainId}",
       "operation_id": "patchClusterDomain",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/domains/{domainId}/transfer",
       "operation_id": "transferClusterDomain",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_domains_transfer.create"
     },
     {
       "method": "GET",
