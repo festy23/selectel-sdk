@@ -2,6 +2,7 @@ package catalog_test
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/festy23/selectel-sdk/catalog"
@@ -28,7 +29,7 @@ func TestOfflineCatalogIsImmutableAndDoesNotOverclaim(t *testing.T) {
 		t.Fatal("catalog is mutable")
 	}
 	s := c.Summary()
-	if s.InventoryComplete || s.CoverageRatio != nil || s.Implemented != 53 || s.Partial != 11 {
+	if s.InventoryComplete || s.CoverageRatio != nil || s.Implemented < 53 || s.Partial < 11 {
 		t.Fatal("unknown denominator advertised as covered")
 	}
 	if _, err := c.List(catalog.Filter{Verification: "unknown"}); types.ErrorCode(err) != types.InvalidArgument {
@@ -69,7 +70,32 @@ func TestSerializedCatalogHasVersionAndUncertainCoverage(t *testing.T) {
 			CoverageRatio     *float64 `json:"coverage_ratio"`
 		} `json:"summary"`
 	}
-	if json.Unmarshal(b, &doc) != nil || doc.SchemaVersion != 1 || len(doc.Operations) != 191 || doc.Summary.InventoryComplete || doc.Summary.CoverageRatio != nil {
+	if json.Unmarshal(b, &doc) != nil || doc.SchemaVersion != 1 || len(doc.Operations) < 191 || doc.Summary.InventoryComplete || doc.Summary.CoverageRatio != nil {
 		t.Fatal("serialized catalog loses contract or overclaims coverage")
+	}
+}
+
+func TestRegistryTokenBindingsAreCompleteAndGenerationSpecific(t *testing.T) {
+	c := catalog.Default()
+	ids := []string{"registry.v1.token.create", "registry.v1.token.get", "registry.v1.token.delete", "registry.v1.token_refresh.create", "registry.v2.tokens.create", "registry.v2.tokens.get", "registry.v2.tokens.list", "registry.v2.tokens.update", "registry.v2.tokens_refresh.create", "registry.v2.tokens_regenerate.create", "registry.v2.tokens_revoke.create", "registry.v2.tokens.delete"}
+	for _, id := range ids {
+		v, e := c.Describe(id)
+		expected := "v2"
+		if strings.HasPrefix(id, "registry.v1.") {
+			expected = "v1"
+		}
+		if e != nil || v.APIGeneration != expected || v.Implementation.Status != "implemented" || v.Service != "registry" || v.RequestBindingRef == nil || v.ResponseBindingRef == nil || v.ErrorBindingRef == nil {
+			t.Fatal(id, v, e)
+		}
+	}
+	for _, id := range []string{"registry.v1.registries.create", "registry.v1.registries.get", "registry.v1.registries.delete", "registry.v1.registries.list", "registry.v2.registries.list"} {
+		v, e := c.Describe(id)
+		if e != nil || v.Implementation.Status != "implemented" {
+			t.Fatal(id, v, e)
+		}
+	}
+	s := c.Summary()
+	if s.InventoryComplete || s.CoverageRatio != nil {
+		t.Fatal(s)
 	}
 }

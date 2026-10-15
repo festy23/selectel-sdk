@@ -84,6 +84,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
+	if ref.Service == "registry" && ref.APIGeneration == "v2" && ref.Kind == "token" {
+		return registry.Bind(c.runtime, ref.Scope).V2.Tokens().Handle(ref, nil)
+	}
 	return c.mksHandle(ref, nil)
 }
 func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
@@ -103,6 +106,12 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
 	}
+	if capability.Effect != "mutation" {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if len(receipt.ResourceRefs) == 0 && receipt.ProviderOperationRef == nil && receipt.Outcome != types.Unknown {
+		return operations.BindReceipt(c.runtime, &receipt)
+	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)
 	}
@@ -118,6 +127,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if ref.Service == "compute" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, &receipt)
+	}
+	if ref.Service == "registry" && ref.APIGeneration == "v2" && ref.Kind == "token" {
+		return registry.Bind(c.runtime, ref.Scope).V2.Tokens().Handle(ref, &receipt)
 	}
 	return c.mksHandle(ref, &receipt)
 }
