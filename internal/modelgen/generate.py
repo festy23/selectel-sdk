@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "filestorage": ("file-storage-manila", {"ShareType":"ShareType", "Share":"Share", "ShareNetwork":"ShareNetwork", "NetworkCreateRequest":"NetworkCreateRequest", "AccessRule":"AccessRule", "AccessCreateRequest":"AccessCreateRequest", "ShareCreateRequest":"ShareCreateRequest", "ExtendRequest":"ExtendRequest"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -39,6 +40,7 @@ ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "cni": "CNI", 
 
 
 def name(text):
+    text = text.replace(":", "_")
     words = re.sub(r"([a-z])([A-Z])", r"\1_\2", text).split("_")
     return "".join(ACRONYMS.get(w.lower(), w[:1].upper() + w[1:]) for w in words if w)
 
@@ -49,6 +51,8 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
+    if package == "filestorage":
+        resource_roots = {"ShareType", "ShareNetwork", "Share", "AccessRule"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -76,7 +80,12 @@ for case, (family, initial, top_name) in CASES.items():
                 return pending[reference], False
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
+        if package == "filestorage" and schema.get("nullable"):
+            inner, _ = field_type({key: value for key, value in schema.items() if key != "nullable"}, type_name, field)
+            return "types.Nullable[" + inner + "]", False
         kind = schema.get("type")
+        if package == "filestorage" and kind == "string" and field in {"description", "display_description", "cidr", "gateway", "host", "href", "access_to", "access_key"}:
+            return "types.ProtectedValue", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
@@ -140,6 +149,16 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
+            if package == "filestorage" and nested.get("type") == "object" and not nested.get("properties") and not nested.get("additionalProperties"):
+                code += f"\tif v.{field_name} != nil {{\n"
+                if nested.get("nullable"):
+                    code += f"\tif content, valid := v.{field_name}.Value(); valid {{\n"
+                    raw_object = "content.Reveal()"
+                else:
+                    raw_object = f"v.{field_name}.Reveal()"
+                code += f"\tvar object map[string]json.RawMessage; if json.Unmarshal({raw_object}, &object) != nil || object == nil {{ return types.NewError(types.ProtocolError) }}\n"
+                if nested.get("nullable"): code += "\t}\n"
+                code += "\t}\n"
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
             elif nested.get("type") == "array":
@@ -164,11 +183,18 @@ for case, (family, initial, top_name) in CASES.items():
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or package == "filestorage":
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'
-            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
+            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n"
+            if package == "filestorage":
+                for wire, value in sorted(properties.items()):
+                    if value.get("nullable"):
+                        imports["bytes"] = "bytes"
+                        inner, _ = field_type({key: item for key, item in value.items() if key != "nullable"}, type_name + name(wire), wire)
+                        code += f'\tif field, exists := fields[{json.dumps(wire)}]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {{ value.{name(wire)} = types.Null[{inner}]() }}\n'
+            code += f"\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
         emitted[reference] = code
     filename = "v1_types_generated.go" if case == "registry_v1" else "types_generated.go"
     target = ROOT / package / filename

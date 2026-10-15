@@ -44,6 +44,12 @@ var addresses = map[string]map[string]string{
 
 func Resolve(service, generation string, scope types.Scope) (types.EndpointBinding, error) {
 	key := service + "." + generation
+	if service == "filestorage" && (generation == "v2_73" || generation == "legacy_os_extend") {
+		switch scope.Pool {
+		case "ru-1", "ru-2", "ru-3", "ru-6", "ru-7", "ru-8", "ru-9", "gis-1", "gis-2":
+			return types.EndpointBinding{ID: "selectel-" + key + ":" + scope.Pool, URL: "https://" + scope.Pool + ".cloud.api.selcloud.ru/share/v2", Scope: scope, APIGeneration: generation, Audience: "selectel"}, nil
+		}
+	}
 	u := addresses[key][scope.Pool]
 	if u == "" {
 		return types.EndpointBinding{}, types.NewError(types.EndpointUnavailable)

@@ -1,0 +1,46 @@
+{
+  "operation_id": "filestorage.v2_73.shares.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/shares",
+    "mapping": "body.share generated2.73 ShareCreateRequest. Explicit same-generation share_network/share_type refs set matching IDs, contradictory input rejected. Positive exact Integer size (upstream GiB), NFS/CIFS firstparty protocols; no guessed marketing TB conversion. snapshot/group/hints variants gated before I/O pending provider source, no inferred owners."
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      202
+    ],
+    "mapping": "Generated Share envelope. Independently scan root id/project_id before fields, require caller project, root parent nil. Available network/type echoes must match caller selections; receipt retains trustworthy created root on malformed/contradictory fields plus caller anchors. Accepted not readiness, unknown no replay/adoption.",
+    "sensitive_fields": [
+      "description",
+      "metadata",
+      "host",
+      "links.href"
+    ]
+  },
+  "errors": {
+    "mapping": "Safe shared HTTP status taxonomy; documented 400/401/403/404/409/413/422 are Rejected. Unexpected server/transport outcome remains Unknown without replay. Local validation returns revision-bound NotSent0attempts. Accepted exact refs survive independent decode errors."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No causal replay proof. Exact caller/accepted returned refs may be explicitly observed using available typed reads; no name lookup/adoption or automatic replay."
+  },
+  "limitations": [
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability.",
+    "Snapshot/group/scheduler-hints variants require provider contract and return CapabilityUnavailable before I/O. Quota preflight/reservation and wait goals not implemented."
+  ]
+}

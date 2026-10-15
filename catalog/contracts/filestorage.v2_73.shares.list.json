@@ -1,0 +1,50 @@
+{
+  "operation_id": "filestorage.v2_73.shares.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/shares/detail",
+    "mapping": "Typed ShareFilters expose documented selectors and source limit/offset. metadata/extra_specs protected JSON string dictionaries reveal only in private query serialization; raw query values participate only in private cursorhash. No all_tenants or foreign project_id substitution. Host/server selectors remain provider-policy controlled; rows still must match explicit caller project. Optionalfalse retained."
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      202
+    ],
+    "mapping": "Generated full Share at compiled2.73 according to pinned versioned view; deprecated export_location(s) removed since2.9, admin host/server fields optional, required-present-null distinct. Unknown status preserved without classification/readiness. Root ref only after nonemptyID and exactproject check. Protected metadata/links/description/host objects/scalars never diagnostic output; source object fields reject scalar shapes. Informational count exactInteger, never a terminal predicate or APIcoverage denominator.",
+    "sensitive_fields": [
+      "metadata",
+      "description",
+      "links.href",
+      "host"
+    ]
+  },
+  "errors": {
+    "mapping": "shared sanitized HTTP status taxonomy, no raw provider response diagnostics; bounded retries for read"
+  },
+  "pagination": {
+    "kind": "offset",
+    "proof": "Pinned shares controller and common pagination/get_all use limit/offset; only empty sourcepage terminates even if serverclamps limit. APIreference says202 while controller/WSGI default200; both same typedshape.",
+    "end_rule": "only empty sourcepage; advance offset by receivedrowcount, not requestedsize; server clamps itslimit independently",
+    "bounds": "shared CollectionTimeout/MaxItems/MaxPages and contract/scope/endpoint/semantic cursor; earlier successful pages retained on later error; no responseURL navigation"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "Source-confirmed firstparty sharelist scenario, compatible2.73protocol; no live/full deploymentinventory claim.",
+    "No automatic cross-project resource adoption: foreignowner rows failScopeMismatch, earlier pages retained. Optional publicsearch does not override callerproject guard.",
+    "No inferred ownerparent, readiness, snapshot consistency or wait/recovery promise.",
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability."
+  ]
+}

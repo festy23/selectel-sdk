@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "e193ad5fe1c39262e00dfcd86e1e3557d86b3677de5133240fde40bfe093910a",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "052b21fe99a783592585da1587767e2fb173367bbe20eeca12745d5ad0f3d524",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "484e119e61af745b2016014c4ffe662330603c7890a4b139ad5e6bf9f0431759",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "21ea4d29a545f8f946674dff61ff2bfd900da296204e0337bcc593ac18a073a1",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +451,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "b23452a8b0d9ebd38ef7df89968f562646af4528d1fe6ebea19e5d1e7f49045a",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +517,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "b177fa0f2bc04e67427aff80e2870ad1ef6fe94a73a6e394b5e39b9e73b6a652",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +583,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "337a7072e06211ae68a0574ca209e902b65540cf26561199ebdd133eda7fde94",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +649,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "53a7df4106a159dbe3946a9145fc4fb66834af7baab4e977a89c663a7f611e85",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2167,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "0fc8406df3d1de98910fbf6f0157716832c989487414863c7c8ef4d50a25bfca",
       "level": "offline"
     },
     "wait_goals": []
@@ -4981,6 +4981,635 @@
     "wait_goals": []
   },
   {
+    "action": "extend",
+    "api_generation": "legacy_os_extend",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.legacy_os_extend.shares.extend.json": "3df48fb02eb1a787ce832db187e42b4784448e499cf652f539d3f3e4b8d60137"
+    },
+    "contract_revision": "b657c40264a07b65cdbcd073f5920cc99abdd651e8a22864f930760f345eafd7",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/filestorage.legacy_os_extend.shares.extend.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.legacy_os_extend.shares.extend.json#/errors",
+    "go_method": "filestorage.Client.ExtendLegacy",
+    "implementation": {
+      "binding": "filestorage.Client.ExtendLegacy",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila-extend-legacy.json#/paths/~1shares~1{share_id}~1action/post",
+    "input_type": "types.ResourceRef, types.Integer, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.legacy_os_extend.shares.extend",
+    "output_schema_ref": "sources/file-storage-manila-extend-legacy.json#/paths/~1shares~1{share_id}~1action/post/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila-extend-legacy.json#/paths/~1shares~1{share_id}~1action/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.legacy_os_extend.shares.extend.json#/retry",
+    "request_binding_ref": "contracts/filestorage.legacy_os_extend.shares.extend.json#/request",
+    "resource": "shares",
+    "response_binding_ref": "contracts/filestorage.legacy_os_extend.shares.extend.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "POST /share/v2/shares/{share_id}/action body.os-extend no negotiation header",
+      "revision": "56d702ef82cc30662b3f58ab06dd040bd8adf090df267fbf6ae6c73a3dce74b1",
+      "uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/"
+    },
+    "verification": {
+      "contract_revision": "b657c40264a07b65cdbcd073f5920cc99abdd651e8a22864f930760f345eafd7",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "d46816be07a5c3ee06d5da3fdef6577b34f81c348c023c3e62b28ae67abfc33f",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.networks.list.json": "def455a27c7f9b515036fab46d2cb1f2510a6ff59d67e58f33b36146e78b5e80"
+    },
+    "contract_revision": "514bf62fff113b18097221c223e491ad7207f88667accb6cd32099fbfc7ad8b7",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.networks.list.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.networks.list.json#/errors",
+    "go_method": "filestorage.Client.ListNetworks",
+    "implementation": {
+      "binding": "filestorage.Client.ListNetworks",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila.json#/paths/~1share-networks~1detail/get",
+    "input_type": "filestorage.NetworkFilters, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.networks.list",
+    "output_schema_ref": "sources/file-storage-manila.json#/paths/~1share-networks~1detail/get/responses",
+    "output_type": "pagination.Collection[filestorage.ShareNetwork]",
+    "pagination_contract_ref": "contracts/filestorage.v2_73.networks.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila.json#/paths/~1share-networks~1detail/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.networks.list.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.networks.list.json#/request",
+    "resource": "networks",
+    "response_binding_ref": "contracts/filestorage.v2_73.networks.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "description",
+      "share_network_subnets.cidr",
+      "share_network_subnets.gateway"
+    ],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "GET /v2/share-networks/detail microversion2.73",
+      "revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/index.rst"
+    },
+    "verification": {
+      "contract_revision": "514bf62fff113b18097221c223e491ad7207f88667accb6cd32099fbfc7ad8b7",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "852873725d25ee565d6278f6bbccd95ff2a1d91f5647a27dfaea1f8fea27ffb0",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.share_access_rules.list.json": "2b4a396703068fc58571e0ace1c8bb34cbf42ca6fdcb42a52ef8dd3996f687b3"
+    },
+    "contract_revision": "e0d5512cde51def6897f4481209f24c56fa65b34bc3d9bd9e403284e38c8a6e5",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.share_access_rules.list.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.share_access_rules.list.json#/errors",
+    "go_method": "filestorage.Client.ListAccessRules",
+    "implementation": {
+      "binding": "filestorage.Client.ListAccessRules",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila.json#/paths/~1share-access-rules/get",
+    "input_type": "types.ResourceRef, *types.ProtectedJSON, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.share_access_rules.list",
+    "output_schema_ref": "sources/file-storage-manila.json#/paths/~1share-access-rules/get/responses",
+    "output_type": "pagination.Collection[filestorage.AccessRule]",
+    "pagination_contract_ref": "contracts/filestorage.v2_73.share_access_rules.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila.json#/paths/~1share-access-rules/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.share_access_rules.list.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.share_access_rules.list.json#/request",
+    "resource": "share_access_rules",
+    "response_binding_ref": "contracts/filestorage.v2_73.share_access_rules.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "access_to",
+      "access_key",
+      "metadata"
+    ],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "GET /v2/share-access-rules microversion2.73",
+      "revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/index.rst"
+    },
+    "verification": {
+      "contract_revision": "e0d5512cde51def6897f4481209f24c56fa65b34bc3d9bd9e403284e38c8a6e5",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "6ccef2159f6acac7f9efa1aa6961ca51f3b782ed3e7bb1511cedc9c6f3c5b5c3",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.share_networks.create.json": "58c5e330f9922896f56451f6e2f632156d55b77be3559f9be963d918de464451"
+    },
+    "contract_revision": "4a2b3cb7ae7f57d1a35cf739afc488fb84cc253330c0df400d075d6f449a0429",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.share_networks.create.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.share_networks.create.json#/errors",
+    "go_method": "filestorage.Client.CreateNetwork",
+    "implementation": {
+      "binding": "filestorage.Client.CreateNetwork",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila.json#/paths/~1share-networks/post",
+    "input_type": "types.ResourceRef, types.ResourceRef, filestorage.NetworkCreateRequest, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.share_networks.create",
+    "output_schema_ref": "sources/file-storage-manila.json#/paths/~1share-networks/post/responses",
+    "output_type": "filestorage.ShareNetwork",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila.json#/paths/~1share-networks/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.share_networks.create.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.share_networks.create.json#/request",
+    "resource": "share_networks",
+    "response_binding_ref": "contracts/filestorage.v2_73.share_networks.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "description",
+      "share_network_subnets.cidr",
+      "share_network_subnets.gateway"
+    ],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "POST /v2/share-networks microversion2.73",
+      "revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/index.rst"
+    },
+    "verification": {
+      "contract_revision": "4a2b3cb7ae7f57d1a35cf739afc488fb84cc253330c0df400d075d6f449a0429",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "f558d9c5a847add1015dfd7b8b50261fe3c3c7f984ace53726db4a5c45d3218e",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "allow",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.shares.allow.json": "0f2df24c8ffb5f458499282a5c616a486790734cdc7299989cea55c6bcfa9ca9"
+    },
+    "contract_revision": "10087f7b42e54e3ceceb0625ab2e82440427b7cdd95222de5870610622e43cf1",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.shares.allow.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.shares.allow.json#/errors",
+    "go_method": "filestorage.Client.AllowAccess",
+    "implementation": {
+      "binding": "filestorage.Client.AllowAccess",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila-allow.json#/paths/~1shares~1{share_id}~1action/post",
+    "input_type": "types.ResourceRef, filestorage.AccessCreateRequest, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.shares.allow",
+    "output_schema_ref": "sources/file-storage-manila-allow.json#/paths/~1shares~1{share_id}~1action/post/responses",
+    "output_type": "filestorage.AccessRule",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila-allow.json#/paths/~1shares~1{share_id}~1action/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.shares.allow.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.shares.allow.json#/request",
+    "resource": "shares",
+    "response_binding_ref": "contracts/filestorage.v2_73.shares.allow.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "access_to",
+      "access_key",
+      "metadata"
+    ],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "POST /v2/shares/{share_id}/action body.allow_access microversion2.73",
+      "revision": "84fe2d75df8a864adc93a9eb23ebff3e06aa0b372e657c3403f041b796493584",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/share-actions.inc"
+    },
+    "verification": {
+      "contract_revision": "10087f7b42e54e3ceceb0625ab2e82440427b7cdd95222de5870610622e43cf1",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "964365cd2ab0b6b6a6afb3e486c87504793a317d14a8fc48c648f995361e04a2",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.shares.create.json": "64d7cd281c33bd7eb2a4200dd5f3d7da9e5037f28bb9ddacb11b68d8a8fb19d1"
+    },
+    "contract_revision": "99d0899d3855100cbc93a239d2c5743ced3b0759fd100318f98aaf1f60b2a6aa",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.shares.create.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.shares.create.json#/errors",
+    "go_method": "filestorage.Client.CreateShare",
+    "implementation": {
+      "binding": "filestorage.Client.CreateShare",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila.json#/paths/~1shares/post",
+    "input_type": "types.ResourceRef, types.ResourceRef, filestorage.ShareCreateRequest, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.shares.create",
+    "output_schema_ref": "sources/file-storage-manila.json#/paths/~1shares/post/responses",
+    "output_type": "filestorage.Share",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila.json#/paths/~1shares/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.shares.create.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.shares.create.json#/request",
+    "resource": "shares",
+    "response_binding_ref": "contracts/filestorage.v2_73.shares.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "description",
+      "metadata",
+      "host",
+      "links.href"
+    ],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "POST /v2/shares microversion2.73",
+      "revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/index.rst"
+    },
+    "verification": {
+      "contract_revision": "99d0899d3855100cbc93a239d2c5743ced3b0759fd100318f98aaf1f60b2a6aa",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "4c602165da31f754fb7edb74f61fd74cf3d4533d7dac2165c213459a8b8aa9d1",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "deny",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.shares.deny.json": "25f8704645919d784bb02b7c5e21ee5324ac3a030b2d701093e75d760ae9f159"
+    },
+    "contract_revision": "4fa95234c97906456daee6437e71cbda572a755ee30d9f6c8296ff70c70c7d9c",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.shares.deny.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.shares.deny.json#/errors",
+    "go_method": "filestorage.Client.DenyAccess",
+    "implementation": {
+      "binding": "filestorage.Client.DenyAccess",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila-deny.json#/paths/~1shares~1{share_id}~1action/post",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.shares.deny",
+    "output_schema_ref": "sources/file-storage-manila-deny.json#/paths/~1shares~1{share_id}~1action/post/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila-deny.json#/paths/~1shares~1{share_id}~1action/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.shares.deny.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.shares.deny.json#/request",
+    "resource": "shares",
+    "response_binding_ref": "contracts/filestorage.v2_73.shares.deny.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "POST /v2/shares/{share_id}/action body.deny_access microversion2.73",
+      "revision": "ed82f32e231702420196d54b8c963e2f781e774a37ac3ee28e93367f3f48a817",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/share-actions.inc"
+    },
+    "verification": {
+      "contract_revision": "4fa95234c97906456daee6437e71cbda572a755ee30d9f6c8296ff70c70c7d9c",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "ab909783fa199755e1f5205c31e9b02bf415c3d10387c6eebb80c9b6f87d4e0a",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "extend",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.shares.extend.json": "39949d5f6345e3f630ca2cc5147066686333483ff87af8a2b4cce6774cfe2eb6"
+    },
+    "contract_revision": "19a40b1a3438d3bdd600bdcc78328312e74bb1ddcdbcde6b6f3e5727e01ae7d7",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.shares.extend.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.shares.extend.json#/errors",
+    "go_method": "filestorage.Client.Extend",
+    "implementation": {
+      "binding": "filestorage.Client.Extend",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila-extend.json#/paths/~1shares~1{share_id}~1action/post",
+    "input_type": "types.ResourceRef, filestorage.ExtendRequest, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.shares.extend",
+    "output_schema_ref": "sources/file-storage-manila-extend.json#/paths/~1shares~1{share_id}~1action/post/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila-extend.json#/paths/~1shares~1{share_id}~1action/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.shares.extend.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.shares.extend.json#/request",
+    "resource": "shares",
+    "response_binding_ref": "contracts/filestorage.v2_73.shares.extend.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "POST /v2/shares/{share_id}/action body.extend microversion2.73",
+      "revision": "066117317e4534fa58ec4420ba1ef36f53fae6ed78db08e94bba140020699bf1",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/share-actions.inc"
+    },
+    "verification": {
+      "contract_revision": "19a40b1a3438d3bdd600bdcc78328312e74bb1ddcdbcde6b6f3e5727e01ae7d7",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "ff2723fba49d535b8f91628839a1bc1d68f8ac051d5a73527860bd38391f277e",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.shares.list.json": "9fdaae7ece7b672e9229e3ee676608d8b56a89e648561bf63c044baa25a8f473"
+    },
+    "contract_revision": "f82e75e6a4c4a7a464fec530cc326f17a06dd8bf22f1dd6e4af315d6a632197d",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.shares.list.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.shares.list.json#/errors",
+    "go_method": "filestorage.Client.ListShares",
+    "implementation": {
+      "binding": "filestorage.Client.ListShares",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila.json#/paths/~1shares~1detail/get",
+    "input_type": "filestorage.ShareFilters, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.shares.list",
+    "output_schema_ref": "sources/file-storage-manila.json#/paths/~1shares~1detail/get/responses",
+    "output_type": "pagination.Collection[filestorage.Share]",
+    "pagination_contract_ref": "contracts/filestorage.v2_73.shares.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila.json#/paths/~1shares~1detail/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.shares.list.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.shares.list.json#/request",
+    "resource": "shares",
+    "response_binding_ref": "contracts/filestorage.v2_73.shares.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "metadata",
+      "description",
+      "links.href",
+      "host"
+    ],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "GET /v2/shares/detail microversion2.73",
+      "revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/index.rst"
+    },
+    "verification": {
+      "contract_revision": "f82e75e6a4c4a7a464fec530cc326f17a06dd8bf22f1dd6e4af315d6a632197d",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "54e9aea6b162d8d059015dd883f6cacb3de388f6674b3d81ebbaf38b94a90199",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2_73",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/filestorage.v2_73.types.list.json": "91d66ed71edfa211d05ecc732b91dc0d1be7ff7e78764a6c9c5f26404161c5ff"
+    },
+    "contract_revision": "0e267a4a91d327ce9a5f0afc858106bc7143ea5de506bfa620e0121bcad657d1",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/filestorage.v2_73.types.list.json#/endpoint",
+    "error_binding_ref": "contracts/filestorage.v2_73.types.list.json#/errors",
+    "go_method": "filestorage.Client.ListTypes",
+    "implementation": {
+      "binding": "filestorage.Client.ListTypes",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/file-storage-manila.json#/paths/~1types/get",
+    "input_type": "filestorage.TypeFilters, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "filestorage.v2_73.types.list",
+    "output_schema_ref": "sources/file-storage-manila.json#/paths/~1types/get/responses",
+    "output_type": "pagination.Collection[filestorage.ShareType]",
+    "pagination_contract_ref": "contracts/filestorage.v2_73.types.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/file-storage-manila.json#/paths/~1types/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/filestorage.v2_73.types.list.json#/retry",
+    "request_binding_ref": "contracts/filestorage.v2_73.types.list.json#/request",
+    "resource": "types",
+    "response_binding_ref": "contracts/filestorage.v2_73.types.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project",
+      "project",
+      "region",
+      "pool"
+    ],
+    "sensitive_fields": [
+      "extra_specs",
+      "required_extra_specs"
+    ],
+    "service": "filestorage",
+    "source": {
+      "operation_locator": "GET /types",
+      "revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
+      "uri": "https://github.com/openstack/manila/blob/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/api-ref/source/index.rst"
+    },
+    "verification": {
+      "contract_revision": "0e267a4a91d327ce9a5f0afc858106bc7143ea5de506bfa620e0121bcad657d1",
+      "evidence_ref": "filestorage_client_test.go",
+      "implementation_revision": "3c3870202e08fed92dc9692ba96719cb98135a111745b6270deeebab4e7f8971",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
     "action": "filter",
     "api_generation": "cloudwatch",
     "auth": {
@@ -5044,7 +5673,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "aadcb5ea4a053146101bf803f305cdd81f3ba21829741a98028cd9be9aa1234f",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +5743,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "651e53ecc04eeb41815e114ebf0ecd9e876034fde2f3d8a3110864a748c85b50",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +5810,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "41e538b862d2861a30f931d789a40e1bed330f1c9268feccfa5a111169b01931",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +5877,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "e3a9480bf14b789c644f76d8720b0b130ddb1bd7a835698955433a1832e02b22",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +5943,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "f0ee770bb2ee4fd6f57ff6e35532f37e38799c053725f2e4df2d19b9d9397de7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +6009,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "b8e8a55fd09e04d6f581d6ca3bee48ecb0ee942c5d8eb5bf3444948e1ce19799",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +6074,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "dee0001c9e25d07ff67ee225fe2f030229df1846a2bdfba77ed363a5772d0d03",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +6131,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "5237746b4fab6b65d0302810b522b36b827a2b7c9a7aa574b791c5cc1b40092c",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +6190,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "aed0bed3194574f511b37ab717a504f5a3936035696fa68fe8bd64910d5e6234",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +6249,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "3398ee9abfc38e212077aeead97544541e1581a126f906c54f1e012276484c07",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +6310,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "42eba8d1a46ecb762bac4dcea4181defc077174763c075457a95eb621ffb01e1",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +6369,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "889f2a3c25aa2a4020f5501903b757593b9cb074a448dfefba722b756fbc18a0",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +6428,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "793f075676e58ab568726da8f1e3d6fcb4b8cecc86cb9b5ef472b365a4e20291",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +6489,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "a15928c643570d95fb8beebca1f064a63f55d79aa93f3bdfa1b0512860b7dde3",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +6550,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "fded76dce26cee99980eee650ba21a0056df3c9a8d0bd5dec1774ad5ba10b174",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +6607,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "42f56fcd1cbe2899e619a66736d890bc84d216ee4b0c79f6d96f226045fd99b4",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +6664,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "8dad516ba754f59269687bdb21ca16ab0dbb90642510e305ffaebe7d43ea55dc",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +6725,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "7bef3a202e892371f524f279b3a0bdede938b170b4a86a56c89c0cda15565ae2",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +6784,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "85cb717c9e9bdde4d2a5bc92411656faa3db37144a4cfe5a5c9a2926424d1170",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +6841,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "d111a8e766235b4c9669e10acb30b8c8848f70d4d3217162651dad2d974ff8d2",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +6900,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "039e5cfe7f7a037e6412b6af902db97b2b9d0cb2d1a00397f51a51aa00a6fd71",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +6959,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "1f5c6fc58f0b0baf7e9735c0c2d76808d5038d1e14fc2a2805ae34559075820c",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +7016,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "03f1b25864da3ad2473c5f49f02c053d3e3f014ec0dd6c74d4d7d4f23a2d9386",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +7073,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "f2002e3796354b4ccf0fa9b4103ab3f259991a2089014415aad7295bf1ced4e7",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +7132,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "d348253c48f0491fe40ec733f2dffc232f0cd11a0183e2128f3704ef4b8f5f0f",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +7189,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "2e108cbdd251765b83543ef917f3ff13e948333e67937a8326ab573b5435086c",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +7246,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "9d74bf96af2822a8d7b1dbdb3cb0a0062c66c6bff975301b85b0caec22351b38",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +7303,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "3d77c3d785c8c293032e97f30e12c00286a719d37c66a703db14d19a354dc2cf",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +7360,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "dcc04334f1eaa1ac36e6f1e089eed670bc995ba8b36610148b80e52d972147f0",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +7417,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "9a9eaa6f8cea1d379cfeaa70f68c2b4ca645731b0147d7c986f998cb74370a86",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +7479,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "ad7353ab145aaccc081c90cc2b4d6b09d6c85521a02463bb1ad27f18b0162d7b",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +7541,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "c6e37fae9b69e61f9911b483165fc80af19e21679c8b583b8495701ef1de4c1c",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +7602,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "c143374f7f4e114573d7b7bfadacb1eba25ce5b184d7ccd4f31de84fb7d10540",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +7663,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "83584352e72bd57bb8b867d76fb338a00122e06b48e9db7158abb5af73ccc9d9",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +7722,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "59043f0ad71017660f057f33e66b6163a920d0a238ee466549ae3e9461d35b8e",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +7779,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "5c05e9c87afe379caf025d67000da6513254de435899368da32fa480f4c48afe",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +8524,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "805a33bb9fe10608a708ced6b3a788a74e034f4a54809cea822c2fb1e40471bb",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +8580,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "96942c53dbad4a2bf34a981ace3e2ee8419b3fea971f1cbaa07e058832c4ac0e",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +8636,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "2c2ae5aa21fa37c54e93025153fda6dc8f14d3b9268b06f91a189ad9a2016e8f",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +8692,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "d066f78b5fc6f8b294ccbf1a985511547c3a36b39a35dea65a507660dcfeef0a",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +8748,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "02391c73b2d9b0e0bcc9a0ed10a74dff9915c54cf7dc7efdf757965a9fa2b5b2",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +9176,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "455a162ef9fdb4a472dd1e96c36505034619b28864a36e3390ede905b174e603",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +9233,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "fb32561102154f99a07658bce726d036cf9c9ed27459fb4197141be687dee95b",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +9290,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "1a56897ce609251d6a095ae93c3ce0a57ba5a06f4c201355273a682886a43d55",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +9347,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "61540f369a4cdccd2bc4e935d2ba6efe64aaa3912e9516cf36044adbc181994e",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +10214,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "3ffe9221da7d136375df8c12a8e28b1264765bd8eb2030d83a3947c585e02ccf",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +10813,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "0fc891afca07efd14a496b9876cd7fc6e1121d68e25da05a2049d55900ca7500",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +10870,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "4dc9e473dcfc5a5913ab26e9362f35b543cfdf1ee7754d11b3a068972e2d5f4c",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +10929,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "a65e44a7edea441e544087d31487b4c005d730a75df9fb8d41bf43a52fd7f91e",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +10986,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "e995bb5cac27d25ff10d306b7ec77527372b70d93ec8c86f4c3372ddef6ee4bf",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +11043,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "f0d6b4ae0b423ed4508689ff0a05b0ad2a986ae439a08014a451503114cf8262",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +11102,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "b1f50da9b0c3eaf54e479bdc9c039b7de57c1b6abaffafcefa1899d2994e21e2",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +11161,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "0312a845cd3295e25a43f7eaa568b0d0efc5272ff6e75734dfee897193f1d892",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +11218,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "bd0362ae3ff4eba8f466767f62ce1bece36cc96c7d0d995cafa6e29ce50fc7df",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +11275,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "e047ed81bc74746de14f33590129c36b80707908d1570a53c1d83bfcb587fbfc",
       "level": "offline"
     },
     "wait_goals": []

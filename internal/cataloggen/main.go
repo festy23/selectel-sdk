@@ -21,19 +21,30 @@ type family struct {
 }
 
 var families = map[string]family{
-	"balance":                      {"billing", "v3", "iam_account", false},
-	"balance-statistics":           {"billing", "v1", "iam_account", false},
-	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
-	"craas":                        {"registry", "v2", "iam_project", true},
-	"managed-databases":            {"databases", "v1", "iam_project", false},
-	"managed-kubernetes":           {"mks", "v2", "iam_project", false},
-	"secrets-manager":              {"secrets", "v1", "iam_project", true},
-	"audit-logs":                   {"audit", "v1", "iam_account", true},
-	"compute-nova":                 {"compute", "v2_1", "iam_project", false},
-	"cloudwatch-logs":              {"logs", "cloudwatch", "s3_sigv4", false},
-	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
+	"file-storage-manila-extend-legacy": {"filestorage", "legacy_os_extend", "iam_project", false},
+	"file-storage-manila-allow":         {"filestorage", "v2_73", "iam_project", false},
+	"file-storage-manila-deny":          {"filestorage", "v2_73", "iam_project", false},
+	"file-storage-manila-extend":        {"filestorage", "v2_73", "iam_project", false},
+	"file-storage-manila":               {"filestorage", "v2_73", "iam_project", false},
+	"balance":                           {"billing", "v3", "iam_account", false},
+	"balance-statistics":                {"billing", "v1", "iam_account", false},
+	"cloud-projects-and-resources":      {"projects", "v2", "iam_account", true},
+	"craas":                             {"registry", "v2", "iam_project", true},
+	"managed-databases":                 {"databases", "v1", "iam_project", false},
+	"managed-kubernetes":                {"mks", "v2", "iam_project", false},
+	"secrets-manager":                   {"secrets", "v1", "iam_project", true},
+	"audit-logs":                        {"audit", "v1", "iam_account", true},
+	"compute-nova":                      {"compute", "v2_1", "iam_project", false},
+	"cloudwatch-logs":                   {"logs", "cloudwatch", "s3_sigv4", false},
+	"prometheus-metrics":                {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"file-storage-manila GET /shares/detail":                           "filestorage.v2_73.shares.list",
+	"file-storage-manila GET /share-networks/detail":                   "filestorage.v2_73.networks.list",
+	"file-storage-manila-extend-legacy POST /shares/{share_id}/action": "filestorage.legacy_os_extend.shares.extend",
+	"file-storage-manila-allow POST /shares/{share_id}/action":         "filestorage.v2_73.shares.allow",
+	"file-storage-manila-deny POST /shares/{share_id}/action":          "filestorage.v2_73.shares.deny",
+	"file-storage-manila-extend POST /shares/{share_id}/action":        "filestorage.v2_73.shares.extend",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",
@@ -168,7 +179,7 @@ func generate() error {
 				if f.Mode == "iam_project" {
 					scope = append(scope, "project")
 				}
-				if f.Mode == "s3_sigv4" || f.Mode == "basic" {
+				if f.Mode == "s3_sigv4" || f.Mode == "basic" || f.Service == "filestorage" {
 					scope = append(scope, "project", "region", "pool")
 				}
 				effect := "mutation"

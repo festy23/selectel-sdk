@@ -1,0 +1,39 @@
+{
+  "operation_id": "filestorage.v2_73.shares.deny",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/shares/{share_id}/action",
+    "mapping": "Explicit access_rule ref with exact caller share parent; path uses parent ID, body.deny_access.access_id uses rule ID. No discovery/name lookup/adoption/fallback."
+  },
+  "response": {
+    "successful_statuses": [
+      202
+    ],
+    "mapping": "Pinned controller bodyless202 acceptance only, no rule application/absence assertion. Receipt retains exact caller rule+parent, unknown never replays.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Safe shared HTTP status taxonomy; documented 400/401/403/404 are Rejected. Unexpected server/transport outcome remains Unknown without replay. Local validation returns revision-bound NotSent0attempts. Accepted exact refs survive independent decode errors."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No causal replay proof. Exact caller/accepted returned refs may be explicitly observed using available typed reads; no name lookup/adoption or automatic replay."
+  },
+  "limitations": [
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability."
+  ]
+}

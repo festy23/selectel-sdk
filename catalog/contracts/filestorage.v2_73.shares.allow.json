@@ -1,0 +1,44 @@
+{
+  "operation_id": "filestorage.v2_73.shares.allow",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/shares/{share_id}/action",
+    "mapping": "Exact caller share ref, body.allow_access maps required access_type/access_to, optional access_level and metadata. Protected target revealed only for wire; metadata string dictionary. No caller ref conversion or fallback."
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      202
+    ],
+    "mapping": "access envelope generated2.73 fields. Scan returned id+share_id first; share_id must equal explicit caller. Preserve independently trustworthy created rule ref parent caller share on accepted malformed field. Unknown only caller anchor, no adoption/replay/readiness.",
+    "sensitive_fields": [
+      "access_to",
+      "access_key",
+      "metadata"
+    ]
+  },
+  "errors": {
+    "mapping": "Safe shared HTTP status taxonomy; documented 400/401/403/404 are Rejected. Unexpected server/transport outcome remains Unknown without replay. Local validation returns revision-bound NotSent0attempts. Accepted exact refs survive independent decode errors."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No causal replay proof. Exact caller/accepted returned refs may be explicitly observed using available typed reads; no name lookup/adoption or automatic replay."
+  },
+  "limitations": [
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability."
+  ]
+}
