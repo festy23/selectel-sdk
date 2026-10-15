@@ -90,3 +90,6 @@ func Ref(endpoint types.EndpointBinding, service, kind, id string) *types.Resour
 	}
 	return &types.ResourceRef{Scope: endpoint.Scope, Service: service, APIGeneration: endpoint.APIGeneration, Kind: kind, ID: id, EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
 }
+
+// StructuredLimit bounds parsed JSON and typed response header metadata.
+func (r *Runtime) StructuredLimit() uint64 { return r.config.MaxJSONBytes }

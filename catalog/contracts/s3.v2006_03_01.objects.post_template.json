@@ -1,0 +1,59 @@
+{
+  "operation_id": "s3.v2006_03_01.objects.post_template",
+  "source_revision": "b4a39f02e6f8eef1b29b2731726eb76fa416926c5ec89378a70070505ad995c6",
+  "endpoint": "explicit Selectel regional S3 URL; default path-style, immutable WithVirtualHosted selects bucket-host derivation; both saved as exact refs with no redirect/fallback/AWS defaults",
+  "auth": "s3_sigv4 scope account/project/region/pool; signing region=pool/service=s3",
+  "request": {
+    "method": "POST",
+    "path": "/{bucket}",
+    "query_selector": null,
+    "header_selector": null,
+    "native_model": "AWS service/s3 v1.114.3 presign_post.go + Selectel published generate_presigned_post example",
+    "mapping": "SDK-owned typed PostTemplateOptions prefix -> native Key with compiled ${filename}; native Conditions restricted to mandatory prefix/size/auth plus typed equality conditions",
+    "covered_native_fields": [
+      "Bucket",
+      "Conditions",
+      "Expires",
+      "Key"
+    ],
+    "native_fields": [
+      "Bucket",
+      "Conditions",
+      "Expires",
+      "Key"
+    ],
+    "excluded_variants": [
+      "POST template form only: exact bucket and nonempty caller prefix plus compiled ${filename}; no arbitrary policy, auth override, ACL or redirects; caller submits file last, no SDK HTTP upload"
+    ],
+    "policy_fields": [
+      "exact bucket",
+      "starts-with $key caller prefix; form key is prefix + compiled ${filename}; no exact object proof",
+      "explicit content-length-range min/max integers",
+      "optional exact Content-Type and x-amz-meta-*",
+      "required exact SigV4 algorithm/date/credential and optional session token"
+    ]
+  },
+  "response": {
+    "mapping": "native URL -> protected URL; Values -> protected Fields; Policy is protected Fields[policy]; ExpiresAt is exact generated policy expiration",
+    "sensitive_fields": [
+      "URL",
+      "Fields values",
+      "Policy"
+    ],
+    "native_fields": [
+      "URL",
+      "Values"
+    ],
+    "limitation": "Local form generation only; no SDK HTTP POST/file transfer or remote acknowledgement"
+  },
+  "errors": {
+    "local": "invalid_argument, scope_mismatch, endpoint_unavailable, credentials_unavailable, unauthenticated, canceled/deadline_exceeded; common validation/auth/budget rules",
+    "remote": "caller submits form independently; no remote response/error mapping claimed"
+  },
+  "retry": "No HTTP, retry or mutation receipt during signing",
+  "recovery": "unavailable: no mutation executed by presign; caller owns remote submission outcome",
+  "wait": "unavailable for local presign; exact object HEAD is separate observation only",
+  "pagination": "not applicable",
+  "shared_provenance": "reviewed Swift DoResponse 8a07c83 plus reviewed receipt support379458e",
+  "local_presign": "Buckets.PresignPostTemplate only: exact bucket endpoint, nonempty UTF-8 prefix <=1013 bytes with no caller placeholders, 1..900 second expiry, explicit byte range; local noHTTP/noReceipt/no exact object ref or creation proof"
+}

@@ -8,6 +8,7 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"encoding/json"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -20,14 +21,17 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/festy23/selectel-sdk/credentials"
+	"github.com/festy23/selectel-sdk/internal/endpoints"
 	"github.com/festy23/selectel-sdk/types"
 )
 
 // Operation is an internal, compiled binding. It is never a public raw executor.
 type Operation struct {
+	S3BucketHost                           string
 	ID, Service, APIGeneration, Method     string
 	Effect                                 string
 	Auth                                   types.AuthMode
@@ -39,12 +43,16 @@ type Operation struct {
 	ErrorCodes                             map[int]types.Code
 	Headers                                http.Header
 	SigV4Service, ErrorProtocol            string
+	S3UnsignedPayload                      bool
 }
 type Request struct {
 	Scope              types.Scope
 	Path               string
 	Query              url.Values
 	Body               []byte
+	BodyStream         io.Reader
+	BodySize           int64
+	Transfer           bool
 	Options            types.CallOptions
 	Refs               []types.ResourceRef
 	PinnedEndpoint     *types.EndpointBinding
@@ -59,9 +67,32 @@ type Decoded[T any] struct {
 }
 type Decoder[T any] func([]byte, types.EndpointBinding) (Decoded[T], error)
 
+// ResponseDecoder is a private service binding seam. It consumes the response
+// synchronously with the common budget context; response bodies never escape runtime.
+type ResponseDecoder[T any] func(context.Context, io.Reader, types.EndpointBinding, int, http.Header) (Decoded[T], error)
+
 // DoJSON applies one budget to validation, credentials, auth, requests and retries.
 // A positive acknowledgement is preserved even if decoding the body fails.
-func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode Decoder[T]) (out types.Result[T], err error) {
+func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode Decoder[T]) (types.Result[T], error) {
+	var adapter ResponseDecoder[T]
+	if decode != nil {
+		adapter = func(_ context.Context, body io.Reader, endpoint types.EndpointBinding, status int, _ http.Header) (Decoded[T], error) {
+			raw, e := readResponse(body, r.config.MaxJSONBytes)
+			if e != nil {
+				return Decoded[T]{}, e
+			}
+			if len(op.NoContentSuccess) > 0 && (len(bytes.TrimSpace(raw)) == 0) != containsStatus(op.NoContentSuccess, status) {
+				return Decoded[T]{}, types.NewError(types.ProtocolError)
+			}
+			return decode(raw, endpoint)
+		}
+	}
+	return DoResponse(r, ctx, op, in, adapter)
+}
+
+// DoResponse preserves the shared validation/auth/receipt execution algorithm for
+// typed header and streaming bindings. No public raw executor is exposed.
+func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode ResponseDecoder[T]) (out types.Result[T], err error) {
 	started := time.Now().UTC()
 	out.Metadata = types.Metadata{Scope: in.Scope, APIGeneration: op.APIGeneration, RequestIDs: []string{}}
 	var attempt uint
@@ -72,6 +103,13 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			return out, idErr
 		}
 		out.Receipt = &types.Receipt{SchemaVersion: 1, CallID: id, OperationID: op.ID, Scope: in.Scope, Outcome: types.NotSent, Recovery: "unavailable", ResourceRefs: []types.ResourceRef{}}
+		// Local validation failures still return a revision-bound terminal receipt.
+		if r != nil {
+			if capability, e := r.catalog.Describe(op.ID); e == nil {
+				out.Receipt.ContractRevision = capability.ContractRevision
+			}
+		}
+
 	}
 	defer func() {
 		out.Metadata.ObservedAt = time.Now().UTC()
@@ -115,7 +153,11 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 	if r == nil || ctx == nil || decode == nil {
 		return out, types.NewError(types.InvalidArgument)
 	}
-	call, cancel := context.WithTimeout(ctx, r.config.CallTimeout)
+	budget := r.config.CallTimeout
+	if in.Transfer {
+		budget = r.config.TransferTimeout
+	}
+	call, cancel := context.WithTimeout(ctx, budget)
 	defer cancel()
 	if call.Err() != nil {
 		return out, types.ContextError(call.Err())
@@ -135,6 +177,9 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 	if in.Options.IdempotencyKey != "" {
 		return out, types.NewError(types.InvalidArgument)
 	} // No undocumented replay/header injection.
+	if in.BodyStream != nil && (len(in.Body) > 0 || in.BodySize < 0 || op.Effect != "mutation" || (op.Auth == types.S3SigV4 && !s3UnsignedOperation(op, in))) {
+		return out, types.NewError(types.InvalidArgument)
+	}
 	if in.Validate != nil {
 		if err := in.Validate(); err != nil {
 			return out, err
@@ -206,9 +251,19 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			return out, types.NewError(types.InvalidArgument)
 		}
 		u.RawQuery = in.Query.Encode()
-		req, requestErr := http.NewRequestWithContext(call, op.Method, u.String(), bytes.NewReader(in.Body))
+		var body io.Reader = bytes.NewReader(in.Body)
+		if in.BodyStream != nil {
+			body = io.NopCloser(in.BodyStream)
+		}
+		req, requestErr := http.NewRequestWithContext(call, op.Method, u.String(), body)
 		if requestErr != nil {
 			return out, types.NewError(types.InvalidArgument)
+		}
+		if in.BodyStream != nil {
+			req.ContentLength = in.BodySize
+			if in.BodySize == 0 {
+				req.Body = http.NoBody
+			}
 		}
 		for k, values := range op.Headers {
 			if strings.EqualFold(k, "Authorization") || strings.EqualFold(k, "X-Auth-Token") || strings.EqualFold(k, "X-Token") || strings.EqualFold(k, "Host") {
@@ -255,18 +310,14 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			if out.Receipt != nil {
 				out.Receipt.Outcome = types.Accepted
 			}
-			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
-			resp.Body.Close()
-			if readErr != nil {
-				if call.Err() != nil {
-					return out, types.ContextError(call.Err())
-				}
-				return out, readErr
+			closeBody := sync.OnceFunc(func() { _ = resp.Body.Close() })
+			stopClose := context.AfterFunc(call, closeBody)
+			decoded, decodeErr := decode(call, resp.Body, endpoint, status, resp.Header.Clone())
+			stopClose()
+			closeBody()
+			if decodeErr != nil && call.Err() != nil {
+				decodeErr = types.ContextError(call.Err())
 			}
-			if len(op.NoContentSuccess) > 0 && (len(bytes.TrimSpace(raw)) == 0) != containsStatus(op.NoContentSuccess, status) {
-				return out, types.NewError(types.ProtocolError)
-			}
-			decoded, decodeErr := decode(raw, endpoint)
 			if out.Receipt != nil {
 				for _, ref := range decoded.Refs {
 					if ref.Validate() != nil || ref.Scope != in.Scope || ref.Service != op.Service || ref.APIGeneration != op.APIGeneration || ref.EndpointID != endpoint.ID || ref.EndpointURL != endpoint.URL {
@@ -292,7 +343,7 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 					out.Receipt.Recovery = "resource"
 				}
 				out.Data = decoded.Data
-			} else if decodeErr == nil || (decoded.PartialRead && types.ErrorCode(decodeErr) == types.ResponseLimit) {
+			} else if decodeErr == nil || (decoded.PartialRead && (types.ErrorCode(decodeErr) == types.ResponseLimit || in.Transfer)) {
 				out.Data = decoded.Data
 			}
 			if decodeErr != nil {
@@ -308,6 +359,44 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		if code, ok := op.ErrorCodes[status]; ok {
 			providerError = types.NewError(code)
 			providerError.HTTPStatus = status
+		}
+
+		if op.Service == "s3" && op.ErrorProtocol == "s3" && op.SigV4Service == "s3" {
+			if out.Receipt != nil && containsStatus(op.Rejected, status) {
+				out.Receipt.Outcome = types.Rejected
+			}
+			diagnosticBody := resp.Body
+			closeDiagnostic := sync.OnceFunc(func() { _ = diagnosticBody.Close() })
+			stopDiagnostic := context.AfterFunc(call, closeDiagnostic)
+			raw, readErr := readResponse(diagnosticBody, r.config.MaxJSONBytes)
+			stopDiagnostic()
+			closeDiagnostic()
+			resp.Body = io.NopCloser(strings.NewReader(""))
+			if call.Err() != nil {
+				resp.Body.Close()
+				return out, types.ContextError(call.Err())
+			}
+			if readErr == nil {
+				var wire struct {
+					XMLName xml.Name `xml:"Error"`
+					Code    string   `xml:"Code"`
+				}
+				if xml.Unmarshal(raw, &wire) == nil && s3Code(wire.Code) {
+					providerError.ProviderCode = wire.Code
+					switch wire.Code {
+					case "InvalidAccessKeyId", "SignatureDoesNotMatch", "ExpiredToken", "InvalidToken", "RequestTimeTooSkewed":
+						providerError.Code = types.Unauthenticated
+					case "NoSuchBucket", "NoSuchKey", "NoSuchVersion":
+						providerError.Code = types.NotFound
+					case "AccessDenied":
+						providerError.Code = types.PermissionDenied
+					case "BucketAlreadyExists", "BucketAlreadyOwnedByYou":
+						providerError.Code = types.Conflict
+					case "SlowDown":
+						providerError.Code = types.RateLimited
+					}
+				}
+			}
 		}
 		if op.ErrorProtocol == "cloudwatch" {
 			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
@@ -383,6 +472,16 @@ func (r *Runtime) resolve(op Operation, in Request, entry *authEntry) (types.End
 			}
 		}
 	}
+	if op.S3BucketHost != "" {
+		if op.Service != "s3" || op.APIGeneration != "v2006_03_01" || op.SigV4Service != "s3" {
+			return types.EndpointBinding{}, types.NewError(types.CapabilityUnavailable)
+		}
+		var e error
+		endpoint, e = endpoints.S3VirtualHosted(endpoint, op.S3BucketHost)
+		if e != nil {
+			return types.EndpointBinding{}, e
+		}
+	}
 	if endpoint.ID == "" || endpoint.Scope != in.Scope || endpoint.APIGeneration != op.APIGeneration || endpoint.Audience != credentials.SelectelAudience {
 		return types.EndpointBinding{}, types.NewError(types.ScopeMismatch)
 	}
@@ -411,8 +510,18 @@ func authorizeHeader(req *http.Request, e *authEntry, op Operation, in Request) 
 			return types.NewError(types.CapabilityUnavailable)
 		}
 		digest := sha256.Sum256(in.Body)
+		payloadHash := hex.EncodeToString(digest[:])
+		if op.SigV4Service == "s3" {
+			if in.BodyStream != nil {
+				if !s3UnsignedOperation(op, in) {
+					return types.NewError(types.InvalidArgument)
+				}
+				payloadHash = "UNSIGNED-PAYLOAD"
+			}
+			req.Header.Set("X-Amz-Content-Sha256", payloadHash)
+		}
 		material := aws.Credentials{AccessKeyID: string(e.material.AccessKey.Reveal()), SecretAccessKey: string(e.material.SecretKey.Reveal()), SessionToken: string(e.material.SessionToken.Reveal())}
-		if err := v4.NewSigner().SignHTTP(req.Context(), material, req, hex.EncodeToString(digest[:]), op.SigV4Service, in.Scope.Pool, time.Now().UTC()); err != nil {
+		if err := v4.NewSigner().SignHTTP(req.Context(), material, req, payloadHash, op.SigV4Service, in.Scope.Pool, time.Now().UTC(), func(o *v4.SignerOptions) { o.DisableURIPathEscaping = op.SigV4Service == "s3" }); err != nil {
 			return types.NewError(types.Unauthenticated)
 		}
 	default:
@@ -541,7 +650,7 @@ func (r *Runtime) retryDelay(ctx context.Context, attempt uint, retryAfter strin
 }
 func requestIDs(header http.Header) []string {
 	out := []string{}
-	for _, key := range []string{"X-Request-Id", "X-Openstack-Request-Id", "X-Amzn-Requestid"} {
+	for _, key := range []string{"X-Request-Id", "X-Openstack-Request-Id", "X-Amzn-Requestid", "X-Amz-Request-Id", "X-Trans-Id"} {
 		for _, id := range header.Values(key) {
 			if len(id) > 0 && len(id) <= 128 && !strings.ContainsAny(id, "\r\n\t ") {
 				out = append(out, id)
@@ -569,4 +678,20 @@ func cloneRefs(refs []types.ResourceRef) []types.ResourceRef {
 		}
 	}
 	return out
+}
+
+func s3UnsignedOperation(op Operation, in Request) bool {
+	return op.S3UnsignedPayload && op.Service == "s3" && op.APIGeneration == "v2006_03_01" && op.ID == "s3.v2006_03_01.objects.put" && op.Method == "PUT" && op.Auth == types.S3SigV4 && op.SigV4Service == "s3" && in.Transfer
+}
+
+func s3Code(s string) bool {
+	if len(s) == 0 || len(s) > 128 {
+		return false
+	}
+	for _, c := range s {
+		if !(c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9') {
+			return false
+		}
+	}
+	return true
 }

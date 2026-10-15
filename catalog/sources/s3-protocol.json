@@ -1,0 +1,227 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SDK-owned S3 protocol extraction, not a provider OpenAPI",
+    "version": "2006-03-01"
+  },
+  "paths": {
+    "/CreateBucket": {
+      "put": {
+        "operationId": "CreateBucket",
+        "x-operation-locator": "PUT /{bucket}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_CreateBucket.go.txt"
+      }
+    },
+    "/PutObject": {
+      "put": {
+        "operationId": "PutObject",
+        "x-operation-locator": "PUT /{bucket}/{key}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_PutObject.go.txt"
+      }
+    },
+    "/GetObject": {
+      "get": {
+        "operationId": "GetObject",
+        "x-operation-locator": "GET /{bucket}/{key}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          },
+          "206": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          },
+          "304": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_GetObject.go.txt"
+      }
+    },
+    "/HeadBucket": {
+      "head": {
+        "operationId": "HeadBucket",
+        "x-operation-locator": "HEAD /{bucket}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_HeadBucket.go.txt"
+      }
+    },
+    "/GetBucketLocation": {
+      "get": {
+        "operationId": "GetBucketLocation",
+        "x-operation-locator": "GET /{bucket}?location",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_GetBucketLocation.go.txt"
+      }
+    },
+    "/DeleteBucket": {
+      "delete": {
+        "operationId": "DeleteBucket",
+        "x-operation-locator": "DELETE /{bucket}",
+        "responses": {
+          "204": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_DeleteBucket.go.txt"
+      }
+    },
+    "/HeadObject": {
+      "head": {
+        "operationId": "HeadObject",
+        "x-operation-locator": "HEAD /{bucket}/{key}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          },
+          "206": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          },
+          "304": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_HeadObject.go.txt"
+      }
+    },
+    "/DeleteObject": {
+      "delete": {
+        "operationId": "DeleteObject",
+        "x-operation-locator": "DELETE /{bucket}/{key}",
+        "responses": {
+          "204": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_DeleteObject.go.txt"
+      }
+    },
+    "/CopyObject": {
+      "put": {
+        "operationId": "CopyObject",
+        "x-operation-locator": "PUT /{bucket}/{key} copy-source",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_CopyObject.go.txt"
+      }
+    },
+    "/DeleteObjects": {
+      "post": {
+        "operationId": "DeleteObjects",
+        "x-operation-locator": "POST /{bucket}?delete",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_DeleteObjects.go.txt"
+      }
+    },
+    "/ListBuckets": {
+      "get": {
+        "operationId": "ListBuckets",
+        "x-operation-locator": "GET /",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_ListBuckets.go.txt"
+      }
+    },
+    "/ListObjects": {
+      "get": {
+        "operationId": "ListObjects",
+        "x-operation-locator": "GET /{bucket}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_ListObjects.go.txt"
+      }
+    },
+    "/ListObjectsV2": {
+      "get": {
+        "operationId": "ListObjectsV2",
+        "x-operation-locator": "GET /{bucket}?list-type=2",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "api_op_ListObjectsV2.go.txt"
+      }
+    },
+    "/PresignPostObject": {
+      "post": {
+        "operationId": "PresignPostObject",
+        "x-operation-locator": "POST /{bucket}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "presign_post.go.txt"
+      }
+    },
+    "/PresignPostTemplate": {
+      "post": {
+        "operationId": "PresignPostTemplate",
+        "x-operation-locator": "POST /{bucket}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "presign_post.go.txt"
+      }
+    }
+  },
+  "x-source-uri": "https://docs.selectel.ru/api/object-storage-s3/",
+  "x-source-revision": "b4a39f02e6f8eef1b29b2731726eb76fa416926c5ec89378a70070505ad995c6",
+  "x-sdk-source": "github.com/aws/aws-sdk-go-v2/service/s3 v1.114.3 c8f4a4457aa933bd6c8ce60bc2ca2a0599b77478",
+  "x-local-snapshots": {
+    "api_op_CopyObject.go.txt": "bb00f3012c2d179473048d27d5b3da59c763e7e775e1b4428851b6c276f44511",
+    "api_op_CreateBucket.go.txt": "f71fc1b9367758b8a52b2acb99b9abd1bd4e8fb91aa55d7d8477ae573d300e40",
+    "api_op_DeleteBucket.go.txt": "f4f4c347ff8d6fde9726ca3e8c46a4c4cc5d00f564f3573ebd1a9d5a1aa80bc2",
+    "api_op_DeleteObject.go.txt": "6bcbbd7b5347bbfc85a34dd290bfe72d168538900ae1dcb827b3c6bd8185dbbd",
+    "api_op_DeleteObjects.go.txt": "7c55d451a5df29c2e4b66fb926f66025623fe37a821f851bea500ec7ebf01854",
+    "api_op_GetBucketLocation.go.txt": "0316f0b0013223442b4ac1bebcb403bf0004c8eaaa6968399c38859daaaba1ec",
+    "api_op_GetObject.go.txt": "b0e8b21f1e2dd921f144157ff37adb572247e1346e6c69f703003193dd3ef69c",
+    "api_op_HeadBucket.go.txt": "3fb0090b7b4a95ec343919e869043c0182619300ab6b16c19edadddfc879776b",
+    "api_op_HeadObject.go.txt": "c1874fd358504dc89767f0d36e96ff0879ac95f3ddeb803779d395cb671166f9",
+    "api_op_ListBuckets.go.txt": "b81a84a8bbce33aa9b5fd8197cdd9f611ebb7275bbce38a414c2de287ec9c2ff",
+    "api_op_ListObjects.go.txt": "d97c40de4f60ecdd8078a7d639068245b932692e06577be59cd69ccacaf6d455",
+    "api_op_ListObjectsV2.go.txt": "957e6d2478900a663fec331a63daedd5518e5c98d2b071ad155395dfa4127fc6",
+    "api_op_PutObject.go.txt": "b37887b9c0d9ad43232e1c7c7bee035702dbe743ceeb6b03b2a5743390963814",
+    "presign_post.go.txt": "b71c1daa50fe79ecc44c71b47052f85a044b0ac24c6278b741df5f0b5de4eb21",
+    "selectel-addressing.html": "7dd89916093f82dfa2887e4c7bb30f9a753b07307adb3cad6a2cf3d96993b5aa",
+    "selectel-conditional.html": "971933598789395ef7d296ce827f987f26487aa7c9e0bb1fa9149fafb87fb8f2",
+    "selectel-create-bucket.html": "797b68aa1a78085b4d3d67702530a6cf6ec0d1a8ee2257bb6a545c94b40736ce",
+    "selectel-limits.html": "84e3fe20deee8f0eddca39f5baad39383f60aeeeded186c1333d826c1eacd5d4",
+    "selectel-s3.html": "b4a39f02e6f8eef1b29b2731726eb76fa416926c5ec89378a70070505ad995c6",
+    "selectel-urls.html": "72250b47c599ed2b734198b4b46b4c85517d4331c5324e668aef52149aef64b1",
+    "smithy-path-replace.go.txt": "cb80f3562937bc290ab2ecf59649b5a93c7566f7bdc3ceef65d420eaf8b6b8bb"
+  }
+}
