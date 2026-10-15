@@ -4591,7 +4591,7 @@
     "input_type": "filestorage.TypeFilters, pagination.Options",
     "output_type": "pagination.Collection[filestorage.ShareType]",
     "contract_ref": "contracts/filestorage.v2_73.types.list.json",
-    "status": "implemented",
+    "status": "partial",
     "files": [
       "client.go",
       "filestorage/client.go",
@@ -4626,7 +4626,7 @@
     "input_type": "filestorage.NetworkFilters, pagination.Options",
     "output_type": "pagination.Collection[filestorage.ShareNetwork]",
     "contract_ref": "contracts/filestorage.v2_73.networks.list.json",
-    "status": "implemented",
+    "status": "partial",
     "files": [
       "client.go",
       "filestorage/client.go",
@@ -4662,7 +4662,7 @@
     "input_type": "types.ResourceRef, types.ResourceRef, filestorage.NetworkCreateRequest, types.CallOptions",
     "output_type": "filestorage.ShareNetwork",
     "contract_ref": "contracts/filestorage.v2_73.share_networks.create.json",
-    "status": "implemented",
+    "status": "partial",
     "files": [
       "client.go",
       "filestorage/client.go",
@@ -4700,7 +4700,7 @@
     "input_type": "filestorage.ShareFilters, pagination.Options",
     "output_type": "pagination.Collection[filestorage.Share]",
     "contract_ref": "contracts/filestorage.v2_73.shares.list.json",
-    "status": "implemented",
+    "status": "partial",
     "files": [
       "client.go",
       "filestorage/client.go",
@@ -4722,6 +4722,42 @@
       "catalog/catalog.go",
       "filestorage/networks.go",
       "filestorage/shares.go"
+    ],
+    "evidence_files": [
+      "filestorage_client_test.go",
+      "catalog/evidence/filestorage-current-inventory.json"
+    ],
+    "evidence_ref": "filestorage_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
+  },
+  "filestorage.v2_73.share_access_rules.list": {
+    "go_method": "filestorage.Client.ListAccessRules",
+    "input_type": "types.ResourceRef, *types.ProtectedJSON, pagination.Options",
+    "output_type": "pagination.Collection[filestorage.AccessRule]",
+    "contract_ref": "contracts/filestorage.v2_73.share_access_rules.list.json",
+    "status": "partial",
+    "files": [
+      "client.go",
+      "filestorage/client.go",
+      "filestorage/types_generated.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/endpoints/locations.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "pagination/pagination.go",
+      "catalog/sources/file-storage-manila.json",
+      "types/nullable.go",
+      "types/protected.go",
+      "types/protected_json.go",
+      "types/contracts.go",
+      "types/errors.go",
+      "internal/core/pagination.go",
+      "catalog/catalog.go",
+      "filestorage/access.go"
     ],
     "evidence_files": [
       "filestorage_client_test.go",

@@ -42,6 +42,7 @@
   "limitations": [
     "Firstparty CLI network list is mapped to compatible pinned2.73 protocol; no live or full deploymentinventory claim.",
     "Name/description filters only; administrative cross-project and undocumented generic backend filters are outside firstparty subset.",
-    "No snapshot consistency or wait/readiness promise."
+    "No snapshot consistency or wait/readiness promise.",
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability."
   ]
 }

@@ -1,0 +1,46 @@
+{
+  "operation_id": "filestorage.v2_73.share_access_rules.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/share-access-rules",
+    "mapping": "Required exact caller share ref; share_id query, optional protected string dictionary metadata. No cross-generation conversion or alternate route fallback."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Finite access_list array from pinned2.73 controller; generated fields/protected nullable access_key and access_to, unknown state preserved. Parent is exact explicit caller share. Optional returned share_id must match caller. No readiness assertion.",
+    "sensitive_fields": [
+      "extra_specs",
+      "required_extra_specs"
+    ]
+  },
+  "errors": {
+    "mapping": "shared sanitized HTTP status taxonomy, no raw provider response diagnostics; bounded retries for read"
+  },
+  "pagination": {
+    "kind": "finite-provider-array",
+    "field": "access_list",
+    "bounds": "shared FixedIterator localcutoff preserves partial data/SDKcursor, never returns false completeness"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "Selectelfirstpartycreateguide documents sharetype list CLI. Pinnedupstream2.73 wiremapping is compatible evidence, not live deployment verification.",
+    "SelectelZed/max2.75 vs pinnedZed15.0.0/max2.73 discrepancy owned#70;2.74/2.75 and fullproviderinventory notimplemented or declaredcomplete.",
+    "Administrative is_public=all and extra-spec mutating APIs are outside confirmedfirstparty subset.",
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability."
+  ]
+}

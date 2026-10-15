@@ -373,3 +373,55 @@ func TestFileStorageProtectedFiltersBindCursorWithoutDisclosingSelectors(t *test
 		t.Fatalf("cursor reused across protected filters %v calls%d", e, calls)
 	}
 }
+
+func TestFileStorageAccessRulesUseExplicitShareParentAndProtectKeys(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/share/v2/share-access-rules" || r.URL.Query().Get("share_id") != "share-1" || r.Header.Get("X-OpenStack-Manila-API-Version") != "2.73" {
+			t.Fatalf("request %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"access_list":[{"id":"rule-1","access_level":"rw","access_to":"synthetic-private-ip","access_type":"ip","state":"future-state","access_key":"synthetic-private-key","created_at":null,"updated_at":null,"metadata":{}}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	view, _ := p.Location("spb", "ru-9")
+	share := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share", ID: "share-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	out, e := view.FileStorage().ListAccessRules(context.Background(), share, nil, pagination.Options{})
+	if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.Parent == nil || *out.Items[0].Ref.Parent != share || out.Items[0].State == nil || *out.Items[0].State != "future-state" {
+		t.Fatalf("access %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out)
+	if strings.Contains(string(safe)+fmt.Sprintf("%+v %#v", out, out), "synthetic-private-") {
+		t.Fatal("access secret leaked")
+	}
+}
+
+func TestFileStorageAccessRuleForeignParentNeverAdopted(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"access_list":[{"id":"foreign-rule","share_id":"other-share","access_level":"rw","access_to":"synthetic-private-ip","access_type":"ip","state":"active","access_key":null,"created_at":null,"updated_at":null,"metadata":{}}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	share := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share", ID: "share-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	out, e := v.FileStorage().ListAccessRules(context.Background(), share, nil, pagination.Options{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Complete || len(out.Items) != 0 {
+		t.Fatalf("foreign %+v %v", out, e)
+	}
+	share.APIGeneration = "v2_0"
+	_, e = v.FileStorage().ListAccessRules(context.Background(), share, nil, pagination.Options{})
+	if types.ErrorCode(e) != types.ScopeMismatch || calls != 1 {
+		t.Fatalf("generation %v calls%d", e, calls)
+	}
+}

@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-    "filestorage": ("file-storage-manila", {"ShareType":"ShareType", "Share":"Share", "ShareNetwork":"ShareNetwork", "NetworkCreateRequest":"NetworkCreateRequest"}, None),
+    "filestorage": ("file-storage-manila", {"ShareType":"ShareType", "Share":"Share", "ShareNetwork":"ShareNetwork", "NetworkCreateRequest":"NetworkCreateRequest", "AccessRule":"AccessRule"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -52,7 +52,7 @@ for case, (family, initial, top_name) in CASES.items():
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
     if package == "filestorage":
-        resource_roots = {"ShareType", "ShareNetwork", "Share"}
+        resource_roots = {"ShareType", "ShareNetwork", "Share", "AccessRule"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -84,7 +84,7 @@ for case, (family, initial, top_name) in CASES.items():
             inner, _ = field_type({key: value for key, value in schema.items() if key != "nullable"}, type_name, field)
             return "types.Nullable[" + inner + "]", False
         kind = schema.get("type")
-        if package == "filestorage" and kind == "string" and field in {"description", "display_description", "cidr", "gateway", "host", "href"}:
+        if package == "filestorage" and kind == "string" and field in {"description", "display_description", "cidr", "gateway", "host", "href", "access_to", "access_key"}:
             return "types.ProtectedValue", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False

@@ -41,6 +41,7 @@
   "limitations": [
     "Firstparty Neutron-backed networkcreation subset only; fulldeploymentinventory and2.74/2.75 unresolved under#70.",
     "No automatic preflight quota reservation, quota increase, networking changes or readiness claim; provider413 rejection preserved.",
-    "Reviewed protected wire renderer from OneC PR106 adapted with explicit known Nullable primitive cases; unknown Nullable types failclosed. Reviewed PR97 earlyContractRevision fix reused without volume features."
+    "Reviewed protected wire renderer from OneC PR106 adapted with explicit known Nullable primitive cases; unknown Nullable types failclosed. Reviewed PR97 earlyContractRevision fix reused without volume features.",
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability."
   ]
 }

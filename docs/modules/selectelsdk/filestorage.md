@@ -95,3 +95,15 @@ Protected metadata/extra-spec selectors раскрываются только д
 private cursor hashing. Сам cursor не содержит selector; другой secret selector
 даёт другой fingerprint и отклоняет reuse до credential/resource I/O. Shared
 source object validators не допускают scalar вместо schema object.
+
+ListAccessRules использует GET /share-access-rules с обязательным caller share_id
+и finite access_list (pinned controller не пагинирует этот результат). Explicit
+caller share становится parent rule ref; доступный response share_id обязан
+совпадать, foreign rule не принимается. access_to и nullable access_key защищены;
+state остаётся raw, без обещания применения правила или сетевой доступности.
+Legacy access_list action исключён именно из compiled2.73: pinned source явно
+возвращает404 начиная2.45. Это не утверждение withdrawal других generations.
+
+Все modern2.73 bindings помечены partial: upstream wire mappings подтверждены,
+но exact Selectel modern route/body/microversion availability не доказана CLI
+сценариями. Пробел принадлежит #70 с reconciliation #74 и acceptance #76.

@@ -8,6 +8,63 @@ import (
 	"github.com/festy23/selectel-sdk/types"
 )
 
+type AccessRule struct {
+	AccessKey   *types.Nullable[types.ProtectedValue] `json:"access_key,omitempty"`
+	AccessLevel *string                               `json:"access_level,omitempty"`
+	AccessTo    *types.ProtectedValue                 `json:"access_to,omitempty"`
+	AccessType  *string                               `json:"access_type,omitempty"`
+	CreatedAt   *types.Nullable[string]               `json:"created_at,omitempty"`
+	ID          *string                               `json:"id,omitempty"`
+	Metadata    *types.ProtectedJSON                  `json:"metadata,omitempty"`
+	ShareID     *string                               `json:"share_id,omitempty"`
+	State       *string                               `json:"state,omitempty"`
+	UpdatedAt   *types.Nullable[string]               `json:"updated_at,omitempty"`
+	Ref         *types.ResourceRef                    `json:"ref,omitempty"`
+}
+
+func (v AccessRule) Validate() error {
+	if v.AccessKey == nil || v.AccessLevel == nil || v.AccessTo == nil || v.AccessType == nil || v.CreatedAt == nil || v.ID == nil || v.Metadata == nil || v.State == nil || v.UpdatedAt == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Metadata != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.Metadata.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	return nil
+}
+func (v *AccessRule) normalize() {
+}
+func (v *AccessRule) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire AccessRule
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if field, exists := fields["access_key"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.AccessKey = types.Null[types.ProtectedValue]()
+	}
+	if field, exists := fields["created_at"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.CreatedAt = types.Null[string]()
+	}
+	if field, exists := fields["updated_at"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.UpdatedAt = types.Null[string]()
+	}
+	*v = AccessRule(value)
+	v.normalize()
+	return nil
+}
+
 type Link struct {
 	Href *types.ProtectedValue `json:"href,omitempty"`
 	Rel  *string               `json:"rel,omitempty"`

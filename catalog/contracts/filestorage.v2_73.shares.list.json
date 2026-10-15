@@ -44,6 +44,7 @@
   "limitations": [
     "Source-confirmed firstparty sharelist scenario, compatible2.73protocol; no live/full deploymentinventory claim.",
     "No automatic cross-project resource adoption: foreignowner rows failScopeMismatch, earlier pages retained. Optional publicsearch does not override callerproject guard.",
-    "No inferred ownerparent, readiness, snapshot consistency or wait/recovery promise."
+    "No inferred ownerparent, readiness, snapshot consistency or wait/recovery promise.",
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability."
   ]
 }
