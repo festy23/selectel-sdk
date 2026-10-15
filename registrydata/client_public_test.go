@@ -1347,3 +1347,176 @@ func TestOCIDiagnosticBodyCancellationClosesOnceAndRetainsKnownRejection(t *test
 		})
 	}
 }
+
+func TestMonolithicPOSTUploadVerifiesFullBlobWithoutImplicitFallback(t *testing.T) {
+	const rawDigest = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	for _, status := range []int{201, 202} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				if r.Method != "POST" || r.URL.Path != "/v2/reg/repo/blobs/uploads/" || r.URL.Query().Get("digest") != rawDigest || r.ContentLength != 5 || r.Header.Get("Content-Type") != "application/octet-stream" {
+					t.Fatal(r.Method, r.URL, r.Header, r.ContentLength)
+				}
+				body, _ := io.ReadAll(r.Body)
+				if string(body) != "hello" {
+					t.Fatal(string(body))
+				}
+				out := response(status, "")
+				if status == 201 {
+					out.Header.Set("Location", "/v2/reg/repo/blobs/"+rawDigest)
+					out.Header.Set("Docker-Content-Digest", rawDigest)
+				} else {
+					out.Header.Set("Location", "/v2/reg/repo/blobs/uploads/session?_state=opaque")
+				}
+				return out, nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			digest, _ := registrydata.ParseDigest(rawDigest)
+			out, err := c.Uploads.Monolithic(context.Background(), repo, digest, strings.NewReader("hello"), 5, types.CallOptions{})
+			if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || calls != 2 {
+				t.Fatal(out, err, calls)
+			}
+			if status == 201 {
+				if out.Data.Blob == nil || !out.Data.Blob.DigestVerified || out.Data.Blob.Address.ID != rawDigest || out.Data.Session != nil {
+					t.Fatal(out)
+				}
+			} else {
+				if out.Data.Session == nil || out.Data.Session.Ref.ID != "session" || out.Data.Blob != nil {
+					t.Fatal(out)
+				}
+			}
+		})
+	}
+}
+func TestMonolithicUnknownAndAcceptedSessionResumeDoNotReplay(t *testing.T) {
+	const rawDigest = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	for _, status := range []int{500, 202} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			posts := 0
+			root, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				if r.Method == "POST" {
+					posts++
+					io.Copy(io.Discard, r.Body)
+					v := response(status, "")
+					if status == 202 {
+						v.Header.Set("Location", "/v2/reg/repo/blobs/uploads/session?_state=protected")
+					}
+					return v, nil
+				}
+				if r.Method != "HEAD" || r.URL.Path != "/v2/reg/repo/blobs/"+rawDigest {
+					t.Fatal(r.Method, r.URL)
+				}
+				return response(200, ""), nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			digest, _ := registrydata.ParseDigest(rawDigest)
+			out, err := c.Uploads.Monolithic(context.Background(), repo, digest, strings.NewReader("hello"), 5, types.CallOptions{})
+			if status == 500 && types.ErrorCode(err) != types.UnknownOutcome {
+				t.Fatal(err)
+			}
+			if status == 202 && err != nil {
+				t.Fatal(err)
+			}
+			h, err := root.Resume(*out.Receipt)
+			if err != nil {
+				t.Fatal(err)
+			}
+			recovery, err := h.Recover(context.Background())
+			if posts != 1 {
+				t.Fatal(posts)
+			}
+			if status == 500 {
+				if types.ErrorCode(err) != types.UnknownOutcome || recovery.ProofStatus != "indeterminate" || recovery.Observation == nil || recovery.Observation.Ref.ID != rawDigest {
+					t.Fatal(recovery, err)
+				}
+			} else {
+				if err != nil || recovery.ProofStatus != "conclusive" || h.Resource().ID != "session" {
+					t.Fatal(recovery, err, h.Resource())
+				}
+			}
+		})
+	}
+}
+func TestMonolithicEmptyBlobHasExactZeroWireContentLength(t *testing.T) {
+	const digestString = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		var wire strings.Builder
+		if e := r.Write(&wire); e != nil {
+			t.Fatal(e)
+		}
+		if !strings.Contains(wire.String(), "Content-Length: 0\r\n") || strings.Contains(wire.String(), "Transfer-Encoding: chunked") {
+			t.Fatal(wire.String())
+		}
+		out := response(201, "")
+		out.Header.Set("Location", "/v2/reg/repo/blobs/"+digestString)
+		return out, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	digest, _ := registrydata.ParseDigest(digestString)
+	out, err := c.Uploads.Monolithic(context.Background(), repo, digest, nil, 0, types.CallOptions{})
+	if err != nil || out.Data.Blob == nil || !out.Data.Blob.DigestVerified {
+		t.Fatal(out, err)
+	}
+}
+func TestMonolithicRejectedRealmDoesNotReadBodyOrSendCredentials(t *testing.T) {
+	reads, calls := 0, 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Host != "cr.selcloud.ru" || r.URL.Path != "/v2/" || r.Header.Get("Authorization") != "" {
+			t.Fatal("credentials or request escaped preflight")
+		}
+		out := response(401, "")
+		out.Header.Set("Www-Authenticate", `Bearer realm="https://foreign.invalid/token",service="registry"`)
+		return out, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	digest, _ := registrydata.ParseDigest("sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	reader := &countReader{reads: &reads, Reader: strings.NewReader("hello")}
+	out, err := c.Uploads.Monolithic(context.Background(), repo, digest, reader, 5, types.CallOptions{})
+	if err == nil || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || reads != 0 || calls != 1 {
+		t.Fatal(out, err, reads, calls)
+	}
+}
+func TestMonolithicAcceptedMalformedResponseOrWrongDigestRetainsRequestedAddress(t *testing.T) {
+	// Valid expected digest is independent of the transmitted bad payload.
+	digest, _ := registrydata.ParseDigest("sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824")
+	for _, variant := range []string{"digest", "foreign-location", "wrong-repository", "short"} {
+		t.Run(variant, func(t *testing.T) {
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				io.Copy(io.Discard, r.Body)
+				out := response(201, "")
+				location := "/v2/reg/repo/blobs/" + digest.String()
+				if variant == "foreign-location" {
+					location = "https://foreign.invalid" + location
+				}
+				if variant == "wrong-repository" {
+					location = "/v2/reg/other/blobs/" + digest.String()
+				}
+				out.Header.Set("Location", location)
+				return out, nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			payload := "wrong"
+			if variant == "short" {
+				payload = "hi"
+			}
+			out, err := c.Uploads.Monolithic(context.Background(), repo, digest, strings.NewReader(payload), 5, types.CallOptions{})
+			if err == nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.ResourceRefs[1].ID != digest.String() || (out.Data.Blob != nil && out.Data.Blob.DigestVerified) {
+				t.Fatal(out, err)
+			}
+		})
+	}
+}

@@ -98,8 +98,7 @@ last equal to the last returned tag. Extensions, extra query and multiple Links
 are excluded. Invalid namespace/row/Link preserves an already validated bounded
 prefix and the original terminal error, without another request.
 
-Protocol-confirmed omissions retained under **#50**: single-POST monolithic
-upload and mount/from variants; referrers/artifactType pagination and subject
+Protocol-confirmed omissions retained under **#50**: mount/from variants; referrers/artifactType pagination and subject
 fallback workflow; optional chunk-min-length/other metadata; extended Link
 syntax and additional content formats/algorithms. These are not described as
 provider-unsupported. In particular Put sends exactly one manifest mutation;
@@ -130,3 +129,40 @@ Cancellation closes a blocking diagnostic body once; a source-documented
 rejection is recorded before diagnostic processing and remains Rejected even
 when cancellation prevents reading its optional provider code. Cancellation
 does not authorize a retry or change the already known mutation refusal.
+
+
+## Explicit optional single-POST upload
+
+`Uploads.Monolithic(ctx, repository, digest, reader, size, options)` implements
+OCI1.1.1 end-4b on the existing POST upload-start remote binding. This is an
+explicit optional protocol variant, with no claim of current Selectel server
+availability. It does not replace Start or automatically follow a202 with PUT.
+
+The caller supplies the exact repository, digest and int64 byte length; the
+compiled Basic/Bearer preflight finishes before reading the stream. All transfer,
+error-body processing and cancellation share the existing transfer budget. Bytes
+are streamed once and hashed locally; empty input has explicit Content-Length0,
+not unknown-length chunked framing. A201 response must provide same-origin exact
+repository/requested-digest Location; the Blob union arm has DigestVerified only
+when every declared byte was read and its local digest matches. Malformed accepted
+headers/size/digest preserve the Accepted receipt and requested address, without
+claiming a valid completed blob.
+
+A202 response returns only the protected Session union arm at offset0; it does not
+prove blob completion or authorize automatic retransmission. The caller decides
+whether/how to supply data to Finalize. The initial repository and requested blob
+remain in the receipt; a validated202 session is retained as a third exact ref.
+Its protected Location/query must be saved separately to perform session calls.
+
+Unknown outcomes retain the caller-selected blob address for exact HEAD observation
+through Resume, with no creation/ownership proof and no replay. Resume validates
+repository/blob[/session] parent relationships and endpoint agreement; a known202
+receipt recovers conclusively without turning its session into blob completion.
+The additional requested-blob auth proof is accepted only for the compiled start
+operation with exactly one digest query value matching that ref; no general
+caller-controlled auth bypass or cross-origin trust is introduced.
+
+Confirmed remaining protocol work remains owned by #50: mount/from, referrers and
+manifest-subject fallback, optional hints/metadata, extended Link forms and further
+formats/algorithms. Selectel optional variant availability and actual realm/offload
+topology still require #74 evidence; #75 retains partial acceptance qualifications.

@@ -16,6 +16,10 @@ type BlobWriteResult struct {
 	DigestVerified bool                 `json:"digest_verified"`
 	Location       types.ProtectedValue `json:"location"`
 }
+type MonolithicUploadResult struct {
+	Blob    *BlobWriteResult `json:"blob,omitempty"`
+	Session *UploadSession   `json:"session,omitempty"`
+}
 type UploadSession struct {
 	Ref      types.ResourceRef    `json:"ref"`
 	Location types.ProtectedValue `json:"location"`

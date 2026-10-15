@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/festy23/selectel-sdk/operations"
 	"github.com/festy23/selectel-sdk/types"
+	"reflect"
 	"time"
 )
 
@@ -87,7 +88,7 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	if len(receipt.ResourceRefs) == 0 && receipt.ProviderOperationRef == nil && receipt.Outcome != types.Unknown {
 		return operations.BindReceipt(c.runtime, &receipt)
 	}
-	if receipt.ProviderOperationRef != nil || receipt.Endpoint == nil || len(receipt.ResourceRefs) == 0 || len(receipt.ResourceRefs) > 2 {
+	if receipt.ProviderOperationRef != nil || receipt.Endpoint == nil || len(receipt.ResourceRefs) == 0 || len(receipt.ResourceRefs) > 3 || (len(receipt.ResourceRefs) == 3 && receipt.OperationID != "registry_data.oci_v1.uploads.start") {
 		return nil, types.NewError(types.RecoveryUnavailable)
 	}
 	ep := receipt.Endpoint
@@ -125,12 +126,23 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 			return nil, types.NewError(types.ScopeMismatch)
 		}
 	}
-	if len(receipt.ResourceRefs) == 2 {
+	if len(receipt.ResourceRefs) >= 2 {
 		second := receipt.ResourceRefs[1]
 		parent := first
 		if receipt.OperationID == "registry_data.oci_v1.uploads.start" {
-			if second.Kind != "upload" {
+			if second.Kind != "upload" && second.Kind != "blob" {
 				return nil, types.NewError(types.InvalidArgument)
+			}
+			if second.Kind == "blob" {
+				if _, e := ParseDigest(second.ID); e != nil {
+					return nil, e
+				}
+			}
+			if len(receipt.ResourceRefs) == 3 {
+				third := receipt.ResourceRefs[2]
+				if second.Kind != "blob" || third.Kind != "upload" || third.Parent == nil || !reflect.DeepEqual(*third.Parent, first) {
+					return nil, types.NewError(types.InvalidArgument)
+				}
 			}
 		} else if receipt.OperationID == "registry_data.oci_v1.uploads.finalize" {
 			if second.Kind != "blob" {
@@ -150,6 +162,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 		}
 	}
 	primary := first
+	if receipt.OperationID == "registry_data.oci_v1.uploads.start" && (len(receipt.ResourceRefs) == 3 || (len(receipt.ResourceRefs) == 2 && receipt.ResourceRefs[1].Kind == "blob")) {
+		primary = receipt.ResourceRefs[len(receipt.ResourceRefs)-1]
+	}
 	if receipt.OperationID == "registry_data.oci_v1.uploads.finalize" && len(receipt.ResourceRefs) == 2 {
 		primary = receipt.ResourceRefs[1]
 	}

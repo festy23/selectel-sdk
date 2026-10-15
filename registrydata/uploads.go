@@ -273,3 +273,77 @@ func (c *Uploads) CancelNative(ctx context.Context, session UploadSession, o typ
 		return core.Decoded[struct{}]{}, nil
 	})
 }
+
+// Monolithic explicitly attempts the optional OCI single-POST upload variant.
+// A202 result returns a session only; the caller decides whether to continue.
+// No automatic fallback consumes or retransmits the caller's reader.
+func (c *Uploads) Monolithic(ctx context.Context, repo types.ResourceRef, digest Digest, body io.Reader, size int64, options types.CallOptions) (types.Result[MonolithicUploadResult], error) {
+	op, bind := c.client.operation("registry_data.oci_v1.uploads.start")
+	op.Success = []int{201, 202}
+	op.Headers = http.Header{"Content-Type": {"application/octet-stream"}}
+	requested := child(repo, "blob", digest.String())
+	hashes := digestHashes()
+	missing := body == nil && size > 0
+	if body == nil {
+		body = strings.NewReader("")
+	}
+	stream := &uploadReader{reader: io.TeeReader(io.LimitReader(body, size), io.MultiWriter(hashes["sha256"], hashes["sha384"], hashes["sha512"])), ctx: ctx}
+	var requestBody io.Reader = stream
+	if size == 0 {
+		requestBody = nil
+	}
+	return core.DoResponse(c.client.runtime, ctx, op, core.Request{Scope: c.client.scope, Path: repositoryPath(repo) + "/blobs/uploads/", Query: url.Values{"digest": {digest.String()}}, Refs: []types.ResourceRef{repo, requested}, PinnedEndpoint: pin(repo), Options: options, Transfer: true, BodyStream: requestBody, BodySize: size, Validate: func() error {
+		if bind != nil {
+			return bind
+		}
+		if e := c.client.valid(repo, "repository"); e != nil {
+			return e
+		}
+		if missing || size < 0 {
+			return types.NewError(types.InvalidArgument)
+		}
+		_, e := ParseDigest(digest.String())
+		return e
+	}}, func(_ context.Context, _ io.Reader, _ types.EndpointBinding, status int, h http.Header) (core.Decoded[MonolithicUploadResult], error) {
+		location, e := header(h, "Location", c.client.runtime.StructuredLimit())
+		if e != nil {
+			return core.Decoded[MonolithicUploadResult]{}, e
+		}
+		if status == 202 {
+			session, e := c.uploadLocation(location, repo, nil)
+			out := core.Decoded[MonolithicUploadResult]{}
+			if session.Ref.ID != "" {
+				out.Data.Session = &session
+				out.Refs = []types.ResourceRef{session.Ref}
+			}
+			return out, e
+		}
+		base, _ := url.Parse(repo.EndpointURL)
+		target, e := url.Parse(location)
+		if e != nil || location == "" || target.User != nil || target.Fragment != "" || target.Opaque != "" {
+			return core.Decoded[MonolithicUploadResult]{}, types.NewError(types.ProtocolError)
+		}
+		requestURL, _ := url.Parse(strings.TrimRight(repo.EndpointURL, "/") + repositoryPath(repo) + "/blobs/uploads/")
+		target = requestURL.ResolveReference(target)
+		if !sameOrigin(base, target) {
+			return core.Decoded[MonolithicUploadResult]{}, types.NewError(types.ProtocolError)
+		}
+		if target.EscapedPath() != strings.TrimRight(base.EscapedPath(), "/")+repositoryPath(repo)+"/blobs/"+url.PathEscape(digest.String()) {
+			return core.Decoded[MonolithicUploadResult]{}, types.NewError(types.ScopeMismatch)
+		}
+		blob := BlobWriteResult{Address: requested, Digest: digest, Location: types.Protect([]byte(target.String()))}
+		out := core.Decoded[MonolithicUploadResult]{Data: MonolithicUploadResult{Blob: &blob}, Refs: []types.ResourceRef{requested}}
+		stated, e := header(h, "Docker-Content-Digest", c.client.runtime.StructuredLimit())
+		if e != nil {
+			return out, e
+		}
+		if stated != "" && stated != digest.String() {
+			return out, types.NewError(types.ProtocolError)
+		}
+		if stream.read != size || sum(hashes[digest.Algorithm], digest.Algorithm) != digest {
+			return out, types.NewError(types.ProtocolError)
+		}
+		blob.DigestVerified = true
+		return out, nil
+	})
+}

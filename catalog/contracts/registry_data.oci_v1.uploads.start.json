@@ -12,10 +12,10 @@
     "method": "POST",
     "path": "/v2/{name}/blobs/uploads/",
     "mapping": "Exact repository for Start; exact session ref plus caller-held protected provider Location otherwise. Same-origin/same-repository path; critical query bytes preserved without normalization. Reserved existing digest query rejected. No offloaded Location follow or inferred session URL.",
-    "body": "No request body"
+    "body": "Start has no body. Explicit Monolithic variant has digest query, Content-Type application/octet-stream and exact Content-Length caller stream, compiled preflight before body. No implicit PUT fallback or replay."
   },
   "response": {
-    "mapping": "202 Start or204 Status or202 Append; required protected Location exact origin/repository/session. Start Offset0; Status/Append required Range0-last-byte gives Offset=last+1, 0-0 means1 (no empty-upload inference); Append checks exact next offset and transmitted size. Malformed accepted response retains known session identity before unrelated fields.",
+    "mapping": "Start requires202 exact session Location. Explicit Monolithic accepts201 exact requested blob Location plus local digest/length verification, or202 exact session Location with no blob completion/proof; union result requires caller-directed next action. Unknown retains requested blob address only, never creation proof.",
     "sensitive_fields": [
       "location"
     ]
@@ -40,7 +40,7 @@
   "compatibility": "same-origin realm/query restrictions not a claim about undocumented Selectel topology; optional deletion/server availability untested; inventory incomplete",
   "remaining": {
     "confirmed_protocol_not_in_this_subset": [
-      "OCI single-POST monolithic upload and mount/from variants",
+      "OCI mount/from upload variants",
       "OCI referrers API/artifactType pagination and manifest subject/referrers fallback workflow",
       "OCI optional chunk-min-length hint and additional response metadata",
       "Extended/multiple Link syntax; additional image formats/digest algorithms"

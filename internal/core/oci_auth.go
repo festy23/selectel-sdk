@@ -20,7 +20,8 @@ func ociScope(op Operation, in Request, endpoint types.EndpointBinding) (string,
 	if op.ID == "registry_data.oci_v1.version.get" && op.Service == "registry_data" && op.APIGeneration == "oci_v1" && op.Auth == types.Basic && op.Method == "GET" && op.Effect == "read" && len(in.Refs) == 0 && in.Path == "/v2/" {
 		return "", nil
 	}
-	if op.Service != "registry_data" || op.APIGeneration != "oci_v1" || op.Auth != types.Basic || ((op.ID == "registry_data.oci_v1.uploads.finalize" && len(in.Refs) != 2) || (op.ID != "registry_data.oci_v1.uploads.finalize" && len(in.Refs) != 1)) {
+	monolithic := op.ID == "registry_data.oci_v1.uploads.start" && in.Query.Has("digest")
+	if op.Service != "registry_data" || op.APIGeneration != "oci_v1" || op.Auth != types.Basic || (((op.ID == "registry_data.oci_v1.uploads.finalize" || monolithic) && len(in.Refs) != 2) || (op.ID != "registry_data.oci_v1.uploads.finalize" && !monolithic && len(in.Refs) != 1)) {
 		return "", types.NewError(types.InvalidArgument)
 	}
 	ref := in.Refs[0]
@@ -43,6 +44,12 @@ func ociScope(op Operation, in Request, endpoint types.EndpointBinding) (string,
 	if len(in.Refs) == 2 {
 		extra := in.Refs[1]
 		query, e := url.ParseQuery(in.OCISessionQuery)
+		if monolithic {
+			query = in.Query
+			if len(query) != 1 || len(query["digest"]) != 1 || in.OCISessionQuery != "" {
+				return "", types.NewError(types.InvalidArgument)
+			}
+		}
 		if e != nil || extra.Kind != "blob" || extra.ID != query.Get("digest") || extra.Parent == nil || !reflect.DeepEqual(*extra.Parent, *repo) {
 			return "", types.NewError(types.InvalidArgument)
 		}

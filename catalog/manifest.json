@@ -10139,9 +10139,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.blobs.delete.json": "820292df639da796a0f861f855d41524617a4e3ba8cbc25a087147183edabfbe"
+      "contracts/registry_data.oci_v1.blobs.delete.json": "2bb4190fc170b1396cd820a85a91d0ce16792678937f186a53bd70b46f3e7531"
     },
-    "contract_revision": "c5d1a5b8ab61daf5b4f3e0f9c28208da870596d7eab4ff2403c4259c2e21dce6",
+    "contract_revision": "9cc346867ff2720ca5d95a4ba322e5d24b99c652173adfddf11b03b8cd98cb0c",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.blobs.delete.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.blobs.delete.json#/errors",
@@ -10163,7 +10163,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.blobs.delete.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": "contracts/registry_data.oci_v1.blobs.delete.json#/recovery",
@@ -10179,13 +10179,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 deleting blobs / end-10",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "c5d1a5b8ab61daf5b4f3e0f9c28208da870596d7eab4ff2403c4259c2e21dce6",
+      "contract_revision": "9cc346867ff2720ca5d95a4ba322e5d24b99c652173adfddf11b03b8cd98cb0c",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "8e2055df8d3894f52ec1c94576853868306b32840b06e35690563ded33812165",
+      "implementation_revision": "df718aca086759ee2202c0c94a1ff110b5baec8889256914299d76b11427505b",
       "level": "offline"
     },
     "wait_goals": []
@@ -10199,9 +10199,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.blobs.get.json": "13eb3ccb998d4b377c0008e50d0f34ce765c06a234ba65bfff2ff78125cb63b0"
+      "contracts/registry_data.oci_v1.blobs.get.json": "b392a9cf42e3405feb0e5d38351a11e0a55f4619c8463175edc6c2a002682d3c"
     },
-    "contract_revision": "9954f6813533badb0e0bcaf190e448ec30e5108b59358b911c5b8beed9e71fcc",
+    "contract_revision": "acc19024715895f4d3b7da4e66f9ef085b72c83eb85d90fd1999b0ab842c5499",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.blobs.get.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.blobs.get.json#/errors",
@@ -10223,7 +10223,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.blobs.get.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10241,13 +10241,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 pulling blobs / end-2; RFC9110 Range",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "9954f6813533badb0e0bcaf190e448ec30e5108b59358b911c5b8beed9e71fcc",
+      "contract_revision": "acc19024715895f4d3b7da4e66f9ef085b72c83eb85d90fd1999b0ab842c5499",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "f0e831fc6fdf75a06ba05978965ca6391761a06343b35f6cbb75833fafca167d",
+      "implementation_revision": "aaa4d993b5990d65383e095b1febf94c10333bdcb8d1ed1f1837ce5b5aacccf1",
       "level": "offline"
     },
     "wait_goals": []
@@ -10261,9 +10261,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.blobs.head.json": "f4fdcc0db164444ba3d4fd568af66a13ec88ea24a291ad12e9c2906ef75c1772"
+      "contracts/registry_data.oci_v1.blobs.head.json": "ac3d03476d8b0d432d9ab800e4f0f844ee23353f525f3ade35e5446d9f216254"
     },
-    "contract_revision": "32ee620c62835a7dd12ca2be6ee1811b56b802eac54d43b8c9f86ddc0f7774a7",
+    "contract_revision": "e49993b0bfbe407d289059425231906045b4351b0c86f37d361df86468efbed6",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.blobs.head.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.blobs.head.json#/errors",
@@ -10285,7 +10285,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.blobs.head.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10301,13 +10301,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 checking content / end-2",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "32ee620c62835a7dd12ca2be6ee1811b56b802eac54d43b8c9f86ddc0f7774a7",
+      "contract_revision": "e49993b0bfbe407d289059425231906045b4351b0c86f37d361df86468efbed6",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "e78591cebadb5ef1367b1c685af29a3701dfa8cd611006ec2a703bbda9f3a637",
+      "implementation_revision": "d3e6bcca4e1c2c32e445ad8fc672e4f64febfdc5089ce0c6dc034431b78bbdef",
       "level": "offline"
     },
     "wait_goals": []
@@ -10321,9 +10321,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.manifests.delete.json": "845e09d24ede13acfa4eb41a16c06416c8d63738db2c5388c6a850dd0f7f758d"
+      "contracts/registry_data.oci_v1.manifests.delete.json": "16473139336f0b23a38a7b0bcf3b7bd220a81ac4c87f22a7bf43abe82b7601e5"
     },
-    "contract_revision": "0c8a9bc75544f17dd88ee2ea4c162577ce396d0a3bd145caab15905e224d2668",
+    "contract_revision": "0e40785f9eff9ed9612e229d4b3c3e9932d89caf566be19bfe431d4d642eb302",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.manifests.delete.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.manifests.delete.json#/errors",
@@ -10345,7 +10345,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.manifests.delete.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": "contracts/registry_data.oci_v1.manifests.delete.json#/recovery",
@@ -10361,13 +10361,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 deleting tags/manifests / end-9",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "0c8a9bc75544f17dd88ee2ea4c162577ce396d0a3bd145caab15905e224d2668",
+      "contract_revision": "0e40785f9eff9ed9612e229d4b3c3e9932d89caf566be19bfe431d4d642eb302",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "82c7bbe849a748d0dec65e2b863f284b34c0ca04df97e89fc13c3b8f4d359bcd",
+      "implementation_revision": "c541d6bc5c4619efa7f2fdaf7e293b7d0fa0e21f3e92c8756df7077fa7a5f848",
       "level": "offline"
     },
     "wait_goals": []
@@ -10381,9 +10381,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.manifests.get.json": "63e5f1c8f3ca17d105146c322cdfaf4a091f6c009b6b5debdd0afd7e9dc5096b"
+      "contracts/registry_data.oci_v1.manifests.get.json": "eb7b1c1644b84584b344937627d20ba9f691689284dd6db8443b1f219a5e4a36"
     },
-    "contract_revision": "e35f1ddc64e81437cb3eee536ac436b2f7f6ee133baef4588eecfe6d32987704",
+    "contract_revision": "0fb03c399b29853c2c6d26a04f9011a190289f2f15d39a356cac4b2cd22966d4",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.manifests.get.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.manifests.get.json#/errors",
@@ -10405,7 +10405,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.manifests.get.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10423,13 +10423,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 pulling manifests / end-3",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "e35f1ddc64e81437cb3eee536ac436b2f7f6ee133baef4588eecfe6d32987704",
+      "contract_revision": "0fb03c399b29853c2c6d26a04f9011a190289f2f15d39a356cac4b2cd22966d4",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "fdf48a3e9d837d43c6fccb3c037d7a52321cd76137a24a49331b5f83a0b9df97",
+      "implementation_revision": "e745f9a268e1c5296ec5cf3c88fb45176109125767169c5f301704439f69760d",
       "level": "offline"
     },
     "wait_goals": []
@@ -10443,9 +10443,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.manifests.head.json": "2c376a2df1c04a7c91a29ad6bd21bc93ec099c09e95b036c59e5f4174f1503d4"
+      "contracts/registry_data.oci_v1.manifests.head.json": "07d1e2dde4300994e0e89b03c4957c317f0d8a35a49bc9286a57906f8ce9693d"
     },
-    "contract_revision": "ca94d95613bdef87db84607d55bae60f23002a23c5a69a3e6c65b99d15fdd787",
+    "contract_revision": "3db90c0aae893bc1bf3286de1a6a1a833bdb3c359bac65e85030b235f34f6436",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.manifests.head.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.manifests.head.json#/errors",
@@ -10467,7 +10467,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.manifests.head.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10483,13 +10483,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 checking content / end-3",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "ca94d95613bdef87db84607d55bae60f23002a23c5a69a3e6c65b99d15fdd787",
+      "contract_revision": "3db90c0aae893bc1bf3286de1a6a1a833bdb3c359bac65e85030b235f34f6436",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "7f32a263f760a3b77c592a3543bf80b21b8c6d5b6fb559e0edb68ebc5885fe57",
+      "implementation_revision": "4ae8a31616d3a849118b5271c00213a3ac7aea0e272064487d64d3aec0c598ad",
       "level": "offline"
     },
     "wait_goals": []
@@ -10503,9 +10503,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.manifests.replace.json": "f4bc1ab2aa771e3a48fc6af17efd04e15e339dd3f94445c0d526e8a8dafab572"
+      "contracts/registry_data.oci_v1.manifests.replace.json": "d88adf2a7523f84e6b763743c02518f90acf21172bdad25e72e32a904a31856d"
     },
-    "contract_revision": "0ebe6f4ff376f8be3fede89833fd5d26132abc092a5cb8387f2927d7a2ebfd19",
+    "contract_revision": "baac161e96b3d70e5ee89c257f22a8b8e09123c5afa7fc15ccfc4ef53da26f1d",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.manifests.replace.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.manifests.replace.json#/errors",
@@ -10527,7 +10527,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.manifests.replace.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": "contracts/registry_data.oci_v1.manifests.replace.json#/recovery",
@@ -10545,13 +10545,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 pushing manifests / end-7",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "0ebe6f4ff376f8be3fede89833fd5d26132abc092a5cb8387f2927d7a2ebfd19",
+      "contract_revision": "baac161e96b3d70e5ee89c257f22a8b8e09123c5afa7fc15ccfc4ef53da26f1d",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "4c309af406de2f701cc1cb53b1d046299fccc68a1dbc4544b8e8d57e4dc66565",
+      "implementation_revision": "f89679e8470ba8bdff8641ea84f16528d441bd251a9cf08f3184b4dfb10d09bb",
       "level": "offline"
     },
     "wait_goals": []
@@ -10565,9 +10565,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.tags.list.json": "c8e4b8b0173f8a66e0faa1250939fa80a73c31e6c2f9bd4c8638992c1406e14d"
+      "contracts/registry_data.oci_v1.tags.list.json": "ec56460c0c1b075c1ea1d5e19683568bd38517bcdd244a09a88fd3ee43b37989"
     },
-    "contract_revision": "b9476eb583b77796e4fc651e5fa1d4a33434a7afc1461d037da3cf1f1933ac3c",
+    "contract_revision": "00bc0bdc33ea2fe371a56ee304c6cace50adc5460ad4e56a0dd5c6d87fdec1e6",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.tags.list.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.tags.list.json#/errors",
@@ -10589,7 +10589,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.tags.list.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10605,13 +10605,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 listing tags / end-8a/end-8b",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "b9476eb583b77796e4fc651e5fa1d4a33434a7afc1461d037da3cf1f1933ac3c",
+      "contract_revision": "00bc0bdc33ea2fe371a56ee304c6cace50adc5460ad4e56a0dd5c6d87fdec1e6",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "989f5dae2f101ed1ba112a5f3cc7b5ae38fd6c3c103e31eae6c201ee430aeb17",
+      "implementation_revision": "6a49210c7f5cd1d06ed1eb8d70c544aec93c3c88e516e06e40bb07d1795f6276",
       "level": "offline"
     },
     "wait_goals": []
@@ -10625,9 +10625,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.uploads.append.json": "c674ee0023724f8a2cbdc03311e58119c4f6c680f7c3687f3f6039d1f9bd8871"
+      "contracts/registry_data.oci_v1.uploads.append.json": "2ca977f21b3bbaba446875b1c7953086326f1113243ac1ee30223b86de60acc2"
     },
-    "contract_revision": "5cb61ed463128009cd6ac803c183ccc1669c020ee5794bb1bc0515389eae36eb",
+    "contract_revision": "dfaad8b59b824b98a7f6e142a75661857e560115f8a1837b50a43b8d1394a76a",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.append.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.append.json#/errors",
@@ -10649,7 +10649,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.append.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10667,13 +10667,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 chunked uploads / end-5",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "5cb61ed463128009cd6ac803c183ccc1669c020ee5794bb1bc0515389eae36eb",
+      "contract_revision": "dfaad8b59b824b98a7f6e142a75661857e560115f8a1837b50a43b8d1394a76a",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "532bf217a872c8bee3df85f7b4cd60355e0619ad3c9dd369f9e374d491305359",
+      "implementation_revision": "72f4c537f2d4bcbbb70c63422cb357fce9d12b8e75a97e76d1c3f3ec21843aff",
       "level": "offline"
     },
     "wait_goals": []
@@ -10687,9 +10687,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.uploads.cancel_native.json": "2d0d19f2cd03b5e8fc10cdb2a510198821e68f16c24b830e6ca6a0d454473153"
+      "contracts/registry_data.oci_v1.uploads.cancel_native.json": "16741064a063199d96fc227b7ebf09602c98c5d1325fedf71a0438d91052946d"
     },
-    "contract_revision": "c09b5521184dcf33f6f01b6da54a293a39f104b1df5ac2f7a3255a25d06286b4",
+    "contract_revision": "dfa857e9c63bf940401dc246a3623252ce42fd78bfec52c6c1e95a6dd1b5e319",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.cancel_native.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.cancel_native.json#/errors",
@@ -10711,7 +10711,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.cancel_native.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10729,13 +10729,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "Distribution pinned API Canceling an upload / DELETE upload UUID; explicit native variant",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/distribution/distribution/blob/f7d69d28c2e302f31d1f6ce8e193da58407225a7/docs/content/spec/api.md"
     },
     "verification": {
-      "contract_revision": "c09b5521184dcf33f6f01b6da54a293a39f104b1df5ac2f7a3255a25d06286b4",
+      "contract_revision": "dfa857e9c63bf940401dc246a3623252ce42fd78bfec52c6c1e95a6dd1b5e319",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "507dd8f7e0e14a4905fa8ea29a5f68da7110147fb03ab0b76e2c3aaf2da061ad",
+      "implementation_revision": "b41a932b5ce6db0d19dee6260e78fa3e97a0dc28d4f3ebeb09e651ad59dd8f84",
       "level": "offline"
     },
     "wait_goals": []
@@ -10749,9 +10749,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.uploads.finalize.json": "a7112a6b54d00d8bb26a30eb76e0798bca84286234531c802e0356a151b717d3"
+      "contracts/registry_data.oci_v1.uploads.finalize.json": "5dc3f6cbcf21203230833afec1094f256536e31e758c3104d74495f1cab5c68c"
     },
-    "contract_revision": "a36fc20177ddfa9640f8f2d0da96c3982fc7b8fc56c16edcea77e110ba3478df",
+    "contract_revision": "da79aba003b7a00a593e9708ae6f3a9d9362cb49f9f31252e3475730dd6521cb",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.finalize.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.finalize.json#/errors",
@@ -10773,7 +10773,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.finalize.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": "contracts/registry_data.oci_v1.uploads.finalize.json#/recovery",
@@ -10791,13 +10791,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 POST then PUT / chunked close / end-6",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "a36fc20177ddfa9640f8f2d0da96c3982fc7b8fc56c16edcea77e110ba3478df",
+      "contract_revision": "da79aba003b7a00a593e9708ae6f3a9d9362cb49f9f31252e3475730dd6521cb",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "5ffcee1adad1d769803d51b3d2333d2630315f8af713811f5cb729b2e1fdfb95",
+      "implementation_revision": "57e439d1d131ca028d3b88a5824dbd2b589671f7e278bcbed92eb54b5e411104",
       "level": "offline"
     },
     "wait_goals": []
@@ -10811,31 +10811,31 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.uploads.start.json": "383b3e9750d1b2df6c67ac86d725d6530a15ed4309a4e266a50eae39189ba2e0"
+      "contracts/registry_data.oci_v1.uploads.start.json": "18fe65d2ee5f0e33b9b93ca28bd4cf7b6436e466b50e76e7b70b2c9d072920c1"
     },
-    "contract_revision": "40dc83fe094ec718b2acee4fdab47c0dde70526d3368e42a7146497d1adbc379",
+    "contract_revision": "6aa0f3176adaf877cc2eb9b1936185f95f2b58b62dea938765d614988a4c0d58",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.start.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.start.json#/errors",
-    "go_method": "registrydata.Uploads.Start",
+    "go_method": "registrydata.Uploads.Start/Monolithic",
     "implementation": {
-      "binding": "registrydata.Uploads.Start",
+      "binding": "registrydata.Uploads.Start/Monolithic",
       "status": "partial"
     },
     "input_schema_ref": "sources/registry-oci.json#/paths/~1v2~1{name}~1blobs~1uploads~1/post",
-    "input_type": "types.ResourceRef, types.CallOptions",
+    "input_type": "types.ResourceRef, types.CallOptions or types.ResourceRef, registrydata.Digest, io.Reader, int64, types.CallOptions",
     "limitations": [
       "Verification does not establish live availability"
     ],
     "operation_id": "registry_data.oci_v1.uploads.start",
     "output_schema_ref": "sources/registry-oci.json#/paths/~1v2~1{name}~1blobs~1uploads~1/post/responses",
-    "output_type": "registrydata.UploadSession",
+    "output_type": "registrydata.UploadSession or registrydata.MonolithicUploadResult",
     "pagination_contract_ref": null,
     "parameter_support": {
       "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.start.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10853,13 +10853,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 POST then PUT / end-4a",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "40dc83fe094ec718b2acee4fdab47c0dde70526d3368e42a7146497d1adbc379",
+      "contract_revision": "6aa0f3176adaf877cc2eb9b1936185f95f2b58b62dea938765d614988a4c0d58",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "6e28224a1b063d3320c2c6ab5f121dafb08e2bedb6610e68b1823e3a92f81600",
+      "implementation_revision": "8e9c08b33c3cfe5df13b51016fa7d94bded780ca4fe0246ae6962eaf11899df3",
       "level": "offline"
     },
     "wait_goals": []
@@ -10873,9 +10873,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.uploads.status.json": "834ede338710022afa0a6d6c0a714caf136debbfe69159be1922927b2962aa6e"
+      "contracts/registry_data.oci_v1.uploads.status.json": "81647894c7170d8a3f945a3a06617571642ffc2d1b307b587067e9fb0eab46a3"
     },
-    "contract_revision": "05afd89031db679d3f938adb77e7e3dbd9c88aeca069a6b0e08757c93c1272bc",
+    "contract_revision": "14ef56803717f06210fc985a08d2a2a866c6cc764e9c619b2f504bf00acf587b",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.status.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.status.json#/errors",
@@ -10897,7 +10897,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.status.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10915,13 +10915,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 upload status / end-13",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "05afd89031db679d3f938adb77e7e3dbd9c88aeca069a6b0e08757c93c1272bc",
+      "contract_revision": "14ef56803717f06210fc985a08d2a2a866c6cc764e9c619b2f504bf00acf587b",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "dca2a968672ef50dcd593fb120efab45f76c3c0f1fa81d5ac0f64943abc9b08f",
+      "implementation_revision": "5a1d9958a5454a5626ee21d473a44450a8528ebb8b4a1baacadc2d487837fb00",
       "level": "offline"
     },
     "wait_goals": []
@@ -10935,9 +10935,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/registry_data.oci_v1.version.get.json": "0f3423a641e4c9256952ab9a1fe0368ed7097423eed36261be994fc97be8bb21"
+      "contracts/registry_data.oci_v1.version.get.json": "51199a5e8f617421998e0988d15995d2e9d028ad4b067a42ece708d719b2a609"
     },
-    "contract_revision": "7aafecc7d5c9e2f7c781f9161f2a5061df5be3443df8d41c3606945c0ea11348",
+    "contract_revision": "ca0c47cd44f5885e6d9ebde856a5ecef00de253426d5d3542703696b951558a2",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.version.get.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.version.get.json#/errors",
@@ -10959,7 +10959,7 @@
       "covered_schema_ref": "contracts/registry_data.oci_v1.version.get.json#/request",
       "excluded_variants": [
         "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-        "Confirmed protocol omissions (single-POST/mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+        "Confirmed protocol omissions (mount/referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
       ]
     },
     "recovery_contract_ref": null,
@@ -10975,13 +10975,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 API version check / end-1",
-      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
+      "revision": "fd361a035eaa752b53525c0f8a668b004e7130c56c5c435f3db462742350bde1",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "7aafecc7d5c9e2f7c781f9161f2a5061df5be3443df8d41c3606945c0ea11348",
+      "contract_revision": "ca0c47cd44f5885e6d9ebde856a5ecef00de253426d5d3542703696b951558a2",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "574ce0cc21f7bfdb603ecf7d227d320118013ebbecc0212e32e74de0ff45aa5e",
+      "implementation_revision": "7c3c24b4504e85d0a5ce18fdce97ac2678887e71ebe32eb090fa1642d60bb0e3",
       "level": "offline"
     },
     "wait_goals": []

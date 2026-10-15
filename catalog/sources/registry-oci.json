@@ -383,6 +383,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "digest",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -403,6 +411,9 @@
           },
           "405": {
             "description": "source status 405"
+          },
+          "201": {
+            "description": "Optional explicit single-POST monolithic completion"
           }
         },
         "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
