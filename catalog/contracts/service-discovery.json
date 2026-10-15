@@ -1,0 +1,423 @@
+{
+  "schema_version": 1,
+  "surveyed_at": "2026-10-16",
+  "scope": "Discovery evidence only; no Selectel operation inventory inferred from component table or upstream API",
+  "sources": {
+    "selectel-openstack-components": {
+      "uri": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli.md",
+      "revision": "1a379ca0505fcc422d2b3fb6495a7699f09d41769c531b6d5e95b2483889d68b",
+      "locator": "openstack-components-versions / Heat, Placement, Gnocchi rows",
+      "role": "first_party_component_version",
+      "facts": [
+        "Heat Zed API1.0; Placement Zed API1.0 maximum microversion1.39; Gnocchi release4.5 API1.0.",
+        "Component listing does not establish Selectel user policy, endpoint, auth, operation inventory or actual deployment patch.",
+        "Manila is separately owned by #70; Nova placement/server groups are not the Placement API."
+      ]
+    },
+    "heat-zed-reference": {
+      "uri": "https://raw.githubusercontent.com/openstack/heat/894711550192d4f5e2265d8734ae52d4a3250468/api-ref/source/v1/index.rst",
+      "revision": "894711550192d4f5e2265d8734ae52d4a3250468",
+      "locator": "Heat 19.0.0 upstream v1 API index",
+      "role": "upstream_reference_only",
+      "facts": [
+        "Upstream reference includes stacks, resources, events and templates; this is not a Selectel-supported operation denominator or deployment patch claim."
+      ]
+    },
+    "selectel-api-index": {
+      "uri": "https://docs.selectel.ru/api/",
+      "revision": "1a76c0cf3ffae25ec494f693c17a5cd17682ed6e5405d3a05f0e1a77c3856659",
+      "locator": "Public API index navigation",
+      "role": "first_party_documentation_index",
+      "facts": [
+        "Bounded index sweep recorded public API page links; missing navigation entries do not prove absent or withdrawn APIs.",
+        "Secrets Manager, certificates, VMware and legacy API pages have distinct owners; KMS crypto operations are not inferred from Secrets Manager."
+      ]
+    },
+    "selectel-api-urls": {
+      "uri": "https://docs.selectel.ru/api/urls/",
+      "revision": "0fce7c721dab50c8064b780548cccf2f9e822978a1d7cc1d73e9f1ca54177b4f",
+      "locator": "Documented base URL map examined for Heat/Placement/Gnocchi/KMS",
+      "role": "first_party_endpoint_map_search",
+      "facts": [
+        "This survey did not establish a user operation endpoint recipe for Heat/Placement/Gnocchi/KMS; no host/catalog service type is guessed."
+      ]
+    },
+    "selectel-sitemap": {
+      "uri": "https://docs.selectel.ru/sitemap.xml",
+      "revision": "7cdd0293a99f3893eedf2b851c2d02deadd2a2396f76646aecbab228b8c41b8f",
+      "locator": "Sitemap paths searched for heat/placement/gnocchi/kms/vds/ml-platform/trino/redash/hive",
+      "role": "first_party_sitemap_search",
+      "facts": [
+        "Sitemap search is a bounded discovery surface, not proof of API absence or API operation inventory.",
+        "Placement-group pages refer to cloud-server Nova groups, not proof of Placement API support."
+      ]
+    },
+    "zed-release-baseline": {
+      "uri": "https://releases.openstack.org/zed/",
+      "revision": "dd031694c511e6ce5ef179c85e756734cb534ba06261654747213e336f38b802",
+      "locator": "Heat19.0.0 and Placement8.0.0 initial Zed releases",
+      "role": "upstream_release_reference",
+      "facts": [
+        "Initial Zed reference versions are Heat19.0.0 and Placement8.0.0; this does not pin the Selectel deployment patch or operation support."
+      ]
+    },
+    "placement-zed-reference": {
+      "uri": "https://raw.githubusercontent.com/openstack/placement/5ec38f6d3b76619fac442a85a9b5c73dc606b83a/placement/microversion.py",
+      "revision": "5ec38f6d3b76619fac442a85a9b5c73dc606b83a",
+      "locator": "Placement8.0.0 VERSIONS maximum1.39",
+      "role": "upstream_reference_only",
+      "facts": [
+        "Pinned upstream reference supports microversions through1.39. Provider policy/operations must still be confirmed."
+      ]
+    },
+    "gnocchi-45-reference": {
+      "uri": "https://raw.githubusercontent.com/gnocchixyz/gnocchi/eaa83d6867cc5be11908936a6f72d1dbd3162207/doc/source/rest.yaml",
+      "revision": "eaa83d6867cc5be11908936a6f72d1dbd3162207",
+      "locator": "Gnocchi4.5.0 upstream REST documentation source",
+      "role": "upstream_reference_only",
+      "facts": [
+        "Upstream4.5.0 reference is distinct from the latest gnocchiclient7.x documentation linked by the provider; neither establishes Selectel-supported operations or permissions.",
+        "Gnocchi is not considered covered by the SDK Prometheus Metrics service."
+      ]
+    },
+    "hive-overview": {
+      "uri": "https://docs.selectel.ru/cloud-for-hive-metastore/about/about-cloud-for-hive-metastore.md",
+      "revision": "89a0730bbab7cc5d2b2c06830da212e79d3b3b00a592a2c7a78bbb18c86de67d",
+      "locator": "Versions and connection protocols",
+      "role": "first_party_data_integration",
+      "facts": [
+        "Hive Metastore4.2.0; private-subnet Thrift port9083 and Iceberg REST HTTP port8080 are documented.",
+        "Exact supported operation/auth/REST-spec revision and SDK safe transport boundary remain unconfirmed.",
+        "Cluster control-plane API is not inferred from these data endpoints."
+      ]
+    },
+    "hive-connect": {
+      "uri": "https://docs.selectel.ru/cloud-for-hive-metastore/manage/connect-to-cluster.md",
+      "revision": "f1540cdce1c8d1fe8a769ce9ab41f47091ebe61dec32aefe7deb579bfa7e2870",
+      "locator": "Versions and connection protocols",
+      "role": "first_party_data_integration",
+      "facts": [
+        "Hive Metastore4.2.0; private-subnet Thrift port9083 and Iceberg REST HTTP port8080 are documented.",
+        "Exact supported operation/auth/REST-spec revision and SDK safe transport boundary remain unconfirmed.",
+        "Cluster control-plane API is not inferred from these data endpoints."
+      ]
+    },
+    "vds-candidate": {
+      "uri": "https://docs.selectel.ru/vds-servers/about/about-vds-server.md",
+      "revision": "764288190075ed754032e526bd66c0853cf4ca7143794038ed08090a441047d9",
+      "locator": "Product integration / management boundary",
+      "role": "first_party_candidate_boundary",
+      "facts": [
+        "Product page contrasts VDS control-panel management with cloud-server OpenStack CLI/Terraform; no separate public VDS control API is established by this survey."
+      ]
+    },
+    "ml_platform-candidate": {
+      "uri": "https://docs.selectel.ru/ml-platform/about-ml-platform.md",
+      "revision": "9af4fc7b2d06b5b22dcfddaa9f0e3fe2cb49c1ce0581a9bc23ee33c700b1218a",
+      "locator": "Product integration / management boundary",
+      "role": "first_party_candidate_boundary",
+      "facts": [
+        "Product describes ClearML SDK integration and hosted ML infrastructure; no Selectel cluster control-plane operation inventory or version-bound ClearML API contract is established."
+      ]
+    },
+    "trino-candidate": {
+      "uri": "https://docs.selectel.ru/cloud-for-trino/manage/connect-to-cluster.md",
+      "revision": "05338d751c4d7cadaa6592b892721653530fa1d15c514038b9b76b3dfbca64cf",
+      "locator": "Product integration / management boundary",
+      "role": "first_party_candidate_boundary",
+      "facts": [
+        "First-party Trino CLI endpoint and credentials are described; a full Selectel control-plane or HTTP statement operation contract is not established by CLI presence alone."
+      ]
+    },
+    "redash-candidate": {
+      "uri": "https://docs.selectel.ru/cloud-for-redash/manage/connect-to-cluster.md",
+      "revision": "842a69431519c62806e96d3acfaeda34005f9dffc6e40c6986566fe42242fa3e",
+      "locator": "Product integration / management boundary",
+      "role": "first_party_candidate_boundary",
+      "facts": [
+        "First-party Redash GUI connection is described; no public provider control API or complete upstream Redash operation surface is inferred."
+      ]
+    }
+  },
+  "families": {
+    "heat": {
+      "availability": "discovery_pending",
+      "source_ids": [
+        "selectel-openstack-components",
+        "heat-zed-reference",
+        "zed-release-baseline",
+        "selectel-api-urls"
+      ],
+      "versions": [
+        {
+          "component": "Heat",
+          "release": "Zed",
+          "api_version": "1.0"
+        }
+      ],
+      "inventory_count": null,
+      "missing_contracts": [
+        "Selectel user-accessible operation inventory and effective policy",
+        "Scope/auth and endpoint recipe per operation",
+        "Full request/response/error/status/replay/wait contracts"
+      ],
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/124"
+      ]
+    },
+    "placement": {
+      "availability": "discovery_pending",
+      "inventory_count": null,
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/125"
+      ],
+      "missing_contracts": [
+        "Selectel user-accessible operations and effective user/admin policy",
+        "Per-method microversion, auth/scope and endpoint",
+        "Typed request/response/error/replay/receipt mappings; Nova server groups are owned by #31, not this family"
+      ],
+      "versions": [
+        {
+          "component": "Placement",
+          "release": "Zed",
+          "api_version": "1.0",
+          "max_microversion": "1.39"
+        }
+      ],
+      "source_ids": [
+        "selectel-openstack-components",
+        "placement-zed-reference",
+        "zed-release-baseline",
+        "selectel-api-urls"
+      ]
+    },
+    "gnocchi": {
+      "availability": "discovery_pending",
+      "inventory_count": null,
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/126"
+      ],
+      "missing_contracts": [
+        "Selectel telemetry operation inventory, scope/auth and user endpoint",
+        "Aggregation/time/measure/resource/error/replay/bounds contracts",
+        "Separation from Prometheus Metrics #60; no implicit ingestion or endpoint alias"
+      ],
+      "versions": [
+        {
+          "component": "Gnocchi",
+          "release": "4.5",
+          "api_version": "1.0"
+        }
+      ],
+      "source_ids": [
+        "selectel-openstack-components",
+        "gnocchi-45-reference",
+        "selectel-api-urls"
+      ]
+    },
+    "kms": {
+      "availability": "discovery_pending",
+      "inventory_count": null,
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/127"
+      ],
+      "missing_contracts": [
+        "Authoritative public KMS contract or provider disposition",
+        "Actual API generation/auth/endpoint/operation inventory, if confirmed",
+        "No inference from Secrets Manager, upstream Barbican, package mirrors, missing pages or permission failures"
+      ],
+      "versions": [],
+      "source_ids": [
+        "selectel-api-index",
+        "selectel-api-urls",
+        "selectel-sitemap"
+      ]
+    },
+    "hive_metastore": {
+      "availability": "discovery_pending",
+      "inventory_count": null,
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/128"
+      ],
+      "missing_contracts": [
+        "Distinct Thrift and Iceberg REST operation inventory, auth and protocol revisions",
+        "Plain private HTTP8080/Thrift9083 versus SDK HTTPS-only and agreed transport test boundaries",
+        "No cluster lifecycle/control plane inferred from data integration; no whole upstream API imported"
+      ],
+      "versions": [
+        {
+          "component": "Hive Metastore",
+          "release": "4.2.0"
+        }
+      ],
+      "source_ids": [
+        "hive-overview",
+        "hive-connect"
+      ]
+    }
+  },
+  "externally_owned": {
+    "file_storage": {
+      "issues": [
+        70,
+        74,
+        76
+      ],
+      "pull_request": "https://github.com/festy23/selectel-sdk/pull/115",
+      "source_ids": [
+        "selectel-openstack-components"
+      ],
+      "disposition": "Existing source-bound slice owns version/availability/lifecycle/quota/wait gaps; no duplicate bindings imported"
+    },
+    "ai_data": {
+      "issues": [
+        72,
+        74,
+        76
+      ],
+      "pull_request": "https://github.com/festy23/selectel-sdk/pull/123",
+      "source_ids": [
+        "selectel-api-index"
+      ],
+      "disposition": "Existing8partial bindings and data/control/preview/streaming gaps remain owned by #72; no duplicate source family implementation"
+    },
+    "vmware": {
+      "issues": [
+        68,
+        107,
+        108,
+        109
+      ],
+      "pull_request": "https://github.com/festy23/selectel-sdk/pull/110",
+      "source_ids": [
+        "selectel-api-index"
+      ],
+      "disposition": "Version/auth and lifecycle/network/storage slices already exist; no reallocation of their work"
+    },
+    "legacy": {
+      "issues": [
+        71,
+        116,
+        117,
+        118
+      ],
+      "pull_request": "https://github.com/festy23/selectel-sdk/pull/120",
+      "source_ids": [
+        "selectel-api-index"
+      ],
+      "disposition": "MKS/DNS/storage legacy tasks and generations remain separate; no withdrawal inferred from forbidden/missing page responses"
+    }
+  },
+  "candidates": [
+    {
+      "product": "vds",
+      "availability": "discovery_pending",
+      "source_ids": [
+        "vds-candidate"
+      ],
+      "inventory_count": null,
+      "disposition": "candidate product/integration only; no service ID or operation rows invented",
+      "ownership": [
+        "https://github.com/festy23/selectel-sdk/issues/73",
+        "https://github.com/festy23/selectel-sdk/issues/74"
+      ],
+      "missing_contracts": [
+        "Separate Selectel public operation contract, if one exists; SDK/GUI/CLI/product card alone is not a provider API inventory"
+      ]
+    },
+    {
+      "product": "ml_platform",
+      "availability": "discovery_pending",
+      "source_ids": [
+        "ml_platform-candidate"
+      ],
+      "inventory_count": null,
+      "disposition": "candidate product/integration only; no service ID or operation rows invented",
+      "ownership": [
+        "https://github.com/festy23/selectel-sdk/issues/73",
+        "https://github.com/festy23/selectel-sdk/issues/74"
+      ],
+      "missing_contracts": [
+        "Separate Selectel public operation contract, if one exists; SDK/GUI/CLI/product card alone is not a provider API inventory"
+      ]
+    },
+    {
+      "product": "trino",
+      "availability": "discovery_pending",
+      "source_ids": [
+        "trino-candidate"
+      ],
+      "inventory_count": null,
+      "disposition": "candidate product/integration only; no service ID or operation rows invented",
+      "ownership": [
+        "https://github.com/festy23/selectel-sdk/issues/73",
+        "https://github.com/festy23/selectel-sdk/issues/74"
+      ],
+      "missing_contracts": [
+        "Separate Selectel public operation contract, if one exists; SDK/GUI/CLI/product card alone is not a provider API inventory"
+      ]
+    },
+    {
+      "product": "redash",
+      "availability": "discovery_pending",
+      "source_ids": [
+        "redash-candidate"
+      ],
+      "inventory_count": null,
+      "disposition": "candidate product/integration only; no service ID or operation rows invented",
+      "ownership": [
+        "https://github.com/festy23/selectel-sdk/issues/73",
+        "https://github.com/festy23/selectel-sdk/issues/74"
+      ],
+      "missing_contracts": [
+        "Separate Selectel public operation contract, if one exists; SDK/GUI/CLI/product card alone is not a provider API inventory"
+      ]
+    }
+  ],
+  "surveyed_api_paths": [
+    "/api/1c-cloud/",
+    "/api/audit-logs/",
+    "/api/authorization/",
+    "/api/balance-statistics/",
+    "/api/balance/",
+    "/api/billing-reports/",
+    "/api/billing-transactions/",
+    "/api/cdn/",
+    "/api/certificates-manager/",
+    "/api/cloud-projects-and-resources/",
+    "/api/cloud-public-network/",
+    "/api/craas/",
+    "/api/dedicated/",
+    "/api/dns-actual/",
+    "/api/dns-legacy/",
+    "/api/email-service/",
+    "/api/federations/",
+    "/api/global-router/",
+    "/api/ip-addresses/",
+    "/api/lets-encrypt-certificates/",
+    "/api/managed-databases/",
+    "/api/managed-kubernetes-legacy/",
+    "/api/managed-kubernetes/",
+    "/api/mobile-farm/",
+    "/api/object-storage-s3/",
+    "/api/object-storage-swift-old/",
+    "/api/object-storage-swift/",
+    "/api/object-storage/",
+    "/api/private-dns/",
+    "/api/quota-management/",
+    "/api/scheduled-backups/",
+    "/api/secrets-manager/",
+    "/api/selectel-storage-old/",
+    "/api/tickets-attachments/",
+    "/api/tickets-restrictions/",
+    "/api/tickets/",
+    "/api/urls/",
+    "/api/users-and-roles/",
+    "/api/vmware/"
+  ],
+  "survey_limitations": [
+    "Bounded first-party index/version/endpoint/sitemap/product survey on2026-10-16; not a proof of all possible Selectel API families",
+    "No cloud/catalog probing, caller permissions, provider support messages or live operations used",
+    "All per-operation request/response/error/auth/endpoint mappings remain in their owned slices; discovery adds zero remote operation records"
+  ]
+}

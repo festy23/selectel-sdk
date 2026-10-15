@@ -119,3 +119,18 @@ region. Permission/availability для caller определяется конк�
 Native SDK method list и Terraform resource list не являются знаменателем
 API coverage. При изменении API source новая версия каталога сохраняет старые
 идентификаторы, добавляет новые и явно отмечает withdrawn операции.
+
+## Discovery evidence
+
+`Client.Catalog().Services()` возвращает optional `Discovery` для исследованных
+семейств без callable contracts. Это локальные SDK-owned metadata, а не результат
+проверки прав или доступности deployment. `EvidenceRef` указывает на встроенный
+[отчёт](../../../catalog/contracts/service-discovery.json); `Revision` — SHA-256
+полного файла. `Sources` разделяет первичные Selectel facts и upstream reference;
+`Versions` не превращает component release в API generation. Неизвестные версии
+не заполняются, `InventoryCount=null` означает неизвестный denominator.
+
+Возвращаемые metadata и artifact bytes являются независимыми копиями. Чтение
+каталога не получает credentials и не выполняет HTTP. Discovery не добавляет
+OperationContract, callable binding или verification claim. См.
+[границы исследования](api-discovery.md).

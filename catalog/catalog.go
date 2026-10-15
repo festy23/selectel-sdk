@@ -69,11 +69,38 @@ type Capability struct {
 	Verification              Verification      `json:"verification"`
 	Limitations               []string          `json:"limitations"`
 }
+
+// DiscoverySource binds an offline factual extract to its owning public source.
+type DiscoverySource struct {
+	URI      string   `json:"uri"`
+	Revision string   `json:"revision"`
+	Locator  string   `json:"locator"`
+	Role     string   `json:"role"`
+	Facts    []string `json:"facts"`
+}
+type DiscoveryVersion struct {
+	Component       string `json:"component"`
+	Release         string `json:"release,omitempty"`
+	APIVersion      string `json:"api_version,omitempty"`
+	MaxMicroversion string `json:"max_microversion,omitempty"`
+}
+
+// DiscoveryEvidence never establishes callable operations or access rights.
+type DiscoveryEvidence struct {
+	EvidenceRef      string             `json:"evidence_ref"`
+	Revision         string             `json:"revision"`
+	Sources          []DiscoverySource  `json:"sources"`
+	Versions         []DiscoveryVersion `json:"versions"`
+	InventoryCount   *uint              `json:"inventory_count"`
+	MissingContracts []string           `json:"missing_contracts"`
+	FollowupIssues   []string           `json:"followup_issues"`
+}
 type Service struct {
-	ID                string   `json:"id"`
-	SourceURIs        []string `json:"source_uris"`
-	InventoryComplete bool     `json:"inventory_complete"`
-	Availability      string   `json:"availability"`
+	Discovery         *DiscoveryEvidence `json:"discovery,omitempty"`
+	ID                string             `json:"id"`
+	SourceURIs        []string           `json:"source_uris"`
+	InventoryComplete bool               `json:"inventory_complete"`
+	Availability      string             `json:"availability"`
 }
 type Filter struct{ Service, APIGeneration, Effect, Availability, Verification string }
 type Catalog struct {
@@ -132,6 +159,21 @@ func (c Catalog) Services() []Service {
 	for i, s := range c.services {
 		out[i] = s
 		out[i].SourceURIs = append([]string(nil), s.SourceURIs...)
+		if s.Discovery != nil {
+			d := *s.Discovery
+			d.Sources = append([]DiscoverySource(nil), d.Sources...)
+			for j := range d.Sources {
+				d.Sources[j].Facts = append([]string(nil), d.Sources[j].Facts...)
+			}
+			d.Versions = append([]DiscoveryVersion(nil), d.Versions...)
+			d.MissingContracts = append([]string(nil), d.MissingContracts...)
+			d.FollowupIssues = append([]string(nil), d.FollowupIssues...)
+			if d.InventoryCount != nil {
+				count := *d.InventoryCount
+				d.InventoryCount = &count
+			}
+			out[i].Discovery = &d
+		}
 	}
 	return out
 }
