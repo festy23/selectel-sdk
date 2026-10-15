@@ -16,6 +16,7 @@ import (
 	"github.com/festy23/selectel-sdk/logs"
 	"github.com/festy23/selectel-sdk/metrics"
 	"github.com/festy23/selectel-sdk/mks"
+	"github.com/festy23/selectel-sdk/mkslegacy"
 	"github.com/festy23/selectel-sdk/operations"
 	"github.com/festy23/selectel-sdk/projects"
 	"github.com/festy23/selectel-sdk/registry"
@@ -175,4 +176,9 @@ func New(config Config) (*Client, error) {
 }
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
+}
+
+// MKSLegacy selects the explicit Managed Kubernetes v1 generation without fallback.
+func (r RegionalClient) MKSLegacy() *mkslegacy.Client {
+	return mkslegacy.Bind(r.client.runtime, r.client.scope)
 }

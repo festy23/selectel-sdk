@@ -1,0 +1,44 @@
+{
+  "operation_id": "mks.v1.clusters_registries.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/clusters/{cluster_id}/registries",
+    "mapping": "Exact v1 caller cluster, generated RegistryCreateIntegrationsStruct body with registry IDs. Preserve nil/explicit empty array; no caller list lookup/default inserted."
+  },
+  "response": {
+    "successful_statuses": [
+      201
+    ],
+    "mapping": "Direct RegistriesIntegration object; scan all independently trustworthy native association IDs before unrelated fields, retaining them in accepted receipt even after malformed/duplicate rows. Native refs identify MKS associations, not Registry service ownership or causal creation proof; unknown only caller anchors, no adoption/replay.",
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ]
+  },
+  "errors": {
+    "mapping": "Source404 is Rejected; default unexpected status/transport outcome Unknown, safe SDK errors with no raw provider diagnostics. Local validation keeps revision-boundNotSent0attempts."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No causal replay proof or operation ref; caller may observe exact ref explicitly."
+  },
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio"
+  ]
+}

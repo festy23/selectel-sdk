@@ -1,0 +1,44 @@
+{
+  "operation_id": "mks.v1.clusters.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/clusters",
+    "mapping": "Generated SwaggerClusterCreateStruct and all nested fields in body.cluster. Required region must equal caller pool; source nodegroups validated, protected base64 user_data forwarded once, no provider defaults inserted. Declared cluster_type enum is validated before credentials; no enum default is inserted."
+  },
+  "response": {
+    "successful_statuses": [
+      201
+    ],
+    "mapping": "Generated DetailedCluster envelope. Scan id/project_id/region before unrelated fields. Require caller project/pool; created root ref has no inferred parent. Accepted malformed body retains independently trustworthy root ID; unknown has no inferred newly created ID, never replay/adoption.",
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ]
+  },
+  "errors": {
+    "mapping": "Source404 is Rejected; default unexpected status/transport outcome Unknown, safe SDK errors with no raw provider diagnostics. Local validation keeps revision-boundNotSent0attempts."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No causal replay proof or operation ref; caller may observe exact ref explicitly."
+  },
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio"
+  ]
+}

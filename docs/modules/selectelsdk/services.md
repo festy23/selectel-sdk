@@ -203,3 +203,6 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+[MKS legacy v1](mks-legacy.md) has explicit generation-bound observation methods;
+its inventory and other legacy families remain incomplete.

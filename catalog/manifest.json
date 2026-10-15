@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "de118be09fa290e03ed7392a1bc23feb220cee42daf1fa446096eeffc8e66b49",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "e38fd0186b89f5e7c3990da19df3be71339f614e02916a5fec46d4ff6bd5cca4",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "947ef82f1ed26249978a91ae168f44eeb0681af6b5f3cb9098c83bd072321eaa",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "a2d718ab2795e5d8fe5d30f996dba25e311ac87ad4258942b41765ca5183e8d0",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +451,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "349a6887fb77a7c91283cddb47cc6e6afe42e13913be9f66679e57857a8fbb96",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +517,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "8a6d92abedcd90a7cc5977ff1e92f6b5166b5e546b855816d3ca87ed00fc1421",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +583,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "e3437dfe7366ea98926da45dd8ecd614c4148df617f9dafa4f4b8c6dbac88edb",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +649,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "6bc96403d2a5be439664baf63f98c803a9b54fb1c1e8ebdf1a2e27177f02dcaa",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2167,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "c69bf126bb9373dafc14e870c209a36a2dca1bb62231a9da96efe7f4e91b63b7",
       "level": "offline"
     },
     "wait_goals": []
@@ -4981,6 +4981,1013 @@
     "wait_goals": []
   },
   {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "513d44cb7e937d46c0358a78e2ba59b09c69cd68a9e5da5dfcfe9701ffc5579d",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1export/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1export/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.export.list",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1export/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "export",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "GET /{domain}/export",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "a1fee027ac085962e2b75610f66e4fae4121f06ca404a02948019a75e455cb4f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.records.create",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "records",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "POST /{domain}/records",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "2dd95dedf6d9d39c2a2e3a84d67444a654713c6f91d5cd2793c4d292f2c5e24e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.records.delete",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "records",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "DELETE /{domain}/records/{record_id}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "625b1b575bfa5a5ad71415731f10cdf37ea6e84c21d4477c48c7a1423e1cbf69",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.records.get",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "records",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "GET /{domain}/records/{record_id}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "c2e2829d3b6584a50f5973bce634dc66878acf9c6a74e7d39b23bac1c4e96734",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.records.list",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "records",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "GET /{domain}/records",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "b2c817a1248ce26d2d0e52774df472303e8440444c1b2cb6085a9e807ddef352",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.records.replace",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "records",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "PUT /{domain}/records",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace_1158c7f1",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "6e059d7a185d2f3bab100ca9d865cc677e0f531a3e6fa26e721ec3771e5d96c4",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.records.replace_1158c7f1",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "records",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "PUT /{domain}/records/{record_id}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "54ddf565cd7765011b6e4bf7f59ea5cbe760e73d1beb36a45e6a8ddb6cf44c14",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1batch_update/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1batch_update/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.records_batch_update.update",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1records~1batch_update/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "records_batch_update",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "PATCH /{domain}/records/batch_update",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "77a63eafffc6f326821bf1bb2a1e0cc1cdf16994ef581f30296e6284e7b1d441",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.secrets.create",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "secrets",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "POST /",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "029aa01f3afb3e5cfb75004e6fd5dc88d73292fafdce90a83503c8a48a011471",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.secrets.delete",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "secrets",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "DELETE /{domain}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "96cb32a28e1bb7a494e1652b96c97f75ad90b000c5787c46a62d3d67ba6c2225",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.secrets.get",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "secrets",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "GET /{domain}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "0b699e551ae6a3ad1b6134a8cf6f3cb63c9e1f2f3eaf044a813ef3a38452312e",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.secrets.list",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "secrets",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "GET /",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "91114018fd290775946e4e04bb2574fd92677bf084c14aeb6c95302aa91e0846",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.secrets.update",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "secrets",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "PATCH /{domain}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "6cf89d62ba13790eb93ebf5fa9f6ab4e1b67be18e7a926678ddcccf2dd8fc630",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1state/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1state/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.state.list",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1state/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "state",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "GET /{domain}/state",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "fd6766140c35a319432e1c161664c16b8764b67135ac66df7a552ba9fd2153dc",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1{domain}~1state/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1state/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.state.update",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1{domain}~1state/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "state",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "PATCH /{domain}/state",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "5ecf9796b8327d2303422c465aabbc228a6e5f1cd3650c2160645f342be3b775",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.tags.delete",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "tags",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "DELETE /tags/{tag_id}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "da019607b016a7e189ccdae0ab4c9bf2c80eaed23e7ed7360f2d4e594560233a",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.tags.get",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "tags",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "GET /tags/{tag_id}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "a77e19bdd9d03421680c924dbf08f608362e7ed95a7dfb216a2567535b9dcefd",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.tags.replace",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1tags~1{tag_id}/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "tags",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "PUT /tags/{tag_id}",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "static_token"
+    },
+    "availability": "documented",
+    "contract_revision": "114602f6e58eb3c97104da9d851a70d9b932640ab056ca331f832d4d003f9dca",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/dns-legacy.json#/paths/~1version~1v2/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/dns-legacy.json#/paths/~1version~1v2/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "dns.v1.version.replace",
+    "output_schema_ref": "sources/dns-legacy.json#/paths/~1version~1v2/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "version",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account"
+    ],
+    "sensitive_fields": [],
+    "service": "dns",
+    "source": {
+      "operation_locator": "PUT /version/v2",
+      "revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+      "uri": "https://docs.selectel.ru/api/dns-legacy.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
     "action": "filter",
     "api_generation": "cloudwatch",
     "auth": {
@@ -5044,7 +6051,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "dab55cd27b964332c95146de6828c19cb34459079291364eeddde72204df3cb7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +6121,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "d3b857d859ba7bc0432e9d88219a38266fbe454abc3032721f1b8f97ecc35a57",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +6188,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "d40f14f7af252fb2c6a44000d6115fabf13d53f22fa62f8eebc20d76b7042e80",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +6255,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "e5bba5908b0bee1f51219625692ba05e029cd8ebd1c818a8ee62fe1d53e3cc4d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +6321,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "ff2e28a65ead7e0e97fe188e4149f515752006a2b255bd59b25046c389ed593d",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +6387,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "33a73c6b50e05b07a9cabf0ccc77cb164871dd10f281d331d987c8c179bc1551",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +6452,1716 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "f957432cfdb17259b1c23bf3d7aa14373df07db242f2257e29a6c89243801a65",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.admission_controllers.list.json": "e5352e70e7f2f56bc8bdb826830e09a2ff0701fbb4e7de17a382d091eb45334e"
+    },
+    "contract_revision": "8ddac3b2b2d3b39d6de3879d7f219dfa8bc08557da4486d42bfa9854f3273ebd",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.admission_controllers.list.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.admission_controllers.list.json#/errors",
+    "go_method": "mkslegacy.Client.ListAdmissionControllers",
+    "implementation": {
+      "binding": "mkslegacy.Client.ListAdmissionControllers",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1admission-controllers/get",
+    "input_type": "pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.admission_controllers.list",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1admission-controllers/get/responses",
+    "output_type": "pagination.Collection[mkslegacy.AdmissionControllers]",
+    "pagination_contract_ref": "contracts/mks.v1.admission_controllers.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1admission-controllers/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.admission_controllers.list.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.admission_controllers.list.json#/request",
+    "resource": "admission_controllers",
+    "response_binding_ref": "contracts/mks.v1.admission_controllers.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /admission-controllers",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "8ddac3b2b2d3b39d6de3879d7f219dfa8bc08557da4486d42bfa9854f3273ebd",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "dbb75d25719c25b2d5816e7bb312c10ff092329af2bcf3bb3b9a6ada363d34ba",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters.create.json": "9812cbe66e61a6850825a54f29f6404e2041077b5ae12a113e2632a6b48b6929"
+    },
+    "contract_revision": "c2b8bff527852fb29fbcb3917fb1d6560636d408c3408d78385f35287326ea9e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters.create.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters.create.json#/errors",
+    "go_method": "mkslegacy.Client.CreateCluster",
+    "implementation": {
+      "binding": "mkslegacy.Client.CreateCluster",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/post",
+    "input_type": "mkslegacy.ClusterCreateSpec, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters.create",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/post/responses",
+    "output_type": "mkslegacy.DetailedCluster",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters.create.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters.create.json#/request",
+    "resource": "clusters",
+    "response_binding_ref": "contracts/mks.v1.clusters.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "POST /clusters",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "c2b8bff527852fb29fbcb3917fb1d6560636d408c3408d78385f35287326ea9e",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "017263ed18002e1e7d63201fcf6e78ca3e1d03c5dcebabd40d801e5c619d6c2c",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters.delete.json": "b58a6a6980de68cc1e07dd94591b787f781e3f9adc2155af4736911d188cb5e0"
+    },
+    "contract_revision": "5cef0ebb62e0d5e471bc654333eddf3d42e3390d386b5a0155bb21a2bb359069",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters.delete.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters.delete.json#/errors",
+    "go_method": "mkslegacy.Client.DeleteCluster",
+    "implementation": {
+      "binding": "mkslegacy.Client.DeleteCluster",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/delete",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters.delete",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters.delete.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters.delete.json#/request",
+    "resource": "clusters",
+    "response_binding_ref": "contracts/mks.v1.clusters.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "DELETE /clusters/{cluster_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "5cef0ebb62e0d5e471bc654333eddf3d42e3390d386b5a0155bb21a2bb359069",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "14eba5b27f4c98dc9fbb98a599fcb3959a81d262136f299bbd96f8f6e6143c33",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters.get.json": "43e7d83fae2339d92442fa90c96ce93818801ab2e9c93e7cee0467913dcb5823"
+    },
+    "contract_revision": "73abb9c813703ca067e9553ecd2dc940c44b6bd1c672c7da9d71199fdfbfdc16",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters.get.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters.get.json#/errors",
+    "go_method": "mkslegacy.Client.GetCluster",
+    "implementation": {
+      "binding": "mkslegacy.Client.GetCluster",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/get",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters.get",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/get/responses",
+    "output_type": "mkslegacy.DetailedCluster",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters.get.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters.get.json#/request",
+    "resource": "clusters",
+    "response_binding_ref": "contracts/mks.v1.clusters.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters/{cluster_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "73abb9c813703ca067e9553ecd2dc940c44b6bd1c672c7da9d71199fdfbfdc16",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "8242a5398057d532896f5724bf8ce173dbacb64f19af2715f65503d12cbf8e15",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters.list.json": "23f64f897dea3acc32474945b8ad4794e391fcb53fa555f3954179ae87321a2f"
+    },
+    "contract_revision": "277e32591b6c2907be46915bcf1c77e7df1ee4bfe47867ec376d83ab8123b42d",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters.list.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters.list.json#/errors",
+    "go_method": "mkslegacy.Client.ListClusters",
+    "implementation": {
+      "binding": "mkslegacy.Client.ListClusters",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/get",
+    "input_type": "pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters.list",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/get/responses",
+    "output_type": "pagination.Collection[mkslegacy.Cluster]",
+    "pagination_contract_ref": "contracts/mks.v1.clusters.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters.list.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters.list.json#/request",
+    "resource": "clusters",
+    "response_binding_ref": "contracts/mks.v1.clusters.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "277e32591b6c2907be46915bcf1c77e7df1ee4bfe47867ec376d83ab8123b42d",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "65d29fa1d8f52bc0826e054b96fe9f6d1278fee57d6b9a36c5f675f93cf1d40e",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters.replace.json": "006dff0335dbec1fa81e99d886e925e0f41fddbe9190969bdbb845c9f7871134"
+    },
+    "contract_revision": "6a5e26a8ff4833f1f8506032764b4200295d3766f27f5458f8c9f2de8861c2a9",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters.replace.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters.replace.json#/errors",
+    "go_method": "mkslegacy.Client.UpdateCluster",
+    "implementation": {
+      "binding": "mkslegacy.Client.UpdateCluster",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/put",
+    "input_type": "types.ResourceRef, mkslegacy.ClusterUpdateSpec, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters.replace",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/put/responses",
+    "output_type": "mkslegacy.DetailedCluster",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters.replace.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters.replace.json#/request",
+    "resource": "clusters",
+    "response_binding_ref": "contracts/mks.v1.clusters.replace.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "PUT /clusters/{cluster_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "6a5e26a8ff4833f1f8506032764b4200295d3766f27f5458f8c9f2de8861c2a9",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "bdc802c3149918a7b010250ebd0f3f1418d243a16667d3d80588ffca00af2b60",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_kubeconfig.list.json": "715b68ab78866bfcc3bea95ca2a333cc5db07776fd6f8825f1089087878089ce"
+    },
+    "contract_revision": "61bdbc21223a0f3719076cfef8a0a663de7c3bf71647e59c7a2e0f989b152cba",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_kubeconfig.list.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_kubeconfig.list.json#/errors",
+    "go_method": "mkslegacy.Client.GetKubeconfig",
+    "implementation": {
+      "binding": "mkslegacy.Client.GetKubeconfig",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1kubeconfig/get",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_kubeconfig.list",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1kubeconfig/get/responses",
+    "output_type": "types.ProtectedValue",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1kubeconfig/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_kubeconfig.list.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_kubeconfig.list.json#/request",
+    "resource": "clusters_kubeconfig",
+    "response_binding_ref": "contracts/mks.v1.clusters_kubeconfig.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "entire kubeconfig (not fetched)"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters/{cluster_id}/kubeconfig",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "61bdbc21223a0f3719076cfef8a0a663de7c3bf71647e59c7a2e0f989b152cba",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "9729b3f37fb8e10c6c1b7517bcf5400eac61b54e53b25f4d076add48d3440317",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_nodegroups.create.json": "82c85c800a927f38a7b05f620537a65385139566dc6ec20f5e5dc55a8535a8cc"
+    },
+    "contract_revision": "27b6168fee74e6bd69dec6836757fbdbd38a58995576b8d3954eb94ebe251427",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_nodegroups.create.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_nodegroups.create.json#/errors",
+    "go_method": "mkslegacy.Client.CreateNodegroup",
+    "implementation": {
+      "binding": "mkslegacy.Client.CreateNodegroup",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups/post",
+    "input_type": "types.ResourceRef, mkslegacy.NodegroupCreate, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_nodegroups.create",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups/post/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_nodegroups.create.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_nodegroups.create.json#/request",
+    "resource": "clusters_nodegroups",
+    "response_binding_ref": "contracts/mks.v1.clusters_nodegroups.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "POST /clusters/{cluster_id}/nodegroups",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "27b6168fee74e6bd69dec6836757fbdbd38a58995576b8d3954eb94ebe251427",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "10a40cc99fdf76a2254d9d378411cba317d735fa3857f85a2aeab748ffc43b36",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_nodegroups.delete.json": "bc643a5bbee216d966f1338c6adb6bd3a6382d6eb30b076a0b817d20f9b8812d"
+    },
+    "contract_revision": "2066d823f247258f0f28bde522933d498fe0aabfddb3d9cdf8e80af74a28e2bb",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_nodegroups.delete.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_nodegroups.delete.json#/errors",
+    "go_method": "mkslegacy.Client.DeleteNodegroup",
+    "implementation": {
+      "binding": "mkslegacy.Client.DeleteNodegroup",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/delete",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_nodegroups.delete",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_nodegroups.delete.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_nodegroups.delete.json#/request",
+    "resource": "clusters_nodegroups",
+    "response_binding_ref": "contracts/mks.v1.clusters_nodegroups.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "DELETE /clusters/{cluster_id}/nodegroups/{nodegroup_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "2066d823f247258f0f28bde522933d498fe0aabfddb3d9cdf8e80af74a28e2bb",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "07f4c6499949efc1da311bae33f80d02b5b6adfd5e5bcd35bf4e73909b65d788",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_nodegroups.get.json": "e5b4226d798ff958b2e6e09004b7c7df72ad28354cd260ed3bb36a2b631827c2"
+    },
+    "contract_revision": "e4c0af8ae7e3ce3c4a9a4d975543964a2c412ac0f8c460904bb363b95573b581",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_nodegroups.get.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_nodegroups.get.json#/errors",
+    "go_method": "mkslegacy.Client.GetNodegroup",
+    "implementation": {
+      "binding": "mkslegacy.Client.GetNodegroup",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/get",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_nodegroups.get",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/get/responses",
+    "output_type": "mkslegacy.DetailedNodegroup",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_nodegroups.get.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_nodegroups.get.json#/request",
+    "resource": "clusters_nodegroups",
+    "response_binding_ref": "contracts/mks.v1.clusters_nodegroups.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters/{cluster_id}/nodegroups/{nodegroup_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "e4c0af8ae7e3ce3c4a9a4d975543964a2c412ac0f8c460904bb363b95573b581",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "e43700e76206a4d5fd6e5eed18f78d27a0bc27924ccfbcc7b97d3a86a7a43d5b",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_nodegroups.list.json": "2f49f9cbae2700b0d55b85cceb5beaf587bea9edb6783ff8641164a007dcf8ab"
+    },
+    "contract_revision": "cdb4398c136f2ff5007cd28935958d213a404d7a97264fcb982f7a27b9a7415b",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_nodegroups.list.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_nodegroups.list.json#/errors",
+    "go_method": "mkslegacy.Client.ListNodegroups",
+    "implementation": {
+      "binding": "mkslegacy.Client.ListNodegroups",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups/get",
+    "input_type": "types.ResourceRef, pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_nodegroups.list",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups/get/responses",
+    "output_type": "pagination.Collection[mkslegacy.Nodegroup]",
+    "pagination_contract_ref": "contracts/mks.v1.clusters_nodegroups.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_nodegroups.list.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_nodegroups.list.json#/request",
+    "resource": "clusters_nodegroups",
+    "response_binding_ref": "contracts/mks.v1.clusters_nodegroups.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters/{cluster_id}/nodegroups",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "cdb4398c136f2ff5007cd28935958d213a404d7a97264fcb982f7a27b9a7415b",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "622a5f5559ca8bf882e820cc6f8071505428b6967c62e0bf11f7573b3cacc238",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_nodegroups.replace.json": "a680a852bb5c6943b52705231768d998643a6dfc776dd9556ad7856d2938701a"
+    },
+    "contract_revision": "ef4d31921d7ea48ca33fe3ad06e02de3f860cf8af2d6df44c5951cbdfb422243",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_nodegroups.replace.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_nodegroups.replace.json#/errors",
+    "go_method": "mkslegacy.Client.UpdateNodegroup",
+    "implementation": {
+      "binding": "mkslegacy.Client.UpdateNodegroup",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/put",
+    "input_type": "types.ResourceRef, mkslegacy.NodegroupUpdate, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_nodegroups.replace",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/put/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_nodegroups.replace.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_nodegroups.replace.json#/request",
+    "resource": "clusters_nodegroups",
+    "response_binding_ref": "contracts/mks.v1.clusters_nodegroups.replace.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "PUT /clusters/{cluster_id}/nodegroups/{nodegroup_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "ef4d31921d7ea48ca33fe3ad06e02de3f860cf8af2d6df44c5951cbdfb422243",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "faa3db8d1617c63afee1b9f212787d39d4cce614d75267d2d217408dece260c7",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_nodegroups_resize.create.json": "1e65397223ffe21cd01aeadd8ecd4ffed7c4babd5ab5185b94b3352b2832e14e"
+    },
+    "contract_revision": "913d9db59e485dee4efbb356b808bcae213bfe915e7d324a6d7be0e513552fc9",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_nodegroups_resize.create.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_nodegroups_resize.create.json#/errors",
+    "go_method": "mkslegacy.Client.ResizeNodegroup",
+    "implementation": {
+      "binding": "mkslegacy.Client.ResizeNodegroup",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1resize/post",
+    "input_type": "types.ResourceRef, types.Integer, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_nodegroups_resize.create",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1resize/post/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1resize/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_nodegroups_resize.create.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_nodegroups_resize.create.json#/request",
+    "resource": "clusters_nodegroups_resize",
+    "response_binding_ref": "contracts/mks.v1.clusters_nodegroups_resize.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "POST /clusters/{cluster_id}/nodegroups/{nodegroup_id}/resize",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "913d9db59e485dee4efbb356b808bcae213bfe915e7d324a6d7be0e513552fc9",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "c566eac54121706a5577cc75e75b7b1765486ecff0240ef2c7f0fa866e8e80e3",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_registries.create.json": "bf66fd452e9ea83c3461a975d3089a97bd6956e3ecb905f02772a2d9a673527e"
+    },
+    "contract_revision": "99fec82c1f39102d645bf5bd513b24b3f38593cc8ded8f66f472743169a73fc2",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_registries.create.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_registries.create.json#/errors",
+    "go_method": "mkslegacy.Client.CreateRegistryIntegrations",
+    "implementation": {
+      "binding": "mkslegacy.Client.CreateRegistryIntegrations",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/post",
+    "input_type": "types.ResourceRef, mkslegacy.RegistryCreateSpec, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_registries.create",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/post/responses",
+    "output_type": "mkslegacy.RegistriesIntegration",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_registries.create.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_registries.create.json#/request",
+    "resource": "clusters_registries",
+    "response_binding_ref": "contracts/mks.v1.clusters_registries.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "POST /clusters/{cluster_id}/registries",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "99fec82c1f39102d645bf5bd513b24b3f38593cc8ded8f66f472743169a73fc2",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "7f256419a52fbe3bad825e3a690b9cb6c18bba25079529fb190c5934f90e1c40",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_registries.delete.json": "eec78e254a19b6208d43679273dfb58de6ad207a0e948c6473f2231cb04bb5a9"
+    },
+    "contract_revision": "2044a222c472322bda82cd1e1513ed854f90b8041b3fbe3a89de8dba5f31cc27",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_registries.delete.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_registries.delete.json#/errors",
+    "go_method": "mkslegacy.Client.DeleteAllRegistryIntegrations",
+    "implementation": {
+      "binding": "mkslegacy.Client.DeleteAllRegistryIntegrations",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/delete",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_registries.delete",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_registries.delete.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_registries.delete.json#/request",
+    "resource": "clusters_registries",
+    "response_binding_ref": "contracts/mks.v1.clusters_registries.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "DELETE /clusters/{cluster_id}/registries",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "2044a222c472322bda82cd1e1513ed854f90b8041b3fbe3a89de8dba5f31cc27",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "97aa576a025cec082065bd9603de297cbc6745445b77e1125859b9430a1d4da1",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_registries.list.json": "0d41e81ad915cfbd1951251720547ebde28e79a649e40e06dac759ef6f881add"
+    },
+    "contract_revision": "d47adbe9e10a15942c45b8bac016a30e56249687ed578ea75f284b653035d3b5",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_registries.list.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_registries.list.json#/errors",
+    "go_method": "mkslegacy.Client.GetRegistryIntegrations",
+    "implementation": {
+      "binding": "mkslegacy.Client.GetRegistryIntegrations",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/get",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_registries.list",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/get/responses",
+    "output_type": "mkslegacy.RegistriesIntegration",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_registries.list.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_registries.list.json#/request",
+    "resource": "clusters_registries",
+    "response_binding_ref": "contracts/mks.v1.clusters_registries.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters/{cluster_id}/registries",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "d47adbe9e10a15942c45b8bac016a30e56249687ed578ea75f284b653035d3b5",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "40206e973e9afe969e1cc997289553ccc6fc437ce815bdd07bd01bfb68fd3019",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_registries.replace.json": "28bffeecccb7fbf335aa7fd90fda0d3e07c1942f8952e79f4fad7ae813777ee7"
+    },
+    "contract_revision": "0ae76e76b3b2f9e50af753e890d4767d9db34d1bbe276e51a648cee18ed463d5",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_registries.replace.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_registries.replace.json#/errors",
+    "go_method": "mkslegacy.Client.ReplaceRegistryIntegrations",
+    "implementation": {
+      "binding": "mkslegacy.Client.ReplaceRegistryIntegrations",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/put",
+    "input_type": "types.ResourceRef, mkslegacy.RegistryUpdateSpec, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_registries.replace",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/put/responses",
+    "output_type": "mkslegacy.RegistriesIntegration",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries/put",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_registries.replace.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_registries.replace.json#/request",
+    "resource": "clusters_registries",
+    "response_binding_ref": "contracts/mks.v1.clusters_registries.replace.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "PUT /clusters/{cluster_id}/registries",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "0ae76e76b3b2f9e50af753e890d4767d9db34d1bbe276e51a648cee18ed463d5",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "43b6ca426efe5f57d63a3e46f1093b49f18359b12a3a0cc3b1ccbf6fb5e3dc43",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_rotate_certs.create.json": "eb1c27098773ec0935b58c1269ab34a93f4b767310f03bd7a091e49c72581dc8"
+    },
+    "contract_revision": "ac872717ae5472e9516e7b866eaa94234107ff01f9b9c14aa786f52d0e11e91f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_rotate_certs.create.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_rotate_certs.create.json#/errors",
+    "go_method": "mkslegacy.Client.RotateCertificates",
+    "implementation": {
+      "binding": "mkslegacy.Client.RotateCertificates",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1rotate-certs/post",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_rotate_certs.create",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1rotate-certs/post/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1rotate-certs/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_rotate_certs.create.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_rotate_certs.create.json#/request",
+    "resource": "clusters_rotate_certs",
+    "response_binding_ref": "contracts/mks.v1.clusters_rotate_certs.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "POST /clusters/{cluster_id}/rotate-certs",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "ac872717ae5472e9516e7b866eaa94234107ff01f9b9c14aa786f52d0e11e91f",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "209298e45a640bb465544514f72a3a85b8958582866f12296f43f4e4fe025b73",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_tasks.get.json": "64884552732b888bc35846417ff094b13a000e0ad76067aa923dcb858b251b5b"
+    },
+    "contract_revision": "3c307c047b94bd332fd22046263afcafe2dc6c8ee0fdfa093a4589e9c1758f4b",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_tasks.get.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_tasks.get.json#/errors",
+    "go_method": "mkslegacy.Client.GetTask",
+    "implementation": {
+      "binding": "mkslegacy.Client.GetTask",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1tasks~1{task_id}/get",
+    "input_type": "types.ResourceRef, mkslegacy.TaskOptions, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_tasks.get",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1tasks~1{task_id}/get/responses",
+    "output_type": "mkslegacy.Task",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1tasks~1{task_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_tasks.get.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_tasks.get.json#/request",
+    "resource": "clusters_tasks",
+    "response_binding_ref": "contracts/mks.v1.clusters_tasks.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "error_details.name",
+      "error_details.details"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters/{cluster_id}/tasks/{task_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "3c307c047b94bd332fd22046263afcafe2dc6c8ee0fdfa093a4589e9c1758f4b",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "8714b378263a1c435488ff548d25c60db547919bf7d4a5c05c37176c72c10f1a",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_tasks.list.json": "6e989e5844567f6095b90196f6d587750f2700d32ca8a2f8a81477719a295c13"
+    },
+    "contract_revision": "6f67d4ae170a804dd3533b512a38111a566479ad23f7ab68c62addd11ae4f35d",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_tasks.list.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_tasks.list.json#/errors",
+    "go_method": "mkslegacy.Client.ListTasksPage",
+    "implementation": {
+      "binding": "mkslegacy.Client.ListTasksPage",
+      "status": "partial"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1tasks/get",
+    "input_type": "types.ResourceRef, mkslegacy.TaskListOptions, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_tasks.list",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1tasks/get/responses",
+    "output_type": "pagination.Page[mkslegacy.Task]",
+    "pagination_contract_ref": "contracts/mks.v1.clusters_tasks.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1tasks/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_tasks.list.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_tasks.list.json#/request",
+    "resource": "clusters_tasks",
+    "response_binding_ref": "contracts/mks.v1.clusters_tasks.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "error_details.name",
+      "error_details.details"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters/{cluster_id}/tasks",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "6f67d4ae170a804dd3533b512a38111a566479ad23f7ab68c62addd11ae4f35d",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "2fe0ebf45a34e5dfecaedc4217c2141dfb3020511dc9477283cf3e1abe1ce7db",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_upgrade_minor_version.create.json": "db183ccde20b7189b748c8a313a5541880f78f20658d824e007f29b95c19662a"
+    },
+    "contract_revision": "0482e82ee8ace2f5255a10446c82e67b9e3d4feec40b852bbe04a195c9cff555",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_upgrade_minor_version.create.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_upgrade_minor_version.create.json#/errors",
+    "go_method": "mkslegacy.Client.UpgradeMinorVersion",
+    "implementation": {
+      "binding": "mkslegacy.Client.UpgradeMinorVersion",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1upgrade-minor-version/post",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_upgrade_minor_version.create",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1upgrade-minor-version/post/responses",
+    "output_type": "mkslegacy.DetailedCluster",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1upgrade-minor-version/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_upgrade_minor_version.create.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_upgrade_minor_version.create.json#/request",
+    "resource": "clusters_upgrade_minor_version",
+    "response_binding_ref": "contracts/mks.v1.clusters_upgrade_minor_version.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "POST /clusters/{cluster_id}/upgrade-minor-version",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "0482e82ee8ace2f5255a10446c82e67b9e3d4feec40b852bbe04a195c9cff555",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "7bb906b1c7ce3ac1661167fac77d048ad6bf1f2ad94aa9713f77e6e569f03dc4",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters_upgrade_patch_version.create.json": "2f88f6f237756a3b7908afda7c04f7c1f3fab36429965cad444cf9e38433eaea"
+    },
+    "contract_revision": "61ce47e5379a0720f190f15b48dbb118a08cebda2454bbde1d035a0d95fee3cf",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters_upgrade_patch_version.create.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters_upgrade_patch_version.create.json#/errors",
+    "go_method": "mkslegacy.Client.UpgradePatchVersion",
+    "implementation": {
+      "binding": "mkslegacy.Client.UpgradePatchVersion",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1upgrade-patch-version/post",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.clusters_upgrade_patch_version.create",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1upgrade-patch-version/post/responses",
+    "output_type": "mkslegacy.DetailedCluster",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1upgrade-patch-version/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters_upgrade_patch_version.create.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters_upgrade_patch_version.create.json#/request",
+    "resource": "clusters_upgrade_patch_version",
+    "response_binding_ref": "contracts/mks.v1.clusters_upgrade_patch_version.create.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "POST /clusters/{cluster_id}/upgrade-patch-version",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "61ce47e5379a0720f190f15b48dbb118a08cebda2454bbde1d035a0d95fee3cf",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "cd09f366b57b3864ff0e97ea438410f23ba00f29434767c1a37b0d88c773a958",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.feature_gates.list.json": "e6f499e0e9096d5062fd9e15234e958c0d759e1e241ad83c93f39cacdbb54c00"
+    },
+    "contract_revision": "bed845f379407276fc42bd4a5f1e1f62906130409630fbae76026911c59b2c12",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.feature_gates.list.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.feature_gates.list.json#/errors",
+    "go_method": "mkslegacy.Client.ListFeatureGates",
+    "implementation": {
+      "binding": "mkslegacy.Client.ListFeatureGates",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1feature-gates/get",
+    "input_type": "pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.feature_gates.list",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1feature-gates/get/responses",
+    "output_type": "pagination.Collection[mkslegacy.FeatureGates]",
+    "pagination_contract_ref": "contracts/mks.v1.feature_gates.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1feature-gates/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.feature_gates.list.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.feature_gates.list.json#/request",
+    "resource": "feature_gates",
+    "response_binding_ref": "contracts/mks.v1.feature_gates.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /feature-gates",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "bed845f379407276fc42bd4a5f1e1f62906130409630fbae76026911c59b2c12",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "84780ef63b2016fdb90c876c0b5cd3a9663c8f5a2d3c7894e0df0f02462cc352",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.kubeversions.list.json": "d5494500f797021e394408a055ed8380c9ea1e9d835e1b23bb1720ab97f596dc"
+    },
+    "contract_revision": "52ebc8f0afa5382d1b2e32ea2ec6577f26a22e3c09caa5a3691ae5adb4de0859",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.kubeversions.list.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.kubeversions.list.json#/errors",
+    "go_method": "mkslegacy.Client.ListKubeVersions",
+    "implementation": {
+      "binding": "mkslegacy.Client.ListKubeVersions",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1kubeversions/get",
+    "input_type": "pagination.Options",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.kubeversions.list",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1kubeversions/get/responses",
+    "output_type": "pagination.Collection[mkslegacy.KubeVersion]",
+    "pagination_contract_ref": "contracts/mks.v1.kubeversions.list.json#/pagination",
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1kubeversions/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.kubeversions.list.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.kubeversions.list.json#/request",
+    "resource": "kubeversions",
+    "response_binding_ref": "contracts/mks.v1.kubeversions.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /kubeversions",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "52ebc8f0afa5382d1b2e32ea2ec6577f26a22e3c09caa5a3691ae5adb4de0859",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "e4edd3aaf99b745105d218523a7a791f81938e787c6b4920922002122a474897",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.nodes.delete.json": "c3973601f55f7dcfb7885a7739ecd0f8c6adfb9b22df58409a3c70bc7e62b01e"
+    },
+    "contract_revision": "0709dc7cac6725bc7c291b03422d750f23dafa92b9bb7f25842189ad2de2f9d3",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.nodes.delete.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.nodes.delete.json#/errors",
+    "go_method": "mkslegacy.Client.DeleteNode",
+    "implementation": {
+      "binding": "mkslegacy.Client.DeleteNode",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}/delete",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.nodes.delete",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.nodes.delete.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.nodes.delete.json#/request",
+    "resource": "nodes",
+    "response_binding_ref": "contracts/mks.v1.nodes.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "DELETE /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "0709dc7cac6725bc7c291b03422d750f23dafa92b9bb7f25842189ad2de2f9d3",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "b45352d752ef390db992fbec6009ed6b66186489fb16ed9507c04c8c694e0704",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.nodes.get.json": "72dd210b72673a8d85d315fb28f387421e372c65971412067ef1f535364f2d9a"
+    },
+    "contract_revision": "0301bf13214c4cfb532e5c0833fdb0e26d4d8d37185b77c173f8d9dba0ca2ce5",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/mks.v1.nodes.get.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.nodes.get.json#/errors",
+    "go_method": "mkslegacy.Client.GetNode",
+    "implementation": {
+      "binding": "mkslegacy.Client.GetNode",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}/get",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.nodes.get",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}/get/responses",
+    "output_type": "mkslegacy.Node",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.nodes.get.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.nodes.get.json#/request",
+    "resource": "nodes",
+    "response_binding_ref": "contracts/mks.v1.nodes.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "GET /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "0301bf13214c4cfb532e5c0833fdb0e26d4d8d37185b77c173f8d9dba0ca2ce5",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "8192f32f768bda38ec2fa17947bb8ec944f40c42295af17aa3d4abbfc4ebaf3c",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "reinstall",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.nodes.reinstall.json": "d239dff3e1772db67903437e7b5e7df609ea18aff132a16ec65de627b36906ba"
+    },
+    "contract_revision": "421b6f538bb47bcaf23f205d69b56a9696c351647d2dce7a6203c868bacc9d6a",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.nodes.reinstall.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.nodes.reinstall.json#/errors",
+    "go_method": "mkslegacy.Client.ReinstallNode",
+    "implementation": {
+      "binding": "mkslegacy.Client.ReinstallNode",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}~1reinstall/post",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.nodes.reinstall",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}~1reinstall/post/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1nodegroups~1{nodegroup_id}~1{node_id}~1reinstall/post",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.nodes.reinstall.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.nodes.reinstall.json#/request",
+    "resource": "nodes",
+    "response_binding_ref": "contracts/mks.v1.nodes.reinstall.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "POST /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}/reinstall",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "421b6f538bb47bcaf23f205d69b56a9696c351647d2dce7a6203c868bacc9d6a",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "63855182635040d3d42f2f2dd251de1ccf92ea6ea2542bc7652791dd3cdf4646",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v1",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.registry_integrations.delete.json": "bc51306e59e17c5d9a1595e55fc2d16bada5e10f7328c6887fd4772aa83d789a"
+    },
+    "contract_revision": "eef3d0e703b91fbfae84a9fd53d13251af1c4db100e8689685fc6e09ac8568b8",
+    "effect": "mutation",
+    "endpoint_recipe_ref": "contracts/mks.v1.registry_integrations.delete.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.registry_integrations.delete.json#/errors",
+    "go_method": "mkslegacy.Client.DeleteRegistryIntegration",
+    "implementation": {
+      "binding": "mkslegacy.Client.DeleteRegistryIntegration",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries~1{registry_id}/delete",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "mks.v1.registry_integrations.delete",
+    "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries~1{registry_id}/delete/responses",
+    "output_type": "struct{}",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}~1registries~1{registry_id}/delete",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.registry_integrations.delete.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.registry_integrations.delete.json#/request",
+    "resource": "registry_integrations",
+    "response_binding_ref": "contracts/mks.v1.registry_integrations.delete.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
+    "service": "mks",
+    "source": {
+      "operation_locator": "DELETE /clusters/{cluster_id}/registries/{registry_id}",
+      "revision": "d338e3ef3f7422675d66fbc9ec2772127b2564b15c288f8a215381972b6a754d",
+      "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
+    },
+    "verification": {
+      "contract_revision": "eef3d0e703b91fbfae84a9fd53d13251af1c4db100e8689685fc6e09ac8568b8",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "e07862ebb32f6bc419b67eb15165d4a0c30e13f16abfde69261b41027ebebb41",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +8218,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "b0ab806060a59d36b3544fe23985b5a997526d1beb1552e467c22232b39db880",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +8277,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "1cb263a0e2fb48c76d2af748bb1ede06b5002d34b7677aaeb14cc0c7234a703b",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +8336,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "06d0ca98722f7d2ef7e3befdd2345c9b7d5b34b92d683460e53ff9040f457049",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +8397,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "60b8aa90dd12868a8b4fb9c9d6a8e323e54c202b86f02272305ac298cf462686",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +8456,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "3a63dec97cb412ddf68b3dc10f58c1358401cad939e632dc5cf23e62ad2b8faf",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +8515,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "7a94350684990c558f8a9bb41f970087a42ce88cb4901c3bfeb02b842fbc3fad",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +8576,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "61a82cac67176bffb580304fcf309a527e7dcf0d9103351c4eb5e8cfc15ba737",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +8637,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "c72eb4e1c86df70ad430e1515f0baaf02cec630775287ae3afb97af2d85b9f2a",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +8694,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "422f08d2834d14988d32734576dac741f11297af0faf186842b836fe2427e30b",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +8751,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "f485b6f9f00a52b9af33119b7210752e40870d2fe1ecd6d31b658a6db0109c91",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +8812,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "12578a2f972c3d74036976ab567eb521a2245e5ff0ef5987d60a94df6d71ab79",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +8871,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "d4d71a90ebc52040890838cf48acee953d3cf521dc0c91738beda292ff4136a5",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +8928,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "a3dec9c898e802e58d350a1e274a0d6aae78bdefdf8e121e960cceee750367aa",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +8987,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "99dfc7a9cdad24ff1351ae628853a0d2a700dea39929d819e61f6d50f88841f8",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +9046,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "d311e87a88f0d6698a5b9917cb967da04ba2489930d44878a588b37892e584d4",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +9103,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "47d19c12a6a3b341bad52506b1804aad00e48424d923c9eee5db30d73e9015c9",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +9160,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "23658549db5812d4c9f4e88279824733f77797c901468ed742f2c8b05ebdc2aa",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +9219,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "f0bc336220ea8fd98c82cfa3221f4f87b9c39abac1771373a3746ca5f6893ba6",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +9276,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "93cdec7433a307cb89a0f6ee5a227fe1f253c16b2536d70cf7e20d546049fda0",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +9333,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "7f263376e37c21efc763a21bc3c8307389a6255595a79ed24f88c847a25cd7cb",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +9390,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "967ed375937ed8de02f060fce97b06948da8be1f56e0a68b5603e296bb1d41f2",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +9447,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "927912710117fbe72844d8dc703ead9dab58b19081ff6138b66bcc6440d6a25b",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +9504,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "87f06beda0840be55b35f7a2c538903c1a96ac20d6c6099eaa192ebc6ac783aa",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +9566,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "dc904ab7eec5ada6224aff5fa828c920522ccd826155340e373b4e3eeb4daacb",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +9628,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "af7d899dd640430137c34d2129cdd9717c3339d0aa959592ae7fc700d055fa15",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +9689,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "27e66cb1c8c2d993a1cd945df4de122eb5c244579a31b2fb4d974ac90f0f165b",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +9750,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "276c46964592d78f7706486588faa3d3280e76a11ecbd763535e50c7cb8c1afc",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +9809,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "d8c0842fa05af879b648965a6d5183c453dcfb88534ff10fc34e78d9ef0d13d9",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +9866,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "b2c33d5946f4db45b99563ccdf64c86908fa199428f2e5c7dc7fe263d65e0f8a",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +10611,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "28093723dfb962cdf130845f79ea7694d3b2e7130b36e30fe2628585e8ff5d4d",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +10667,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "e4425d1bdb1dda56429925839f1344b5739fba26b9a498ae3bfdbaba4e8a0823",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +10723,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "258b82470e1996931da2f4af3d52ca48b4367247262876f2e7ce3abd3b76c98b",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +10779,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "890339cdc00cb38b2507e665064834da58bb7384468c33ee148d55fad815dcca",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +10835,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "c908feb4d2b8d1b40be799c6cd58b28c2e79f7f4c563d73c627a51e17418fc67",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +11263,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "012899af11e8a086338e552f3015631922099dc27c4ba7edc84f7662412ea2da",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +11320,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "dc907a6d3bb7160a258d25ead607c9d406bc2ead8eb5e76a43e68d5f448f01ad",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +11377,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "e8868363ee31690ea587153d405d46b0ae7e21e0d4de73584fe19693b0dedf09",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +11434,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "4fd81d28950973835594dc5eeeed87815ef3046dd052d8de4bea2034ad4d4c4b",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +12301,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "89e2bdeb1541e152ed6d42a91087afc265784eb388ff3e979fa0587687f862af",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +12900,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "f2f6b62d096c41cf069ea643fdda0dc47f9c1436cc8737e636172a3de8cb3a97",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +12957,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "1cb1e2c6dbf06a1d5f194546a97a5315cedbc45ffceec8ff98013d1a4c532006",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +13016,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "3f391c3775544ba98562ec76ae654f56894121f03ffc45b4b5ed7fc6c593bbc0",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +13073,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "e284f4af86c6c0f7376c28d7f95db80f2dbfb774a0f964b6bd8deb107c032c18",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +13130,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "42229901840dce278de5e36d93736eb29c54d1693308b6122313b14242133403",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +13189,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "1542885ea1890c3e05c4afb01d487e9cf788f47458ec924c13c12455b8030517",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +13248,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "12fdfbf16a41fb19de2539e9e3906bac5fa111ff104bc22e23a0d6c01f96042f",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +13305,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "fa83c109193dcd4dbbdb2bfb212d1ba2976e492e70e06c701f60b0bbf284dd81",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +13362,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "134b0c36343a03a4ae05bf433ccd104caac5a1d2290f415d6a297abf60160065",
       "level": "offline"
     },
     "wait_goals": []

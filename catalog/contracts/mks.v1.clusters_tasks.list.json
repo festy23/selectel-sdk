@@ -1,0 +1,45 @@
+{
+  "operation_id": "mks.v1.clusters_tasks.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/clusters/{cluster_id}/tasks",
+    "mapping": "Exact caller v1 cluster. Source parameter table Offset/Limit capitalized int64 selectors and snake-case with_error_details; explicitfalse/zero preserved, no spelling fallback or automatic traversal."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "One bounded typed tasks/count page. Count retained as ReportedCount, not TotalCount/end rule. Done false, no invented NextCursor, Incomplete even for empty page because termination contract unconfirmed. Exact task parent caller cluster; unknown states/errors protected.",
+    "sensitive_fields": [
+      "error_details.name",
+      "error_details.details"
+    ]
+  },
+  "errors": {
+    "mapping": "Bounded safe read; source404not_found, sanitized status taxonomy; successful page returns Incomplete because end contract unknown."
+  },
+  "pagination": {
+    "kind": "source-page-only",
+    "termination": "unknown, no Done/NextCursor inferred",
+    "reported_count": "exact opaque source count, not total/proof of completion",
+    "bounds": "single call/response byte budget; optional native int64 Limit; no automatic repeated pages"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio",
+    "Task list pagination/Offset-Limit case and count/end-rule reconciliation owned#71/#74/#76. SDK ignores pagination, schema descriptions use camel-case flags while parameter table uses snake-case. No invented traversal."
+  ]
+}

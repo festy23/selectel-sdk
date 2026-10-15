@@ -1,0 +1,109 @@
+# Managed Kubernetes legacy
+
+`Project(id).Location(region,pool).MKSLegacy()` selects MKS generation `v1`.
+It does not convert v2 refs or fall back between generations. Source inventory
+contains28 operations from the current published [legacy schema](https://docs.selectel.ru/api/managed-kubernetes-legacy.json).
+The current MKS v1 slice has26 implemented and2 partial bindings (task page and kubeconfig source gate); it is not complete
+are unimplemented. Whole legacy inventory including DNS/storage is incomplete,
+coverage_ratio=null; published sources are not live deployment verification.
+
+Project Keystone auth and HTTPSv1 pool endpoints come from the official
+[mks-go README](https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md).
+This pinned source resolves the schema's HTTPS-global/HTTP-operation discrepancy
+without sending credentials to HTTP. ru-9v1 is its own documented endpoint,
+not the v2 ru-8 alias. Unlisted pools require exact Config.EndpointOverride.
+SDK source region means pool ID, compared with caller scope.Pool; no field is
+used to select a host or infer resource ownership.
+
+Generated DTOs preserve optional fields, exact numeric values and protected
+opaque data/certificate configuration. Raw unknown status/CNI values survive
+without invented readiness classification. Returned root refs require matching
+caller project/pool; Get also requires exact ID/generation/endpoint. Response
+provider `ref` is ignored. Neutron associations remain metadata, not parent refs.
+List is the finite provider array documented by the pinned SDK; local bounds
+return incomplete collections/cursors, never false completeness.
+
+Owned source gap #71: kubeconfig schema declares204/bodyless while official SDK
+ExtractRaw expects payload. No successful YAML/status contract is invented.
+DNS legacy is marked outdated/migration recommended, not proven withdrawn.
+S3 notice states old settings/users/URLs stop working after2026-09-15; it does not
+prove withdrawal of every Swift-old/Selectel-storage-old operation. These families
+need separate source reconciliation; #74 tracks inventory drift and #76 acceptance.
+File Storage legacy resize remains #70/PR115 and is not duplicated here.
+
+No cloud resources, old credential auth endpoints or kubeconfigs were contacted.
+All tests use the public Client with synthetic credentials and only transport
+replacement. No v1 wait goals are claimed.
+
+ListKubeVersions, ListAdmissionControllers and ListFeatureGates expose bounded
+finite source arrays. Native capitalized KubeVersionMinor/Names fields are
+preserved; Names is an array, and no default configuration is invented.
+
+CreateCluster validates the generated native request tree, caller pool and
+base64 user_data, forwarding the protected value unchanged only at the private
+wire boundary. An accepted identity (id/project_id/region) is scanned before
+other fields so malformed unrelated fields do not lose the created root ref.
+DeleteCluster204 is acceptance, not an absence assertion. Unknown mutations
+never replay or infer a new resource; exact known refs and receipts survive.
+The narrow reviewed early ContractRevision fix from PR97 commit
+379458e4f658b1216137fea4acce5dae6027d320 (delta82121d740a2788930ce7c4934d449c35b096966d)
+is reused in internal/core/request.go; no volume feature code is included.
+Private wire rendering follows the existing baseline mks serializer.
+
+UpdateCluster, UpgradeMinorVersion and UpgradePatchVersion check exact returned
+cluster identity before adopting a ref, retaining caller receipt/ref on accepted
+foreign/malformed responses. RotateCertificates204 is only acceptance and does
+not invent a task. Optional false update fields are preserved. Generated opaque
+source-object fields reject scalar/null shapes rather than accepting arbitrary
+ProtectedJSON as a schema object.
+
+Nodegroup list/get bind explicit cluster parents and native nested nodes; all
+available ancestor IDs are checked. CreateNodegroup204 yields no new group ID,
+so only caller cluster anchor is retained. Update/delete/resize retain exact
+group+cluster hierarchy; desired size is exact Integer without rounding. Cyclic
+or foreign service/generation/endpoint parent chains refuse before I/O. Legacy
+node resource paths omit the v2 /nodes segment, and no conversion is inferred.
+
+GetNode/DeleteNode/ReinstallNode use native v1 routes without /nodes. OS-server
+IDs remain metadata. Unknown500/transport retains cloned caller hierarchy
+without replay or raw provider error text;204 is acceptance, not completion.
+
+GetTask uses explicit caller cluster parent, preserves raw unknown status and
+protected error name/details with exact numeric code. nodegroup_id remains
+metadata, not an inferred parent. Compiled flags follow snake-case parameter
+tables; camel-case descriptions are recorded as source discrepancy, no fallback.
+ListTasksPage performs one bounded read and always returns Incomplete with
+Done=false and no invented NextCursor, even for an empty page. Offset/Limit use
+exact capitalized source names and int64 bounds. count is ReportedCount, never
+TotalCount or proof of completion. Traversal/end-rule reconciliation remains
+owned #71/#74/#76; this binding is partial rather than falsely complete.
+
+Five registry integration operations use native MKS association refs beneath an
+explicit caller cluster. They never assert ownership of a Registry-service
+resource or manufacture its endpoint. Create/replace scan all trustworthy native
+association IDs before other fields; malformed/duplicate rows do not lose later
+independent IDs in an accepted receipt. These are observed association refs, not
+causal proof that every returned link was newly created. Unknown only retains
+caller anchors, never list-diff adoption. Replace preserves explicit empty array.
+DeleteAllRegistryIntegrations is explicit collection action, while
+DeleteRegistryIntegration requires exact native association ref;204 is only
+acceptance, not an absence or readiness guarantee.
+
+GetKubeconfig is a local source gate returning CapabilityUnavailable after exact
+caller ref checks, before CredentialSource lookup or HTTP. Its partial binding
+does not implement the remote download; status/content/stream contract remains
+unknown. No YAML payload or successful status is invented to resolve the conflict.
+
+## Remaining family slices
+
+The native child/blocking issues of #71 are [MKS source contracts](https://github.com/festy23/selectel-sdk/issues/116),
+[DNS legacy v1](https://github.com/festy23/selectel-sdk/issues/117) and
+[old storage availability/protocols](https://github.com/festy23/selectel-sdk/issues/118).
+DNS19 operations are imported as unimplemented in the machine catalog. Official
+domains-go confirms its account Selectel Token/X-Token and HTTPSv1 endpoint,
+distinct from current project-scoped DNSv2. The outdated/migration message is not
+withdrawal evidence. Public source articles and20/21 recognized old-storage table
+rows are pinned in catalog/evidence/legacy-family-source-dispositions.json;
+they are discovery evidence, not unique operation counts or coverage claims.
+Old-storage operational bindings remain absent pending #118. #71 remains
+incomplete, and only References #71 is justified for this implementation subset.

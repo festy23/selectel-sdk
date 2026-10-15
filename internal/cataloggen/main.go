@@ -21,6 +21,8 @@ type family struct {
 }
 
 var families = map[string]family{
+	"dns-legacy":                   {"dns", "v1", "static_token", false},
+	"managed-kubernetes-legacy":    {"mks", "v1", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +36,11 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"managed-kubernetes-legacy DELETE /clusters/{cluster_id}/registries/{registry_id}":                    "mks.v1.registry_integrations.delete",
+	"managed-kubernetes-legacy GET /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}":            "mks.v1.nodes.get",
+	"managed-kubernetes-legacy DELETE /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}":         "mks.v1.nodes.delete",
+	"managed-kubernetes-legacy POST /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}/reinstall": "mks.v1.nodes.reinstall",
+
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",

@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+ "mkslegacy": ("managed-kubernetes-legacy", {"Cluster":"Cluster", "ClusterDetailed":"DetailedCluster", "KubeVersion":"KubeVersion", "AvailableAdmissionControllers":"AdmissionControllers", "AvailableFeatureGates":"FeatureGates", "SwaggerClusterCreateStruct":"ClusterCreateSpec", "SwaggerClusterUpdateStruct":"ClusterUpdateSpec", "Nodegroup":"Nodegroup", "NodegroupDetailed":"DetailedNodegroup", "SwaggerNode":"Node", "NodegroupUpdate":"NodegroupUpdate", "Task":"Task", "RegistriesIntegration":"RegistriesIntegration", "RegistryWithMeta":"RegistryIntegration", "RegistryCreateIntegrationsStruct":"RegistryCreateSpec", "SwaggerUpdateRegistriesIntegrationStruct":"RegistryUpdateSpec"},None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -49,8 +50,10 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
-    if package == "mks":
+    if package in {"mks", "mkslegacy"}:
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
+    if package == "mkslegacy":
+        resource_roots.update({"SwaggerNode", "RegistryWithMeta"})
     pending = dict(roots)
     emitted = {}
     imports = {"types": "github.com/festy23/selectel-sdk/types", "json": "encoding/json"}
@@ -77,7 +80,9 @@ for case, (family, initial, top_name) in CASES.items():
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
         kind = schema.get("type")
-        if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
+        if package in {"mks", "mkslegacy"} and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
+            return "types.ProtectedValue", False
+        if package == "mkslegacy" and field in {"ca_certs", "x509_ca_certificates", "issuer_url"}:
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False
@@ -142,6 +147,8 @@ for case, (family, initial, top_name) in CASES.items():
             nested = definitions.get(ref, value)
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
+            elif package == "mkslegacy" and nested.get("type") == "object" and not nested.get("properties") and not nested.get("additionalProperties"):
+                code += f"\tif v.{field_name} != nil {{ var object map[string]json.RawMessage; if json.Unmarshal(v.{field_name}.Reveal(), &object) != nil || object == nil {{ return types.NewError(types.ProtocolError) }} }}\n"
             elif nested.get("type") == "array":
                 item = nested["items"]
                 item = definitions.get(item.get("$ref", "").split("/")[-1], item)

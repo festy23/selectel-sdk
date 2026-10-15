@@ -1,0 +1,2755 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Managing clusters, node groups, and Managed Kubernetes nodes: creating a cluster, automating cluster maintenance, and more",
+    "title": "Managed Kubernetes API",
+    "version": "v1.0.0"
+  },
+  "paths": {
+    "/admission-controllers": {
+      "get": {
+        "description": "Get supported admission controllers",
+        "operationId": "getAdmissionControllers",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/admissionControllersList"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get supported admission controllers",
+        "tags": [
+          "AdmissionControllers"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters": {
+      "get": {
+        "description": "Example response:\n```\n{\n    \"clusters\": [\n        {\n            \"id\": \"5803b490-2d6b-418a-8645-eacda0f003c5\",\n            \"created_at\": \"2019-11-04T10:21:11.943917Z\",\n            \"updated_at\": \"2019-11-04T10:29:22.652987Z\",\n            \"name\": \"cluster1\",\n            \"status\": \"ACTIVE\",\n            \"project_id\": \"c1f35d51fbfc4ba595830d5416fea58a\",\n            \"network_id\": \"f6e76442-d33d-4c35-9d73-b5391ca03653\",\n            \"subnet_id\": \"a9881ca2-d481-4206-b39a-7f7e758672e3\",\n            \"kube_api_ip\": \"203.0.113.101\",\n            \"kube_version\": \"1.16.9\",\n            \"region\": \"ru-3\",\n            \"additional_software\": null,\n            \"enable_autorepair\": true,\n            \"enable_patch_version_auto_upgrade\": true,\n            \"kubernetes_options\": {\n                \"feature_gates\": [\n                    \"CPUManager\"\n                 ],\n                \"admission_controllers\": [\n                    \"PodSecurityPolicy\"\n                ],\n                \"audit_logs\": {\n                    \"enabled\": true,\n                    \"secret_name\": \"mks-audit-logs\"\n                },\n                \"oidc\": {\n                    \"enabled\": true,\n                    \"issuer_url\": \"https://example.com/\",\n                    \"client_id\": \"kubernetes\",\n                    \"username_claim\": \"email\",\n                    \"groups_claim\": \"groups\",\n                    \"provider_name\": \"keycloak\"\n                }\n            },\n            \"zonal\": false,\n            \"cluster_type\": \"HIGH_AVAILABILITY\",\n            \"private_kube_api\": false\n        },\n        {\n            \"id\": \"998e205c-b67c-4941-85cd-c31b09582a4a\",\n            \"created_at\": \"2019-11-04T12:54:20.769125Z\",\n            \"updated_at\": \"2019-11-04T13:08:08.785385Z\",\n            \"name\": \"testing\",\n            \"status\": \"ACTIVE\",\n            \"project_id\": \"c1f35d51fbfc4ba595830d5416fea58a\",\n            \"network_id\": \"b5e2e88d-d393-4b9d-b5e5-9cc89c7843cf\",\n            \"subnet_id\": \"31c0a11c-cdb2-442a-a92b-0c5d12631b75\",\n            \"kube_api_ip\": \"203.0.113.220\",\n            \"kube_version\": \"1.17.6\",\n            \"region\": \"ru-1\",\n            \"additional_software\": null,\n            \"enable_autorepair\": true,\n            \"enable_patch_version_auto_upgrade\": false,\n            \"kubernetes_options\": {\n                \"feature_gates\": [\n                    \"CPUManager\"\n                 ],\n                \"admission_controllers\": [\n                    \"PodSecurityPolicy\"\n                ],\n                \"audit_logs\": {\n                    \"enabled\": true,\n                    \"secret_name\": \"mks-audit-logs\"\n                },\n                \"oidc\": {\n                    \"enabled\": true,\n                    \"issuer_url\": \"https://example.com/\",\n                    \"client_id\": \"kubernetes\",\n                    \"username_claim\": \"email\",\n                    \"groups_claim\": \"groups\",\n                    \"provider_name\": \"keycloak\"\n                }\n            },\n            \"zonal\": true,\n            \"cluster_type\": \"HIGH_AVAILABILITY\",\n            \"private_kube_api\": true\n        }\n    ]\n}\n```",
+        "operationId": "listClusters",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/clustersList"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get all clusters",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "post": {
+        "description": "Example response:\n```\n{\n    \"cluster\": {\n        \"id\": \"998e205c-b67c-4941-85cd-c31b09582a4a\",\n        \"created_at\": \"2019-11-04T12:54:20.769125Z\",\n        \"updated_at\": null,\n        \"name\": \"staging\",\n        \"status\": \"PENDING_CREATE\",\n        \"project_id\": \"c1f35d51fbfc4ba595830d5416fea58a\",\n        \"network_id\": \"\",\n        \"subnet_id\": \"\",\n        \"kube_api_ip\": \"\",\n        \"kube_version\": \"1.16.9\",\n        \"region\": \"ru-2\",\n        \"additional_software\": null,\n        \"pki_tree_updated_at\": null,\n        \"maintenance_window_start\": \"01:00:00\",\n        \"maintenance_window_end\": \"03:00:00\",\n        \"maintenance_last_start\": null,\n        \"enable_autorepair\": true,\n        \"enable_patch_version_auto_upgrade\": true,\n        \"kubernetes_options\": {\n            \"feature_gates\": [\n                \"CPUManager\"\n             ],\n            \"admission_controllers\": [\n                \"PodSecurityPolicy\"\n            ],\n            \"x509_ca_certificates\":\"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJek1Ea3dOVEUyTkRVMU1Wb1hEVE16TURrd01qRTJORFUxTVZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTlBCCmF3VlM1citJcFdaNzQreFp3eUIvUVgzdC9nSHVEUkJBUUtjQmtadjlUT2VCZ1l2NVFWcFg0VkxLMk1JZUxFUkQKb3VtT0xGL3FQTEtPc3dkMzdndlN4QmRGY1Z5bTRuVi9OQisrUHJUMFFuNHRnbUZPcVlESmdsSmNHOERjR2loZQpWMWNackYxZ2NVOVhjdFFzcDM0T2JmZlhBd3A2WnpBdklYcGhRbnpGbkFrdUlSM3RyVGxWbTZMZ09Xek9NWlF0ClhtckYxRWYyYmtNcG01TnduVmx4c0xubHFLTGJLK1NTOUsyMk1za2dzQStqTVZaNVRSWjlzb0dhanVOUitkRmwKWU5XeWtSZ3JTL1ZBU2VXV3NhOGE3V0lmWGlBOHVHZ0U2ZVBQKzdDNEFNNmNqbjQ4K2l5Z01DSUFoSllGaFVZNQo2NW85SXBxaXU4TmRLUExhZ1I4Q0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZNeTd6NWQxa1plZGVzWDlzWlJJV01BamVLa2ZNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFDVjFMaVJ1SXJVZlR6YkFwak10R3Z6T0tXK0cxYVFsNTRzQ3RJUmQwMENjbSt0OFJqZQpDVjJyeXArd0MyRGt4amZpS0owanpQbitVM3F4V01HMmdDNmpGRi9YbHRGeWNGd291OFJUcisycGZuTk9MbGEzCnpHK0o3Uys4b1RObWZxa2NqZExLa08rQ0U1M3Rpa0daQy95eThMWEVJdWlBeGptOFY5WlF3SGxxZjRXaUFPUXMKNGNUbUpRT2tJaU5ZTDRJcmlLQWNTMzB4bDVtNDB4ZVI5dm1DdzBNdGhoLytDNFNLNW9NNS9YaWZNT2JadnV6WQpkR3ArbGdkUU9jdTJJUEVUQUl2S3J1UDVObUhnZ2RaNXZnVHRKWGdqSkJZcHV6dXNiUmxmMy8wbWZhOE82V0o3ClZxVTJZL3FkSFRNVWhkUkgyRU9KcThDQ3VQNHFiUnppaVhGdQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t\",\n            \"audit_logs\": {\n                \"enabled\": true,\n                \"secret_name\": \"mks-audit-logs\"\n            },\n            \"oidc\": {\n                \"enabled\": true,\n                \"issuer_url\": \"https://example.com/\",\n                \"client_id\": \"kubernetes\",\n                \"username_claim\": \"email\",\n                \"groups_claim\": \"groups\",\n                \"provider_name\": \"keycloak\",\n                \"ca_certs\": \"-----BEGIN CERTIFICATE-----\\nMIIDBTCCAe2gAwIBAgIUH+2Pl+wxAzrNznYckzQcWPPFkd4wDQYJKoZIhvcNAQEL\\nBQAwEjEQMA4GA1UEAwwHa3ViZS1jYTAeFw0yNTAzMTEwNjQ5NDRaFw0yNTAzMjEw\\nNjQ5NDRaMBIxEDAOBgNVBAMMB2t1YmUtY2EwggEiMA0GCSqGSIb3DQEBAQUAA4IB\\nDwAwggEKAoIBAQCwxR1ho0OKw22/HduzIQhg55G5K6XQ5jT9YlvwYYlx1PsIfm8I\\n9sktqp9e0aM5hfFdRJ+5RJ5njg9ui0ctQB4wj3KszYTd9M80dkqZ0vJCACuUZJ6o\\nNL6ecvOPkymPz1JxQGBK66s2oV+9o2wpJE03UE/HpjKgZ/wLfUdYgWAGvu6bsF1U\\n/UcUiujSeKRtAq8gSNQd+Jj7a5bFG02V2mv5/OXNQU0EN+n4Z+uNo7O7H0ZqVWXm\\nZBMJhfBFxfjK39F0bkv0Lf4OXP2Jb+TgR7/RO70BZ8KKmEect0VO61UuCnMRVEc/\\ncAnQGOwT33ssU/IPxqh/G7X62Zq7kAZNRP7vAgMBAAGjUzBRMB0GA1UdDgQWBBSM\\nHgn6VoZ47VQXbsdOsgfMwnemBTAfBgNVHSMEGDAWgBSMHgn6VoZ47VQXbsdOsgfM\\nwnemBTAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQAKgaPRsmCt\\nEJFD9RRsrp7XdJGLo/Wj7m85bAJF/4AePf6DxQRTDmgArVHhI5WaN3Ev6GjyArFT\\nDdFPln+zM7Kz9T/O6X5VdfrLA6T0ScDQYO03e/YH+Iy1VEoKgocWj2Js+e/BJCX3\\nwd6SBvm2Q2odE5U0JaNnaGyNz2A+QLyhLfabNdPLqZO80mT/USTyeIDNJJQNLrY9\\nZKI1VKet/lAQBp3FLcZeK+PtjsBt/gscw9lx2oTnHI428EDiFCKO8FxpX+h1WsdU\\n36xy8y80qfeuyOpsPcnodtwcaakInawLC3WoiAhFKAMF4/aCx6mjlfmgtgeTvFa/\\nNdu6k9VYDhuM\\n-----END CERTIFICATE-----\",\n            \t\"ca_certs_expiration\": \"2019-12-16T11:34:19.140113Z\"\n            }\n        },\n        \"zonal\": false,\n        \"cluster_type\": \"HIGH_AVAILABILITY\",\n        \"private_kube_api\": false\n    }\n}\n```",
+        "operationId": "createCluster",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwaggerClusterCreateBody"
+              }
+            }
+          },
+          "description": "Cluster create request body.",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/clusterObj"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Create a new cluster",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}": {
+      "delete": {
+        "description": "Delete a cluster",
+        "operationId": "deleteCluster",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Delete a cluster",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "get": {
+        "description": "Example response:\n```\n{\n    \"cluster\": {\n        \"id\": \"998e205c-b67c-4941-85cd-c31b09582a4a\",\n        \"created_at\": \"2019-11-04T12:54:20.769125Z\",\n        \"updated_at\": \"2019-11-04T13:08:08.785385Z\",\n        \"name\": \"testing\",\n        \"status\": \"ACTIVE\",\n        \"project_id\": \"c1f35d51fbfc4ba595830d5416fea58a\",\n        \"network_id\": \"b5e2e88d-d393-4b9d-b5e5-9cc89c7843cf\",\n        \"subnet_id\": \"31c0a11c-cdb2-442a-a92b-0c5d12631b75\",\n        \"kube_api_ip\": \"203.0.113.220\",\n        \"kube_version\": \"1.17.6\",\n        \"region\": \"ru-1\",\n        \"additional_software\": null,\n        \"pki_tree_updated_at\": \"2019-12-16T11:34:19.140113Z\",\n        \"maintenance_window_start\": \"01:00:00\",\n        \"maintenance_window_end\": \"03:00:00\",\n        \"maintenance_last_start\": \"2019-12-16T01:04:10.140212Z\",\n        \"enable_autorepair\": false,\n        \"enable_patch_version_auto_upgrade\": true,\n        \"kubernetes_options\": {\n            \"feature_gates\": [\n                \"CPUManager\"\n             ],\n            \"admission_controllers\": [\n                \"PodSecurityPolicy\"\n            ],\n            \"x509_ca_certificates\":\"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJek1Ea3dOVEUyTkRVMU1Wb1hEVE16TURrd01qRTJORFUxTVZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTlBCCmF3VlM1citJcFdaNzQreFp3eUIvUVgzdC9nSHVEUkJBUUtjQmtadjlUT2VCZ1l2NVFWcFg0VkxLMk1JZUxFUkQKb3VtT0xGL3FQTEtPc3dkMzdndlN4QmRGY1Z5bTRuVi9OQisrUHJUMFFuNHRnbUZPcVlESmdsSmNHOERjR2loZQpWMWNackYxZ2NVOVhjdFFzcDM0T2JmZlhBd3A2WnpBdklYcGhRbnpGbkFrdUlSM3RyVGxWbTZMZ09Xek9NWlF0ClhtckYxRWYyYmtNcG01TnduVmx4c0xubHFLTGJLK1NTOUsyMk1za2dzQStqTVZaNVRSWjlzb0dhanVOUitkRmwKWU5XeWtSZ3JTL1ZBU2VXV3NhOGE3V0lmWGlBOHVHZ0U2ZVBQKzdDNEFNNmNqbjQ4K2l5Z01DSUFoSllGaFVZNQo2NW85SXBxaXU4TmRLUExhZ1I4Q0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZNeTd6NWQxa1plZGVzWDlzWlJJV01BamVLa2ZNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFDVjFMaVJ1SXJVZlR6YkFwak10R3Z6T0tXK0cxYVFsNTRzQ3RJUmQwMENjbSt0OFJqZQpDVjJyeXArd0MyRGt4amZpS0owanpQbitVM3F4V01HMmdDNmpGRi9YbHRGeWNGd291OFJUcisycGZuTk9MbGEzCnpHK0o3Uys4b1RObWZxa2NqZExLa08rQ0U1M3Rpa0daQy95eThMWEVJdWlBeGptOFY5WlF3SGxxZjRXaUFPUXMKNGNUbUpRT2tJaU5ZTDRJcmlLQWNTMzB4bDVtNDB4ZVI5dm1DdzBNdGhoLytDNFNLNW9NNS9YaWZNT2JadnV6WQpkR3ArbGdkUU9jdTJJUEVUQUl2S3J1UDVObUhnZ2RaNXZnVHRKWGdqSkJZcHV6dXNiUmxmMy8wbWZhOE82V0o3ClZxVTJZL3FkSFRNVWhkUkgyRU9KcThDQ3VQNHFiUnppaVhGdQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t\",\n            \"audit_logs\": {\n                \"enabled\": true,,\n                \"secret_name\": \"mks-audit-logs\"\n            },\n            \"oidc\": {\n                \"enabled\": true,\n                \"issuer_url\": \"https://example.com/\",\n                \"client_id\": \"kubernetes\",\n                \"username_claim\": \"email\",\n                \"groups_claim\": \"groups\",\n                \"provider_name\": \"keycloak\",\n                \"ca_certs\": \"-----BEGIN CERTIFICATE-----\\nMIIDBTCCAe2gAwIBAgIUH+2Pl+wxAzrNznYckzQcWPPFkd4wDQYJKoZIhvcNAQEL\\nBQAwEjEQMA4GA1UEAwwHa3ViZS1jYTAeFw0yNTAzMTEwNjQ5NDRaFw0yNTAzMjEw\\nNjQ5NDRaMBIxEDAOBgNVBAMMB2t1YmUtY2EwggEiMA0GCSqGSIb3DQEBAQUAA4IB\\nDwAwggEKAoIBAQCwxR1ho0OKw22/HduzIQhg55G5K6XQ5jT9YlvwYYlx1PsIfm8I\\n9sktqp9e0aM5hfFdRJ+5RJ5njg9ui0ctQB4wj3KszYTd9M80dkqZ0vJCACuUZJ6o\\nNL6ecvOPkymPz1JxQGBK66s2oV+9o2wpJE03UE/HpjKgZ/wLfUdYgWAGvu6bsF1U\\n/UcUiujSeKRtAq8gSNQd+Jj7a5bFG02V2mv5/OXNQU0EN+n4Z+uNo7O7H0ZqVWXm\\nZBMJhfBFxfjK39F0bkv0Lf4OXP2Jb+TgR7/RO70BZ8KKmEect0VO61UuCnMRVEc/\\ncAnQGOwT33ssU/IPxqh/G7X62Zq7kAZNRP7vAgMBAAGjUzBRMB0GA1UdDgQWBBSM\\nHgn6VoZ47VQXbsdOsgfMwnemBTAfBgNVHSMEGDAWgBSMHgn6VoZ47VQXbsdOsgfM\\nwnemBTAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQAKgaPRsmCt\\nEJFD9RRsrp7XdJGLo/Wj7m85bAJF/4AePf6DxQRTDmgArVHhI5WaN3Ev6GjyArFT\\nDdFPln+zM7Kz9T/O6X5VdfrLA6T0ScDQYO03e/YH+Iy1VEoKgocWj2Js+e/BJCX3\\nwd6SBvm2Q2odE5U0JaNnaGyNz2A+QLyhLfabNdPLqZO80mT/USTyeIDNJJQNLrY9\\nZKI1VKet/lAQBp3FLcZeK+PtjsBt/gscw9lx2oTnHI428EDiFCKO8FxpX+h1WsdU\\n36xy8y80qfeuyOpsPcnodtwcaakInawLC3WoiAhFKAMF4/aCx6mjlfmgtgeTvFa/\\nNdu6k9VYDhuM\\n-----END CERTIFICATE-----\",\n            \t\"ca_certs_expiration\": \"2019-12-16T11:34:19.140113Z\"\n            }\n        },\n        \"zonal\": false,\n        \"cluster_type\": \"HIGH_AVAILABILITY\",\n        \"private_kube_api\": false,\n        \"registries_integration\": {\n          \"registries\": [\n            {\n              \"id\": \"4bed5c76-c8ce-4c8f-92f8-26721cab4079\"\n            }\n          ],\n          \"status\": \"ACTIVE\"\n        }\n    }\n}\n```",
+        "operationId": "getCluster",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/clusterObj"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get cluster by ID",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "put": {
+        "description": "Example response:\n```\n{\n    \"cluster\": {\n        \"id\": \"a1f1e026-24c5-4a72-ba8b-7f213c9e5922\",\n        \"created_at\": \"2020-01-13T15:15:20.769129Z\",\n        \"updated_at\": \"2020-01-14T10:12:34.785341Z\",\n        \"name\": \"mycluster\",\n        \"status\": \"ACTIVE\",\n        \"project_id\": \"16204804dedf46f1b1389aa39e73c485\",\n        \"network_id\": \"33b4a55f-a20c-4daf-a7af-76989dc7dce0\",\n        \"subnet_id\": \"8c34704d-8ac0-4c9e-8bf3-6699d9ab91ea\",\n        \"kube_api_ip\": \"203.0.113.220\",\n        \"kube_version\": \"1.17.6\",\n        \"region\": \"ru-2\",\n        \"additional_software\": null,\n        \"pki_tree_updated_at\": \"2020-01-13T20:45:01.140121Z\",\n        \"maintenance_window_start\": \"04:00:00\",\n        \"maintenance_window_end\": \"06:00:00\",\n        \"maintenance_last_start\": \"2020-01-13T20:04:00.712351Z\",\n        \"enable_autorepair\": false,\n        \"enable_patch_version_auto_upgrade\": false,\n        \"kubernetes_options\": {\n            \"feature_gates\": [\n                \"CPUManager\"\n             ],\n            \"admission_controllers\": [\n                \"PodSecurityPolicy\"\n            ],\n            \"audit_logs\": {\n                \"enabled\": true,\n                \"secret_name\": \"mks-audit-logs\"\n            },\n            \"oidc\": {\n                \"enabled\": true,\n                \"issuer_url\": \"https://example.com/\",\n                \"client_id\": \"kubernetes\",\n                \"username_claim\": \"email\",\n                \"groups_claim\": \"groups\",\n                \"provider_name\": \"keycloak\",\n                \"ca_certs\": \"-----BEGIN CERTIFICATE-----\\nMIIDBTCCAe2gAwIBAgIUH+2Pl+wxAzrNznYckzQcWPPFkd4wDQYJKoZIhvcNAQEL\\nBQAwEjEQMA4GA1UEAwwHa3ViZS1jYTAeFw0yNTAzMTEwNjQ5NDRaFw0yNTAzMjEw\\nNjQ5NDRaMBIxEDAOBgNVBAMMB2t1YmUtY2EwggEiMA0GCSqGSIb3DQEBAQUAA4IB\\nDwAwggEKAoIBAQCwxR1ho0OKw22/HduzIQhg55G5K6XQ5jT9YlvwYYlx1PsIfm8I\\n9sktqp9e0aM5hfFdRJ+5RJ5njg9ui0ctQB4wj3KszYTd9M80dkqZ0vJCACuUZJ6o\\nNL6ecvOPkymPz1JxQGBK66s2oV+9o2wpJE03UE/HpjKgZ/wLfUdYgWAGvu6bsF1U\\n/UcUiujSeKRtAq8gSNQd+Jj7a5bFG02V2mv5/OXNQU0EN+n4Z+uNo7O7H0ZqVWXm\\nZBMJhfBFxfjK39F0bkv0Lf4OXP2Jb+TgR7/RO70BZ8KKmEect0VO61UuCnMRVEc/\\ncAnQGOwT33ssU/IPxqh/G7X62Zq7kAZNRP7vAgMBAAGjUzBRMB0GA1UdDgQWBBSM\\nHgn6VoZ47VQXbsdOsgfMwnemBTAfBgNVHSMEGDAWgBSMHgn6VoZ47VQXbsdOsgfM\\nwnemBTAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQAKgaPRsmCt\\nEJFD9RRsrp7XdJGLo/Wj7m85bAJF/4AePf6DxQRTDmgArVHhI5WaN3Ev6GjyArFT\\nDdFPln+zM7Kz9T/O6X5VdfrLA6T0ScDQYO03e/YH+Iy1VEoKgocWj2Js+e/BJCX3\\nwd6SBvm2Q2odE5U0JaNnaGyNz2A+QLyhLfabNdPLqZO80mT/USTyeIDNJJQNLrY9\\nZKI1VKet/lAQBp3FLcZeK+PtjsBt/gscw9lx2oTnHI428EDiFCKO8FxpX+h1WsdU\\n36xy8y80qfeuyOpsPcnodtwcaakInawLC3WoiAhFKAMF4/aCx6mjlfmgtgeTvFa/\\nNdu6k9VYDhuM\\n-----END CERTIFICATE-----\",\n            \t\"ca_certs_expiration\": \"2019-12-16T11:34:19.140113Z\"\n            }\n        },\n        \"zonal\": false,\n        \"cluster_type\": \"HIGH_AVAILABILITY\",\n        \"private_kube_api\": false\n    }\n}\n```",
+        "operationId": "updateCluster",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwaggerClusterUpdateBody"
+              }
+            }
+          },
+          "description": "Cluster update request body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/clusterObj"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Update a cluster",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/kubeconfig": {
+      "get": {
+        "description": "Get cluster kubeconfig",
+        "operationId": "getKubeconfig",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get cluster kubeconfig",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/nodegroups": {
+      "get": {
+        "description": "Example response:\n```\n{\n    \"nodegroups\": [\n        {\n            \"id\": \"63ed5342-b22c-4c7a-9d41-c1fe4a142c13\",\n            \"created_at\": \"2019-11-05T15:08:23.66493Z\",\n            \"updated_at\": \"2019-11-06T10:50:39.304694Z\",\n            \"cluster_id\": \"2d6feb84-ecca-4ea6-bd36-90a0ba838b5e\",\n            \"flavor_id\": \"c48c1b7a-33b3-4ff1-94e8-8e48f1c848f9\",\n            \"volume_gb\": 64,\n            \"volume_type\": \"fast.ru-1a\",\n            \"local_volume\": false,\n            \"availability_zone\": \"ru-1a\",\n            \"enable_autoscale\": true,\n            \"autoscale_min_nodes\": 1,\n            \"autoscale_max_nodes\": 10,\n            \"nodegroup_type\": \"standard\"\n            \"labels\": {\n              \"key1\": \"value1\",\n              \"key2\": \"value2\"\n            },\n            \"taints\": [\n              {\n               \"key\": \"key1\",\n               \"value\": \"value1\",\n               \"effect\": \"NoSchedule\"\n              },\n              {\n               \"key\": \"key2\",\n               \"value\": \"value2\",\n               \"effect\": \"PreferNoSchedule\"\n              }\n            ],\n            \"nodes\": [\n                {\n                    \"id\": \"94838b31-9ae0-4a23-88ad-256e4f13d345\",\n                    \"created_at\": \"2019-11-05T15:08:23.672122Z\",\n                    \"updated_at\": \"2019-11-06T10:50:39.31144Z\",\n                    \"hostname\": \"first-node\",\n                    \"ip\": \"198.51.100.101\",\n                    \"nodegroup_id\": \"63ed5342-b22c-4c7a-9d41-c1fe4a142c13\",\n                    \"os_server_id\": \"1821e0ef-cd77-4fea-bd39-5b1f470368b5\"\n                },\n                {\n                    \"id\": \"ab0128c4-4ba3-4522-85bc-df26eb73f54d\",\n                    \"created_at\": \"2019-11-05T15:08:23.670328Z\",\n                    \"updated_at\": \"2019-11-06T10:50:39.310225Z\",\n                    \"hostname\": \"second-node\",\n                    \"ip\": \"198.51.100.102\",\n                    \"nodegroup_id\": \"63ed5342-b22c-4c7a-9d41-c1fe4a142c13\",\n                    \"os_server_id\": \"a2c3a2e1-5f4b-4d5d-a095-48c96bc83171\"\n                }\n            ],\n            \"available_additional_info\": {\n\t            \"user_data\": false\n            },\n            \"install_nvidia_device_plugin\": false\n        },\n        {\n            \"id\": \"822aa376-790d-434d-ac56-3983fb4f6591\",\n            \"created_at\": \"2019-11-05T15:08:23.663397Z\",\n            \"updated_at\": \"2019-11-06T10:50:39.302515Z,\n            \"cluster_id\": \"2d6feb84-ecca-4ea6-bd36-90a0ba838b5e\",\n            \"flavor_id\": \"11516413-5ff9-41e1-8673-bed6b8d3b102\",\n            \"volume_gb\": 100,\n            \"volume_type\": \"fast.ru-1b\",\n            \"local_volume\": false,\n            \"availability_zone\": \"ru-1b\",\n            \"enable_autoscale\": true,\n            \"autoscale_min_nodes\": 1,\n            \"autoscale_max_nodes\": 10,\n            \"nodegroup_type\": \"standard\",\n            \"labels\": {\n              \"key1\": \"value1\",\n              \"key2\": \"value2\"\n            },\n            \"taints\": [\n              {\n               \"key\": \"key1\",\n               \"value\": \"value1\",\n               \"effect\": \"NoSchedule\"\n              },\n              {\n               \"key\": \"key2\",\n               \"value\": \"value2\",\n               \"effect\": \"PreferNoSchedule\"\n              }\n            ],\n            \"nodes\": [\n                {\n                    \"id\": \"bbba3f42-3f3d-4652-a57d-f1f68d4cf42e\",\n                    \"created_at\": \"2019-11-05T15:08:23.668641Z\",\n                    \"updated_at\": \"2019-11-06T10:50:39.308983Z\",\n                    \"hostname\": \"third-node\",\n                    \"ip\": \"198.51.100.103\",\n                    \"nodegroup_id\": \"822aa376-790d-434d-ac56-3983fb4f6591\",\n                    \"os_server_id\": \"6099e18b-27e2-4b74-8cf7-0e2bb4368b38\"\n                }\n            ],\n            \"available_additional_info\": {\n\t            \"user_data\": true\n            },\n            \"install_nvidia_device_plugin\": false\n        }\n    ]\n}\n```",
+        "operationId": "listNodegroups",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/nodegroupsList"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get all cluster nodegroups",
+        "tags": [
+          "Nodegroups"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "post": {
+        "description": "Create a new cluster nodegroup",
+        "operationId": "createNodegroup",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwaggerNodegroupCreateBody"
+              }
+            }
+          },
+          "description": "Nodegroup create request body.",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Create a new cluster nodegroup",
+        "tags": [
+          "Nodegroups"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/nodegroups/{nodegroup_id}": {
+      "delete": {
+        "description": "Delete cluster nodegroup",
+        "operationId": "deleteNodegroup",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Nodegroup identifier.",
+            "in": "path",
+            "name": "nodegroup_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Delete cluster nodegroup",
+        "tags": [
+          "Nodegroups"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "get": {
+        "description": "Example response:\n```\n{\n    \"nodegroup\": {\n        \"id\": \"63ed5342-b22c-4c7a-9d41-c1fe4a142c13\",\n        \"created_at\": \"2019-11-05T15:08:23.66493Z\",\n        \"updated_at\": \"2019-11-06T10:50:39.304694Z\",\n        \"cluster_id\": \"2d6feb84-ecca-4ea6-bd36-90a0ba838b5e\",\n        \"flavor_id\": \"c48c1b7a-33b3-4ff1-94e8-8e48f1c848f9\",\n        \"volume_gb\": 32,\n        \"volume_type\": \"\",\n        \"local_volume\": true,\n        \"availability_zone\": \"ru-1a\",\n        \"enable_autoscale\": true,\n        \"autoscale_min_nodes\": 1,\n        \"autoscale_max_nodes\": 10,\n        \"nodegroup_type\": \"standard\",\n        \"labels\": {\n          \"key1\": \"value1\",\n          \"key2\": \"value2\"\n        },\n        \"taints\": [\n         {\n           \"key\": \"key1\",\n           \"value\": \"value1\",\n           \"effect\": \"NoSchedule\"\n         },\n         {\n           \"key\": \"key2\",\n           \"value\": \"value2\",\n           \"effect\": \"PreferNoSchedule\"\n         }\n        ],\n        \"nodes\": [\n            {\n                \"id\": \"94838b31-9ae0-4a23-88ad-256e4f13d345\",\n                \"created_at\": \"2019-11-05T15:08:23.672122Z\",\n                \"updated_at\": \"2019-11-06T10:50:39.31144Z\",\n                \"hostname\": \"first-node\",\n                \"ip\": \"198.51.100.101\",\n                \"nodegroup_id\": \"63ed5342-b22c-4c7a-9d41-c1fe4a142c13\",\n                \"os_server_id\": \"6099e18b-27e2-4b74-8cf7-0e2bb4368b38\"\n            },\n            {\n                \"id\": \"ab0128c4-4ba3-4522-85bc-df26eb73f54d\",\n                \"created_at\": \"2019-11-05T15:08:23.670328Z\",\n                \"updated_at\": \"2019-11-06T10:50:39.310225Z\",\n                \"hostname\": \"second-node\",\n                \"ip\": \"198.51.100.102\",\n                \"nodegroup_id\": \"63ed5342-b22c-4c7a-9d41-c1fe4a142c13\",\n                \"os_server_id\": \"1d23179d-6fd5-4737-8f68-0e3796735657\"\n            }\n        ],\n        \"user_data\": \"IyEvYmluL2Jhc2ggLXYKYXB0IC15IHVwZGF0ZQphcHQgLXkgaW5zdGFsbCBtdHI=\",\n        \"install_nvidia_device_plugin\": true\n    }\n}\n```",
+        "operationId": "getNodegroup",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Nodegroup identifier.",
+            "in": "path",
+            "name": "nodegroup_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/nodegroupObj"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get cluster nodegroup by ID",
+        "tags": [
+          "Nodegroups"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "put": {
+        "description": "Update nodegroup",
+        "operationId": "updateNodegroup",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Nodegroup identifier.",
+            "in": "path",
+            "name": "nodegroup_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwaggerNodegroupUpdateBody"
+              }
+            }
+          },
+          "description": "Nodegroup update request body.",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Update nodegroup",
+        "tags": [
+          "Nodegroups"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}": {
+      "delete": {
+        "description": "Delete node of a cluster nodegroup by ID",
+        "operationId": "deleteNode",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Nodegroup identifier.",
+            "in": "path",
+            "name": "nodegroup_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Node identifier.",
+            "in": "path",
+            "name": "node_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "tags": [
+          "Nodes"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "get": {
+        "description": "Example response:\n```\n{\n    \"node\": {\n        \"id\": \"94838b31-9ae0-4a23-88ad-256e4f13d345\",\n        \"created_at\": \"2019-11-05T15:08:23.672122Z\",\n        \"updated_at\": \"2019-11-06T10:50:39.31144Z\",\n        \"hostname\": \"first-node\",\n        \"ip\": \"198.51.100.101\",\n        \"nodegroup_id\": \"63ed5342-b22c-4c7a-9d41-c1fe4a142c13\",\n        \"os_server_id\": \"1821e0ef-cd77-4fea-bd39-5b1f470368b5\"\n    }\n}\n```",
+        "operationId": "getNode",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Nodegroup identifier.",
+            "in": "path",
+            "name": "nodegroup_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Node identifier.",
+            "in": "path",
+            "name": "node_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/nodeObj"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get node of a cluster nodegroup by ID",
+        "tags": [
+          "Nodes"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}/reinstall": {
+      "post": {
+        "description": "Reinstall node of a cluster nodegroup by ID",
+        "operationId": "reinstallNode",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Nodegroup identifier.",
+            "in": "path",
+            "name": "nodegroup_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Node identifier.",
+            "in": "path",
+            "name": "node_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Reinstall node of a cluster nodegroup by ID",
+        "tags": [
+          "Nodes"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/nodegroups/{nodegroup_id}/resize": {
+      "post": {
+        "description": "Resize cluster nodegroup",
+        "operationId": "resizeNodegroup",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Nodegroup identifier.",
+            "in": "path",
+            "name": "nodegroup_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwaggerNodegroupResizeBody"
+              }
+            }
+          },
+          "description": "Nodegroup resize request body.",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Resize cluster nodegroup",
+        "tags": [
+          "Nodegroups"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/registries": {
+      "delete": {
+        "description": "Delete all registry integrations",
+        "operationId": "deleteAllRegistriesIntegration",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Delete all registry integrations",
+        "tags": [
+          "Registries"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "get": {
+        "description": "Get integrated registries",
+        "operationId": "getRegistries",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/registriesIntegration"
+          },
+          "409": {
+            "$ref": "#/components/responses/genericError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get integrated registries",
+        "tags": [
+          "Registries"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "post": {
+        "description": "Create registries integration",
+        "operationId": "createRegistriesIntegration",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistryCreateIntegrationsStruct"
+              }
+            }
+          },
+          "description": "Create registries integration request body.",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/registriesIntegration"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Create registries integration",
+        "tags": [
+          "Registries"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      },
+      "put": {
+        "description": "Update registries integration",
+        "operationId": "updateRegistry",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwaggerUpdateRegistriesIntegrationStruct"
+              }
+            }
+          },
+          "description": "Registry update request body.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/registriesIntegration"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Update registries integration",
+        "tags": [
+          "Registries"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/registries/{registry_id}": {
+      "delete": {
+        "description": "Delete registry integration",
+        "operationId": "deleteSingleRegistryIntegration",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Registry identifier.",
+            "in": "path",
+            "name": "registry_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Delete registry integration",
+        "tags": [
+          "Registries"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/rotate-certs": {
+      "post": {
+        "description": "Rotate cluster certificates",
+        "operationId": "rotateCerts",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/genericNoContent"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Rotate cluster certificates",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/tasks": {
+      "get": {
+        "description": "Example response:\n```\n{\n    \"count\": 2,\n    \"tasks\": [\n        {\n            \"id\": \"aaa350dc-bbc2-442b-8d53-788d45b68728\",\n            \"started_at\": \"2019-11-04T12:54:20.784887Z\",\n            \"updated_at\": \"2019-11-04T13:00:08.782731Z\",\n            \"cluster_id\": \"087f27de-8f9b-4368-9123-98f49161a69f\",\n            \"status\": \"DONE\",\n            \"type\": \"CREATE_CLUSTER\",\n            \"error_details\": {\n                \"code\": 0,\n                \"name\": \"NO_ERROR\",\n                \"details\": \"\"\n            }\n        },\n        {\n            \"id\": \"a462e4ff-83e4-4aa4-b63b-731942a95644\",\n            \"started_at\": \"2019-11-04T14:12:08.784887Z\",\n            \"updated_at\": \"2019-11-04T14:12:54.782731Z\",\n            \"cluster_id\": \"087f27de-8f9b-4368-9123-98f49161a69f\",\n            \"status\": \"DONE\",\n            \"type\": \"ROTATE_CERTS\",\n            \"error_details\": {\n                \"code\": 0,\n                \"name\": \"NO_ERROR\",\n                \"details\": \"\"\n            }\n        }\n    ]\n}\n```",
+        "operationId": "listTasks",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Flag to show error details at task view.",
+            "in": "query",
+            "name": "with_error_details",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Number of tasks to skip.",
+            "in": "query",
+            "name": "Offset",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "Limit of tasks in response.",
+            "in": "query",
+            "name": "Limit",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/tasksList"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get all cluster tasks",
+        "tags": [
+          "Tasks"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/tasks/{task_id}": {
+      "get": {
+        "description": "Example response:\n```\n{\n    \"task\": {\n        \"id\": \"aaa350dc-bbc2-442b-8d53-788d45b68728\",\n        \"started_at\": \"2019-11-04T12:54:20.784887Z\",\n        \"updated_at\": \"2019-11-04T13:00:08.782731Z\",\n        \"cluster_id\": \"087f27de-8f9b-4368-9123-98f49161a69f\",\n        \"status\": \"DONE\",\n        \"type\": \"CREATE_CLUSTER\",\n        \"error_details\": {\n            \"code\": 0,\n            \"name\": \"NO_ERROR\",\n            \"details\": \"\"\n        },\n         \"task_data\": {\n             \"location_name\": \"SPB-5\",\n             \"service_uuid\": \"00353c1d-1e64-5ae1-a083-145dce6838b1\",\n             \"nodegroup_type\": \"DEDICATED\"\n       }\n    }\n}\n```",
+        "operationId": "getTask",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Task identifier.",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Flag to show error details at task view.",
+            "in": "query",
+            "name": "with_error_details",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Flag to show task details at task view.",
+            "in": "query",
+            "name": "with_task_details",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/taskObj"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get cluster task by ID",
+        "tags": [
+          "Tasks"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/upgrade-minor-version": {
+      "post": {
+        "description": "Example response:\n```\n{\n    \"cluster\": {\n        \"id\": \"0551d9d2-fa10-4c57-9774-d7b088f5e0b2\",\n        \"created_at\": \"2020-05-12T12:45:10.729225Z\",\n        \"updated_at\": \"2020-05-12T14:20:05.729324Z\",\n        \"name\": \"upgrade-me\",\n        \"status\": \"PENDING_UPGRADE_MINOR_VERSION\",\n        \"project_id\": \"0994073ec7a24b64b03788d25826fcb0\",\n        \"network_id\": \"ddf3a3d0-f11b-4a9d-b017-bc128af66a65\",\n        \"subnet_id\": \"0814a551-e659-489d-8cb3-c743f70fbd8c\",\n        \"kube_api_ip\": \"203.0.113.220\",\n        \"kube_version\": \"1.17.6\",\n        \"region\": \"ru-3\",\n        \"additional_software\": null,\n        \"pki_tree_updated_at\": \"2020-05-12T12:45:10.729225Z\",\n        \"maintenance_window_start\": \"01:00:00\",\n        \"maintenance_window_end\": \"03:00:00\",\n        \"maintenance_last_start\": null,\n        \"enable_autorepair\": true,\n        \"enable_patch_version_auto_upgrade\": false,\n        \"kubernetes_options\": {\n            \"feature_gates\": [\n                \"CPUManager\"\n             ],\n            \"admission_controllers\": [\n                \"PodSecurityPolicy\"\n            ],\n            \"audit_logs\": {\n                \"enabled\": true,\n                \"secret_name\": \"mks-audit-logs\"\n            },\n            \"oidc\": {\n                \"enabled\": true,\n                \"issuer_url\": \"https://example.com/\",\n                \"client_id\": \"kubernetes\",\n                \"username_claim\": \"email\",\n                \"groups_claim\": \"groups\",\n                \"provider_name\": \"keycloak\"\n            }\n        },\n        \"zonal\": true,\n        \"cluster_type\": \"BASIC\",\n        \"private_kube_api\": false\n    }\n}\n```",
+        "operationId": "upgradeMinorVersion",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/clusterObj"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Upgrade cluster Kubernetes minor version",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/clusters/{cluster_id}/upgrade-patch-version": {
+      "post": {
+        "description": "Example response:\n```\n{\n    \"cluster\": {\n        \"id\": \"0551d9d2-fa10-4c57-9774-d7b088f5e0b2\",\n        \"created_at\": \"2020-03-11T10:30:15.769125Z\",\n        \"updated_at\": \"2020-03-11T11:30:15.769224Z\",\n        \"name\": \"my-cluster\",\n        \"status\": \"PENDING_UPGRADE_PATCH_VERSION\",\n        \"project_id\": \"7d52bc2dc3f94c408d55562d1e92be35\",\n        \"network_id\": \"9009ca40-223b-4773-a71f-02ba80ee2582\",\n        \"subnet_id\": \"2970b83c-81ba-4ca2-8aff-11770f353b75\",\n        \"kube_api_ip\": \"203.0.113.220\",\n        \"kube_version\": \"1.16.9\",\n        \"region\": \"ru-3\",\n        \"additional_software\": null,\n        \"pki_tree_updated_at\": \"2020-03-11T11:00:02.768124Z\",\n        \"maintenance_window_start\": \"01:00:00\",\n        \"maintenance_window_end\": \"03:00:00\",\n        \"maintenance_last_start\": null,\n        \"enable_autorepair\": true,\n        \"enable_patch_version_auto_upgrade\": true,\n        \"kubernetes_options\": {\n            \"feature_gates\": [\n                \"CPUManager\"\n             ],\n            \"admission_controllers\": [\n                \"PodSecurityPolicy\"\n            ],\n            \"audit_logs\": {\n                \"enabled\": true,\n                \"secret_name\": \"mks-audit-logs\"\n            },\n            \"oidc\": {\n                \"enabled\": true,\n                \"issuer_url\": \"https://example.com/\",\n                \"client_id\": \"kubernetes\",\n                \"username_claim\": \"email\",\n                \"groups_claim\": \"groups\",\n                \"provider_name\": \"keycloak\"\n            }\n        },\n        \"zonal\": false,\n        \"cluster_type\": \"HIGH_AVAILABILITY\",\n        \"private_kube_api\": false\n    }\n}\n```",
+        "operationId": "upgradePatchVersion",
+        "parameters": [
+          {
+            "description": "Cluster identifier.",
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/clusterObj"
+          },
+          "404": {
+            "$ref": "#/components/responses/genericNotFoundError"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Upgrade cluster Kubernetes patch version",
+        "tags": [
+          "Clusters"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/feature-gates": {
+      "get": {
+        "description": "Get supported feature gates",
+        "operationId": "getFeatureGates",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/featureGatesList"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get supported feature gates",
+        "tags": [
+          "FeatureGates"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    },
+    "/kubeversions": {
+      "get": {
+        "description": "Get all supported Kubernetes versions",
+        "operationId": "getKubeVersions",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/kubeVersionsList"
+          },
+          "default": {
+            "$ref": "#/components/responses/genericError"
+          }
+        },
+        "summary": "Get all supported Kubernetes versions",
+        "tags": [
+          "Kubeversions"
+        ],
+        "servers": [
+          {
+            "url": "http://ru-3.mks.selcloud.ru/v1"
+          }
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "X-Auth-Token": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://ru-3.mks.selcloud.ru/v1"
+    }
+  ],
+  "components": {
+    "responses": {
+      "admissionControllersList": {
+        "description": "Enabled admission controllers list.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "$ref": "#/components/schemas/admissionControllers"
+            }
+          }
+        }
+      },
+      "clusterObj": {
+        "description": "Cluster object.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "cluster": {
+                  "$ref": "#/components/schemas/ClusterDetailed"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "clustersList": {
+        "description": "Clusters list.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "clusters": {
+                  "items": {
+                    "$ref": "#/components/schemas/Cluster"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "featureGatesList": {
+        "description": "Enabled feature gates list.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "$ref": "#/components/schemas/featureGates"
+            }
+          }
+        }
+      },
+      "genericError": {
+        "description": "Generic error message.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "error": {
+                  "properties": {
+                    "message": {
+                      "description": "Message of the error.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "genericNoContent": {
+        "description": "Generic no content response."
+      },
+      "genericNotFoundError": {
+        "description": "Generic message about not found error for any object.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "error": {
+                  "properties": {
+                    "id": {
+                      "description": "Object ID.",
+                      "format": "uuid4",
+                      "type": "string"
+                    },
+                    "message": {
+                      "description": "Message of the error.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "kubeVersionsList": {
+        "description": "Kubernetes version list.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "kube_versions": {
+                  "items": {
+                    "$ref": "#/components/schemas/KubeVersion"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "nodeObj": {
+        "description": "Node object.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "node": {
+                  "$ref": "#/components/schemas/SwaggerNode"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "nodegroupObj": {
+        "description": "Nodegroup object.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "nodegroup": {
+                  "$ref": "#/components/schemas/NodegroupDetailed"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "nodegroupsList": {
+        "description": "Nodegroups list.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "nodegroups": {
+                  "items": {
+                    "$ref": "#/components/schemas/Nodegroup"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "registriesIntegration": {
+        "description": "Registries integration.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "$ref": "#/components/schemas/RegistriesIntegration"
+            }
+          }
+        }
+      },
+      "taskErrorDetails": {
+        "description": "Task error details.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "$ref": "#/components/schemas/TaskErrorDetails"
+            }
+          }
+        }
+      },
+      "taskObj": {
+        "description": "Task object.\nTo enable error details use query parameter 'withErrorDetails=true'.\nTo enable task details use query parameter 'withTaskDetails=true'.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "task": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "tasksList": {
+        "description": "Tasks list.\nTo enable error details use query parameter 'withErrorDetails=true'.",
+        "content": {
+          "*/*": {
+            "schema": {
+              "properties": {
+                "count": {
+                  "format": "int64",
+                  "type": "integer"
+                },
+                "tasks": {
+                  "items": {
+                    "$ref": "#/components/schemas/Task"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "X-Auth-Token": {
+        "description": "Keystone token for project",
+        "in": "header",
+        "name": "X-Auth-Token",
+        "type": "apiKey"
+      }
+    },
+    "schemas": {
+      "AuditLogs": {
+        "properties": {
+          "enabled": {
+            "description": "Enabled indicates whether kubernetes audit logs should be collected\nand pushed into SIEM system (e.g. logstash).\nFalse by default.",
+            "type": "boolean"
+          },
+          "secret_name": {
+            "description": "SecretName contains name of the kubernetes secret in namespace kube-system\nwith credentials of SIEM system where logs should be pushed.\nFields of the secret: host, port, username (optional), password (optional), ca.crt (optional).\nThis field is optional. By default, used mks-audit-logs.\nSecret name should be as a DNS subdomain name as defined in RFC 1123.\nMore: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "AvailableAdmissionControllers": {
+        "description": "AvailableAdmissionControllers represents detailed info about available admission controllers\nfor every k8s minor version.",
+        "properties": {
+          "KubeVersionMinor": {
+            "type": "string"
+          },
+          "Names": {
+            "$ref": "#/components/schemas/OptionNames"
+          }
+        },
+        "type": "object"
+      },
+      "AvailableFeatureGates": {
+        "description": "AvailableFeatureGates represents detailed info about available feature gates\nfor every k8s minor version.",
+        "properties": {
+          "KubeVersionMinor": {
+            "type": "string"
+          },
+          "Names": {
+            "$ref": "#/components/schemas/OptionNames"
+          }
+        },
+        "type": "object"
+      },
+      "CNICiliumSettings": {
+        "description": "CNICiliumSettings\nrepresents settings for Cilium CNI if this CNI was chosen as \"cni_type\",\notherwise settings will be ignored.",
+        "properties": {
+          "envoy_daemonset": {
+            "default": true,
+            "description": "EnvoyDaemonset Enables Envoy DaemonSet for Cilium CNI.",
+            "type": "boolean"
+          },
+          "hubble_relay": {
+            "default": true,
+            "description": "HubbleRelay Enables hubble relay for Cilium CNI.",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "Cluster": {
+        "properties": {
+          "additional_software": {
+            "additionalProperties": {},
+            "description": "AdditionalSoftware represents information about additional software installed in the cluster.",
+            "readOnly": true,
+            "type": "object"
+          },
+          "cluster_type": {
+            "description": "ClusterType represents the type of the cluster.",
+            "enum": [
+              "BASIC",
+              "HIGH_AVAILABILITY",
+              "HIGH_AVAILABILITY_MULTI_AZ"
+            ],
+            "type": "string"
+          },
+          "cni_type": {
+            "description": "CniType CNI type represents type of CNI which will be used in cluster.\nSupported CNI types are CALICO and CILIUM.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "CreatedAt is the timestamp in UTC timezone of when the cluster has been created.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "enable_autorepair": {
+            "description": "EnableAutorepair reflects if worker nodes are allowed to be reinstalled automatically\nin case of their unavailability or unhealthiness.",
+            "type": "boolean"
+          },
+          "enable_patch_version_auto_upgrade": {
+            "description": "EnablePatchVersionAutoUpgrade specifies if Kubernetes version of the cluster is allowed to be upgraded\nautomatically.",
+            "type": "boolean"
+          },
+          "id": {
+            "description": "ID is the identifier of the cluster.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "kube_api_ip": {
+            "description": "KubeAPIIP represents the IP of the Kubernetes API.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "kube_version": {
+            "description": "KubeVersion represents the current Kubernetes version of the cluster.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "kubernetes_options": {
+            "$ref": "#/components/schemas/KubernetesOptionsView"
+          },
+          "name": {
+            "description": "Name represents the name of the cluster.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "network_id": {
+            "description": "NetworkID contains reference to the network of the cluster.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "private_kube_api": {
+            "description": "PrivateKubeAPI represents if kube API is available from the Internet or not.",
+            "type": "boolean"
+          },
+          "project_id": {
+            "description": "ProjectID contains reference to the project of the cluster.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "region": {
+            "description": "Region represents the region of where the cluster is located.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "status": {
+            "description": "Status represents current status of the cluster.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "subnet_id": {
+            "description": "SubnetID contains reference to the subnet of the cluster.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "UpdatedAt is the timestamp in UTC timezone of when the cluster has been updated.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "zonal": {
+            "description": "Zonal specifies that cluster has only a single master and that\ncontrol-plane is not in highly available mode.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "cni_type"
+        ],
+        "title": "Cluster view.",
+        "type": "object"
+      },
+      "ClusterDetailed": {
+        "properties": {
+          "additional_software": {
+            "additionalProperties": {},
+            "description": "AdditionalSoftware represents information about additional software installed in the cluster.",
+            "readOnly": true,
+            "type": "object"
+          },
+          "cluster_type": {
+            "description": "ClusterType represents the type of the cluster.",
+            "enum": [
+              "BASIC",
+              "HIGH_AVAILABILITY",
+              "HIGH_AVAILABILITY_MULTI_AZ"
+            ],
+            "type": "string"
+          },
+          "cni_cilium_settings": {
+            "$ref": "#/components/schemas/CNICiliumSettings"
+          },
+          "cni_type": {
+            "description": "CniType CNI type represents type of CNI which will be used in cluster.\nSupported CNI types are CALICO and CILIUM.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "CreatedAt is the timestamp in UTC timezone of when the cluster has been created.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "enable_autorepair": {
+            "description": "EnableAutorepair reflects if worker nodes are allowed to be reinstalled automatically\nin case of their unavailability or unhealthiness.",
+            "type": "boolean"
+          },
+          "enable_patch_version_auto_upgrade": {
+            "description": "EnablePatchVersionAutoUpgrade specifies if Kubernetes version of the cluster is allowed to be upgraded\nautomatically.",
+            "type": "boolean"
+          },
+          "id": {
+            "description": "ID is the identifier of the cluster.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "kube_api_ip": {
+            "description": "KubeAPIIP represents the IP of the Kubernetes API.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "kube_version": {
+            "description": "KubeVersion represents the current Kubernetes version of the cluster.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "kubernetes_options": {
+            "$ref": "#/components/schemas/KubernetesOptionsView"
+          },
+          "maintenance_last_start": {
+            "description": "MaintenanceLastStart is the timestamp in UTC timezone of the last cluster maintenance start.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "maintenance_window_end": {
+            "description": "MaintenanceWindowEnd represents UTC time in \"hh:mm:ss\" format of when the cluster will end its\nmaintenance tasks.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "maintenance_window_start": {
+            "description": "MaintenanceWindowStart represents UTC time in \"hh:mm:ss\" format of when the cluster will start its\nmaintenance tasks.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "name": {
+            "description": "Name represents the name of the cluster.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "network_id": {
+            "description": "NetworkID contains reference to the network of the cluster.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "pki_tree_updated_at": {
+            "description": "PKITreeUpdatedAt represents the timestamp in UTC timezone of when the PKI-tree of the cluster\nhas been updated.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "private_kube_api": {
+            "description": "PrivateKubeAPI represents if kube API is available from the Internet or not.",
+            "type": "boolean"
+          },
+          "project_id": {
+            "description": "ProjectID contains reference to the project of the cluster.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "region": {
+            "description": "Region represents the region of where the cluster is located.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "registries_integration": {
+            "$ref": "#/components/schemas/RegistriesIntegration"
+          },
+          "status": {
+            "description": "Status represents current status of the cluster.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "subnet_id": {
+            "description": "SubnetID contains reference to the subnet of the cluster.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "UpdatedAt is the timestamp in UTC timezone of when the cluster has been updated.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "zonal": {
+            "description": "Zonal specifies that cluster has only a single master and that\ncontrol-plane is not in highly available mode.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "cni_type"
+        ],
+        "title": "Cluster detailed view.",
+        "type": "object"
+      },
+      "KubeVersion": {
+        "properties": {
+          "is_default": {
+            "description": "IsDefault flag indicates if kubernetes version is default.",
+            "readOnly": true,
+            "type": "boolean"
+          },
+          "version": {
+            "description": "Version represents the supported Kubernetes version in format: \"X.Y.Z\".",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Version view.",
+        "type": "object"
+      },
+      "KubernetesOptions": {
+        "description": "KubernetesOptions\nrepresents additional k8s options such as pod security policy,\nfeature gates and etc.",
+        "properties": {
+          "admission_controllers": {
+            "description": "AdmissionControllers represents turned on admission controllers for the cluster.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audit_logs": {
+            "$ref": "#/components/schemas/AuditLogs"
+          },
+          "enable_pod_security_policy": {
+            "description": "EnablePodSecurityPolicy indicates if PodSecurityPolicy admission controller\nmust be turned on/off.\n\nNote 💡\n```\nEnablePodSecurityPolicy is deprecated as of v1.21, and will be removed in v1.25\n```",
+            "type": "boolean",
+            "x-deprecated": true
+          },
+          "feature_gates": {
+            "description": "FeatureGates represents turned on feature gates",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "oidc": {
+            "$ref": "#/components/schemas/OIDC"
+          },
+          "x509_ca_certificates": {
+            "description": "X509CaCertificates represent custom X509 CA certs which can be used for cluster components.\nCertificates should be encoded to base64 format.\n\nNote 💡\n```\nX509CaCertificates can be disabled for some pools.\n```",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "KubernetesOptionsView": {
+        "properties": {
+          "admission_controllers": {
+            "description": "AdmissionControllers represents turned on admission controllers for the cluster.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audit_logs": {
+            "$ref": "#/components/schemas/AuditLogs"
+          },
+          "enable_pod_security_policy": {
+            "description": "EnablePodSecurityPolicy indicates if PodSecurityPolicy admission controller must be turned on/off.\n\nNote 💡\n```\nEnablePodSecurityPolicy is deprecated as of v1.21, and is removed in v1.25\n```",
+            "type": "boolean",
+            "x-deprecated": true
+          },
+          "feature_gates": {
+            "description": "FeatureGates represents turned on feature gates for the cluster.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "oidc": {
+            "$ref": "#/components/schemas/OIDCView"
+          },
+          "x509_ca_certificates": {
+            "description": "X509CaCertificates represent custom X509 CA certs which are used for cluster components.\nNote 💡\n```\nX509CaCertificates can be disabled for some pools.\n```",
+            "type": "string"
+          }
+        },
+        "title": "KubernetesOptionsView represents additional k8s options such as pod security policy, feature gates etc.",
+        "type": "object"
+      },
+      "Nodegroup": {
+        "properties": {
+          "autoscale_max_nodes": {
+            "description": "AutoscaleMaxNodes represents maximum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "autoscale_min_nodes": {
+            "description": "AutoscaleMinNodes represents minimum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "availability_zone": {
+            "description": "AvailabilityZone represents OpenStack availability zone for all nodes in the nodegroup.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "available_additional_info": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "description": "AvailableAdditionalInfo provides additional information about nodegroup like userdata, etc.\nUsually it's large volume of data and here we only show presence of this info.",
+            "type": "object"
+          },
+          "cluster_id": {
+            "description": "ClusterID contains cluster identifier.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "created_at": {
+            "description": "CreatedAt is the timestamp in UTC timezone of when the nodegroup has been created.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "enable_autoscale": {
+            "description": "EnableAutoscale reflects if the nodegroup is allowed to be scaled automatically.",
+            "type": "boolean"
+          },
+          "flavor_id": {
+            "description": "FlavorID contains OpenStack flavor identifier for all nodes in the nodegroup.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "id": {
+            "description": "ID is the identifier of the nodegroup.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "install_nvidia_device_plugin": {
+            "description": "InstallNvidiaDevicePlugin indicates if nvidia device plugin installation was requested.",
+            "type": "boolean"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels represents an object containing a set of Kubernetes labels that will be applied\nfor each node in the group. The keys must be user-defined.",
+            "type": "object"
+          },
+          "local_volume": {
+            "description": "LocalVolume represents if nodes use local volume.",
+            "readOnly": true,
+            "type": "boolean"
+          },
+          "nodegroup_type": {
+            "description": "NodegroupType represents type of nodes in nodegroup.\n\n## Note 💡\n`\nstandard -- for all nodes from configs: standard line, cpu line, memory line;\ngpu      -- for nodes from gpu line;\n`",
+            "readOnly": true,
+            "type": "string"
+          },
+          "nodes": {
+            "description": "Nodes contains list of all nodes in the nodegroup.",
+            "items": {
+              "$ref": "#/components/schemas/SwaggerNode"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "preemptible": {
+            "description": "Preeemptible represents if nodes are preemptible.",
+            "type": "boolean"
+          },
+          "status": {
+            "description": "Status represents current status of the nodegroup.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "taints": {
+            "description": "Taints represents a list of nodegroup taints.",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupTaint"
+            },
+            "type": "array"
+          },
+          "updated_at": {
+            "description": "UpdatedAt is the timestamp in UTC timezone of when the nodegroup has been updated.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "volume_gb": {
+            "description": "VolumeGB represents initial volume size in GB for each node.",
+            "format": "int64",
+            "readOnly": true,
+            "type": "integer"
+          },
+          "volume_type": {
+            "description": "VolumeType represents initial blockstorage volume type for each node.",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Nodegroup view.",
+        "type": "object"
+      },
+      "NodegroupCreate": {
+        "properties": {
+          "affinity_policy": {
+            "description": "AffinityPolicy is an optional parameter to tune nodes affinity.",
+            "type": "string"
+          },
+          "autoscale_max_nodes": {
+            "description": "AutoscaleMaxNodes represents maximum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "autoscale_min_nodes": {
+            "description": "AutoscaleMinNodes represents minimum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "availability_zone": {
+            "description": "AvailabilityZone should contain the valid zone in the selected region of the created cluster.",
+            "type": "string"
+          },
+          "count": {
+            "description": "Count represents nodes count for this nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "cpus": {
+            "description": "CPUs represents CPU count for each node.\nIt can be omitted only in cases when flavor_id is set.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "enable_autoscale": {
+            "description": "EnableAutoscale reflects if the nodegroup is allowed to be scaled automatically.",
+            "type": "boolean"
+          },
+          "flavor_id": {
+            "description": "FlavorID contains reference to a pre-created flavor.\nIt can be omitted in most cases.",
+            "type": "string"
+          },
+          "install_nvidia_device_plugin": {
+            "description": "InstallNvidiaDevicePlugin indicates if nvidia device plugin installation was requested.",
+            "type": "boolean"
+          },
+          "keypair_name": {
+            "description": "KeypairName contains name of the SSH key that will be added to all nodes.",
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels represents an object containing a set of Kubernetes labels that will be applied\nfor each node in the group. The keys must be user-defined.",
+            "type": "object"
+          },
+          "local_volume": {
+            "description": "LocalVolume represents if nodes will use local volume.",
+            "type": "boolean"
+          },
+          "preemptible": {
+            "description": "Preeemptible represents if nodes are preemptible.",
+            "type": "boolean"
+          },
+          "ram_mb": {
+            "description": "RAMMB represents RAM count in MB for each node.\nIt can be omitted only in cases when flavor_id is set.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "taints": {
+            "description": "Taints represents a list of nodegroup taints.",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupTaint"
+            },
+            "type": "array"
+          },
+          "user_data": {
+            "description": "UserData represents base64 data which is used to pass a script that worker nodes run on boot.",
+            "type": "string"
+          },
+          "volume_gb": {
+            "description": "VolumeGB represents volume size in GB for each node.\nIt can be omitted only in cases when flavor_id is set and volume is local.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "volume_type": {
+            "description": "VolumeType represents blockstorage volume type for each node.\nIt can be omitted only in cases when flavor_id is set and volume is local.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "count",
+          "availability_zone"
+        ],
+        "title": "Nodegroup create.",
+        "type": "object"
+      },
+      "NodegroupDetailed": {
+        "properties": {
+          "autoscale_max_nodes": {
+            "description": "AutoscaleMaxNodes represents maximum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "autoscale_min_nodes": {
+            "description": "AutoscaleMinNodes represents minimum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "availability_zone": {
+            "description": "AvailabilityZone represents OpenStack availability zone for all nodes in the nodegroup.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "cluster_id": {
+            "description": "ClusterID contains cluster identifier.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "created_at": {
+            "description": "CreatedAt is the timestamp in UTC timezone of when the nodegroup has been created.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "enable_autoscale": {
+            "description": "EnableAutoscale reflects if the nodegroup is allowed to be scaled automatically.",
+            "type": "boolean"
+          },
+          "flavor_id": {
+            "description": "FlavorID contains OpenStack flavor identifier for all nodes in the nodegroup.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "id": {
+            "description": "ID is the identifier of the nodegroup.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "install_nvidia_device_plugin": {
+            "description": "InstallNvidiaDevicePlugin indicates if nvidia device plugin installation was requested.",
+            "type": "boolean"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels represents an object containing a set of Kubernetes labels that will be applied\nfor each node in the group. The keys must be user-defined.",
+            "type": "object"
+          },
+          "local_volume": {
+            "description": "LocalVolume represents if nodes use local volume.",
+            "readOnly": true,
+            "type": "boolean"
+          },
+          "nodegroup_type": {
+            "description": "NodegroupType represents type of nodes in nodegroup.\n\n## Note 💡\n`\nstandard -- for all nodes from configs: standard line, cpu line, memory line;\ngpu      -- for nodes from gpu line;\n`",
+            "readOnly": true,
+            "type": "string"
+          },
+          "nodes": {
+            "description": "Nodes contains list of all nodes in the nodegroup.",
+            "items": {
+              "$ref": "#/components/schemas/SwaggerNode"
+            },
+            "readOnly": true,
+            "type": "array"
+          },
+          "preemptible": {
+            "description": "Preeemptible represents if nodes are preemptible.",
+            "type": "boolean"
+          },
+          "status": {
+            "description": "Status represents current status of the nodegroup.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "taints": {
+            "description": "Taints represents a list of nodegroup taints.",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupTaint"
+            },
+            "type": "array"
+          },
+          "updated_at": {
+            "description": "UpdatedAt is the timestamp in UTC timezone of when the nodegroup has been updated.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "user_data": {
+            "description": "UserData represents base64 data which is used to pass a script that worker nodes run on boot.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "volume_gb": {
+            "description": "VolumeGB represents initial volume size in GB for each node.",
+            "format": "int64",
+            "readOnly": true,
+            "type": "integer"
+          },
+          "volume_type": {
+            "description": "VolumeType represents initial blockstorage volume type for each node.",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Nodegroup detailed view.",
+        "type": "object"
+      },
+      "NodegroupTaint": {
+        "description": "SwaggerNodegroupTaint represents k8s nodegroup taint that applies for every\nnode in the group.",
+        "properties": {
+          "effect": {
+            "description": "Effect for taint.\nCan only be one of three types: NoSchedule, PreferNoSchedule or NoExecute.",
+            "type": "string"
+          },
+          "key": {
+            "description": "Key for taint.",
+            "type": "string"
+          },
+          "value": {
+            "description": "Value for taint.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "NodegroupUpdate": {
+        "properties": {
+          "autoscale_max_nodes": {
+            "description": "AutoscaleMaxNodes represents maximum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "autoscale_min_nodes": {
+            "description": "AutoscaleMinNodes represents minimum possible number of worker nodes in the nodegroup.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "enable_autoscale": {
+            "description": "EnableAutoscale reflects if the nodegroup is allowed to be scaled automatically.",
+            "type": "boolean"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels represents an object containing a set of Kubernetes labels that will be applied\nfor each node in the group. The keys must be user-defined.",
+            "type": "object"
+          },
+          "taints": {
+            "description": "Taints represents an object containing a set of Kubernetes taints that will be applied\nfor each node in the group.\n\n## Note 💡\n`\nChanging the list of taints equal to applying `*`kubectl taint nodes`*` with flag `*`--overwrite=true`*`.\n`",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupTaint"
+            },
+            "type": "array"
+          }
+        },
+        "title": "Nodegroup update.",
+        "type": "object"
+      },
+      "OIDC": {
+        "properties": {
+          "ca_certs": {
+            "description": "CACerts represent optional custom CA certs chain in X509 PEM format of provider's SSL certificate.\nWill be written to file on masters which will be passed in `--oidc-ca-file` kube-apiserver flag.",
+            "type": "string"
+          },
+          "client_id": {
+            "description": "ClientID represents required client id that all tokens must be issued for.\nWill be placed in `--oidc-client-id` flag.\nIt is required when enabled = true.",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "Enabled indicates whether OIDC should be turned on in the cluster.\nFalse by default.",
+            "type": "boolean"
+          },
+          "groups_claim": {
+            "description": "GroupsClaim represents optional JWT claim to use as the user's group. By default, `groups`.\nWill be placed in `--oidc-groups-claim` flag.",
+            "type": "string"
+          },
+          "issuer_url": {
+            "description": "IssuerURL represents URL of the provider that allows the API server to discover public signing keys.\nWill be placed in `--oidc-issuer-url` flag.\nIt is required when enabled = true.",
+            "type": "string"
+          },
+          "provider_name": {
+            "description": "ProviderName represents custom user defined name of the provider. It is not used in the cluster directly.\nIt is required when enabled = true.",
+            "type": "string"
+          },
+          "username_claim": {
+            "description": "UsernameClaim represents optional JWT claim to use as the username. By default, `sub`.\nWill be placed in `--oidc-username-claim` flag.",
+            "type": "string"
+          }
+        },
+        "title": "OIDC represents parameters to connect client's OIDC provider with kubernetes.",
+        "type": "object"
+      },
+      "OIDCView": {
+        "properties": {
+          "ca_certs": {
+            "description": "CACerts represent optional custom CA certs chain in X509 PEM format of provider's SSL certificate.",
+            "type": "string"
+          },
+          "ca_certs_expiration": {
+            "description": "CACertsExpiration represents date and time when the first of provided CA certificates will be expired.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "client_id": {
+            "description": "ClientID represents required client id that all tokens must be issued for.",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "Enabled indicates whether OIDC i turned on in the cluster.",
+            "type": "boolean"
+          },
+          "groups_claim": {
+            "description": "GroupsClaim represents optional JWT claim to use as the user's group.",
+            "type": "string"
+          },
+          "issuer_url": {
+            "description": "IssuerURL represents URL of the provider that allows the API server to discover public signing keys.",
+            "type": "string"
+          },
+          "provider_name": {
+            "description": "ProviderName represents custom user defined name of the provider. It is not used in the cluster directly.",
+            "type": "string"
+          },
+          "username_claim": {
+            "description": "UsernameClaim represents optional JWT claim to use as the username.",
+            "type": "string"
+          }
+        },
+        "title": "OIDCView represents parameters to connect client's OIDC provider with kubernetes.",
+        "type": "object"
+      },
+      "OptionNames": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "RegistriesIntegration": {
+        "properties": {
+          "registries": {
+            "items": {
+              "$ref": "#/components/schemas/RegistryWithMeta"
+            },
+            "type": "array"
+          },
+          "status": {
+            "description": "Status represents status of the registries' integration.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Registry": {
+        "properties": {
+          "id": {
+            "description": "ID represents unique identifier of the registry.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RegistryCreateIntegrationsStruct": {
+        "properties": {
+          "registries": {
+            "items": {
+              "$ref": "#/components/schemas/Registry"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "RegistryWithMeta": {
+        "properties": {
+          "id": {
+            "description": "ID represents unique identifier of the registry.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name represents name of the registry.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "SwaggerAuditLogs": {
+        "properties": {
+          "enabled": {
+            "description": "Enabled indicates whether kubernetes audit logs should be collected\nand pushed into SIEM system (e.g. logstash).",
+            "type": "boolean"
+          },
+          "secret_name": {
+            "description": "SecretName contains name of the kubernetes secret in namespace kube-system\nwith credentials of SIEM system where logs should be pushed.\nFields of the secret: host, port, username (optional), password (optional), ca.crt (optional).\nThis field is optional. By default, used mks-audit-logs.\nSecret name should be as a DNS subdomain name as defined in RFC 1123.\nMore: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "SwaggerClusterCreateBody": {
+        "description": "SwaggerClusterCreateBody\nrepresents body content.",
+        "properties": {
+          "cluster": {
+            "$ref": "#/components/schemas/SwaggerClusterCreateStruct"
+          }
+        },
+        "required": [
+          "cluster"
+        ],
+        "type": "object"
+      },
+      "SwaggerClusterCreateStruct": {
+        "properties": {
+          "additional_software": {
+            "additionalProperties": {},
+            "description": "AdditionalSoftware represents information about additional software installed in the cluster.",
+            "readOnly": true,
+            "type": "object"
+          },
+          "cluster_type": {
+            "description": "ClusterType represents the type of the cluster.\nThe default value depends on the `zonal` value. If it is `false` or not provided, a high availability cluster will be created; otherwise, a basic one.\nFor high availability multizonal clusters, this field is required.",
+            "enum": [
+              "BASIC",
+              "HIGH_AVAILABILITY",
+              "HIGH_AVAILABILITY_MULTI_AZ"
+            ],
+            "type": "string"
+          },
+          "cni_cilium_settings": {
+            "$ref": "#/components/schemas/CNICiliumSettings"
+          },
+          "cni_type": {
+            "description": "CniType CNI type represents type of CNI which will be used in cluster.\nSupported CNI types are CALICO and CILIUM. CALICO by default.",
+            "type": "string"
+          },
+          "enable_autorepair": {
+            "description": "EnableAutorepair reflects if worker nodes are allowed to be reinstalled automatically\nin case of their unavailability or unhealthiness. Enabled by default.",
+            "type": "boolean"
+          },
+          "enable_patch_version_auto_upgrade": {
+            "description": "EnablePatchVersionAutoUpgrade specifies if Kubernetes version of the cluster is allowed to be upgraded\nautomatically.\nEnabled by default for high availability multizonal and high availability clusters and disabled for basic clusters.",
+            "type": "boolean"
+          },
+          "kube_version": {
+            "description": "KubeVersion represents the needed Kubernetes version of the cluster.\nIt should be in x.y.z format.",
+            "type": "string"
+          },
+          "kubernetes_options": {
+            "$ref": "#/components/schemas/KubernetesOptions"
+          },
+          "maintenance_window_start": {
+            "description": "MaintenanceWindowStart represents UTC time of when the cluster will start its maintenance tasks.\nIt should be in hh:mm:ss format if provided.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name represent the needed name of the cluster.\nIt shouldn't contain more than 32 symbols and can contain latin letters\nwith numbers and hyphens and start with a letter or a number.",
+            "type": "string"
+          },
+          "network_id": {
+            "description": "NetworkID contains a reference to the network of the cluster.\nIt can be set in cases where network is pre-created.",
+            "format": "uuid4",
+            "type": "string"
+          },
+          "nodegroups": {
+            "description": "Nodegroups contains groups of nodes with their parameters.",
+            "items": {
+              "$ref": "#/components/schemas/NodegroupCreate"
+            },
+            "type": "array"
+          },
+          "private_kube_api": {
+            "description": "PrivateKubeAPI specifies if kube API should be available from the Internet or not.\nFalse by default.",
+            "type": "boolean"
+          },
+          "region": {
+            "description": "Region represents the needed region.",
+            "type": "string"
+          },
+          "subnet_id": {
+            "description": "SubnetID contains a reference to the subnet of the cluster.\nIt can be set in cases where subnet is pre-created.",
+            "format": "uuid4",
+            "type": "string"
+          },
+          "zonal": {
+            "description": "Zonal specifies that only a single zonal master will be created.\nIt is needed if highly available control-plane is not required.\nFalse by default.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "kube_version",
+          "region",
+          "nodegroups"
+        ],
+        "type": "object"
+      },
+      "SwaggerClusterUpdateBody": {
+        "description": "SwaggerClusterUpdateBody\nrepresents body content.",
+        "properties": {
+          "cluster": {
+            "$ref": "#/components/schemas/SwaggerClusterUpdateStruct"
+          }
+        },
+        "required": [
+          "cluster"
+        ],
+        "type": "object"
+      },
+      "SwaggerClusterUpdateStruct": {
+        "properties": {
+          "enable_autorepair": {
+            "description": "EnableAutorepair reflects if worker nodes are allowed to be reinstalled automatically\nin case of their unavailability or unhealthiness.",
+            "type": "boolean"
+          },
+          "enable_patch_version_auto_upgrade": {
+            "description": "EnablePatchVersionAutoUpgrade specifies if Kubernetes version of the cluster is allowed to be upgraded\nautomatically.",
+            "type": "boolean"
+          },
+          "kubernetes_options": {
+            "$ref": "#/components/schemas/SwaggerKubernetesOptions"
+          },
+          "maintenance_window_start": {
+            "description": "MaintenanceWindowStart represents UTC time of when the cluster will start its maintenance tasks.\nIt should be in hh:mm:ss format if provided.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "SwaggerKubernetesOptions": {
+        "description": "SwaggerKubernetesOptions\nrepresents additional k8s options such as pod security policy,\nfeature gates and etc.",
+        "properties": {
+          "admission_controllers": {
+            "description": "AdmissionControllers represents turned on admission controllers for the cluster.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audit_logs": {
+            "$ref": "#/components/schemas/SwaggerAuditLogs"
+          },
+          "enable_pod_security_policy": {
+            "description": "EnablePodSecurityPolicy indicates if PodSecurityPolicy admission controller\nmust be turned on/off.\n\nNote 💡\n```\nEnablePodSecurityPolicy is deprecated as of v1.21, and will be removed in v1.25\n```",
+            "type": "boolean",
+            "x-deprecated": true
+          },
+          "feature_gates": {
+            "description": "FeatureGates represents turned on feature gates",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "oidc": {
+            "$ref": "#/components/schemas/SwaggerOIDC"
+          },
+          "x509_ca_certificates": {
+            "description": "X509CaCertificates represent custom X509 CA certs which can be used for cluster components.\nCertificates should be encoded to base64 format.\n\nNote 💡\n```\nX509CaCertificates can be disabled for some pools.\n```",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "SwaggerNode": {
+        "properties": {
+          "created_at": {
+            "description": "CreatedAt is the timestamp in UTC timezone of when the node has been created.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "hostname": {
+            "description": "Hostname represents a hostname of the node.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "id": {
+            "description": "ID is the identifier of the node.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "ip": {
+            "description": "IP represents IP address of the node.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "nodegroup_id": {
+            "description": "NodegroupID contains nodegroup identifier.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "os_server_id": {
+            "description": "OSServerID contains OpenStack server identifier.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "UpdatedAt is the timestamp in UTC timezone of when the node has been updated.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Node view.",
+        "type": "object"
+      },
+      "SwaggerNodegroupCreateBody": {
+        "description": "SwaggerNodegroupCreateBody\nrepresents body content.",
+        "properties": {
+          "nodegroup": {
+            "$ref": "#/components/schemas/NodegroupCreate"
+          }
+        },
+        "required": [
+          "nodegroup"
+        ],
+        "type": "object"
+      },
+      "SwaggerNodegroupResizeBody": {
+        "description": "SwaggerNodegroupResizeBody\nrepresents body content.",
+        "properties": {
+          "nodegroup": {
+            "description": "Nodegroup resize request body.\n\nin: body",
+            "properties": {
+              "desired": {
+                "description": "Desired represents desired amount of nodes for this nodegroup.",
+                "format": "int64",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "desired"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "nodegroup"
+        ],
+        "type": "object"
+      },
+      "SwaggerNodegroupUpdateBody": {
+        "description": "SwaggerNodegroupUpdateBody\nrepresents body content.",
+        "properties": {
+          "nodegroup": {
+            "$ref": "#/components/schemas/NodegroupUpdate"
+          }
+        },
+        "required": [
+          "nodegroup"
+        ],
+        "type": "object"
+      },
+      "SwaggerOIDC": {
+        "properties": {
+          "ca_certs": {
+            "description": "CACerts represent optional custom CA certs chain in X509 PEM format of provider's SSL certificate.\nWill be placed in `--oidc-ca-file` flag.",
+            "type": "string"
+          },
+          "client_id": {
+            "description": "ClientID represents required client id that all tokens must be issued for.\nWill be placed in `--oidc-client-id` flag.\nIt is required when enabled = true.",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "Enabled indicates whether OIDC should be turned on in the cluster.\nFalse by default.",
+            "type": "boolean"
+          },
+          "groups_claim": {
+            "description": "GroupsClaim represents optional JWT claim to use as the user's group. By default, `groups`.\nWill be placed in `--oidc-groups-claim` flag.",
+            "type": "string"
+          },
+          "issuer_url": {
+            "description": "IssuerURL represents URL of the provider that allows the API server to discover public signing keys.\nWill be placed in `--oidc-issuer-url` flag.\nIt is required when enabled = true.",
+            "type": "string"
+          },
+          "provider_name": {
+            "description": "ProviderName represents custom user defined name of the provider. It is not used in the cluster directly.\nIt is required when enabled = true.",
+            "type": "string"
+          },
+          "username_claim": {
+            "description": "UsernameClaim represents optional JWT claim to use as the username. By default, `sub`.\nWill be placed in `--oidc-username-claim` flag.",
+            "type": "string"
+          }
+        },
+        "title": "SwaggerOIDC represents parameters to connect client's SwaggerOIDC provider with kubernetes.",
+        "type": "object"
+      },
+      "SwaggerUpdateRegistriesIntegrationStruct": {
+        "properties": {
+          "registries": {
+            "items": {
+              "$ref": "#/components/schemas/Registry"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Task": {
+        "properties": {
+          "cluster_id": {
+            "description": "ClusterID contains cluster identifier.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "error_details": {
+            "$ref": "#/components/schemas/TaskErrorDetails"
+          },
+          "id": {
+            "description": "ID is the identifier of the task.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "nodegroup_id": {
+            "description": "NodegroupID contains nodegroup identifier.",
+            "format": "uuid4",
+            "readOnly": true,
+            "type": "string"
+          },
+          "started_at": {
+            "description": "StartedAt is the timestamp in UTC timezone of when the task has been started.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "status": {
+            "description": "Status represents current status of the task.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "task_data": {
+            "$ref": "#/components/schemas/TaskTaskDetails"
+          },
+          "type": {
+            "description": "Task represents task's type.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "UpdatedAt is the timestamp in UTC timezone of when the task has been updated.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Task view.",
+        "type": "object"
+      },
+      "TaskErrorDetails": {
+        "description": "Disabled by default, to enable error details use query parameter 'withErrorDetails=true'.",
+        "properties": {
+          "code": {
+            "description": "Code represents task's error code.",
+            "format": "int64",
+            "readOnly": true,
+            "type": "integer"
+          },
+          "details": {
+            "description": "Details contains task's error helpful information.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "name": {
+            "description": "Name represents task's error short description.",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Task error details view.",
+        "type": "object"
+      },
+      "TaskTaskDetails": {
+        "description": "Disabled by default, to enable task details use query parameter 'withTaskDetails=true'.",
+        "properties": {
+          "location_name": {
+            "description": "LocationName represents location where nodegroup will be placed.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "nodegroup_type": {
+            "description": "NodegroupType represents type of nodegroup.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "service_uuid": {
+            "description": "ServiceUUID represents dedicated service uuid.",
+            "readOnly": true,
+            "type": "string"
+          }
+        },
+        "title": "Task details view.",
+        "type": "object"
+      },
+      "admissionControllers": {
+        "properties": {
+          "admission_controllers": {
+            "items": {
+              "$ref": "#/components/schemas/AvailableAdmissionControllers"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "featureGates": {
+        "properties": {
+          "feature_gates": {
+            "items": {
+              "$ref": "#/components/schemas/AvailableFeatureGates"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "operation_id": "mks.v1.feature_gates.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/feature-gates",
+    "mapping": "No remote pagination or extra filters in pinned schema/SDK List. Scope from caller; endpoint not selected from response."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "feature_gates finite source array preserving KubeVersionMinor and Names array. No resource refs or invented defaults.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "shared sanitized HTTP status taxonomy, explicit404not_found; source default genericerror rawtext never diagnostic; bounded safe-read retries"
+  },
+  "pagination": {
+    "kind": "finite-provider-array",
+    "field": "feature_gates",
+    "bounds": "FixedIterator uses shared collection/page/item deadlines and preserves local partial cursors"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "operation_id": "mks.v1.clusters_nodegroups.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/clusters/{cluster_id}/nodegroups",
+    "mapping": "Exact caller v1 cluster ref, no v2 conversion/fallback; finite native list."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "nodegroups generated array. Require nodegroup id/cluster_id matches caller; parent exact caller cluster. Native nested node refs have group parent, validate every available nodegroup_id before adopting; never infer OS-server/Neutron refs from metadata.",
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ]
+  },
+  "errors": {
+    "mapping": "shared sanitized HTTP status taxonomy, explicit404not_found; source default genericerror rawtext never diagnostic; bounded safe-read retries"
+  },
+  "pagination": {
+    "kind": "finite-provider-array",
+    "field": "nodegroups",
+    "bounds": "FixedIterator uses shared collection/page/item deadlines and preserves local partial cursors"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio"
+  ]
+}
