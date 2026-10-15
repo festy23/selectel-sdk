@@ -10141,7 +10141,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.blobs.delete.json": "820292df639da796a0f861f855d41524617a4e3ba8cbc25a087147183edabfbe"
     },
-    "contract_revision": "5a02da1793bcec569e0319cd3c7a41c70a49a808c5296aa94dd65b3a1b958c08",
+    "contract_revision": "c5d1a5b8ab61daf5b4f3e0f9c28208da870596d7eab4ff2403c4259c2e21dce6",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.blobs.delete.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.blobs.delete.json#/errors",
@@ -10179,13 +10179,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 deleting blobs / end-10",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "5a02da1793bcec569e0319cd3c7a41c70a49a808c5296aa94dd65b3a1b958c08",
+      "contract_revision": "c5d1a5b8ab61daf5b4f3e0f9c28208da870596d7eab4ff2403c4259c2e21dce6",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "27850b15c780091ea46ad928c077972626bc0fef516a7fcaeb960991a4e0c252",
+      "implementation_revision": "8e2055df8d3894f52ec1c94576853868306b32840b06e35690563ded33812165",
       "level": "offline"
     },
     "wait_goals": []
@@ -10201,7 +10201,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.blobs.get.json": "13eb3ccb998d4b377c0008e50d0f34ce765c06a234ba65bfff2ff78125cb63b0"
     },
-    "contract_revision": "bf699ae8b9853c7b339f94ad58b26ade2ab2b195f74e61516a0e1d8cb1fc9f5a",
+    "contract_revision": "9954f6813533badb0e0bcaf190e448ec30e5108b59358b911c5b8beed9e71fcc",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.blobs.get.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.blobs.get.json#/errors",
@@ -10241,13 +10241,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 pulling blobs / end-2; RFC9110 Range",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "bf699ae8b9853c7b339f94ad58b26ade2ab2b195f74e61516a0e1d8cb1fc9f5a",
+      "contract_revision": "9954f6813533badb0e0bcaf190e448ec30e5108b59358b911c5b8beed9e71fcc",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "e0d4d56be698f1432d26888f42491b99ba859086fcf159e547fea6a03c5e1350",
+      "implementation_revision": "f0e831fc6fdf75a06ba05978965ca6391761a06343b35f6cbb75833fafca167d",
       "level": "offline"
     },
     "wait_goals": []
@@ -10263,7 +10263,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.blobs.head.json": "f4fdcc0db164444ba3d4fd568af66a13ec88ea24a291ad12e9c2906ef75c1772"
     },
-    "contract_revision": "df8597892e22c363de97dd10c82c89f167126d3c0906d05ca0e7b11afef33245",
+    "contract_revision": "32ee620c62835a7dd12ca2be6ee1811b56b802eac54d43b8c9f86ddc0f7774a7",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.blobs.head.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.blobs.head.json#/errors",
@@ -10301,13 +10301,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 checking content / end-2",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "df8597892e22c363de97dd10c82c89f167126d3c0906d05ca0e7b11afef33245",
+      "contract_revision": "32ee620c62835a7dd12ca2be6ee1811b56b802eac54d43b8c9f86ddc0f7774a7",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "4de5834ddddc5d0bbcde83295c05c15707e4663f4dec7fc2a99a104670b8e2cf",
+      "implementation_revision": "e78591cebadb5ef1367b1c685af29a3701dfa8cd611006ec2a703bbda9f3a637",
       "level": "offline"
     },
     "wait_goals": []
@@ -10323,7 +10323,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.manifests.delete.json": "845e09d24ede13acfa4eb41a16c06416c8d63738db2c5388c6a850dd0f7f758d"
     },
-    "contract_revision": "3d5a1abd44d92ae8177920c5318f45db4008bcc4bbbf083727873bd9b740a73a",
+    "contract_revision": "0c8a9bc75544f17dd88ee2ea4c162577ce396d0a3bd145caab15905e224d2668",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.manifests.delete.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.manifests.delete.json#/errors",
@@ -10361,13 +10361,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 deleting tags/manifests / end-9",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "3d5a1abd44d92ae8177920c5318f45db4008bcc4bbbf083727873bd9b740a73a",
+      "contract_revision": "0c8a9bc75544f17dd88ee2ea4c162577ce396d0a3bd145caab15905e224d2668",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "b02edd26ee05e1488194971f8f58a57fe592201a2530470057795a5aaed956b2",
+      "implementation_revision": "82c7bbe849a748d0dec65e2b863f284b34c0ca04df97e89fc13c3b8f4d359bcd",
       "level": "offline"
     },
     "wait_goals": []
@@ -10383,7 +10383,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.manifests.get.json": "63e5f1c8f3ca17d105146c322cdfaf4a091f6c009b6b5debdd0afd7e9dc5096b"
     },
-    "contract_revision": "a61486c35d970468075d44866cc090706c9b928495f970240f4b67dd05ceefb6",
+    "contract_revision": "e35f1ddc64e81437cb3eee536ac436b2f7f6ee133baef4588eecfe6d32987704",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.manifests.get.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.manifests.get.json#/errors",
@@ -10423,13 +10423,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 pulling manifests / end-3",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "a61486c35d970468075d44866cc090706c9b928495f970240f4b67dd05ceefb6",
+      "contract_revision": "e35f1ddc64e81437cb3eee536ac436b2f7f6ee133baef4588eecfe6d32987704",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "4fa568120fffd9d3d68175ac4edd13966c3323f4ea11bb369fc24ca5eb38a643",
+      "implementation_revision": "fdf48a3e9d837d43c6fccb3c037d7a52321cd76137a24a49331b5f83a0b9df97",
       "level": "offline"
     },
     "wait_goals": []
@@ -10445,7 +10445,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.manifests.head.json": "2c376a2df1c04a7c91a29ad6bd21bc93ec099c09e95b036c59e5f4174f1503d4"
     },
-    "contract_revision": "c616af64b2307598385f34736beb21a2779b0e49df882f4d6e21af8395c56064",
+    "contract_revision": "ca94d95613bdef87db84607d55bae60f23002a23c5a69a3e6c65b99d15fdd787",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.manifests.head.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.manifests.head.json#/errors",
@@ -10483,13 +10483,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 checking content / end-3",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "c616af64b2307598385f34736beb21a2779b0e49df882f4d6e21af8395c56064",
+      "contract_revision": "ca94d95613bdef87db84607d55bae60f23002a23c5a69a3e6c65b99d15fdd787",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "a2609b39b781cd3473f2be7649c0ed4467d186f2c62e1378027733897edd3240",
+      "implementation_revision": "7f32a263f760a3b77c592a3543bf80b21b8c6d5b6fb559e0edb68ebc5885fe57",
       "level": "offline"
     },
     "wait_goals": []
@@ -10505,7 +10505,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.manifests.replace.json": "f4bc1ab2aa771e3a48fc6af17efd04e15e339dd3f94445c0d526e8a8dafab572"
     },
-    "contract_revision": "1cb01a5223e865ce4c1a8dcb3b57370a9481a2334e5ec68e83ef0dfc3c57a429",
+    "contract_revision": "0ebe6f4ff376f8be3fede89833fd5d26132abc092a5cb8387f2927d7a2ebfd19",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.manifests.replace.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.manifests.replace.json#/errors",
@@ -10545,13 +10545,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 pushing manifests / end-7",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "1cb01a5223e865ce4c1a8dcb3b57370a9481a2334e5ec68e83ef0dfc3c57a429",
+      "contract_revision": "0ebe6f4ff376f8be3fede89833fd5d26132abc092a5cb8387f2927d7a2ebfd19",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "d57bdbb2ba2b4072a775d9fc1e654ae6f0dbec0de0cc58aa32a955091d91efe7",
+      "implementation_revision": "4c309af406de2f701cc1cb53b1d046299fccc68a1dbc4544b8e8d57e4dc66565",
       "level": "offline"
     },
     "wait_goals": []
@@ -10567,7 +10567,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.tags.list.json": "c8e4b8b0173f8a66e0faa1250939fa80a73c31e6c2f9bd4c8638992c1406e14d"
     },
-    "contract_revision": "bf40b8f599c8e7a983357cf5f344b6c75d60a726c551799ee7b6d86b5364dca0",
+    "contract_revision": "b9476eb583b77796e4fc651e5fa1d4a33434a7afc1461d037da3cf1f1933ac3c",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.tags.list.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.tags.list.json#/errors",
@@ -10605,13 +10605,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 listing tags / end-8a/end-8b",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "bf40b8f599c8e7a983357cf5f344b6c75d60a726c551799ee7b6d86b5364dca0",
+      "contract_revision": "b9476eb583b77796e4fc651e5fa1d4a33434a7afc1461d037da3cf1f1933ac3c",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "0a65a6e53c6aaa8360b7d2fe80b6dea2805b5c9372c3542b61f0b99949433702",
+      "implementation_revision": "989f5dae2f101ed1ba112a5f3cc7b5ae38fd6c3c103e31eae6c201ee430aeb17",
       "level": "offline"
     },
     "wait_goals": []
@@ -10627,7 +10627,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.uploads.append.json": "c674ee0023724f8a2cbdc03311e58119c4f6c680f7c3687f3f6039d1f9bd8871"
     },
-    "contract_revision": "8c68786a866175d892869ff3ecb8a1a3e9243d279f8f8f3fdddf778f39186891",
+    "contract_revision": "5cb61ed463128009cd6ac803c183ccc1669c020ee5794bb1bc0515389eae36eb",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.append.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.append.json#/errors",
@@ -10667,13 +10667,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 chunked uploads / end-5",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "8c68786a866175d892869ff3ecb8a1a3e9243d279f8f8f3fdddf778f39186891",
+      "contract_revision": "5cb61ed463128009cd6ac803c183ccc1669c020ee5794bb1bc0515389eae36eb",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "7689b49c3f813779245389691da3a9d05c32a158929906dbebf64d8e44c591d2",
+      "implementation_revision": "532bf217a872c8bee3df85f7b4cd60355e0619ad3c9dd369f9e374d491305359",
       "level": "offline"
     },
     "wait_goals": []
@@ -10689,7 +10689,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.uploads.cancel_native.json": "2d0d19f2cd03b5e8fc10cdb2a510198821e68f16c24b830e6ca6a0d454473153"
     },
-    "contract_revision": "557478bb722bc56ecce9125f039d2abd2a5b60456e664067853376d9c7a64194",
+    "contract_revision": "c09b5521184dcf33f6f01b6da54a293a39f104b1df5ac2f7a3255a25d06286b4",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.cancel_native.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.cancel_native.json#/errors",
@@ -10729,13 +10729,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "Distribution pinned API Canceling an upload / DELETE upload UUID; explicit native variant",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/distribution/distribution/blob/f7d69d28c2e302f31d1f6ce8e193da58407225a7/docs/content/spec/api.md"
     },
     "verification": {
-      "contract_revision": "557478bb722bc56ecce9125f039d2abd2a5b60456e664067853376d9c7a64194",
+      "contract_revision": "c09b5521184dcf33f6f01b6da54a293a39f104b1df5ac2f7a3255a25d06286b4",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "a850402688acaae0b80d1f654b9458a4133046a45efbf86590937a3a2ec38926",
+      "implementation_revision": "507dd8f7e0e14a4905fa8ea29a5f68da7110147fb03ab0b76e2c3aaf2da061ad",
       "level": "offline"
     },
     "wait_goals": []
@@ -10751,7 +10751,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.uploads.finalize.json": "a7112a6b54d00d8bb26a30eb76e0798bca84286234531c802e0356a151b717d3"
     },
-    "contract_revision": "cc84101c880a7c22b241a18d006191edb9f3de6b4980c72ff772000c579722cd",
+    "contract_revision": "a36fc20177ddfa9640f8f2d0da96c3982fc7b8fc56c16edcea77e110ba3478df",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.finalize.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.finalize.json#/errors",
@@ -10791,13 +10791,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 POST then PUT / chunked close / end-6",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "cc84101c880a7c22b241a18d006191edb9f3de6b4980c72ff772000c579722cd",
+      "contract_revision": "a36fc20177ddfa9640f8f2d0da96c3982fc7b8fc56c16edcea77e110ba3478df",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "57bab3a1a3f1822597f712585592d1bd238f85e3b4dd7c7dc537ef09699f30ec",
+      "implementation_revision": "5ffcee1adad1d769803d51b3d2333d2630315f8af713811f5cb729b2e1fdfb95",
       "level": "offline"
     },
     "wait_goals": []
@@ -10813,7 +10813,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.uploads.start.json": "383b3e9750d1b2df6c67ac86d725d6530a15ed4309a4e266a50eae39189ba2e0"
     },
-    "contract_revision": "db9e9c82b463159a68d63f0768b1aed6a1eefbf01e0e38be519a32b305adf513",
+    "contract_revision": "40dc83fe094ec718b2acee4fdab47c0dde70526d3368e42a7146497d1adbc379",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.start.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.start.json#/errors",
@@ -10853,13 +10853,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 POST then PUT / end-4a",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "db9e9c82b463159a68d63f0768b1aed6a1eefbf01e0e38be519a32b305adf513",
+      "contract_revision": "40dc83fe094ec718b2acee4fdab47c0dde70526d3368e42a7146497d1adbc379",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "dc7281fc539e2c69b2c9677203b16db18279e331b15964fbdbc5874a7e3c78cc",
+      "implementation_revision": "6e28224a1b063d3320c2c6ab5f121dafb08e2bedb6610e68b1823e3a92f81600",
       "level": "offline"
     },
     "wait_goals": []
@@ -10875,7 +10875,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.uploads.status.json": "834ede338710022afa0a6d6c0a714caf136debbfe69159be1922927b2962aa6e"
     },
-    "contract_revision": "0ec4f6355161ebc6b2a6050fcb2132633bb398342465cdf512550c7978c39d6f",
+    "contract_revision": "05afd89031db679d3f938adb77e7e3dbd9c88aeca069a6b0e08757c93c1272bc",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.uploads.status.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.uploads.status.json#/errors",
@@ -10915,13 +10915,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 upload status / end-13",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "0ec4f6355161ebc6b2a6050fcb2132633bb398342465cdf512550c7978c39d6f",
+      "contract_revision": "05afd89031db679d3f938adb77e7e3dbd9c88aeca069a6b0e08757c93c1272bc",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "cba0dd7353a29547aa77b843a6945a4b4b5eb5934d2879809219f2698fee3f27",
+      "implementation_revision": "dca2a968672ef50dcd593fb120efab45f76c3c0f1fa81d5ac0f64943abc9b08f",
       "level": "offline"
     },
     "wait_goals": []
@@ -10937,7 +10937,7 @@
     "contract_artifact_revisions": {
       "contracts/registry_data.oci_v1.version.get.json": "0f3423a641e4c9256952ab9a1fe0368ed7097423eed36261be994fc97be8bb21"
     },
-    "contract_revision": "3e9a1c37ade2b4b8b997ad7b63a48c6b214fb934ade94b53a0f594d55194ab17",
+    "contract_revision": "7aafecc7d5c9e2f7c781f9161f2a5061df5be3443df8d41c3606945c0ea11348",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/registry_data.oci_v1.version.get.json#/endpoint",
     "error_binding_ref": "contracts/registry_data.oci_v1.version.get.json#/errors",
@@ -10975,13 +10975,13 @@
     "service": "registry_data",
     "source": {
       "operation_locator": "OCI1.1.1 API version check / end-1",
-      "revision": "127bf446e0b55f41362e99c69a512c32d7ff78a924620ff8b8cb2ce8a92d637e",
+      "revision": "125ce60bf51e584408601f605b548efbff57126f173b91f205f69e0bb110a421",
       "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md"
     },
     "verification": {
-      "contract_revision": "3e9a1c37ade2b4b8b997ad7b63a48c6b214fb934ade94b53a0f594d55194ab17",
+      "contract_revision": "7aafecc7d5c9e2f7c781f9161f2a5061df5be3443df8d41c3606945c0ea11348",
       "evidence_ref": "registrydata/client_public_test.go",
-      "implementation_revision": "06b86a9cb2542fd5049df69a0b262760c3beba392447581a9af5cc2e364b7b41",
+      "implementation_revision": "574ce0cc21f7bfdb603ecf7d227d320118013ebbecc0212e32e74de0ff45aa5e",
       "level": "offline"
     },
     "wait_goals": []
