@@ -48,6 +48,53 @@ func Bind(r *core.Runtime, ref types.ResourceRef, receipt *types.Receipt, read R
 	h := &Handle{runtime: r, ref: cloneRef(ref), receipt: cloneReceipt(receipt), read: read, goals: goals}
 	return h, nil
 }
+
+// BindReceipt binds a validated terminal receipt without inventing an observation
+// target. Only Recover is supported; Status and Wait cannot infer resource state.
+func BindReceipt(r *core.Runtime, receipt *types.Receipt) (*Handle, error) {
+	if r == nil || receipt == nil || receipt.SchemaVersion != 1 || receipt.CallID == "" || receipt.Scope.Validate() != nil || len(receipt.ResourceRefs) != 0 || receipt.ProviderOperationRef != nil {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	switch receipt.Outcome {
+	case types.Accepted, types.Rejected, types.NotSent:
+	default:
+		return nil, types.NewError(types.RecoveryUnavailable)
+	}
+	capability, err := r.Catalog().Describe(receipt.OperationID)
+	if err != nil {
+		return nil, err
+	}
+	if capability.ContractRevision != receipt.ContractRevision {
+		return nil, types.NewError(types.CapabilityUnavailable)
+	}
+	if capability.Effect != "mutation" {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	locationRequired := false
+	for _, required := range capability.ScopeRequirements {
+		switch required {
+		case "project":
+			if receipt.Scope.ProjectID == "" {
+				return nil, types.NewError(types.InvalidArgument)
+			}
+		case "region", "pool":
+			locationRequired = true
+		}
+	}
+	if locationRequired && receipt.Scope.Region == "" && receipt.Scope.Pool == "" {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if ep := receipt.Endpoint; ep != nil {
+		if ep.ID == "" || types.ValidateEndpoint(ep.URL) != nil {
+			return nil, types.NewError(types.InvalidArgument)
+		}
+		if ep.Scope != receipt.Scope || ep.APIGeneration != capability.APIGeneration || ep.Audience != "selectel" {
+			return nil, types.NewError(types.ScopeMismatch)
+		}
+	}
+	return &Handle{runtime: r, receipt: cloneReceipt(receipt)}, nil
+}
+
 func cloneReceipt(r *types.Receipt) *types.Receipt {
 	if r == nil {
 		return nil
@@ -86,6 +133,9 @@ func (h *Handle) Status(ctx context.Context) (out Observation, err error) {
 	defer func() { err = h.attach(err) }()
 	if err := h.check(ctx); err != nil {
 		return Observation{}, err
+	}
+	if h.read == nil {
+		return Observation{}, types.NewError(types.RecoveryUnavailable)
 	}
 	return h.read(ctx)
 }

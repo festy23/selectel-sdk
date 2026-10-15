@@ -1,0 +1,59 @@
+{
+  "operation_id": "registry_data.oci_v1.manifests.replace",
+  "effect": "mutation",
+  "source": {
+    "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+    "protocol_commit": "a139cc423184af6078077b9b7ee336eddbd03f8f",
+    "auth_commit": "f7d69d28c2e302f31d1f6ce8e193da58407225a7"
+  },
+  "endpoint": "cr.selcloud.ru documented Selectel data origin, /v2 separate from management /api; unsupported locations unavailable unless explicit override; exact refs pinned",
+  "auth": "explicit project-bound Basic snapshot; compiled preflight before any body transmission, Basic/Bearer negotiation within same budget; HTTPS same-origin realm only; nonempty advertised service and compiled exact repository/action scope; realm query permits only overwritten service/scope, never offline token/auth override. Tokens protected, redirects never followed. Auth endpoint404 is endpoint_unavailable, not content absence",
+  "request": {
+    "method": "PUT",
+    "path": "/v2/{name}/manifests/{reference}",
+    "mapping": "canonical OCI namespace, tag/digest syntax and parent chain checked; request refs are caller-selected addresses, not ownership/creation proof. Typed Accept and content media types OCI image/index, Docker v2 image/list; no arbitrary headers/auth overrides; manifest bytes preserved without transformation",
+    "body": "Protected JSON, unchanged wire bytes, bounded by StructuredLimit; typed OCI/Docker v2 media type and optional declared mediaType consistency; digest-address input verified before I/O. Single remote manifest PUT only, no referrers fallback mutations."
+  },
+  "response": {
+    "mapping": "201 Accepted before decode; exact requested address retained; verified source/computed digest and protected same-origin same-repository Location; unrelated malformed headers retain trusted address/metadata",
+    "sensitive_fields": [
+      "location"
+    ]
+  },
+  "errors": {
+    "shared": "normal HTTP status mapping and bounded safe-read retry; first errors[0].code from pinned OCI allowlist retained exactly; provider message/detail discarded. Diagnostic read/decode failure does not suppress401/403/503 status semantics",
+    "mutation": "only source rejected statuses conclusive; transport/5xx unknown,no replay; malformed201/202 remains Accepted",
+    "rejected_statuses": [
+      400,
+      401,
+      403,
+      404,
+      413
+    ]
+  },
+  "retry": "bounded safe reads; no mutation replay, rollback or source fallback",
+  "pagination": null,
+  "recovery": "Root Resource/Resume validate exact scope, generation, parents, endpoint and receipt operation/revision/effect. Known no-ref/multi-ref receipts Recover conclusive with no I/O; unknown content-address receipts observe exact HEAD only, never mutation replay/adoption/creation proof. Start/Append/Cancel receipt alone lacks protected Location/query: unknown session Status/Recover unavailable; Finalize retains caller-requested blob digest address before I/O and observes only exact HEAD without creation proof; caller-held UploadSession supports explicit exact Status offset observation, not mutation outcome proof. No wait goals inferred.",
+  "wait": {
+    "goals": []
+  },
+  "compatibility": "same-origin realm/query restrictions not a claim about undocumented Selectel topology; optional deletion/server availability untested; inventory incomplete",
+  "remaining": {
+    "confirmed_protocol_not_in_this_subset": [
+      "OCI single-POST monolithic upload and mount/from variants",
+      "OCI referrers API/artifactType pagination and manifest subject/referrers fallback workflow",
+      "OCI optional chunk-min-length hint and additional response metadata",
+      "Extended/multiple Link syntax; additional image formats/digest algorithms"
+    ],
+    "selectel_source_unknown": [
+      "actual Bearer realm/service topology and custom query requirements",
+      "cross-origin upload/download offload trust policy",
+      "availability of optional tag/blob deletion, referrers, mount/monolithic POST, native cancellation"
+    ],
+    "owners": {
+      "implementation": "#50",
+      "primary_evidence": "#74",
+      "P1_acceptance": "#75"
+    }
+  }
+}

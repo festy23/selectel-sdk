@@ -88,6 +88,7 @@ flowchart TD
 | [dependencies.md](dependencies.md) | SDK, совместимые протоколы и reuse Terraform provider |
 | [settings.md](settings.md) | Типы, значения и ограничения настроек |
 | [caches.md](caches.md) | Локальные кэши и конкурентное обновление |
+| [registry-data.md](registry-data.md) | OCI content и upload sessions |
 
 ## Порядок расширения
 

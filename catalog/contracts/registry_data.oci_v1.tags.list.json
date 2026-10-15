@@ -1,0 +1,51 @@
+{
+  "operation_id": "registry_data.oci_v1.tags.list",
+  "effect": "read",
+  "source": {
+    "uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+    "protocol_commit": "a139cc423184af6078077b9b7ee336eddbd03f8f",
+    "auth_commit": "f7d69d28c2e302f31d1f6ce8e193da58407225a7"
+  },
+  "endpoint": "cr.selcloud.ru documented Selectel data origin, /v2 separate from management /api; unsupported locations unavailable unless explicit override; exact refs pinned",
+  "auth": "explicit project-bound Basic snapshot; compiled preflight before any body transmission, Basic/Bearer negotiation within same budget; HTTPS same-origin realm only; nonempty advertised service and compiled exact repository/action scope; realm query permits only overwritten service/scope, never offline token/auth override. Tokens protected, redirects never followed. Auth endpoint404 is endpoint_unavailable, not content absence",
+  "request": {
+    "method": "GET",
+    "path": "/v2/{name}/tags/list",
+    "mapping": "Immutable exact repository snapshot; bounded source n/last pagination; public cursor bound to complete ref hierarchy, view, endpoint, operation and contract revision.",
+    "body": null
+  },
+  "response": {
+    "mapping": "bounded lexical tags list with exact namespace and n/last; source Link next preferred, strict same-origin same-path n/last only",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "shared": "normal HTTP status mapping and bounded safe-read retry; first errors[0].code from pinned OCI allowlist retained exactly; provider message/detail discarded. Diagnostic read/decode failure does not suppress401/403/503 status semantics",
+    "mutation": "only source rejected statuses conclusive; transport/5xx unknown,no replay; malformed201/202 remains Accepted",
+    "rejected_statuses": []
+  },
+  "retry": "bounded safe reads; no mutation replay, rollback or source fallback",
+  "pagination": "Bounded PageSize/MaxItems/MaxPages and collection budget. Prefer validated next Link even for short page; supported Link has one same-origin/same-path n/last target, matching returned last tag and requested size. Without Link short page ends, full page probes after last tag. Scope mismatch/malformed row preserves validated bounded prefix and original error; no extra I/O. Strict supported Link subset excludes extensions/multiple links.",
+  "recovery": "Root Resource/Resume validate exact scope, generation, parents, endpoint and receipt operation/revision/effect. Known no-ref/multi-ref receipts Recover conclusive with no I/O; unknown content-address receipts observe exact HEAD only, never mutation replay/adoption/creation proof. Start/Append/Cancel receipt alone lacks protected Location/query: unknown session Status/Recover unavailable; Finalize retains caller-requested blob digest address before I/O and observes only exact HEAD without creation proof; caller-held UploadSession supports explicit exact Status offset observation, not mutation outcome proof. No wait goals inferred.",
+  "wait": {
+    "goals": []
+  },
+  "compatibility": "same-origin realm/query restrictions not a claim about undocumented Selectel topology; optional deletion/server availability untested; inventory incomplete",
+  "remaining": {
+    "confirmed_protocol_not_in_this_subset": [
+      "OCI single-POST monolithic upload and mount/from variants",
+      "OCI referrers API/artifactType pagination and manifest subject/referrers fallback workflow",
+      "OCI optional chunk-min-length hint and additional response metadata",
+      "Extended/multiple Link syntax; additional image formats/digest algorithms"
+    ],
+    "selectel_source_unknown": [
+      "actual Bearer realm/service topology and custom query requirements",
+      "cross-origin upload/download offload trust policy",
+      "availability of optional tag/blob deletion, referrers, mount/monolithic POST, native cancellation"
+    ],
+    "owners": {
+      "implementation": "#50",
+      "primary_evidence": "#74",
+      "P1_acceptance": "#75"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+# Registry protocol projection
+
+The generator owns DTOs, endpoint selection, operation definitions, capability
+bindings/contracts and `catalog/sources/registry-oci.json`. The latter is an
+**SDK-owned projection**, not an official Selectel OpenAPI. Run `go generate .`.
+
+Pinned primary protocol snapshots in `assets`:
+
+- `distribution-spec.md` and `content-negotiation.md`: OCI Distribution 1.1.1,
+  commit `a139cc423184af6078077b9b7ee336eddbd03f8f`, Apache 2.0 (`LICENSE-OCI.txt`).
+- `token-auth.md` and `distribution-api.md`: Distribution commit
+  `f7d69d28c2e302f31d1f6ce8e193da58407225a7`, Apache 2.0
+  (`LICENSE-Distribution.txt`). Native cancellation is explicitly named; its
+  presence in this protocol does not establish current Selectel availability.
+- `auth-access-records.json`: SDK-owned facts from that Distribution commit's
+  `registry/handlers/app.go` appendAccessRecords: GET/HEAD pull, POST/PUT/PATCH
+  pull+push, DELETE delete. Challenge-advertised scope cannot broaden these.
+- `selectel-data-origin.json`: SDK-owned factual projection of primary Selectel
+  login/push/pull guides, with exact retrieval hashes. It is not a copied guide
+  or a server-discovered API schema.
+
+The projection records SHA256 for every local asset. Source inventory remains
+incomplete and all 14 selected bindings remain partial. Protocol-confirmed
+omissions and unavailable Selectel topology evidence are distinguished in each
+contract and the service contract; ownership stays with #50/#74/#75.
+
+Narrow runtime reuse has reviewed provenance: `DoResponse` from `8a07c83`,
+receipt-only recovery/early revision from `379458e`, and bounded pagination error
+prefix preservation from `a49e66b`. No unrelated service feature is copied.
+New private OCI authentication and opaque session-query paths need both review
+axes, including budget/cancellation, compiled scopes, redirects and no replay.

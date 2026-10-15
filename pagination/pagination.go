@@ -179,6 +179,37 @@ func (i *Iterator[T]) Next(ctx context.Context) (Page[T], error) {
 	page, err := i.fetch(ctx, input, size)
 	i.pages++
 	if err != nil {
+		// A typed source may return a validated prefix before a malformed row.
+		// Preserve only this view's bounded items, with a replay cursor that skips
+		// the delivered prefix; the source error remains terminal for this iterator.
+		if len(page.Items) > 0 {
+			if i.base.EndpointID == "" && i.plan.DynamicEndpoint {
+				i.base.EndpointID = page.Metadata.EndpointID
+			}
+			if page.Metadata.Scope != i.base.Scope || page.Metadata.EndpointID != i.base.EndpointID || page.Metadata.APIGeneration != i.base.APIGeneration {
+				i.terminal = types.NewError(types.ScopeMismatch)
+				return Page[T]{}, i.terminal
+			}
+			if i.skip > uint(len(page.Items)) {
+				i.terminal = types.NewError(types.ProtocolError)
+				return Page[T]{}, i.terminal
+			}
+			available := page.Items[i.skip:]
+			n := min(uint(len(available)), remaining)
+			cursor := i.base
+			cursor.WireCursor = input
+			cursor.Skip = i.skip + n
+			if i.sensitiveInput {
+				v := types.Protect([]byte(input))
+				cursor.Sensitive = true
+				cursor.SensitiveWire = &v
+				cursor.WireCursor = ""
+			}
+			i.last = &cursor
+			i.items += n
+			i.terminal = err
+			return Page[T]{Items: append([]T{}, available[:n]...), Metadata: page.Metadata, Provider: page.Provider, NextCursor: copyCursor(i.last)}, err
+		}
 		i.terminal = err
 		return Page[T]{Metadata: page.Metadata, NextCursor: copyCursor(i.last)}, err
 	}

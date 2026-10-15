@@ -1,0 +1,800 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SDK-owned OCI1.1.1 protocol projection (not official OpenAPI)",
+    "version": "1.1.1"
+  },
+  "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+  "x-api-generation": "oci_v1",
+  "x-scope-requirements": [
+    "account",
+    "project"
+  ],
+  "x-source-revisions": {
+    "distribution-spec.md": "360b29820869bfaac5f73ebfa30669c9172c069ef619f8c6689acc3bcef6f719",
+    "LICENSE-OCI.txt": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+    "token-auth.md": "f0a23288bcb4fe5ce662b18578e5436d7834b66b6dd648e36ca186e443ddee86",
+    "content-negotiation.md": "38c54464135f29a5e7d0b3065d3b8d85e0df6970f8b05cf221d5bc6687d937ed",
+    "auth-access-records.json": "c49737a30bca468d61d6ca36a92769123ae1bc26bee7aa2f2582527009cbfa24",
+    "LICENSE-Distribution.txt": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14",
+    "distribution-api.md": "140f85a6b36e6b0dfe0728dff09b6ed4884d15aa64c046ac1a788aa1954f0215",
+    "selectel-data-origin.json": "7ec968046b9cc6bd95c496042f7193106263c83a77466faffd50a1d15dbade94"
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/v2/": {
+      "get": {
+        "operationId": "registry_data.oci_v1.version.get",
+        "x-operation-locator": "OCI1.1.1 API version check / end-1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "source status 200"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/{name}/tags/list": {
+      "get": {
+        "operationId": "registry_data.oci_v1.tags.list",
+        "x-operation-locator": "OCI1.1.1 listing tags / end-8a/end-8b",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "last",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "source status 200"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/{name}/blobs/uploads/{reference}": {
+      "delete": {
+        "operationId": "registry_data.oci_v1.uploads.cancel_native",
+        "x-operation-locator": "Distribution pinned API Canceling an upload / DELETE upload UUID; explicit native variant",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "source status 204"
+          },
+          "400": {
+            "description": "source status 400"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/distribution/distribution/blob/f7d69d28c2e302f31d1f6ce8e193da58407225a7/docs/content/spec/api.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "registry_data.oci_v1.uploads.finalize",
+        "x-operation-locator": "OCI1.1.1 POST then PUT / chunked close / end-6",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Length",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Content-Range",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "digest",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "source status 201"
+          },
+          "400": {
+            "description": "source status 400"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          },
+          "416": {
+            "description": "source status 416"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "registry_data.oci_v1.uploads.append",
+        "x-operation-locator": "OCI1.1.1 chunked uploads / end-5",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Length",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Content-Range",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "source status 202"
+          },
+          "400": {
+            "description": "source status 400"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          },
+          "416": {
+            "description": "source status 416"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "registry_data.oci_v1.uploads.status",
+        "x-operation-locator": "OCI1.1.1 upload status / end-13",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "source status 204"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/{name}/blobs/uploads/": {
+      "post": {
+        "operationId": "registry_data.oci_v1.uploads.start",
+        "x-operation-locator": "OCI1.1.1 POST then PUT / end-4a",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "source status 202"
+          },
+          "400": {
+            "description": "source status 400"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          },
+          "405": {
+            "description": "source status 405"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/{name}/blobs/{digest}": {
+      "head": {
+        "operationId": "registry_data.oci_v1.blobs.head",
+        "x-operation-locator": "OCI1.1.1 checking content / end-2",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "digest",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "source status 200"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "registry_data.oci_v1.blobs.delete",
+        "x-operation-locator": "OCI1.1.1 deleting blobs / end-10",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "digest",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "source status 202"
+          },
+          "400": {
+            "description": "source status 400"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          },
+          "405": {
+            "description": "source status 405"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "registry_data.oci_v1.blobs.get",
+        "x-operation-locator": "OCI1.1.1 pulling blobs / end-2; RFC9110 Range",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "digest",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Range",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "source status 200"
+          },
+          "206": {
+            "description": "source status 206"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v2/{name}/manifests/{reference}": {
+      "get": {
+        "operationId": "registry_data.oci_v1.manifests.get",
+        "x-operation-locator": "OCI1.1.1 pulling manifests / end-3",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "source status 200"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "head": {
+        "operationId": "registry_data.oci_v1.manifests.head",
+        "x-operation-locator": "OCI1.1.1 checking content / end-3",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "source status 200"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "registry_data.oci_v1.manifests.replace",
+        "x-operation-locator": "OCI1.1.1 pushing manifests / end-7",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "source status 201"
+          },
+          "400": {
+            "description": "source status 400"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          },
+          "413": {
+            "description": "source status 413"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "registry_data.oci_v1.manifests.delete",
+        "x-operation-locator": "OCI1.1.1 deleting tags/manifests / end-9",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "source status 202"
+          },
+          "400": {
+            "description": "source status 400"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          },
+          "405": {
+            "description": "source status 405"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  }
+}
