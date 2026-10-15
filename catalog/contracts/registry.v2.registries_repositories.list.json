@@ -1,0 +1,138 @@
+{
+  "operation_id": "registry.v2.registries_repositories.list",
+  "effect": "read",
+  "source_revision": "a6e68b67cd861617e5d66304891d4523f685593b36fbcdb4538ffc76de2bb314",
+  "native_operation": "listRepositoriesV2",
+  "endpoint": "existing project registry recipe; /api included once; all exact parent/resource refs pin endpoint URL/ID, reject changed override and redirects",
+  "auth": "IAM project view, explicit generation/location; no token/S3/OCI credential fallback",
+  "request": {
+    "method": "GET",
+    "path": "/v2/registries/{id}/repositories",
+    "parameters": [
+      {
+        "description": "Unique identifier of the registry.",
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "description": "Number of items per page.",
+        "in": "query",
+        "name": "limit",
+        "schema": {
+          "default": 10,
+          "type": "integer"
+        }
+      },
+      {
+        "description": "Page offset for pagination.",
+        "in": "query",
+        "name": "offset",
+        "schema": {
+          "default": 0,
+          "type": "integer"
+        }
+      },
+      {
+        "description": "Search query for filtering repositories by name.",
+        "in": "query",
+        "name": "search",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "description": "Field to sort by.",
+        "in": "query",
+        "name": "sort_field",
+        "schema": {
+          "$ref": "#/components/schemas/SortReposField"
+        }
+      },
+      {
+        "description": "Sort order type.",
+        "in": "query",
+        "name": "sort_type",
+        "schema": {
+          "$ref": "#/components/schemas/SortType"
+        }
+      },
+      {
+        "description": "Short output, return only repository names.\n\nWhen short output is enabled, sorting can only be done by name.",
+        "in": "query",
+        "name": "short",
+        "schema": {
+          "type": "boolean"
+        }
+      }
+    ],
+    "body": null,
+    "mapping": "path IDs escaped once as individual opaque segments; nonempty UTF8 IDs; exact scope/service/generation/parent chain; optional false and empty slices preserved; nil omitted; no provider defaults inserted. Lists own snapshots of refs, query/filter values and initial offset before cursor fingerprint"
+  },
+  "response": {
+    "mapping": "Required repositories/totalCount/filteredCount envelope; exact name gives v2 child ref",
+    "source": {
+      "200": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RepositoryList"
+            }
+          }
+        },
+        "description": "List of repositories."
+      },
+      "404": {
+        "content": {
+          "application/json": {
+            "examples": {
+              "ErrRegistryNotFound": {
+                "$ref": "#/components/examples/ErrRegistryNotFound"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/registry.commonNotFoundError"
+            }
+          }
+        },
+        "description": "Registry has not been found."
+      },
+      "500": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/registry.commonServerError"
+            }
+          }
+        },
+        "description": "Server is not responding. Please try again later."
+      }
+    },
+    "sensitive_fields": [],
+    "numbers": "exact Integer, no float conversion",
+    "timestamps": "source date-time requires RFC3339 offset; UTC time.Time, nullable updatedAt preserves explicit null; malformed input protocol_error"
+  },
+  "errors": {
+    "shared": "401 unauthenticated refresh;403 permission_denied;404 not_found;409 conflict;429 rate_limited; other structured status provider_error; raw provider messages discarded",
+    "mutation": "source documented4xx rejected with Receipt; transport/5xx unknown_outcome, no replay; malformed accepted response protocol_error retains Receipt/exact request refs"
+  },
+  "retry": "never replay mutation; bounded safe reads only",
+  "pagination": {
+    "wire": "v1 repository offset+limit, empty array end; v2 repository/images offset+limit, filteredCount end, totalCount and filteredCount retained as TotalCount/ReportedCount",
+    "bounds": "shared MaxItems/MaxPages/response-size/CollectionTimeout; immutable original semantic request; validated prefix preserved on malformed row; incomplete never advertised complete"
+  },
+  "wait": {
+    "goals": [],
+    "meaning": "only v1 exact-address absence for delete; no GC/cleanup readiness goal, no task ID or invented provider state"
+  },
+  "recovery": {
+    "meaning": "known terminal receipts conclusive without I/O (reviewed379458e); unknown v1 exact target observation remains indeterminate, never proves creation/cleanup/GC completion; no name lookup/replay; v2 lacks exact read handle"
+  },
+  "excluded_variants": [
+    "short=true names-only wire shape conflicts with object schema; object/name-only-object response supported, string-array shape unknown; owner #48/P1 implementation, #74 evidence, #75 acceptance"
+  ],
+  "native_sdk_variants": null
+}

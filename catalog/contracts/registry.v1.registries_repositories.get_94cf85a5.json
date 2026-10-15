@@ -1,0 +1,100 @@
+{
+  "operation_id": "registry.v1.registries_repositories.get_94cf85a5",
+  "effect": "read",
+  "source_revision": "a6e68b67cd861617e5d66304891d4523f685593b36fbcdb4538ffc76de2bb314",
+  "native_operation": "listLayers",
+  "endpoint": "existing project registry recipe; /api included once; all exact parent/resource refs pin endpoint URL/ID, reject changed override and redirects",
+  "auth": "IAM project view, explicit generation/location; no token/S3/OCI credential fallback",
+  "request": {
+    "method": "GET",
+    "path": "/v1/registries/{id}/repositories/{name}/{reference}",
+    "parameters": [
+      {
+        "description": "Unique identifier of the registry.",
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "description": "Name of the repository.",
+        "in": "path",
+        "name": "name",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "description": "Image digest or tag name.",
+        "in": "path",
+        "name": "reference",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "body": null,
+    "mapping": "path IDs escaped once as individual opaque segments; nonempty UTF8 IDs; exact scope/service/generation/parent chain; optional false and empty slices preserved; nil omitted; no provider defaults inserted. Lists own snapshots of refs, query/filter values and initial offset before cursor fingerprint"
+  },
+  "response": {
+    "mapping": "Current Image object including layers; explicit NativeLayers selects pinned SDK []Layer instead; never fallback. Caller alias retained as address, never replaced by returned digest; explicit manifest digest must match when present",
+    "source": {
+      "200": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/repository.Image"
+            }
+          }
+        },
+        "description": "List of image layers has been returned."
+      },
+      "404": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/registry.commonNotFoundError"
+            }
+          }
+        },
+        "description": "Image or tag has not been found."
+      },
+      "500": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/registry.commonServerError"
+            }
+          }
+        },
+        "description": "Server is not responding. Please try again later."
+      }
+    },
+    "sensitive_fields": [],
+    "numbers": "exact Integer, no float conversion",
+    "timestamps": "source date-time requires RFC3339 offset; UTC time.Time, nullable updatedAt preserves explicit null; malformed input protocol_error"
+  },
+  "errors": {
+    "shared": "401 unauthenticated refresh;403 permission_denied;404 not_found;409 conflict;429 rate_limited; other structured status provider_error; raw provider messages discarded",
+    "mutation": "source documented4xx rejected with Receipt; transport/5xx unknown_outcome, no replay; malformed accepted response protocol_error retains Receipt/exact request refs"
+  },
+  "retry": "never replay mutation; bounded safe reads only",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "meaning": "only v1 exact-address absence for delete; no GC/cleanup readiness goal, no task ID or invented provider state"
+  },
+  "recovery": {
+    "meaning": "known terminal receipts conclusive without I/O (reviewed379458e); unknown v1 exact target observation remains indeterminate, never proves creation/cleanup/GC completion; no name lookup/replay; v2 lacks exact read handle"
+  },
+  "excluded_variants": [],
+  "native_sdk_variants": {
+    "revision": "8f0d0cba0b59360f344b3b2d32157b1549c2645a",
+    "source": "internal/registrymanagementgen/assets/sdk-repository-requests.go.txt",
+    "availability": "source-confirmed public SDK wire variant only; current server availability untested"
+  }
+}
