@@ -28,7 +28,7 @@ MAINTENANCE/ERROR numeric members; полный Device.status — integer. DTO �
 Remote ADB URL, owner/phone/forwarding details и battery telemetry защищены. Числа
 сохраняются лексически без float64; Reveal — явная caller-directed граница.
 
-Текущий slice содержит три device чтения, шесть ADB, шесть proxy operations и auth ticket v2; остальные 14 operations остаются unimplemented
+Текущий slice содержит три device чтения, шесть ADB, шесть proxy operations auth ticket v2 и firewall list/create/update; остальные 11 operations остаются unimplemented
 до source-bound TDD slices, обязательных проверок и двух review. Transfers и device
 connections не выполнялись; remoteConnectUrl возвращается как protected data,
 SDK не открывает ADB/WebSocket соединение автоматически. Offline не означает live.
@@ -58,3 +58,5 @@ PR97 commit379458e4f658b1216137fea4acce5dae6027d320 (delta82121d740a2788930ce7c4
 Proxy token create возвращает single-delivery protected token; diagnostics/JSON не раскрывают его. Explicit user-admin методы требуют account scope и caller-provided user parent. Fingerprint сохраняется до независимой ошибки decoding; DELETE проверяет ответ против точного caller ref. Name length проверяется после trim, wire сохраняет caller spelling. Recovery/wait не обещаны.
 
 IssueTicket использует v2 endpoint binding и project IAM. Ticket/description protected, ticket не становится resource ref; unknown не повторяется, recovery unavailable. SDK не открывает WebSocket/ADB соединение, success false сохраняется как provider data, HTTP acceptance не означает connection/readiness.
+
+Firewall create требует все три поля по source prose; update допускает частичный body и использует native PUT, хотя описание request DTO упоминает PATCH. Scope project-only; root rule refs без inferred parents. Ответ с чужим ID не усыновляется, accepted receipt сохраняет caller ref.

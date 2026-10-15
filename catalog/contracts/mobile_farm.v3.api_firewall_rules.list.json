@@ -1,0 +1,37 @@
+{
+  "operation_id": "mobile_farm.v3.api_firewall_rules.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "project IAM view only",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v3/firewall-rules",
+    "method": "GET",
+    "auth": "iam_project; no fallback",
+    "body": "none"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed FirewallRule id/action/address/ports, generated required fields and enum validation. Nonempty ID maps exact project-scoped root ref. Create scans identity before unrelated field decoding; replace requires returned ID equal exact caller ref, retains accepted caller ref on foreign/invalid response. List finite root array preserves partial collection at local bounds.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Shared safe status taxonomy with documented400/401/403/404/409 as applicable; receipt on every mutation error including pre-I/O, no provider raw diagnostics."
+  },
+  "retry": "Bounded safe reads only",
+  "pagination": {
+    "provider": "Finite native root array with no page/limit parameters",
+    "local": "Bounded FixedIterator; truncation returns observed items and incomplete/SDK cursor"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

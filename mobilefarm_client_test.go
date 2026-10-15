@@ -491,3 +491,61 @@ func TestMobileFarmTicketUnknownNeverReplaysAndMissingProjectHasReceipt(t *testi
 		t.Fatalf("unknown %+v %v calls%d", out, e, calls)
 	}
 }
+
+func TestMobileFarmFirewallListHasExactProjectRefsAndBoundedCollection(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/mobfarm/api/v3/firewall-rules" {
+			t.Fatalf("rules %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`[{"id":"rule-1","action":"allow","address":"*","ports":"443"},{"id":"rule-2","action":"deny","address":"*","ports":"*"}]`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	out, e := p.MobileFarm().ListFirewallRules(context.Background(), pagination.Options{MaxItems: 1})
+	if types.ErrorCode(e) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.ID != "rule-1" || out.Items[0].Ref.Scope.ProjectID != "test-project" || out.Items[0].Ref.Parent != nil {
+		t.Fatalf("rules %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmFirewallCreateValidatesRequiredFieldsAndRetainsAcceptedID(t *testing.T) {
+	calls := 0
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		body, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/mobfarm/api/v3/firewall-rules" || !strings.Contains(string(body), `"address":"*"`) {
+			t.Fatalf("create %s %s", r.URL, body)
+		}
+		return &http.Response{StatusCode: 201, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"id":"rule-1","action":"invalid","address":"*","ports":"443"}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	out, e := p.MobileFarm().CreateFirewallRule(context.Background(), mobilefarm.FirewallRuleRequest{}, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatalf("gate %+v %v", out, e)
+	}
+	var input mobilefarm.FirewallRuleRequest
+	_ = json.Unmarshal([]byte(`{"action":"allow","address":"*","ports":"443"}`), &input)
+	out, e = p.MobileFarm().CreateFirewallRule(context.Background(), input, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != "rule-1" {
+		t.Fatalf("accepted %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmFirewallUpdateUsesPutAndRejectsForeignAcceptedIdentity(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		body, _ := io.ReadAll(r.Body)
+		if r.Method != "PUT" || r.URL.Path != "/mobfarm/api/v3/firewall-rules/rule-1" || string(body) != `{"action":"deny"}` {
+			t.Fatalf("update %s %s %s", r.Method, r.URL, body)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"id":"foreign","action":"deny","address":"*","ports":"*"}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	ref := mobileFarmUserRef()
+	ref.Scope.ProjectID = "test-project"
+	ref.Kind = "firewall_rule"
+	ref.ID = "rule-1"
+	var input mobilefarm.FirewallRuleRequest
+	_ = json.Unmarshal([]byte(`{"action":"deny"}`), &input)
+	out, e := p.MobileFarm().UpdateFirewallRule(context.Background(), ref, input, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("update %+v %v", out, e)
+	}
+}

@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice", "AdbKey":"ADBKey", "CreateAdbKeyRequest":"CreateADBKeyRequest", "entity.ProxyTokenInfo":"ProxyTokenInfo", "entity.ProxyToken":"ProxyToken", "entity.CreateProxyTokenReq":"CreateProxyTokenRequest", "GetTicketResponse":"GetTicketResponse"}, None),
+"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice", "AdbKey":"ADBKey", "CreateAdbKeyRequest":"CreateADBKeyRequest", "entity.ProxyTokenInfo":"ProxyTokenInfo", "entity.ProxyToken":"ProxyToken", "entity.CreateProxyTokenReq":"CreateProxyTokenRequest", "GetTicketResponse":"GetTicketResponse", "entity.Rule":"FirewallRule", "entity.FirewallRuleBodyReq":"FirewallRuleRequest", "entity.FirewallRulePriorityBodyReq":"FirewallRuleOrderRequest"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -147,6 +147,9 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
+            if package == "mobilefarm" and nested.get("type") == "string" and nested.get("enum"):
+                invalid = " && ".join(f"*v.{field_name} != {json.dumps(choice)}" for choice in nested["enum"])
+                code += f"\tif v.{field_name} != nil && ({invalid}) {{ return types.NewError(types.ProtocolError) }}\n"
             if package == "mobilefarm" and nested.get("type") == "string" and ("minLength" in nested or "maxLength" in nested):
                 imports["utf8"] = "unicode/utf8"
                 go_field_type, _ = field_type(value, type_name + field_name, wire)

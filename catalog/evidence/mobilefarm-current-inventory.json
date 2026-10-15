@@ -99,7 +99,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_firewall_rules.list"
     },
     {
       "method": "POST",
@@ -109,7 +110,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_firewall_rules.create"
     },
     {
       "method": "DELETE",
@@ -129,7 +131,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_firewall_rules.replace"
     },
     {
       "method": "PATCH",

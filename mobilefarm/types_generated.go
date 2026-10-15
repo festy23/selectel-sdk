@@ -401,6 +401,72 @@ func (v Display) Validate() error {
 func (v *Display) normalize() {
 }
 
+type FirewallRuleRequest struct {
+	Action  *string `json:"action,omitempty"`
+	Address *string `json:"address,omitempty"`
+	Ports   *string `json:"ports,omitempty"`
+}
+
+func (v FirewallRuleRequest) Validate() error {
+	if v.Action != nil && (*v.Action != "allow" && *v.Action != "deny") {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *FirewallRuleRequest) normalize() {
+}
+func (v *FirewallRuleRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire FirewallRuleRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = FirewallRuleRequest(value)
+	v.normalize()
+	return nil
+}
+
+type FirewallRuleOrderRequest struct {
+	Ids []string `json:"ids,omitzero"`
+}
+
+func (v FirewallRuleOrderRequest) Validate() error {
+	if v.Ids == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *FirewallRuleOrderRequest) normalize() {
+}
+func (v *FirewallRuleOrderRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire FirewallRuleOrderRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = FirewallRuleOrderRequest(value)
+	v.normalize()
+	return nil
+}
+
 type Meta struct {
 	Billing *Billing `json:"billing,omitempty"`
 	Slot    *Slot    `json:"slot,omitempty"`
@@ -534,6 +600,45 @@ func (v *ProxyTokenInfo) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = ProxyTokenInfo(value)
+	v.normalize()
+	return nil
+}
+
+type FirewallRule struct {
+	Action  *string            `json:"action,omitempty"`
+	Address *string            `json:"address,omitempty"`
+	ID      *string            `json:"id,omitempty"`
+	Ports   *string            `json:"ports,omitempty"`
+	Ref     *types.ResourceRef `json:"ref,omitempty"`
+}
+
+func (v FirewallRule) Validate() error {
+	if v.Action == nil || v.Address == nil || v.ID == nil || v.Ports == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Action != nil && (*v.Action != "allow" && *v.Action != "deny") {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *FirewallRule) normalize() {
+}
+func (v *FirewallRule) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire FirewallRule
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = FirewallRule(value)
 	v.normalize()
 	return nil
 }
