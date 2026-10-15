@@ -102,3 +102,55 @@ func TestFileStorageTypeFiltersAndCutoffKeepProtectedNullableDiagnostics(t *test
 		}
 	}
 }
+
+func TestFileStorageNetworkListContinuesAfterServerClampedShortPage(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		offset := r.URL.Query().Get("offset")
+		if r.URL.Path != "/share/v2/share-networks/detail" || r.URL.Query().Get("limit") != "3" {
+			t.Fatalf("network %s", r.URL)
+		}
+		payload := `{"share_networks":[]}`
+		if offset == "0" || offset == "1" {
+			payload = `{"share_networks":[{"id":"network-` + offset + `","project_id":"test-project","name":null,"description":null,"created_at":"2022-01-01T00:00:00","updated_at":null,"status":"active","security_service_update_support":false,"network_allocation_update_support":false,"share_network_subnets":[]}]}`
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	view, _ := p.Location("spb", "ru-9")
+	out, e := view.FileStorage().ListNetworks(context.Background(), filestorage.NetworkFilters{}, pagination.Options{PageSize: 3})
+	if e != nil || !out.Complete || calls != 3 || len(out.Items) != 2 || out.Items[0].Ref == nil || out.Items[0].Ref.ID != "network-0" || out.Items[0].Ref.Parent != nil || out.Items[1].Ref.Scope != view.Scope() {
+		t.Fatalf("networks %+v %v calls%d", out, e, calls)
+	}
+}
+
+func TestFileStorageNetworkPaginationRetainsEarlierPageButExcludesForeignProject(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		project := "test-project"
+		if calls > 1 {
+			project = "foreign-project"
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"share_networks":[{"id":"network-1","project_id":"` + project + `","name":null,"description":null,"created_at":"2022-01-01T00:00:00","updated_at":null,"status":"active","security_service_update_support":false,"network_allocation_update_support":false,"share_network_subnets":[]}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	view, _ := p.Location("spb", "ru-9")
+	out, e := view.FileStorage().ListNetworks(context.Background(), filestorage.NetworkFilters{}, pagination.Options{PageSize: 1})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.Scope.ProjectID != "test-project" || calls != 2 {
+		t.Fatalf("partial %+v %v", out, e)
+	}
+}

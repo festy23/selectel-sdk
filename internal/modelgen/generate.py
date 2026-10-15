@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-    "filestorage": ("file-storage-manila", {"ShareType":"ShareType"}, None),
+    "filestorage": ("file-storage-manila", {"ShareType":"ShareType", "ShareNetwork":"ShareNetwork"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -82,7 +82,7 @@ for case, (family, initial, top_name) in CASES.items():
             inner, _ = field_type({key: value for key, value in schema.items() if key != "nullable"}, type_name, field)
             return "types.Nullable[" + inner + "]", False
         kind = schema.get("type")
-        if package == "filestorage" and kind == "string" and field == "description":
+        if package == "filestorage" and kind == "string" and field in {"description", "cidr", "gateway"}:
             return "types.ProtectedValue", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
@@ -171,7 +171,7 @@ for case, (family, initial, top_name) in CASES.items():
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or package == "filestorage":
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'

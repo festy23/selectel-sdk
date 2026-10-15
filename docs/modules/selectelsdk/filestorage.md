@@ -18,8 +18,8 @@
 подтверждает project IAM, endpoint `https://<pool>.cloud.api.selcloud.ru/share/v2`
 и `os-extend`. SDK фиксирует 9 отдельных операций этих сценариев; три разных
 POST action имеют отдельные source assets и canonical mappings, хотя wire path
-совпадает. Это не алиасы. В текущем срезе implemented только ListTypes, остальные
-8 unimplemented; весь inventory неизвестен, coverage_ratio=null.
+совпадает. Это не алиасы. В текущем срезе implemented ListTypes и ListNetworks, остальные
+7 unimplemented; весь inventory неизвестен, coverage_ratio=null.
 
 Default endpoint recipe применяется только к известным российским cloud pools;
 для других локаций нужен точный caller override, host не выводится по аналогии.
@@ -49,3 +49,14 @@ Lifecycle, quota semantics и operation-specific waits ещё не реализ�
 срезом. Нет claims о deployment, live проверках, готовности хранилища, реальном
 монтировании или изменениях облака. #70 остаётся незавершённой; #74 должен сверить
 inventory/version drift, #76 не может принять сервис при оставшихся пробелах.
+
+
+ListNetworks следует pinned controller, который применяет limit/offset, хотя
+API reference не описывает их для этого endpoint. Offset увеличивается на число
+полученных строк; только пустая страница доказывает конец. Короткая страница может
+означать server clamp, поэтому не становится Complete. Response href никогда
+не выбирает host или credential destination. Предыдущие страницы сохраняются,
+если последующая содержит foreign project или другую ошибку. На каждой строке
+project_id проверяется до создания ref; вложенные Neutron IDs остаются metadata.
+Модель учитывает переход 2.51 к share_network_subnets и versioned поля 2.63/2.70;
+старые flat subnet fields не объявлены частью compiled2.73 ответа.

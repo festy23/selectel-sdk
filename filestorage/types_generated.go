@@ -8,6 +8,144 @@ import (
 	"github.com/festy23/selectel-sdk/types"
 )
 
+type ShareNetwork struct {
+	CreatedAt                      *string                               `json:"created_at,omitempty"`
+	Description                    *types.Nullable[types.ProtectedValue] `json:"description,omitempty"`
+	ID                             *string                               `json:"id,omitempty"`
+	Name                           *types.Nullable[string]               `json:"name,omitempty"`
+	NetworkAllocationUpdateSupport *types.Nullable[bool]                 `json:"network_allocation_update_support,omitempty"`
+	ProjectID                      *string                               `json:"project_id,omitempty"`
+	SecurityServiceUpdateSupport   *types.Nullable[bool]                 `json:"security_service_update_support,omitempty"`
+	ShareNetworkSubnets            []ShareNetworkSubnet                  `json:"share_network_subnets,omitzero"`
+	Status                         *string                               `json:"status,omitempty"`
+	UpdatedAt                      *types.Nullable[string]               `json:"updated_at,omitempty"`
+	Ref                            *types.ResourceRef                    `json:"ref,omitempty"`
+}
+
+func (v ShareNetwork) Validate() error {
+	if v.CreatedAt == nil || v.Description == nil || v.ID == nil || v.Name == nil || v.NetworkAllocationUpdateSupport == nil || v.ProjectID == nil || v.SecurityServiceUpdateSupport == nil || v.ShareNetworkSubnets == nil || v.Status == nil || v.UpdatedAt == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	for _, item := range v.ShareNetworkSubnets {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ShareNetwork) normalize() {
+	for i := range v.ShareNetworkSubnets {
+		v.ShareNetworkSubnets[i].normalize()
+	}
+}
+func (v *ShareNetwork) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ShareNetwork
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if field, exists := fields["description"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Description = types.Null[types.ProtectedValue]()
+	}
+	if field, exists := fields["name"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Name = types.Null[string]()
+	}
+	if field, exists := fields["network_allocation_update_support"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.NetworkAllocationUpdateSupport = types.Null[bool]()
+	}
+	if field, exists := fields["security_service_update_support"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.SecurityServiceUpdateSupport = types.Null[bool]()
+	}
+	if field, exists := fields["updated_at"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.UpdatedAt = types.Null[string]()
+	}
+	*v = ShareNetwork(value)
+	v.normalize()
+	return nil
+}
+
+type ShareNetworkSubnet struct {
+	AvailabilityZone *types.Nullable[string]               `json:"availability_zone,omitempty"`
+	Cidr             *types.Nullable[types.ProtectedValue] `json:"cidr,omitempty"`
+	CreatedAt        *string                               `json:"created_at,omitempty"`
+	Gateway          *types.Nullable[types.ProtectedValue] `json:"gateway,omitempty"`
+	ID               *string                               `json:"id,omitempty"`
+	IPVersion        *types.Nullable[types.Integer]        `json:"ip_version,omitempty"`
+	Mtu              *types.Nullable[types.Integer]        `json:"mtu,omitempty"`
+	NetworkType      *types.Nullable[string]               `json:"network_type,omitempty"`
+	NeutronNetID     *types.Nullable[string]               `json:"neutron_net_id,omitempty"`
+	NeutronSubnetID  *types.Nullable[string]               `json:"neutron_subnet_id,omitempty"`
+	SegmentationID   *types.Nullable[types.Integer]        `json:"segmentation_id,omitempty"`
+	UpdatedAt        *types.Nullable[string]               `json:"updated_at,omitempty"`
+}
+
+func (v ShareNetworkSubnet) Validate() error {
+	if v.AvailabilityZone == nil || v.Cidr == nil || v.CreatedAt == nil || v.Gateway == nil || v.ID == nil || v.IPVersion == nil || v.Mtu == nil || v.NetworkType == nil || v.NeutronNetID == nil || v.NeutronSubnetID == nil || v.SegmentationID == nil || v.UpdatedAt == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *ShareNetworkSubnet) normalize() {
+}
+func (v *ShareNetworkSubnet) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ShareNetworkSubnet
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if field, exists := fields["availability_zone"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.AvailabilityZone = types.Null[string]()
+	}
+	if field, exists := fields["cidr"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Cidr = types.Null[types.ProtectedValue]()
+	}
+	if field, exists := fields["gateway"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Gateway = types.Null[types.ProtectedValue]()
+	}
+	if field, exists := fields["ip_version"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.IPVersion = types.Null[types.Integer]()
+	}
+	if field, exists := fields["mtu"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Mtu = types.Null[types.Integer]()
+	}
+	if field, exists := fields["network_type"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.NetworkType = types.Null[string]()
+	}
+	if field, exists := fields["neutron_net_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.NeutronNetID = types.Null[string]()
+	}
+	if field, exists := fields["neutron_subnet_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.NeutronSubnetID = types.Null[string]()
+	}
+	if field, exists := fields["segmentation_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.SegmentationID = types.Null[types.Integer]()
+	}
+	if field, exists := fields["updated_at"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.UpdatedAt = types.Null[string]()
+	}
+	*v = ShareNetworkSubnet(value)
+	v.normalize()
+	return nil
+}
+
 type ShareType struct {
 	Description             *types.Nullable[types.ProtectedValue] `json:"description,omitempty"`
 	ExtraSpecs              *types.ProtectedJSON                  `json:"extra_specs,omitempty"`

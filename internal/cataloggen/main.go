@@ -38,6 +38,7 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"file-storage-manila GET /share-networks/detail":                   "filestorage.v2_73.networks.list",
 	"file-storage-manila-allow POST /shares/{share_id}/action":         "filestorage.v2_73.shares.allow",
 	"file-storage-manila-deny POST /shares/{share_id}/action":          "filestorage.v2_73.shares.deny",
 	"file-storage-manila-extend POST /shares/{share_id}/action":        "filestorage.v2_73.shares.extend",

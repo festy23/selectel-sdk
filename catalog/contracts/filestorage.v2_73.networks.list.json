@@ -1,0 +1,47 @@
+{
+  "operation_id": "filestorage.v2_73.networks.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/share-networks/detail",
+    "mapping": "NetworkFilters name~/description~ substring selectors with validUTF8; all_tenants/project_id cross-scope variants excluded. limit/offset paging compiled from pinned controller/common.limited, projectless route2.60+, explicit2.73header."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Generated ShareNetwork and nested subnet metadata match versioned pinned view at2.73; obsolete pre2.51 flat Neutron fields excluded in favor of nested share_network_subnets. Explicit null vsmissing preserved, including protected description/CIDR/gateway. Every row checks project_id equals caller before assigning exact root share_network ref; no inferred Neutron ancestor or childref. Native timestamps without timezone preserved as source strings.",
+    "sensitive_fields": [
+      "description",
+      "share_network_subnets.cidr",
+      "share_network_subnets.gateway"
+    ]
+  },
+  "errors": {
+    "mapping": "shared sanitized HTTP status taxonomy, no raw provider response diagnostics; bounded retries for read"
+  },
+  "pagination": {
+    "kind": "offset",
+    "proof": "pinned manila/api/v2/share_networks.py _get_share_networks calls common.limited offset slicing even though APIreference omits pagination",
+    "end_rule": "only empty sourcepage; advance offset by receivedrowcount, not requestedsize; server clamps itslimit independently",
+    "bounds": "shared CollectionTimeout/MaxItems/MaxPages and contract/scope/endpoint/semantic cursor; earlier successful pages retained on later error; no responseURL navigation"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "Firstparty CLI network list is mapped to compatible pinned2.73 protocol; no live or full deploymentinventory claim.",
+    "Name/description filters only; administrative cross-project and undocumented generic backend filters are outside firstparty subset.",
+    "No snapshot consistency or wait/readiness promise."
+  ]
+}
