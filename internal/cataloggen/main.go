@@ -21,6 +21,9 @@ type family struct {
 }
 
 var families = map[string]family{
+	"ai-router":                    {"ai_router", "v1", "protocol_specific", false},
+	"dedicated-inference":          {"dedicated_inference", "v1", "protocol_specific", false},
+	"token-factory":                {"token_factory", "v1", "protocol_specific", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},

@@ -10,7 +10,7 @@ Identity и Revision являются нечувствительными иде�
 секрета Revision меняется. Source, переданный в New, обязателен.
 
 Поддерживаются материалы IAM service-user password, externally issued IAM
-token с expires_at и binding, static token, S3 access/secret key и BasicAuth.
+token с expires_at и binding, static token, S3 access/secret key, BasicAuth и отдельный Bearer API key.
 Данные одного auth scheme не подставляются вместо другого.
 
 Loaders вызываются явно до New: `FromEnvironment(prefix)`,
@@ -20,7 +20,7 @@ Loaders вызываются явно до New: `FromEnvironment(prefix)`,
 
 Environment loader читает только имена с переданным непустым prefix:
 `ACCOUNT_ID`, `USERNAME`, `PASSWORD`, `PROJECT_ID`, `IAM_TOKEN`,
-`TOKEN_EXPIRES_AT`, `STATIC_TOKEN`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`,
+`TOKEN_EXPIRES_AT`, `STATIC_TOKEN`, `BEARER_TOKEN`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`,
 `BASIC_USER`, `BASIC_PASSWORD`. Суффикс добавляется к prefix без изменения.
 Profile loader читает только указанную запись JSON с теми же полями в
 snake_case; Keyring loader читает эту же структуру из указанной записи store.
@@ -46,12 +46,21 @@ IAM password может быть account-bound с отсутствующим pro
 | `static_token` | protected token, account binding | `X-Token` |
 | `s3_sigv4` | access key, secret key, optional session token, binding | SigV4 signing по контракту S3/Logs |
 | `basic` | user ID, password, binding | Basic authorization сервиса Метрики |
+| `bearer_token` | protected token, exact account/project binding | `Authorization: Bearer` только AI Router, Dedicated Inference, Token Factory |
 
 External token, static/S3/Basic binding является утверждением источника.
 SDK помечает его `caller_asserted`, если конкретный API не предоставляет
 документированный способ подтверждения. SDK не заявляет проверку project
 membership по непрозрачному ключу. Scope из ответа Keystone получает
 `provider_verified` после проверки ниже.
+
+Bearer использует `protocol_specific` только для `ai_router`,
+`dedicated_inference`, `token_factory`. Другие protocol-specific adapters
+остаются недоступными до lookup. Static/IAM token не подменяют API key.
+Optional `Material.ExpiresAt` для Bearer проверяется локально; истёкший key
+возвращает `unauthenticated` без HTTP. Binding остаётся `caller_asserted`: auth
+не подтверждает доступ к модели или preview. Loader выбирает только явно
+заданный `bearer_token` / `BEARER_TOKEN`; права не выводятся из других полей.
 
 ## Авторизация
 

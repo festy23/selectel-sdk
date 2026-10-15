@@ -72,6 +72,12 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			return out, idErr
 		}
 		out.Receipt = &types.Receipt{SchemaVersion: 1, CallID: id, OperationID: op.ID, Scope: in.Scope, Outcome: types.NotSent, Recovery: "unavailable", ResourceRefs: []types.ResourceRef{}}
+		// Reviewed PR97 overlap: local NotSent receipts retain the contract revision.
+		if r != nil {
+			if capability, e := r.catalog.Describe(op.ID); e == nil {
+				out.Receipt.ContractRevision = capability.ContractRevision
+			}
+		}
 	}
 	defer func() {
 		out.Metadata.ObservedAt = time.Now().UTC()
@@ -404,6 +410,11 @@ func authorizeHeader(req *http.Request, e *authEntry, op Operation, in Request) 
 		req.Header.Set("X-Auth-Token", string(e.token.Reveal()))
 	case credentials.StaticToken:
 		req.Header.Set("X-Token", string(e.material.Token.Reveal()))
+	case credentials.BearerToken:
+		if op.Auth != types.ProtocolSpecific || !aiBearerProtocol(op.Service) {
+			return types.NewError(types.CapabilityUnavailable)
+		}
+		req.Header.Set("Authorization", "Bearer "+string(e.material.Token.Reveal()))
 	case credentials.Basic:
 		req.SetBasicAuth(string(e.material.Username.Reveal()), string(e.material.Password.Reveal()))
 	case credentials.S3:

@@ -27,6 +27,7 @@ type record struct {
 	IAMToken       string `json:"iam_token"`
 	TokenExpiresAt string `json:"token_expires_at"`
 	StaticToken    string `json:"static_token"`
+	BearerToken    string `json:"bearer_token"`
 	S3AccessKey    string `json:"s3_access_key"`
 	S3SecretKey    string `json:"s3_secret_key"`
 	BasicUser      string `json:"basic_user"`
@@ -101,6 +102,8 @@ func (l *loader) Lookup(ctx context.Context, req types.AuthRequest) (Material, e
 		} else {
 			m.Scheme, m.Username, m.Password = IAMPassword, p(r.Username), p(r.Password)
 		}
+	case types.ProtocolSpecific:
+		m.Scheme, m.Token = BearerToken, p(r.BearerToken)
 	case types.StaticToken:
 		m.Scheme, m.Token = StaticToken, p(r.StaticToken)
 	case types.S3SigV4:
@@ -124,7 +127,7 @@ func FromEnvironment(prefix string) (Source, error) {
 		if err := ctx.Err(); err != nil {
 			return nil, err
 		}
-		r := record{AccountID: os.Getenv(prefix + "ACCOUNT_ID"), Username: os.Getenv(prefix + "USERNAME"), Password: os.Getenv(prefix + "PASSWORD"), ProjectID: os.Getenv(prefix + "PROJECT_ID"), IAMToken: os.Getenv(prefix + "IAM_TOKEN"), TokenExpiresAt: os.Getenv(prefix + "TOKEN_EXPIRES_AT"), StaticToken: os.Getenv(prefix + "STATIC_TOKEN"), S3AccessKey: os.Getenv(prefix + "S3_ACCESS_KEY"), S3SecretKey: os.Getenv(prefix + "S3_SECRET_KEY"), BasicUser: os.Getenv(prefix + "BASIC_USER"), BasicPassword: os.Getenv(prefix + "BASIC_PASSWORD")}
+		r := record{AccountID: os.Getenv(prefix + "ACCOUNT_ID"), Username: os.Getenv(prefix + "USERNAME"), Password: os.Getenv(prefix + "PASSWORD"), ProjectID: os.Getenv(prefix + "PROJECT_ID"), IAMToken: os.Getenv(prefix + "IAM_TOKEN"), TokenExpiresAt: os.Getenv(prefix + "TOKEN_EXPIRES_AT"), StaticToken: os.Getenv(prefix + "STATIC_TOKEN"), BearerToken: os.Getenv(prefix + "BEARER_TOKEN"), S3AccessKey: os.Getenv(prefix + "S3_ACCESS_KEY"), S3SecretKey: os.Getenv(prefix + "S3_SECRET_KEY"), BasicUser: os.Getenv(prefix + "BASIC_USER"), BasicPassword: os.Getenv(prefix + "BASIC_PASSWORD")}
 		return json.Marshal(r)
 	})
 }

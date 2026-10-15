@@ -4585,5 +4585,39 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "ai_router.v1.chat_completions.create": {
+    "go_method": "ai.RouterClient.Chat",
+    "input_type": "ai.ChatRequest",
+    "output_type": "ai.ChatCompletion",
+    "contract_ref": "contracts/ai_router.v1.chat_completions.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/source.go",
+      "credentials/loaders.go",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/protected.go",
+      "types/integer.go",
+      "go.mod",
+      "go.sum"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go"
+    ],
+    "evidence_ref": "ai_data_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/ai-router.json#/paths/~1chat~1completions/post",
+    "excluded_variants": [
+      "streaming",
+      "multimodal content",
+      "tools/prediction/reasoning/options beyond text messages",
+      "full upstream request/response surface"
+    ]
   }
 }
