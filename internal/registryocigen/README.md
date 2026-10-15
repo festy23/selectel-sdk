@@ -43,3 +43,7 @@ https://www.rfc-editor.org/rfc/rfc9110.txt for entity tags (8.8.3), explicit
 If-Match/If-None-Match (13.1.1/13.1.2), precedence (13.2) and rejection412.
 The RFC copyright/license notice is retained. This protocol source does not
 establish optional conditional HTTP support or atomicity on Selectel.
+
+OCI-Chunk-Min-Length advisory POST response metadata follows pinned
+`distribution-spec.md` chunked upload lines337–368. It does not enforce a final
+chunk minimum or establish live Selectel advertisement.

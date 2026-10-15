@@ -98,7 +98,7 @@ last equal to the last returned tag. Extensions, extra query and multiple Links
 are excluded. Invalid namespace/row/Link preserves an already validated bounded
 prefix and the original terminal error, without another request.
 
-Protocol-confirmed omissions retained under **#50**: optional chunk-min-length/other metadata; extended Link
+Protocol-confirmed omissions retained under **#50**: other optional metadata; extended Link
 syntax and additional content formats/algorithms. These are not described as
 provider-unsupported. In particular Put sends exactly one manifest mutation;
 subject/referrers fallback indexing uses explicit local preparation and caller-directed Get/Put stages, described below.
@@ -161,7 +161,7 @@ The additional requested-blob auth proof is accepted only for the compiled start
 operation with exactly one digest query value matching that ref; no general
 caller-controlled auth bypass or cross-origin trust is introduced.
 
-Confirmed remaining protocol work remains owned by #50: optional hints/metadata, extended Link forms and further
+Confirmed remaining protocol work remains owned by #50: other optional metadata, extended Link forms and further
 formats/algorithms. Selectel optional variant availability and actual realm/offload
 topology still require #74 evidence; #75 retains partial acceptance qualifications.
 
@@ -201,7 +201,7 @@ receipts recover without I/O. Protected session query is saved separately by the
 caller for explicit continuation; receipt refs do not reconstruct it.
 
 Current Selectel mount availability is still unknown; this explicit protocol
-variant does not claim otherwise. Optional hints,
+variant does not claim otherwise. Other optional metadata,
 extended Links and additional formats remain #50 work; topology/availability #74
 and final partial acceptance #75 remain open. All 15 selected bindings stay partial.
 
@@ -251,7 +251,7 @@ plus common revision/view bounds. MaxItems truncation yields replay+skip rather
 than false completeness; malformed rows or unsafe Links preserve only a bounded
 validated prefix and the original error without extra I/O. No Link means terminal
 according to the source contract. MaxPages/collection budget/body limit and normal
-safe-read retries/cancellation apply. Further protocol work remains hints/metadata, extended Tag Link
+safe-read retries/cancellation apply. Further protocol work remains other optional metadata, extended Tag Link
 forms and additional content formats/algorithms (#50); source topology/availability
 #74 and P1 acceptance #75 remain open. No live requests were made.
 
@@ -338,3 +338,25 @@ not prove that a particular Selectel deployment enforced the condition or provid
 an atomic read-modify-write. Availability/concurrency evidence remains owned #74
 and acceptance #75. There is no automatic retry, conflict resolution or fallback;
 an unknown outcome still requires exact-reference observation without replay.
+
+
+## Advisory upload chunk minimum
+
+The pinned OCI1.1.1 chunked-upload source (POST response and PATCH guidance)
+defines optional `OCI-Chunk-Min-Length`. Every session-producing POST variant
+(Start, Monolithic202, Mount202) exposes `UploadSession.MinChunkLength` as an
+optional exact nonnegative Integer. Leading zeroes are numerically normalized;
+arbitrary precision is retained. Missing means nil, including on registries that
+do not advertise a chunk minimum. The header obeys StructuredLimit and a single
+value/digits-only contract. Invalid metadata returns a structured protocol/limit
+error after retaining the trustworthy session reference and Accepted receipt.
+
+Status and Append carry an independent copy of the original session hint while
+updating the source Location/offset. This is caller-held advisory metadata, not
+part of resource identity, authority or receipt recovery. Later responses are not
+assumed to advertise a new minimum. The SDK neither partitions nor combines
+caller bytes and does not reject small chunks: source recommends minimum size
+with SHOULD and expressly permits a final chunk of any size. The caller decides
+chunk boundaries and retains normal receipts/errors; no additional HTTP or replay
+is introduced. Actual Selectel hint availability remains evidence #74, acceptance
+#75; all15 remote bindings remain partial.

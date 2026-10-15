@@ -476,7 +476,16 @@
         ],
         "responses": {
           "202": {
-            "description": "source status 202"
+            "description": "source status 202",
+            "headers": {
+              "OCI-Chunk-Min-Length": {
+                "description": "Optional minimum recommended nonfinal chunk bytes; exact nonnegative integer, OCI1.1.1 chunked uploads",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
           },
           "400": {
             "description": "source status 400"

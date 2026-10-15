@@ -2444,3 +2444,145 @@ func TestManifestConditionByteBoundBeforeIO(t *testing.T) {
 		t.Fatal(out, e, calls, lookups)
 	}
 }
+
+func TestUploadMinimumChunkHintPreservesExactMetadataAndSession(t *testing.T) {
+	for _, variant := range []string{"start", "monolithic", "mount"} {
+		for _, hint := range []string{"", "0", "00012", "184467440737095516160000", "-1", "1.5", "bad"} {
+			t.Run(variant+hint, func(t *testing.T) {
+				calls := 0
+				_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+					if r.URL.Path == "/v2/" {
+						return response(200, ""), nil
+					}
+					calls++
+					if r.Method == "POST" {
+						out := response(202, "")
+						out.Header.Set("Location", "/v2/reg/repo/blobs/uploads/session?_state=protected")
+						if hint != "" {
+							out.Header.Set("OCI-Chunk-Min-Length", hint)
+						}
+						return out, nil
+					}
+					out := response(204, "")
+					out.Header.Set("Location", "/v2/reg/repo/blobs/uploads/session?_state=next")
+					out.Header.Set("Range", "0-0")
+					return out, nil
+				})
+				repo, _ := c.Repository("reg", "repo")
+				digest, _ := registrydata.ParseDigest("sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+				var session registrydata.UploadSession
+				var receipt *types.Receipt
+				var err error
+				switch variant {
+				case "start":
+					out, e := c.Uploads.Start(context.Background(), repo, types.CallOptions{})
+					session, receipt, err = out.Data, out.Receipt, e
+				case "monolithic":
+					out, e := c.Uploads.Monolithic(context.Background(), repo, digest, strings.NewReader(""), 0, types.CallOptions{})
+					receipt, err = out.Receipt, e
+					if out.Data.Session != nil {
+						session = *out.Data.Session
+					}
+				case "mount":
+					out, e := c.Uploads.Mount(context.Background(), repo, digest, registrydata.MountOptions{}, types.CallOptions{})
+					receipt, err = out.Receipt, e
+					if out.Data.Session != nil {
+						session = *out.Data.Session
+					}
+				}
+				if receipt == nil || receipt.Outcome != types.Accepted || session.Ref.ID != "session" || calls != 1 {
+					t.Fatal(session, receipt, err, calls)
+				}
+				if hint == "-1" || hint == "1.5" || hint == "bad" {
+					if types.ErrorCode(err) != types.ProtocolError || len(receipt.ResourceRefs) == 0 {
+						t.Fatal(err, receipt)
+					}
+					return
+				}
+				if err != nil {
+					t.Fatal(err)
+				}
+				if hint == "" {
+					if session.MinChunkLength != nil {
+						t.Fatal(session)
+					}
+					return
+				}
+				canonical := strings.TrimLeft(hint, "0")
+				if canonical == "" {
+					canonical = "0"
+				}
+				want, _ := types.ParseInteger(canonical)
+				if session.MinChunkLength == nil || session.MinChunkLength.String() != want.String() {
+					t.Fatal(session)
+				}
+				next, e := c.Uploads.Status(context.Background(), session, types.CallOptions{})
+				if e != nil || next.Data.MinChunkLength == nil || next.Data.MinChunkLength.String() != want.String() || calls != 2 {
+					t.Fatal(next, e, calls)
+				}
+			})
+		}
+	}
+}
+
+func TestUploadHintHeaderFailureKeepsAcceptedIdentity(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		values []string
+		code   types.Code
+	}{{"empty", []string{""}, types.ProtocolError}, {"duplicate", []string{"12", "12"}, types.ProtocolError}, {"bounded", []string{strings.Repeat("1", 257)}, types.ResponseLimit}} {
+		t.Run(test.name, func(t *testing.T) {
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				calls++
+				out := response(202, "")
+				out.Header.Set("Location", "/v2/reg/repo/blobs/uploads/session")
+				out.Header["Oci-Chunk-Min-Length"] = test.values
+				return out, nil
+			}, func(cfg *sdk.Config) { cfg.MaxJSONBytes = 256 })
+			repo, _ := c.Repository("reg", "repo")
+			out, e := c.Uploads.Start(context.Background(), repo, types.CallOptions{})
+			if types.ErrorCode(e) != test.code || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Data.Ref.ID != "session" || len(out.Receipt.ResourceRefs) == 0 || out.Receipt.ResourceRefs[len(out.Receipt.ResourceRefs)-1].ID != "session" {
+				t.Fatal(out, e, calls)
+			}
+		})
+	}
+}
+func TestUploadHintIsAdvisoryAndAppendCarriesSnapshot(t *testing.T) {
+	calls := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		calls++
+		out := response(202, "")
+		out.Header.Set("Location", "/v2/reg/repo/blobs/uploads/session")
+		if r.Method == "POST" {
+			out.Header.Set("OCI-Chunk-Min-Length", "1000")
+		} else {
+			body, _ := io.ReadAll(r.Body)
+			if r.Method != "PATCH" || string(body) != "x" {
+				t.Fatal(r.Method, string(body))
+			}
+			out.Header.Set("Range", "0-0")
+		}
+		return out, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	initial, e := c.Uploads.Start(context.Background(), repo, types.CallOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	next, e := c.Uploads.Append(context.Background(), initial.Data, strings.NewReader("x"), 1, types.CallOptions{})
+	if e != nil || calls != 2 || next.Data.MinChunkLength == nil || next.Data.MinChunkLength.String() != "1000" || next.Data.Offset != 1 || next.Receipt == nil || next.Receipt.Outcome != types.Accepted {
+		t.Fatal(next, e, calls)
+	}
+	original, _ := types.ParseInteger("7")
+	*initial.Data.MinChunkLength = original
+	if next.Data.MinChunkLength.String() != "1000" {
+		t.Fatal("hint alias")
+	}
+}

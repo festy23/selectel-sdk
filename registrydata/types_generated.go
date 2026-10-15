@@ -92,9 +92,10 @@ type MonolithicUploadResult struct {
 	Session *UploadSession   `json:"session,omitempty"`
 }
 type UploadSession struct {
-	Ref      types.ResourceRef    `json:"ref"`
-	Location types.ProtectedValue `json:"location"`
-	Offset   uint64               `json:"offset"`
+	MinChunkLength *types.Integer       `json:"min_chunk_length,omitempty"`
+	Ref            types.ResourceRef    `json:"ref"`
+	Location       types.ProtectedValue `json:"location"`
+	Offset         uint64               `json:"offset"`
 }
 type BlobInfo struct {
 	Address        types.ResourceRef `json:"address"`

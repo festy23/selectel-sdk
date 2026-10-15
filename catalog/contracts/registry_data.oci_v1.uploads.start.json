@@ -15,7 +15,7 @@
     "body": "Start has no body. Explicit Monolithic variant has digest query, Content-Type application/octet-stream and exact Content-Length caller stream, compiled preflight before body. No implicit PUT fallback or replay. Mount has no body; mount exact digest and optional from typed same-endpoint/project source repository. Omitted from permits provider-selected cross-mount by digest without SDK lookup."
   },
   "response": {
-    "mapping": "Start requires202 exact session Location. Explicit Monolithic accepts201 exact requested blob Location plus local digest/length verification, or202 exact session Location with no blob completion/proof; union result requires caller-directed next action. Unknown retains requested blob address only, never creation proof. Mount201 returns protected exact requested/canonical blob Location with no byte verification; Docker-Content-Digest may differ and is retained as unverified metadata. Mount202 returns protected session only, no upload fallback.",
+    "mapping": "Start requires202 exact session Location. Explicit Monolithic accepts201 exact requested blob Location plus local digest/length verification, or202 exact session Location with no blob completion/proof; union result requires caller-directed next action. Unknown retains requested blob address only, never creation proof. Mount201 returns protected exact requested/canonical blob Location with no byte verification; Docker-Content-Digest may differ and is retained as unverified metadata. Mount202 returns protected session only, no upload fallback. All session-producing202 POST variants expose optional OCI-Chunk-Min-Length as bounded exact nonnegative Integer metadata, not a chunk enforcement rule. Pinned source SHOULD recommendation exempts final chunk. Missing remains nil, malformed/repeated header returns structured error after retaining accepted session identity/receipt. Subsequent Status/Append carry original hint without assuming a new response advertised it.",
     "sensitive_fields": [
       "location"
     ]
@@ -40,7 +40,7 @@
   "compatibility": "same-origin realm/query restrictions not a claim about undocumented Selectel topology; optional deletion/server availability untested; inventory incomplete",
   "remaining": {
     "confirmed_protocol_not_in_this_subset": [
-      "OCI optional chunk-min-length hint and additional response metadata",
+      "Additional optional response metadata",
       "Extended/multiple Link syntax; additional image formats/digest algorithms"
     ],
     "selectel_source_unknown": [

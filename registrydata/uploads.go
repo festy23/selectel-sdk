@@ -77,7 +77,7 @@ func (c *Uploads) Start(ctx context.Context, repo types.ResourceRef, o types.Cal
 		if e != nil {
 			return core.Decoded[UploadSession]{}, e
 		}
-		out, e := c.uploadLocation(raw, repo, nil)
+		out, e := c.startedSession(h, raw, repo)
 		decoded := core.Decoded[UploadSession]{Data: out}
 		if out.Ref.ID != "" {
 			decoded.Refs = []types.ResourceRef{out.Ref}
@@ -118,6 +118,13 @@ func (c *Uploads) sessionResponse(h http.Header, session UploadSession) (UploadS
 	out, e := c.uploadLocation(raw, *session.Ref.Parent, &session.Ref)
 	if e != nil {
 		return out, e
+	}
+	if session.MinChunkLength != nil {
+		hint, parseError := types.ParseInteger(session.MinChunkLength.String())
+		if parseError != nil {
+			return out, types.NewError(types.InvalidArgument)
+		}
+		out.MinChunkLength = &hint
 	}
 	raw, e = header(h, "Range", c.client.runtime.StructuredLimit())
 	if e != nil {
@@ -311,7 +318,7 @@ func (c *Uploads) Monolithic(ctx context.Context, repo types.ResourceRef, digest
 			return core.Decoded[MonolithicUploadResult]{}, e
 		}
 		if status == 202 {
-			session, e := c.uploadLocation(location, repo, nil)
+			session, e := c.startedSession(h, location, repo)
 			out := core.Decoded[MonolithicUploadResult]{}
 			if session.Ref.ID != "" {
 				out.Data.Session = &session
@@ -394,7 +401,7 @@ func (c *Uploads) Mount(ctx context.Context, dest types.ResourceRef, digest Dige
 			return core.Decoded[MountResult]{}, e
 		}
 		if status == 202 {
-			session, e := c.uploadLocation(location, dest, nil)
+			session, e := c.startedSession(h, location, dest)
 			out := core.Decoded[MountResult]{}
 			if session.Ref.ID != "" {
 				out.Data.Session = &session
@@ -435,4 +442,37 @@ func (c *Uploads) Mount(ctx context.Context, dest types.ResourceRef, digest Dige
 		blob := MountedBlob{Address: address, RequestedDigest: digest, CanonicalDigest: stated, Location: types.Protect([]byte(target.String()))}
 		return core.Decoded[MountResult]{Data: MountResult{Blob: &blob}, Refs: []types.ResourceRef{address}}, nil
 	})
+}
+
+// startedSession retains trusted identity before optional advisory metadata.
+func (c *Uploads) startedSession(h http.Header, location string, repo types.ResourceRef) (UploadSession, error) {
+	out, e := c.uploadLocation(location, repo, nil)
+	if e != nil {
+		return out, e
+	}
+	raw, e := header(h, "OCI-Chunk-Min-Length", c.client.runtime.StructuredLimit())
+	if e != nil {
+		return out, e
+	}
+	if len(h.Values("OCI-Chunk-Min-Length")) == 0 {
+		return out, nil
+	}
+	if raw == "" {
+		return out, types.NewError(types.ProtocolError)
+	}
+	for _, b := range []byte(raw) {
+		if b < '0' || b > '9' {
+			return out, types.NewError(types.ProtocolError)
+		}
+	}
+	canonical := strings.TrimLeft(raw, "0")
+	if canonical == "" {
+		canonical = "0"
+	}
+	value, e := types.ParseInteger(canonical)
+	if e != nil {
+		return out, types.NewError(types.ProtocolError)
+	}
+	out.MinChunkLength = &value
+	return out, nil
 }

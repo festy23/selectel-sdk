@@ -102,6 +102,9 @@ for method,operation,go,inp,out,success,rejected,locator in operations:
   contract['response']['mapping']+=' Optional RFC9110 ETag header is protected opaque metadata (strong/weak syntax), not content digest or atomicity evidence; absent remains nil, repeated/malformed/bounded header failure is structured.'
   contract['response']['sensitive_fields'].append('etag')
   projection['paths'][wirepath][method]['responses']['200']['headers']={'ETag':{'description':'Optional opaque protected entity-tag, RFC9110 section8.8.3','schema':{'type':'string'}}}
+ if operation=='registry_data.oci_v1.uploads.start':
+  contract['response']['mapping']+=' All session-producing202 POST variants expose optional OCI-Chunk-Min-Length as bounded exact nonnegative Integer metadata, not a chunk enforcement rule. Pinned source SHOULD recommendation exempts final chunk. Missing remains nil, malformed/repeated header returns structured error after retaining accepted session identity/receipt. Subsequent Status/Append carry original hint without assuming a new response advertised it.'
+  projection['paths'][wirepath][method]['responses']['202']['headers']={'OCI-Chunk-Min-Length':{'description':'Optional minimum recommended nonfinal chunk bytes; exact nonnegative integer, OCI1.1.1 chunked uploads','schema':{'type':'integer','minimum':0}}}
  if operation=='registry_data.oci_v1.manifests.replace':
   contract['request']['mapping']+=' OCI subject descriptor is validated only for OCI image/index; unsupported subject algorithm is capability_unavailable before I/O. Payload bytes remain unchanged. Explicit local FallbackTag/PrepareTagIndex helpers perform no HTTP/credential lookup and emit source-only new descriptor fields, verify content digest/subject and same-repository snapshot, copy annotations and artifactType/config fallback, bound bytes/count and suppress duplicates or remove exact digest entries.'
   contract['response']['mapping']+=' Typed RequestedSubject/AcknowledgedSubject retain OCI-Subject correspondence. Absent acknowledgement sets NeedsTagFallback only on accepted response; malformed/mismatched acknowledgement retains Accepted receipt/error, never automatic lookup/fallback/replay. Pure prepared index includes informational BaseDigest, not a precondition or atomicity proof.'
@@ -111,7 +114,7 @@ for method,operation,go,inp,out,success,rejected,locator in operations:
  projection['paths'][wirepath][method]['security']=[{'basicAuth':[]},{'bearerAuth':[]}]
  contract['recovery']='Root Resource/Resume validate exact scope, generation, parents, endpoint and receipt operation/revision/effect. Known no-ref/multi-ref receipts Recover conclusive with no I/O; unknown content-address receipts observe exact HEAD only, never mutation replay/adoption/creation proof. Start/Append/Cancel receipt alone lacks protected Location/query: unknown session Status/Recover unavailable; Finalize retains caller-requested blob digest address before I/O and observes only exact HEAD without creation proof; caller-held UploadSession supports explicit exact Status offset observation, not mutation outcome proof. No wait goals inferred.'
  contract['remaining']={
-  'confirmed_protocol_not_in_this_subset':['OCI optional chunk-min-length hint and additional response metadata','Extended/multiple Link syntax; additional image formats/digest algorithms'],
+  'confirmed_protocol_not_in_this_subset':['Additional optional response metadata','Extended/multiple Link syntax; additional image formats/digest algorithms'],
   'selectel_source_unknown':['actual Bearer realm/service topology and custom query requirements','cross-origin upload/download offload trust policy','availability of optional tag/blob deletion, referrers, mount/monolithic POST, native cancellation'],
   'owners':{'implementation':'#50','primary_evidence':'#74','P1_acceptance':'#75'}}
  (R/'catalog/contracts'/f'{operation}.json').write_text(json.dumps(contract,indent=2)+'\n')
@@ -137,7 +140,7 @@ type MountOptions struct{From *types.ResourceRef `json:"from,omitempty"`}
 type MountedBlob struct{Address types.ResourceRef `json:"address"`;RequestedDigest Digest `json:"requested_digest"`;CanonicalDigest *Digest `json:"canonical_digest,omitempty"`;DigestVerified bool `json:"digest_verified"`;Location types.ProtectedValue `json:"location"`}
 type MountResult struct{Blob *MountedBlob `json:"blob,omitempty"`;Session *UploadSession `json:"session,omitempty"`}
 type MonolithicUploadResult struct{Blob *BlobWriteResult `json:"blob,omitempty"`;Session *UploadSession `json:"session,omitempty"`}
-type UploadSession struct{Ref types.ResourceRef `json:"ref"`;Location types.ProtectedValue `json:"location"`;Offset uint64 `json:"offset"`}
+type UploadSession struct{MinChunkLength *types.Integer `json:"min_chunk_length,omitempty"`;Ref types.ResourceRef `json:"ref"`;Location types.ProtectedValue `json:"location"`;Offset uint64 `json:"offset"`}
 type BlobInfo struct{Address types.ResourceRef `json:"address"`;Digest *Digest `json:"digest,omitempty"`;DigestVerified bool `json:"digest_verified"`;Size *types.Integer `json:"size,omitempty"`;MediaType *string `json:"media_type,omitempty"`}
 type BlobDownloadOptions struct{MaxBytes uint64 `json:"max_bytes"`;Offset uint64 `json:"offset,omitempty"`;Prefix io.Reader `json:"-"`}
 type ContentRange struct{Start types.Integer `json:"start"`;End types.Integer `json:"end"`;Total *types.Integer `json:"total,omitempty"`}
