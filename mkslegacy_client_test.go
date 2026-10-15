@@ -320,3 +320,159 @@ func TestMKSLegacyRotateCertificatesIsAcceptedWithoutInventedTask(t *testing.T) 
 		t.Fatalf("rotate %+v %v", out, e)
 	}
 }
+
+func TestMKSLegacyNodegroupListKeepsExplicitClusterAndNativeNodeParents(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/v1/clusters/legacy-cluster/nodegroups" {
+			t.Fatalf("nodegroups %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"nodegroups":[{"id":"group-1","cluster_id":"legacy-cluster","nodes":[{"id":"node-1","nodegroup_id":"group-1"}]}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	out, e := v.MKSLegacy().ListNodegroups(context.Background(), ref, pagination.Options{})
+	if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.Parent == nil || *out.Items[0].Ref.Parent != ref || len(out.Items[0].Nodes) != 1 || out.Items[0].Nodes[0].Ref == nil || out.Items[0].Nodes[0].Ref.Parent == nil || out.Items[0].Nodes[0].Ref.Parent.ID != "group-1" {
+		t.Fatalf("nodegroups %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyNodegroupGetChecksAvailableAncestorIdentity(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/v1/clusters/legacy-cluster/nodegroups/group-1" {
+			t.Fatalf("group %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"nodegroup":{"id":"group-1","cluster_id":"foreign-cluster","nodes":[]}}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	group := cluster
+	group.ID = "group-1"
+	group.Kind = "nodegroup"
+	group.Parent = &cluster
+	out, e := v.MKSLegacy().GetNodegroup(context.Background(), group, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Data.Ref != nil {
+		t.Fatalf("group %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyNodegroupCreateAcknowledgementNeverInfersNewGroup(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v1/clusters/legacy-cluster/nodegroups" || !strings.Contains(string(raw), `"count":1`) || !strings.Contains(string(raw), `"enable_autoscale":false`) {
+			t.Fatalf("create group %s %s", r.URL, raw)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	count, _ := types.ParseInteger("1")
+	zone := "ru-9a"
+	enabled := false
+	out, e := v.MKSLegacy().CreateNodegroup(context.Background(), ref, mkslegacy.NodegroupCreate{Count: &count, AvailabilityZone: &zone, EnableAutoscale: &enabled}, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref || out.Receipt.ProviderOperationRef != nil {
+		t.Fatalf("create group %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyNodegroupUpdateRetainsExactParentOnAcceptedMalformedBody(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "PUT" || r.URL.Path != "/v1/clusters/legacy-cluster/nodegroups/group-1" || !strings.Contains(string(raw), `"enable_autoscale":false`) {
+			t.Fatalf("update group %s %s", r.URL, raw)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"unexpected":"synthetic-private-body"}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	group := cluster
+	group.ID = "group-1"
+	group.Kind = "nodegroup"
+	group.Parent = &cluster
+	enabled := false
+	out, e := v.MKSLegacy().UpdateNodegroup(context.Background(), group, mkslegacy.NodegroupUpdate{EnableAutoscale: &enabled}, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].Parent == nil || out.Receipt.ResourceRefs[0].Parent.ID != "legacy-cluster" {
+		t.Fatalf("update group %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyNodegroupDeleteRejectsForeignAncestorsBeforeIO(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) { calls++; return nil, io.ErrUnexpectedEOF })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "foreign-service", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	group := cluster
+	group.Service = "mks"
+	group.ID = "group-1"
+	group.Kind = "nodegroup"
+	group.Parent = &cluster
+	out, e := v.MKSLegacy().DeleteNodegroup(context.Background(), group, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.ContractRevision == "" || calls != 0 {
+		t.Fatalf("ancestor %+v %v calls%d", out, e, calls)
+	}
+	cluster.Service = "mks"
+	cluster.Parent = &cluster
+	_, e = v.MKSLegacy().DeleteNodegroup(context.Background(), group, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument || calls != 0 {
+		t.Fatalf("cycle %v calls%d", e, calls)
+	}
+}
+
+func TestMKSLegacyNodegroupResizePreservesExactDesiredAmount(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v1/clusters/legacy-cluster/nodegroups/group-1/resize" || string(raw) != `{"nodegroup":{"desired":9007199254740993}}` {
+			t.Fatalf("resize %s %s", r.URL, raw)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	group := cluster
+	group.ID = "group-1"
+	group.Kind = "nodegroup"
+	group.Parent = &cluster
+	desired, _ := types.ParseInteger("9007199254740993")
+	out, e := v.MKSLegacy().ResizeNodegroup(context.Background(), group, desired, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 {
+		t.Fatalf("resize %+v %v", out, e)
+	}
+}

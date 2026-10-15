@@ -3,7 +3,7 @@
 `Project(id).Location(region,pool).MKSLegacy()` selects MKS generation `v1`.
 It does not convert v2 refs or fall back between generations. Source inventory
 contains28 operations from the current published [legacy schema](https://docs.selectel.ru/api/managed-kubernetes-legacy.json).
-The current slice implements eleven operations: cluster list/get/create/update/delete, minor/patch upgrade, certificate rotation and three configuration reads; the remaining17 operations
+The current slice implements seventeen operations: eight cluster operations, three configuration reads and six nodegroup operations; the remaining11 operations
 are unimplemented. Whole legacy inventory including DNS/storage is incomplete,
 coverage_ratio=null; published sources are not live deployment verification.
 
@@ -56,3 +56,10 @@ foreign/malformed responses. RotateCertificates204 is only acceptance and does
 not invent a task. Optional false update fields are preserved. Generated opaque
 source-object fields reject scalar/null shapes rather than accepting arbitrary
 ProtectedJSON as a schema object.
+
+Nodegroup list/get bind explicit cluster parents and native nested nodes; all
+available ancestor IDs are checked. CreateNodegroup204 yields no new group ID,
+so only caller cluster anchor is retained. Update/delete/resize retain exact
+group+cluster hierarchy; desired size is exact Integer without rounding. Cyclic
+or foreign service/generation/endpoint parent chains refuse before I/O. Legacy
+node resource paths omit the v2 /nodes segment, and no conversion is inferred.

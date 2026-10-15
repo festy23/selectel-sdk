@@ -358,6 +358,79 @@ func (v *KubernetesOptionsView) normalize() {
 	}
 }
 
+type Nodegroup struct {
+	AutoscaleMaxNodes         *types.Integer     `json:"autoscale_max_nodes,omitempty"`
+	AutoscaleMinNodes         *types.Integer     `json:"autoscale_min_nodes,omitempty"`
+	AvailabilityZone          *string            `json:"availability_zone,omitempty"`
+	AvailableAdditionalInfo   map[string]bool    `json:"available_additional_info,omitzero"`
+	ClusterID                 *string            `json:"cluster_id,omitempty"`
+	CreatedAt                 *time.Time         `json:"created_at,omitempty"`
+	EnableAutoscale           *bool              `json:"enable_autoscale,omitempty"`
+	FlavorID                  *string            `json:"flavor_id,omitempty"`
+	ID                        *string            `json:"id,omitempty"`
+	InstallNvidiaDevicePlugin *bool              `json:"install_nvidia_device_plugin,omitempty"`
+	Labels                    map[string]string  `json:"labels,omitzero"`
+	LocalVolume               *bool              `json:"local_volume,omitempty"`
+	NodegroupType             *string            `json:"nodegroup_type,omitempty"`
+	Nodes                     []Node             `json:"nodes,omitzero"`
+	Preemptible               *bool              `json:"preemptible,omitempty"`
+	Status                    *string            `json:"status,omitempty"`
+	Taints                    []NodegroupTaint   `json:"taints,omitzero"`
+	UpdatedAt                 *time.Time         `json:"updated_at,omitempty"`
+	VolumeGb                  *types.Integer     `json:"volume_gb,omitempty"`
+	VolumeType                *string            `json:"volume_type,omitempty"`
+	Ref                       *types.ResourceRef `json:"ref,omitempty"`
+}
+
+func (v Nodegroup) Validate() error {
+	for _, item := range v.Nodes {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.Taints {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *Nodegroup) normalize() {
+	if v.CreatedAt != nil {
+		instant := v.CreatedAt.UTC()
+		v.CreatedAt = &instant
+	}
+	for i := range v.Nodes {
+		v.Nodes[i].normalize()
+	}
+	for i := range v.Taints {
+		v.Taints[i].normalize()
+	}
+	if v.UpdatedAt != nil {
+		instant := v.UpdatedAt.UTC()
+		v.UpdatedAt = &instant
+	}
+}
+func (v *Nodegroup) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire Nodegroup
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = Nodegroup(value)
+	v.normalize()
+	return nil
+}
+
 type NodegroupCreate struct {
 	AffinityPolicy            *string               `json:"affinity_policy,omitempty"`
 	AutoscaleMaxNodes         *types.Integer        `json:"autoscale_max_nodes,omitempty"`
@@ -396,6 +469,79 @@ func (v *NodegroupCreate) normalize() {
 	}
 }
 
+type DetailedNodegroup struct {
+	AutoscaleMaxNodes         *types.Integer        `json:"autoscale_max_nodes,omitempty"`
+	AutoscaleMinNodes         *types.Integer        `json:"autoscale_min_nodes,omitempty"`
+	AvailabilityZone          *string               `json:"availability_zone,omitempty"`
+	ClusterID                 *string               `json:"cluster_id,omitempty"`
+	CreatedAt                 *time.Time            `json:"created_at,omitempty"`
+	EnableAutoscale           *bool                 `json:"enable_autoscale,omitempty"`
+	FlavorID                  *string               `json:"flavor_id,omitempty"`
+	ID                        *string               `json:"id,omitempty"`
+	InstallNvidiaDevicePlugin *bool                 `json:"install_nvidia_device_plugin,omitempty"`
+	Labels                    map[string]string     `json:"labels,omitzero"`
+	LocalVolume               *bool                 `json:"local_volume,omitempty"`
+	NodegroupType             *string               `json:"nodegroup_type,omitempty"`
+	Nodes                     []Node                `json:"nodes,omitzero"`
+	Preemptible               *bool                 `json:"preemptible,omitempty"`
+	Status                    *string               `json:"status,omitempty"`
+	Taints                    []NodegroupTaint      `json:"taints,omitzero"`
+	UpdatedAt                 *time.Time            `json:"updated_at,omitempty"`
+	UserData                  *types.ProtectedValue `json:"user_data,omitempty"`
+	VolumeGb                  *types.Integer        `json:"volume_gb,omitempty"`
+	VolumeType                *string               `json:"volume_type,omitempty"`
+	Ref                       *types.ResourceRef    `json:"ref,omitempty"`
+}
+
+func (v DetailedNodegroup) Validate() error {
+	for _, item := range v.Nodes {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.Taints {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *DetailedNodegroup) normalize() {
+	if v.CreatedAt != nil {
+		instant := v.CreatedAt.UTC()
+		v.CreatedAt = &instant
+	}
+	for i := range v.Nodes {
+		v.Nodes[i].normalize()
+	}
+	for i := range v.Taints {
+		v.Taints[i].normalize()
+	}
+	if v.UpdatedAt != nil {
+		instant := v.UpdatedAt.UTC()
+		v.UpdatedAt = &instant
+	}
+}
+func (v *DetailedNodegroup) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DetailedNodegroup
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DetailedNodegroup(value)
+	v.normalize()
+	return nil
+}
+
 type NodegroupTaint struct {
 	Effect *string `json:"effect,omitempty"`
 	Key    *string `json:"key,omitempty"`
@@ -406,6 +552,47 @@ func (v NodegroupTaint) Validate() error {
 	return nil
 }
 func (v *NodegroupTaint) normalize() {
+}
+
+type NodegroupUpdate struct {
+	AutoscaleMaxNodes *types.Integer    `json:"autoscale_max_nodes,omitempty"`
+	AutoscaleMinNodes *types.Integer    `json:"autoscale_min_nodes,omitempty"`
+	EnableAutoscale   *bool             `json:"enable_autoscale,omitempty"`
+	Labels            map[string]string `json:"labels,omitzero"`
+	Taints            []NodegroupTaint  `json:"taints,omitzero"`
+}
+
+func (v NodegroupUpdate) Validate() error {
+	for _, item := range v.Taints {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *NodegroupUpdate) normalize() {
+	for i := range v.Taints {
+		v.Taints[i].normalize()
+	}
+}
+func (v *NodegroupUpdate) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire NodegroupUpdate
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = NodegroupUpdate(value)
+	v.normalize()
+	return nil
 }
 
 type OIDC struct {
@@ -632,6 +819,50 @@ func (v *SwaggerKubernetesOptions) normalize() {
 	if v.OIDC != nil {
 		v.OIDC.normalize()
 	}
+}
+
+type Node struct {
+	CreatedAt   *time.Time         `json:"created_at,omitempty"`
+	Hostname    *string            `json:"hostname,omitempty"`
+	ID          *string            `json:"id,omitempty"`
+	IP          *string            `json:"ip,omitempty"`
+	NodegroupID *string            `json:"nodegroup_id,omitempty"`
+	OsServerID  *string            `json:"os_server_id,omitempty"`
+	UpdatedAt   *time.Time         `json:"updated_at,omitempty"`
+	Ref         *types.ResourceRef `json:"ref,omitempty"`
+}
+
+func (v Node) Validate() error {
+	return nil
+}
+func (v *Node) normalize() {
+	if v.CreatedAt != nil {
+		instant := v.CreatedAt.UTC()
+		v.CreatedAt = &instant
+	}
+	if v.UpdatedAt != nil {
+		instant := v.UpdatedAt.UTC()
+		v.UpdatedAt = &instant
+	}
+}
+func (v *Node) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire Node
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = Node(value)
+	v.normalize()
+	return nil
 }
 
 type SwaggerOIDC struct {
