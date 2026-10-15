@@ -172,6 +172,18 @@
         },
         "x-native-source": "api_op_ListObjectsV2.go.txt"
       }
+    },
+    "/PresignPostObject": {
+      "post": {
+        "operationId": "PresignPostObject",
+        "x-operation-locator": "POST /{bucket}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "presign_post.go.txt"
+      }
     }
   },
   "x-source-uri": "https://docs.selectel.ru/api/object-storage-s3/",
@@ -191,6 +203,7 @@
     "api_op_ListObjects.go.txt": "d97c40de4f60ecdd8078a7d639068245b932692e06577be59cd69ccacaf6d455",
     "api_op_ListObjectsV2.go.txt": "957e6d2478900a663fec331a63daedd5518e5c98d2b071ad155395dfa4127fc6",
     "api_op_PutObject.go.txt": "b37887b9c0d9ad43232e1c7c7bee035702dbe743ceeb6b03b2a5743390963814",
+    "presign_post.go.txt": "b71c1daa50fe79ecc44c71b47052f85a044b0ac24c6278b741df5f0b5de4eb21",
     "selectel-addressing.html": "7dd89916093f82dfa2887e4c7bb30f9a753b07307adb3cad6a2cf3d96993b5aa",
     "selectel-conditional.html": "971933598789395ef7d296ce827f987f26487aa7c9e0bb1fa9149fafb87fb8f2",
     "selectel-create-bucket.html": "797b68aa1a78085b4d3d67702530a6cf6ec0d1a8ee2257bb6a545c94b40736ce",

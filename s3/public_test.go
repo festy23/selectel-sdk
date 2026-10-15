@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/hmac"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -769,5 +770,267 @@ func TestConfirmedConditionalCopyDatesAndDeleteIfMatch(t *testing.T) {
 	notSent, e := c.Objects.Delete(context.Background(), dst, s3.DeleteObjectOptions{IfMatch: &bad}, types.CallOptions{})
 	if (!errors.As(e, &sdkerr) || sdkerr.Code != types.InvalidArgument) || notSent.Receipt == nil || notSent.Receipt.Outcome != types.NotSent || calls != 2 {
 		t.Fatal(e, calls)
+	}
+}
+
+func TestPresignedPostExactPolicySignatureProtectedAndNoHTTP(t *testing.T) {
+	calls := 0
+	_, c := clients(t, func(*http.Request) (*http.Response, error) { calls++; return nil, io.ErrUnexpectedEOF })
+	for _, virtual := range []bool{false, true} {
+		view := c
+		if virtual {
+			view = c.WithVirtualHosted()
+		}
+		b, _ := view.Bucket("test-bucket")
+		ref, _ := view.Object(b, "exact/folder & key")
+		ct := types.Protect([]byte("application/private-marker"))
+		got, e := view.Objects.PresignPost(context.Background(), ref, s3.PostOptions{Expires: 5 * time.Minute, MinBytes: 1, MaxBytes: 1024, Conditions: s3.PostConditions{ContentType: &ct, Metadata: map[string]types.ProtectedValue{"tag": types.Protect([]byte("private-metadata-marker"))}}}, types.CallOptions{})
+		if e != nil {
+			t.Fatal(e)
+		}
+		if got.Receipt != nil || calls != 0 {
+			t.Fatal("POST must sign locally only")
+		}
+		endpoint := "https://s3.ru-1.storage.selcloud.ru/test-bucket"
+		if virtual {
+			endpoint = "https://test-bucket.s3.ru-1.storage.selcloud.ru/"
+		}
+		if string(got.Data.URL.Reveal()) != endpoint {
+			t.Fatal("wrong form address")
+		}
+		fields := map[string]string{}
+		for k, v := range got.Data.Fields {
+			fields[k] = string(v.Reveal())
+		}
+		if fields["key"] != ref.ID || fields["Content-Type"] != "application/private-marker" || fields["x-amz-meta-tag"] != "private-metadata-marker" {
+			t.Fatal("form fields")
+		}
+		if fields["policy"] != string(got.Data.Policy.Reveal()) {
+			t.Fatal("policy mismatch")
+		}
+		raw, e := base64.StdEncoding.DecodeString(fields["policy"])
+		if e != nil {
+			t.Fatal(e)
+		}
+		var policy struct {
+			Expiration time.Time         `json:"expiration"`
+			Conditions []json.RawMessage `json:"conditions"`
+		}
+		if e = json.Unmarshal(raw, &policy); e != nil || !policy.Expiration.Equal(got.Data.ExpiresAt) {
+			t.Fatal(e)
+		}
+		conditions := map[string]string{}
+		var sizeRange []any
+		for _, cond := range policy.Conditions {
+			var pair map[string]string
+			if json.Unmarshal(cond, &pair) == nil {
+				for k, v := range pair {
+					conditions[k] = v
+				}
+				continue
+			}
+			if json.Unmarshal(cond, &sizeRange) != nil {
+				t.Fatal("unexpected condition")
+			}
+		}
+		if conditions["bucket"] != "test-bucket" || conditions["key"] != ref.ID || conditions["Content-Type"] != fields["Content-Type"] || conditions["x-amz-meta-tag"] != fields["x-amz-meta-tag"] || len(sizeRange) != 3 || sizeRange[0] != "content-length-range" || sizeRange[1] != float64(1) || sizeRange[2] != float64(1024) {
+			t.Fatal("unbounded form policy")
+		}
+		for _, k := range []string{"X-Amz-Date", "X-Amz-Credential", "X-Amz-Algorithm"} {
+			if conditions[k] != fields[k] || fields[k] == "" {
+				t.Fatal("missing auth condition")
+			}
+		}
+		stamp, e := time.Parse("20060102T150405Z", fields["X-Amz-Date"])
+		if e != nil || got.Data.ExpiresAt.Sub(stamp) != 5*time.Minute {
+			t.Fatal(e)
+		}
+		expectedCredential := "synthetic-access/" + stamp.Format("20060102") + "/ru-1/s3/aws4_request"
+		if fields["X-Amz-Credential"] != expectedCredential {
+			t.Fatal("wrong scope")
+		}
+		mac := func(key []byte, text string) []byte {
+			m := hmac.New(sha256.New, key)
+			m.Write([]byte(text))
+			return m.Sum(nil)
+		}
+		signingKey := mac(mac(mac(mac([]byte("AWS4synthetic-secret"), stamp.Format("20060102")), "ru-1"), "s3"), "aws4_request")
+		signature := hex.EncodeToString(mac(signingKey, fields["policy"]))
+		if signature != fields["X-Amz-Signature"] {
+			t.Fatal("invalid POST HMAC")
+		}
+		formatted := fmt.Sprintf("%+v %#v", got.Data, got.Data)
+		encoded, _ := json.Marshal(got.Data)
+		for _, secret := range []string{fields["policy"], signature, "private-metadata-marker", "private-marker", "synthetic-access"} {
+			if strings.Contains(formatted, secret) || strings.Contains(string(encoded), secret) {
+				t.Fatal("form disclosure")
+			}
+		}
+	}
+}
+
+func TestPresignedPostRejectsUnboundedOrForeignInputsBeforeCredentials(t *testing.T) {
+	lookups := 0
+	client, e := sdk.New(sdk.Config{AccountID: "a", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+		lookups++
+		return credentials.Material{}, types.NewError(types.CredentialsUnavailable)
+	}), Transport: transport(func(*http.Request) (*http.Response, error) { t.Fatal("POST must never call HTTP"); return nil, nil })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	project, _ := client.Project("p")
+	regional, _ := project.Location("spb", "ru-1")
+	c := regional.S3()
+	b, _ := c.Bucket("test-bucket")
+	ref, _ := c.Object(b, "key")
+	defaults := func() s3.PostOptions { return s3.PostOptions{Expires: time.Minute, MinBytes: 0, MaxBytes: 1024} }
+	cases := []struct {
+		name   string
+		change func(*s3.PostOptions, *types.ResourceRef)
+	}{
+		{"no expiry", func(p *s3.PostOptions, _ *types.ResourceRef) { p.Expires = 0 }},
+		{"long expiry", func(p *s3.PostOptions, _ *types.ResourceRef) { p.Expires = 901 * time.Second }},
+		{"fractional expiry", func(p *s3.PostOptions, _ *types.ResourceRef) { p.Expires += time.Millisecond }},
+		{"no maximum", func(p *s3.PostOptions, _ *types.ResourceRef) { p.MaxBytes = 0 }},
+		{"negative minimum", func(p *s3.PostOptions, _ *types.ResourceRef) { p.MinBytes = -1 }},
+		{"reversed size", func(p *s3.PostOptions, _ *types.ResourceRef) { p.MinBytes = 2048 }},
+		{"template key", func(_ *s3.PostOptions, r *types.ResourceRef) { r.ID = "${filename}" }},
+		{"foreign project", func(_ *s3.PostOptions, r *types.ResourceRef) { r.Scope.ProjectID = "other" }},
+		{"no parent", func(_ *s3.PostOptions, r *types.ResourceRef) { r.Parent = nil }},
+		{"metadata injection", func(p *s3.PostOptions, _ *types.ResourceRef) {
+			p.Conditions.Metadata = map[string]types.ProtectedValue{"bad\r\n": types.Protect([]byte("x"))}
+		}},
+		{"invalid UTF8", func(p *s3.PostOptions, _ *types.ResourceRef) {
+			v := types.Protect([]byte{255})
+			p.Conditions.ContentType = &v
+		}},
+	}
+	for _, test := range cases {
+		t.Run(test.name, func(t *testing.T) {
+			p := defaults()
+			r := ref
+			test.change(&p, &r)
+			out, e := c.Objects.PresignPost(context.Background(), r, p, types.CallOptions{})
+			if e == nil || out.Receipt != nil || !out.Data.URL.Empty() || len(out.Data.Fields) != 0 || lookups != 0 {
+				t.Fatal(e, lookups)
+			}
+		})
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	_, e = c.Objects.PresignPost(ctx, ref, defaults(), types.CallOptions{})
+	if types.ErrorCode(e) != types.Canceled || lookups != 0 {
+		t.Fatal(e, lookups)
+	}
+}
+
+func TestPresignedPostBoundsPolicyExpiryAndPinsExactEndpoint(t *testing.T) {
+	scope := types.Scope{AccountID: "a", ProjectID: "p", Region: "spb", Pool: "ru-1"}
+	calls := 0
+	expiry := time.Now().UTC().Add(10 * time.Minute)
+	makeView := func(max uint64, override bool) *s3.Client {
+		cfg := sdk.Config{AccountID: "a", MaxJSONBytes: max, Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+			return credentials.Material{Identity: "synthetic", Revision: "1", Binding: scope, Audience: "selectel", Scheme: credentials.S3, AccessKey: types.Protect([]byte("synthetic-access")), SecretKey: types.Protect([]byte("synthetic-secret")), SessionToken: types.Protect([]byte("private-session-token")), ExpiresAt: expiry}, nil
+		}), Transport: transport(func(*http.Request) (*http.Response, error) { calls++; return nil, io.ErrUnexpectedEOF })}
+		if override {
+			cfg.EndpointOverrides = map[types.EndpointKey]types.EndpointBinding{{Service: "s3", APIGeneration: "v2006_03_01", Scope: scope}: {ID: "changed", URL: "https://changed.example", Scope: scope, APIGeneration: "v2006_03_01", Audience: "selectel"}}
+		}
+		client, e := sdk.New(cfg)
+		if e != nil {
+			t.Fatal(e)
+		}
+		p, _ := client.Project("p")
+		r, _ := p.Location("spb", "ru-1")
+		return r.S3()
+	}
+	c := makeView(1024, false)
+	bucket, _ := c.Bucket("test-bucket")
+	ref, _ := c.Object(bucket, "key")
+	opts := s3.PostOptions{Expires: time.Minute, MaxBytes: 1}
+	form, e := c.Objects.PresignPost(context.Background(), ref, opts, types.CallOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	fields := form.Data.Fields
+	token := string(fields["X-Amz-Security-Token"].Reveal())
+	if token != "private-session-token" {
+		t.Fatal("missing token")
+	}
+	policyBytes, _ := base64.StdEncoding.DecodeString(string(form.Data.Policy.Reveal()))
+	if !strings.Contains(string(policyBytes), `"X-Amz-Security-Token":"private-session-token"`) {
+		t.Fatal("token not constrained")
+	}
+	opts.Conditions.Metadata = map[string]types.ProtectedValue{"too-large": types.Protect([]byte(strings.Repeat("x", 1025)))}
+	_, e = c.Objects.PresignPost(context.Background(), ref, opts, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument {
+		t.Fatal(e)
+	}
+	opts.Conditions.Metadata = nil
+	opts.Expires = 15 * time.Minute
+	_, e = c.Objects.PresignPost(context.Background(), ref, opts, types.CallOptions{})
+	if types.ErrorCode(e) != types.Unauthenticated {
+		t.Fatal(e)
+	}
+	opts.Expires = time.Minute
+	_, e = makeView(1024, true).Objects.PresignPost(context.Background(), ref, opts, types.CallOptions{})
+	if types.ErrorCode(e) != types.EndpointUnavailable {
+		t.Fatal(e)
+	}
+	expiry = time.Now().Add(-time.Minute)
+	_, e = makeView(1024, false).Objects.PresignPost(context.Background(), ref, opts, types.CallOptions{})
+	if types.ErrorCode(e) != types.Unauthenticated {
+		t.Fatal(e)
+	}
+	if calls != 0 {
+		t.Fatal("unexpected HTTP", calls)
+	}
+}
+
+func TestPresignedPostPreservesExactLargeByteRangeAndPolicyBound(t *testing.T) {
+	_, c := clients(t, func(*http.Request) (*http.Response, error) { t.Fatal("local signing HTTP"); return nil, nil })
+	b, _ := c.Bucket("test-bucket")
+	ref, _ := c.Object(b, "key")
+	const size int64 = 9007199254740993
+	out, e := c.Objects.PresignPost(context.Background(), ref, s3.PostOptions{Expires: time.Minute, MinBytes: size - 1, MaxBytes: size}, types.CallOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	raw, _ := base64.StdEncoding.DecodeString(string(out.Data.Policy.Reveal()))
+	if !strings.Contains(string(raw), `["content-length-range",9007199254740992,9007199254740993]`) {
+		t.Fatal("byte range lost precision")
+	}
+	// An otherwise small input can expand during JSON/base64 encoding; the final
+	// policy must also fit the configured structured limit.
+	scope := types.Scope{AccountID: "a", ProjectID: "p", Region: "spb", Pool: "ru-1"}
+	root, e := sdk.New(sdk.Config{AccountID: "a", MaxJSONBytes: 128, Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+		return credentials.Material{Identity: "s", Revision: "1", Binding: scope, Audience: "selectel", Scheme: credentials.S3, AccessKey: types.Protect([]byte("a")), SecretKey: types.Protect([]byte("s"))}, nil
+	}), Transport: transport(func(*http.Request) (*http.Response, error) { t.Fatal("policy bound HTTP"); return nil, nil })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := root.Project("p")
+	r, _ := p.Location("spb", "ru-1")
+	out, e = r.S3().Objects.PresignPost(context.Background(), ref, s3.PostOptions{Expires: time.Minute, MaxBytes: 1}, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument || !out.Data.Policy.Empty() {
+		t.Fatal(e)
+	}
+}
+
+func TestPresignedPostCredentialLookupHonorsCallBudget(t *testing.T) {
+	root, e := sdk.New(sdk.Config{AccountID: "a", CallTimeout: 20 * time.Millisecond, Credentials: credentials.SourceFunc(func(ctx context.Context, _ types.AuthRequest) (credentials.Material, error) {
+		<-ctx.Done()
+		return credentials.Material{}, ctx.Err()
+	}), Transport: transport(func(*http.Request) (*http.Response, error) { t.Fatal("POST budget HTTP"); return nil, nil })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := root.Project("p")
+	r, _ := p.Location("spb", "ru-1")
+	c := r.S3()
+	b, _ := c.Bucket("test-bucket")
+	ref, _ := c.Object(b, "key")
+	got, e := c.Objects.PresignPost(context.Background(), ref, s3.PostOptions{Expires: time.Minute, MaxBytes: 1}, types.CallOptions{})
+	if types.ErrorCode(e) != types.DeadlineExceeded || !got.Data.URL.Empty() || got.Receipt != nil {
+		t.Fatal(e)
 	}
 }

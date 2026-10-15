@@ -18,7 +18,10 @@ Native typed operation request/response fields and wire semantics are from
 [AWS SDK Go service/s3 v1.114.3](https://github.com/aws/aws-sdk-go-v2/tree/service/s3/v1.114.3/service/s3),
 commit `c8f4a4457aa933bd6c8ce60bc2ca2a0599b77478`, published 2026-10-09.
 `assets/api_op_*.go.txt` are unmodified public source snapshots of the 13 selected
-operations. The AWS S3 service module is a research source, not a runtime
+operations. `assets/presign_post.go.txt` pins the same immutable upstream
+POST policy/HMAC/form implementation; generated binding `objects.post` exposes
+only local typed form generation, not an HTTP upload executor.
+The AWS S3 service module is a research source, not a runtime
 service dependency. Existing AWS SigV4 runtime signs requests; Smithy path
 escaping uses the runtime's pinned `github.com/aws/smithy-go v1.28.5`, with the
 unmodified `assets/smithy-path-replace.go.txt` source snapshot.
@@ -31,7 +34,7 @@ there is no general caller-selected signing bypass.
 
 Generated contracts record covered input fields, full native model inventory,
 and exact excluded request variants. AWS evidence alone does not establish
-Selectel availability of advanced fields. All 13 bindings remain partial;
+Selectel availability of advanced fields. All 14 bindings (13 core plus local POST form) remain partial;
 whole-family inventory is incomplete and coverage ratio remains null. Explicit
 ListBuckets native pagination has upstream wire evidence only. Multipart (#45),
 bucket settings (#46), and unresolved advanced compatibility evidence (#74/P1/#75)

@@ -22,6 +22,21 @@ type PresignedURL struct {
 	Headers   map[string]types.ProtectedValue `json:"headers"`
 	ExpiresAt time.Time                       `json:"expires_at"`
 }
+type PostConditions struct {
+	ContentType *types.ProtectedValue
+	Metadata    map[string]types.ProtectedValue
+}
+type PostOptions struct {
+	Expires            time.Duration
+	MinBytes, MaxBytes int64
+	Conditions         PostConditions
+}
+type PresignedPost struct {
+	URL       types.ProtectedValue            `json:"url"`
+	Fields    map[string]types.ProtectedValue `json:"fields"`
+	Policy    types.ProtectedValue            `json:"policy"`
+	ExpiresAt time.Time                       `json:"expires_at"`
+}
 type Owner struct {
 	ID          *string `xml:"ID" json:"id,omitempty"`
 	DisplayName *string `xml:"DisplayName" json:"display_name,omitempty"`
