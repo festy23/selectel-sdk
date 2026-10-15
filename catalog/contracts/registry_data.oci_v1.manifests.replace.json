@@ -28,6 +28,7 @@
       401,
       403,
       404,
+      412,
       413
     ]
   },
@@ -38,9 +39,14 @@
     "goals": []
   },
   "compatibility": "same-origin realm/query restrictions not a claim about undocumented Selectel topology; optional deletion/server availability untested; inventory incomplete",
+  "conditional_http": {
+    "source": "RFC9110 sections8.8.3/13.1.1/13.1.2/13.2; OCI1.1.1 referrers tag workflow conditional HTTP MAY",
+    "request": "Explicit typed wildcard or nonempty entity-tag list; protected tags, bounded total header bytes; If-Match strong comparison, If-None-Match weak comparison; both permitted with RFC precedence. No digest-derived ETag, automatic precondition, retry or fallback.",
+    "response": "Optional GET/HEAD ETag is opaque protected metadata, never digest or ownership proof. HTTP412 is conclusive Rejected. Successful201 only Accepted, not proof the server enforced a precondition.",
+    "availability": "Conditional HTTP support and concurrency atomicity on Selectel remain unverified; caller explicitly selects this protocol variant."
+  },
   "remaining": {
     "confirmed_protocol_not_in_this_subset": [
-      "Optional conditional HTTP protection for explicit referrers-tag updates (source MAY; BaseDigest is informational, no atomic guarantee)",
       "OCI optional chunk-min-length hint and additional response metadata",
       "Extended/multiple Link syntax; additional image formats/digest algorithms"
     ],

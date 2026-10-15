@@ -26,6 +26,7 @@
     "image-spec-schema-defs.json": "23b4abe55230e4bc7f521dc08e5261e9f1aece585059d6581300e9c56eb1420e",
     "image-spec-schema-image-index-schema.json": "1a4641a610933fac77db9af7a83664d54883efac180f8867efd0497048e1a82e",
     "rfc5988.txt": "c48657057de93fe894b0573f292af4024495e336fb253373e56856e6d0426681",
+    "rfc9110.txt": "21c1cdce6ab0e5509b04d84a28000836c7a087cf786efe6f04877ebfff47232a",
     "selectel-data-origin.json": "7ec968046b9cc6bd95c496042f7193106263c83a77466faffd50a1d15dbade94",
     "token-auth.md": "f0a23288bcb4fe5ce662b18578e5436d7834b66b6dd648e36ca186e443ddee86"
   },
@@ -701,7 +702,15 @@
         ],
         "responses": {
           "200": {
-            "description": "source status 200"
+            "description": "source status 200",
+            "headers": {
+              "ETag": {
+                "description": "Optional opaque protected entity-tag, RFC9110 section8.8.3",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "401": {
             "description": "source status 401"
@@ -754,7 +763,15 @@
         ],
         "responses": {
           "200": {
-            "description": "source status 200"
+            "description": "source status 200",
+            "headers": {
+              "ETag": {
+                "description": "Optional opaque protected entity-tag, RFC9110 section8.8.3",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "401": {
             "description": "source status 401"
@@ -803,6 +820,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-None-Match",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -828,6 +861,9 @@
           },
           "404": {
             "description": "source status 404"
+          },
+          "412": {
+            "description": "source status 412"
           },
           "413": {
             "description": "source status 413"

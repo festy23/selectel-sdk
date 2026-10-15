@@ -106,6 +106,10 @@ func (c *Manifests) Get(ctx context.Context, ref types.ResourceRef, in ManifestR
 		size, _ := types.ParseInteger(strconv.Itoa(len(raw)))
 		var payload types.ProtectedJSON
 		_ = json.Unmarshal(raw, &payload)
-		return core.Decoded[ManifestDocument]{Data: ManifestDocument{Address: ref, Digest: digest, MediaType: ManifestMediaType(media), Size: size, Payload: payload}}, nil
+		tag, e := responseETag(h, c.client.runtime.StructuredLimit())
+		if e != nil {
+			return core.Decoded[ManifestDocument]{}, e
+		}
+		return core.Decoded[ManifestDocument]{Data: ManifestDocument{ETag: tag, Address: ref, Digest: digest, MediaType: ManifestMediaType(media), Size: size, Payload: payload}}, nil
 	})
 }

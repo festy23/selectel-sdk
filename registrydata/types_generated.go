@@ -136,16 +136,23 @@ const (
 type ManifestReadOptions struct {
 	Accept []ManifestMediaType `json:"accept,omitempty"`
 }
+type EntityTagCondition struct {
+	Any  bool                   `json:"any"`
+	Tags []types.ProtectedValue `json:"tags,omitempty"`
+}
 type ManifestWriteOptions struct {
-	MediaType ManifestMediaType   `json:"media_type"`
-	Payload   types.ProtectedJSON `json:"payload"`
+	IfMatch     *EntityTagCondition `json:"if_match,omitempty"`
+	IfNoneMatch *EntityTagCondition `json:"if_none_match,omitempty"`
+	MediaType   ManifestMediaType   `json:"media_type"`
+	Payload     types.ProtectedJSON `json:"payload"`
 }
 type ManifestInfo struct {
-	Address        types.ResourceRef  `json:"address"`
-	Digest         *Digest            `json:"digest,omitempty"`
-	DigestVerified bool               `json:"digest_verified"`
-	Size           *types.Integer     `json:"size,omitempty"`
-	MediaType      *ManifestMediaType `json:"media_type,omitempty"`
+	ETag           *types.ProtectedValue `json:"etag,omitempty"`
+	Address        types.ResourceRef     `json:"address"`
+	Digest         *Digest               `json:"digest,omitempty"`
+	DigestVerified bool                  `json:"digest_verified"`
+	Size           *types.Integer        `json:"size,omitempty"`
+	MediaType      *ManifestMediaType    `json:"media_type,omitempty"`
 }
 type ManifestWriteResult struct {
 	RequestedSubject    *Digest              `json:"requested_subject,omitempty"`
@@ -157,9 +164,10 @@ type ManifestWriteResult struct {
 	Size                types.Integer        `json:"size"`
 }
 type ManifestDocument struct {
-	Address   types.ResourceRef   `json:"address"`
-	Digest    Digest              `json:"digest"`
-	MediaType ManifestMediaType   `json:"media_type"`
-	Size      types.Integer       `json:"size"`
-	Payload   types.ProtectedJSON `json:"payload"`
+	ETag      *types.ProtectedValue `json:"etag,omitempty"`
+	Address   types.ResourceRef     `json:"address"`
+	Digest    Digest                `json:"digest"`
+	MediaType ManifestMediaType     `json:"media_type"`
+	Size      types.Integer         `json:"size"`
+	Payload   types.ProtectedJSON   `json:"payload"`
 }

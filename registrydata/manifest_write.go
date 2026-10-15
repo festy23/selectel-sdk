@@ -128,7 +128,11 @@ func (c *Manifests) Head(ctx context.Context, ref types.ResourceRef, in Manifest
 		return c.valid(ref)
 	}}, func(_ context.Context, _ io.Reader, _ types.EndpointBinding, _ int, h http.Header) (core.Decoded[ManifestInfo], error) {
 		v, e := contentInfo(h, ref, c.client.runtime.StructuredLimit())
-		out := ManifestInfo{Address: v.Address, Digest: v.Digest, Size: v.Size, DigestVerified: false}
+		tag, tagError := responseETag(h, c.client.runtime.StructuredLimit())
+		if tagError != nil {
+			return core.Decoded[ManifestInfo]{}, tagError
+		}
+		out := ManifestInfo{ETag: tag, Address: v.Address, Digest: v.Digest, Size: v.Size, DigestVerified: false}
 		if v.MediaType != nil {
 			media := ManifestMediaType(*v.MediaType)
 			if !knownMedia(media) {
@@ -150,6 +154,9 @@ func (c *Manifests) Put(ctx context.Context, ref types.ResourceRef, in ManifestW
 			return bind
 		}
 		if e := c.valid(ref); e != nil {
+			return e
+		}
+		if e := conditionHeaders(op.Headers, in, c.client.runtime.StructuredLimit()); e != nil {
 			return e
 		}
 		if !knownMedia(in.MediaType) || uint64(len(raw)) > c.client.runtime.StructuredLimit() {

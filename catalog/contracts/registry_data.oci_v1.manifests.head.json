@@ -15,8 +15,10 @@
     "body": null
   },
   "response": {
-    "mapping": "optional source digest/size/type metadata, digest explicitly not body-verified; exact requested address",
-    "sensitive_fields": []
+    "mapping": "optional source digest/size/type metadata, digest explicitly not body-verified; exact requested address Optional RFC9110 ETag header is protected opaque metadata (strong/weak syntax), not content digest or atomicity evidence; absent remains nil, repeated/malformed/bounded header failure is structured.",
+    "sensitive_fields": [
+      "etag"
+    ]
   },
   "errors": {
     "shared": "normal HTTP status mapping and bounded safe-read retry; first errors[0].code from pinned OCI allowlist retained exactly; provider message/detail discarded. Diagnostic read/decode failure does not suppress401/403/503 status semantics; cancellation closes optional diagnostic body once under whole call/transfer budget; documented rejection status is retained before diagnostics",
@@ -32,7 +34,6 @@
   "compatibility": "same-origin realm/query restrictions not a claim about undocumented Selectel topology; optional deletion/server availability untested; inventory incomplete",
   "remaining": {
     "confirmed_protocol_not_in_this_subset": [
-      "Optional conditional HTTP protection for explicit referrers-tag updates (source MAY; BaseDigest is informational, no atomic guarantee)",
       "OCI optional chunk-min-length hint and additional response metadata",
       "Extended/multiple Link syntax; additional image formats/digest algorithms"
     ],

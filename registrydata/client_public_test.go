@@ -2281,3 +2281,166 @@ func TestPrepareTagIndexByteBoundRequiresNoCredentialsOrHTTP(t *testing.T) {
 		t.Fatal(out, e, calls, lookups)
 	}
 }
+
+func TestManifestConditionalPutAndETagMetadata(t *testing.T) {
+	for _, method := range []string{"GET", "HEAD"} {
+		t.Run(method, func(t *testing.T) {
+			puts := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				if r.Method == "PUT" {
+					puts++
+					if r.Header.Get("If-Match") != `"opaque,tag"` || r.Header.Get("If-None-Match") != `W/"old", "other"` {
+						t.Fatal(r.Header)
+					}
+					return response(412, `{"errors":[{"code":"DENIED"}]}`), nil
+				}
+				out := response(200, `{}`)
+				out.Header.Set("Content-Type", string(registrydata.OCIManifest))
+				out.Header.Set("ETag", `"opaque,tag"`)
+				return out, nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			ref, _ := c.Manifests.Tag(repo, "tag")
+			var tag *types.ProtectedValue
+			if method == "GET" {
+				v, e := c.Manifests.Get(context.Background(), ref, registrydata.ManifestReadOptions{}, types.CallOptions{})
+				if e != nil {
+					t.Fatal(e)
+				}
+				tag = v.Data.ETag
+			} else {
+				v, e := c.Manifests.Head(context.Background(), ref, registrydata.ManifestReadOptions{}, types.CallOptions{})
+				if e != nil {
+					t.Fatal(e)
+				}
+				tag = v.Data.ETag
+			}
+			if tag == nil || string(tag.Reveal()) != `"opaque,tag"` || strings.Contains(fmt.Sprintf("%+v", tag), "opaque") {
+				t.Fatal(tag)
+			}
+			var payload types.ProtectedJSON
+			json.Unmarshal([]byte(`{}`), &payload)
+			out, e := c.Manifests.Put(context.Background(), ref, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: payload, IfMatch: &registrydata.EntityTagCondition{Tags: []types.ProtectedValue{*tag}}, IfNoneMatch: &registrydata.EntityTagCondition{Tags: []types.ProtectedValue{types.Protect([]byte(`W/"old"`)), types.Protect([]byte(`"other"`))}}}, types.CallOptions{})
+			if e == nil || puts != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Rejected {
+				t.Fatal(out, e, puts)
+			}
+		})
+	}
+}
+func TestManifestConditionalWildcardAndValidationBeforeIO(t *testing.T) {
+	for _, tc := range []struct {
+		name      string
+		condition registrydata.EntityTagCondition
+		valid     bool
+	}{
+		{"wildcard", registrydata.EntityTagCondition{Any: true}, true},
+		{"weak", registrydata.EntityTagCondition{Tags: []types.ProtectedValue{types.Protect([]byte(`W/""`))}}, true},
+		{"empty", registrydata.EntityTagCondition{}, false},
+		{"mixed", registrydata.EntityTagCondition{Any: true, Tags: []types.ProtectedValue{types.Protect([]byte(`"a"`))}}, false},
+		{"unquoted", registrydata.EntityTagCondition{Tags: []types.ProtectedValue{types.Protect([]byte("secret"))}}, false},
+		{"injection", registrydata.EntityTagCondition{Tags: []types.ProtectedValue{types.Protect([]byte("\"a\"\r\nAuthorization: evil"))}}, false},
+		{"list-in-tag", registrydata.EntityTagCondition{Tags: []types.ProtectedValue{types.Protect([]byte(`"a", "b"`))}}, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			calls, lookups := 0, 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				if tc.name == "wildcard" && r.Header.Get("If-None-Match") != "*" {
+					t.Fatal(r.Header)
+				}
+				out := response(201, "")
+				out.Header.Set("Location", "/v2/reg/repo/manifests/tag")
+				return out, nil
+			}, func(cfg *sdk.Config) {
+				cfg.Credentials = credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+					lookups++
+					return credentials.Material{Identity: "test", Revision: "1", Binding: types.Scope{AccountID: "a", ProjectID: "p"}, Audience: "selectel", Scheme: credentials.Basic, Username: types.Protect([]byte("u")), Password: types.Protect([]byte("p"))}, nil
+				})
+			})
+			repo, _ := c.Repository("reg", "repo")
+			ref, _ := c.Manifests.Tag(repo, "tag")
+			var payload types.ProtectedJSON
+			json.Unmarshal([]byte(`{}`), &payload)
+			out, e := c.Manifests.Put(context.Background(), ref, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: payload, IfNoneMatch: &tc.condition}, types.CallOptions{})
+			if tc.valid {
+				if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted {
+					t.Fatal(out, e)
+				}
+			} else if e == nil || calls != 0 || lookups != 0 || out.Receipt == nil || out.Receipt.Outcome != types.NotSent {
+				t.Fatal(out, e, calls, lookups)
+			}
+		})
+	}
+}
+
+func TestManifestETagMalformedIsProtocolError(t *testing.T) {
+	for _, method := range []string{"GET", "HEAD"} {
+		for _, raw := range []string{"", `unquoted`, `"a" , "b"`, `w/"a"`, "\"a\x7f\""} {
+			t.Run(method+raw, func(t *testing.T) {
+				_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+					out := response(200, `{}`)
+					if r.URL.Path != "/v2/" {
+						out.Header.Set("Content-Type", string(registrydata.OCIManifest))
+						out.Header.Set("ETag", raw)
+					}
+					return out, nil
+				})
+				repo, _ := c.Repository("reg", "repo")
+				ref, _ := c.Manifests.Tag(repo, "tag")
+				var err error
+				if method == "GET" {
+					_, err = c.Manifests.Get(context.Background(), ref, registrydata.ManifestReadOptions{}, types.CallOptions{})
+				} else {
+					_, err = c.Manifests.Head(context.Background(), ref, registrydata.ManifestReadOptions{}, types.CallOptions{})
+				}
+				if types.ErrorCode(err) != types.ProtocolError {
+					t.Fatal(err)
+				}
+			})
+		}
+	}
+}
+func TestConditionalManifestUnknownDoesNotReplay(t *testing.T) {
+	puts := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		puts++
+		return nil, errors.New("lost response")
+	})
+	repo, _ := c.Repository("reg", "repo")
+	ref, _ := c.Manifests.Tag(repo, "tag")
+	var payload types.ProtectedJSON
+	json.Unmarshal([]byte(`{}`), &payload)
+	out, e := c.Manifests.Put(context.Background(), ref, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: payload, IfMatch: &registrydata.EntityTagCondition{Any: true}}, types.CallOptions{})
+	if e == nil || puts != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Unknown {
+		t.Fatal(out, e, puts)
+	}
+}
+
+func TestManifestConditionByteBoundBeforeIO(t *testing.T) {
+	calls, lookups := 0, 0
+	_, c := dataClient(t, func(*http.Request) (*http.Response, error) { calls++; return nil, errors.New("unexpected HTTP") }, func(cfg *sdk.Config) {
+		cfg.MaxJSONBytes = 256
+		cfg.Credentials = credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+			lookups++
+			return credentials.Material{}, errors.New("unexpected lookup")
+		})
+	})
+	repo, _ := c.Repository("reg", "repo")
+	ref, _ := c.Manifests.Tag(repo, "tag")
+	var payload types.ProtectedJSON
+	json.Unmarshal([]byte(`{}`), &payload)
+	tag := types.Protect([]byte(`"` + strings.Repeat("x", 130) + `"`))
+	out, e := c.Manifests.Put(context.Background(), ref, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: payload, IfMatch: &registrydata.EntityTagCondition{Tags: []types.ProtectedValue{tag}}, IfNoneMatch: &registrydata.EntityTagCondition{Tags: []types.ProtectedValue{tag}}}, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument || calls != 0 || lookups != 0 || out.Receipt == nil || out.Receipt.Outcome != types.NotSent {
+		t.Fatal(out, e, calls, lookups)
+	}
+}

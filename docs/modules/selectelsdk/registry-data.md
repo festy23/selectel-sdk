@@ -98,8 +98,7 @@ last equal to the last returned tag. Extensions, extra query and multiple Links
 are excluded. Invalid namespace/row/Link preserves an already validated bounded
 prefix and the original terminal error, without another request.
 
-Protocol-confirmed omissions retained under **#50**: optional conditional HTTP
-protection for explicit referrers-tag updates; optional chunk-min-length/other metadata; extended Link
+Protocol-confirmed omissions retained under **#50**: optional chunk-min-length/other metadata; extended Link
 syntax and additional content formats/algorithms. These are not described as
 provider-unsupported. In particular Put sends exactly one manifest mutation;
 subject/referrers fallback indexing uses explicit local preparation and caller-directed Get/Put stages, described below.
@@ -162,8 +161,7 @@ The additional requested-blob auth proof is accepted only for the compiled start
 operation with exactly one digest query value matching that ref; no general
 caller-controlled auth bypass or cross-origin trust is introduced.
 
-Confirmed remaining protocol work remains owned by #50: optional conditional
-referrers-tag update protection, optional hints/metadata, extended Link forms and further
+Confirmed remaining protocol work remains owned by #50: optional hints/metadata, extended Link forms and further
 formats/algorithms. Selectel optional variant availability and actual realm/offload
 topology still require #74 evidence; #75 retains partial acceptance qualifications.
 
@@ -203,7 +201,7 @@ receipts recover without I/O. Protected session query is saved separately by the
 caller for explicit continuation; receipt refs do not reconstruct it.
 
 Current Selectel mount availability is still unknown; this explicit protocol
-variant does not claim otherwise. Optional conditional tag updates, optional hints,
+variant does not claim otherwise. Optional hints,
 extended Links and additional formats remain #50 work; topology/availability #74
 and final partial acceptance #75 remain open. All 15 selected bindings stay partial.
 
@@ -253,8 +251,7 @@ plus common revision/view bounds. MaxItems truncation yields replay+skip rather
 than false completeness; malformed rows or unsafe Links preserve only a bounded
 validated prefix and the original error without extra I/O. No Link means terminal
 according to the source contract. MaxPages/collection budget/body limit and normal
-safe-read retries/cancellation apply. Further protocol work remains optional conditional
-protection for tag updates, hints/metadata, extended Tag Link
+safe-read retries/cancellation apply. Further protocol work remains hints/metadata, extended Tag Link
 forms and additional content formats/algorithms (#50); source topology/availability
 #74 and P1 acceptance #75 remain open. No live requests were made.
 
@@ -308,9 +305,36 @@ Do not advance the workflow by assuming an unknown mutation was applied.
 
 BaseDigest is informational snapshot evidence, not an ETag or HTTP precondition.
 The source documents races between clients updating the tag; this helper does not
-claim atomic read-modify-write, locking or conditional-update protection. Optional
-conditional HTTP optimization remains explicitly owned #50; current Selectel
+claim atomic read-modify-write, locking or conditional-update protection. Explicit conditional HTTP is available as described below; current Selectel
 support/topology stays #74 evidence and final acceptance #75. No network fallback,
 rollback, index write, automatic retry or mutation replay is hidden in Put or the
 preparation API. All15 remote bindings remain partial; local constructors and
 preparation do not inflate remote-operation counts.
+
+
+## Explicit conditional manifest HTTP
+
+OCI1.1.1 permits conditional pushes for registries supporting ETag conditions.
+The pinned [RFC9110](https://www.rfc-editor.org/rfc/rfc9110.html#section-13.1)
+defines these semantics. `Manifests.Get` and `Head` expose an optional protected
+`ETag`: an opaque quoted validator, including a possible `W/` prefix. It is not
+computed from the content digest. Missing ETag remains nil; malformed or repeated
+ETag is a structured protocol error. No trailer-derived validator is inferred.
+
+`ManifestWriteOptions.IfMatch` and `IfNoneMatch` each accept an explicit
+`EntityTagCondition`: either Any=true with no Tags (wire `*`), or a nonempty list
+of protected quoted entity tags with Any=false. The SDK joins the list with comma
+and space without unescaping the opaque bytes. Total condition value bytes are
+bounded by StructuredLimit; malformed/injected tags are rejected before credentials
+or HTTP. Weak tags are valid syntax; If-Match uses strong comparison so a weak tag
+cannot satisfy a strong match, whereas If-None-Match uses weak comparison. If both
+are selected, RFC9110 section13.2 precedence applies (If-Match first).
+
+The caller may explicitly copy a Get ETag into IfMatch for the prepared tag write,
+or select IfNoneMatch Any after their own known-absence decision. Preparation never
+chooses either condition, and BaseDigest is never converted into ETag. HTTP412
+means conclusive Rejected with the receipt retained. A201 remains Accepted; it does
+not prove that a particular Selectel deployment enforced the condition or provided
+an atomic read-modify-write. Availability/concurrency evidence remains owned #74
+and acceptance #75. There is no automatic retry, conflict resolution or fallback;
+an unknown outcome still requires exact-reference observation without replay.

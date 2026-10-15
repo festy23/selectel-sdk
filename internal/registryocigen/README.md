@@ -20,7 +20,7 @@ Pinned primary protocol snapshots in `assets`:
   or a server-discovered API schema.
 
 The projection records SHA256 for every local asset. Source inventory remains
-incomplete and all 14 selected bindings remain partial. Protocol-confirmed
+incomplete and all 15 selected bindings remain partial. Protocol-confirmed
 omissions and unavailable Selectel topology evidence are distinguished in each
 contract and the service contract; ownership stays with #50/#74/#75.
 
@@ -37,3 +37,9 @@ and revision record live in `assets/image-spec-*`. The generator asserts descrip
 and platform property sets so edits cannot silently omit newly pinned fields.
 RFC5988 is retained as `assets/rfc5988.txt` for bounded continuation parsing. These
 are source facts, not proof of current Selectel optional endpoint availability.
+
+RFC9110 is pinned in `assets/rfc9110.txt`, retrieved from
+https://www.rfc-editor.org/rfc/rfc9110.txt for entity tags (8.8.3), explicit
+If-Match/If-None-Match (13.1.1/13.1.2), precedence (13.2) and rejection412.
+The RFC copyright/license notice is retained. This protocol source does not
+establish optional conditional HTTP support or atomicity on Selectel.
