@@ -11,11 +11,11 @@
   "request": {
     "method": "PUT",
     "path": "/v2/{name}/manifests/{reference}",
-    "mapping": "canonical OCI namespace, tag/digest syntax and parent chain checked; request refs are caller-selected addresses, not ownership/creation proof. Typed Accept and content media types OCI image/index, Docker v2 image/list; no arbitrary headers/auth overrides; manifest bytes preserved without transformation",
+    "mapping": "canonical OCI namespace, tag/digest syntax and parent chain checked; request refs are caller-selected addresses, not ownership/creation proof. Typed Accept and content media types OCI image/index, Docker v2 image/list; no arbitrary headers/auth overrides; manifest bytes preserved without transformation OCI subject descriptor is validated only for OCI image/index; unsupported subject algorithm is capability_unavailable before I/O. Payload bytes remain unchanged. Explicit local FallbackTag/PrepareTagIndex helpers perform no HTTP/credential lookup and emit source-only new descriptor fields, verify content digest/subject and same-repository snapshot, copy annotations and artifactType/config fallback, bound bytes/count and suppress duplicates or remove exact digest entries.",
     "body": "Protected JSON, unchanged wire bytes, bounded by StructuredLimit; typed OCI/Docker v2 media type and optional declared mediaType consistency; digest-address input verified before I/O. Single remote manifest PUT only, no referrers fallback mutations."
   },
   "response": {
-    "mapping": "201 Accepted before decode; exact requested address retained; verified source/computed digest and protected same-origin same-repository Location; unrelated malformed headers retain trusted address/metadata",
+    "mapping": "201 Accepted before decode; exact requested address retained; verified source/computed digest and protected same-origin same-repository Location; unrelated malformed headers retain trusted address/metadata Typed RequestedSubject/AcknowledgedSubject retain OCI-Subject correspondence. Absent acknowledgement sets NeedsTagFallback only on accepted response; malformed/mismatched acknowledgement retains Accepted receipt/error, never automatic lookup/fallback/replay. Pure prepared index includes informational BaseDigest, not a precondition or atomicity proof.",
     "sensitive_fields": [
       "location"
     ]
@@ -40,7 +40,7 @@
   "compatibility": "same-origin realm/query restrictions not a claim about undocumented Selectel topology; optional deletion/server availability untested; inventory incomplete",
   "remaining": {
     "confirmed_protocol_not_in_this_subset": [
-      "Manifest subject/referrers fallback workflow",
+      "Optional conditional HTTP protection for explicit referrers-tag updates (source MAY; BaseDigest is informational, no atomic guarantee)",
       "OCI optional chunk-min-length hint and additional response metadata",
       "Extended/multiple Link syntax; additional image formats/digest algorithms"
     ],

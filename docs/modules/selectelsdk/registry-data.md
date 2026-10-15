@@ -98,11 +98,11 @@ last equal to the last returned tag. Extensions, extra query and multiple Links
 are excluded. Invalid namespace/row/Link preserves an already validated bounded
 prefix and the original terminal error, without another request.
 
-Protocol-confirmed omissions retained under **#50**: explicit subject/referrers-tag
-fallback workflow; optional chunk-min-length/other metadata; extended Link
+Protocol-confirmed omissions retained under **#50**: optional conditional HTTP
+protection for explicit referrers-tag updates; optional chunk-min-length/other metadata; extended Link
 syntax and additional content formats/algorithms. These are not described as
 provider-unsupported. In particular Put sends exactly one manifest mutation;
-subject/referrers fallback indexing is a separate unsupported workflow.
+subject/referrers fallback indexing uses explicit local preparation and caller-directed Get/Put stages, described below.
 Primary Selectel evidence still needed under **#74**: actual token realm/service
 and custom query topology, cross-origin offload trust, optional deletion/
 referrers/mount/native cancellation availability. **#75** owns P1 acceptance of
@@ -162,8 +162,8 @@ The additional requested-blob auth proof is accepted only for the compiled start
 operation with exactly one digest query value matching that ref; no general
 caller-controlled auth bypass or cross-origin trust is introduced.
 
-Confirmed remaining protocol work remains owned by #50: explicit
-manifest-subject fallback, optional hints/metadata, extended Link forms and further
+Confirmed remaining protocol work remains owned by #50: optional conditional
+referrers-tag update protection, optional hints/metadata, extended Link forms and further
 formats/algorithms. Selectel optional variant availability and actual realm/offload
 topology still require #74 evidence; #75 retains partial acceptance qualifications.
 
@@ -203,7 +203,7 @@ receipts recover without I/O. Protected session query is saved separately by the
 caller for explicit continuation; receipt refs do not reconstruct it.
 
 Current Selectel mount availability is still unknown; this explicit protocol
-variant does not claim otherwise. Explicit subject/tag fallback, optional hints,
+variant does not claim otherwise. Optional conditional tag updates, optional hints,
 extended Links and additional formats remain #50 work; topology/availability #74
 and final partial acceptance #75 remain open. All 15 selected bindings stay partial.
 
@@ -253,7 +253,64 @@ plus common revision/view bounds. MaxItems truncation yields replay+skip rather
 than false completeness; malformed rows or unsafe Links preserve only a bounded
 validated prefix and the original error without extra I/O. No Link means terminal
 according to the source contract. MaxPages/collection budget/body limit and normal
-safe-read retries/cancellation apply. Further protocol work remains explicit
-subject/tag fallback and publishing workflows, hints/metadata, extended Tag Link
+safe-read retries/cancellation apply. Further protocol work remains optional conditional
+protection for tag updates, hints/metadata, extended Tag Link
 forms and additional content formats/algorithms (#50); source topology/availability
 #74 and P1 acceptance #75 remain open. No live requests were made.
+
+
+## Explicit subject/tag preparation
+
+OCI image/index Put now validates a supplied subject descriptor and reports
+RequestedSubject, AcknowledgedSubject and NeedsTagFallback. Unsupported subject
+algorithms are capability_unavailable before I/O; malformed known subject fields
+are invalid_argument. A matching OCI-Subject response acknowledges that association
+only, not content ownership or referrers availability. Its absence on201 sets the
+fallback flag. Malformed/mismatched headers retain Accepted receipt and error.
+Unknown mutation outcome is still unknown; no fallback or replay is started.
+Docker payload extensions are not interpreted as OCI subject declarations.
+
+`Referrers.FallbackTag(subjectDigestRef)` is a pure exact-view constructor for the
+source `<algorithm>-<encoded reference, limited to64 characters>` tag schema.
+The complete original subject remains explicit. Longer encodings can share a
+prefix; the derived mutable tag is an address, not uniqueness/ownership proof or
+an adopted subject. No tag lookup is performed by construction.
+
+`PrepareTagIndex(subject, current, contentDigestRef, contentOptions, change,
+TagIndexOptions)` is pure bounded preparation, not a remote operation:
+
+- The caller explicitly Gets the fallback tag with OCIIndex Accept. Wrong media
+  type/schema/snapshot/view is rejected. Only the caller decides that a confirmed
+  resource404 permits `current=nil`; auth failure or unknown outcome is not this
+  decision. No helper catches404, searches names, fetches content or changes scope.
+- Add requires exact same-repository content digest and protected OCI image/index
+  bytes matching that digest and subject. The new provider descriptor contains
+  only mediaType/digest/size/artifactType/annotations. ArtifactType uses the source
+  manifest field, or config mediaType for an image manifest; an index without it
+  omits the field. All source annotations are copied. SDK refs/scope/endpoint are
+  never serialized into the new descriptor.
+- Remove needs only the exact caller-selected content digest ref; it does not
+  require refetching a deleted body. Duplicate Add and absent Remove are no-ops.
+  Existing descriptors and index metadata/extensions are preserved; matching
+  Remove entries are removed. No resource existence or creation proof is inferred.
+- Current must be the exact derived tag document with matching payload digest,
+  size and OCIIndex metadata. MaxDescriptors defaults to collection MaxItems;
+  input/output bytes use StructuredLimit. Invalid source payloads fail locally;
+  bounds return response_limit without producing a cloud write.
+
+PreparedTagIndex contains protected Write options, exact Subject/Tag refs,
+Changed/count and optional BaseDigest. Duplicate no-op preserves original payload
+bytes. Preparation creates no Receipt, performs no credential lookup/HTTP, and
+returns no authorization or replay decision. The caller separately invokes
+`Manifests.Put(prepared.Tag, prepared.Write, ...)` and retains that call's Receipt.
+For cleanup, the caller selects Remove after handling the original delete outcome.
+Do not advance the workflow by assuming an unknown mutation was applied.
+
+BaseDigest is informational snapshot evidence, not an ETag or HTTP precondition.
+The source documents races between clients updating the tag; this helper does not
+claim atomic read-modify-write, locking or conditional-update protection. Optional
+conditional HTTP optimization remains explicitly owned #50; current Selectel
+support/topology stays #74 evidence and final acceptance #75. No network fallback,
+rollback, index write, automatic retry or mutation replay is hidden in Put or the
+preparation API. All15 remote bindings remain partial; local constructors and
+preparation do not inflate remote-operation counts.

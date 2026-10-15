@@ -144,6 +144,7 @@ func (c *Manifests) Put(ctx context.Context, ref types.ResourceRef, in ManifestW
 	raw := in.Payload.Reveal()
 	op.Headers = http.Header{"Content-Type": {string(in.MediaType)}}
 	size, _ := types.ParseInteger(strconv.Itoa(len(raw)))
+	var requestedSubject *Digest
 	return core.DoResponse(c.client.runtime, ctx, op, core.Request{Scope: c.client.scope, Path: manifestPath(ref), Body: raw, Transfer: true, Options: o, Refs: []types.ResourceRef{ref}, PinnedEndpoint: pin(ref), Validate: func() error {
 		if bind != nil {
 			return bind
@@ -164,6 +165,11 @@ func (c *Manifests) Put(ctx context.Context, ref types.ResourceRef, in ManifestW
 				return types.NewError(types.InvalidArgument)
 			}
 		}
+		var subjectError error
+		requestedSubject, subjectError = manifestSubject(raw, in.MediaType, *ref.Parent)
+		if subjectError != nil {
+			return subjectError
+		}
 		if ref.Kind == "manifest_digest" {
 			d, _ := ParseDigest(ref.ID)
 			actual, _ := hashBytes(raw, d.Algorithm)
@@ -174,7 +180,25 @@ func (c *Manifests) Put(ctx context.Context, ref types.ResourceRef, in ManifestW
 		return nil
 	}}, func(_ context.Context, _ io.Reader, ep types.EndpointBinding, _ int, h http.Header) (core.Decoded[ManifestWriteResult], error) {
 		digest, _ := hashBytes(raw, "sha256")
-		out := ManifestWriteResult{Address: ref, Digest: digest, Size: size}
+		out := ManifestWriteResult{Address: ref, Digest: digest, Size: size, RequestedSubject: requestedSubject}
+		if requestedSubject != nil {
+			ack, e := header(h, "OCI-Subject", c.client.runtime.StructuredLimit())
+			if e != nil {
+				return core.Decoded[ManifestWriteResult]{Data: out}, e
+			}
+			if ack == "" {
+				out.NeedsTagFallback = true
+			} else {
+				parsed, e := ParseDigest(ack)
+				if e != nil {
+					return core.Decoded[ManifestWriteResult]{Data: out}, types.NewError(types.ProtocolError)
+				}
+				if parsed != *requestedSubject {
+					return core.Decoded[ManifestWriteResult]{Data: out}, types.NewError(types.ScopeMismatch)
+				}
+				out.AcknowledgedSubject = &parsed
+			}
+		}
 		stated, e := header(h, "Docker-Content-Digest", c.client.runtime.StructuredLimit())
 		if e != nil {
 			return core.Decoded[ManifestWriteResult]{Data: out}, e
@@ -251,4 +275,32 @@ func (c *Manifests) Delete(ctx context.Context, ref types.ResourceRef, o types.C
 }
 func (c *Manifests) DeleteTag(ctx context.Context, ref types.ResourceRef, o types.CallOptions) (types.Result[struct{}], error) {
 	return c.remove(ctx, ref, "manifest_tag", o)
+}
+
+func manifestSubject(raw []byte, media ManifestMediaType, repo types.ResourceRef) (*Digest, error) {
+	if media != OCIManifest && media != OCIIndex {
+		return nil, nil
+	}
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	value, present := fields["subject"]
+	if !present {
+		return nil, nil
+	}
+	var identity struct {
+		Digest *string `json:"digest"`
+	}
+	if json.Unmarshal(value, &identity) != nil || identity.Digest == nil {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	if _, e := ParseDigest(*identity.Digest); types.ErrorCode(e) == types.CapabilityUnavailable {
+		return nil, e
+	}
+	decoded, e := decodeReferrer(value, repo)
+	if e != nil {
+		return nil, types.NewError(types.InvalidArgument)
+	}
+	return &decoded.Digest, nil
 }

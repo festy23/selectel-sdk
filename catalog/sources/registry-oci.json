@@ -807,7 +807,15 @@
         ],
         "responses": {
           "201": {
-            "description": "source status 201"
+            "description": "source status 201",
+            "headers": {
+              "OCI-Subject": {
+                "description": "Subject digest processed by registry; absence is explicit caller-directed fallback decision, not hidden workflow",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "400": {
             "description": "source status 400"

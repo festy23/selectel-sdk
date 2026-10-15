@@ -2,10 +2,36 @@
 package registrydata
 
 import (
+	"encoding/json"
 	"github.com/festy23/selectel-sdk/types"
 	"io"
 )
 
+type TagIndexChange string
+
+const (
+	TagIndexAdd    TagIndexChange = "add"
+	TagIndexRemove TagIndexChange = "remove"
+)
+
+type TagIndexOptions struct {
+	MaxDescriptors uint `json:"max_descriptors"`
+}
+type PreparedTagIndex struct {
+	Subject         types.ResourceRef    `json:"subject"`
+	Tag             types.ResourceRef    `json:"tag"`
+	Write           ManifestWriteOptions `json:"write"`
+	Changed         bool                 `json:"changed"`
+	DescriptorCount uint                 `json:"descriptor_count"`
+	BaseDigest      *Digest              `json:"base_digest,omitempty"`
+}
+type tagDescriptorWire struct {
+	MediaType    string          `json:"mediaType"`
+	Digest       string          `json:"digest"`
+	Size         types.Integer   `json:"size"`
+	ArtifactType *string         `json:"artifactType,omitempty"`
+	Annotations  json.RawMessage `json:"annotations,omitempty"`
+}
 type ReferrerOptions struct {
 	ArtifactType *string `json:"artifact_type,omitempty"`
 }
@@ -122,10 +148,13 @@ type ManifestInfo struct {
 	MediaType      *ManifestMediaType `json:"media_type,omitempty"`
 }
 type ManifestWriteResult struct {
-	Address  types.ResourceRef    `json:"address"`
-	Digest   Digest               `json:"digest"`
-	Location types.ProtectedValue `json:"location"`
-	Size     types.Integer        `json:"size"`
+	RequestedSubject    *Digest              `json:"requested_subject,omitempty"`
+	AcknowledgedSubject *Digest              `json:"acknowledged_subject,omitempty"`
+	NeedsTagFallback    bool                 `json:"needs_tag_fallback"`
+	Address             types.ResourceRef    `json:"address"`
+	Digest              Digest               `json:"digest"`
+	Location            types.ProtectedValue `json:"location"`
+	Size                types.Integer        `json:"size"`
 }
 type ManifestDocument struct {
 	Address   types.ResourceRef   `json:"address"`

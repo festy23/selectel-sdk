@@ -2022,3 +2022,262 @@ func TestReferrersMultipleAppliedFilterHeadersArePreserved(t *testing.T) {
 		t.Fatal(out, e)
 	}
 }
+func TestSubjectPushReportsAcknowledgementWithoutHiddenFallback(t *testing.T) {
+	const subject = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	const other = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	payload := `{"schemaVersion":2,"mediaType":"application/vnd.oci.image.manifest.v1+json","subject":{"mediaType":"application/vnd.oci.image.manifest.v1+json","digest":"` + subject + `","size":1},"config":{"mediaType":"application/example","digest":"` + subject + `","size":0},"layers":[]}`
+	for _, ack := range []string{"", subject, other, "bad"} {
+		t.Run(ack, func(t *testing.T) {
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				calls++
+				if r.Method != "PUT" || r.URL.Path != "/v2/reg/repo/manifests/artifact" {
+					t.Fatal("implicit fallback", r.Method, r.URL)
+				}
+				out := response(201, "")
+				out.Header.Set("Location", "/v2/reg/repo/manifests/artifact")
+				if ack != "" {
+					out.Header.Set("OCI-Subject", ack)
+				}
+				return out, nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			ref, _ := c.Manifests.Tag(repo, "artifact")
+			var protected types.ProtectedJSON
+			json.Unmarshal([]byte(payload), &protected)
+			out, err := c.Manifests.Put(context.Background(), ref, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: protected}, types.CallOptions{})
+			if calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Data.RequestedSubject == nil || out.Data.RequestedSubject.String() != subject {
+				t.Fatal(out, err, calls)
+			}
+			if ack == "" {
+				if err != nil || !out.Data.NeedsTagFallback || out.Data.AcknowledgedSubject != nil {
+					t.Fatal(out, err)
+				}
+			} else if ack == subject {
+				if err != nil || out.Data.NeedsTagFallback || out.Data.AcknowledgedSubject == nil || out.Data.AcknowledgedSubject.String() != subject {
+					t.Fatal(out, err)
+				}
+			} else if err == nil || out.Data.NeedsTagFallback {
+				t.Fatal(out, err)
+			}
+		})
+	}
+}
+func TestFallbackTagUsesExactSubjectWithoutHTTP(t *testing.T) {
+	calls, lookups := 0, 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) { calls++; return nil, errors.New("unexpected HTTP") }, func(cfg *sdk.Config) {
+		cfg.Credentials = credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+			lookups++
+			return credentials.Material{}, errors.New("unexpected lookup")
+		})
+	})
+	repo, _ := c.Repository("reg", "repo")
+	for _, test := range []struct{ raw, want string }{
+		{"sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824", "sha256-2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"},
+		{"sha384:" + strings.Repeat("a", 96), "sha384-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+		{"sha512:" + strings.Repeat("b", 128), "sha512-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+	} {
+		d, _ := registrydata.ParseDigest(test.raw)
+		subject, _ := c.Manifests.Digest(repo, d)
+		tag, e := c.Referrers.FallbackTag(subject)
+		if e != nil || tag.Kind != "manifest_tag" || tag.ID != test.want || tag.Parent.ID != "repo" || calls != 0 || lookups != 0 {
+			t.Fatal(tag, e, calls, lookups)
+		}
+	}
+}
+func TestPrepareTagIndexProducesOnlyProviderFieldsAndRequiresExplicitPut(t *testing.T) {
+	const subjectDigest = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	const payload = `{"schemaVersion":2,"mediaType":"application/vnd.oci.image.manifest.v1+json","subject":{"mediaType":"application/vnd.oci.image.manifest.v1+json","digest":"` + subjectDigest + `","size":0},"config":{"mediaType":"application/example.config","digest":"` + subjectDigest + `","size":0},"layers":[],"annotations":{"secret":"caller-secret"}}`
+	calls := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		calls++
+		if r.Method != "PUT" || !strings.HasSuffix(r.URL.Path, "/manifests/sha256-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855") {
+			t.Fatal(r.Method, r.URL)
+		}
+		body, _ := io.ReadAll(r.Body)
+		var index struct {
+			Manifests []map[string]json.RawMessage `json:"manifests"`
+		}
+		if json.Unmarshal(body, &index) != nil || len(index.Manifests) != 1 {
+			t.Fatal("invalid prepared index")
+		}
+		descriptor := index.Manifests[0]
+		if len(descriptor) != 5 || string(descriptor["artifactType"]) != `"application/example.config"` || string(descriptor["annotations"]) != `{"secret":"caller-secret"}` {
+			t.Fatal("descriptor source fields lost")
+		}
+		for _, key := range []string{"address", "ref", "scope", "endpoint_id", "endpoint_url", "parent"} {
+			if _, ok := descriptor[key]; ok {
+				t.Fatal("SDK metadata sent")
+			}
+		}
+		v := response(201, "")
+		v.Header.Set("Location", r.URL.Path)
+		return v, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	sd, _ := registrydata.ParseDigest(subjectDigest)
+	subject, _ := c.Manifests.Digest(repo, sd)
+	// Independent SHA256/length fixture for the literal payload above.
+	contentDigest, _ := registrydata.ParseDigest("sha256:b13dbe0808e9986b174417bd97f614e052ad67dae3c2e133d196ce5d141ae8c4")
+	content, _ := c.Manifests.Digest(repo, contentDigest)
+	var protected types.ProtectedJSON
+	json.Unmarshal([]byte(payload), &protected)
+	prepared, err := c.Referrers.PrepareTagIndex(subject, nil, content, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: protected}, registrydata.TagIndexAdd, registrydata.TagIndexOptions{MaxDescriptors: 5})
+	if err != nil || !prepared.Changed || prepared.DescriptorCount != 1 || prepared.BaseDigest != nil || calls != 0 {
+		t.Fatal(prepared, err, calls)
+	}
+	encoded, _ := json.Marshal(prepared)
+	if strings.Contains(string(encoded), "caller-secret") {
+		t.Fatal("prepared payload exposed")
+	}
+	result, err := c.Manifests.Put(context.Background(), prepared.Tag, prepared.Write, types.CallOptions{})
+	if err != nil || result.Receipt == nil || result.Receipt.Outcome != types.Accepted || calls != 1 {
+		t.Fatal(result, err, calls)
+	}
+}
+func TestPrepareTagIndexDuplicateAndRemovePreserveCurrentMetadataWithoutIO(t *testing.T) {
+	const subjectDigest = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	const contentDigest = "sha256:b13dbe0808e9986b174417bd97f614e052ad67dae3c2e133d196ce5d141ae8c4"
+	const payload = `{"schemaVersion":2,"mediaType":"application/vnd.oci.image.manifest.v1+json","subject":{"mediaType":"application/vnd.oci.image.manifest.v1+json","digest":"` + subjectDigest + `","size":0},"config":{"mediaType":"application/example.config","digest":"` + subjectDigest + `","size":0},"layers":[],"annotations":{"secret":"caller-secret"}}`
+	const index = `{"schemaVersion":2,"mediaType":"application/vnd.oci.image.index.v1+json","annotations":{"keep":"metadata-secret"},"x-extension":{"keep":true},"manifests":[{"mediaType":"application/vnd.oci.image.manifest.v1+json","digest":"` + contentDigest + `","size":434,"artifactType":"application/example.config","annotations":{"secret":"caller-secret"}}]}`
+	calls := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		if r.Method != "GET" || !strings.HasSuffix(r.URL.Path, "/sha256-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855") {
+			t.Fatal(r.Method, r.URL)
+		}
+		v := response(200, index)
+		v.Header.Set("Content-Type", string(registrydata.OCIIndex))
+		return v, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	sd, _ := registrydata.ParseDigest(subjectDigest)
+	subject, _ := c.Manifests.Digest(repo, sd)
+	cd, _ := registrydata.ParseDigest(contentDigest)
+	content, _ := c.Manifests.Digest(repo, cd)
+	tag, _ := c.Referrers.FallbackTag(subject)
+	current, err := c.Manifests.Get(context.Background(), tag, registrydata.ManifestReadOptions{Accept: []registrydata.ManifestMediaType{registrydata.OCIIndex}}, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var body types.ProtectedJSON
+	json.Unmarshal([]byte(payload), &body)
+	duplicate, err := c.Referrers.PrepareTagIndex(subject, &current.Data, content, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: body}, registrydata.TagIndexAdd, registrydata.TagIndexOptions{MaxDescriptors: 5})
+	if err != nil || duplicate.Changed || duplicate.DescriptorCount != 1 || duplicate.BaseDigest == nil || *duplicate.BaseDigest != current.Data.Digest || string(duplicate.Write.Payload.Reveal()) != index || calls != 2 {
+		t.Fatal(duplicate, err, calls)
+	}
+	removed, err := c.Referrers.PrepareTagIndex(subject, &current.Data, content, registrydata.ManifestWriteOptions{}, registrydata.TagIndexRemove, registrydata.TagIndexOptions{MaxDescriptors: 5})
+	if err != nil || !removed.Changed || removed.DescriptorCount != 0 || calls != 2 {
+		t.Fatal(removed, err, calls)
+	}
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(removed.Write.Payload.Reveal(), &fields) != nil || string(fields["manifests"]) != "[]" || string(fields["annotations"]) != `{"keep":"metadata-secret"}` || string(fields["x-extension"]) != `{"keep":true}` {
+		t.Fatal("existing metadata lost")
+	}
+}
+func TestPrepareTagIndexRejectsEmptyConfigArtifactFallback(t *testing.T) {
+	const sd = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		v := response(200, `{"schemaVersion":2,"subject":{"mediaType":"application/vnd.oci.image.manifest.v1+json","digest":"`+sd+`","size":0},"config":{"mediaType":""},"layers":[]}`)
+		v.Header.Set("Content-Type", string(registrydata.OCIManifest))
+		return v, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	tag, _ := c.Manifests.Tag(repo, "bad-config")
+	document, e := c.Manifests.Get(context.Background(), tag, registrydata.ManifestReadOptions{}, types.CallOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	content, _ := c.Manifests.Digest(repo, document.Data.Digest)
+	digest, _ := registrydata.ParseDigest(sd)
+	subject, _ := c.Manifests.Digest(repo, digest)
+	if _, e = c.Referrers.PrepareTagIndex(subject, nil, content, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: document.Data.Payload}, registrydata.TagIndexAdd, registrydata.TagIndexOptions{}); types.ErrorCode(e) != types.InvalidArgument {
+		t.Fatal(e)
+	}
+}
+func TestPrepareTagIndexBoundsAndSnapshotScopeGuards(t *testing.T) {
+	const first = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	const second = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	calls := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		v := response(200, `{"schemaVersion":2,"manifests":[{"mediaType":"application/vnd.oci.image.manifest.v1+json","digest":"`+first+`","size":1},{"mediaType":"application/vnd.oci.image.manifest.v1+json","digest":"`+second+`","size":0}]}`)
+		v.Header.Set("Content-Type", string(registrydata.OCIIndex))
+		return v, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	digest, _ := registrydata.ParseDigest(first)
+	subject, _ := c.Manifests.Digest(repo, digest)
+	content, _ := c.Manifests.Digest(repo, digest)
+	tag, _ := c.Referrers.FallbackTag(subject)
+	current, e := c.Manifests.Get(context.Background(), tag, registrydata.ManifestReadOptions{}, types.CallOptions{})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.Referrers.PrepareTagIndex(subject, &current.Data, content, registrydata.ManifestWriteOptions{}, registrydata.TagIndexRemove, registrydata.TagIndexOptions{MaxDescriptors: 1}); types.ErrorCode(e) != types.ResponseLimit || calls != 2 {
+		t.Fatal(e, calls)
+	}
+	wrong := current.Data
+	wrong.Address.ID = "different-tag"
+	if _, e = c.Referrers.PrepareTagIndex(subject, &wrong, content, registrydata.ManifestWriteOptions{}, registrydata.TagIndexRemove, registrydata.TagIndexOptions{MaxDescriptors: 5}); types.ErrorCode(e) != types.ScopeMismatch || calls != 2 {
+		t.Fatal(e, calls)
+	}
+	changed := current.Data
+	json.Unmarshal([]byte(`{"schemaVersion":2,"manifests":[]}`), &changed.Payload)
+	if _, e = c.Referrers.PrepareTagIndex(subject, &changed, content, registrydata.ManifestWriteOptions{}, registrydata.TagIndexRemove, registrydata.TagIndexOptions{MaxDescriptors: 5}); types.ErrorCode(e) != types.InvalidArgument || calls != 2 {
+		t.Fatal(e, calls)
+	}
+	otherRepo, _ := c.Repository("reg", "other")
+	other, _ := c.Manifests.Digest(otherRepo, digest)
+	if _, e = c.Referrers.PrepareTagIndex(subject, &current.Data, other, registrydata.ManifestWriteOptions{}, registrydata.TagIndexRemove, registrydata.TagIndexOptions{MaxDescriptors: 5}); types.ErrorCode(e) != types.ScopeMismatch || calls != 2 {
+		t.Fatal(e, calls)
+	}
+}
+func TestSubjectUnsupportedAlgorithmIsUnavailableBeforeIO(t *testing.T) {
+	calls := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) { calls++; return nil, errors.New("unexpected HTTP") })
+	repo, _ := c.Repository("reg", "repo")
+	tag, _ := c.Manifests.Tag(repo, "artifact")
+	var payload types.ProtectedJSON
+	json.Unmarshal([]byte(`{"schemaVersion":2,"subject":{"mediaType":"application/vnd.oci.image.manifest.v1+json","digest":"sha3-256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","size":1}}`), &payload)
+	out, e := c.Manifests.Put(context.Background(), tag, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: payload}, types.CallOptions{})
+	if types.ErrorCode(e) != types.CapabilityUnavailable || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatal(out, e, calls)
+	}
+}
+func TestPrepareTagIndexByteBoundRequiresNoCredentialsOrHTTP(t *testing.T) {
+	calls, lookups := 0, 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) { calls++; return nil, errors.New("unexpected HTTP") }, func(cfg *sdk.Config) {
+		cfg.MaxJSONBytes = 256
+		cfg.Credentials = credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+			lookups++
+			return credentials.Material{}, errors.New("unexpected credentials")
+		})
+	})
+	repo, _ := c.Repository("reg", "repo")
+	sd, _ := registrydata.ParseDigest("sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+	subject, _ := c.Manifests.Digest(repo, sd)
+	cd, _ := registrydata.ParseDigest("sha256:b13dbe0808e9986b174417bd97f614e052ad67dae3c2e133d196ce5d141ae8c4")
+	content, _ := c.Manifests.Digest(repo, cd)
+	var payload types.ProtectedJSON
+	json.Unmarshal([]byte(`{"padding":"`+strings.Repeat("x", 300)+`"}`), &payload)
+	out, e := c.Referrers.PrepareTagIndex(subject, nil, content, registrydata.ManifestWriteOptions{MediaType: registrydata.OCIManifest, Payload: payload}, registrydata.TagIndexAdd, registrydata.TagIndexOptions{MaxDescriptors: 1})
+	if types.ErrorCode(e) != types.ResponseLimit || calls != 0 || lookups != 0 || out.Changed {
+		t.Fatal(out, e, calls, lookups)
+	}
+}
