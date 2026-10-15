@@ -11,6 +11,7 @@ import (
 	"github.com/festy23/selectel-sdk/catalog"
 	"github.com/festy23/selectel-sdk/compute"
 	"github.com/festy23/selectel-sdk/databases"
+	"github.com/festy23/selectel-sdk/dnslegacy"
 	"github.com/festy23/selectel-sdk/internal/endpoints"
 	"github.com/festy23/selectel-sdk/inventory"
 	"github.com/festy23/selectel-sdk/logs"
@@ -48,6 +49,9 @@ func (p ProjectClient) Secrets() *secrets.Client {
 	return secrets.Bind(p.client.runtime, p.client.scope)
 }
 func (a AccountClient) Scope() types.Scope { return a.client.scope }
+func (a AccountClient) LegacyDNS() *dnslegacy.Client {
+	return dnslegacy.Bind(a.client.runtime, a.client.scope)
+}
 func (a AccountClient) Billing() *billing.Client {
 	return billing.Bind(a.client.runtime, a.client.scope)
 }

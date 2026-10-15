@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"dns-legacy":                   {"dns", "v1", "static_token", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},

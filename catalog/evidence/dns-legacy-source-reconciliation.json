@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "surveyed_at": "2026-10-16",
+  "source_uri": "https://docs.selectel.ru/api/dns-legacy.json",
+  "source_revision": "d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39",
+  "sdk_uri": "https://github.com/selectel/domains-go",
+  "sdk_revision": "6b87a8d9f7b4089a30a4a1dc361cf73117f1af61",
+  "client_content_sha256": "bdb9aabcf21b6fd3c51a0986b787f52d286ecc37c7a93f1179746e40f88829bf",
+  "readme_content_sha256": "ced5b594ab6d264256553b658168b723fc724005ef60b558007506d1536d9409",
+  "boundary": "current published19operation subset; full legacy inventory/availability not complete; preserve PR120 IDs",
+  "endpoint": "https://api.selectel.ru/domains/v1",
+  "auth": "Selectel token X-Token, account scope; do not infer IAM or v2 fallback",
+  "ownership": [
+    117,
+    71,
+    74,
+    76
+  ],
+  "shared_reuse": {
+    "early_receipt_revision": "379458e4f658b1216137fea4acce5dae6027d320"
+  },
+  "canonical_ids": {
+    "GET /{domain}/export": "dns.v1.export.list",
+    "POST /{domain}/records": "dns.v1.records.create",
+    "DELETE /{domain}/records/{record_id}": "dns.v1.records.delete",
+    "GET /{domain}/records/{record_id}": "dns.v1.records.get",
+    "GET /{domain}/records": "dns.v1.records.list",
+    "PUT /{domain}/records": "dns.v1.records.replace",
+    "PUT /{domain}/records/{record_id}": "dns.v1.records.replace_1158c7f1",
+    "PATCH /{domain}/records/batch_update": "dns.v1.records_batch_update.update",
+    "POST /": "dns.v1.secrets.create",
+    "DELETE /{domain}": "dns.v1.secrets.delete",
+    "GET /{domain}": "dns.v1.secrets.get",
+    "GET /": "dns.v1.secrets.list",
+    "PATCH /{domain}": "dns.v1.secrets.update",
+    "GET /{domain}/state": "dns.v1.state.list",
+    "PATCH /{domain}/state": "dns.v1.state.update",
+    "DELETE /tags/{tag_id}": "dns.v1.tags.delete",
+    "GET /tags/{tag_id}": "dns.v1.tags.get",
+    "PUT /tags/{tag_id}": "dns.v1.tags.replace",
+    "PUT /version/v2": "dns.v1.version.replace"
+  }
+}

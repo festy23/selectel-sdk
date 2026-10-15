@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+ "dnslegacy": ("dns-legacy", {"TagSchema": "Tag", "TagBody": "TagUpdateSpec", "DomainOut": "Domain"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -49,6 +50,8 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
+    if package == "dnslegacy":
+        resource_roots = {"TagSchema", "DomainOut"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -77,6 +80,8 @@ for case, (family, initial, top_name) in CASES.items():
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
         kind = schema.get("type")
+        if package == "dnslegacy" and kind == "string" and field != "type":
+            return "types.ProtectedValue", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
@@ -140,6 +145,13 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
+            if package == "dnslegacy" and nested.get("format") in {"ipv4", "ipv6"}:
+                imports["netip"] = "net/netip"
+                family_check = "Is4" if nested["format"] == "ipv4" else "Is6"
+                code += f"\tif v.{field_name} != nil {{ if ip, err := netip.ParseAddr(string(v.{field_name}.Reveal())); err != nil || !ip.{family_check}() {{ return types.NewError(types.ProtocolError) }} }}\n"
+            if package == "dnslegacy" and wire == "type" and nested.get("enum"):
+                checks = " && ".join(f"*v.{field_name} != {json.dumps(item)}" for item in nested["enum"])
+                code += f"\tif v.{field_name} != nil && ({checks}) {{ return types.NewError(types.ProtocolError) }}\n"
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
             elif nested.get("type") == "array":

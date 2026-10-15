@@ -4585,5 +4585,88 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "dns.v1.tags.get": {
+    "go_method": "dnslegacy.Tags.Get",
+    "input_type": "string + types.CallOptions",
+    "output_type": "dnslegacy.Tag",
+    "contract_ref": "contracts/dns.v1.tags.get.json",
+    "status": "implemented",
+    "files": [
+      "dnslegacy/client.go",
+      "dnslegacy/types_generated.go",
+      "client.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "catalog/catalog.go"
+    ],
+    "evidence_files": [
+      "dnslegacy_client_test.go"
+    ],
+    "evidence_ref": "dnslegacy_client_test.go#TestLegacyDNSGetTagUsesExactAccountV1TokenAndProtectedDTO"
+  },
+  "dns.v1.tags.replace": {
+    "go_method": "dnslegacy.Tags.Update",
+    "input_type": "types.ResourceRef + dnslegacy.TagUpdateSpec + types.CallOptions",
+    "output_type": "dnslegacy.Tag",
+    "contract_ref": "contracts/dns.v1.tags.replace.json",
+    "status": "implemented",
+    "files": [
+      "dnslegacy/client.go",
+      "dnslegacy/types_generated.go",
+      "client.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "catalog/catalog.go",
+      "internal/endpoints/locations.go"
+    ],
+    "evidence_files": [
+      "dnslegacy_client_test.go"
+    ],
+    "evidence_ref": "dnslegacy_client_test.go#TestLegacyDNSTagUpdateRevealsOnlyAtWireAndRetainsAcceptedExactRef"
+  },
+  "dns.v1.tags.delete": {
+    "go_method": "dnslegacy.Tags.Delete",
+    "input_type": "types.ResourceRef + types.CallOptions",
+    "output_type": "dnslegacy.Acknowledgement",
+    "contract_ref": "contracts/dns.v1.tags.delete.json",
+    "status": "partial",
+    "files": [
+      "dnslegacy/client.go",
+      "dnslegacy/types_generated.go",
+      "client.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "catalog/catalog.go",
+      "internal/endpoints/locations.go"
+    ],
+    "evidence_files": [
+      "dnslegacy_client_test.go"
+    ],
+    "evidence_ref": "dnslegacy_client_test.go#TestLegacyDNSTagDeleteAcceptsOnlyStatusEvidenceAndProtectsUnknownBody",
+    "covered_schema_ref": "contracts/dns.v1.tags.delete.json#/request",
+    "excluded_variants": [
+      "Success JSON schema is empty; body/status acceptance is not a typed provider field contract or completion proof"
+    ]
+  },
+  "dns.v1.secrets.get": {
+    "go_method": "dnslegacy.Domains.Get",
+    "input_type": "dnslegacy.DomainSelector + *bool + types.CallOptions",
+    "output_type": "dnslegacy.Domain",
+    "contract_ref": "contracts/dns.v1.secrets.get.json",
+    "status": "implemented",
+    "files": [
+      "dnslegacy/client.go",
+      "dnslegacy/types_generated.go",
+      "client.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "catalog/catalog.go",
+      "dnslegacy/domains.go"
+    ],
+    "evidence_files": [
+      "dnslegacy_client_test.go"
+    ],
+    "evidence_ref": "dnslegacy_client_test.go#TestLegacyDNSDomainGetKeepsNumericOwnerMetadataAndDistinctExactRef"
   }
 }
