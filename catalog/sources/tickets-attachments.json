@@ -1,0 +1,1196 @@
+{
+  "paths": {
+    "/public/files/uuid/{file_uuid}": {
+      "get": {
+        "summary": "Get meta-info for file by file_uuid parameter",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "file_uuid",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadedFile"
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Files"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "file_uuid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/public/files/info": {
+      "get": {
+        "summary": "Get list meta-info by array of file_uuids",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "file_uuid",
+            "required": true,
+            "explode": true,
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UploadedFile"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Files"
+        ]
+      }
+    },
+    "/public/files/uuid/{file_uuid}/download": {
+      "get": {
+        "summary": "Download file by file_uuid",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "file_uuid",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          }
+        },
+        "tags": [
+          "Files"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "file_uuid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/public/files/": {
+      "post": {
+        "summary": "Receive file in multipart from data",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "actor_uuid",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "default": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadFileResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/MultipartFile"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Files"
+        ]
+      }
+    },
+    "/public/files/list": {
+      "get": {
+        "summary": "Get list of all files with filters and pagination",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "actor_uuid",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "employee_id",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "query",
+            "name": "file_hash",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "external_id",
+            "required": false,
+            "explode": true,
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "file_uuid",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "user_id",
+            "required": false,
+            "explode": true,
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {}
+          },
+          {
+            "in": "query",
+            "name": "visibility",
+            "required": false,
+            "schema": {}
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UploadedFile"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Files"
+        ]
+      }
+    },
+    "/public/files/extensions": {
+      "get": {
+        "summary": "Get available to upload file extensions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtensionsOrMimetypesItems"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Files"
+        ]
+      }
+    },
+    "/public/files/mimetypes": {
+      "get": {
+        "summary": "Get available to upload file mimetypes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtensionsOrMimetypesItems"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Files"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Tickets Attachments API",
+    "version": "v1",
+    "description": "Managing attachments for Control panel tickets"
+  },
+  "servers": [
+    {
+      "url": "https://api.selectel.ru/files"
+    }
+  ],
+  "security": [
+    {
+      "static_token": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Files",
+      "description": "Ticket files"
+    }
+  ],
+  "openapi": "3.0.2",
+  "components": {
+    "securitySchemes": {
+      "static_token": {
+        "in": "header",
+        "name": "X-Token",
+        "description": "Static token",
+        "type": "apiKey"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Error code"
+          },
+          "errors": {
+            "type": "object",
+            "description": "Errors"
+          },
+          "status": {
+            "type": "string",
+            "description": "Error name"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      },
+      "AntivirusChecks": {
+        "type": "object",
+        "properties": {
+          "log": {
+            "type": "string"
+          },
+          "gdrive_id": {
+            "type": "string"
+          },
+          "state": {},
+          "file_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deleted_from_gdrive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UploadedFile": {
+        "type": "object",
+        "properties": {
+          "actor_uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "antivirus_checks": {
+            "$ref": "#/components/schemas/AntivirusChecks"
+          },
+          "file_hash": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "original_filename": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "employee_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "file_uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {},
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uniq_part": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "visibility": {},
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "content_type": {
+            "type": "string"
+          }
+        }
+      },
+      "MultipartFile": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "UploadFileResponse": {
+        "type": "object",
+        "properties": {
+          "actor_uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "employee_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "original_filename": {
+            "type": "string"
+          },
+          "object_key": {
+            "type": "string"
+          },
+          "uniq_part": {
+            "type": "string"
+          },
+          "file_hash": {
+            "type": "string"
+          },
+          "file_uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "private_presigned_link": {
+            "type": "string",
+            "format": "url"
+          },
+          "public_download_external_url": {
+            "type": "string",
+            "format": "url"
+          },
+          "unauth_download_url": {
+            "type": "string",
+            "format": "url"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "public",
+              "private"
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "private_download_external_url": {
+            "type": "string",
+            "format": "url"
+          },
+          "dynamic_image_url": {
+            "type": "string",
+            "format": "url"
+          },
+          "unauth_publish": {
+            "type": "boolean"
+          },
+          "content_type": {
+            "type": "string"
+          },
+          "unauth_download_external_url": {
+            "type": "string",
+            "format": "url"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "public_download_url": {
+            "type": "string",
+            "format": "url"
+          },
+          "user_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "private_download_url": {
+            "type": "string",
+            "format": "url"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ExtensionsOrMimetypesItems": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "CONTINUE": {
+        "description": "Continue",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "SWITCHING_PROTOCOLS": {
+        "description": "Switching Protocols",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PROCESSING": {
+        "description": "Processing",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "OK": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "CREATED": {
+        "description": "Created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "ACCEPTED": {
+        "description": "Accepted",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NON_AUTHORITATIVE_INFORMATION": {
+        "description": "Non-Authoritative Information",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NO_CONTENT": {
+        "description": "No Content",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "RESET_CONTENT": {
+        "description": "Reset Content",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PARTIAL_CONTENT": {
+        "description": "Partial Content",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "MULTI_STATUS": {
+        "description": "Multi-Status",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "ALREADY_REPORTED": {
+        "description": "Already Reported",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "IM_USED": {
+        "description": "IM Used",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "MULTIPLE_CHOICES": {
+        "description": "Multiple Choices",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "MOVED_PERMANENTLY": {
+        "description": "Moved Permanently",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "FOUND": {
+        "description": "Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "SEE_OTHER": {
+        "description": "See Other",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NOT_MODIFIED": {
+        "description": "Not Modified",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "USE_PROXY": {
+        "description": "Use Proxy",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "TEMPORARY_REDIRECT": {
+        "description": "Temporary Redirect",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PERMANENT_REDIRECT": {
+        "description": "Permanent Redirect",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BAD_REQUEST": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "UNAUTHORIZED": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PAYMENT_REQUIRED": {
+        "description": "Payment Required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "FORBIDDEN": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NOT_FOUND": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "METHOD_NOT_ALLOWED": {
+        "description": "Method Not Allowed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NOT_ACCEPTABLE": {
+        "description": "Not Acceptable",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PROXY_AUTHENTICATION_REQUIRED": {
+        "description": "Proxy Authentication Required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "REQUEST_TIMEOUT": {
+        "description": "Request Timeout",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "CONFLICT": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "GONE": {
+        "description": "Gone",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "LENGTH_REQUIRED": {
+        "description": "Length Required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PRECONDITION_FAILED": {
+        "description": "Precondition Failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "REQUEST_ENTITY_TOO_LARGE": {
+        "description": "Request Entity Too Large",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "REQUEST_URI_TOO_LONG": {
+        "description": "Request-URI Too Long",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "description": "Unsupported Media Type",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "REQUESTED_RANGE_NOT_SATISFIABLE": {
+        "description": "Requested Range Not Satisfiable",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "EXPECTATION_FAILED": {
+        "description": "Expectation Failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "MISDIRECTED_REQUEST": {
+        "description": "Misdirected Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "UNPROCESSABLE_ENTITY": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "LOCKED": {
+        "description": "Locked",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "FAILED_DEPENDENCY": {
+        "description": "Failed Dependency",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "UPGRADE_REQUIRED": {
+        "description": "Upgrade Required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PRECONDITION_REQUIRED": {
+        "description": "Precondition Required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "TOO_MANY_REQUESTS": {
+        "description": "Too Many Requests",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "REQUEST_HEADER_FIELDS_TOO_LARGE": {
+        "description": "Request Header Fields Too Large",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "UNAVAILABLE_FOR_LEGAL_REASONS": {
+        "description": "Unavailable For Legal Reasons",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NOT_IMPLEMENTED": {
+        "description": "Not Implemented",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BAD_GATEWAY": {
+        "description": "Bad Gateway",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "SERVICE_UNAVAILABLE": {
+        "description": "Service Unavailable",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "GATEWAY_TIMEOUT": {
+        "description": "Gateway Timeout",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "HTTP_VERSION_NOT_SUPPORTED": {
+        "description": "HTTP Version Not Supported",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "VARIANT_ALSO_NEGOTIATES": {
+        "description": "Variant Also Negotiates",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "INSUFFICIENT_STORAGE": {
+        "description": "Insufficient Storage",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "LOOP_DETECTED": {
+        "description": "Loop Detected",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NOT_EXTENDED": {
+        "description": "Not Extended",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NETWORK_AUTHENTICATION_REQUIRED": {
+        "description": "Network Authentication Required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "DEFAULT_ERROR": {
+        "description": "Default error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

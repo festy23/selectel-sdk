@@ -1,0 +1,3068 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Tickets API",
+    "version": "v1.2.0",
+    "description": "Managing tickets, comments, topics, categories, and products in the Control panel"
+  },
+  "security": [
+    {
+      "iam_token_account_scoped": []
+    },
+    {
+      "static_token": []
+    }
+  ],
+  "paths": {
+    "/v2/tickets": {
+      "post": {
+        "operationId": "createTicket",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "access_level": {
+                    "description": "Access level of the ticket.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/AccessLevelKeysEnum"
+                      }
+                    ]
+                  },
+                  "body_values": {
+                    "type": "object",
+                    "nullable": true,
+                    "description": "Variables values for templated creation (`pass_to_data_center` category)."
+                  },
+                  "categories": {
+                    "type": "array",
+                    "description": "Client categories to create ticket with.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "category_fields": {
+                    "type": "array",
+                    "nullable": true,
+                    "description": "Values for fields related to category.",
+                    "items": {
+                      "$ref": "#/components/schemas/CategoryFieldItemRequestData"
+                    }
+                  },
+                  "comment_body": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Body of the first comment on the ticket."
+                  },
+                  "files": {
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "description": "List of file UUIDs from system file storage.",
+                    "type": "array"
+                  },
+                  "keystone_projects": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of IAM project IDs for which ticket will be available (`project_users` access level).",
+                    "type": "array"
+                  },
+                  "products": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of products.",
+                    "type": "array"
+                  },
+                  "secrets": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "List of secret IDs to add to the first comment on the ticket.",
+                    "type": "array"
+                  },
+                  "summary": {
+                    "description": "Short description of the issue.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "access_level",
+                  "keystone_projects",
+                  "summary",
+                  "categories",
+                  "products",
+                  "secrets",
+                  "files"
+                ],
+                "title": "CreateTicketRequestData",
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "access_level": {
+                      "nullable": true,
+                      "description": "Access level of the ticket.",
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/AccessLevelKeysEnum"
+                        }
+                      ]
+                    },
+                    "categories": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Categories of the ticket.",
+                      "type": "array"
+                    },
+                    "created_at": {
+                      "format": "date-time",
+                      "description": "Timestamp of the ticket creation.",
+                      "type": "string"
+                    },
+                    "is_await_client": {
+                      "description": "Flag to signal if ticket awaits client action.",
+                      "type": "boolean"
+                    },
+                    "is_await_support": {
+                      "description": "Flag to signal if ticket awaits support action.",
+                      "type": "boolean"
+                    },
+                    "is_can_be_voted": {
+                      "description": "Flag to signal if users can vote on the ticket.",
+                      "type": "boolean"
+                    },
+                    "is_client_read": {
+                      "description": "Flag to signal if client user has read all comments on the ticket.",
+                      "type": "boolean"
+                    },
+                    "is_closed_by_system": {
+                      "description": "Flag to signal if ticket was closed by system.",
+                      "type": "boolean"
+                    },
+                    "is_from_mailing": {
+                      "description": "Flag to signal if ticket was sent from automation system.",
+                      "type": "boolean"
+                    },
+                    "keystone_projects": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of IAM project IDs for which the ticket is available.",
+                      "type": "array"
+                    },
+                    "notice_id": {
+                      "type": "integer",
+                      "nullable": true,
+                      "description": "ID of related notice."
+                    },
+                    "notification_categories": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Notification categories for ticket updates.",
+                      "type": "array"
+                    },
+                    "number": {
+                      "type": "integer",
+                      "description": "Tickets ID."
+                    },
+                    "products": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array",
+                      "description": "List of products related to the ticket."
+                    },
+                    "split_from_ticket_number": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "ID of source ticket from which current ticket was split."
+                    },
+                    "status": {
+                      "description": "Status of the ticket",
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/ClientTicketStatusKeysEnum"
+                        }
+                      ]
+                    },
+                    "summary": {
+                      "type": "string",
+                      "description": "Short description of the issue."
+                    },
+                    "unread_comments_count": {
+                      "type": "integer",
+                      "description": "Count of messages that current user has not read yet."
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true,
+                      "description": "Timestamp of the last ticket update."
+                    },
+                    "vote_created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true,
+                      "description": "Timestamp of vote creation."
+                    },
+                    "vote_score": {
+                      "description": "Score of the vote on the ticket.",
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "vote_type": {
+                      "description": "Vote score type.",
+                      "nullable": true,
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/ScoreTypesEnum"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "access_level",
+                    "created_at",
+                    "is_await_client",
+                    "is_await_support",
+                    "is_can_be_voted",
+                    "is_client_read",
+                    "keystone_projects",
+                    "is_from_mailing",
+                    "notice_id",
+                    "notification_categories",
+                    "number",
+                    "summary",
+                    "status",
+                    "unread_comments_count",
+                    "vote_score",
+                    "vote_created_at",
+                    "vote_type",
+                    "updated_at",
+                    "products",
+                    "categories",
+                    "split_from_ticket_number",
+                    "is_closed_by_system"
+                  ],
+                  "title": "CreateTicketResponse",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The ticket has been created."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "DATA_VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "OBJECT_NOT_FOUND"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests to create tickets. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "TOO_MANY_REQUESTS"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create ticket",
+        "description": "Creates ticket with provided data.",
+        "tags": [
+          "Tickets"
+        ]
+      },
+      "get": {
+        "operationId": "getTicketsList",
+        "parameters": [
+          {
+            "name": "page",
+            "description": "The current page number.",
+            "required": false,
+            "in": "query",
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "items_per_page",
+            "description": "Max number of items to return per page.",
+            "required": false,
+            "in": "query",
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "sort_by",
+            "description": "Field to sort by.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string",
+              "default": "created_at",
+              "enum": [
+                "created_at",
+                "updated_at",
+                "resolved_at",
+                "closed_at"
+              ]
+            }
+          },
+          {
+            "name": "sort_by_order",
+            "description": "Order to sort by.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string",
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "description": "Text-search query string.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_only_opened",
+            "description": "Flag to get only results with non-closed status.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "is_only_closed",
+            "description": "Flag to get only results with closed status.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "is_only_abuse",
+            "description": "Flag to get only results related to abuse issues.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "access_levels",
+            "description": "Filter to get only results with specific access level.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AccessLevelKeysEnum"
+              }
+            }
+          },
+          {
+            "name": "keystone_projects",
+            "description": "Filter to get only results in specific IAM projects.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "$ref": "#/components/schemas/TicketItemResponse"
+                      },
+                      "title": "List of result objects.",
+                      "type": "array"
+                    },
+                    "items_per_page": {
+                      "title": "Number of items returned per page.",
+                      "type": "integer"
+                    },
+                    "page": {
+                      "title": "The current page number.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "items_per_page",
+                    "items"
+                  ],
+                  "title": "GetMultipleTicketsResponse",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Tickets have been returned."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "DATA_VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "OBJECT_NOT_FOUND"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get multiple tickets",
+        "description": "Filters tickets with provided search parameters and returns requested page.",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/v2/tickets/count": {
+      "get": {
+        "operationId": "getTicketsCount",
+        "parameters": [
+          {
+            "name": "q",
+            "description": "Text-search query string.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_only_opened",
+            "description": "Flag to get only results with non-closed status.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "is_only_closed",
+            "description": "Flag to get only results with closed status.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "is_only_abuse",
+            "description": "Flag to get only results related to abuse issues.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "access_levels",
+            "description": "Filter to get only results with specific access level.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AccessLevelKeysEnum"
+              }
+            }
+          },
+          {
+            "name": "keystone_projects",
+            "description": "Filter to get only results in specific IAM projects.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "items_count": {
+                      "description": "The number of tickets found.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "items_count"
+                  ],
+                  "title": "GetTicketsCountResponse",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The number of tickets has been returned."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "DATA_VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "OBJECT_NOT_FOUND"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get tickets count",
+        "description": "Returns number of tickets.",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/v2/tickets/{number}": {
+      "get": {
+        "operationId": "getTicket",
+        "parameters": [
+          {
+            "name": "number",
+            "description": "The number of the ticket.",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "access_level": {
+                      "nullable": true,
+                      "description": "Access level of the ticket.",
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/AccessLevelKeysEnum"
+                        }
+                      ]
+                    },
+                    "categories": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Categories of the ticket.",
+                      "type": "array"
+                    },
+                    "created_at": {
+                      "format": "date-time",
+                      "description": "Timestamp of the ticket creation.",
+                      "type": "string"
+                    },
+                    "is_await_client": {
+                      "description": "Flag to signal if ticket awaits client action.",
+                      "type": "boolean"
+                    },
+                    "is_await_support": {
+                      "description": "Flag to signal if ticket awaits support action.",
+                      "type": "boolean"
+                    },
+                    "is_can_be_voted": {
+                      "description": "Flag to signal if users can vote on the ticket.",
+                      "type": "boolean"
+                    },
+                    "is_client_read": {
+                      "description": "Flag to signal if client user has read all comments on the ticket.",
+                      "type": "boolean"
+                    },
+                    "is_closed_by_system": {
+                      "description": "Flag to signal if ticket was closed by system.",
+                      "type": "boolean"
+                    },
+                    "is_from_mailing": {
+                      "description": "Flag to signal if ticket was sent from automation system.",
+                      "type": "boolean"
+                    },
+                    "keystone_projects": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of IAM project ids for which the ticket is available.",
+                      "type": "array"
+                    },
+                    "notice_id": {
+                      "type": "integer",
+                      "nullable": true,
+                      "description": "ID of related notice."
+                    },
+                    "notification_categories": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Notification categories for ticket updates.",
+                      "type": "array"
+                    },
+                    "number": {
+                      "type": "integer",
+                      "description": "Tickets ID."
+                    },
+                    "products": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array",
+                      "description": "List of products related to the ticket."
+                    },
+                    "split_from_ticket_number": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "ID of source ticket from which current ticket was split."
+                    },
+                    "status": {
+                      "description": "Status of the ticket",
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/ClientTicketStatusKeysEnum"
+                        }
+                      ]
+                    },
+                    "summary": {
+                      "type": "string",
+                      "description": "Short description of the issue."
+                    },
+                    "unread_comments_count": {
+                      "type": "integer",
+                      "description": "Count of messages that current user has not read yet."
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true,
+                      "description": "Timestamp of the last ticket update."
+                    },
+                    "vote_created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true,
+                      "description": "Timestamp of vote creation."
+                    },
+                    "vote_score": {
+                      "description": "Score of the vote on the ticket.",
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "vote_type": {
+                      "description": "Vote score type.",
+                      "nullable": true,
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/ScoreTypesEnum"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "access_level",
+                    "created_at",
+                    "is_await_client",
+                    "is_await_support",
+                    "is_can_be_voted",
+                    "is_client_read",
+                    "keystone_projects",
+                    "is_from_mailing",
+                    "notice_id",
+                    "notification_categories",
+                    "number",
+                    "summary",
+                    "status",
+                    "unread_comments_count",
+                    "vote_score",
+                    "vote_created_at",
+                    "vote_type",
+                    "updated_at",
+                    "products",
+                    "categories",
+                    "split_from_ticket_number",
+                    "is_closed_by_system"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The ticket has been returned."
+          }
+        },
+        "summary": "Get ticket",
+        "description": "Returns ticket by its number.",
+        "tags": [
+          "Tickets"
+        ]
+      },
+      "patch": {
+        "operationId": "updateTicket",
+        "parameters": [
+          {
+            "name": "number",
+            "description": "The number of the ticket.",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "access_level": {
+                    "description": "New access level of the ticket.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/AccessLevelKeysEnum"
+                      }
+                    ]
+                  },
+                  "keystone_projects": {
+                    "type": "array",
+                    "description": "New list of IAM project ids to relate to the ticket.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "access_level",
+                  "keystone_projects"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "access_level": {
+                      "nullable": true,
+                      "description": "Access level of the ticket.",
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/AccessLevelKeysEnum"
+                        }
+                      ]
+                    },
+                    "categories": {
+                      "type": "array",
+                      "description": "Categories of the ticket.",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "description": "Timestamp of the ticket creation.",
+                      "format": "date-time"
+                    },
+                    "is_await_client": {
+                      "description": "Flag to signal if ticket awaits client action.",
+                      "type": "boolean"
+                    },
+                    "is_await_support": {
+                      "description": "Flag to signal if ticket awaits support action.",
+                      "type": "boolean"
+                    },
+                    "is_can_be_voted": {
+                      "description": "Flag to signal if users can vote on the ticket.",
+                      "type": "boolean"
+                    },
+                    "is_client_read": {
+                      "description": "Flag to signal if client user has read all comments on the ticket.",
+                      "type": "boolean"
+                    },
+                    "is_closed_by_system": {
+                      "description": "Flag to signal if ticket was closed by system.",
+                      "type": "boolean"
+                    },
+                    "is_from_mailing": {
+                      "description": "Flag to signal if ticket was sent from automation system.",
+                      "type": "boolean"
+                    },
+                    "keystone_projects": {
+                      "type": "array",
+                      "description": "List of IAM project ids for which the ticket is available.",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "notice_id": {
+                      "type": "integer",
+                      "nullable": true,
+                      "description": "ID of related notice."
+                    },
+                    "notification_categories": {
+                      "type": "array",
+                      "description": "Notification categories for ticket updates.",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "number": {
+                      "type": "integer",
+                      "description": "Tickets ID."
+                    },
+                    "products": {
+                      "type": "array",
+                      "description": "List of products related to the ticket.",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "split_from_ticket_number": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "ID of source ticket from which current ticket was split."
+                    },
+                    "status": {
+                      "description": "Status of the ticket",
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/ClientTicketStatusKeysEnum"
+                        }
+                      ]
+                    },
+                    "summary": {
+                      "type": "string",
+                      "description": "Short description of the issue."
+                    },
+                    "unread_comments_count": {
+                      "type": "integer",
+                      "description": "Count of messages that current user has not read yet."
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true,
+                      "description": "Timestamp of the last ticket update."
+                    },
+                    "vote_created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true,
+                      "description": "Timestamp of vote creation."
+                    },
+                    "vote_score": {
+                      "description": "Score of the vote on the ticket.",
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "vote_type": {
+                      "description": "Vote score type.",
+                      "nullable": true,
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/ScoreTypesEnum"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "access_level",
+                    "created_at",
+                    "is_await_client",
+                    "is_await_support",
+                    "is_can_be_voted",
+                    "is_client_read",
+                    "keystone_projects",
+                    "is_from_mailing",
+                    "notice_id",
+                    "notification_categories",
+                    "number",
+                    "summary",
+                    "status",
+                    "unread_comments_count",
+                    "vote_score",
+                    "vote_created_at",
+                    "vote_type",
+                    "updated_at",
+                    "products",
+                    "categories",
+                    "split_from_ticket_number",
+                    "is_closed_by_system"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The ticket has been updated."
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "OBJECT_NOT_FOUND"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update ticket",
+        "description": "Updates ticket by its number with provided data.",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/{ticket_number}/close": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticket_number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketCloseArgs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The ticket has been closed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "VALIDATION_ERROR",
+                      "IMPOSSIBLE_CLOSE_TICKET"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Close ticket",
+        "description": "Closes the ticket. You will not be able to create and get comments on this ticket. You can reopen the closed ticket later.",
+        "operationId": "closeTicket",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/{ticket_number}/reopen": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticket_number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketReopenArgs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The ticket has been reopened.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "VALIDATION_ERROR",
+                      "IMPOSSIBLE_REOPEN_TICKET"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Reopen ticket",
+        "description": "Reopens the ticket that has been closed. You can add and get comments on the reopened ticket again.",
+        "operationId": "reopenTicket",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/{ticket_number}/comments": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticket_number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "body": "My second comment",
+                "files": [
+                  "c45035c7-27b3-4ed6-81aa-a57fc9112a35"
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CommentCreateArgs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The comment has been added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/RetryAfter"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/xRateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/xRateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/xRateLimitReset"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "VALIDATION_ERROR",
+                      "IMPOSSIBLE_CREATE_COMMENT"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests for adding comments. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "TOO_MANY_REQUESTS"
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/RetryAfter"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/xRateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/xRateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/xRateLimitReset"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Add comment",
+        "description": "Adds a comment to the ticket. You can only add comments to the tickets that are not closed.",
+        "operationId": "addComment",
+        "tags": [
+          "Comments"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticket_number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of comments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comments"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "List comments",
+        "description": "Returns a list of ticket comments.",
+        "operationId": "listComments",
+        "tags": [
+          "Comments"
+        ]
+      }
+    },
+    "/tickets/{ticket_number}/vote": {
+      "patch": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticket_number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketVoteCreateArgs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The ticket has been rated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vote"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Rate ticket",
+        "description": "Rates how useful communication with technical support in a ticket was.",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/comments/{comment_id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "comment_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comment has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Get comment",
+        "description": "Returns a comment by its ID.",
+        "operationId": "getComment",
+        "tags": [
+          "Comments"
+        ]
+      }
+    },
+    "/comments/{comment_id}/vote": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "comment_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentVoteCreateArgs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The comment has been rated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vote"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Rate comment",
+        "description": "Rates a particular comment as being useful or not.",
+        "operationId": "rateComment",
+        "tags": [
+          "Comments"
+        ]
+      }
+    },
+    "/v2/categories": {
+      "get": {
+        "operationId": "getCategories",
+        "parameters": [
+          {
+            "name": "sort_by",
+            "description": "Field to sort results by.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "default": "view_priority",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_by_order",
+            "description": "Order to sort results by.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_only_active",
+            "description": "Flag to get only active categories.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "$ref": "#/components/schemas/GetMultipleCategoriesItemResponse"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "List of categories returned."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "DATA_VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "OBJECT_NOT_FOUND"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "List categories",
+        "description": "Returns list of categories for tickets.",
+        "tags": [
+          "Categories"
+        ]
+      }
+    },
+    "/v2/categories/{category}/fields": {
+      "get": {
+        "operationId": "getCategoryFields",
+        "parameters": [
+          {
+            "name": "category",
+            "description": "Category key.",
+            "in": "path",
+            "required": true,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "$ref": "#/components/schemas/GetCategoryFieldsItemResponse"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "List of category fields."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "DATA_VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "OBJECT_NOT_FOUND"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get category fields",
+        "description": "Returns category fields.",
+        "tags": [
+          "Categories"
+        ]
+      }
+    },
+    "/v2/products": {
+      "get": {
+        "operationId": "getProducts",
+        "parameters": [
+          {
+            "name": "parent",
+            "description": "Parent of subproducts to return.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_by",
+            "description": "Field to sort results by.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string",
+              "default": "view_priority"
+            }
+          },
+          {
+            "name": "sort_by_order",
+            "description": "Order to sort results by.",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "allowReserved": false,
+            "schema": {
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "items": {
+                      "items": {
+                        "$ref": "#/components/schemas/GetMultipleProductsItemResponse"
+                      },
+                      "title": "Items",
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Products successfully returned."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "DATA_VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "OBJECT_NOT_FOUND"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get products",
+        "description": "Returns multiple products to use for tickets creation.",
+        "tags": [
+          "Products"
+        ]
+      }
+    },
+    "/tickets": {
+      "post": {
+        "deprecated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "comment_body": "my first comment",
+                "summary": "new test ticket"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/TicketCreateArgs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The ticket has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/RetryAfter"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/xRateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/xRateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/xRateLimitReset"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "PRODUCT_NOT_FOUND",
+                      "CATEGORY_NOT_FOUND"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests to create tickets. Try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "TOO_MANY_REQUESTS"
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/RetryAfter"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/xRateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/xRateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/xRateLimitReset"
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Create ticket",
+        "description": "Creates a ticket to technical support.",
+        "operationId": "createTicketDeprecated",
+        "tags": [
+          "Tickets"
+        ]
+      },
+      "get": {
+        "deprecated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "only_opened",
+            "description": "If true, returns tickets in the Closed status.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Number of the page to be returned.",
+            "schema": {
+              "default": 1,
+              "format": "int32",
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "only_closed",
+            "description": "If true, only tickets in the Closed status are returned.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "description": "Search query for Full-text search of tickets.",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "items_per_page",
+            "description": "Number of returned tickets per page.",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "int32",
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "description": "Name of the field used as a result sorting key.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created_at",
+                "updated_at",
+                "number",
+                "summary",
+                "status"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_by_order",
+            "description": "A sort order.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "access_level",
+            "description": "User access level. Only tickets of these users are returned.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "account_users",
+                "project_users",
+                "all_users"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "keystone_projects",
+            "required": false,
+            "description": "Project identifiers. Only tickets within these projects are returned.",
+            "schema": {
+              "$ref": "#/components/schemas/KeystoneProjects"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tickets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "List tickets",
+        "description": "Returns a list of tickets in the account.",
+        "operationId": "listTicketsDeprecated",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/{ticket_number}": {
+      "get": {
+        "deprecated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticket_number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The ticket has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Get ticket",
+        "description": "Returns a ticket by its number.",
+        "operationId": "getTicketDeprecated",
+        "tags": [
+          "Tickets"
+        ]
+      },
+      "patch": {
+        "deprecated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticket_number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "access_level": "account_users"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/TicketModifyArgs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ticket properties have been updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "code": [
+                      "VALIDATION_ERROR"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "Update ticket",
+        "description": "Updates ticket properties.",
+        "operationId": "updateTicketDeprecated",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/topics": {
+      "get": {
+        "deprecated": true,
+        "responses": {
+          "200": {
+            "description": "List of topics.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Topics"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "summary": "List topics",
+        "description": "Returns a list of ticket topics in the account.",
+        "operationId": "listTopicsDeprecated",
+        "tags": [
+          "Topics"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Tickets",
+      "description": "To discuss any issue you have, you can create tickets to technical support. You can work with created tickets: list, get, update, close, reopen, or rate a particular ticket."
+    },
+    {
+      "name": "Comments",
+      "description": "To give you a feedback on a ticket, technical support adds comments. You can also add your comments to discuss the ticket. Besides, you can get or list comments and rate the comments added by technical support."
+    },
+    {
+      "name": "Topics",
+      "description": "You specify a ticket topic when creating a ticket. You cannot edit a ticket topic after creating a ticket."
+    },
+    {
+      "name": "Categories",
+      "description": "Supporting entity to help create tickets with specific category."
+    },
+    {
+      "name": "Products",
+      "description": "Supporting entity to help create tickets with specific product."
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "static_token": {
+        "type": "apiKey",
+        "in": "header",
+        "description": "Static token",
+        "name": "X-Token"
+      },
+      "iam_token_account_scoped": {
+        "in": "header",
+        "name": "X-Auth-Token",
+        "description": "IAM token for account (preferred)",
+        "type": "apiKey"
+      }
+    },
+    "headers": {
+      "RetryAfter": {
+        "description": "The number of seconds to retry after the Rate Limit will be reset.",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "xRateLimitLimit": {
+        "description": "The total number of requests allowed for the active window.",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "xRateLimitRemaining": {
+        "description": "The number of requests remaining in the active window.",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "xRateLimitReset": {
+        "description": "UTC seconds since epoch when the window will be reset.",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Comment": {
+        "properties": {
+          "files": {
+            "type": "array",
+            "description": "Attached files in a comment.",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            }
+          },
+          "body": {
+            "type": "string",
+            "description": "Text in a comment."
+          },
+          "id": {
+            "format": "int32",
+            "type": "integer",
+            "description": "Comment identifier."
+          },
+          "is_client_author": {
+            "type": "boolean",
+            "description": "If true, the comment has been added by a client."
+          },
+          "is_client_read": {
+            "type": "boolean",
+            "description": "If true, the comment was received from the API by a client."
+          },
+          "sent_at": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Timestamp of when the comment was added."
+          },
+          "splitted_at": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Timestamp of when the comment was splitted to ticket by support."
+          },
+          "splitted_to_ticket_number": {
+            "format": "int32",
+            "type": "integer",
+            "description": "Number of the ticket created by splitting this comment by support."
+          },
+          "vote": {
+            "$ref": "#/components/schemas/CommentVote"
+          },
+          "ticket_number": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of the ticket that contains the comment."
+          },
+          "client_author_id": {
+            "type": "string",
+            "description": "Client identifier in case the comment was added by a client."
+          },
+          "admin_author": {
+            "$ref": "#/components/schemas/CommentAdminAuthor"
+          }
+        },
+        "type": "object"
+      },
+      "CommentCreateArgs": {
+        "description": "At least one of properties is required: files, body.",
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            },
+            "minItems": 1,
+            "maxItems": 10,
+            "description": "Array of files to attach to a comment."
+          },
+          "body": {
+            "maxLength": 50000,
+            "minLength": 1,
+            "type": "string",
+            "description": "Text of a comment to create."
+          }
+        },
+        "type": "object"
+      },
+      "CommentVoteCreateArgs": {
+        "properties": {
+          "comment": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Text of a comment to vote for."
+          },
+          "score": {
+            "enum": [
+              1,
+              -1
+            ],
+            "format": "int32",
+            "type": "integer",
+            "description": "Score in two points scale of vote to add to the comment."
+          }
+        },
+        "required": [
+          "score"
+        ],
+        "type": "object"
+      },
+      "Comments": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "description": "List of comments."
+      },
+      "Ticket": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TicketItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "vote": {
+                "$ref": "#/components/schemas/TicketVote"
+              },
+              "access_level": {
+                "$ref": "#/components/schemas/AccessLevel"
+              },
+              "keystone_projects": {
+                "$ref": "#/components/schemas/KeystoneProjects"
+              },
+              "splitted_from_ticket_number": {
+                "format": "int32",
+                "type": "integer",
+                "description": "Number of the ticket from which the current ticket has been split by support."
+              }
+            }
+          }
+        ],
+        "type": "object"
+      },
+      "TicketCloseArgs": {
+        "properties": {
+          "comment": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Comment on the ticket score."
+          },
+          "score": {
+            "format": "int32",
+            "maximum": 5,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Ticket score on a five-point scale."
+          }
+        },
+        "type": "object"
+      },
+      "TicketCreateArgs": {
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            },
+            "minItems": 1,
+            "maxItems": 10,
+            "description": "Files to add to the initial ticket comment."
+          },
+          "comment_body": {
+            "maxLength": 50000,
+            "minLength": 1,
+            "type": "string",
+            "description": "Ticket initial comment."
+          },
+          "summary": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string",
+            "description": "Ticket summary."
+          },
+          "topic_key": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Selected ticket topic."
+          },
+          "notice_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Notice from which the ticket has to be created."
+          },
+          "access_level": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "keystone_projects": {
+            "$ref": "#/components/schemas/KeystoneProjects"
+          }
+        },
+        "required": [
+          "comment_body",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "TicketItem": {
+        "properties": {
+          "closed_at": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date-time string of the time when the ticket was closed. null if the ticket was not closed."
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date-time string of time when the ticket was created."
+          },
+          "is_client_author": {
+            "type": "boolean",
+            "description": "True if the ticket was created by client, False if not."
+          },
+          "is_client_read": {
+            "example": true,
+            "readOnly": true,
+            "description": "True if the ticket was received from the api by client, False if not."
+          },
+          "is_closed": {
+            "type": "boolean",
+            "description": "True if the ticket is in Closed status, False if not."
+          },
+          "is_resolved": {
+            "type": "boolean",
+            "description": "True if ticket is in Resolved status, False if not."
+          },
+          "number": {
+            "format": "int32",
+            "type": "integer",
+            "description": "Unique ticket number."
+          },
+          "status": {
+            "example": {
+              "en": "Open",
+              "ru": "\\u041E\\u0442\\u043A\\u0440\\u044B\\u0442"
+            },
+            "readOnly": true,
+            "type": "object",
+            "description": "Ticket status.",
+            "properties": {
+              "ru": {
+                "type": "string",
+                "description": "Name of the status in Russian language."
+              },
+              "en": {
+                "type": "string",
+                "description": "Name of the status in English language."
+              }
+            }
+          },
+          "status_key": {
+            "enum": [
+              "in_progress",
+              "resolved",
+              "closed",
+              "pending",
+              "replied"
+            ],
+            "type": "string",
+            "description": "Ticket status key."
+          },
+          "summary": {
+            "type": "string",
+            "description": "Ticket summary."
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date-time string of when ticket was last updated."
+          },
+          "vote": {
+            "$ref": "#/components/schemas/TicketVote"
+          },
+          "access_level": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "keystone_projects": {
+            "$ref": "#/components/schemas/KeystoneProjects"
+          },
+          "notice_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Id of notice from which the ticket was created."
+          }
+        },
+        "type": "object"
+      },
+      "TicketModifyArgs": {
+        "properties": {
+          "access_level": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "keystone_projects": {
+            "$ref": "#/components/schemas/KeystoneProjects"
+          }
+        },
+        "type": "object"
+      },
+      "TicketPage": {
+        "properties": {
+          "item_count": {
+            "format": "int32",
+            "type": "integer",
+            "description": "Total number of tickets found."
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TicketItem"
+            },
+            "type": "array",
+            "description": "Content of current page."
+          },
+          "items_per_page": {
+            "format": "int32",
+            "type": "integer",
+            "description": "Count of requested tickets per one page."
+          },
+          "page": {
+            "format": "int32",
+            "type": "integer",
+            "description": "Number of requested page."
+          },
+          "page_count": {
+            "format": "int32",
+            "type": "integer",
+            "description": "Total number of pages found."
+          }
+        },
+        "type": "object"
+      },
+      "TicketReopenArgs": {
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            },
+            "minItems": 1,
+            "maxItems": 10,
+            "description": "Array of file UUIDs to add to reopening comment."
+          },
+          "body": {
+            "maxLength": 50000,
+            "minLength": 1,
+            "type": "string",
+            "description": "Text of reopening comment."
+          }
+        },
+        "required": [
+          "body"
+        ],
+        "type": "object"
+      },
+      "Vote": {
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "User's comment on the vote."
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date-time string of when the vote has been created."
+          },
+          "score": {
+            "format": "int32",
+            "type": "integer",
+            "description": "Score in one of scales."
+          }
+        },
+        "type": "object"
+      },
+      "TicketVote": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Vote"
+          },
+          {
+            "type": "object",
+            "description": "Client's vote for ticket on a five-point scale."
+          }
+        ]
+      },
+      "CommentVote": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Vote"
+          },
+          {
+            "type": "object",
+            "description": "Client's vote for comment on a two-point scale (like or dislike)."
+          }
+        ]
+      },
+      "TicketVoteCreateArgs": {
+        "properties": {
+          "comment": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Comment to add to the vote."
+          },
+          "score": {
+            "format": "int32",
+            "maximum": 10,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Score on a two-point scale (like or dislike)."
+          }
+        },
+        "required": [
+          "score"
+        ],
+        "type": "object"
+      },
+      "CommentAdminAuthor": {
+        "type": "object",
+        "description": "Comment's admin author info if it was created by vendor's employee.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Author nickname or full name."
+          }
+        }
+      },
+      "Topic": {
+        "properties": {
+          "key": {
+            "example": "order_consultation",
+            "type": "string",
+            "description": "Key of topic to use."
+          },
+          "names": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "en": "Pre-Order consultation",
+              "ru": "\\u041A\\u043E\\u043D\\u0441\\u0443\\u043B\\u044C\\u0442\\u0430\\u0446\\u0438\\ \\u044F \\u043F\\u0435\\u0440\\u0435\\u0434 \\u0437\\u0430\\u043A\\u0430\\u0437\\ \\u043E\\u043C"
+            },
+            "type": "object",
+            "description": "Names to be displayed to user in different languages."
+          },
+          "subtopics": {
+            "example": {
+              "key": "servers",
+              "names": {
+                "en": "Servers",
+                "ru": "\\u0421\\u0435\\u0440\\u0432\\u0435\\u0440\\u044B"
+              }
+            },
+            "items": {
+              "$ref": "#/components/schemas/Topic"
+            },
+            "type": "array",
+            "description": "Array of topics parented by current in hierarchy."
+          }
+        },
+        "type": "object"
+      },
+      "Topics": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Topic"
+            },
+            "type": "array",
+            "description": "Array of provided topics."
+          }
+        },
+        "type": "object"
+      },
+      "File": {
+        "type": "string",
+        "format": "uuid",
+        "description": "File UUID in file-storage system."
+      },
+      "AccessLevel": {
+        "type": "string",
+        "enum": [
+          "account_users",
+          "project_users",
+          "all_users"
+        ],
+        "description": "Access level of ticket."
+      },
+      "KeystoneProjects": {
+        "type": "array",
+        "description": "Array of IAM project identifiers for which access is allowed for project_users access_level.",
+        "maxItems": 1,
+        "minItems": 1,
+        "items": {
+          "$ref": "#/components/schemas/KeystoneProject"
+        }
+      },
+      "KeystoneProject": {
+        "type": "string",
+        "description": "Project identifier from iam."
+      },
+      "AccessLevelKeysEnum": {
+        "enum": [
+          "all_users",
+          "account_users",
+          "project_users"
+        ],
+        "description": "Access level of the object.",
+        "type": "string"
+      },
+      "CategoryFieldItemRequestData": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "key",
+          "values"
+        ],
+        "title": "CategoryFieldItemRequestData",
+        "type": "object"
+      },
+      "CategoryFieldValueItemResponse": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "description": "Value unique technical key.",
+            "type": "string"
+          },
+          "localizations": {
+            "description": "See **LanguagesEnum** schema for possible keys.",
+            "nullable": true,
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Value localizations in several languages.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "key",
+          "localizations"
+        ],
+        "description": "Category fields value object.",
+        "type": "object"
+      },
+      "ClientTicketStatusKeysEnum": {
+        "enum": [
+          "in_progress",
+          "resolved",
+          "closed",
+          "pending",
+          "replied",
+          "new",
+          "awaiting"
+        ],
+        "description": "Enum of the ticket's possible statuses.",
+        "type": "string"
+      },
+      "GetCategoryFieldsItemResponse": {
+        "properties": {
+          "key": {
+            "description": "Field key (used as relation key in other objects).",
+            "type": "string"
+          },
+          "names": {
+            "nullable": true,
+            "description": "See **LanguagesEnum** schema for possible keys.",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Field names in several languages.",
+            "type": "object"
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryFieldValueItemResponse"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "key",
+          "names",
+          "values"
+        ],
+        "title": "GetCategoryFieldsItemResponse",
+        "type": "object"
+      },
+      "GetMultipleCategoriesItemResponse": {
+        "properties": {
+          "descriptions": {
+            "nullable": true,
+            "description": "See **LanguagesEnum** schema for possible keys.",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Category descriptions in several languages.",
+            "type": "object"
+          },
+          "id": {
+            "title": "Category ID",
+            "type": "integer"
+          },
+          "key": {
+            "title": "Category key (used as relation key in other objects).",
+            "type": "string"
+          },
+          "names": {
+            "nullable": true,
+            "description": "See **LanguagesEnum** schema for possible keys.",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Category names in several languages.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "key",
+          "names",
+          "descriptions"
+        ],
+        "title": "GetMultipleCategoriesItemResponse",
+        "type": "object"
+      },
+      "GetMultipleProductsItemResponse": {
+        "properties": {
+          "id": {
+            "description": "ID of the product.",
+            "type": "integer"
+          },
+          "key": {
+            "description": "Unique key of the product.",
+            "type": "string"
+          },
+          "names": {
+            "nullable": true,
+            "description": "Product names in several languages. See LanguagesEnum schema for possible keys.",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "key",
+          "names"
+        ],
+        "description": "Product object item.",
+        "type": "object"
+      },
+      "LanguagesEnum": {
+        "type": "string",
+        "description": "Enum of possible languages for localized values.",
+        "enum": [
+          "ru",
+          "en"
+        ]
+      },
+      "ScoreTypesEnum": {
+        "type": "string",
+        "description": "Enum of possible score types.",
+        "enum": [
+          "plus_minus",
+          "ten_point",
+          "five_point"
+        ]
+      },
+      "TicketItemResponse": {
+        "properties": {
+          "access_level": {
+            "description": "Access level of the ticket.",
+            "nullable": true,
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AccessLevelKeysEnum"
+              }
+            ]
+          },
+          "categories": {
+            "type": "array",
+            "description": "List of ticket's categories.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the creation of the ticket."
+          },
+          "is_await_client": {
+            "type": "boolean",
+            "description": "Flag to signal if ticket awaits action from client."
+          },
+          "is_await_support": {
+            "type": "boolean",
+            "description": "Flag to signal if ticket awaits action from support."
+          },
+          "is_can_be_voted": {
+            "type": "boolean",
+            "description": "Flag to signal if users can vote on the ticket."
+          },
+          "is_client_read": {
+            "type": "boolean",
+            "description": "Flag to signal if client user has read all comments on the ticket."
+          },
+          "is_from_mailing": {
+            "type": "boolean",
+            "description": "Flag to signal if ticket was sent from automation system."
+          },
+          "keystone_projects": {
+            "type": "array",
+            "description": "List of IAM project IDs for which the ticket is available.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notice_id": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID of related notice."
+          },
+          "notification_categories": {
+            "type": "array",
+            "description": "Notification categories for ticket updates.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "description": "The number of the ticket."
+          },
+          "products": {
+            "type": "array",
+            "description": "List of products related to the ticket.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "description": "Status of the ticket.",
+            "$ref": "#/components/schemas/ClientTicketStatusKeysEnum"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short description of the issue."
+          },
+          "unread_comments_count": {
+            "type": "integer",
+            "description": "Count of messages that current user has not read yet."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Timestamp of the last ticket update."
+          },
+          "vote_created_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Timestamp of vote creation."
+          },
+          "vote_score": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Score of the vote on the ticket."
+          },
+          "vote_type": {
+            "description": "Vote score type.",
+            "nullable": true,
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScoreTypesEnum"
+              }
+            ]
+          }
+        },
+        "required": [
+          "access_level",
+          "created_at",
+          "is_await_client",
+          "is_await_support",
+          "is_can_be_voted",
+          "is_client_read",
+          "keystone_projects",
+          "is_from_mailing",
+          "notice_id",
+          "notification_categories",
+          "number",
+          "summary",
+          "status",
+          "unread_comments_count",
+          "vote_score",
+          "vote_created_at",
+          "vote_type",
+          "updated_at",
+          "products",
+          "categories"
+        ],
+        "title": "TicketItemResponse",
+        "type": "object"
+      },
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Unique code of the error.",
+            "example": "INTERNAL_ERROR",
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "validation_details": {
+            "description": "Additional information about validation.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/Error"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

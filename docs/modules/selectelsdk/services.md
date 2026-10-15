@@ -203,3 +203,9 @@ restore реализуется отдельным документированн
 в SDK. Биллинг account, project consumption, provider prediction и resource
 cost имеют раздельные методы и типы. Telemetry отражает только доступные
 и реально собранные данные; SDK не синтезирует отсутствующие логи/метрики.
+
+### Support tickets and attachments
+
+See the [support contract](support.md) for current and legacy ticket operations,
+protected content, multipart streaming, exact references and source-limited
+partial list/download variants.

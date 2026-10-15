@@ -1,0 +1,1536 @@
+{
+  "Comment": {
+    "properties": {
+      "files": {
+        "type": "array",
+        "description": "Attached files in a comment.",
+        "items": {
+          "$ref": "#/components/schemas/File"
+        }
+      },
+      "body": {
+        "type": "string",
+        "description": "Text in a comment."
+      },
+      "id": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Comment identifier."
+      },
+      "is_client_author": {
+        "type": "boolean",
+        "description": "If true, the comment has been added by a client."
+      },
+      "is_client_read": {
+        "type": "boolean",
+        "description": "If true, the comment was received from the API by a client."
+      },
+      "sent_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Timestamp of when the comment was added."
+      },
+      "splitted_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Timestamp of when the comment was splitted to ticket by support."
+      },
+      "splitted_to_ticket_number": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Number of the ticket created by splitting this comment by support."
+      },
+      "vote": {
+        "$ref": "#/components/schemas/CommentVote"
+      },
+      "ticket_number": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Number of the ticket that contains the comment."
+      },
+      "client_author_id": {
+        "type": "string",
+        "description": "Client identifier in case the comment was added by a client."
+      },
+      "admin_author": {
+        "$ref": "#/components/schemas/CommentAdminAuthor"
+      }
+    },
+    "type": "object"
+  },
+  "CommentCreateArgs": {
+    "description": "At least one of properties is required: files, body.",
+    "properties": {
+      "files": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/File"
+        },
+        "minItems": 1,
+        "maxItems": 10,
+        "description": "Array of files to attach to a comment."
+      },
+      "body": {
+        "maxLength": 50000,
+        "minLength": 1,
+        "type": "string",
+        "description": "Text of a comment to create."
+      }
+    },
+    "type": "object"
+  },
+  "CommentVoteCreateArgs": {
+    "properties": {
+      "comment": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Text of a comment to vote for."
+      },
+      "score": {
+        "enum": [
+          1,
+          -1
+        ],
+        "format": "int32",
+        "type": "integer",
+        "description": "Score in two points scale of vote to add to the comment."
+      }
+    },
+    "required": [
+      "score"
+    ],
+    "type": "object"
+  },
+  "Comments": {
+    "properties": {
+      "items": {
+        "items": {
+          "$ref": "#/components/schemas/Comment"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object",
+    "description": "List of comments."
+  },
+  "Ticket": {
+    "type": "object",
+    "properties": {
+      "closed_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of the time when the ticket was closed. null if the ticket was not closed."
+      },
+      "created_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of time when the ticket was created."
+      },
+      "is_client_author": {
+        "type": "boolean",
+        "description": "True if the ticket was created by client, False if not."
+      },
+      "is_client_read": {
+        "example": true,
+        "readOnly": true,
+        "description": "True if the ticket was received from the api by client, False if not.",
+        "type": "boolean"
+      },
+      "is_closed": {
+        "type": "boolean",
+        "description": "True if the ticket is in Closed status, False if not."
+      },
+      "is_resolved": {
+        "type": "boolean",
+        "description": "True if ticket is in Resolved status, False if not."
+      },
+      "number": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Unique ticket number."
+      },
+      "status": {
+        "$ref": "#/components/schemas/TicketStatus"
+      },
+      "status_key": {
+        "enum": [
+          "in_progress",
+          "resolved",
+          "closed",
+          "pending",
+          "replied"
+        ],
+        "type": "string",
+        "description": "Ticket status key."
+      },
+      "summary": {
+        "type": "string",
+        "description": "Ticket summary."
+      },
+      "updated_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of when ticket was last updated."
+      },
+      "vote": {
+        "$ref": "#/components/schemas/TicketVote"
+      },
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevel"
+      },
+      "keystone_projects": {
+        "$ref": "#/components/schemas/KeystoneProjects"
+      },
+      "notice_id": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Id of notice from which the ticket was created."
+      },
+      "splitted_from_ticket_number": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Number of the ticket from which the current ticket has been split by support."
+      }
+    },
+    "required": []
+  },
+  "TicketCloseArgs": {
+    "properties": {
+      "comment": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Comment on the ticket score."
+      },
+      "score": {
+        "format": "int32",
+        "maximum": 5,
+        "minimum": 1,
+        "type": "integer",
+        "description": "Ticket score on a five-point scale."
+      }
+    },
+    "type": "object"
+  },
+  "TicketCreateArgs": {
+    "properties": {
+      "files": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/File"
+        },
+        "minItems": 1,
+        "maxItems": 10,
+        "description": "Files to add to the initial ticket comment."
+      },
+      "comment_body": {
+        "maxLength": 50000,
+        "minLength": 1,
+        "type": "string",
+        "description": "Ticket initial comment."
+      },
+      "summary": {
+        "maxLength": 255,
+        "minLength": 1,
+        "type": "string",
+        "description": "Ticket summary."
+      },
+      "topic_key": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Selected ticket topic."
+      },
+      "notice_id": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Notice from which the ticket has to be created."
+      },
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevel"
+      },
+      "keystone_projects": {
+        "$ref": "#/components/schemas/KeystoneProjects"
+      }
+    },
+    "required": [
+      "comment_body",
+      "summary"
+    ],
+    "type": "object"
+  },
+  "TicketItem": {
+    "properties": {
+      "closed_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of the time when the ticket was closed. null if the ticket was not closed."
+      },
+      "created_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of time when the ticket was created."
+      },
+      "is_client_author": {
+        "type": "boolean",
+        "description": "True if the ticket was created by client, False if not."
+      },
+      "is_client_read": {
+        "example": true,
+        "readOnly": true,
+        "description": "True if the ticket was received from the api by client, False if not.",
+        "type": "boolean"
+      },
+      "is_closed": {
+        "type": "boolean",
+        "description": "True if the ticket is in Closed status, False if not."
+      },
+      "is_resolved": {
+        "type": "boolean",
+        "description": "True if ticket is in Resolved status, False if not."
+      },
+      "number": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Unique ticket number."
+      },
+      "status": {
+        "$ref": "#/components/schemas/TicketItemStatus"
+      },
+      "status_key": {
+        "enum": [
+          "in_progress",
+          "resolved",
+          "closed",
+          "pending",
+          "replied"
+        ],
+        "type": "string",
+        "description": "Ticket status key."
+      },
+      "summary": {
+        "type": "string",
+        "description": "Ticket summary."
+      },
+      "updated_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of when ticket was last updated."
+      },
+      "vote": {
+        "$ref": "#/components/schemas/TicketVote"
+      },
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevel"
+      },
+      "keystone_projects": {
+        "$ref": "#/components/schemas/KeystoneProjects"
+      },
+      "notice_id": {
+        "type": "integer",
+        "format": "int32",
+        "description": "Id of notice from which the ticket was created."
+      }
+    },
+    "type": "object"
+  },
+  "TicketModifyArgs": {
+    "properties": {
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevel"
+      },
+      "keystone_projects": {
+        "$ref": "#/components/schemas/KeystoneProjects"
+      }
+    },
+    "type": "object"
+  },
+  "TicketPage": {
+    "properties": {
+      "item_count": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Total number of tickets found."
+      },
+      "items": {
+        "items": {
+          "$ref": "#/components/schemas/TicketItem"
+        },
+        "type": "array",
+        "description": "Content of current page."
+      },
+      "items_per_page": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Count of requested tickets per one page."
+      },
+      "page": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Number of requested page."
+      },
+      "page_count": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Total number of pages found."
+      }
+    },
+    "type": "object"
+  },
+  "TicketReopenArgs": {
+    "properties": {
+      "files": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/File"
+        },
+        "minItems": 1,
+        "maxItems": 10,
+        "description": "Array of file UUIDs to add to reopening comment."
+      },
+      "body": {
+        "maxLength": 50000,
+        "minLength": 1,
+        "type": "string",
+        "description": "Text of reopening comment."
+      }
+    },
+    "required": [
+      "body"
+    ],
+    "type": "object"
+  },
+  "Vote": {
+    "properties": {
+      "comment": {
+        "type": "string",
+        "description": "User's comment on the vote."
+      },
+      "created_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of when the vote has been created."
+      },
+      "score": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Score in one of scales."
+      }
+    },
+    "type": "object"
+  },
+  "TicketVote": {
+    "type": "object",
+    "properties": {
+      "comment": {
+        "type": "string",
+        "description": "User's comment on the vote."
+      },
+      "created_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of when the vote has been created."
+      },
+      "score": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Score in one of scales."
+      }
+    },
+    "required": []
+  },
+  "CommentVote": {
+    "type": "object",
+    "properties": {
+      "comment": {
+        "type": "string",
+        "description": "User's comment on the vote."
+      },
+      "created_at": {
+        "format": "date-time",
+        "type": "string",
+        "description": "Date-time string of when the vote has been created."
+      },
+      "score": {
+        "format": "int32",
+        "type": "integer",
+        "description": "Score in one of scales."
+      }
+    },
+    "required": []
+  },
+  "TicketVoteCreateArgs": {
+    "properties": {
+      "comment": {
+        "minLength": 1,
+        "type": "string",
+        "description": "Comment to add to the vote."
+      },
+      "score": {
+        "format": "int32",
+        "maximum": 10,
+        "minimum": 1,
+        "type": "integer",
+        "description": "Score on a two-point scale (like or dislike)."
+      }
+    },
+    "required": [
+      "score"
+    ],
+    "type": "object"
+  },
+  "CommentAdminAuthor": {
+    "type": "object",
+    "description": "Comment's admin author info if it was created by vendor's employee.",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Author nickname or full name."
+      }
+    }
+  },
+  "Topic": {
+    "properties": {
+      "key": {
+        "example": "order_consultation",
+        "type": "string",
+        "description": "Key of topic to use."
+      },
+      "names": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "example": {
+          "en": "Pre-Order consultation",
+          "ru": "\\u041A\\u043E\\u043D\\u0441\\u0443\\u043B\\u044C\\u0442\\u0430\\u0446\\u0438\\ \\u044F \\u043F\\u0435\\u0440\\u0435\\u0434 \\u0437\\u0430\\u043A\\u0430\\u0437\\ \\u043E\\u043C"
+        },
+        "type": "object",
+        "description": "Names to be displayed to user in different languages."
+      },
+      "subtopics": {
+        "example": {
+          "key": "servers",
+          "names": {
+            "en": "Servers",
+            "ru": "\\u0421\\u0435\\u0440\\u0432\\u0435\\u0440\\u044B"
+          }
+        },
+        "items": {
+          "$ref": "#/components/schemas/Topic"
+        },
+        "type": "array",
+        "description": "Array of topics parented by current in hierarchy."
+      }
+    },
+    "type": "object"
+  },
+  "Topics": {
+    "properties": {
+      "items": {
+        "items": {
+          "$ref": "#/components/schemas/Topic"
+        },
+        "type": "array",
+        "description": "Array of provided topics."
+      }
+    },
+    "type": "object"
+  },
+  "File": {
+    "type": "string",
+    "format": "uuid",
+    "description": "File UUID in file-storage system."
+  },
+  "AccessLevel": {
+    "type": "string",
+    "enum": [
+      "account_users",
+      "project_users",
+      "all_users"
+    ],
+    "description": "Access level of ticket."
+  },
+  "KeystoneProjects": {
+    "type": "array",
+    "description": "Array of IAM project identifiers for which access is allowed for project_users access_level.",
+    "maxItems": 1,
+    "minItems": 1,
+    "items": {
+      "$ref": "#/components/schemas/KeystoneProject"
+    }
+  },
+  "KeystoneProject": {
+    "type": "string",
+    "description": "Project identifier from iam."
+  },
+  "AccessLevelKeysEnum": {
+    "enum": [
+      "all_users",
+      "account_users",
+      "project_users"
+    ],
+    "description": "Access level of the object.",
+    "type": "string"
+  },
+  "CategoryFieldItemRequestData": {
+    "properties": {
+      "key": {
+        "title": "Key",
+        "type": "string"
+      },
+      "values": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Values",
+        "type": "array"
+      }
+    },
+    "required": [
+      "key",
+      "values"
+    ],
+    "title": "CategoryFieldItemRequestData",
+    "type": "object"
+  },
+  "CategoryFieldValueItemResponse": {
+    "properties": {
+      "key": {
+        "title": "Key",
+        "description": "Value unique technical key.",
+        "type": "string"
+      },
+      "localizations": {
+        "description": "See **LanguagesEnum** schema for possible keys.",
+        "nullable": true,
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Value localizations in several languages.",
+        "type": "object"
+      }
+    },
+    "required": [
+      "key",
+      "localizations"
+    ],
+    "description": "Category fields value object.",
+    "type": "object"
+  },
+  "ClientTicketStatusKeysEnum": {
+    "enum": [
+      "in_progress",
+      "resolved",
+      "closed",
+      "pending",
+      "replied",
+      "new",
+      "awaiting"
+    ],
+    "description": "Enum of the ticket's possible statuses.",
+    "type": "string"
+  },
+  "GetCategoryFieldsItemResponse": {
+    "properties": {
+      "key": {
+        "description": "Field key (used as relation key in other objects).",
+        "type": "string"
+      },
+      "names": {
+        "nullable": true,
+        "description": "See **LanguagesEnum** schema for possible keys.",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Field names in several languages.",
+        "type": "object"
+      },
+      "values": {
+        "items": {
+          "$ref": "#/components/schemas/CategoryFieldValueItemResponse"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "key",
+      "names",
+      "values"
+    ],
+    "title": "GetCategoryFieldsItemResponse",
+    "type": "object"
+  },
+  "GetMultipleCategoriesItemResponse": {
+    "properties": {
+      "descriptions": {
+        "nullable": true,
+        "description": "See **LanguagesEnum** schema for possible keys.",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Category descriptions in several languages.",
+        "type": "object"
+      },
+      "id": {
+        "title": "Category ID",
+        "type": "integer"
+      },
+      "key": {
+        "title": "Category key (used as relation key in other objects).",
+        "type": "string"
+      },
+      "names": {
+        "nullable": true,
+        "description": "See **LanguagesEnum** schema for possible keys.",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Category names in several languages.",
+        "type": "object"
+      }
+    },
+    "required": [
+      "id",
+      "key",
+      "names",
+      "descriptions"
+    ],
+    "title": "GetMultipleCategoriesItemResponse",
+    "type": "object"
+  },
+  "GetMultipleProductsItemResponse": {
+    "properties": {
+      "id": {
+        "description": "ID of the product.",
+        "type": "integer"
+      },
+      "key": {
+        "description": "Unique key of the product.",
+        "type": "string"
+      },
+      "names": {
+        "nullable": true,
+        "description": "Product names in several languages. See LanguagesEnum schema for possible keys.",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object"
+      }
+    },
+    "required": [
+      "id",
+      "key",
+      "names"
+    ],
+    "description": "Product object item.",
+    "type": "object"
+  },
+  "LanguagesEnum": {
+    "type": "string",
+    "description": "Enum of possible languages for localized values.",
+    "enum": [
+      "ru",
+      "en"
+    ]
+  },
+  "ScoreTypesEnum": {
+    "type": "string",
+    "description": "Enum of possible score types.",
+    "enum": [
+      "plus_minus",
+      "ten_point",
+      "five_point"
+    ]
+  },
+  "TicketItemResponse": {
+    "properties": {
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevelKeysEnum",
+        "description": "Access level of the ticket.",
+        "nullable": true
+      },
+      "categories": {
+        "type": "array",
+        "description": "List of ticket's categories.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of the creation of the ticket."
+      },
+      "is_await_client": {
+        "type": "boolean",
+        "description": "Flag to signal if ticket awaits action from client."
+      },
+      "is_await_support": {
+        "type": "boolean",
+        "description": "Flag to signal if ticket awaits action from support."
+      },
+      "is_can_be_voted": {
+        "type": "boolean",
+        "description": "Flag to signal if users can vote on the ticket."
+      },
+      "is_client_read": {
+        "type": "boolean",
+        "description": "Flag to signal if client user has read all comments on the ticket."
+      },
+      "is_from_mailing": {
+        "type": "boolean",
+        "description": "Flag to signal if ticket was sent from automation system."
+      },
+      "keystone_projects": {
+        "type": "array",
+        "description": "List of IAM project IDs for which the ticket is available.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "notice_id": {
+        "type": "integer",
+        "nullable": true,
+        "description": "ID of related notice."
+      },
+      "notification_categories": {
+        "type": "array",
+        "description": "Notification categories for ticket updates.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "number": {
+        "type": "integer",
+        "description": "The number of the ticket."
+      },
+      "products": {
+        "type": "array",
+        "description": "List of products related to the ticket.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "status": {
+        "description": "Status of the ticket.",
+        "$ref": "#/components/schemas/ClientTicketStatusKeysEnum"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Short description of the issue."
+      },
+      "unread_comments_count": {
+        "type": "integer",
+        "description": "Count of messages that current user has not read yet."
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true,
+        "description": "Timestamp of the last ticket update."
+      },
+      "vote_created_at": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true,
+        "description": "Timestamp of vote creation."
+      },
+      "vote_score": {
+        "type": "integer",
+        "nullable": true,
+        "description": "Score of the vote on the ticket."
+      },
+      "vote_type": {
+        "$ref": "#/components/schemas/ScoreTypesEnum",
+        "description": "Vote score type.",
+        "nullable": true
+      }
+    },
+    "required": [
+      "access_level",
+      "created_at",
+      "is_await_client",
+      "is_await_support",
+      "is_can_be_voted",
+      "is_client_read",
+      "keystone_projects",
+      "is_from_mailing",
+      "notice_id",
+      "notification_categories",
+      "number",
+      "summary",
+      "status",
+      "unread_comments_count",
+      "vote_score",
+      "vote_created_at",
+      "vote_type",
+      "updated_at",
+      "products",
+      "categories"
+    ],
+    "title": "TicketItemResponse",
+    "type": "object"
+  },
+  "Error": {
+    "properties": {
+      "code": {
+        "description": "Unique code of the error.",
+        "example": "INTERNAL_ERROR",
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      },
+      "validation_details": {
+        "description": "Additional information about validation.",
+        "type": "object"
+      }
+    },
+    "required": [
+      "code",
+      "message"
+    ],
+    "type": "object"
+  },
+  "ErrorResponse": {
+    "properties": {
+      "error": {
+        "$ref": "#/components/schemas/Error"
+      }
+    },
+    "type": "object"
+  },
+  "CreateTicketRequestData": {
+    "properties": {
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevelKeysEnum",
+        "description": "Access level of the ticket."
+      },
+      "body_values": {
+        "type": "object",
+        "nullable": true,
+        "description": "Variables values for templated creation (`pass_to_data_center` category)."
+      },
+      "categories": {
+        "type": "array",
+        "description": "Client categories to create ticket with.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "category_fields": {
+        "type": "array",
+        "nullable": true,
+        "description": "Values for fields related to category.",
+        "items": {
+          "$ref": "#/components/schemas/CategoryFieldItemRequestData"
+        }
+      },
+      "comment_body": {
+        "type": "string",
+        "nullable": true,
+        "description": "Body of the first comment on the ticket."
+      },
+      "files": {
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "List of file UUIDs from system file storage.",
+        "type": "array"
+      },
+      "keystone_projects": {
+        "items": {
+          "type": "string"
+        },
+        "description": "List of IAM project IDs for which ticket will be available (`project_users` access level).",
+        "type": "array"
+      },
+      "products": {
+        "items": {
+          "type": "string"
+        },
+        "description": "List of products.",
+        "type": "array"
+      },
+      "secrets": {
+        "items": {
+          "type": "integer"
+        },
+        "description": "List of secret IDs to add to the first comment on the ticket.",
+        "type": "array"
+      },
+      "summary": {
+        "description": "Short description of the issue.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "access_level",
+      "keystone_projects",
+      "summary",
+      "categories",
+      "products",
+      "secrets",
+      "files"
+    ],
+    "title": "CreateTicketRequestData",
+    "type": "object"
+  },
+  "CreateTicketResponse": {
+    "properties": {
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevelKeysEnum",
+        "nullable": true,
+        "description": "Access level of the ticket."
+      },
+      "categories": {
+        "items": {
+          "type": "string"
+        },
+        "description": "Categories of the ticket.",
+        "type": "array"
+      },
+      "created_at": {
+        "format": "date-time",
+        "description": "Timestamp of the ticket creation.",
+        "type": "string"
+      },
+      "is_await_client": {
+        "description": "Flag to signal if ticket awaits client action.",
+        "type": "boolean"
+      },
+      "is_await_support": {
+        "description": "Flag to signal if ticket awaits support action.",
+        "type": "boolean"
+      },
+      "is_can_be_voted": {
+        "description": "Flag to signal if users can vote on the ticket.",
+        "type": "boolean"
+      },
+      "is_client_read": {
+        "description": "Flag to signal if client user has read all comments on the ticket.",
+        "type": "boolean"
+      },
+      "is_closed_by_system": {
+        "description": "Flag to signal if ticket was closed by system.",
+        "type": "boolean"
+      },
+      "is_from_mailing": {
+        "description": "Flag to signal if ticket was sent from automation system.",
+        "type": "boolean"
+      },
+      "keystone_projects": {
+        "items": {
+          "type": "string"
+        },
+        "description": "List of IAM project IDs for which the ticket is available.",
+        "type": "array"
+      },
+      "notice_id": {
+        "type": "integer",
+        "nullable": true,
+        "description": "ID of related notice."
+      },
+      "notification_categories": {
+        "items": {
+          "type": "string"
+        },
+        "description": "Notification categories for ticket updates.",
+        "type": "array"
+      },
+      "number": {
+        "type": "integer",
+        "description": "Tickets ID."
+      },
+      "products": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array",
+        "description": "List of products related to the ticket."
+      },
+      "split_from_ticket_number": {
+        "type": "string",
+        "nullable": true,
+        "description": "ID of source ticket from which current ticket was split."
+      },
+      "status": {
+        "$ref": "#/components/schemas/ClientTicketStatusKeysEnum",
+        "description": "Status of the ticket"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Short description of the issue."
+      },
+      "unread_comments_count": {
+        "type": "integer",
+        "description": "Count of messages that current user has not read yet."
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true,
+        "description": "Timestamp of the last ticket update."
+      },
+      "vote_created_at": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true,
+        "description": "Timestamp of vote creation."
+      },
+      "vote_score": {
+        "description": "Score of the vote on the ticket.",
+        "type": "integer",
+        "nullable": true
+      },
+      "vote_type": {
+        "$ref": "#/components/schemas/ScoreTypesEnum",
+        "description": "Vote score type.",
+        "nullable": true
+      }
+    },
+    "required": [
+      "access_level",
+      "created_at",
+      "is_await_client",
+      "is_await_support",
+      "is_can_be_voted",
+      "is_client_read",
+      "keystone_projects",
+      "is_from_mailing",
+      "notice_id",
+      "notification_categories",
+      "number",
+      "summary",
+      "status",
+      "unread_comments_count",
+      "vote_score",
+      "vote_created_at",
+      "vote_type",
+      "updated_at",
+      "products",
+      "categories",
+      "split_from_ticket_number",
+      "is_closed_by_system"
+    ],
+    "title": "CreateTicketResponse",
+    "type": "object"
+  },
+  "GetMultipleTicketsResponse": {
+    "properties": {
+      "items": {
+        "items": {
+          "$ref": "#/components/schemas/TicketItemResponse"
+        },
+        "title": "List of result objects.",
+        "type": "array"
+      },
+      "items_per_page": {
+        "title": "Number of items returned per page.",
+        "type": "integer"
+      },
+      "page": {
+        "title": "The current page number.",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "page",
+      "items_per_page",
+      "items"
+    ],
+    "title": "GetMultipleTicketsResponse",
+    "type": "object"
+  },
+  "GetTicketsCountResponse": {
+    "properties": {
+      "items_count": {
+        "description": "The number of tickets found.",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "items_count"
+    ],
+    "title": "GetTicketsCountResponse",
+    "type": "object"
+  },
+  "GetTicketResponse": {
+    "properties": {
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevelKeysEnum",
+        "nullable": true,
+        "description": "Access level of the ticket."
+      },
+      "categories": {
+        "items": {
+          "type": "string"
+        },
+        "description": "Categories of the ticket.",
+        "type": "array"
+      },
+      "created_at": {
+        "format": "date-time",
+        "description": "Timestamp of the ticket creation.",
+        "type": "string"
+      },
+      "is_await_client": {
+        "description": "Flag to signal if ticket awaits client action.",
+        "type": "boolean"
+      },
+      "is_await_support": {
+        "description": "Flag to signal if ticket awaits support action.",
+        "type": "boolean"
+      },
+      "is_can_be_voted": {
+        "description": "Flag to signal if users can vote on the ticket.",
+        "type": "boolean"
+      },
+      "is_client_read": {
+        "description": "Flag to signal if client user has read all comments on the ticket.",
+        "type": "boolean"
+      },
+      "is_closed_by_system": {
+        "description": "Flag to signal if ticket was closed by system.",
+        "type": "boolean"
+      },
+      "is_from_mailing": {
+        "description": "Flag to signal if ticket was sent from automation system.",
+        "type": "boolean"
+      },
+      "keystone_projects": {
+        "items": {
+          "type": "string"
+        },
+        "description": "List of IAM project ids for which the ticket is available.",
+        "type": "array"
+      },
+      "notice_id": {
+        "type": "integer",
+        "nullable": true,
+        "description": "ID of related notice."
+      },
+      "notification_categories": {
+        "items": {
+          "type": "string"
+        },
+        "description": "Notification categories for ticket updates.",
+        "type": "array"
+      },
+      "number": {
+        "type": "integer",
+        "description": "Tickets ID."
+      },
+      "products": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array",
+        "description": "List of products related to the ticket."
+      },
+      "split_from_ticket_number": {
+        "type": "string",
+        "nullable": true,
+        "description": "ID of source ticket from which current ticket was split."
+      },
+      "status": {
+        "$ref": "#/components/schemas/ClientTicketStatusKeysEnum",
+        "description": "Status of the ticket"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Short description of the issue."
+      },
+      "unread_comments_count": {
+        "type": "integer",
+        "description": "Count of messages that current user has not read yet."
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true,
+        "description": "Timestamp of the last ticket update."
+      },
+      "vote_created_at": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true,
+        "description": "Timestamp of vote creation."
+      },
+      "vote_score": {
+        "description": "Score of the vote on the ticket.",
+        "type": "integer",
+        "nullable": true
+      },
+      "vote_type": {
+        "$ref": "#/components/schemas/ScoreTypesEnum",
+        "description": "Vote score type.",
+        "nullable": true
+      }
+    },
+    "required": [
+      "access_level",
+      "created_at",
+      "is_await_client",
+      "is_await_support",
+      "is_can_be_voted",
+      "is_client_read",
+      "keystone_projects",
+      "is_from_mailing",
+      "notice_id",
+      "notification_categories",
+      "number",
+      "summary",
+      "status",
+      "unread_comments_count",
+      "vote_score",
+      "vote_created_at",
+      "vote_type",
+      "updated_at",
+      "products",
+      "categories",
+      "split_from_ticket_number",
+      "is_closed_by_system"
+    ],
+    "type": "object"
+  },
+  "UpdateTicketRequest": {
+    "properties": {
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevelKeysEnum",
+        "description": "New access level of the ticket."
+      },
+      "keystone_projects": {
+        "type": "array",
+        "description": "New list of IAM project ids to relate to the ticket.",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "access_level",
+      "keystone_projects"
+    ],
+    "type": "object"
+  },
+  "UpdateTicketResponse": {
+    "properties": {
+      "access_level": {
+        "$ref": "#/components/schemas/AccessLevelKeysEnum",
+        "nullable": true,
+        "description": "Access level of the ticket."
+      },
+      "categories": {
+        "type": "array",
+        "description": "Categories of the ticket.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "created_at": {
+        "type": "string",
+        "description": "Timestamp of the ticket creation.",
+        "format": "date-time"
+      },
+      "is_await_client": {
+        "description": "Flag to signal if ticket awaits client action.",
+        "type": "boolean"
+      },
+      "is_await_support": {
+        "description": "Flag to signal if ticket awaits support action.",
+        "type": "boolean"
+      },
+      "is_can_be_voted": {
+        "description": "Flag to signal if users can vote on the ticket.",
+        "type": "boolean"
+      },
+      "is_client_read": {
+        "description": "Flag to signal if client user has read all comments on the ticket.",
+        "type": "boolean"
+      },
+      "is_closed_by_system": {
+        "description": "Flag to signal if ticket was closed by system.",
+        "type": "boolean"
+      },
+      "is_from_mailing": {
+        "description": "Flag to signal if ticket was sent from automation system.",
+        "type": "boolean"
+      },
+      "keystone_projects": {
+        "type": "array",
+        "description": "List of IAM project ids for which the ticket is available.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "notice_id": {
+        "type": "integer",
+        "nullable": true,
+        "description": "ID of related notice."
+      },
+      "notification_categories": {
+        "type": "array",
+        "description": "Notification categories for ticket updates.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "number": {
+        "type": "integer",
+        "description": "Tickets ID."
+      },
+      "products": {
+        "type": "array",
+        "description": "List of products related to the ticket.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "split_from_ticket_number": {
+        "type": "string",
+        "nullable": true,
+        "description": "ID of source ticket from which current ticket was split."
+      },
+      "status": {
+        "$ref": "#/components/schemas/ClientTicketStatusKeysEnum",
+        "description": "Status of the ticket"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Short description of the issue."
+      },
+      "unread_comments_count": {
+        "type": "integer",
+        "description": "Count of messages that current user has not read yet."
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true,
+        "description": "Timestamp of the last ticket update."
+      },
+      "vote_created_at": {
+        "type": "string",
+        "format": "date-time",
+        "nullable": true,
+        "description": "Timestamp of vote creation."
+      },
+      "vote_score": {
+        "description": "Score of the vote on the ticket.",
+        "type": "integer",
+        "nullable": true
+      },
+      "vote_type": {
+        "$ref": "#/components/schemas/ScoreTypesEnum",
+        "description": "Vote score type.",
+        "nullable": true
+      }
+    },
+    "required": [
+      "access_level",
+      "created_at",
+      "is_await_client",
+      "is_await_support",
+      "is_can_be_voted",
+      "is_client_read",
+      "keystone_projects",
+      "is_from_mailing",
+      "notice_id",
+      "notification_categories",
+      "number",
+      "summary",
+      "status",
+      "unread_comments_count",
+      "vote_score",
+      "vote_created_at",
+      "vote_type",
+      "updated_at",
+      "products",
+      "categories",
+      "split_from_ticket_number",
+      "is_closed_by_system"
+    ],
+    "type": "object"
+  },
+  "GetCategoriesResponse": {
+    "properties": {
+      "items": {
+        "items": {
+          "$ref": "#/components/schemas/GetMultipleCategoriesItemResponse"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "items"
+    ],
+    "type": "object"
+  },
+  "GetCategoryFieldsResponse": {
+    "properties": {
+      "items": {
+        "items": {
+          "$ref": "#/components/schemas/GetCategoryFieldsItemResponse"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "items"
+    ],
+    "type": "object"
+  },
+  "GetProductsResponse": {
+    "properties": {
+      "items": {
+        "items": {
+          "$ref": "#/components/schemas/GetMultipleProductsItemResponse"
+        },
+        "title": "Items",
+        "type": "array"
+      }
+    },
+    "required": [
+      "items"
+    ],
+    "type": "object"
+  },
+  "TicketStatus": {
+    "example": {
+      "en": "Open",
+      "ru": "\\u041E\\u0442\\u043A\\u0440\\u044B\\u0442"
+    },
+    "readOnly": true,
+    "type": "object",
+    "description": "Ticket status.",
+    "properties": {
+      "ru": {
+        "type": "string",
+        "description": "Name of the status in Russian language."
+      },
+      "en": {
+        "type": "string",
+        "description": "Name of the status in English language."
+      }
+    }
+  },
+  "TicketItemStatus": {
+    "example": {
+      "en": "Open",
+      "ru": "\\u041E\\u0442\\u043A\\u0440\\u044B\\u0442"
+    },
+    "readOnly": true,
+    "type": "object",
+    "description": "Ticket status.",
+    "properties": {
+      "ru": {
+        "type": "string",
+        "description": "Name of the status in Russian language."
+      },
+      "en": {
+        "type": "string",
+        "description": "Name of the status in English language."
+      }
+    }
+  }
+}
