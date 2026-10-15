@@ -1,0 +1,106 @@
+{
+  "confirmed_scenario_operation_count": 9,
+  "inventory_complete": false,
+  "coverage_ratio": null,
+  "version_source": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli/",
+  "version_discrepancy": {
+    "selectel": "Zed/max2.75",
+    "pinned_upstream": "15.0.0/f8f89548f322107e56dcc1d016a2f88dd3ecb9f3/max2.73",
+    "compiled": "2.73",
+    "owner_issue": 70,
+    "remaining": "2.74/2.75 and fulldeploymentinventory; no liveproof"
+  },
+  "operations": [
+    {
+      "source_file": "catalog/sources/file-storage-manila-allow.json",
+      "source_revision": "bbfa824e8164a8734960f339a4126ebda10f9ea67dfff09f69c9d493ebb5139c",
+      "method": "POST",
+      "path": "/shares/{share_id}/action",
+      "microversion": "2.73",
+      "native_action": "allow_access",
+      "source_locator": "POST /v2/shares/{share_id}/action body.allow_access microversion2.73",
+      "status": "unimplemented"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila-deny.json",
+      "source_revision": "70be5f0bef86169694fcf7c31660f035c819249d35a2665f9aea537d0a116a29",
+      "method": "POST",
+      "path": "/shares/{share_id}/action",
+      "microversion": "2.73",
+      "native_action": "deny_access",
+      "source_locator": "POST /v2/shares/{share_id}/action body.deny_access microversion2.73",
+      "status": "unimplemented"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila-extend.json",
+      "source_revision": "2f239b12781addc5a9bf0d7d4fb74f333c7b53c77eea2fb760c10d21d40eeee4",
+      "method": "POST",
+      "path": "/shares/{share_id}/action",
+      "microversion": "2.73",
+      "native_action": "os-extend",
+      "source_locator": "POST /v2/shares/{share_id}/action body.os-extend microversion2.73",
+      "status": "unimplemented"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila.json",
+      "source_revision": "2534f968f93e9c7b675d7a5902b6285ae9d59fcf59a7379ae60c6e12a4b6de0d",
+      "method": "GET",
+      "path": "/types",
+      "microversion": "2.73",
+      "native_action": null,
+      "source_locator": "GET /v2/types",
+      "status": "implemented",
+      "binding": "filestorage.v2_73.types.list"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila.json",
+      "source_revision": "2534f968f93e9c7b675d7a5902b6285ae9d59fcf59a7379ae60c6e12a4b6de0d",
+      "method": "GET",
+      "path": "/shares/detail",
+      "microversion": "2.73",
+      "native_action": null,
+      "source_locator": "GET /v2/shares/detail microversion2.73",
+      "status": "unimplemented"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila.json",
+      "source_revision": "2534f968f93e9c7b675d7a5902b6285ae9d59fcf59a7379ae60c6e12a4b6de0d",
+      "method": "POST",
+      "path": "/shares",
+      "microversion": "2.73",
+      "native_action": null,
+      "source_locator": "POST /v2/shares microversion2.73",
+      "status": "unimplemented"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila.json",
+      "source_revision": "2534f968f93e9c7b675d7a5902b6285ae9d59fcf59a7379ae60c6e12a4b6de0d",
+      "method": "GET",
+      "path": "/share-networks/detail",
+      "microversion": "2.73",
+      "native_action": null,
+      "source_locator": "GET /v2/share-networks/detail microversion2.73",
+      "status": "unimplemented"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila.json",
+      "source_revision": "2534f968f93e9c7b675d7a5902b6285ae9d59fcf59a7379ae60c6e12a4b6de0d",
+      "method": "POST",
+      "path": "/share-networks",
+      "microversion": "2.73",
+      "native_action": null,
+      "source_locator": "POST /v2/share-networks microversion2.73",
+      "status": "unimplemented"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila.json",
+      "source_revision": "2534f968f93e9c7b675d7a5902b6285ae9d59fcf59a7379ae60c6e12a4b6de0d",
+      "method": "GET",
+      "path": "/share-access-rules",
+      "microversion": "2.73",
+      "native_action": null,
+      "source_locator": "GET /v2/share-access-rules microversion2.73",
+      "status": "unimplemented"
+    }
+  ]
+}

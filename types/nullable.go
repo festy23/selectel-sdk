@@ -3,6 +3,8 @@ package types
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io"
 )
 
 // Nullable distinguishes an explicit JSON null from a present value.
@@ -21,6 +23,19 @@ func (n Nullable[T]) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(n.value)
 }
+
+// Format uses the public JSON representation, so protected values nested in T
+// retain their encoding boundary instead of exposing unexported storage bytes.
+func (n Nullable[T]) Format(state fmt.State, _ rune) {
+	raw, err := n.MarshalJSON()
+	if err != nil {
+		_, _ = io.WriteString(state, redacted)
+		return
+	}
+	_, _ = state.Write(raw)
+}
+func (n Nullable[T]) MarshalText() ([]byte, error) { return n.MarshalJSON() }
+
 func (n *Nullable[T]) UnmarshalJSON(raw []byte) error {
 	if bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
 		*n = Nullable[T]{}

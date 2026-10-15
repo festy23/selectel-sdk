@@ -302,5 +302,14 @@
     "id": "kms",
     "inventory_complete": false,
     "source_uris": []
+  },
+  {
+    "availability": "documented",
+    "id": "filestorage",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/en/file-storage/create-storage/",
+      "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli/"
+    ]
   }
 ]

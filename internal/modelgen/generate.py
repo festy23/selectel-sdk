@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    "filestorage": ("file-storage-manila", {"ShareType":"ShareType"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -39,6 +40,7 @@ ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "cni": "CNI", 
 
 
 def name(text):
+    text = text.replace(":", "_")
     words = re.sub(r"([a-z])([A-Z])", r"\1_\2", text).split("_")
     return "".join(ACRONYMS.get(w.lower(), w[:1].upper() + w[1:]) for w in words if w)
 
@@ -76,7 +78,12 @@ for case, (family, initial, top_name) in CASES.items():
                 return pending[reference], False
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
+        if package == "filestorage" and schema.get("nullable"):
+            inner, _ = field_type({key: value for key, value in schema.items() if key != "nullable"}, type_name, field)
+            return "types.Nullable[" + inner + "]", False
         kind = schema.get("type")
+        if package == "filestorage" and kind == "string" and field == "description":
+            return "types.ProtectedValue", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
@@ -168,7 +175,14 @@ for case, (family, initial, top_name) in CASES.items():
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'
-            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
+            code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n"
+            if package == "filestorage":
+                for wire, value in sorted(properties.items()):
+                    if value.get("nullable"):
+                        imports["bytes"] = "bytes"
+                        inner, _ = field_type({key: item for key, item in value.items() if key != "nullable"}, type_name + name(wire), wire)
+                        code += f'\tif field, exists := fields[{json.dumps(wire)}]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {{ value.{name(wire)} = types.Null[{inner}]() }}\n'
+            code += f"\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
         emitted[reference] = code
     filename = "v1_types_generated.go" if case == "registry_v1" else "types_generated.go"
     target = ROOT / package / filename

@@ -1,0 +1,45 @@
+{
+  "operation_id": "filestorage.v2_73.types.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/types",
+    "mapping": "TypeFilters optional is_public bool, extra_specs string dictionary serialized as literal_eval-compatible JSON, native underscore query verified pinnedcontroller despite rest_method extra-specs spelling. Invalid UTF8 refuses before credentials/HTTP. Projectless route supported since2.60."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "share_types finite array of generated ShareType from pinnedManila15.0.0api-ref; all7 source required fields validated at2.73; pinned view permits explicit null description distinct from missing, protected Nullable preserves that distinction. Exact project-view root share_type ref; no ownership inference. Explicitfalse preserved. extra_specs and required_extra_specs are protected schema-opaque objects. volume_types legacyduplicate ignored; no duplicate coverage.",
+    "sensitive_fields": [
+      "extra_specs",
+      "required_extra_specs"
+    ]
+  },
+  "errors": {
+    "mapping": "shared sanitized HTTP status taxonomy, no raw provider response diagnostics; bounded retries for read"
+  },
+  "pagination": {
+    "kind": "finite-provider-array",
+    "field": "share_types",
+    "bounds": "shared FixedIterator localcutoff preserves partial data/SDKcursor, never returns false completeness"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "Selectelfirstpartycreateguide documents sharetype list CLI. Pinnedupstream2.73 wiremapping is compatible evidence, not live deployment verification.",
+    "SelectelZed/max2.75 vs pinnedZed15.0.0/max2.73 discrepancy owned#70;2.74/2.75 and fullproviderinventory notimplemented or declaredcomplete.",
+    "Administrative is_public=all and extra-spec mutating APIs are outside confirmedfirstparty subset."
+  ]
+}
