@@ -58,3 +58,10 @@ PATCH отправляет raw ClusterSpec; config/resize/upgrade использ
 не причинное доказательство окончания restart или применения целевого flavor,
 version/config. Проверка прикладной готовности и сравнение желаемых параметров
 остаются отдельными действиями вызывающей стороны.
+
+Региональные `Regions` / `GetServiceConfig` возвращают глобальные metadata без
+переключения scope: даже defaultRegion и returned endpoints не инициируют
+новые вызовы. `ListClusterFlavors` / `ListClusterPlatforms` используют bounded
+fixed-page collection и SDK cursor+skip для локального продолжения.
+`includeDeprecated` сохраняет различие absence/false/true.
+`GetClusterFlavorConstraints` возвращает source min/max как точные int64 строки.

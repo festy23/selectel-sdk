@@ -37,7 +37,7 @@
       "path": "/service/config",
       "operation_id": "getServiceConfig",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
@@ -51,7 +51,7 @@
       "path": "/service/regions",
       "operation_id": "getServiceRegions",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "POST",
@@ -205,21 +205,21 @@
       "path": "/cluster-flavors",
       "operation_id": "listClusterFlavors",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/cluster-flavors/constraints",
       "operation_id": "listClusterFlavorConstraints",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/cluster-platforms",
       "operation_id": "listClusterPlatforms",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",

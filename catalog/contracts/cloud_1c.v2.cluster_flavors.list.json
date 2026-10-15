@@ -1,0 +1,38 @@
+{
+  "operation_id": "cloud_1c.v2.cluster_flavors.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/cluster-flavors",
+    "query": {
+      "includeDeprecated": "optional bool; absence and explicit false preserved"
+    }
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "All typed ClusterFlavor fields, exact source int64 strings; metadata IDs are not resource references",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": {
+    "provider": "Finite source flavors array; no provider page parameter or cursor documented",
+    "local": "FixedIterator enforces PageSize/MaxItems/MaxPages/CollectionTimeout and MaxJSONBytes; partial local page retains SDK replay cursor+skip",
+    "consistency": "Best effort reread; no snapshot guarantee"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

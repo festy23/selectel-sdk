@@ -190,6 +190,42 @@ func (v ClusterFlavor) Validate() error {
 func (v *ClusterFlavor) normalize() {
 }
 
+type ClusterFlavorConstraints struct {
+	DiskGb *ResourceConstraint `json:"diskGb,omitempty"`
+	RAMMb  *ResourceConstraint `json:"ramMb,omitempty"`
+	VCPU   *ResourceConstraint `json:"vCpu,omitempty"`
+}
+
+func (v ClusterFlavorConstraints) Validate() error {
+	if v.DiskGb != nil {
+		if err := v.DiskGb.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.RAMMb != nil {
+		if err := v.RAMMb.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.VCPU != nil {
+		if err := v.VCPU.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterFlavorConstraints) normalize() {
+	if v.DiskGb != nil {
+		v.DiskGb.normalize()
+	}
+	if v.RAMMb != nil {
+		v.RAMMb.normalize()
+	}
+	if v.VCPU != nil {
+		v.VCPU.normalize()
+	}
+}
+
 type ClusterPlatform struct {
 	Deprecated *bool   `json:"deprecated,omitempty"`
 	Version    *string `json:"version,omitempty"`
@@ -428,6 +464,43 @@ func (v Endpoint) Validate() error {
 func (v *Endpoint) normalize() {
 }
 
+type GetClusterFlavorConstraintsResponse struct {
+	Constraints *ClusterFlavorConstraints `json:"constraints,omitempty"`
+}
+
+func (v GetClusterFlavorConstraintsResponse) Validate() error {
+	if v.Constraints != nil {
+		if err := v.Constraints.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *GetClusterFlavorConstraintsResponse) normalize() {
+	if v.Constraints != nil {
+		v.Constraints.normalize()
+	}
+}
+func (v *GetClusterFlavorConstraintsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire GetClusterFlavorConstraintsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = GetClusterFlavorConstraintsResponse(value)
+	v.normalize()
+	return nil
+}
+
 type GetClusterResponse struct {
 	Cluster *Cluster `json:"cluster,omitempty"`
 }
@@ -461,6 +534,80 @@ func (v *GetClusterResponse) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = GetClusterResponse(value)
+	v.normalize()
+	return nil
+}
+
+type GetRegionsResponse struct {
+	Regions []Region `json:"regions,omitzero"`
+}
+
+func (v GetRegionsResponse) Validate() error {
+	for _, item := range v.Regions {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *GetRegionsResponse) normalize() {
+	for i := range v.Regions {
+		v.Regions[i].normalize()
+	}
+}
+func (v *GetRegionsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire GetRegionsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = GetRegionsResponse(value)
+	v.normalize()
+	return nil
+}
+
+type GetServiceConfigResponse struct {
+	Config *ServiceConfig `json:"config,omitempty"`
+}
+
+func (v GetServiceConfigResponse) Validate() error {
+	if v.Config != nil {
+		if err := v.Config.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *GetServiceConfigResponse) normalize() {
+	if v.Config != nil {
+		v.Config.normalize()
+	}
+}
+func (v *GetServiceConfigResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire GetServiceConfigResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = GetServiceConfigResponse(value)
 	v.normalize()
 	return nil
 }
@@ -667,6 +814,18 @@ func (v *PatchClusterResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type Region struct {
+	RegionCode *string `json:"regionCode,omitempty"`
+	RegionName *string `json:"regionName,omitempty"`
+	RegionPool *string `json:"regionPool,omitempty"`
+}
+
+func (v Region) Validate() error {
+	return nil
+}
+func (v *Region) normalize() {
+}
+
 type ResizeClusterBody struct {
 	Flavor *ClusterFlavor `json:"flavor,omitempty"`
 }
@@ -744,6 +903,27 @@ func (v *ResizeClusterResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type ResourceConstraint struct {
+	Max *string `json:"max,omitempty"`
+	Min *string `json:"min,omitempty"`
+}
+
+func (v ResourceConstraint) Validate() error {
+	if v.Max != nil {
+		if _, err := strconv.ParseInt(*v.Max, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	if v.Min != nil {
+		if _, err := strconv.ParseInt(*v.Min, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	return nil
+}
+func (v *ResourceConstraint) normalize() {
+}
+
 type RestartClusterResponse struct {
 	Cluster *Cluster `json:"cluster,omitempty"`
 }
@@ -779,6 +959,34 @@ func (v *RestartClusterResponse) UnmarshalJSON(raw []byte) error {
 	*v = RestartClusterResponse(value)
 	v.normalize()
 	return nil
+}
+
+type ServiceConfig struct {
+	DefaultRegion *string           `json:"defaultRegion,omitempty"`
+	Endpoints     []ServiceEndpoint `json:"endpoints,omitzero"`
+	Regions       []Region          `json:"regions,omitzero"`
+}
+
+func (v ServiceConfig) Validate() error {
+	for _, item := range v.Endpoints {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.Regions {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ServiceConfig) normalize() {
+	for i := range v.Endpoints {
+		v.Endpoints[i].normalize()
+	}
+	for i := range v.Regions {
+		v.Regions[i].normalize()
+	}
 }
 
 type ServiceEndpoint struct {

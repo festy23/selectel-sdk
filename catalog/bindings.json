@@ -4621,7 +4621,11 @@
       "internal/core/request.go",
       "internal/core/auth.go",
       "internal/modelgen/generate.py",
-      "catalog/sources/1c-cloud.json"
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4860,5 +4864,135 @@
       "cluster.active"
     ],
     "recovery": true
+  },
+  "cloud_1c.v2.cluster_flavors.list": {
+    "go_method": "onec.Client.ListClusterFlavors",
+    "input_type": "*bool, pagination.Options",
+    "output_type": "pagination.Collection[onec.ClusterFlavor]",
+    "contract_ref": "contracts/cloud_1c.v2.cluster_flavors.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.cluster_platforms.list": {
+    "go_method": "onec.Client.ListClusterPlatforms",
+    "input_type": "*bool, pagination.Options",
+    "output_type": "pagination.Collection[onec.ClusterPlatform]",
+    "contract_ref": "contracts/cloud_1c.v2.cluster_platforms.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.cluster_flavors_constraints.list": {
+    "go_method": "onec.Client.GetClusterFlavorConstraints",
+    "input_type": "types.CallOptions",
+    "output_type": "onec.GetClusterFlavorConstraintsResponse",
+    "contract_ref": "contracts/cloud_1c.v2.cluster_flavors_constraints.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.service_regions.list": {
+    "go_method": "onec.Client.Regions",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Collection[onec.Region]",
+    "contract_ref": "contracts/cloud_1c.v2.service_regions.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.service_config.list": {
+    "go_method": "onec.Client.GetServiceConfig",
+    "input_type": "types.CallOptions",
+    "output_type": "onec.GetServiceConfigResponse",
+    "contract_ref": "contracts/cloud_1c.v2.service_config.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
   }
 }

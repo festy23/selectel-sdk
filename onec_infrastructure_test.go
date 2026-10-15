@@ -467,3 +467,78 @@ func TestOneCClusterUpgradeSendsExplicitPlatformVersion(t *testing.T) {
 		t.Fatalf("upgrade result %+v %v", out, err)
 	}
 }
+
+func TestOneCClusterFlavorDiscoveryBoundsAndResumesFiniteMetadata(t *testing.T) {
+	calls := 0
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.Method != "GET" || r.URL.Path != "/v2/cluster-flavors" || r.URL.RawQuery != "includeDeprecated=false" {
+			t.Fatalf("flavor wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"flavors":[{"id":"flavor-1","vCpu":"2","ramMb":"4096","diskGb":"20"},{"id":"flavor-2","vCpu":"4","ramMb":"8192","diskGb":"40"}]}`))}, nil
+	}))
+	deprecated := false
+	first, err := regional.ListClusterFlavors(context.Background(), &deprecated, pagination.Options{MaxItems: 1})
+	if types.ErrorCode(err) != types.Incomplete || first.Complete || len(first.Items) != 1 || *first.Items[0].ID != "flavor-1" || first.NextCursor == nil || first.NextCursor.Skip != 1 || calls != 1 {
+		t.Fatalf("first flavor page %+v %v", first, err)
+	}
+	second, err := regional.ListClusterFlavors(context.Background(), &deprecated, pagination.Options{MaxItems: 1, Cursor: first.NextCursor})
+	if err != nil || !second.Complete || len(second.Items) != 1 || *second.Items[0].ID != "flavor-2" || second.NextCursor != nil || calls != 2 {
+		t.Fatalf("second flavor page %+v %v", second, err)
+	}
+}
+
+func TestOneCClusterPlatformDiscoveryPreservesDeprecatedMetadata(t *testing.T) {
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/cluster-platforms" || r.URL.RawQuery != "includeDeprecated=true" {
+			t.Fatalf("platform wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"platforms":[{"version":"8.3.synthetic-new","deprecated":false},{"version":"8.3.synthetic-old","deprecated":true}]}`))}, nil
+	}))
+	deprecated := true
+	out, err := regional.ListClusterPlatforms(context.Background(), &deprecated, pagination.Options{})
+	if err != nil || !out.Complete || len(out.Items) != 2 || *out.Items[0].Version != "8.3.synthetic-new" || *out.Items[0].Deprecated || !*out.Items[1].Deprecated {
+		t.Fatalf("platforms %+v %v", out, err)
+	}
+}
+
+func TestOneCClusterFlavorConstraintsUseTypedExactLimits(t *testing.T) {
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/cluster-flavors/constraints" || r.URL.RawQuery != "" {
+			t.Fatalf("constraints wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"constraints":{"vCpu":{"min":"2","max":"128"},"diskGb":{"min":"20","max":"9007199254740993"}}}`))}, nil
+	}))
+	out, err := regional.GetClusterFlavorConstraints(context.Background(), types.CallOptions{})
+	if err != nil || out.Data.Constraints == nil || out.Data.Constraints.DiskGb == nil || *out.Data.Constraints.DiskGb.Max != "9007199254740993" {
+		t.Fatalf("constraints %+v %v", out, err)
+	}
+}
+
+func TestOneCRegionalDiscoveryReturnsAllRegionMetadataWithoutAdoption(t *testing.T) {
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/service/regions" {
+			t.Fatalf("regions wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"regions":[{"regionName":"Synthetic SPB","regionCode":"ru-9","regionPool":"ru-9"},{"regionName":"Synthetic NSK","regionCode":"ru-8","regionPool":"ru-8"}]}`))}, nil
+	}))
+	out, err := regional.Regions(context.Background(), pagination.Options{})
+	if err != nil || !out.Complete || len(out.Items) != 2 || *out.Items[0].RegionCode != "ru-9" || *out.Items[1].RegionPool != "ru-8" {
+		t.Fatalf("regions %+v %v", out, err)
+	}
+}
+
+func TestOneCServiceConfigIsMetadataAndDoesNotSelectDefaultRegion(t *testing.T) {
+	calls := 0
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.Method != "GET" || r.URL.Path != "/v2/service/config" {
+			t.Fatalf("service config wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"config":{"defaultRegion":"ru-8","regions":[{"regionCode":"ru-8","regionPool":"ru-8"}],"endpoints":[{"region":"ru-8","endpoints":[{"protocol":"https","endpoint":"https://unselected.synthetic.example","type":"api"}]}]}}`))}, nil
+	}))
+	out, err := regional.GetServiceConfig(context.Background(), types.CallOptions{})
+	if err != nil || calls != 1 || out.Data.Config == nil || *out.Data.Config.DefaultRegion != "ru-8" || len(out.Data.Config.Endpoints) != 1 || out.Metadata.Scope.Pool != "ru-9" {
+		t.Fatalf("service config %+v %v calls%d", out, err, calls)
+	}
+}
