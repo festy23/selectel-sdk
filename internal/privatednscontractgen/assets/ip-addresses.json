@@ -1,0 +1,615 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PTR API",
+    "description": "Managing Pointer (PTR) records that enable reverse DNS mapping for public IP addresses",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Pointers"
+        ],
+        "summary": "List PTR records",
+        "description": "Returns a paginated list of PTR records.\nBy default, the maximum number of records returned in the response is 1000.\n\nTo work with a larger number of records, you need to use the\nlimit and offset parameters.",
+        "operationId": "listPtrRecords",
+        "parameters": [
+          {
+            "description": "Maximum number of items to return in response. Used for pagination.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Limit",
+              "description": "Maximum number of items to return in response. Used for pagination.",
+              "default": 1000
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "description": "Number of items to skip. Used for pagination.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "title": "Offset",
+              "description": "Number of items to skip. Used for pagination.",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "description": "Filter PTR records by domain name.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Filter",
+              "description": "Filter PTR records by domain name."
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "description": "Return only the total count of PTR records.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "Only-Count",
+              "description": "Return only the total count of PTR records.",
+              "default": false
+            },
+            "name": "only-count",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of PTR records.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RecordPTRRead"
+                  },
+                  "type": "array",
+                  "title": "Response Listptrrecords"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "static_token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Pointers"
+        ],
+        "summary": "Create PTR record",
+        "description": "Creates a PTR record using the provided attributes.",
+        "operationId": "createPtrRecord",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordPTRCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The PTR record has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordPTRRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A PTR record with the same IP already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "static_token": []
+          }
+        ]
+      }
+    },
+    "/{ptr_id}": {
+      "get": {
+        "tags": [
+          "Pointers"
+        ],
+        "summary": "Retrieve PTR records information",
+        "description": "Returns information about a specified PTR record.",
+        "operationId": "getPtrRecord",
+        "parameters": [
+          {
+            "description": "PTR record identifier.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Ptr Id",
+              "description": "PTR record identifier."
+            },
+            "name": "ptr_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The PTR record has been returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordPTRRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The PTR record has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "static_token": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Pointers"
+        ],
+        "summary": "Update PTR record",
+        "description": "Updates one or more attributes of the specified PTR record.",
+        "operationId": "updatePtrRecord",
+        "parameters": [
+          {
+            "description": "PTR record identifier.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Ptr Id",
+              "description": "PTR record identifier."
+            },
+            "name": "ptr_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordPTRUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The PTR record has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordPTRRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The PTR record has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "static_token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Pointers"
+        ],
+        "summary": "Delete PTR record",
+        "description": "Deletes a PTR record by its unique identifier.",
+        "operationId": "deletePtrRecord",
+        "parameters": [
+          {
+            "description": "PTR record identifier.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Ptr Id",
+              "description": "PTR record identifier."
+            },
+            "name": "ptr_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The PTR record has been successfully deleted."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The PTR record has not been found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. Fix the request and try again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "static_token": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error",
+            "description": "Text of the error."
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Description of the error."
+          },
+          "location": {
+            "type": "string",
+            "title": "Location",
+            "description": "Location of the error."
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "RecordPTRCreate": {
+        "properties": {
+          "ip": {
+            "type": "string",
+            "title": "Ip",
+            "description": "IP address for which the PTR record is created."
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 65534,
+            "minLength": 2,
+            "title": "Content",
+            "description": "Domain name that the IP address resolves to.",
+            "default": ""
+          },
+          "ttl": {
+            "type": "integer",
+            "maximum": 604800,
+            "minimum": 60,
+            "title": "Ttl",
+            "description": "Time-to-live value for DNS record in seconds. Controls how long DNS resolvers cache this record.",
+            "default": 86400
+          }
+        },
+        "type": "object",
+        "required": [
+          "ip"
+        ],
+        "title": "RecordPTRCreate",
+        "description": "PTR record create schema."
+      },
+      "RecordPTRRead": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Unique identifier of the DNS record."
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Domain name that the IP address resolves to."
+          },
+          "ip": {
+            "type": "string",
+            "title": "Ip",
+            "description": "IP address associated with the PTR record."
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id",
+            "description": "ID of the user who owns the record."
+          },
+          "ttl": {
+            "type": "integer",
+            "title": "Ttl",
+            "description": "Time-to-live value for DNS record in seconds. Controls how long DNS resolvers cache this record."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "content",
+          "ip",
+          "user_id",
+          "ttl"
+        ],
+        "title": "RecordPTRRead",
+        "description": "PTR record schema."
+      },
+      "RecordPTRUpdate": {
+        "properties": {
+          "ip": {
+            "type": "string",
+            "title": "Ip",
+            "description": "New IP address for the PTR record."
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "New domain name that the IP should resolve to."
+          }
+        },
+        "type": "object",
+        "title": "RecordPTRUpdate",
+        "description": "PTR record update schema."
+      }
+    },
+    "securitySchemes": {
+      "static_token": {
+        "type": "apiKey",
+        "description": "Static token",
+        "in": "header",
+        "name": "X-Token"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Pointers",
+      "description": "Managing PTR records: creation, viewing, modification, and deletion."
+    }
+  ]
+}

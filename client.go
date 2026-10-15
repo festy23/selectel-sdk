@@ -17,7 +17,9 @@ import (
 	"github.com/festy23/selectel-sdk/metrics"
 	"github.com/festy23/selectel-sdk/mks"
 	"github.com/festy23/selectel-sdk/operations"
+	"github.com/festy23/selectel-sdk/privatedns"
 	"github.com/festy23/selectel-sdk/projects"
+	"github.com/festy23/selectel-sdk/ptr"
 	"github.com/festy23/selectel-sdk/registry"
 	"github.com/festy23/selectel-sdk/secrets"
 	"github.com/festy23/selectel-sdk/types"
@@ -81,6 +83,12 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Scope.AccountID != c.scope.AccountID {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
+	if ref.Service == "ip_addresses" && ref.APIGeneration == "v1" {
+		return ptr.Bind(c.runtime, ref.Scope).Handle(ref, nil)
+	}
+	if ref.Service == "private_dns" && ref.APIGeneration == "v1" {
+		return privatedns.Bind(c.runtime, ref.Scope).Handle(ref, nil)
+	}
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
@@ -102,6 +110,12 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
+	}
+	if capability.Service == "ip_addresses" && capability.APIGeneration == "v1" {
+		return ptr.Bind(c.runtime, receipt.Scope).Resume(receipt)
+	}
+	if capability.Service == "private_dns" && capability.APIGeneration == "v1" {
+		return privatedns.Bind(c.runtime, receipt.Scope).Resume(receipt)
 	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)
@@ -176,3 +190,9 @@ func New(config Config) (*Client, error) {
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
 }
+
+func (r RegionalClient) PrivateDNS() *privatedns.Client {
+	return privatedns.Bind(r.client.runtime, r.client.scope)
+}
+
+func (a AccountClient) PTR() *ptr.Client { return ptr.Bind(a.client.runtime, a.client.scope) }

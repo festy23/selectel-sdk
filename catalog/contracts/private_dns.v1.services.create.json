@@ -1,0 +1,59 @@
+{
+  "operation_id": "private_dns.v1.services.create",
+  "source_revision": "0ea46bb63f01ff9cab69085bbbe55284bb10ad1f5fa97c4e9b65d61d85f68d46",
+  "endpoint": "regional URL table private-dns/v1; exact explicit override",
+  "auth": "iam_project X-Auth-Token only",
+  "request": {
+    "method": "POST",
+    "path": "/services",
+    "schema": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/serviceCreateBody"
+          }
+        }
+      }
+    },
+    "parameters": [],
+    "scope": "caller project/location authorization view, response project owner metadata",
+    "native_read_filter_variant": null
+  },
+  "response": {
+    "source": {
+      "201": {
+        "description": "New DNS service has been created.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/serviceDetailedResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "$ref": "#/components/responses/badRequest"
+      },
+      "401": {
+        "$ref": "#/components/responses/unauthorized"
+      },
+      "403": {
+        "$ref": "#/components/responses/forbidden"
+      }
+    },
+    "mapping": "source generated DTO; exact integers; protected record values; identity decoded before unrelated fields",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "provider_text": "discarded; no text classification"
+  },
+  "retry": "bounded safe reads; mutations no replay",
+  "recovery": "exact resource observation only; never name lookup/adoption; known outcomes conclusive",
+  "wait": "existence/absence only; no DNS propagation claim",
+  "pagination": "source complete single response, SDK bounded fixed-page collection",
+  "shared_provenance": "reviewed379458e receipt-only recovery and revision-before-validation; reviewed095faea diagnostic numericcode decoder retains status refresh/retry semantics; no imported service feature code"
+}

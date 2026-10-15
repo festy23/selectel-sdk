@@ -1,0 +1,1030 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Private DNS API",
+    "version": "1.0",
+    "description": "Managing DNS for private networks:  DNS services, zones, and their record sets"
+  },
+  "servers": [
+    {
+      "url": "/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Services",
+      "description": "A service represents a connection to a DNS resolver."
+    },
+    {
+      "name": "Zones"
+    },
+    {
+      "name": "Record sets"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "iam_token_project_scoped": {
+        "in": "header",
+        "name": "X-Auth-Token",
+        "description": "IAM token for project.",
+        "type": "apiKey"
+      }
+    },
+    "parameters": {
+      "projectIdQuery": {
+        "name": "project",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": false,
+        "example": "0ef1e88209d84d9b943e655b5076f6a8",
+        "description": "Filter results by project identifier."
+      },
+      "serviceIdPath": {
+        "name": "service_id",
+        "in": "path",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true,
+        "example": "ba859349-b3f1-4015-9d0d-6871f7fadca7",
+        "description": "DNS service identifier."
+      },
+      "zoneIdPath": {
+        "name": "zone_id",
+        "in": "path",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true,
+        "example": "cf2dfff0-cd93-43ee-a7ea-810dabab9676",
+        "description": "Zone identifier."
+      },
+      "zoneDomainQuery": {
+        "name": "domain",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "example": "domain.com",
+        "required": false,
+        "description": "Filter results by zone domain name."
+      }
+    },
+    "schemas": {
+      "networkIdField": {
+        "type": "string",
+        "format": "uuid",
+        "example": "b706af9b-b048-42a5-a87d-d69a601abec8",
+        "description": "Network identifier of the DNS service."
+      },
+      "zoneNameField": {
+        "type": "string",
+        "maxLength": 64,
+        "description": "Name of the zone."
+      },
+      "zoneDomainField": {
+        "type": "string",
+        "maxLength": 255,
+        "example": "domain.com",
+        "description": "Domain of the zone."
+      },
+      "zoneReservedByField": {
+        "type": "string",
+        "maxLength": 64,
+        "description": "Owner service for the zone (e.g. Managed Databases). Reserved zones cannot be modified."
+      },
+      "zoneTTLField": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Default time-to-live (TTL) in the zone, in seconds."
+      },
+      "recordTypeField": {
+        "type": "string",
+        "enum": [
+          "A",
+          "AAAA",
+          "MX",
+          "CNAME",
+          "TXT"
+        ],
+        "description": "Type of record."
+      },
+      "recordDomainField": {
+        "type": "string",
+        "maxLength": 255,
+        "example": "sub.domain.com.",
+        "description": "Domain of the record. Must be equal to the zone domain or one of its subdomains."
+      },
+      "recordTTLField": {
+        "type": "integer",
+        "minimum": -1,
+        "default": -1,
+        "description": "Time-to-live (TTL) of the record, in seconds. Use -1 to inherit the zone's TTL."
+      },
+      "recordValuesField": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "maxItems": 100,
+        "description": "Record set's values list. CNAME record sets may contain only one value."
+      },
+      "isRecursorEnabledField": {
+        "type": "boolean",
+        "default": false,
+        "description": "If `true`, enables a recursive resolver that allows the service to resolve public domain names."
+      },
+      "errorSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Machine-readable error code."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable description of what went wrong."
+          }
+        }
+      },
+      "addressItem": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "example": "192.168.0.1",
+            "description": "IP address in the subnet for accessing the DNS service."
+          },
+          "cidr": {
+            "type": "string",
+            "example": "192.168.0.0/24",
+            "description": "Subnet IP address range in CIDR notation."
+          }
+        }
+      },
+      "serviceItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the DNS service."
+          },
+          "project": {
+            "type": "string",
+            "description": "Project identifier of the DNS service."
+          },
+          "network_id": {
+            "$ref": "#/components/schemas/networkIdField"
+          },
+          "high_availability": {
+            "type": "boolean",
+            "description": "If true, the DNS service uses two instances instead of one."
+          },
+          "is_recursor_enabled": {
+            "type": "boolean",
+            "description": "If `true`, a recursive resolver is enabled, allowing the service to resolve public domain names."
+          }
+        }
+      },
+      "serviceDetailedItem": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/serviceItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "addresses": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/addressItem"
+                },
+                "description": "List of DNS service addresses."
+              }
+            }
+          }
+        ]
+      },
+      "servicesListResponse": {
+        "type": "object",
+        "properties": {
+          "services": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/serviceItem"
+            },
+            "description": "List of DNS services."
+          }
+        }
+      },
+      "serviceDetailedResponse": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "$ref": "#/components/schemas/serviceDetailedItem",
+            "description": "Detailed information about the DNS service."
+          }
+        }
+      },
+      "serviceCreateBody": {
+        "type": "object",
+        "required": [
+          "network_id"
+        ],
+        "properties": {
+          "network_id": {
+            "$ref": "#/components/schemas/networkIdField"
+          },
+          "is_recursor_enabled": {
+            "$ref": "#/components/schemas/isRecursorEnabledField"
+          }
+        }
+      },
+      "serviceUpdateBody": {
+        "type": "object",
+        "properties": {
+          "is_recursor_enabled": {
+            "$ref": "#/components/schemas/isRecursorEnabledField"
+          }
+        }
+      },
+      "zoneItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the zone."
+          },
+          "name": {
+            "$ref": "#/components/schemas/zoneNameField"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/zoneDomainField"
+          },
+          "project": {
+            "type": "string",
+            "description": "Project identifier of the zone."
+          },
+          "reserved_by": {
+            "$ref": "#/components/schemas/zoneReservedByField"
+          },
+          "ttl": {
+            "$ref": "#/components/schemas/zoneTTLField"
+          },
+          "serial_number": {
+            "type": "integer",
+            "description": "Serial number of the zone."
+          }
+        }
+      },
+      "zoneDetailedItem": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/zoneItem"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "records": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/recordSetItem"
+                },
+                "description": "Record sets of the zone."
+              },
+              "bindings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/zoneBindingItem"
+                },
+                "description": "Bindings of the zone."
+              }
+            }
+          }
+        ]
+      },
+      "zonesListResponse": {
+        "type": "object",
+        "properties": {
+          "zones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/zoneItem"
+            },
+            "description": "List of zones."
+          }
+        }
+      },
+      "zoneDetailedResponse": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "$ref": "#/components/schemas/zoneDetailedItem",
+            "description": "Detailed information about the zone."
+          }
+        }
+      },
+      "zoneCreateBody": {
+        "type": "object",
+        "required": [
+          "name",
+          "domain"
+        ],
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/zoneNameField"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/zoneDomainField"
+          },
+          "ttl": {
+            "$ref": "#/components/schemas/zoneTTLField"
+          },
+          "records": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/recordSetAddBody"
+            },
+            "description": "List of record sets in the zone."
+          }
+        }
+      },
+      "zoneUpdateBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/zoneNameField"
+          },
+          "ttl": {
+            "$ref": "#/components/schemas/zoneTTLField"
+          }
+        }
+      },
+      "zoneBindingItem": {
+        "type": "object",
+        "properties": {
+          "resource_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier of the zone's binding."
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "Type of the zone's binding."
+          }
+        }
+      },
+      "recordSetItem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/recordTypeField"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/recordDomainField"
+          },
+          "generated": {
+            "type": "boolean",
+            "description": "If true, record was generated by integration, and may be updated only by that integration."
+          },
+          "ttl": {
+            "$ref": "#/components/schemas/recordTTLField"
+          },
+          "values": {
+            "$ref": "#/components/schemas/recordValuesField"
+          }
+        }
+      },
+      "recordSetsListResponse": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/recordSetItem"
+            },
+            "description": "List of record sets in the zone."
+          }
+        }
+      },
+      "recordSetAddBody": {
+        "type": "object",
+        "required": [
+          "type",
+          "domain"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/recordTypeField"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/recordDomainField"
+          },
+          "ttl": {
+            "$ref": "#/components/schemas/recordTTLField"
+          },
+          "values": {
+            "$ref": "#/components/schemas/recordValuesField"
+          }
+        }
+      },
+      "recordSetDeleteBody": {
+        "type": "object",
+        "required": [
+          "type",
+          "domain"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "A",
+            "description": "Type of the record."
+          },
+          "domain": {
+            "$ref": "#/components/schemas/recordDomainField"
+          }
+        }
+      },
+      "recordSetHardUpdateBody": {
+        "type": "object",
+        "properties": {
+          "generated": {
+            "type": "boolean",
+            "description": "If true, mark record sets as generated by an integration so that future syncs may update them."
+          },
+          "set": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/recordSetAddBody"
+            },
+            "maxItems": 1000,
+            "description": "List of record sets to add or replace."
+          },
+          "delete": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/recordSetDeleteBody"
+            },
+            "maxItems": 1000,
+            "description": "List of record sets to delete."
+          }
+        }
+      },
+      "recordSetSoftUpdateBody": {
+        "type": "object",
+        "properties": {
+          "generated": {
+            "type": "boolean",
+            "description": "If true, mark record sets as generated by an integration so that future syncs may update them."
+          },
+          "records": {
+            "type": "array",
+            "description": "List of record sets to add or remove.",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "domain"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/recordTypeField"
+                },
+                "domain": {
+                  "$ref": "#/components/schemas/recordDomainField"
+                },
+                "ttl": {
+                  "$ref": "#/components/schemas/recordTTLField"
+                },
+                "add": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 100,
+                  "description": "List of record values to add. CNAME records must contain only one value."
+                },
+                "delete": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of record values to delete."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "badRequest": {
+        "description": "Bad request. Fix the request and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/errorSchema"
+            }
+          }
+        }
+      },
+      "unauthorized": {
+        "description": "Bad or expired token. You can reissue the token and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/errorSchema"
+            }
+          }
+        }
+      },
+      "forbidden": {
+        "description": "Access is forbidden. Make sure you have the required permissions.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/errorSchema"
+            }
+          }
+        }
+      },
+      "notFound": {
+        "description": "Resource has not been found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/errorSchema"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "iam_token_project_scoped": []
+    }
+  ],
+  "paths": {
+    "/services": {
+      "get": {
+        "summary": "List services",
+        "description": "Returns a list of DNS services.",
+        "tags": [
+          "Services"
+        ],
+        "operationId": "getServices",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/projectIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/servicesListResponse"
+                }
+              }
+            },
+            "description": "List of DNS services has been returned."
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create service",
+        "description": "Create a new DNS service.",
+        "tags": [
+          "Services"
+        ],
+        "operationId": "createService",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/serviceCreateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New DNS service has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serviceDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          }
+        }
+      }
+    },
+    "/services/{service_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/serviceIdPath"
+        }
+      ],
+      "get": {
+        "summary": "Get service information",
+        "description": "Returns detailed information about the DNS service.",
+        "tags": [
+          "Services"
+        ],
+        "operationId": "getServiceById",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/serviceDetailedResponse"
+                }
+              }
+            },
+            "description": "Detailed information about DNS service has been returned."
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update service",
+        "description": "Apply new parameters or update existing ones for a DNS service.",
+        "tags": [
+          "Services"
+        ],
+        "operationId": "updateServiceById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/serviceUpdateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "DNS service parameters have been updated."
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete service",
+        "description": "Delete a DNS service.",
+        "tags": [
+          "Services"
+        ],
+        "operationId": "deleteServiceById",
+        "responses": {
+          "204": {
+            "description": "DNS service has been deleted."
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      }
+    },
+    "/zones": {
+      "get": {
+        "summary": "List zones",
+        "description": "Returns a list of zones.",
+        "tags": [
+          "Zones"
+        ],
+        "operationId": "getZones",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/projectIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/zoneDomainQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/zonesListResponse"
+                }
+              }
+            },
+            "description": "List of zones has been returned."
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create zone",
+        "description": "Create a new private zone.",
+        "tags": [
+          "Zones"
+        ],
+        "operationId": "createZone",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/zoneCreateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New private zone has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/zoneDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          }
+        }
+      }
+    },
+    "/zones/{zone_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/zoneIdPath"
+        }
+      ],
+      "get": {
+        "summary": "Get zone information",
+        "description": "Returns detailed information about a private zone.",
+        "tags": [
+          "Zones"
+        ],
+        "operationId": "getZoneById",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/zoneDetailedResponse"
+                }
+              }
+            },
+            "description": "Detailed information about private zone has been returned."
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update zone",
+        "description": "Apply new parameters (name, TTL) or update existing ones for a private zone.",
+        "tags": [
+          "Zones"
+        ],
+        "operationId": "updateZoneById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/zoneUpdateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Private zone parameters have been updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/zoneDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete zone",
+        "description": "Delete a private zone.",
+        "tags": [
+          "Zones"
+        ],
+        "operationId": "deleteZoneById",
+        "responses": {
+          "204": {
+            "description": "Private zone has been deleted."
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      }
+    },
+    "/zones/{zone_id}/recordset": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/zoneIdPath"
+        }
+      ],
+      "get": {
+        "summary": "List record sets",
+        "description": "Returns a list of record sets for a private zone.",
+        "tags": [
+          "Record sets"
+        ],
+        "operationId": "getZoneRecordSets",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/recordSetsListResponse"
+                }
+              }
+            },
+            "description": "List of zone's record sets have been returned."
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      },
+      "put": {
+        "summary": "Hard update record sets",
+        "description": "Overwrite (hard update) record sets of a private zone. All existing values in record sets will be replaced with the ones provided in the request.",
+        "tags": [
+          "Record sets"
+        ],
+        "operationId": "hardUpdateZoneRecordSets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/recordSetHardUpdateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Zone record sets have been updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/recordSetsListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Soft update record sets",
+        "description": "Add to or remove particular values (soft update) from record sets of a private zone. Values provided in the request will be deleted or added to the existing ones.",
+        "tags": [
+          "Record sets"
+        ],
+        "operationId": "softUpdateZoneRecordSets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/recordSetSoftUpdateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Zone record sets have been updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/recordSetsListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      }
+    }
+  }
+}
