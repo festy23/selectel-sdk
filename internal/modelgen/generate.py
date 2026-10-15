@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-    "filestorage": ("file-storage-manila", {"ShareType":"ShareType", "ShareNetwork":"ShareNetwork"}, None),
+    "filestorage": ("file-storage-manila", {"ShareType":"ShareType", "ShareNetwork":"ShareNetwork", "NetworkCreateRequest":"NetworkCreateRequest"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -51,6 +51,8 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
+    if package == "filestorage":
+        resource_roots = {"ShareType", "ShareNetwork"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)

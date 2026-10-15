@@ -1,0 +1,46 @@
+{
+  "operation_id": "filestorage.v2_73.share_networks.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/share-networks",
+    "mapping": "Envelope share_network with all5 generated source fields. Explicit caller Neutron network+subnet refs must be network/v2, same exact project/region/pool, same endpoint, network root, available subnet parent exactlymatching network. IDs inserted from validated refs, contradictory DTO IDs rejected before credentials/HTTP. Protected nullable names/descriptions/false/null only revealed by private typed wire encoder. No all-project origin or unrelatedservice adoption."
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      202
+    ],
+    "mapping": "Source APIreference declares202 but pinned controller returns default200 from WSGI. Both statuses use typed ShareNetwork and retain Accepted receipt; no readiness inferred. Verify project_id before ID, scan parent and all independentlytrustworthy native share_network_subnet IDs from explicit created-default-subnet response before unrelated fields. Childref parent comes only from native nested creation context, never Neutron IDs. Validate available returned Neutron IDs against explicit caller origins. No manufactured rootowner parent. Caller origins retained as references/anchors, not Neutron mutationeffects.",
+    "sensitive_fields": [
+      "description",
+      "share_network_subnets.cidr",
+      "share_network_subnets.gateway"
+    ]
+  },
+  "errors": {
+    "mapping": "Safe shared status taxonomy, documented400/401/403/413quota/422 are Rejected;500/transport remain Unknown without replay. Local validation returns revision-bound NotSent0attempts/noCredentialHTTP. All accepted identities remain in receipt on decoding or association error."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No safe causal replay proof for network/defaultsubnet creation; no name lookup or adoption, caller may observe exact refs explicitly when supported."
+  },
+  "limitations": [
+    "Firstparty Neutron-backed networkcreation subset only; fulldeploymentinventory and2.74/2.75 unresolved under#70.",
+    "No automatic preflight quota reservation, quota increase, networking changes or readiness claim; provider413 rejection preserved.",
+    "Reviewed protected wire renderer from OneC PR106 adapted with explicit known Nullable primitive cases; unknown Nullable types failclosed. Reviewed PR97 earlyContractRevision fix reused without volume features."
+  ]
+}

@@ -18,8 +18,8 @@
 подтверждает project IAM, endpoint `https://<pool>.cloud.api.selcloud.ru/share/v2`
 и `os-extend`. SDK фиксирует 9 отдельных операций этих сценариев; три разных
 POST action имеют отдельные source assets и canonical mappings, хотя wire path
-совпадает. Это не алиасы. В текущем срезе implemented ListTypes и ListNetworks, остальные
-7 unimplemented; весь inventory неизвестен, coverage_ratio=null.
+совпадает. Это не алиасы. В текущем срезе implemented ListTypes, ListNetworks и CreateNetwork, остальные
+6 unimplemented; весь inventory неизвестен, coverage_ratio=null.
 
 Default endpoint recipe применяется только к известным российским cloud pools;
 для других локаций нужен точный caller override, host не выводится по аналогии.
@@ -45,7 +45,7 @@ PR80 commit `4534c4e79c8cc281490f075b0f2e094770d16e8a`. Feature-код PR80 не
 Public tests проверяют JSON/fmt, включая decimal/hex представления внутренних
 bytes, required null/missing, source false и ограничение collection.
 
-Lifecycle, quota semantics и operation-specific waits ещё не реализованы этим
+Share lifecycle, quota reads и operation-specific waits ещё не реализованы этим
 срезом. Нет claims о deployment, live проверках, готовности хранилища, реальном
 монтировании или изменениях облака. #70 остаётся незавершённой; #74 должен сверить
 inventory/version drift, #76 не может принять сервис при оставшихся пробелах.
@@ -60,3 +60,23 @@ API reference не описывает их для этого endpoint. Offset у
 project_id проверяется до создания ref; вложенные Neutron IDs остаются metadata.
 Модель учитывает переход 2.51 к share_network_subnets и versioned поля 2.63/2.70;
 старые flat subnet fields не объявлены частью compiled2.73 ответа.
+
+
+CreateNetwork принимает explicit Neutron network/subnet refs одного project и
+location, service network/generation v2; available subnet parent должен точно
+совпадать с caller network. Возвращённый share-network parent не выводится из
+Neutron metadata. Поскольку pinned create явно создаёт default share-network
+subnet, receipt сохраняет independently trustworthy returned child IDs с parent
+из native nested response context. Все IDs сканируются до независимых полей;
+malformed row не теряет последующие IDs. Unknown сохраняет только известные
+caller anchors без inferred newly created resource и никогда не повторяется.
+Источник API reference объявляет 202, pinned controller использует WSGI default
+200; обе source-bound формы принимаются без readiness claim. Quota413 является
+rejection; SDK не обещает preflight quota reservation или увеличение квот.
+
+Private protected wire renderer узко переиспользован из reviewed OneC PR106
+(7cd0b1469adaba5367ee0d92d43b044100ac2aa4), с package rename и explicit known Nullable
+primitive cases, чтобы request null/secret не превратились в REDACTED на wire.
+Неизвестные Nullable types отклоняются. Reviewed PR97 early receipt revision fix
+379458e4f658b1216137fea4acce5dae6027d320 (delta от82121d740a2788930ce7c4934d449c35b096966d)
+применён только к internal/core/request.go; volume feature-код не переносился.

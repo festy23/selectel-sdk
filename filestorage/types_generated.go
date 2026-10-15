@@ -8,6 +8,45 @@ import (
 	"github.com/festy23/selectel-sdk/types"
 )
 
+type NetworkCreateRequest struct {
+	AvailabilityZone *string                               `json:"availability_zone,omitempty"`
+	Description      *types.Nullable[types.ProtectedValue] `json:"description,omitempty"`
+	Name             *types.Nullable[string]               `json:"name,omitempty"`
+	NeutronNetID     *string                               `json:"neutron_net_id,omitempty"`
+	NeutronSubnetID  *string                               `json:"neutron_subnet_id,omitempty"`
+}
+
+func (v NetworkCreateRequest) Validate() error {
+	return nil
+}
+func (v *NetworkCreateRequest) normalize() {
+}
+func (v *NetworkCreateRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire NetworkCreateRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if field, exists := fields["description"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Description = types.Null[types.ProtectedValue]()
+	}
+	if field, exists := fields["name"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Name = types.Null[string]()
+	}
+	*v = NetworkCreateRequest(value)
+	v.normalize()
+	return nil
+}
+
 type ShareNetwork struct {
 	CreatedAt                      *string                               `json:"created_at,omitempty"`
 	Description                    *types.Nullable[types.ProtectedValue] `json:"description,omitempty"`
