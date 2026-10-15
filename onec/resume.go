@@ -91,6 +91,8 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 		return c.DatastoreHandle(*selected, &receipt)
 	case "cluster_proxy":
 		return c.ClusterProxyHandle(*selected, &receipt)
+	case "journal_plan":
+		return c.JournalPlanHandle(*selected, &receipt)
 	case "cluster_volume":
 		return c.ClusterVolumeHandle(*selected, &receipt)
 	case "cluster_domain":

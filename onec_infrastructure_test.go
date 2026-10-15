@@ -1659,3 +1659,117 @@ func TestOneCVolumeUnmountWaitsForExactExplicitDeletedState(t *testing.T) {
 		t.Fatalf("unmount wait %+v %v", waited, err)
 	}
 }
+
+func TestOneCPredefinedJournalConfigsPreserveProtectedXMLAndBounds(t *testing.T) {
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/logs/tech-journal/predefined-configs" {
+			t.Fatalf("journal configs %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"predefinedLogConfigs":[{"name":"synthetic-config","rawXml":"synthetic-private-xml"},{"name":"other-config","rawXml":"other-xml"}]}`))}, nil
+	}))
+	out, err := regional.ListPredefinedJournalConfigs(context.Background(), pagination.Options{MaxItems: 1})
+	if types.ErrorCode(err) != types.Incomplete || len(out.Items) != 1 || out.Complete || string(out.Items[0].RawXml.Reveal()) != "synthetic-private-xml" {
+		t.Fatalf("configs %+v %v", out, err)
+	}
+	safe, _ := json.Marshal(out.Items[0])
+	if strings.Contains(string(safe), "synthetic-private-xml") {
+		t.Fatal("raw journal XML leaked")
+	}
+}
+
+func TestOneCCurrentJournalConfigUsesCallerClusterWithoutRawXMLLeak(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/logs/tech-journal/config" {
+			t.Fatalf("journal config %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"logConfig":{"name":"synthetic-config","rawXml":"synthetic-current-private-xml"}}`))}, nil
+	}))
+	out, err := regional.GetJournalConfig(context.Background(), cluster, types.CallOptions{})
+	if err != nil || out.Data.LogConfig == nil || string(out.Data.LogConfig.RawXml.Reveal()) != "synthetic-current-private-xml" {
+		t.Fatalf("current journal config %+v %v", out, err)
+	}
+}
+
+func TestOneCJournalPlansAreFiniteParentScopedProtectedAndUTC(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/logs/tech-journal/plans" {
+			t.Fatalf("journal plans %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"logPlans":[{"id":"plan-1","clusterId":"cluster-1","configData":"synthetic-plan-xml","startsAt":"2026-10-15T12:00:00+03:00","status":"TECH_JOURNAL_LOG_PLAN_STATUS_RUNNING"}]}`))}, nil
+	}))
+	out, err := regional.ListJournalPlans(context.Background(), cluster, pagination.Options{})
+	if err != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref.Parent.ID != "cluster-1" || out.Items[0].StartsAt.Location() != time.UTC {
+		t.Fatalf("journal plans %+v %v", out, err)
+	}
+	safe, _ := json.Marshal(out.Items[0])
+	if strings.Contains(string(safe), "synthetic-plan-xml") {
+		t.Fatal("plan XML leaked")
+	}
+}
+
+func TestOneCJournalPlanCreationProtectsWireAndRetainsAcceptedIdentity(t *testing.T) {
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path != "/v2/clusters/cluster-1/logs/tech-journal/plans" {
+			t.Fatalf("plan path %s", r.URL)
+		}
+		payload := `{"logPlan":{"id":"plan-1","clusterId":"cluster-1","status":"TECH_JOURNAL_LOG_PLAN_STATUS_RUNNING","configData":"synthetic-plan-xml"}}`
+		if r.Method == "POST" {
+			raw, _ := io.ReadAll(r.Body)
+			if !strings.Contains(string(raw), `"rawXml":"synthetic-plan-xml"`) {
+				t.Fatal("private XML lost")
+			}
+		} else {
+			payload = `{"logPlans":[{"id":"plan-1","clusterId":"cluster-1","status":"TECH_JOURNAL_LOG_PLAN_STATUS_RUNNING"}]}`
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	var spec onec.CreateTechJournalLogPlanBody
+	_ = json.Unmarshal([]byte(`{"logConfig":{"name":"synthetic-config","rawXml":"synthetic-plan-xml"}}`), &spec)
+	out, err := regional.CreateJournalPlan(context.Background(), cluster, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Data.LogPlan.Ref.Parent.ID != "cluster-1" {
+		t.Fatalf("plan create %+v %v", out, err)
+	}
+	h, err := c.Resume(*out.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	waited, err := h.Wait(context.Background(), "journal_plan.running")
+	if err != nil || !waited.Complete {
+		t.Fatalf("plan running %+v %v", waited, err)
+	}
+}
+
+func TestOneCJournalDisableRetainsExactPlanAndOperationSpecificGoal(t *testing.T) {
+	reads := 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method == "POST" {
+			raw, _ := io.ReadAll(r.Body)
+			if r.URL.Path != "/v2/clusters/cluster-1/logs/tech-journal/plans/plan-1/disable" || len(raw) != 0 {
+				t.Fatalf("disable wire %s", r.URL)
+			}
+			return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{}`))}, nil
+		}
+		reads++
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"logPlans":[{"id":"plan-1","clusterId":"cluster-1","status":"TECH_JOURNAL_LOG_PLAN_STATUS_CANCELLED"}]}`))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "journal_plan"
+	ref.ID = "plan-1"
+	ref.Parent = &cluster
+	out, err := regional.DisableJournalPlan(context.Background(), ref, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 {
+		t.Fatalf("disable %+v %v", out, err)
+	}
+	h, err := c.Resume(*out.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = h.Wait(context.Background(), "journal_plan.running")
+	if types.ErrorCode(err) != types.CapabilityUnavailable || reads != 0 {
+		t.Fatalf("disable wrong goal %v", err)
+	}
+	waited, err := h.Wait(context.Background(), "journal_plan.stopped")
+	if err != nil || !waited.Complete || reads != 1 {
+		t.Fatalf("disabled %+v %v", waited, err)
+	}
+}

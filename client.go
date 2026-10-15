@@ -200,6 +200,8 @@ func (c *Client) onecHandle(ref types.ResourceRef, receipt *types.Receipt) (*ope
 		return service.DatastoreHandle(ref, receipt)
 	case "cluster_proxy":
 		return service.ClusterProxyHandle(ref, receipt)
+	case "journal_plan":
+		return service.JournalPlanHandle(ref, receipt)
 	case "cluster_volume":
 		return service.ClusterVolumeHandle(ref, receipt)
 	case "cluster_domain":

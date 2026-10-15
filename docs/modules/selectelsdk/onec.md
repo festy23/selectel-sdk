@@ -176,3 +176,13 @@ Volumes list остаётся partial по unknown cursor terminal rule, uint64 
 сохраняется строкой без округления. S3 accessKeyId/secretAccessKey, provider reason
 и mountPath защищены; source credential values раскрываются только в wire encoder.
 Состояние ACTIVE не доказывает права S3/приложения или доступность файлов.
+
+Tech journal API содержит finite predefined configs/plans, current config,
+CreateJournalPlan и DisableJournalPlan. Raw XML/configData защищены, private wire
+encoder передаёт только явно заданный XML. Создание сохраняет ID до независимого
+decode failure; parent-only unknown не даёт recovery. Disable имеет пустой body
+и typed empty response, но retained receipt. Exact plan Status читает finite plans
+с общим CallTimeout и bounds; create goal running, disable goal stopped ограничены
+capability. Scheduled не означает running; CANCELLED/STOPPED/FINISHED завершают
+stopped, ERRORED — failure. Отсутствие exact ID не доказывает отмены; unknown source
+states сохраняются. Никакой log delivery или XML-семантики вне source не обещано.

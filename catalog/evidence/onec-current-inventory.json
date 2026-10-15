@@ -277,7 +277,8 @@
       "path": "/clusters/logs/tech-journal/predefined-configs",
       "operation_id": "listPredefinedTechJournalLogConfigs",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_predefined_configs.list"
     },
     {
       "method": "GET",
@@ -365,28 +366,32 @@
       "path": "/clusters/{id}/logs/tech-journal/config",
       "operation_id": "getTechJournalLogsConfig",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_config.list"
     },
     {
       "method": "GET",
       "path": "/clusters/{id}/logs/tech-journal/plans",
       "operation_id": "listTechJournalLogPlans",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_plans.list"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/logs/tech-journal/plans",
       "operation_id": "createTechJournalLogPlan",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_plans.create"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/logs/tech-journal/plans/{planId}/disable",
       "operation_id": "disableTechJournalLogPlan",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_plans_disable.create"
     },
     {
       "method": "GET",

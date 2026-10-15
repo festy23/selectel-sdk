@@ -5863,5 +5863,176 @@
       "cluster_volume.deleted"
     ],
     "recovery": true
+  },
+  "cloud_1c.v2.clusters_logs_tech_journal_predefined_configs.list": {
+    "go_method": "onec.Client.ListPredefinedJournalConfigs",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Collection[onec.TechJournalLogsConfig]",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_logs_tech_journal_predefined_configs.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/volumes.go",
+      "onec/journal.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.clusters_logs_tech_journal_config.list": {
+    "go_method": "onec.Client.GetJournalConfig",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.GetTechJournalLogsConfigResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_logs_tech_journal_config.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/volumes.go",
+      "onec/journal.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.clusters_logs_tech_journal_plans.list": {
+    "go_method": "onec.Client.ListJournalPlans",
+    "input_type": "types.ResourceRef, pagination.Options",
+    "output_type": "pagination.Collection[onec.TechJournalLogPlan]",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_logs_tech_journal_plans.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/volumes.go",
+      "onec/journal.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.clusters_logs_tech_journal_plans.create": {
+    "go_method": "onec.Client.CreateJournalPlan",
+    "input_type": "types.ResourceRef, onec.CreateTechJournalLogPlanBody, types.CallOptions",
+    "output_type": "onec.CreateTechJournalLogPlanResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_logs_tech_journal_plans.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go",
+      "onec/domains.go",
+      "onec/wire.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go",
+      "onec/volumes.go",
+      "onec/journal.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "journal_plan.running"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.clusters_logs_tech_journal_plans_disable.create": {
+    "go_method": "onec.Client.DisableJournalPlan",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.DisableTechJournalLogPlanResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_logs_tech_journal_plans_disable.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go",
+      "onec/domains.go",
+      "onec/wire.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go",
+      "onec/volumes.go",
+      "onec/journal.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "journal_plan.stopped"
+    ],
+    "recovery": true
   }
 }

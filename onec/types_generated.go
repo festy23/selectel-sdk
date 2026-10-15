@@ -844,6 +844,93 @@ func (v *CreateDatastoreResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type CreateTechJournalLogPlanBody struct {
+	EndsAt    *time.Time             `json:"endsAt,omitempty"`
+	LogConfig *TechJournalLogsConfig `json:"logConfig,omitempty"`
+	StartsAt  *time.Time             `json:"startsAt,omitempty"`
+}
+
+func (v CreateTechJournalLogPlanBody) Validate() error {
+	if v.LogConfig == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.LogConfig != nil {
+		if err := v.LogConfig.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *CreateTechJournalLogPlanBody) normalize() {
+	if v.EndsAt != nil {
+		instant := v.EndsAt.UTC()
+		v.EndsAt = &instant
+	}
+	if v.LogConfig != nil {
+		v.LogConfig.normalize()
+	}
+	if v.StartsAt != nil {
+		instant := v.StartsAt.UTC()
+		v.StartsAt = &instant
+	}
+}
+func (v *CreateTechJournalLogPlanBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire CreateTechJournalLogPlanBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = CreateTechJournalLogPlanBody(value)
+	v.normalize()
+	return nil
+}
+
+type CreateTechJournalLogPlanResponse struct {
+	LogPlan *TechJournalLogPlan `json:"logPlan,omitempty"`
+}
+
+func (v CreateTechJournalLogPlanResponse) Validate() error {
+	if v.LogPlan != nil {
+		if err := v.LogPlan.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *CreateTechJournalLogPlanResponse) normalize() {
+	if v.LogPlan != nil {
+		v.LogPlan.normalize()
+	}
+}
+func (v *CreateTechJournalLogPlanResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire CreateTechJournalLogPlanResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = CreateTechJournalLogPlanResponse(value)
+	v.normalize()
+	return nil
+}
+
 type CursorResponse struct {
 	Next  *string `json:"next,omitempty"`
 	Total *string `json:"total,omitempty"`
@@ -1312,6 +1399,17 @@ func (v *DeleteDatastoreResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type DisableTechJournalLogPlanResponse struct{}
+
+func (v DisableTechJournalLogPlanResponse) Validate() error { return nil }
+func (v *DisableTechJournalLogPlanResponse) UnmarshalJSON(raw []byte) error {
+	var object map[string]json.RawMessage
+	if json.Unmarshal(raw, &object) != nil || object == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+
 type Endpoint struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 	Protocol *string `json:"protocol,omitempty"`
@@ -1649,6 +1747,43 @@ func (v *GetServiceEndpointsResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type GetTechJournalLogsConfigResponse struct {
+	LogConfig *TechJournalLogsConfig `json:"logConfig,omitempty"`
+}
+
+func (v GetTechJournalLogsConfigResponse) Validate() error {
+	if v.LogConfig != nil {
+		if err := v.LogConfig.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *GetTechJournalLogsConfigResponse) normalize() {
+	if v.LogConfig != nil {
+		v.LogConfig.normalize()
+	}
+}
+func (v *GetTechJournalLogsConfigResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire GetTechJournalLogsConfigResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = GetTechJournalLogsConfigResponse(value)
+	v.normalize()
+	return nil
+}
+
 type Health struct {
 	Issues []HealthIssue `json:"issues,omitzero"`
 }
@@ -1970,6 +2105,80 @@ func (v *ListDatastoresResponse) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = ListDatastoresResponse(value)
+	v.normalize()
+	return nil
+}
+
+type ListPredefinedTechJournalLogConfigsResponse struct {
+	PredefinedLogConfigs []TechJournalLogsConfig `json:"predefinedLogConfigs,omitzero"`
+}
+
+func (v ListPredefinedTechJournalLogConfigsResponse) Validate() error {
+	for _, item := range v.PredefinedLogConfigs {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListPredefinedTechJournalLogConfigsResponse) normalize() {
+	for i := range v.PredefinedLogConfigs {
+		v.PredefinedLogConfigs[i].normalize()
+	}
+}
+func (v *ListPredefinedTechJournalLogConfigsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListPredefinedTechJournalLogConfigsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListPredefinedTechJournalLogConfigsResponse(value)
+	v.normalize()
+	return nil
+}
+
+type ListTechJournalLogPlansResponse struct {
+	LogPlans []TechJournalLogPlan `json:"logPlans,omitzero"`
+}
+
+func (v ListTechJournalLogPlansResponse) Validate() error {
+	for _, item := range v.LogPlans {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListTechJournalLogPlansResponse) normalize() {
+	for i := range v.LogPlans {
+		v.LogPlans[i].normalize()
+	}
+}
+func (v *ListTechJournalLogPlansResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListTechJournalLogPlansResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListTechJournalLogPlansResponse(value)
 	v.normalize()
 	return nil
 }
@@ -2609,6 +2818,66 @@ func (v StorageAutoScaling) Validate() error {
 	return nil
 }
 func (v *StorageAutoScaling) normalize() {
+}
+
+type TechJournalLogPlan struct {
+	ClusterID  *string               `json:"clusterId,omitempty"`
+	ConfigData *types.ProtectedValue `json:"configData,omitempty"`
+	ConfigName *string               `json:"configName,omitempty"`
+	EndsAt     *time.Time            `json:"endsAt,omitempty"`
+	ID         *string               `json:"id,omitempty"`
+	PlanType   *string               `json:"planType,omitempty"`
+	ReasonCode *string               `json:"reasonCode,omitempty"`
+	StartsAt   *time.Time            `json:"startsAt,omitempty"`
+	Status     *string               `json:"status,omitempty"`
+	Ref        *types.ResourceRef    `json:"ref,omitempty"`
+}
+
+func (v TechJournalLogPlan) Validate() error {
+	return nil
+}
+func (v *TechJournalLogPlan) normalize() {
+	if v.EndsAt != nil {
+		instant := v.EndsAt.UTC()
+		v.EndsAt = &instant
+	}
+	if v.StartsAt != nil {
+		instant := v.StartsAt.UTC()
+		v.StartsAt = &instant
+	}
+}
+func (v *TechJournalLogPlan) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire TechJournalLogPlan
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = TechJournalLogPlan(value)
+	v.normalize()
+	return nil
+}
+
+type TechJournalLogsConfig struct {
+	Name   *string               `json:"name,omitempty"`
+	RawXml *types.ProtectedValue `json:"rawXml,omitempty"`
+}
+
+func (v TechJournalLogsConfig) Validate() error {
+	if v.Name == nil || v.RawXml == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *TechJournalLogsConfig) normalize() {
 }
 
 type TimeOfDay struct {
