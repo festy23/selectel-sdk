@@ -1,0 +1,37 @@
+{
+  "operation_id": "certificates.user_v1.private_key.read",
+  "source": "certificates-manager.json GET /cert/{cert_id}/private_key; pinned secretsmanager-go5adf322 raw response, not JSON/base64 inferred from omitted OpenAPI schema",
+  "endpoint": "global certificate-manager/v1; exact endpoint pin",
+  "auth": "project Keystone, explicit project",
+  "request": {
+    "method": "GET",
+    "path": "/cert/{cert_id}/private_key",
+    "mapping": "exact user_certificate ID/scope/generation/endpoint"
+  },
+  "response": {
+    "mapping": "unchanged raw response bytes in ProtectedValue, only explicit caller Reveal; bounded by MaxJSONBytes and TransferTimeout, closed on cancellation; metadata Get never calls this endpoint",
+    "sensitive_fields": [
+      "body"
+    ]
+  },
+  "errors": {
+    "shared": "shared HTTP status mapping; provider error text discarded"
+  },
+  "retry": "bounded safe read; no body-decode retry",
+  "pagination": null,
+  "recovery": "Root Resource/Resume validate account/project/generation/kind/endpoint, operation/effect/revision and receipt/ref agreement. Metadata Get observes exact address only. Unknown remains indeterminate; no name lookup/adoption/replay. Known no-ref terminal receipt Recover conclusive without I/O; no resource state/wait inferred.",
+  "wait": {
+    "goals": []
+  },
+  "source_evidence": {
+    "openapi_uri": "https://docs.selectel.ru/api/certificates-manager.json",
+    "openapi_sha256": "ab192574b56ebf905aedc0abb7661dd1cd50544e5f04c62fee3330a07c9151b8",
+    "sdk_commit": "5adf32225d3863ae40fd351ea33629f3fcca2447",
+    "sdk_assets_sha256": {
+      "LICENCE": "e5e9ba6ddf7ff45cdb833ffd1826747e4bc42c57e7eeb28d1060b36ec3f24498",
+      "certs.go.txt": "b911c135532d3f5d08a78f8ba9aa93e1ee27fd31aa77c4620fc6a941d9a704fd",
+      "model.go.txt": "1f8581de0860409a9cce3f747b056fb1883d48a04f9fd5e7b07e64f77a11611d",
+      "secretsmanager.go.txt": "86eef73402f82ef1f6903b553d712c7f05480fd19777b56aa692c1d20232ebc6"
+    }
+  }
+}

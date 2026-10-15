@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"certificates-manager":         {"certificates", "user_v1", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,17 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"certificates-manager GET /certs":                                  "certificates.user_v1.certificates.list",
+	"certificates-manager DELETE /cert/{cert_id}":                      "certificates.user_v1.certificates.delete",
+	"certificates-manager PUT /cert/{cert_id}/consumers":               "certificates.user_v1.consumers.add",
+	"certificates-manager DELETE /cert/{cert_id}/consumers":            "certificates.user_v1.consumers.remove",
+	"certificates-manager POST /cert/{cert_id}":                        "certificates.user_v1.versions.create",
+	"certificates-manager PUT /cert/{cert_id}":                         "certificates.user_v1.name.update",
+	"certificates-manager POST /certs":                                 "certificates.user_v1.certificates.upload",
+	"certificates-manager GET /cert/{cert_id}/private_key":             "certificates.user_v1.private_key.read",
+	"certificates-manager GET /cert/{cert_id}/p12":                     "certificates.user_v1.pkcs12.read",
+	"certificates-manager GET /cert/{cert_id}/ca_chain":                "certificates.user_v1.ca_chain.read",
+	"certificates-manager GET /cert/{cert_id}":                         "certificates.user_v1.certificates.get",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",

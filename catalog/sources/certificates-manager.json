@@ -1,0 +1,745 @@
+{
+  "definitions": {
+    "rest.Certificate": {
+      "properties": {
+        "consumers": {
+          "items": {
+            "$ref": "#/definitions/rest.CertificateConsumer"
+          },
+          "type": "array"
+        },
+        "dns_names": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "issued_by": {
+          "$ref": "#/definitions/rest.CertificateIssuedBy"
+        },
+        "name": {
+          "type": "string"
+        },
+        "private_key": {
+          "$ref": "#/definitions/rest.CertificatePrivateKey"
+        },
+        "serial": {
+          "type": "string"
+        },
+        "validity": {
+          "$ref": "#/definitions/rest.CertificateValidity"
+        },
+        "version": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "rest.CertificateConsumer": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rest.CertificateIssuedBy": {
+      "properties": {
+        "commonName": {
+          "type": "string"
+        },
+        "country": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "locality": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "organization": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "organizationalUnit": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "postalCode": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "province": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "serialNumber": {
+          "type": "string"
+        },
+        "streetAddress": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "rest.CertificatePrivateKey": {
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rest.CertificateValidity": {
+      "properties": {
+        "basic_constraints": {
+          "type": "boolean"
+        },
+        "notAfter": {
+          "type": "string"
+        },
+        "notBefore": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rest.Consumer": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rest.PEMCertificate": {
+      "properties": {
+        "certificates": {
+          "description": "List of PEM encoded cerficates",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "private_key": {
+          "description": "Private key in PEM encoded format",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rest.UpdateCertificateConsumerRequest": {
+      "properties": {
+        "consumers": {
+          "items": {
+            "$ref": "#/definitions/rest.Consumer"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rest.UpdateCertificateRequest": {
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rest.UpdateCertificateVersionRequest": {
+      "properties": {
+        "pem": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/rest.PEMCertificate"
+            }
+          ],
+          "description": "Certificate in PEM encoded format"
+        }
+      },
+      "type": "object"
+    },
+    "rest.UploadCertificateRequest": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "pem": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/rest.PEMCertificate"
+            }
+          ],
+          "description": "Certificate in PEM encoded format"
+        }
+      },
+      "type": "object"
+    },
+    "resterr.ErrResponse": {
+      "properties": {
+        "error_text": {
+          "type": "string"
+        },
+        "status_text": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "Managing user TLS certificates",
+    "title": "User Certificates API",
+    "version": "v1.0"
+  },
+  "paths": {
+    "/cert/{cert_id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Remove certificate even when consumers is not empty",
+            "in": "query",
+            "name": "force",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Delete certificate with specified ID",
+        "tags": [
+          "Certificates"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rest.Certificate"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Get certificate with specified ID",
+        "tags": [
+          "Certificates"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/rest.UpdateCertificateVersionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "UpdateVersion certificate version for specified ID",
+        "tags": [
+          "Certificates"
+        ]
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/rest.UpdateCertificateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Update certificate name for  specified ID",
+        "tags": [
+          "Certificates"
+        ]
+      }
+    },
+    "/cert/{cert_id}/ca_chain": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/x-pem-file"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Get a public certs for certificate",
+        "tags": [
+          "Certificates"
+        ]
+      }
+    },
+    "/cert/{cert_id}/consumers": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/rest.UpdateCertificateConsumerRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Remove consumer from certificate",
+        "tags": [
+          "Certificates"
+        ]
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/rest.UpdateCertificateConsumerRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Add new consumer to certificate",
+        "tags": [
+          "Certificates"
+        ]
+      }
+    },
+    "/cert/{cert_id}/p12": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/x-pkcs12"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Get a everything related to this certificate in PKCS#12 bundle",
+        "tags": [
+          "Certificates"
+        ]
+      }
+    },
+    "/cert/{cert_id}/private_key": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Certificate's ID",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/x-pem-file"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Get a private key for certificate",
+        "tags": [
+          "Certificates"
+        ]
+      }
+    },
+    "/certs": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/rest.Certificate"
+              },
+              "type": "array"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "List will return certificates",
+        "tags": [
+          "Certificates"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "Payload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/rest.UploadCertificateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rest.Certificate"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "X-Auth-Token": []
+          }
+        ],
+        "summary": "Upload will upload new certificate in storage",
+        "tags": [
+          "Certificates"
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "X-Auth-Token": {
+      "description": "Keystone token for project.",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0"
+}
