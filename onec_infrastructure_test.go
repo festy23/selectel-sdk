@@ -6,6 +6,7 @@ import (
 	sdk "github.com/festy23/selectel-sdk"
 	"github.com/festy23/selectel-sdk/credentials"
 	"github.com/festy23/selectel-sdk/onec"
+	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
 	"io"
 	"net/http"
@@ -165,5 +166,56 @@ func TestOneCClusterUnknownCreationNeverReplays(t *testing.T) {
 	out, err := regional.OneC().CreateCluster(context.Background(), spec, types.CallOptions{})
 	if types.ErrorCode(err) != types.UnknownOutcome || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || out.Receipt.Attempts != 1 || len(out.Receipt.ResourceRefs) != 0 || calls != 1 {
 		t.Fatalf("unknown result %+v, %v calls %d", out, err, calls)
+	}
+}
+
+func TestOneCClusterListingPreservesBoundAndOpaqueContinuation(t *testing.T) {
+	scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+	endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+	calls := 0
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		if r.URL.Path != "/v2/clusters" || r.URL.Query().Get("cursor.limit") != "1" || r.URL.Query().Get("cursor.cursor") != "" {
+			t.Fatalf("list wire %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"clusters":[{"id":"cluster-1","projectId":"test-project","spec":{"name":"test","platform":{},"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}}}],"cursor":{"next":"50","total":"9007199254740993"}}`))}, nil
+	})})
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, _ := c.Project("test-project")
+	regional, _ := p.Location("spb", "ru-9")
+	out, err := regional.OneC().ListClusters(context.Background(), pagination.Options{MaxItems: 1})
+	if types.ErrorCode(err) != types.Incomplete || calls != 1 || out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.NextCursor == nil || out.NextCursor.WireCursor != "50" || len(out.Envelopes) != 1 || *out.Envelopes[0].Cursor.Total != "9007199254740993" {
+		t.Fatalf("list %+v, %v", out, err)
+	}
+}
+
+func TestOneCClusterListingDoesNotInventTerminalSentinels(t *testing.T) {
+	for _, payload := range []string{`{"clusters":[]}`, `{"clusters":[],"cursor":{"next":"0","total":"0"}}`} {
+		t.Run(payload, func(t *testing.T) {
+			scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+			endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+			calls := 0
+			c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/identity/v3/auth/tokens" {
+					return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+				}
+				calls++
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+			})})
+			if err != nil {
+				t.Fatal(err)
+			}
+			p, _ := c.Project("test-project")
+			regional, _ := p.Location("spb", "ru-9")
+			out, err := regional.OneC().ListClusters(context.Background(), pagination.Options{MaxPages: 1})
+			if err == nil || calls != 1 || out.Complete || len(out.Envelopes) != 1 {
+				t.Fatalf("invented end: %+v %v calls %d", out, err, calls)
+			}
+		})
 	}
 }

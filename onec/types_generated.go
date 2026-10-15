@@ -265,6 +265,17 @@ func (v *CreateClusterResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type CursorResponse struct {
+	Next  *string `json:"next,omitempty"`
+	Total *string `json:"total,omitempty"`
+}
+
+func (v CursorResponse) Validate() error {
+	return nil
+}
+func (v *CursorResponse) normalize() {
+}
+
 type Endpoint struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 	Protocol *string `json:"protocol,omitempty"`
@@ -398,6 +409,52 @@ func (v *HealthIssue) normalize() {
 		instant := v.StartedAt.UTC()
 		v.StartedAt = &instant
 	}
+}
+
+type ListClustersResponse struct {
+	Clusters []Cluster       `json:"clusters,omitzero"`
+	Cursor   *CursorResponse `json:"cursor,omitempty"`
+}
+
+func (v ListClustersResponse) Validate() error {
+	for _, item := range v.Clusters {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Cursor != nil {
+		if err := v.Cursor.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListClustersResponse) normalize() {
+	for i := range v.Clusters {
+		v.Clusters[i].normalize()
+	}
+	if v.Cursor != nil {
+		v.Cursor.normalize()
+	}
+}
+func (v *ListClustersResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListClustersResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListClustersResponse(value)
+	v.normalize()
+	return nil
 }
 
 type Metric struct {

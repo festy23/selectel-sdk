@@ -261,7 +261,8 @@
       "path": "/clusters",
       "operation_id": "listClusters",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source"
     },
     {
       "method": "POST",

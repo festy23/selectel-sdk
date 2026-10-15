@@ -30,3 +30,11 @@ ID и projectId ответа должны совпадать с caller scope/ref
 из reviewed PR #97 commit `379458e4f658b1216137fea4acce5dae6027d320`
 (delta от `82121d740a2788930ce7c4934d449c35b096966d`). Другие изменения
 volumes не переносились; `internal/core/request.go` — общая точка интеграции.
+
+`ListClusters(ctx, pagination.Options)` ограничивает страницы, элементы и общий
+collection budget, возвращает ResourceRefs и исходные cursor metadata в Envelopes.
+`cursor.next` и `cursor.total` — uint64 strings без потери точности. Returned
+next используется как pointer; отсутствие next, `"0"` и пустая страница не
+означают конец: pinned Swagger/API-page не определяют terminal sentinel.
+Эта операция остаётся partial; лимиты дают incomplete, отсутствие прогресса —
+protocol_error с сохранёнными наблюдёнными элементами, `Complete=false`.
