@@ -119,3 +119,69 @@ region. Permission/availability для caller определяется конк�
 Native SDK method list и Terraform resource list не являются знаменателем
 API coverage. При изменении API source новая версия каталога сохраняет старые
 идентификаторы, добавляет новые и явно отмечает withdrawn операции.
+
+## Локальная сверка закреплённого subset
+
+`Client.Catalog().Audit()` группирует active documented OperationContracts по
+точной паре source URI/revision. Для каждой группы возвращаются counts,
+canonical IDs без callable binding и partial bindings с `GoMethod`,
+`CoveredSchemaRef`, `ExcludedVariants`. Partial не включается в implemented.
+Массивы сортируются и являются независимыми копиями; credentials/HTTP не нужны.
+
+Это проекция встроенного каталога, не обнаружение live API и не доказательство
+полноты upstream SDK/API. Две revisions одного URI не объединяются. Audit не
+считает convenience helpers дополнительными remote operations и не изобретает
+alias/deprecated mappings. Неописанные семейства/варианты остаются неизвестными;
+общие completeness/ratio следуют Summary, неизвестный denominator даёт null.
+Discovery_pending family всегда входит в IncompleteFamilies, даже без
+OperationContracts; отсутствие операций не делает неизвестный inventory полным.
+
+Срез #74 не завершён: полный canonical mapping всех официальных SDK и protocol
+operations, source drift и проверка public-method coverage требуют дальнейшей
+сверки. [Очередь пробелов](catalog-reconciliation.md) сохраняет владельцев.
+
+## Структурная проверка bindings
+
+`Audit().BindingChecks` перечисляет каждый callable binding с public method,
+файлом Go declaration, SHA-256 его bytes и `Issues`. Генератор разбирает Go AST
+пакетов, указанных bindings, без сети; evidence встроен в
+[public-methods.json](../../../catalog/contracts/public-methods.json).
+Проверяются existence exported receiver/method declaration и разрешимость
+input/output/endpoint/request/response/error/replay/covered-schema references
+в поставляемых JSON artifacts, включая JSON Pointer escapes и array indexes.
+Отсутствие declaration или reference отражается отдельной diagnostic code.
+Порядок checks/issues стабилен, результат не меняет implementation/verification.
+
+Это не доказательство Client reachability, соответствия сигнатуры DTO,
+маршрута/auth, runtime поведения или полного списка remote methods. Go AST
+собирается без build-tag selection; неоднозначные declarations завершают
+генерацию ошибкой, а platform-specific surface требует отдельной сверки.
+Helper declarations могут присутствовать в evidence, но не становятся API
+operations и не считаются отсутствующими remote bindings автоматически.
+
+Для нормализованных native excerpts без OpenAPI responses node (Nova) output
+reference указывает на существующий SDK-owned response mapping, включая empty
+204 contract. Primary source provenance остаётся прежним; schema shape не
+добавляется по догадке. Смена этих четырёх refs меняет contract revisions и
+сбрасывает прежнее verification до повторной offline проверки.
+
+Regression fixture меняет pinned source revision и stale binding локальной
+копии, регенерирует SDK и наблюдает verification/diagnostics через публичный
+Client. Подмены внутренних компонентов и cloud calls нет. Full canonical
+inventory и неразобранные source variants остаются открытыми в #74.
+
+## Bindings вне source inventory
+
+`Audit().OrphanBindings` содержит отсортированные keys из bindings.json, для
+которых генератор не нашёл canonical source operation. Такие записи сохраняются
+в [binding-reconciliation.json](../../../catalog/contracts/binding-reconciliation.json),
+не превращаются в provider operations и не увеличивают coverage. Генератор
+сравнивает две стороны join независимо от implementation status. Отсутствующее
+или некорректное reconciliation evidence отражается в `ReconciliationIssues`
+как `binding_reconciliation_evidence_unavailable`; пустой список orphans при
+такой diagnostic не подтверждает успешную сверку.
+
+Regression fixture добавляет binding с отсутствующей source operation,
+регенерирует SDK и наблюдает ровно этот orphan через public Client, сохраняя
+191 source operation в baseline. Это проверка только pinned source/binding join;
+не полный census всех upstream операций или некаталогизированных Go methods.

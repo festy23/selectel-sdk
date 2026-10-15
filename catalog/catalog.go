@@ -173,7 +173,7 @@ type Summary struct {
 func (c Catalog) Summary() Summary {
 	s := Summary{InventoryComplete: true, IncompleteFamilies: []string{}, UnimplementedIDs: []string{}}
 	for _, family := range c.services {
-		if family.Availability == "documented" && !family.InventoryComplete {
+		if family.Availability == "discovery_pending" || (family.Availability == "documented" && !family.InventoryComplete) {
 			s.InventoryComplete = false
 			s.IncompleteFamilies = append(s.IncompleteFamilies, family.ID)
 		}
