@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "92345ff4c2d6bd566e35a1954942407709987eaf7e6e514d1f4a00103383cb7d",
+      "implementation_revision": "dfb7672fb6c4e632f54bef29bb0319bf44a1f46f4635313bfc1a7b39f3baa050",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "abb760e180605dce0f6e2227696b492134d0e39bf3502b68e5c25c5c779d0e19",
+      "implementation_revision": "5ddb7b6851bfa301cbbf4968ff3a5a9550a42b1e8cbaa9fcc6ef5c7acd0da45f",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "586e61251110fc75f535f360e57d6b02f62b0de7b0e7c1d0d740e4e213d2b23c",
+      "implementation_revision": "81686897be36d427958e7c2b18ffb3ce948587ab34982707191769d6b70ef889",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "c44a4f2818bf95d705c58267ba95c8010e074729be0b7cba64c1b61b5a38c086",
+      "implementation_revision": "fc3107640fc0e575a2e6209d3e6c2a9476e70097ec35af8ea81b702f434d137d",
       "level": "offline"
     },
     "wait_goals": []
@@ -1575,7 +1575,7 @@
     "verification": {
       "contract_revision": "3cf12d0f76a22a685a4b274e7a45ea4b7e757601924b2077db101fb3a058099b",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "5266d8e77a057f22fa15a3fe426ba51901290564ed94461e257d36d113ed87a2",
+      "implementation_revision": "79ed444697f7db5d9d7a3d57d21d6750f9fc1c5e7c6638ee39e47b09ca407e0a",
       "level": "offline"
     },
     "wait_goals": []
@@ -1632,7 +1632,7 @@
     "verification": {
       "contract_revision": "4854c8d6c3e8134b9fb935367114cee0214d9a50ed25a181076acff61cfa66b0",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "619b62916a142fc353af1f4d121be9f806a3b7f90e1fbd15386ee1cd33d57a26",
+      "implementation_revision": "ecaa6ba2a856694ded7ac710c436285c980765c5f399439e85b04ab4739faafd",
       "level": "offline"
     },
     "wait_goals": []
@@ -1689,7 +1689,7 @@
     "verification": {
       "contract_revision": "37a233777b69e8ad1b72136e620f76628b5949f1f008a704cdf7d4b6de1030da",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "866fc6374b3842f70e720f76355888ad1a393c41d5034e4e007e229a8b0a9377",
+      "implementation_revision": "46245947c034640d283569cc67f858c1e1071e40f03f670219d21b84f42ee447",
       "level": "offline"
     },
     "wait_goals": []
@@ -1973,9 +1973,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters.create.json": "51b79beec1a016b7b347d6d228b3af76ec938b1b671de5bb7d34823c845137d4"
+      "contracts/cloud_1c.v2.clusters.create.json": "5bc9c54e97df55513d9c9c15c1cffa93b2b3c5b239e04b40eec6f830f047e67a"
     },
-    "contract_revision": "1aa44f73b4f8e307cfd22202e43d5f8536da264059fd8ede5a0b643babbd423e",
+    "contract_revision": "f1cdefc0455a394f32dc964716c23e7f5d6480b26d83f4ac71adbf3045047bae",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters.create.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters.create.json#/errors",
@@ -2006,7 +2006,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "POST /clusters",
@@ -2014,9 +2017,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "1aa44f73b4f8e307cfd22202e43d5f8536da264059fd8ede5a0b643babbd423e",
+      "contract_revision": "f1cdefc0455a394f32dc964716c23e7f5d6480b26d83f4ac71adbf3045047bae",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "73ad47313f6ac6fe6f2ecefc89f3c95edea05827e9a1d67fe7adc63ae4537708",
+      "implementation_revision": "2284bca1f647ef4a69d1636f4111e3a03cf6ed7ce967e02408777120d20bc583",
       "level": "offline"
     },
     "wait_goals": [
@@ -2032,9 +2035,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters.delete.json": "08a4a48eb9a6b21d7d5efd38d3f41e4ee353e68f2c54aaec0b66959c4db3129d"
+      "contracts/cloud_1c.v2.clusters.delete.json": "5a4d2e087e2b9372cdea403f66ffc89ea1577081c76ef7361f26d22a8ebfdddd"
     },
-    "contract_revision": "e1072d095d7115972bdb4f99ed6776a6261fe11ff490e77d38cc78fb2d9fd27f",
+    "contract_revision": "2aea4f9021170ec11bc4fb6385a9c7ec77498fa4b30a179723ed2834b75bebc8",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters.delete.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters.delete.json#/errors",
@@ -2065,7 +2068,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "DELETE /clusters/{id}",
@@ -2073,9 +2079,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "e1072d095d7115972bdb4f99ed6776a6261fe11ff490e77d38cc78fb2d9fd27f",
+      "contract_revision": "2aea4f9021170ec11bc4fb6385a9c7ec77498fa4b30a179723ed2834b75bebc8",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "bb81ffbca913def668ae1e180729f6fbda07525276a42d5163198365b62de9a6",
+      "implementation_revision": "ad3ca2650498b2123e7c507c52589ac59084be6237392941383e26dbe6cbca19",
       "level": "offline"
     },
     "wait_goals": [
@@ -2091,9 +2097,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters.get.json": "9aea5c5f2559393ddc4248581cf580ae7f5d7ed685bee1f80422119206da8e7d"
+      "contracts/cloud_1c.v2.clusters.get.json": "c6eace3f123e8c32ffa43916f53fe53f207c99655ae9d1b74a435fd9afc0576b"
     },
-    "contract_revision": "8c3270340aa95fd7c73185f1aa086342607638330eca959cf5cc3d451d9842a9",
+    "contract_revision": "267adb0eaf7ae482888c0c163b50eaac2e843c4ed769cd5af8480aa7444313a1",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters.get.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters.get.json#/errors",
@@ -2124,7 +2130,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "GET /clusters/{id}",
@@ -2132,9 +2141,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "8c3270340aa95fd7c73185f1aa086342607638330eca959cf5cc3d451d9842a9",
+      "contract_revision": "267adb0eaf7ae482888c0c163b50eaac2e843c4ed769cd5af8480aa7444313a1",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "69de0ebd3d07c6a9657e5925cdec29a96a6812c21c6f7f5c76b62fd491d95f8d",
+      "implementation_revision": "44045a4c362560dbe06407ac89c893e0038f4a389625216909ea039b71877cac",
       "level": "offline"
     },
     "wait_goals": []
@@ -2148,9 +2157,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters.list.json": "71209a0a0cdb621eded80f3d8bc99e4a709886b17428da986d0d50f6a344becc"
+      "contracts/cloud_1c.v2.clusters.list.json": "162e22011c72636402f7174c11e7bb86da3193facef76655c8621b3e56154e17"
     },
-    "contract_revision": "e1f6b20af7c522c988b4a92940d28ffd77a6d21cfd58c819cd4ed07388ec0572",
+    "contract_revision": "a7af477be8f8776c9bc79b8fd48a3acbee861919ddc7618c628c96d49844a52a",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters.list.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters.list.json#/errors",
@@ -2183,7 +2192,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "clusters[].state.health.issues[].metricThresholdBreach.metric.value",
+      "clusters[].state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "GET /clusters",
@@ -2191,9 +2203,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "e1f6b20af7c522c988b4a92940d28ffd77a6d21cfd58c819cd4ed07388ec0572",
+      "contract_revision": "a7af477be8f8776c9bc79b8fd48a3acbee861919ddc7618c628c96d49844a52a",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "361997508bbd1beb7141bcc2c381482259b3c9d51bf4207fb150a8cea444a260",
+      "implementation_revision": "f94f16833af1e480758ce30fcf665a146d0d5977f5f07f94392d165abcfc3a20",
       "level": "offline"
     },
     "wait_goals": []
@@ -2207,9 +2219,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters.update.json": "0a002b1595ea0cad7bae194e2bd294b03281bd0db2fc223adb7a7c5a89334058"
+      "contracts/cloud_1c.v2.clusters.update.json": "f8525f2cd9104de88be76612504e7d6178ce59f601a884fae411e0bd6b4b784a"
     },
-    "contract_revision": "d245e96d5226054609a80224e1e173ea78518cde03c7190072bc5b9e928b284b",
+    "contract_revision": "f901cdcb714f3df11ba59ebb6178f676f5d8aa25c3fd0b15991e8e024ab8de09",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters.update.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters.update.json#/errors",
@@ -2240,7 +2252,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "PATCH /clusters/{id}",
@@ -2248,9 +2263,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "d245e96d5226054609a80224e1e173ea78518cde03c7190072bc5b9e928b284b",
+      "contract_revision": "f901cdcb714f3df11ba59ebb6178f676f5d8aa25c3fd0b15991e8e024ab8de09",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "0b1e07a36e911185105289ca7506d6135fdeda77d52c60828b9bc0e3c6279ba0",
+      "implementation_revision": "770212da766abf0746d13948e569613c8cb8e96e97c9f4a11a188e4621ab00f9",
       "level": "offline"
     },
     "wait_goals": [
@@ -2266,9 +2281,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters_config.create.json": "21b175d3c49af42fb98281f454a5c7e31417fe0d1156e9c4ab9cc1b7317d9b63"
+      "contracts/cloud_1c.v2.clusters_config.create.json": "c9280a53ff2ba32b937bd16a8aa9d925f65b6d3448f9b47c40cb28c577d3aa0a"
     },
-    "contract_revision": "ce06306e8c039032fcb5464bfbe210a5728982b08b6ab2715a7abcd667d2f201",
+    "contract_revision": "b2697312307f78b1ee6efba802c66e4b905ef4dcb6c676aca88a4b14f3ad8510",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters_config.create.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters_config.create.json#/errors",
@@ -2299,7 +2314,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "POST /clusters/{id}/config",
@@ -2307,9 +2325,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "ce06306e8c039032fcb5464bfbe210a5728982b08b6ab2715a7abcd667d2f201",
+      "contract_revision": "b2697312307f78b1ee6efba802c66e4b905ef4dcb6c676aca88a4b14f3ad8510",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "d585213d186a0b6ec8cbede740817495a20039d514b599ebaee334f7daf86637",
+      "implementation_revision": "cbc69e0ba8f306696ecff459a1c08e4663060ade9cbd0e38c16d29d361182a7f",
       "level": "offline"
     },
     "wait_goals": [
@@ -2973,9 +2991,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters_resize.create.json": "0d3eba32e5eae37d2f4b16bd9bb19e4bb3350eece0d6dbc78d495e64faf9f18e"
+      "contracts/cloud_1c.v2.clusters_resize.create.json": "52089cf6a8ea3079a14a9d906ffd9dc310d97c95412435bde347b0b76271bf10"
     },
-    "contract_revision": "ddbaf406a0923bbe64d3e5f3d85e1b6a337e5881696357c856725a47430bdc55",
+    "contract_revision": "5621402e605b4b347874d154f5c4c041776ebfc1172120ffac5e5d7cb6aef097",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters_resize.create.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters_resize.create.json#/errors",
@@ -3006,7 +3024,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "POST /clusters/{id}/resize",
@@ -3014,9 +3035,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "ddbaf406a0923bbe64d3e5f3d85e1b6a337e5881696357c856725a47430bdc55",
+      "contract_revision": "5621402e605b4b347874d154f5c4c041776ebfc1172120ffac5e5d7cb6aef097",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "10e9ab6e8595d0df9bccc6c66b6f1873a7e98ba2109ef4bef5f46f7c192f5edb",
+      "implementation_revision": "24bddbb455e8f0e17cfbd7c7a90c7cd10a087b9899416235c291f639e63f53f1",
       "level": "offline"
     },
     "wait_goals": [
@@ -3032,9 +3053,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters_restart.create.json": "f66a37fb6b917a90d31db3d6e3c3ffc373ba8696418fdefce610c40cfa2480f2"
+      "contracts/cloud_1c.v2.clusters_restart.create.json": "29ed9e281cc62d3229deca673a5142973dee3640053ac0e94d52ef76c82cc292"
     },
-    "contract_revision": "4b36c69d92492f8fd0404b4fcebfd6bfb2c365209c521151aec395033189a050",
+    "contract_revision": "df938f1d79d9d5baf69eb99f07948bc110c75cdbef6f78156b9d3085f24e8eaf",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters_restart.create.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters_restart.create.json#/errors",
@@ -3065,7 +3086,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "POST /clusters/{id}/restart",
@@ -3073,9 +3097,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "4b36c69d92492f8fd0404b4fcebfd6bfb2c365209c521151aec395033189a050",
+      "contract_revision": "df938f1d79d9d5baf69eb99f07948bc110c75cdbef6f78156b9d3085f24e8eaf",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "ad906a67f8bde9c993eafe6fe5cbfa0c17b66fbfad99ea0b2cf521ea2c11ddb0",
+      "implementation_revision": "783283a8dbd1e0292aa43c237e683f78109e9b82a4020f0fcc9f6f7083708451",
       "level": "offline"
     },
     "wait_goals": [
@@ -3199,9 +3223,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.clusters_upgrade.create.json": "2f47ece8b781a1fbefab3ee86e6a52b4ead4f5d312153a4b347b655ade6f8f61"
+      "contracts/cloud_1c.v2.clusters_upgrade.create.json": "c510426b5dd6e62109ebcb66b7f7bfc8140e17c78f928f86198e1af15742b134"
     },
-    "contract_revision": "d1aeeb72b32b013f2154706d470366320a6a97abc5f2a016653308cd919c8696",
+    "contract_revision": "2a44b0271e13d8a1bf010f75b6d849fe17edb4df493b3582e151f04b64178894",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters_upgrade.create.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.clusters_upgrade.create.json#/errors",
@@ -3232,7 +3256,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "POST /clusters/{id}/upgrade",
@@ -3240,9 +3267,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "d1aeeb72b32b013f2154706d470366320a6a97abc5f2a016653308cd919c8696",
+      "contract_revision": "2a44b0271e13d8a1bf010f75b6d849fe17edb4df493b3582e151f04b64178894",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "1b23aab368fa15a994f42b6e4ab3c550769da52ba3bf83860981f1c4ab400a6b",
+      "implementation_revision": "6822a70871d4713ce906cd7de5b3f1add94e91d62e545a3c4fcae223d3be8a6f",
       "level": "offline"
     },
     "wait_goals": [
@@ -3527,33 +3554,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "db55daed741f13cfacb7d50ec73e7b24edf814287b56aefe01a403e9027c842d",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.datastore_flavors.list.json": "bd51104c086d40185a50931bc8512df2453b5bd10a99bbd6e40eae2e62a2deff"
+    },
+    "contract_revision": "320e7e35852ed214031d3c466bde26509fab057c3626b1af091fd34bf9b51eb5",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastore_flavors.list.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.datastore_flavors.list.json#/errors",
+    "go_method": "onec.Client.ListDatastoreFlavors",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "onec.Client.ListDatastoreFlavors",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors/get",
-    "input_type": null,
+    "input_type": "*bool, pagination.Options",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "cloud_1c.v2.datastore_flavors.list",
     "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors/get/responses",
-    "output_type": null,
-    "pagination_contract_ref": null,
+    "output_type": "pagination.Collection[onec.DatastoreFlavor]",
+    "pagination_contract_ref": "contracts/cloud_1c.v2.datastore_flavors.list.json#/pagination",
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/cloud_1c.v2.datastore_flavors.list.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.datastore_flavors.list.json#/request",
     "resource": "datastore_flavors",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/cloud_1c.v2.datastore_flavors.list.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -3566,10 +3596,10 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "320e7e35852ed214031d3c466bde26509fab057c3626b1af091fd34bf9b51eb5",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "9eb6f62ee5839ac629f28defe55b251b6d446a44dcb4c0a49d7880b1b374a8ec",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -3581,33 +3611,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "d28a3f08a735abc447c32f9bfc1c0f004de400595b189733c750d78280a4388c",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.datastore_flavors_constraints.list.json": "beb4af5b741003c78219ebe4b117568fa409da5f69e8c11f99b00d5a7c4dbd55"
+    },
+    "contract_revision": "3bfd91976ff993f36aef52dad4eaf93c36ed1898de684963a870127d16f7e7f5",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors~1constraints/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastore_flavors_constraints.list.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.datastore_flavors_constraints.list.json#/errors",
+    "go_method": "onec.Client.GetDatastoreFlavorConstraints",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "onec.Client.GetDatastoreFlavorConstraints",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors~1constraints/get",
-    "input_type": null,
+    "input_type": "types.CallOptions",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "cloud_1c.v2.datastore_flavors_constraints.list",
     "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors~1constraints/get/responses",
-    "output_type": null,
+    "output_type": "onec.GetDatastoreFlavorConstraintsResponse",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors~1constraints/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/cloud_1c.v2.datastore_flavors_constraints.list.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.datastore_flavors_constraints.list.json#/request",
     "resource": "datastore_flavors_constraints",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/cloud_1c.v2.datastore_flavors_constraints.list.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -3620,10 +3653,10 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "3bfd91976ff993f36aef52dad4eaf93c36ed1898de684963a870127d16f7e7f5",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "7c5d64b7ea8968d93cc04cb05994e8cfc12a22791dfc14f23520806c47d94e47",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -3635,33 +3668,36 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "a270980f5b6964bddfd380b865bbd9ae3be077152afc273429507388bffc108f",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.datastore_types.list.json": "cbdbb80dea9d952e2b4eb759ed6046e82fd774b2514acc45b027a173d0e67a7e"
+    },
+    "contract_revision": "831e716594b941feaecf16e5aa3814ea09d10b0e58ff236702d1ecb04fbda7a4",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastore-types/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastore_types.list.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.datastore_types.list.json#/errors",
+    "go_method": "onec.Client.ListDatastoreTypes",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "onec.Client.ListDatastoreTypes",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-types/get",
-    "input_type": null,
+    "input_type": "pagination.Options",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "cloud_1c.v2.datastore_types.list",
     "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-types/get/responses",
-    "output_type": null,
-    "pagination_contract_ref": null,
+    "output_type": "pagination.Collection[onec.DatastoreType]",
+    "pagination_contract_ref": "contracts/cloud_1c.v2.datastore_types.list.json#/pagination",
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-types/get",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/cloud_1c.v2.datastore_types.list.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.datastore_types.list.json#/request",
     "resource": "datastore_types",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/cloud_1c.v2.datastore_types.list.json#/response",
     "scope_requirements": [
       "account",
       "project"
@@ -3674,10 +3710,10 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "831e716594b941feaecf16e5aa3814ea09d10b0e58ff236702d1ecb04fbda7a4",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "41fee00138589d76bf15f4c7622f8e007c23b911a2caae3172d159cc40f9b284",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -3690,9 +3726,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.datastores.create.json": "6ecc4add11ac1792c2dc68024a537afeb37cad0b7cbf2fa90d25b6ee076c2b29"
+      "contracts/cloud_1c.v2.datastores.create.json": "9f7fad4763036adb96da8a1ce26abc838b73aadfd7f0dea4685188e0e7ace872"
     },
-    "contract_revision": "2296c7edc514ba6a8195843322428c045aaec1047068cb964187626eca5c5427",
+    "contract_revision": "63619495eb4b0b9120b14eb79ee0b86b6f6076ef19918f1cc0712532951e8645",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastores.create.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.datastores.create.json#/errors",
@@ -3723,7 +3759,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "datastore.state.health.issues[].metricThresholdBreach.metric.value",
+      "datastore.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "POST /datastores",
@@ -3731,9 +3770,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "2296c7edc514ba6a8195843322428c045aaec1047068cb964187626eca5c5427",
+      "contract_revision": "63619495eb4b0b9120b14eb79ee0b86b6f6076ef19918f1cc0712532951e8645",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "213cd29a512b57ae8af17cb628421cf72137bc4dd6b18c5095bc54203ab6cc6c",
+      "implementation_revision": "78fe31e6ffc3061317566810af0758d46cbef4db269de7f57a02c3e2a10a32be",
       "level": "offline"
     },
     "wait_goals": [
@@ -3749,9 +3788,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.datastores.delete.json": "35aeb599c86d65a6ee68844f2ea93cc8a351da032760217b828d15231f6594f7"
+      "contracts/cloud_1c.v2.datastores.delete.json": "258c33ae3843167dc1c0d815b3980319e720708fc8241f36fccb1209f177e316"
     },
-    "contract_revision": "83fcb275f774e1b8e5077fe4861ea90f5c62673c25e3d992cd0960aaebe929c2",
+    "contract_revision": "efe8d7c35d3c0652bc9dfb5a9ade5fd1915d85c6151e3c5c2b1520478944506c",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastores.delete.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.datastores.delete.json#/errors",
@@ -3782,7 +3821,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "datastore.state.health.issues[].metricThresholdBreach.metric.value",
+      "datastore.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "DELETE /datastores/{id}",
@@ -3790,9 +3832,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "83fcb275f774e1b8e5077fe4861ea90f5c62673c25e3d992cd0960aaebe929c2",
+      "contract_revision": "efe8d7c35d3c0652bc9dfb5a9ade5fd1915d85c6151e3c5c2b1520478944506c",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "66f8bd831a6b929817f5ea7faa2d8f4f38435b46b6de4a1f8a7218cbd94d1ce6",
+      "implementation_revision": "f08d94191cf2808785786192ebb8d1aa604b86df6ea22874b1fc1bc5e641495f",
       "level": "offline"
     },
     "wait_goals": [
@@ -3808,9 +3850,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/cloud_1c.v2.datastores.get.json": "99c7f4a40492a5039185f3575bbcaf134bf87bebf6b5ef79b0ce2366911f9172"
+      "contracts/cloud_1c.v2.datastores.get.json": "631e5d77bad8547a62f9db15da1b60bd2b5234259847a986094e881548f7b2c5"
     },
-    "contract_revision": "b6ac6b6c926b6f241dc70109c1a0534d65f3e7bd131cee167700663d855574d5",
+    "contract_revision": "10a0c9ef45fd294d24fdebc7de6a74e2470638b597183dd526d56e90fa9c0887",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastores.get.json#/endpoint",
     "error_binding_ref": "contracts/cloud_1c.v2.datastores.get.json#/errors",
@@ -3841,7 +3883,10 @@
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "datastore.state.health.issues[].metricThresholdBreach.metric.value",
+      "datastore.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "GET /datastores/{id}",
@@ -3849,9 +3894,9 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": "b6ac6b6c926b6f241dc70109c1a0534d65f3e7bd131cee167700663d855574d5",
+      "contract_revision": "10a0c9ef45fd294d24fdebc7de6a74e2470638b597183dd526d56e90fa9c0887",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "cca2f51a6b09703f2005c956399c049971f6012e74ada303e5557f86b61b745c",
+      "implementation_revision": "232a829346f040c240409bd230eee605c5df5cdc355410d6463d3bbcaebf730f",
       "level": "offline"
     },
     "wait_goals": []
@@ -3864,38 +3909,46 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "28705ed2377c64c2436efe9a3b5274df87ae1bd5960fd1bc8ed14daf215e74ac",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.datastores.list.json": "8ce2dcd546d5f49aacbeaff3f02d1ae64b2c51adde03d83eb1269e3ed836dcb9"
+    },
+    "contract_revision": "6f1049d61ffbd6229fd4886400f9b5712e4903a85238a0317a2338ec9871c673",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastores.list.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.datastores.list.json#/errors",
+    "go_method": "onec.Client.ListDatastores",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "onec.Client.ListDatastores",
+      "status": "partial"
     },
     "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores/get",
-    "input_type": null,
+    "input_type": "pagination.Options",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "cloud_1c.v2.datastores.list",
     "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores/get/responses",
-    "output_type": null,
-    "pagination_contract_ref": null,
+    "output_type": "onec.DatastoreListing",
+    "pagination_contract_ref": "contracts/cloud_1c.v2.datastores.list.json#/pagination",
     "parameter_support": {
-      "covered_schema_ref": null,
-      "excluded_variants": []
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastores/get",
+      "excluded_variants": [
+        "Terminal cursor semantics absent from pinned primary contract"
+      ]
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/cloud_1c.v2.datastores.list.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.datastores.list.json#/request",
     "resource": "datastores",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/cloud_1c.v2.datastores.list.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "datastores[].state.health.issues[].metricThresholdBreach.metric.value",
+      "datastores[].state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "GET /datastores",
@@ -3903,10 +3956,10 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "6f1049d61ffbd6229fd4886400f9b5712e4903a85238a0317a2338ec9871c673",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "73347894127bcdbac11bfd53075d37f9900723523f1801a482bcb91086ec841b",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -3918,38 +3971,44 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "ce0984ddd14f4e9b8e1dce91afef5da85ffd50eb3ea7a3275e9c63eda765bff2",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.datastores.update.json": "7edc8370252bfa263c15a5d235324334fbb0bed105816be20cba7bfc897f288c"
+    },
+    "contract_revision": "410712334def7cca121c28dfdefb636f7eabf2fb30632eb614670668035249f7",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/patch/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastores.update.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.datastores.update.json#/errors",
+    "go_method": "onec.Client.PatchDatastore",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "onec.Client.PatchDatastore",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/patch",
-    "input_type": null,
+    "input_type": "types.ResourceRef, onec.DatastoreSpec, types.CallOptions",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "cloud_1c.v2.datastores.update",
     "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/patch/responses",
-    "output_type": null,
+    "output_type": "onec.PatchDatastoreResponse",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/patch",
       "excluded_variants": []
     },
-    "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "recovery_contract_ref": "contracts/cloud_1c.v2.datastores.update.json#/recovery",
+    "replay_policy_ref": "contracts/cloud_1c.v2.datastores.update.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.datastores.update.json#/request",
     "resource": "datastores",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/cloud_1c.v2.datastores.update.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "datastore.state.health.issues[].metricThresholdBreach.metric.value",
+      "datastore.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "PATCH /datastores/{id}",
@@ -3957,12 +4016,14 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "410712334def7cca121c28dfdefb636f7eabf2fb30632eb614670668035249f7",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "c6f8615c63caac125124c2436d38a1b9cb5b97f80858111d12c4f31a51d4e4de",
+      "level": "offline"
     },
-    "wait_goals": []
+    "wait_goals": [
+      "datastore.active"
+    ]
   },
   {
     "action": "list",
@@ -3972,38 +4033,45 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "3c5cba4129b8dbf3452815583e4bd8e84278f5823640d900ed6f1e0ea09daaef",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.datastores_maintenance.list.json": "3622981be11aa8289135730e22936026886f1231893a62893d44b5289fa2e543"
+    },
+    "contract_revision": "2501610a7530163b864e15ba76a76bcf063683bd3900831779c6c929fe02376c",
     "effect": "read",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastores_maintenance.list.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.datastores_maintenance.list.json#/errors",
+    "go_method": "onec.Client.ListDatastoreMaintenanceEvents",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "onec.Client.ListDatastoreMaintenanceEvents",
+      "status": "partial"
     },
     "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get",
-    "input_type": null,
+    "input_type": "types.ResourceRef, pagination.Options",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "cloud_1c.v2.datastores_maintenance.list",
     "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get/responses",
-    "output_type": null,
-    "pagination_contract_ref": null,
+    "output_type": "onec.DatastoreMaintenanceListing",
+    "pagination_contract_ref": "contracts/cloud_1c.v2.datastores_maintenance.list.json#/pagination",
     "parameter_support": {
-      "covered_schema_ref": null,
-      "excluded_variants": []
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get",
+      "excluded_variants": [
+        "Terminal cursor semantics absent from pinned primary contract"
+      ]
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/cloud_1c.v2.datastores_maintenance.list.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.datastores_maintenance.list.json#/request",
     "resource": "datastores_maintenance",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/cloud_1c.v2.datastores_maintenance.list.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "events.spec.description"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "GET /datastores/{id}/maintenance",
@@ -4011,10 +4079,10 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "2501610a7530163b864e15ba76a76bcf063683bd3900831779c6c929fe02376c",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "08d117cc728bae21e3b6b7f585900892fab41b7d4537f6743b7fbc9023da616c",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -4026,38 +4094,44 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "821545675dc0aa9b687eabfbd6c0770af16bd0b60dde166150a6148295438479",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.datastores_resize.create.json": "7227c59b323b4231dff228ae80f8122657e1e5be4156418a20d2b7731cf49598"
+    },
+    "contract_revision": "ac4ac0980348feb6c7d48b0cc18cf751d686bbaaa9010b1637e9aaf3fa0e1f44",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1resize/post/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.datastores_resize.create.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.datastores_resize.create.json#/errors",
+    "go_method": "onec.Client.ResizeDatastore",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "onec.Client.ResizeDatastore",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1resize/post",
-    "input_type": null,
+    "input_type": "types.ResourceRef, onec.ResizeDatastoreBody, types.CallOptions",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "cloud_1c.v2.datastores_resize.create",
     "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1resize/post/responses",
-    "output_type": null,
+    "output_type": "onec.ResizeDatastoreResponse",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1resize/post",
       "excluded_variants": []
     },
-    "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "recovery_contract_ref": "contracts/cloud_1c.v2.datastores_resize.create.json#/recovery",
+    "replay_policy_ref": "contracts/cloud_1c.v2.datastores_resize.create.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.datastores_resize.create.json#/request",
     "resource": "datastores_resize",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/cloud_1c.v2.datastores_resize.create.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "datastore.state.health.issues[].metricThresholdBreach.metric.value",
+      "datastore.state.health.issues[].metricThresholdBreach.threshold"
+    ],
     "service": "cloud_1c",
     "source": {
       "operation_locator": "POST /datastores/{id}/resize",
@@ -4065,12 +4139,14 @@
       "uri": "https://docs.selectel.ru/api/1c-cloud.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "ac4ac0980348feb6c7d48b0cc18cf751d686bbaaa9010b1637e9aaf3fa0e1f44",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "788a0033241b211a897319e6ec046ddb23d00b5266b2d580fb33fb54c6f0c29b",
+      "level": "offline"
     },
-    "wait_goals": []
+    "wait_goals": [
+      "datastore.active"
+    ]
   },
   {
     "action": "create",
@@ -5474,7 +5550,7 @@
     "verification": {
       "contract_revision": "e1b43ee32b1b566deb4afcb20195c3e36b919b565fda690a41b4fe7cc60902dc",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "8b5af4b8904bd05f9141ce81c8f1f96a4a6d08d31fd0892863b2f92c5076ceb9",
+      "implementation_revision": "f409ba57c3706489c903c05f54a0f207b0b8db8a533a291380d30dc1e5379a55",
       "level": "offline"
     },
     "wait_goals": []
@@ -5531,7 +5607,7 @@
     "verification": {
       "contract_revision": "5b779edb0e275215c6eb57a899fe5f07e24d2add0cb3db3f7bac12e5f7ca34c5",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "ede8d01e62bb70678dae0fe9bdef43e34b8ca941fc5d2da70f3a4ce27466f58a",
+      "implementation_revision": "58900efe99ba4cbe5d1d90a93729656b95f211720f3ec150f8b58b04aeadda40",
       "level": "offline"
     },
     "wait_goals": []
@@ -5588,7 +5664,7 @@
     "verification": {
       "contract_revision": "d961e715b6609673a5cf5ad6f330fdbfb292649aa44b4a62ef21bd5e2ec8d0e6",
       "evidence_ref": "onec_infrastructure_test.go",
-      "implementation_revision": "993338f6d6f3fa11204a7a4db1b812d50abc9f7a2ea604d5ea748b22ae248f37",
+      "implementation_revision": "d8774db6963a6c925f1d31e07fdfca8f9a48894a8d73b7db560a323d08a0dcb6",
       "level": "offline"
     },
     "wait_goals": []
@@ -5709,7 +5785,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bf78b225985cc8b67a1611076d468b9ee5c3ef7b22dc6730d459cea4908e9f47",
+      "implementation_revision": "a1807a872826827c2af93650876a596a76735606de26f8025ea1f4ff7f7c5385",
       "level": "offline"
     },
     "wait_goals": [
@@ -5775,7 +5851,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "47d0de65c04e74c93d3ea5fa058c4c728a71c986bf57a9bcbae8a6ad57ab60ee",
+      "implementation_revision": "7070801f3a77ef9d3b11dba44efe5c45c353e43a19bc53f34fa4d810e4f745c0",
       "level": "offline"
     },
     "wait_goals": [
@@ -5841,7 +5917,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "a375ac54172886f01de6f328dc875cee41797882ef3b3ac43c1de171c55659a1",
+      "implementation_revision": "28f4200eba7060e9a695348b5827521d32fd463b678c753e69f7285be6c684f9",
       "level": "offline"
     },
     "wait_goals": []
@@ -5907,7 +5983,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "c9ec3c2e78410fa3a240b8947d5f87dd46a1fc9329e55b7c54833a45f24b63ba",
+      "implementation_revision": "aae617d1de673cd73076b39a0068b190f3fe7ce301a66d29134505e413b2ad04",
       "level": "offline"
     },
     "wait_goals": []
@@ -7425,7 +7501,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "e93b741094dcf5d7d15ed182c5e71ac1bbf3aba3524ab940e484bc50657e644e",
+      "implementation_revision": "cc0836b3a6ca8067a52b88ea069a27f8c4de57e6679eeeaad46c7b94f55239a7",
       "level": "offline"
     },
     "wait_goals": []
@@ -10302,7 +10378,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c17c010eaed8800ab21f992eb8ceadd621e5761bdfbae168c547d49c68ae9028",
+      "implementation_revision": "1a1cdf37fd014ab6a2ad4e439151e37bf1114484a66a5ae7ada7c3dd383e9db0",
       "level": "offline"
     },
     "wait_goals": []
@@ -10372,7 +10448,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "60b527102a33251c9a4af2efadd7d2eb98f2eff035e3b98479a33898137b47b7",
+      "implementation_revision": "c84e7f03fce36fb5c7cf9306ec749102657900175cba198558362535206828b9",
       "level": "offline"
     },
     "wait_goals": []
@@ -10439,7 +10515,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "b1db9aadde5c7987edf970f7c1b0e7415f82d784b1e37f3c28cd8d834bdf45bc",
+      "implementation_revision": "8fc5476e0e896232038470c299a960f571468e45e22b172028cd425c4298bc74",
       "level": "offline"
     },
     "wait_goals": []
@@ -10506,7 +10582,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "34ce7de04a0fe55dd73e62aff56352e27e65dcedffaf2a3d631289561b7a0fec",
+      "implementation_revision": "3c7f0104d93e1224be5742790833247a31658548ef6a3b59f14472a8358b89cb",
       "level": "offline"
     },
     "wait_goals": []
@@ -10572,7 +10648,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "a198e2e480d57cd6b5caacd722d18f4c4c950b523a692861f476d024407e2da2",
+      "implementation_revision": "9d958ae75736d4d7af17735241df659569a6acd9e4acd52a663c5e0085094968",
       "level": "offline"
     },
     "wait_goals": []
@@ -10638,7 +10714,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "d72a05490ee47303d8599ad11e5afd5914a4daf89a4480afd518a0741374c130",
+      "implementation_revision": "9d240ad0fc1d48321fb6558a34320939cfb18272f339d45b69f592b0ab5bab80",
       "level": "offline"
     },
     "wait_goals": []
@@ -10703,7 +10779,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dd6d35177bab9c5ce1e1ec3fde42b95e7df49478c715b6add279a58408083fbd",
+      "implementation_revision": "7ce6c47b10922a861cdf4bb374842e5075fcd710958b483a696d92185107e9a7",
       "level": "offline"
     },
     "wait_goals": []
@@ -10760,7 +10836,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ea6320f49e00ab9e28eb1156fa9b776247355a8b3749679113b265ecb5fb1b2c",
+      "implementation_revision": "9110235a06d202de3ed4e79c3045bb353a8754234c3f096cf918c11ca58e1e67",
       "level": "offline"
     },
     "wait_goals": []
@@ -10819,7 +10895,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6cba7514a66972fb98b2b8978a9a2fff387d6c9b628ef397761a4da73c098814",
+      "implementation_revision": "15f5a7b0050c3836b8d4d1090f5f8c6108359559287d41bad92dac2a5294392a",
       "level": "offline"
     },
     "wait_goals": [
@@ -10878,7 +10954,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "54fbc0c66327800690b95d9a14294acc3acc0168597f1af82273895964ba8cd9",
+      "implementation_revision": "d2d614dc2ce95cdc2135721e730f9e6532d8314ecb4a8cb8b0590ef5aa2f595a",
       "level": "offline"
     },
     "wait_goals": [
@@ -10939,7 +11015,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "4e557a0d8737087eaafe0a62b5eec1c8fde4f3131e7eb43185d446a6490b516f",
+      "implementation_revision": "25ca2a4316fc468318505b6835d7329bf72a777009cbc1bc935b10fad0754f5d",
       "level": "offline"
     },
     "wait_goals": [
@@ -10998,7 +11074,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6b14ee391086b3e2987d11e35a2d81d0ebc626b05e7404fe1a286bfc1409c3d3",
+      "implementation_revision": "40e0aeac12be84747d15fb8d15cd62a897b6a45d679b0315aa8f6f4f99c492aa",
       "level": "offline"
     },
     "wait_goals": []
@@ -11057,7 +11133,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9254e0365eccf8d5cb2a0e8796bdf335c47a7145e69d5145bdee6200715e7ddb",
+      "implementation_revision": "bcdbe879cc7cb75fd9a926efbcae284bc401afc82d87a394984ffaf0c98aa207",
       "level": "offline"
     },
     "wait_goals": [
@@ -11118,7 +11194,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d00b1eab6659c18a87cd871f7b5b5b47a24f26306e7875e23d4f3178e1608ce1",
+      "implementation_revision": "c1501e0ace52608ac01e3b2f022b7a915b702c57c6bc186553e7614f9c15b099",
       "level": "offline"
     },
     "wait_goals": [
@@ -11179,7 +11255,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "4bb72d1a8dd8d6738905ea01c92278c228125a5bf0b310780a11784c89ea1921",
+      "implementation_revision": "d896f7cf91fcf90fcbcd3a746163778cb1f3478fb499e6d15b4a85eb458ac0bd",
       "level": "offline"
     },
     "wait_goals": []
@@ -11236,7 +11312,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "78f55a69d975d20968f96c419cb5c343b64bbe7d93fe1ff715fc767d73f738f1",
+      "implementation_revision": "548ee982b113582898c862cf44737623aa73751c9d660e67ee0d8d0290706330",
       "level": "offline"
     },
     "wait_goals": []
@@ -11293,7 +11369,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "29965667468ced9cfb296e3dcd90c6da1b35bc8304de695dc9dd3475b485d57e",
+      "implementation_revision": "5b7d53024af67a35e93e52af88e84df4348b79938b1b5ea1dd34bc99877e5d27",
       "level": "offline"
     },
     "wait_goals": [
@@ -11354,7 +11430,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cccf4b4859e6d82742086cdae985c22b8b58c15a5b84928af3676641c182d532",
+      "implementation_revision": "857efd8c5d5666974af02178525c17b78e98a6ce4a29778f58ff96b0e6fa579e",
       "level": "offline"
     },
     "wait_goals": [
@@ -11413,7 +11489,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "001c3e23f295f0f66a9cddc1a1e0abf3d0c702507bc2707a19ecdbf8b768ba82",
+      "implementation_revision": "c3324313bb758609afa2332fdec464869c9269abef157107f459a6aa814cfae2",
       "level": "offline"
     },
     "wait_goals": []
@@ -11470,7 +11546,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "31fa7dfa1cc1ff6a6744da34f4e27ced76d21bc1e0d4f8d8f10bb08445cfcdb3",
+      "implementation_revision": "ab961d5e5762788baa2061056c30e1efd03b8f23bfebd4e596f830ce7257d29c",
       "level": "offline"
     },
     "wait_goals": [
@@ -11529,7 +11605,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7f5179473ab799b43c1cc052dd93dc4cd820f7c6075d19ee1cc586de968a5b88",
+      "implementation_revision": "363828a78f8456cbf6a85fbbb6c794d366d5b95de26a4f4e61c7e6d0416d06fa",
       "level": "offline"
     },
     "wait_goals": [
@@ -11588,7 +11664,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "84886c9fb536ce17c1a86a00c88756bc753dd762636183538d238ed05d3f3873",
+      "implementation_revision": "e8d52e31bc429e6030f041d0665b331e1670fad93e48aa54ffd42e3004ae7fa3",
       "level": "offline"
     },
     "wait_goals": []
@@ -11645,7 +11721,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2d1c992c654540d049a4999b4a3041e1532628ef873c8e832d36da38052e802",
+      "implementation_revision": "df9e244c7f91ce39113431549be202f866217446e7b0b0dcd36c2f213743cf5d",
       "level": "offline"
     },
     "wait_goals": []
@@ -11702,7 +11778,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "b727be6f7a1f35e28e93ecc57ad308300e3af68e397f755ebcc64bf7cd0d1305",
+      "implementation_revision": "5a22ceca3236c79c2d635bdc1381cfdf71f2d800c3fe427fa2061fc3d2247a48",
       "level": "offline"
     },
     "wait_goals": [
@@ -11761,7 +11837,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ba1d91dbf481b34a272ba28c2249ddad9607887f9b38ca849cfeed6ce51da9f2",
+      "implementation_revision": "784a31bfdab7284c2b99b9366365e22df81cab1a03584a75b1ade630f9ea16e0",
       "level": "offline"
     },
     "wait_goals": []
@@ -11818,7 +11894,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1e8a466f32df445e572740e59ec2109452fc9a1a2e7cc527450a90143446bca1",
+      "implementation_revision": "92e00649a11db726ac135a399dc43fccb14057282ea8afe4a6093a37a2ea93b8",
       "level": "offline"
     },
     "wait_goals": []
@@ -11875,7 +11951,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "b37def212c27f3fcf2e6b45ad326ea07a5f6f44e7bb48753f1f28651e4ab6477",
+      "implementation_revision": "130034f6d420d8c4e25c66a75408e8d851265fc226a14bbc57189a98bc3ca309",
       "level": "offline"
     },
     "wait_goals": []
@@ -11932,7 +12008,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "f09e09bc38cf9dbb132c950fecf04d4811a4596d29bf75153a47f538dff3b12c",
+      "implementation_revision": "a293e34e5ea7c0b7f5eb1620d109baee7f20972da1526449e774c998ee47a635",
       "level": "offline"
     },
     "wait_goals": []
@@ -11989,7 +12065,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ab461756753eab9e372e928f70feba83348017df38c0a53514de79ff496d58a4",
+      "implementation_revision": "f206d6c3d06d74dea40969bbb5f977003bbebb511c255fdf108b52ed5b870274",
       "level": "offline"
     },
     "wait_goals": []
@@ -12046,7 +12122,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9df0a0be1e0793661b5eb78060c5026d194bc78dae08aa3374f207adaf2f33f9",
+      "implementation_revision": "e6dacabaf21cc837b61efbe54b51a9187f03a915e32a7a8596931c1e1ffe77e3",
       "level": "offline"
     },
     "wait_goals": [
@@ -12108,7 +12184,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "507381e235d8dd611b7a42dfeed4779816fa4d3b07a5740c30d3509fb5fdba70",
+      "implementation_revision": "176b206f818ad3c5ba90baee510c17303b5b7126bba986f3c96b0ebd089f166a",
       "level": "offline"
     },
     "wait_goals": [
@@ -12170,7 +12246,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "31830b52232ed2312193c143c37bb07660bc0f6142efe64251bc8542d9ca39d8",
+      "implementation_revision": "ba1f650d062e9823d2f8ffb383724c0a6ca9097bf4e066cdb8be6cb650d339de",
       "level": "offline"
     },
     "wait_goals": [
@@ -12231,7 +12307,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "81a52910420ba9c15630e09c9a5d6cb9027cce1aeed1720eaa0ac1e2e06b405a",
+      "implementation_revision": "c6014e1b4bf36fc0971ca4d4b0bf01e2d0567b07780e13304b9b919ebd110b96",
       "level": "offline"
     },
     "wait_goals": [
@@ -12292,7 +12368,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "f549c11cc78074f4e7d8ecb4aadf7c62e475dc6152363fa2e265f15df056795d",
+      "implementation_revision": "e65770036b4111bba38b93b441e496bfe757c31aa6dbf94223cce319dce5144e",
       "level": "offline"
     },
     "wait_goals": [
@@ -12351,7 +12427,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "4db68ca8d35594555e617e724669c959900bb341e894519b7214733032194d09",
+      "implementation_revision": "0c527af068078ee7920e1e8761fd51035d94f08a03c85eb184319095de756dd4",
       "level": "offline"
     },
     "wait_goals": []
@@ -12408,7 +12484,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "743aaab4a3d6fcb40e41361d99b40b38ce3dea116b3fd9ac8f5e517c84823932",
+      "implementation_revision": "e80f2b546f6ce120e0481ad4e2909524b8bfb475b0926d24579fff39c4866bfd",
       "level": "offline"
     },
     "wait_goals": []
@@ -13153,7 +13229,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "832535d8b90a0376a6ff1e7ae3e52223da23e552dcfb1daec912685403304cc1",
+      "implementation_revision": "e03bd8faf613cdb96d424de0ef5c966bb3665013f98991e883b7b8eb35ad8b83",
       "level": "offline"
     },
     "wait_goals": []
@@ -13209,7 +13285,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "5df23578d6b04d3cfeca89a34224688280f0b81f877df6ca3778707232f01856",
+      "implementation_revision": "fbcea6621e26bc6dd9baaf259072428c2967aded2c5b56212b0d79fa6ee16417",
       "level": "offline"
     },
     "wait_goals": []
@@ -13265,7 +13341,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "447a5a0d75f91c4ecb20ec215c96d1e5caa9f61838a748d489d427786b15cbac",
+      "implementation_revision": "163d2c3c6c300a9e2b346b6612545271b36756f2e476147da194d87c26e57c2e",
       "level": "offline"
     },
     "wait_goals": []
@@ -13321,7 +13397,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "561e7e21d627fb75f65afdc2fe5112ab9f0fb42d5b6c9767a171d472e4afd01b",
+      "implementation_revision": "1a101af8d7fa9c25c886196ef9fa103efb62ffc8eeb6acae80558b2ebd64c787",
       "level": "offline"
     },
     "wait_goals": []
@@ -13377,7 +13453,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4a936ec51e83824cba00de676f75cfebadd59448128b26b6431f236da813aba7",
+      "implementation_revision": "5dc25084760166219c2b60ebd9ab58b2cc18ea94d5df570cb9fee8d24a334b20",
       "level": "offline"
     },
     "wait_goals": []
@@ -13805,7 +13881,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "7c6d69a99a5627c96780cdde950a3ef83081da1044eec599c92bb5a3c8b7334a",
+      "implementation_revision": "b55cc4bca819e98198f7a1410746b558751a4903143150153123f4fc056177fc",
       "level": "offline"
     },
     "wait_goals": []
@@ -13862,7 +13938,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "b5b9ac7c0fe17e22c41431b44f8cc763a9964e744fe9de4a12ed8a50ddebcba2",
+      "implementation_revision": "57a6c86b4ccf72439aa212f603382a48972223cd215035899e43b128a351b4f9",
       "level": "offline"
     },
     "wait_goals": []
@@ -13919,7 +13995,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c57e35b2fb7621c1c118b9ba11ab27a65dfb5564d5d154b1870dd9c43c3bd787",
+      "implementation_revision": "2d343be9f530267bcb47a7bb927bcf1d7dc01f3dd76328bb28051d1ba45f486a",
       "level": "offline"
     },
     "wait_goals": []
@@ -13976,7 +14052,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "542d6791f74c9a6ed2e3d10718dfe49647cc24d0e28ec2e44d6f536e4143a7d8",
+      "implementation_revision": "63becc380d46bb23a0dc7a0003c15564a557f764833e6428750d0eff1de724ec",
       "level": "offline"
     },
     "wait_goals": []
@@ -14843,7 +14919,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "4d5f4fbbb012a4157d5f6509da0d015311e9116272f375f2487ba965eef35f23",
+      "implementation_revision": "6db1825429f5cbb3e1f2ac046f0a22ecf2fe4e42bf99fc2364a60b2f30507f3a",
       "level": "offline"
     },
     "wait_goals": []
@@ -15442,7 +15518,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "2a049af2ea5faca3352548377a140287b506c23f988e4c6d7cac4be82e60ca9a",
+      "implementation_revision": "14ddbd4b7c105edce13a808255eb191f724e16722b77cb4d1304ccd5e087c15e",
       "level": "offline"
     },
     "wait_goals": []
@@ -15499,7 +15575,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "c8cba57297aab7ccdf86682661f8a5f8537b34628d660b8900b3a0d9c3bac32f",
+      "implementation_revision": "e6600686af3694d103a19978c7ead742ce26380ce6021567afe52f78dd807fea",
       "level": "offline"
     },
     "wait_goals": []
@@ -15558,7 +15634,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9d157e29a45e7cedc29a3ed8deaebd5f26cc209ac1209c96559da08b6d4e17a0",
+      "implementation_revision": "dcb58d8d2bb997ee7be86f8ff48a91a243f176a1002a070016ef3b5fc479a047",
       "level": "offline"
     },
     "wait_goals": []
@@ -15615,7 +15691,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "d7e012c11e13b46491d33ac5dee38c2273cde3e7912a41c67521a98647e253ce",
+      "implementation_revision": "134f7fe18b58cc0512e79ca37191fec8bde8b5b05907c296d436507ea46e50f3",
       "level": "offline"
     },
     "wait_goals": []
@@ -15672,7 +15748,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "2407e68b70e7c66be692a573efc6c783d79b6d3d4ae581afc633e98721088341",
+      "implementation_revision": "fa07fada575b69ffa1e5b895c5cad0ae9f7146a404b8583e5df19a10c45b7718",
       "level": "offline"
     },
     "wait_goals": []
@@ -15731,7 +15807,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "066c89463d4a43a10bcb378a698156e21007de12224cc90a9f49ccf669162640",
+      "implementation_revision": "34ad8ca84018f3d2ce2269b6b4a18e57f4b0576fd303ff73892c4f481732bda4",
       "level": "offline"
     },
     "wait_goals": []
@@ -15790,7 +15866,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "a43aa51a9e7e5f59fb3a4c3f94aa95ab744b6ec6ede6f136250e067c1d291606",
+      "implementation_revision": "538ab41032c0785f4e3fa6290769afeb254bcde24ba8344ae84b3ab7f8d916f5",
       "level": "offline"
     },
     "wait_goals": []
@@ -15847,7 +15923,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "41915f4142aa285be811a2921fc65397276bca8840648634fd618356d5c5bd02",
+      "implementation_revision": "ceb03d2ebe3030d4c582e716a87b024551ee6dc747f3d5b385983960f7d40fa3",
       "level": "offline"
     },
     "wait_goals": []
@@ -15904,7 +15980,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "2277e8ac486af00ccb892cdc94fff45fd906fbf4faf0a58051d9653b0ca2d68e",
+      "implementation_revision": "682a41bc07ba1bc01296cf34eeb131df61089603018dc6642cb6732dd02585df",
       "level": "offline"
     },
     "wait_goals": []

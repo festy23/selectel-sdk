@@ -103,3 +103,22 @@ _ = result // caller consumes the typed response
 
 `regionalAPIBase` выбирает вызывающая сторона после bootstrap discovery;
 фрагмент не выполняет автоматического выбора или cloud mutation.
+
+Datastore inventory: PATCH / resize сохраняют raw spec и source wrapper,
+включая optional nodeCount; flavors/types используют bounded finite collections.
+Datastore list и maintenance list остаются partial по тому же отсутствующему
+terminal cursor contract. Maintenance event refs сохраняют caller datastore
+parent; spec.datastoreId и projectId проверяются. Description защищён,
+source timestamps нормализованы в UTC. Maintenance tasks не становятся
+causal provider operation refs, а event ref не обещает отдельный Get/Wait API.
+
+Во всех ref-based cluster/datastore вызовах EndpointID и EndpointURL должны
+совпасть с явно настроенной binding до credential lookup и HTTP. Несовпадение
+даёт endpoint_unavailable; mutation сохраняет revision-bound NotSent Receipt
+с нулём attempts. Самостоятельный выбор другого адреса по ResourceRef исключён.
+
+Health metric values и thresholds возвращаются как source-bound
+`onec.ProtectedNumber`: JSON number проверяется и сохраняется побайтно,
+format/JSON/Text безопасны; `Reveal()` — явная граница доступа вызывающего.
+Это распространяется на health metadata cluster/datastore и не превращает
+статус ACTIVE или threshold в доказательство прикладной готовности.

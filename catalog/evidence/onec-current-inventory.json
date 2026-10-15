@@ -458,28 +458,29 @@
       "path": "/datastore-flavors",
       "operation_id": "listDatastoreFlavors",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/datastore-flavors/constraints",
       "operation_id": "listDatastoreFlavorConstraints",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/datastore-types",
       "operation_id": "listDatastoreTypes",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/datastores",
       "operation_id": "listDatastores",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source"
     },
     {
       "method": "POST",
@@ -507,21 +508,22 @@
       "path": "/datastores/{id}",
       "operation_id": "patchDatastore",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/datastores/{id}/maintenance",
       "operation_id": "listDatastoreMaintenanceEvents",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source"
     },
     {
       "method": "POST",
       "path": "/datastores/{id}/resize",
       "operation_id": "resizeDatastore",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",

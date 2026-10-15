@@ -3,6 +3,7 @@ package selectelsdk_test
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	sdk "github.com/festy23/selectel-sdk"
 	"github.com/festy23/selectel-sdk/credentials"
 	"github.com/festy23/selectel-sdk/onec"
@@ -640,5 +641,253 @@ func TestOneCReceiptCannotObserveDifferentResourceKindInSameService(t *testing.T
 	_, err = c.Resume(forged)
 	if types.ErrorCode(err) != types.CapabilityUnavailable || calls != 1 {
 		t.Fatalf("cross-kind receipt %v calls%d", err, calls)
+	}
+}
+
+func TestOneCDatastorePatchUsesRawSpecAndExactNodeCount(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "PATCH" || r.URL.Path != "/v2/datastores/store-1" || string(raw) != `{"enableStorageAutoScaling":false,"flavor":{"diskGb":"20","ramMb":"4096","vCpu":"2"},"name":"store","nodeCount":"2"}` {
+			t.Fatalf("datastore patch wire %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecDatastoreFixture))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "datastore"
+	ref.ID = "store-1"
+	var spec onec.DatastoreSpec
+	if json.Unmarshal([]byte(`{"name":"store","flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"},"enableStorageAutoScaling":false,"nodeCount":"2"}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.PatchDatastore(context.Background(), ref, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("patch datastore %+v %v", out, err)
+	}
+}
+
+func TestOneCDatastoreResizeUsesOwnSourceFlavorShape(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v2/datastores/store-1/resize" || string(raw) != `{"flavor":{"diskGb":"40","ramMb":"8192","vCpu":"4"}}` {
+			t.Fatalf("datastore resize wire %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecDatastoreFixture))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "datastore"
+	ref.ID = "store-1"
+	var spec onec.ResizeDatastoreBody
+	if json.Unmarshal([]byte(`{"flavor":{"vCpu":"4","ramMb":"8192","diskGb":"40"}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.ResizeDatastore(context.Background(), ref, spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("resize datastore %+v %v", out, err)
+	}
+}
+
+func TestOneCDatastoreFlavorDiscoveryPreservesAbsentFilter(t *testing.T) {
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/datastore-flavors" || r.URL.RawQuery != "" {
+			t.Fatalf("datastore flavors wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"flavors":[{"id":"store-flavor","vCpu":"2","ramMb":"4096","diskGb":"20","deprecated":false}]}`))}, nil
+	}))
+	out, err := regional.ListDatastoreFlavors(context.Background(), nil, pagination.Options{})
+	if err != nil || !out.Complete || len(out.Items) != 1 || *out.Items[0].ID != "store-flavor" || *out.Items[0].Deprecated {
+		t.Fatalf("datastore flavors %+v %v", out, err)
+	}
+}
+
+func TestOneCDatastoreFlavorConstraintsPreserveOptionalBounds(t *testing.T) {
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/datastore-flavors/constraints" {
+			t.Fatalf("datastore constraints wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"constraints":{"vCpu":{"min":"2","max":"128"},"ramMb":{"min":"4096"}}}`))}, nil
+	}))
+	out, err := regional.GetDatastoreFlavorConstraints(context.Background(), types.CallOptions{})
+	if err != nil || out.Data.Constraints == nil || out.Data.Constraints.RAMMb == nil || *out.Data.Constraints.RAMMb.Min != "4096" || out.Data.Constraints.RAMMb.Max != nil {
+		t.Fatalf("datastore constraints %+v %v", out, err)
+	}
+}
+
+func TestOneCDatastoreTypeDiscoveryPreservesEngineAndVersion(t *testing.T) {
+	_, regional, _ := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/datastore-types" || r.URL.RawQuery != "" {
+			t.Fatalf("datastore types wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"types":[{"id":"pg1c","engine":"postgresql","version":"14-1C"}]}`))}, nil
+	}))
+	out, err := regional.ListDatastoreTypes(context.Background(), pagination.Options{})
+	if err != nil || !out.Complete || len(out.Items) != 1 || *out.Items[0].ID != "pg1c" || *out.Items[0].Engine != "postgresql" || *out.Items[0].Version != "14-1C" {
+		t.Fatalf("datastore types %+v %v", out, err)
+	}
+}
+
+func TestOneCDatastoreListingPreservesPartialCursorAndScopedRefs(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/datastores" || r.URL.Query().Get("cursor.limit") != "1" {
+			t.Fatalf("datastores list wire %s %s", r.Method, r.URL)
+		}
+		payload := `{"datastores":[{"id":"store-1","projectId":"test-project","spec":{"name":"store","flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}}}],"cursor":{"next":"50","total":"2"}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	out, err := regional.ListDatastores(context.Background(), pagination.Options{MaxItems: 1})
+	if types.ErrorCode(err) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.Scope != cluster.Scope || out.Items[0].Ref.Parent != nil || out.Items[0].Ref.Kind != "datastore" || out.NextCursor == nil || out.NextCursor.WireCursor != "50" || len(out.Envelopes) != 1 || *out.Envelopes[0].Cursor.Total != "2" {
+		t.Fatalf("datastores partial %+v %v", out, err)
+	}
+}
+
+func TestOneCDatastoreMaintenancePreservesParentAndProtectedDescription(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/datastores/store-1/maintenance" || r.URL.Query().Get("cursor.limit") != "1" {
+			t.Fatalf("datastore maintenance wire %s %s", r.Method, r.URL)
+		}
+		payload := `{"events":[{"id":"maintenance-1","projectId":"test-project","spec":{"datastoreId":"store-1","description":"synthetic-maintenance-private","tasks":["DATASTORE_MNT_TASK_STORAGE_AUTO_SCALING"],"scheduledFor":"2026-10-15T14:00:00+03:00"}}],"cursor":{"next":"20","total":"5"}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "datastore"
+	ref.ID = "store-1"
+	out, err := regional.ListDatastoreMaintenanceEvents(context.Background(), ref, pagination.Options{MaxItems: 1})
+	if types.ErrorCode(err) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.Parent == nil || *out.Items[0].Ref.Parent != ref || out.Items[0].Spec == nil || string(out.Items[0].Spec.Description.Reveal()) != "synthetic-maintenance-private" || out.Items[0].Spec.ScheduledFor.Location() != time.UTC {
+		t.Fatalf("maintenance %+v %v", out, err)
+	}
+	raw, _ := json.Marshal(out)
+	if strings.Contains(string(raw), "synthetic-maintenance-private") || strings.Contains(fmt.Sprintf("%+v %#v", out, out), "synthetic-maintenance-private") {
+		t.Fatal("maintenance description exposed")
+	}
+}
+
+func TestOneCRefEndpointsAreRejectedBeforeCredentialOrHTTPIO(t *testing.T) {
+	var clusterSpec onec.ClusterSpec
+	var datastoreSpec onec.DatastoreSpec
+	var config onec.ChangeClusterConfigBody
+	var resize onec.ResizeClusterBody
+	var upgrade onec.UpgradeClusterBody
+	var datastoreResize onec.ResizeDatastoreBody
+	fixtures := []struct {
+		raw    string
+		target any
+	}{
+		{`{"name":"cluster","platform":{},"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}}`, &clusterSpec},
+		{`{"name":"store","flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}}`, &datastoreSpec},
+		{`{"config":{}}`, &config}, {`{"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}}`, &resize},
+		{`{"platform":{"version":"8.3.synthetic"}}`, &upgrade}, {`{"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}}`, &datastoreResize},
+	}
+	for _, f := range fixtures {
+		if json.Unmarshal([]byte(f.raw), f.target) != nil {
+			t.Fatal("fixture")
+		}
+	}
+	tests := []struct {
+		name, kind string
+		mutation   bool
+		call       func(*onec.Client, types.ResourceRef) (*types.Receipt, error)
+	}{
+		{"cluster-get", "cluster", false, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			_, e := c.GetCluster(context.Background(), r, types.CallOptions{})
+			return nil, e
+		}},
+		{"cluster-delete", "cluster", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.DeleteCluster(context.Background(), r, types.CallOptions{})
+			return o.Receipt, e
+		}},
+		{"cluster-patch", "cluster", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.PatchCluster(context.Background(), r, clusterSpec, types.CallOptions{})
+			return o.Receipt, e
+		}},
+		{"cluster-config", "cluster", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.ChangeClusterConfig(context.Background(), r, config, types.CallOptions{})
+			return o.Receipt, e
+		}},
+		{"cluster-restart", "cluster", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.RestartCluster(context.Background(), r, types.CallOptions{})
+			return o.Receipt, e
+		}},
+		{"cluster-resize", "cluster", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.ResizeCluster(context.Background(), r, resize, types.CallOptions{})
+			return o.Receipt, e
+		}},
+		{"cluster-upgrade", "cluster", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.UpgradeCluster(context.Background(), r, upgrade, types.CallOptions{})
+			return o.Receipt, e
+		}},
+		{"datastore-get", "datastore", false, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			_, e := c.GetDatastore(context.Background(), r, types.CallOptions{})
+			return nil, e
+		}},
+		{"datastore-delete", "datastore", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.DeleteDatastore(context.Background(), r, types.CallOptions{})
+			return o.Receipt, e
+		}},
+		{"datastore-patch", "datastore", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.PatchDatastore(context.Background(), r, datastoreSpec, types.CallOptions{})
+			return o.Receipt, e
+		}},
+		{"datastore-resize", "datastore", true, func(c *onec.Client, r types.ResourceRef) (*types.Receipt, error) {
+			o, e := c.ResizeDatastore(context.Background(), r, datastoreResize, types.CallOptions{})
+			return o.Receipt, e
+		}},
+	}
+	for _, tc := range tests {
+		for _, dimension := range []string{"id", "url"} {
+			t.Run(tc.name+"/"+dimension, func(t *testing.T) {
+				scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+				endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+				lookups, calls := 0, 0
+				c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(ctx context.Context, r types.AuthRequest) (credentials.Material, error) {
+					lookups++
+					return source().Lookup(ctx, r)
+				}), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(*http.Request) (*http.Response, error) { calls++; return nil, context.Canceled })})
+				if e != nil {
+					t.Fatal(e)
+				}
+				p, _ := c.Project("test-project")
+				regional, _ := p.Location("spb", "ru-9")
+				ref := types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: tc.kind, ID: "exact-id", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+				if dimension == "id" {
+					ref.EndpointID = "foreign-endpoint"
+				} else {
+					ref.EndpointURL += "/foreign"
+				}
+				receipt, e := tc.call(regional.OneC(), ref)
+				if types.ErrorCode(e) != types.EndpointUnavailable || lookups != 0 || calls != 0 {
+					t.Fatalf("endpoint gate %v lookups%d calls%d", e, lookups, calls)
+				}
+				if tc.mutation && (receipt == nil || receipt.Outcome != types.NotSent || receipt.ContractRevision == "" || receipt.Attempts != 0) {
+					t.Fatalf("endpoint receipt %+v", receipt)
+				}
+			})
+		}
+	}
+}
+
+func TestOneCDatastoreHealthTelemetryNumbersStayProtected(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		payload := strings.Replace(onecDatastoreFixture, `"status":"DATASTORE_STATUS_ACTIVE"`, `"status":"DATASTORE_STATUS_ACTIVE","health":{"issues":[{"metricThresholdBreach":{"metric":{"value":987654321.125},"threshold":123456789.625}}]}`, 1)
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "datastore"
+	ref.ID = "store-1"
+	out, err := regional.GetDatastore(context.Background(), ref, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	breach := out.Data.Datastore.State.Health.Issues[0].MetricThresholdBreach
+	if string(breach.Metric.Value.Reveal()) != "987654321.125" || string(breach.Threshold.Reveal()) != "123456789.625" {
+		t.Fatal("protected number changed source precision")
+	}
+	raw, _ := json.Marshal(out)
+	diagnostic := fmt.Sprintf("%+v %#v %+v %#v %x", out, out, *breach.Metric.Value, *breach.Threshold, *breach.Metric.Value)
+	for _, marker := range []string{"987654321.125", "123456789.625"} {
+		if strings.Contains(diagnostic, fmt.Sprint([]byte(marker))) || strings.Contains(diagnostic, fmt.Sprintf("%x", []byte(marker))) {
+			t.Fatal("encoded telemetry leaked")
+		}
+		if strings.Contains(string(raw), marker) || strings.Contains(diagnostic, marker) {
+			t.Fatal("health telemetry leaked")
+		}
 	}
 }

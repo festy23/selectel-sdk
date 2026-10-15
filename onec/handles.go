@@ -195,7 +195,7 @@ func receiptResourceKind(operationID string) string {
 	switch operationID {
 	case "cloud_1c.v2.clusters.create", "cloud_1c.v2.clusters.delete", "cloud_1c.v2.clusters.update", "cloud_1c.v2.clusters_config.create", "cloud_1c.v2.clusters_restart.create", "cloud_1c.v2.clusters_resize.create", "cloud_1c.v2.clusters_upgrade.create":
 		return "cluster"
-	case "cloud_1c.v2.datastores.create", "cloud_1c.v2.datastores.delete":
+	case "cloud_1c.v2.datastores.create", "cloud_1c.v2.datastores.delete", "cloud_1c.v2.datastores.update", "cloud_1c.v2.datastores_resize.create":
 		return "datastore"
 	default:
 		return ""

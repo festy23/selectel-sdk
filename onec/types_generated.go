@@ -583,6 +583,123 @@ func (v DatastoreFlavor) Validate() error {
 func (v *DatastoreFlavor) normalize() {
 }
 
+type DatastoreFlavorConstraints struct {
+	DiskGb *ResourceConstraint `json:"diskGb,omitempty"`
+	RAMMb  *ResourceConstraint `json:"ramMb,omitempty"`
+	VCPU   *ResourceConstraint `json:"vCpu,omitempty"`
+}
+
+func (v DatastoreFlavorConstraints) Validate() error {
+	if v.DiskGb != nil {
+		if err := v.DiskGb.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.RAMMb != nil {
+		if err := v.RAMMb.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.VCPU != nil {
+		if err := v.VCPU.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *DatastoreFlavorConstraints) normalize() {
+	if v.DiskGb != nil {
+		v.DiskGb.normalize()
+	}
+	if v.RAMMb != nil {
+		v.RAMMb.normalize()
+	}
+	if v.VCPU != nil {
+		v.VCPU.normalize()
+	}
+}
+
+type DatastoreMntEvent struct {
+	CreatedAt *time.Time              `json:"createdAt,omitempty"`
+	ID        *string                 `json:"id,omitempty"`
+	ProjectID *string                 `json:"projectId,omitempty"`
+	Spec      *DatastoreMntEventSpec  `json:"spec,omitempty"`
+	State     *DatastoreMntEventState `json:"state,omitempty"`
+	Ref       *types.ResourceRef      `json:"ref,omitempty"`
+}
+
+func (v DatastoreMntEvent) Validate() error {
+	if v.Spec != nil {
+		if err := v.Spec.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.State != nil {
+		if err := v.State.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *DatastoreMntEvent) normalize() {
+	if v.CreatedAt != nil {
+		instant := v.CreatedAt.UTC()
+		v.CreatedAt = &instant
+	}
+	if v.Spec != nil {
+		v.Spec.normalize()
+	}
+	if v.State != nil {
+		v.State.normalize()
+	}
+}
+func (v *DatastoreMntEvent) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DatastoreMntEvent
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DatastoreMntEvent(value)
+	v.normalize()
+	return nil
+}
+
+type DatastoreMntEventSpec struct {
+	DatastoreID  *string               `json:"datastoreId,omitempty"`
+	Description  *types.ProtectedValue `json:"description,omitempty"`
+	ScheduledFor *time.Time            `json:"scheduledFor,omitempty"`
+	Tasks        []string              `json:"tasks,omitzero"`
+}
+
+func (v DatastoreMntEventSpec) Validate() error {
+	return nil
+}
+func (v *DatastoreMntEventSpec) normalize() {
+	if v.ScheduledFor != nil {
+		instant := v.ScheduledFor.UTC()
+		v.ScheduledFor = &instant
+	}
+}
+
+type DatastoreMntEventState struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (v DatastoreMntEventState) Validate() error {
+	return nil
+}
+func (v *DatastoreMntEventState) normalize() {
+}
+
 type DatastoreSpec struct {
 	EnableStorageAutoScaling *bool            `json:"enableStorageAutoScaling,omitempty"`
 	Flavor                   *DatastoreFlavor `json:"flavor,omitempty"`
@@ -834,6 +951,43 @@ func (v *GetClusterResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type GetDatastoreFlavorConstraintsResponse struct {
+	Constraints *DatastoreFlavorConstraints `json:"constraints,omitempty"`
+}
+
+func (v GetDatastoreFlavorConstraintsResponse) Validate() error {
+	if v.Constraints != nil {
+		if err := v.Constraints.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *GetDatastoreFlavorConstraintsResponse) normalize() {
+	if v.Constraints != nil {
+		v.Constraints.normalize()
+	}
+}
+func (v *GetDatastoreFlavorConstraintsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire GetDatastoreFlavorConstraintsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = GetDatastoreFlavorConstraintsResponse(value)
+	v.normalize()
+	return nil
+}
+
 type GetDatastoreResponse struct {
 	Datastore *Datastore `json:"datastore,omitempty"`
 }
@@ -1077,12 +1231,104 @@ func (v *ListClustersResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type ListDatastoreMntEventsResponse struct {
+	Cursor *CursorResponse     `json:"cursor,omitempty"`
+	Events []DatastoreMntEvent `json:"events,omitzero"`
+}
+
+func (v ListDatastoreMntEventsResponse) Validate() error {
+	if v.Cursor != nil {
+		if err := v.Cursor.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.Events {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListDatastoreMntEventsResponse) normalize() {
+	if v.Cursor != nil {
+		v.Cursor.normalize()
+	}
+	for i := range v.Events {
+		v.Events[i].normalize()
+	}
+}
+func (v *ListDatastoreMntEventsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListDatastoreMntEventsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListDatastoreMntEventsResponse(value)
+	v.normalize()
+	return nil
+}
+
+type ListDatastoresResponse struct {
+	Cursor     *CursorResponse `json:"cursor,omitempty"`
+	Datastores []Datastore     `json:"datastores,omitzero"`
+}
+
+func (v ListDatastoresResponse) Validate() error {
+	if v.Cursor != nil {
+		if err := v.Cursor.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.Datastores {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListDatastoresResponse) normalize() {
+	if v.Cursor != nil {
+		v.Cursor.normalize()
+	}
+	for i := range v.Datastores {
+		v.Datastores[i].normalize()
+	}
+}
+func (v *ListDatastoresResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListDatastoresResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListDatastoresResponse(value)
+	v.normalize()
+	return nil
+}
+
 type Metric struct {
-	MetricStatistic *string       `json:"metricStatistic,omitempty"`
-	Name            *string       `json:"name,omitempty"`
-	Period          *string       `json:"period,omitempty"`
-	Unit            *string       `json:"unit,omitempty"`
-	Value           *types.Number `json:"value,omitempty"`
+	MetricStatistic *string          `json:"metricStatistic,omitempty"`
+	Name            *string          `json:"name,omitempty"`
+	Period          *string          `json:"period,omitempty"`
+	Unit            *string          `json:"unit,omitempty"`
+	Value           *ProtectedNumber `json:"value,omitempty"`
 }
 
 func (v Metric) Validate() error {
@@ -1092,8 +1338,8 @@ func (v *Metric) normalize() {
 }
 
 type MetricThresholdBreach struct {
-	Metric    *Metric       `json:"metric,omitempty"`
-	Threshold *types.Number `json:"threshold,omitempty"`
+	Metric    *Metric          `json:"metric,omitempty"`
+	Threshold *ProtectedNumber `json:"threshold,omitempty"`
 }
 
 func (v MetricThresholdBreach) Validate() error {
@@ -1143,6 +1389,43 @@ func (v *PatchClusterResponse) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = PatchClusterResponse(value)
+	v.normalize()
+	return nil
+}
+
+type PatchDatastoreResponse struct {
+	Datastore *Datastore `json:"datastore,omitempty"`
+}
+
+func (v PatchDatastoreResponse) Validate() error {
+	if v.Datastore != nil {
+		if err := v.Datastore.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *PatchDatastoreResponse) normalize() {
+	if v.Datastore != nil {
+		v.Datastore.normalize()
+	}
+}
+func (v *PatchDatastoreResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire PatchDatastoreResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = PatchDatastoreResponse(value)
 	v.normalize()
 	return nil
 }
@@ -1232,6 +1515,89 @@ func (v *ResizeClusterResponse) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = ResizeClusterResponse(value)
+	v.normalize()
+	return nil
+}
+
+type ResizeDatastoreBody struct {
+	Flavor    *DatastoreFlavor `json:"flavor,omitempty"`
+	NodeCount *string          `json:"nodeCount,omitempty"`
+}
+
+func (v ResizeDatastoreBody) Validate() error {
+	if v.Flavor == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Flavor != nil {
+		if err := v.Flavor.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.NodeCount != nil {
+		if _, err := strconv.ParseInt(*v.NodeCount, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	return nil
+}
+func (v *ResizeDatastoreBody) normalize() {
+	if v.Flavor != nil {
+		v.Flavor.normalize()
+	}
+}
+func (v *ResizeDatastoreBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ResizeDatastoreBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ResizeDatastoreBody(value)
+	v.normalize()
+	return nil
+}
+
+type ResizeDatastoreResponse struct {
+	Datastore *Datastore `json:"datastore,omitempty"`
+}
+
+func (v ResizeDatastoreResponse) Validate() error {
+	if v.Datastore != nil {
+		if err := v.Datastore.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ResizeDatastoreResponse) normalize() {
+	if v.Datastore != nil {
+		v.Datastore.normalize()
+	}
+}
+func (v *ResizeDatastoreResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ResizeDatastoreResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ResizeDatastoreResponse(value)
 	v.normalize()
 	return nil
 }

@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
- "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse", "CreateClusterRequest":"CreateClusterRequest", "CreateClusterResponse":"CreateClusterResponse", "ListClustersResponse":"ListClustersResponse", "DeleteClusterResponse":"DeleteClusterResponse", "PatchClusterResponse":"PatchClusterResponse", "RestartClusterResponse":"RestartClusterResponse", "ChangeClusterConfigBody":"ChangeClusterConfigBody", "ChangeClusterConfigResponse":"ChangeClusterConfigResponse", "ResizeClusterBody":"ResizeClusterBody", "ResizeClusterResponse":"ResizeClusterResponse", "UpgradeClusterBody":"UpgradeClusterBody", "UpgradeClusterResponse":"UpgradeClusterResponse", "GetClusterFlavorConstraintsResponse":"GetClusterFlavorConstraintsResponse", "GetRegionsResponse":"GetRegionsResponse", "GetServiceConfigResponse":"GetServiceConfigResponse", "GetDatastoreResponse":"GetDatastoreResponse", "CreateDatastoreRequest":"CreateDatastoreRequest", "CreateDatastoreResponse":"CreateDatastoreResponse", "DeleteDatastoreResponse":"DeleteDatastoreResponse"}, None),
+ "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse", "CreateClusterRequest":"CreateClusterRequest", "CreateClusterResponse":"CreateClusterResponse", "ListClustersResponse":"ListClustersResponse", "DeleteClusterResponse":"DeleteClusterResponse", "PatchClusterResponse":"PatchClusterResponse", "RestartClusterResponse":"RestartClusterResponse", "ChangeClusterConfigBody":"ChangeClusterConfigBody", "ChangeClusterConfigResponse":"ChangeClusterConfigResponse", "ResizeClusterBody":"ResizeClusterBody", "ResizeClusterResponse":"ResizeClusterResponse", "UpgradeClusterBody":"UpgradeClusterBody", "UpgradeClusterResponse":"UpgradeClusterResponse", "GetClusterFlavorConstraintsResponse":"GetClusterFlavorConstraintsResponse", "GetRegionsResponse":"GetRegionsResponse", "GetServiceConfigResponse":"GetServiceConfigResponse", "GetDatastoreResponse":"GetDatastoreResponse", "CreateDatastoreRequest":"CreateDatastoreRequest", "CreateDatastoreResponse":"CreateDatastoreResponse", "DeleteDatastoreResponse":"DeleteDatastoreResponse", "PatchDatastoreResponse":"PatchDatastoreResponse", "ResizeDatastoreBody":"ResizeDatastoreBody", "ResizeDatastoreResponse":"ResizeDatastoreResponse", "GetDatastoreFlavorConstraintsResponse":"GetDatastoreFlavorConstraintsResponse", "ListDatastoresResponse":"ListDatastoresResponse", "ListDatastoreMntEventsResponse":"ListDatastoreMntEventsResponse"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -51,7 +51,7 @@ for case, (family, initial, top_name) in CASES.items():
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
     if package == "onec":
-        resource_roots = {"Cluster", "Datastore", "ClusterProxy", "ClusterDomain", "ClusterVolume", "TechJournalLogPlan"}
+        resource_roots = {"Cluster", "Datastore", "ClusterProxy", "ClusterDomain", "ClusterVolume", "TechJournalLogPlan", "DatastoreMntEvent"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -84,6 +84,8 @@ for case, (family, initial, top_name) in CASES.items():
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False
+        if package == "onec" and kind == "string" and field == "description" and "MntEventSpec" in type_name:
+            return "types.ProtectedValue", False
         if kind == "array":
             inner, _ = field_type(schema["items"], type_name + "Item", "")
             return "[]" + inner, True
@@ -95,6 +97,8 @@ for case, (family, initial, top_name) in CASES.items():
         if kind == "integer":
             return "types.Integer", False
         if kind == "number":
+            if package == "onec" and type_name in {"MetricValue", "MetricThresholdBreachThreshold", "ClusterMetricValue"}:
+                return "ProtectedNumber", False
             return "types.Number", False
         if kind == "boolean":
             return "bool", False

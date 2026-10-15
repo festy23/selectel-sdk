@@ -58,7 +58,13 @@ func (c *Client) DeleteCluster(ctx context.Context, ref types.ResourceRef, optio
 		if ref.Kind != "cluster" || ref.Parent != nil {
 			return types.NewError(types.InvalidArgument)
 		}
-		return bindErr
+		if bindErr != nil {
+			return bindErr
+		}
+		if ref.EndpointID != op.EndpointID || ref.EndpointURL != op.FixedEndpoint {
+			return types.NewError(types.EndpointUnavailable)
+		}
+		return nil
 	}
 	endpoint := types.EndpointBinding{ID: ref.EndpointID, URL: ref.EndpointURL, Scope: ref.Scope, APIGeneration: ref.APIGeneration, Audience: "selectel"}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/clusters/" + url.PathEscape(ref.ID), Options: options, Refs: []types.ResourceRef{ref}, PinnedEndpoint: &endpoint, Validate: validate}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[DeleteClusterResponse], error) {
@@ -100,7 +106,13 @@ func (c *Client) PatchCluster(ctx context.Context, ref types.ResourceRef, spec C
 		if spec.Validate() != nil || bodyErr != nil {
 			return types.NewError(types.InvalidArgument)
 		}
-		return bindErr
+		if bindErr != nil {
+			return bindErr
+		}
+		if ref.EndpointID != op.EndpointID || ref.EndpointURL != op.FixedEndpoint {
+			return types.NewError(types.EndpointUnavailable)
+		}
+		return nil
 	}
 	endpoint := types.EndpointBinding{ID: ref.EndpointID, URL: ref.EndpointURL, Scope: ref.Scope, APIGeneration: ref.APIGeneration, Audience: "selectel"}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/clusters/" + url.PathEscape(ref.ID), Body: body, Options: options, Refs: []types.ResourceRef{ref}, PinnedEndpoint: &endpoint, Validate: validate}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[PatchClusterResponse], error) {
@@ -138,7 +150,13 @@ func (c *Client) RestartCluster(ctx context.Context, ref types.ResourceRef, opti
 		if ref.Kind != "cluster" || ref.Parent != nil {
 			return types.NewError(types.InvalidArgument)
 		}
-		return bindErr
+		if bindErr != nil {
+			return bindErr
+		}
+		if ref.EndpointID != op.EndpointID || ref.EndpointURL != op.FixedEndpoint {
+			return types.NewError(types.EndpointUnavailable)
+		}
+		return nil
 	}
 	endpoint := types.EndpointBinding{ID: ref.EndpointID, URL: ref.EndpointURL, Scope: ref.Scope, APIGeneration: ref.APIGeneration, Audience: "selectel"}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/clusters/" + url.PathEscape(ref.ID) + "/restart", Options: options, Refs: []types.ResourceRef{ref}, PinnedEndpoint: &endpoint, Validate: validate}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[RestartClusterResponse], error) {
@@ -180,7 +198,13 @@ func (c *Client) ChangeClusterConfig(ctx context.Context, ref types.ResourceRef,
 		if spec.Validate() != nil || bodyErr != nil {
 			return types.NewError(types.InvalidArgument)
 		}
-		return bindErr
+		if bindErr != nil {
+			return bindErr
+		}
+		if ref.EndpointID != op.EndpointID || ref.EndpointURL != op.FixedEndpoint {
+			return types.NewError(types.EndpointUnavailable)
+		}
+		return nil
 	}
 	endpoint := types.EndpointBinding{ID: ref.EndpointID, URL: ref.EndpointURL, Scope: ref.Scope, APIGeneration: ref.APIGeneration, Audience: "selectel"}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/clusters/" + url.PathEscape(ref.ID) + "/config", Body: body, Options: options, Refs: []types.ResourceRef{ref}, PinnedEndpoint: &endpoint, Validate: validate}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[ChangeClusterConfigResponse], error) {
@@ -222,7 +246,13 @@ func (c *Client) ResizeCluster(ctx context.Context, ref types.ResourceRef, spec 
 		if spec.Validate() != nil || bodyErr != nil {
 			return types.NewError(types.InvalidArgument)
 		}
-		return bindErr
+		if bindErr != nil {
+			return bindErr
+		}
+		if ref.EndpointID != op.EndpointID || ref.EndpointURL != op.FixedEndpoint {
+			return types.NewError(types.EndpointUnavailable)
+		}
+		return nil
 	}
 	endpoint := types.EndpointBinding{ID: ref.EndpointID, URL: ref.EndpointURL, Scope: ref.Scope, APIGeneration: ref.APIGeneration, Audience: "selectel"}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/clusters/" + url.PathEscape(ref.ID) + "/resize", Body: body, Options: options, Refs: []types.ResourceRef{ref}, PinnedEndpoint: &endpoint, Validate: validate}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[ResizeClusterResponse], error) {
@@ -264,7 +294,13 @@ func (c *Client) UpgradeCluster(ctx context.Context, ref types.ResourceRef, spec
 		if spec.Validate() != nil || bodyErr != nil {
 			return types.NewError(types.InvalidArgument)
 		}
-		return bindErr
+		if bindErr != nil {
+			return bindErr
+		}
+		if ref.EndpointID != op.EndpointID || ref.EndpointURL != op.FixedEndpoint {
+			return types.NewError(types.EndpointUnavailable)
+		}
+		return nil
 	}
 	endpoint := types.EndpointBinding{ID: ref.EndpointID, URL: ref.EndpointURL, Scope: ref.Scope, APIGeneration: ref.APIGeneration, Audience: "selectel"}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/clusters/" + url.PathEscape(ref.ID) + "/upgrade", Body: body, Options: options, Refs: []types.ResourceRef{ref}, PinnedEndpoint: &endpoint, Validate: validate}, func(raw []byte, ep types.EndpointBinding) (core.Decoded[UpgradeClusterResponse], error) {

@@ -5,7 +5,8 @@
     "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
     "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
     "scope": "exact account/project/region/pool",
-    "redirects": "reject"
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
   },
   "request": {
     "scope": "exact regional project",
@@ -19,7 +20,11 @@
       200
     ],
     "mapping": "Typed PatchClusterResponse; ID/projectId checked, accepted exact caller ref retained on decode errors",
-    "sensitive_fields": []
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
+    "number_protection": "Source JSON numbers are lexically validated and stored in onec.ProtectedNumber without precision conversion; formatting/JSON/Text redacts, Reveal is explicit"
   },
   "errors": {
     "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",

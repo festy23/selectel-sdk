@@ -43,7 +43,13 @@ func (c *Client) GetCluster(ctx context.Context, ref types.ResourceRef, options 
 		if ref.Kind != "cluster" || ref.Parent != nil {
 			return types.NewError(types.InvalidArgument)
 		}
-		return bindErr
+		if bindErr != nil {
+			return bindErr
+		}
+		if ref.EndpointID != op.EndpointID || ref.EndpointURL != op.FixedEndpoint {
+			return types.NewError(types.EndpointUnavailable)
+		}
+		return nil
 	}
 	endpoint := types.EndpointBinding{ID: ref.EndpointID, URL: ref.EndpointURL, Scope: ref.Scope, APIGeneration: ref.APIGeneration, Audience: "selectel"}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/clusters/" + url.PathEscape(ref.ID), Options: options, Refs: []types.ResourceRef{ref}, PinnedEndpoint: &endpoint, Validate: validate}, func(raw []byte, endpoint types.EndpointBinding) (core.Decoded[GetClusterResponse], error) {

@@ -4599,7 +4599,8 @@
       "internal/core/request.go",
       "internal/core/auth.go",
       "internal/modelgen/generate.py",
-      "catalog/sources/1c-cloud.json"
+      "catalog/sources/1c-cloud.json",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4626,7 +4627,8 @@
       "internal/core/reads.go",
       "internal/core/pagination.go",
       "pagination/pagination.go",
-      "onec/datastores.go"
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4652,7 +4654,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/datastores.go"
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4680,7 +4683,9 @@
       "internal/modelgen/generate.py",
       "catalog/sources/1c-cloud.json",
       "onec/lists.go",
-      "pagination/pagination.go"
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4710,7 +4715,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/datastores.go"
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4739,7 +4745,8 @@
       "catalog/sources/1c-cloud.json",
       "onec/mutations.go",
       "onec/handles.go",
-      "operations/handle.go"
+      "operations/handle.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4768,7 +4775,8 @@
       "catalog/sources/1c-cloud.json",
       "onec/mutations.go",
       "onec/handles.go",
-      "operations/handle.go"
+      "operations/handle.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4797,7 +4805,8 @@
       "catalog/sources/1c-cloud.json",
       "onec/mutations.go",
       "onec/handles.go",
-      "operations/handle.go"
+      "operations/handle.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4826,7 +4835,8 @@
       "catalog/sources/1c-cloud.json",
       "onec/mutations.go",
       "onec/handles.go",
-      "operations/handle.go"
+      "operations/handle.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4855,7 +4865,8 @@
       "catalog/sources/1c-cloud.json",
       "onec/mutations.go",
       "onec/handles.go",
-      "operations/handle.go"
+      "operations/handle.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4885,7 +4896,9 @@
       "onec/discovery.go",
       "internal/core/reads.go",
       "internal/core/pagination.go",
-      "pagination/pagination.go"
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4911,7 +4924,8 @@
       "onec/discovery.go",
       "internal/core/reads.go",
       "internal/core/pagination.go",
-      "pagination/pagination.go"
+      "pagination/pagination.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4937,7 +4951,9 @@
       "onec/discovery.go",
       "internal/core/reads.go",
       "internal/core/pagination.go",
-      "pagination/pagination.go"
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4963,7 +4979,9 @@
       "onec/discovery.go",
       "internal/core/reads.go",
       "internal/core/pagination.go",
-      "pagination/pagination.go"
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4989,7 +5007,8 @@
       "onec/discovery.go",
       "internal/core/reads.go",
       "internal/core/pagination.go",
-      "pagination/pagination.go"
+      "pagination/pagination.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5016,7 +5035,8 @@
       "internal/core/reads.go",
       "internal/core/pagination.go",
       "pagination/pagination.go",
-      "onec/datastores.go"
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5042,7 +5062,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/datastores.go"
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5072,7 +5093,8 @@
       "onec/mutations.go",
       "onec/handles.go",
       "operations/handle.go",
-      "onec/datastores.go"
+      "onec/datastores.go",
+      "onec/protected.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -5084,5 +5106,211 @@
       "datastore.deleted"
     ],
     "recovery": true
+  },
+  "cloud_1c.v2.datastores.update": {
+    "go_method": "onec.Client.PatchDatastore",
+    "input_type": "types.ResourceRef, onec.DatastoreSpec, types.CallOptions",
+    "output_type": "onec.PatchDatastoreResponse",
+    "contract_ref": "contracts/cloud_1c.v2.datastores.update.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "datastore.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.datastores_resize.create": {
+    "go_method": "onec.Client.ResizeDatastore",
+    "input_type": "types.ResourceRef, onec.ResizeDatastoreBody, types.CallOptions",
+    "output_type": "onec.ResizeDatastoreResponse",
+    "contract_ref": "contracts/cloud_1c.v2.datastores_resize.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "datastore.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.datastore_flavors.list": {
+    "go_method": "onec.Client.ListDatastoreFlavors",
+    "input_type": "*bool, pagination.Options",
+    "output_type": "pagination.Collection[onec.DatastoreFlavor]",
+    "contract_ref": "contracts/cloud_1c.v2.datastore_flavors.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.datastore_flavors_constraints.list": {
+    "go_method": "onec.Client.GetDatastoreFlavorConstraints",
+    "input_type": "types.CallOptions",
+    "output_type": "onec.GetDatastoreFlavorConstraintsResponse",
+    "contract_ref": "contracts/cloud_1c.v2.datastore_flavors_constraints.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.datastore_types.list": {
+    "go_method": "onec.Client.ListDatastoreTypes",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Collection[onec.DatastoreType]",
+    "contract_ref": "contracts/cloud_1c.v2.datastore_types.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.datastores.list": {
+    "go_method": "onec.Client.ListDatastores",
+    "input_type": "pagination.Options",
+    "output_type": "onec.DatastoreListing",
+    "contract_ref": "contracts/cloud_1c.v2.datastores.list.json",
+    "status": "partial",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/lists.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastores/get",
+    "excluded_variants": [
+      "Terminal cursor semantics absent from pinned primary contract"
+    ]
+  },
+  "cloud_1c.v2.datastores_maintenance.list": {
+    "go_method": "onec.Client.ListDatastoreMaintenanceEvents",
+    "input_type": "types.ResourceRef, pagination.Options",
+    "output_type": "onec.DatastoreMaintenanceListing",
+    "contract_ref": "contracts/cloud_1c.v2.datastores_maintenance.list.json",
+    "status": "partial",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/lists.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get",
+    "excluded_variants": [
+      "Terminal cursor semantics absent from pinned primary contract"
+    ]
   }
 }
