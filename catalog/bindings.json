@@ -5499,5 +5499,61 @@
     ],
     "recovery": false,
     "wait_goals": []
+  },
+  "s3.v2006_03_01.objects.post_template": {
+    "go_method": "s3.Buckets.PresignPostTemplate",
+    "input_type": "types.ResourceRef, s3.PostTemplateOptions",
+    "output_type": "s3.PresignedPost",
+    "contract_ref": "contracts/s3.v2006_03_01.objects.post_template.json",
+    "status": "partial",
+    "files": [
+      "client.go",
+      "generate.go",
+      "s3/client.go",
+      "s3/wait.go",
+      "s3/presign.go",
+      "s3/post.go",
+      "s3/lists.go",
+      "s3/bulk.go",
+      "s3/objects.go",
+      "s3/buckets.go",
+      "s3/transfers.go",
+      "s3/types_generated.go",
+      "internal/s3contractgen/generate.py",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/pagination.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "internal/core/s3_post.go",
+      "internal/core/s3_presign.go",
+      "internal/core/wait.go",
+      "internal/endpoints/locations.go",
+      "internal/endpoints/s3.go",
+      "operations/handle.go",
+      "pagination/pagination.go",
+      "types/contracts.go",
+      "types/errors.go",
+      "types/integer.go",
+      "types/nullable.go",
+      "types/number.go",
+      "types/protected.go",
+      "types/protected_json.go"
+    ],
+    "evidence_files": [
+      "s3/public_test.go",
+      "s3/catalog_test.go"
+    ],
+    "evidence_ref": "s3/public_test.go;s3/catalog_test.go",
+    "covered_schema_ref": "contracts/s3.v2006_03_01.objects.post_template.json#/request",
+    "excluded_variants": [
+      "POST template form only: exact bucket and nonempty caller prefix plus compiled ${filename}; no arbitrary policy, auth override, ACL or redirects; caller submits file last, no SDK HTTP upload",
+      "Advanced AWS response fields not source-confirmed for Selectel; see response native_fields and limitation"
+    ],
+    "recovery": false,
+    "wait_goals": []
   }
 }

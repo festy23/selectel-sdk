@@ -184,6 +184,18 @@
         },
         "x-native-source": "presign_post.go.txt"
       }
+    },
+    "/PresignPostTemplate": {
+      "post": {
+        "operationId": "PresignPostTemplate",
+        "x-operation-locator": "POST /{bucket}",
+        "responses": {
+          "200": {
+            "description": "AWS S3 typed XML/header response; operation-specific source mapping in SDK contract"
+          }
+        },
+        "x-native-source": "presign_post.go.txt"
+      }
     }
   },
   "x-source-uri": "https://docs.selectel.ru/api/object-storage-s3/",

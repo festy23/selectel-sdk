@@ -21,6 +21,9 @@ commit `c8f4a4457aa933bd6c8ce60bc2ca2a0599b77478`, published 2026-10-09.
 operations. `assets/presign_post.go.txt` pins the same immutable upstream
 POST policy/HMAC/form implementation; generated binding `objects.post` exposes
 only local typed form generation, not an HTTP upload executor.
+The separate `objects.post_template` protocol variant maps the Selectel
+`${filename}` example and native starts-with key condition into a typed exact
+bucket/nonempty prefix interface; no exact object proof is returned.
 The AWS S3 service module is a research source, not a runtime
 service dependency. Existing AWS SigV4 runtime signs requests; Smithy path
 escaping uses the runtime's pinned `github.com/aws/smithy-go v1.28.5`, with the
@@ -34,7 +37,7 @@ there is no general caller-selected signing bypass.
 
 Generated contracts record covered input fields, full native model inventory,
 and exact excluded request variants. AWS evidence alone does not establish
-Selectel availability of advanced fields. All 14 bindings (13 core plus local POST form) remain partial;
+Selectel availability of advanced fields. All 15 bindings (13 core plus local exact-key/scoped-template POST forms) remain partial;
 whole-family inventory is incomplete and coverage ratio remains null. Explicit
 ListBuckets native pagination has upstream wire evidence only. Multipart (#45),
 bucket settings (#46), and unresolved advanced compatibility evidence (#74/P1/#75)

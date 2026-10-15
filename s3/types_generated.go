@@ -31,6 +31,12 @@ type PostOptions struct {
 	MinBytes, MaxBytes int64
 	Conditions         PostConditions
 }
+type PostTemplateOptions struct {
+	Prefix             string
+	Expires            time.Duration
+	MinBytes, MaxBytes int64
+	Conditions         PostConditions
+}
 type PresignedPost struct {
 	URL       types.ProtectedValue            `json:"url"`
 	Fields    map[string]types.ProtectedValue `json:"fields"`

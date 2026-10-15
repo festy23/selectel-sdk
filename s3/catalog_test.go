@@ -9,7 +9,7 @@ import (
 func TestS3CatalogRetainsPartialNativeCoverageAndUnknownInventory(t *testing.T) {
 	c := catalog.Default()
 	ops, e := c.List(catalog.Filter{Service: "s3"})
-	if e != nil || len(ops) != 14 {
+	if e != nil || len(ops) != 15 {
 		t.Fatal(e, len(ops))
 	}
 	for _, op := range ops {

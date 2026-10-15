@@ -972,6 +972,10 @@ func TestPresignedPostBoundsPolicyExpiryAndPinsExactEndpoint(t *testing.T) {
 		t.Fatal(e)
 	}
 	opts.Expires = time.Minute
+	_, templateErr := makeView(1024, true).Buckets.PresignPostTemplate(context.Background(), bucket, s3.PostTemplateOptions{Prefix: "uploads/", Expires: time.Minute, MaxBytes: 1}, types.CallOptions{})
+	if types.ErrorCode(templateErr) != types.EndpointUnavailable {
+		t.Fatal(templateErr)
+	}
 	_, e = makeView(1024, true).Objects.PresignPost(context.Background(), ref, opts, types.CallOptions{})
 	if types.ErrorCode(e) != types.EndpointUnavailable {
 		t.Fatal(e)
@@ -1032,5 +1036,133 @@ func TestPresignedPostCredentialLookupHonorsCallBudget(t *testing.T) {
 	got, e := c.Objects.PresignPost(context.Background(), ref, s3.PostOptions{Expires: time.Minute, MaxBytes: 1}, types.CallOptions{})
 	if types.ErrorCode(e) != types.DeadlineExceeded || !got.Data.URL.Empty() || got.Receipt != nil {
 		t.Fatal(e)
+	}
+}
+
+func TestScopedPostTemplateBindsPrefixWithoutExactObjectProof(t *testing.T) {
+	_, c := clients(t, func(*http.Request) (*http.Response, error) { t.Fatal("template must not call HTTP"); return nil, nil })
+	for _, virtual := range []bool{false, true} {
+		view := c
+		if virtual {
+			view = c.WithVirtualHosted()
+		}
+		ref, _ := view.Bucket("test-bucket")
+		prefix := "incoming/../quote\"<&+\\/Я/"
+		out, e := view.Buckets.PresignPostTemplate(context.Background(), ref, s3.PostTemplateOptions{Prefix: prefix, Expires: time.Minute, MinBytes: 0, MaxBytes: 1024}, types.CallOptions{})
+		if e != nil {
+			t.Fatal(e)
+		}
+		if out.Receipt != nil {
+			t.Fatal("local form is not a mutation receipt")
+		}
+		form := map[string]string{}
+		for k, v := range out.Data.Fields {
+			form[k] = string(v.Reveal())
+		}
+		if form["key"] != prefix+"${filename}" {
+			t.Fatal("wrong compiled filename key")
+		}
+		raw, e := base64.StdEncoding.DecodeString(string(out.Data.Policy.Reveal()))
+		if e != nil {
+			t.Fatal(e)
+		}
+		var policy struct {
+			Conditions []json.RawMessage `json:"conditions"`
+		}
+		if e = json.Unmarshal(raw, &policy); e != nil {
+			t.Fatal(e)
+		}
+		prefixCount := 0
+		bucketCount := 0
+		for _, condition := range policy.Conditions {
+			var exact map[string]string
+			if json.Unmarshal(condition, &exact) == nil {
+				if _, found := exact["key"]; found {
+					t.Fatal("template must not claim exact key")
+				}
+				if exact["bucket"] == ref.ID {
+					bucketCount++
+				}
+				continue
+			}
+			var row []any
+			if json.Unmarshal(condition, &row) != nil {
+				t.Fatal("invalid condition")
+			}
+			if row[0] == "starts-with" {
+				if len(row) != 3 || row[1] != "$key" || row[2] != prefix {
+					t.Fatal("unscoped prefix")
+				}
+				prefixCount++
+			}
+		}
+		if prefixCount != 1 || bucketCount != 1 {
+			t.Fatal("missing exact bucket/prefix constraints")
+		}
+		endpoint := "https://s3.ru-1.storage.selcloud.ru/test-bucket"
+		if virtual {
+			endpoint = "https://test-bucket.s3.ru-1.storage.selcloud.ru/"
+		}
+		if string(out.Data.URL.Reveal()) != endpoint {
+			t.Fatal("wrong endpoint")
+		}
+		mac := func(k []byte, v string) []byte { h := hmac.New(sha256.New, k); h.Write([]byte(v)); return h.Sum(nil) }
+		day := strings.Split(form["X-Amz-Credential"], "/")[1]
+		key := mac(mac(mac(mac([]byte("AWS4synthetic-secret"), day), "ru-1"), "s3"), "aws4_request")
+		if hex.EncodeToString(mac(key, form["policy"])) != form["X-Amz-Signature"] {
+			t.Fatal("invalid template HMAC")
+		}
+		encoded, _ := json.Marshal(out)
+		printed := fmt.Sprintf("%+v %#v", out, &out)
+		for _, secret := range []string{form["policy"], form["X-Amz-Signature"], "incoming/", "synthetic-access"} {
+			if strings.Contains(string(encoded), secret) || strings.Contains(printed, secret) {
+				t.Fatal("template disclosure")
+			}
+		}
+	}
+}
+
+func TestScopedPostTemplateRejectsPlaceholderEscapesAndForeignScope(t *testing.T) {
+	lookups := 0
+	root, e := sdk.New(sdk.Config{AccountID: "a", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+		lookups++
+		return credentials.Material{}, types.NewError(types.CredentialsUnavailable)
+	}), Transport: transport(func(*http.Request) (*http.Response, error) { t.Fatal("template HTTP"); return nil, nil })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := root.Project("p")
+	r, _ := p.Location("spb", "ru-1")
+	c := r.S3()
+	bucket, _ := c.Bucket("test-bucket")
+	object, _ := c.Object(bucket, "object")
+	for _, prefix := range []string{"", "${filename}", "allowed/${filename}", "allowed/${other}", strings.Repeat("a", 1014), string([]byte{255})} {
+		out, e := c.Buckets.PresignPostTemplate(context.Background(), bucket, s3.PostTemplateOptions{Prefix: prefix, Expires: time.Minute, MaxBytes: 1}, types.CallOptions{})
+		if types.ErrorCode(e) != types.InvalidArgument || lookups != 0 || out.Receipt != nil || !out.Data.Policy.Empty() {
+			t.Fatal(e, lookups)
+		}
+	}
+	for _, ref := range []types.ResourceRef{object, func() types.ResourceRef { v := bucket; v.Scope.ProjectID = "other"; return v }()} {
+		_, e := c.Buckets.PresignPostTemplate(context.Background(), ref, s3.PostTemplateOptions{Prefix: "uploads/", Expires: time.Minute, MaxBytes: 1}, types.CallOptions{})
+		if e == nil || lookups != 0 {
+			t.Fatal(e, lookups)
+		}
+	}
+	for _, opts := range []s3.PostTemplateOptions{{Prefix: "uploads/", MaxBytes: 1}, {Prefix: "uploads/", Expires: 901 * time.Second, MaxBytes: 1}, {Prefix: "uploads/", Expires: time.Minute, MaxBytes: 0}, {Prefix: "uploads/", Expires: time.Minute, MinBytes: 2, MaxBytes: 1}} {
+		_, e := c.Buckets.PresignPostTemplate(context.Background(), bucket, opts, types.CallOptions{})
+		if types.ErrorCode(e) != types.InvalidArgument || lookups != 0 {
+			t.Fatal(e, lookups)
+		}
+	}
+	bad := types.Protect([]byte("text/plain\r\nInjected: x"))
+	_, e = c.Buckets.PresignPostTemplate(context.Background(), bucket, s3.PostTemplateOptions{Prefix: "uploads/", Expires: time.Minute, MaxBytes: 1, Conditions: s3.PostConditions{ContentType: &bad}}, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument || lookups != 0 {
+		t.Fatal(e, lookups)
+	}
+	// Existing exact-key API still refuses the source-confirmed placeholder.
+	templated, _ := c.Object(bucket, "uploads/${filename}")
+	_, e = c.Objects.PresignPost(context.Background(), templated, s3.PostOptions{Expires: time.Minute, MaxBytes: 1}, types.CallOptions{})
+	if e == nil || lookups != 0 {
+		t.Fatal("exact key validation weakened", e, lookups)
 	}
 }

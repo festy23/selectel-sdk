@@ -11,10 +11,11 @@ ops.extend([('HeadObject','HEAD','/{bucket}/{key}','objects.head','Objects.Head'
 ops.append(('DeleteObjects','POST','/{bucket}?delete','objects.delete_many','Objects.DeleteMany','DeleteManyRequest','DeleteManyResponse'))
 ops.extend([('ListBuckets','GET','/','buckets.list','Buckets.ListPage','BucketListOptions','BucketSummary'),('ListObjects','GET','/{bucket}','objects.list_v1','Objects.ListPageV1','ObjectListOptions','ListEntry'),('ListObjectsV2','GET','/{bucket}?list-type=2','objects.list_v2','Objects.ListPage','ObjectListOptions','ListEntry')])
 ops.append(('PresignPostObject','POST','/{bucket}','objects.post','Objects.PresignPost','PostOptions','PresignedPost'))
+ops.append(('PresignPostTemplate','POST','/{bucket}','objects.post_template','Buckets.PresignPostTemplate','PostTemplateOptions','PresignedPost'))
 b={k:v for k,v in json.loads((R/'catalog/bindings.json').read_text()).items() if not k.startswith('s3.v2006_03_01.')};paths={};over=[]
 files=['client.go','generate.go','s3/client.go','s3/wait.go','s3/presign.go','s3/post.go','s3/lists.go','s3/bulk.go','s3/objects.go','s3/buckets.go','s3/transfers.go','s3/types_generated.go','internal/s3contractgen/generate.py']+sorted(str(p.relative_to(R)) for d in ['internal/core','internal/endpoints','types','credentials','operations','pagination'] for p in (R/d).glob('*.go') if not p.name.endswith('_test.go'))
 covered={
-'PresignPostObject':{'Bucket','Key','Expires','Conditions'},
+'PresignPostObject':{'Bucket','Key','Expires','Conditions'},'PresignPostTemplate':{'Bucket','Key','Expires','Conditions'},
 'CreateBucket':{'Bucket','CreateBucketConfiguration','ObjectLockEnabledForBucket'},'DeleteBucket':{'Bucket'},'HeadBucket':{'Bucket'},'GetBucketLocation':{'Bucket'},
 'ListBuckets':{'ContinuationToken','MaxBuckets','Prefix','BucketRegion'},
 'PutObject':{'Bucket','Key','Body','ContentLength','ContentType','ContentMD5','Metadata','IfMatch','IfNoneMatch'},
@@ -22,7 +23,7 @@ covered={
 'CopyObject':{'Bucket','Key','CopySource','Metadata','MetadataDirective','ContentType','IfMatch','IfNoneMatch','CopySourceIfMatch','CopySourceIfNoneMatch','CopySourceIfModifiedSince','CopySourceIfUnmodifiedSince'},
 'ListObjects':{'Bucket','Delimiter','EncodingType','Marker','MaxKeys','Prefix'},'ListObjectsV2':{'Bucket','ContinuationToken','Delimiter','EncodingType','FetchOwner','MaxKeys','Prefix','StartAfter'}}
 def native_fields(native,kind):
- if native=='PresignPostObject':
+ if native in ['PresignPostObject','PresignPostTemplate']:
   text=(A/'presign_post.go.txt').read_text();assert 'Conditions []any' in text and 'Values map[string]string' in text
   return ['Bucket','Conditions','Expires','Key'] if kind=='Input' else ['URL','Values']
  text=(A/('api_op_'+native+'.go.txt')).read_text();match=re.search(r'type '+native+kind+r' struct \{(.*?)\n\}',text,re.S);assert match,native
@@ -38,7 +39,7 @@ for native,m,path,suffix,go,inp,out in ops:
  exclusions=[('AWS input '+field+': excluded from Selectel subset by published ACL/tagging/request-payment/object-response compatibility; not forwarded' if field=='ACL' or field.startswith('Grant') or field in ['Tagging','TaggingDirective','RequestPayer'] or field.startswith('Response') else 'AWS input '+field+': Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75') for field in missing]
  if native=='CreateBucket':exclusions.append('CreateBucketConfiguration: directory-bucket location/bucket/tags nested variants unconfirmed; LocationConstraint only')
  if native=='ListBuckets':exclusions.append('NativePagination max-buckets/prefix/bucket-region/continuation request variant has AWS SDK wire evidence only; current Selectel availability unknown')
- if native=='PresignPostObject':
+ if native in ['PresignPostObject','PresignPostTemplate']:
   exclusions += ['POST form only: exact key and content type/metadata equality conditions; no key templates/prefix conditions, ACL, redirects or arbitrary policy JSON; caller submits file last, no SDK HTTP upload']
   c['request']['native_model']='AWS service/s3 v1.114.3 presign_post.go + Selectel published generate_presigned_post example'
   o['x-native-source']='presign_post.go.txt'
@@ -48,7 +49,7 @@ for native,m,path,suffix,go,inp,out in ops:
  c['response']['limitation']='Only source-confirmed basic Selectel header/XML subset is typed; advanced AWS output fields are not claimed complete. Provider timestamps retain raw source strings; SDK observation times are UTC time.Time.'
  c['errors']={'400':'invalid_argument','401':'unauthenticated','403':'permission_denied except known authentication machine codes','404':'not_found','409':'conflict','412':'conflict','416':'invalid_argument','429':'rate_limited','503 SlowDown':'rate_limited; bounded safe-read retry','copy HTTP200 Error':'provider_error with Accepted acknowledgement retained; no success claim','delete-many HTTP200 mixed':'provider_error/partial_success, exact per-item results preserved, Accepted acknowledgement retained','provider_message':'discarded; optional XML diagnostics cannot bypass normal status/retry/cancellation'}
  c['local_presign']='PresignGet/PresignPut: explicit CredentialSource only, no HTTP or mutation receipt; protected URL and signed headers; 1..900 whole seconds, source-provided credential expiry enforced' if suffix in ['objects.get','objects.put'] else c.get('local_presign')
- if native=='PresignPostObject':
+ if native in ['PresignPostObject','PresignPostTemplate']:
   c['request']['policy_fields']=['exact bucket','exact key; no ${filename} expansion','explicit content-length-range min/max integers','optional exact Content-Type and x-amz-meta-*','required exact SigV4 algorithm/date/credential and optional session token']
   c['request']['mapping']='SDK-owned typed PostOptions mapped into base64 JSON policy and protected form values; source PresignPostOptions.Conditions is deliberately restricted, never raw caller policy'
   c['response']['mapping']='native URL -> protected URL; Values -> protected Fields; Policy is protected Fields[policy]; ExpiresAt is exact generated policy expiration'
@@ -60,7 +61,13 @@ for native,m,path,suffix,go,inp,out in ops:
   c['wait']='unavailable for local presign; exact object HEAD is separate observation only'
   c['pagination']='not applicable'
 
- if native!='PresignPostObject': c['recovery']='Exact named bucket/key address only; never creation or contents proof. Known outcomes conclusive without I/O; unknown bulk or version-selected delete RecoveryUnavailable; version arguments are not serialized into generic key refs.'
+ if native not in ['PresignPostObject','PresignPostTemplate']: c['recovery']='Exact named bucket/key address only; never creation or contents proof. Known outcomes conclusive without I/O; unknown bulk or version-selected delete RecoveryUnavailable; version arguments are not serialized into generic key refs.'
+ if native=='PresignPostTemplate':
+  exclusions=['POST template form only: exact bucket and nonempty caller prefix plus compiled ${filename}; no arbitrary policy, auth override, ACL or redirects; caller submits file last, no SDK HTTP upload']
+  c['request']['excluded_variants']=exclusions
+  c['request']['policy_fields'][1]='starts-with $key caller prefix; form key is prefix + compiled ${filename}; no exact object proof'
+  c['request']['mapping']='SDK-owned typed PostTemplateOptions prefix -> native Key with compiled ${filename}; native Conditions restricted to mandatory prefix/size/auth plus typed equality conditions'
+  c['local_presign']='Buckets.PresignPostTemplate only: exact bucket endpoint, nonempty UTF-8 prefix <=1013 bytes with no caller placeholders, 1..900 second expiry, explicit byte range; local noHTTP/noReceipt/no exact object ref or creation proof'
  input_type=inp if inp.startswith('types.') else 's3.'+inp
  if native!='ListBuckets':input_type='types.ResourceRef, '+input_type
  if native=='CopyObject':input_type='types.ResourceRef, '+input_type
@@ -69,7 +76,7 @@ for native,m,path,suffix,go,inp,out in ops:
  output_type='s3.'+out
  if native.startswith('List'):input_type+=', pagination.Options';output_type='pagination.Page['+output_type+']'
  (R/'catalog/contracts'/f'{id}.json').write_text(json.dumps(c,indent=2)+'\n')
- b[id]={'go_method':'s3.'+go,'input_type':input_type,'output_type':output_type,'contract_ref':f'contracts/{id}.json','status':'partial','files':files,'evidence_files':['s3/public_test.go','s3/catalog_test.go'],'evidence_ref':'s3/public_test.go;s3/catalog_test.go','covered_schema_ref':f'contracts/{id}.json#/request','excluded_variants':exclusions+['Advanced AWS response fields not source-confirmed for Selectel; see response native_fields and limitation'],'recovery':m not in ['GET','HEAD'] and suffix!='objects.post','wait_goals':(['bucket.present'] if suffix=='buckets.create' else ['bucket.absent'] if suffix=='buckets.delete' else ['object.present'] if suffix=='objects.put' else ['object.absent'] if suffix=='objects.delete' else [])}
+ b[id]={'go_method':'s3.'+go,'input_type':input_type,'output_type':output_type,'contract_ref':f'contracts/{id}.json','status':'partial','files':files,'evidence_files':['s3/public_test.go','s3/catalog_test.go'],'evidence_ref':'s3/public_test.go;s3/catalog_test.go','covered_schema_ref':f'contracts/{id}.json#/request','excluded_variants':exclusions+['Advanced AWS response fields not source-confirmed for Selectel; see response native_fields and limitation'],'recovery':m not in ['GET','HEAD'] and suffix not in ['objects.post','objects.post_template'],'wait_goals':(['bucket.present'] if suffix=='buckets.create' else ['bucket.absent'] if suffix=='buckets.delete' else ['object.present'] if suffix=='objects.put' else ['object.absent'] if suffix=='objects.delete' else [])}
 s={'openapi':'3.0.3','info':{'title':'SDK-owned S3 protocol extraction, not a provider OpenAPI','version':'2006-03-01'},'paths':paths,'x-source-uri':'https://docs.selectel.ru/api/object-storage-s3/','x-source-revision':rev,'x-sdk-source':'github.com/aws/aws-sdk-go-v2/service/s3 v1.114.3 c8f4a4457aa933bd6c8ce60bc2ca2a0599b77478','x-local-snapshots':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(A.iterdir()) if p.is_file()}}
 (R/'catalog/sources/s3-protocol.json').write_text(json.dumps(s,indent=2)+'\n');(R/'catalog/bindings.json').write_text(json.dumps(b,indent=2)+'\n');p=R/'internal/cataloggen/s3_generated.go';p.write_text('// Code generated by s3contractgen; DO NOT EDIT.\npackage main\nfunc init(){families["s3-protocol"]=family{"s3","v2006_03_01","s3_sigv4",false};for k,v:=range map[string]string{'+''.join(over)+'}{overrides[k]=v}}\n');subprocess.run(['gofmt','-w',str(p)],check=True)
 (R/'s3/types_generated.go').write_text('''// Code generated by s3contractgen from pinned AWS S3 operation models; DO NOT EDIT.
@@ -81,6 +88,7 @@ type Empty struct{}
 type PresignedURL struct{URL types.ProtectedValue `json:"url"`;Headers map[string]types.ProtectedValue `json:"headers"`;ExpiresAt time.Time `json:"expires_at"`}
 type PostConditions struct{ContentType *types.ProtectedValue;Metadata map[string]types.ProtectedValue}
 type PostOptions struct{Expires time.Duration;MinBytes,MaxBytes int64;Conditions PostConditions}
+type PostTemplateOptions struct{Prefix string;Expires time.Duration;MinBytes,MaxBytes int64;Conditions PostConditions}
 type PresignedPost struct{URL types.ProtectedValue `json:"url"`;Fields map[string]types.ProtectedValue `json:"fields"`;Policy types.ProtectedValue `json:"policy"`;ExpiresAt time.Time `json:"expires_at"`}
 type Owner struct{ID *string `xml:"ID" json:"id,omitempty"`;DisplayName *string `xml:"DisplayName" json:"display_name,omitempty"`}
 type BucketSummary struct{Name string `json:"name"`;CreationDate,Region,ARN *string;Ref *types.ResourceRef `json:"ref,omitempty"`}

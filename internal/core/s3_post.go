@@ -17,12 +17,13 @@ import (
 )
 
 // S3PostPolicy is a private, compiled POST form subset, not caller policy JSON.
-// Bucket/key are exact refs; only content type and user metadata may add equality
-// conditions. The authentication, key and length constraints cannot be replaced.
+// Exact mode uses an object ref; template mode binds a bucket and compiled
+// filename prefix. Only content type and metadata may add equality conditions.
+// Authentication, bucket/key constraints and length limits cannot be replaced.
 type S3PostPolicy struct {
-	Bucket, Key        string
-	MinBytes, MaxBytes int64
-	Fields             map[string]string
+	Bucket, Key, Prefix string
+	MinBytes, MaxBytes  int64
+	Fields              map[string]string
 }
 
 type S3PostForm struct {
@@ -34,10 +35,25 @@ type S3PostForm struct {
 // PresignS3Post creates form inputs locally. The signature algorithm and canonical
 // policy shape follow pinned AWS service/s3 presign_post.go; no service client,
 // default credential chain, HTTP call or public raw signing seam is introduced.
-func (r *Runtime) PresignS3Post(ctx context.Context, op Operation, in Request, policy S3PostPolicy, expires time.Duration) (out types.Result[S3PostForm], err error) {
+func (r *Runtime) PresignS3Post(ctx context.Context, op Operation, in Request, policy S3PostPolicy, expires time.Duration) (types.Result[S3PostForm], error) {
+	return r.presignS3Post(ctx, op, in, policy, expires, false)
+}
+
+// PresignS3PostTemplate is a separate compiled variant: one exact bucket and
+// caller prefix, with a fixed filename placeholder. It never creates object refs.
+func (r *Runtime) PresignS3PostTemplate(ctx context.Context, op Operation, in Request, policy S3PostPolicy, expires time.Duration) (types.Result[S3PostForm], error) {
+	return r.presignS3Post(ctx, op, in, policy, expires, true)
+}
+
+func (r *Runtime) presignS3Post(ctx context.Context, op Operation, in Request, policy S3PostPolicy, expires time.Duration, template bool) (out types.Result[S3PostForm], err error) {
+	expectedID := "s3.v2006_03_01.objects.post"
+	if template {
+		expectedID = "s3.v2006_03_01.objects.post_template"
+	}
+
 	out.Metadata = types.Metadata{Scope: in.Scope, APIGeneration: op.APIGeneration}
 	defer func() { out.Metadata.ObservedAt = time.Now().UTC() }()
-	if r == nil || ctx == nil || op.ID != "s3.v2006_03_01.objects.post" || op.Service != "s3" || op.APIGeneration != "v2006_03_01" || op.Auth != types.S3SigV4 || op.SigV4Service != "s3" || op.Method != "POST" || expires <= 0 || expires > 15*time.Minute || expires%time.Second != 0 || policy.MinBytes < 0 || policy.MaxBytes <= 0 || policy.MinBytes > policy.MaxBytes {
+	if r == nil || ctx == nil || op.ID != expectedID || op.Service != "s3" || op.APIGeneration != "v2006_03_01" || op.Auth != types.S3SigV4 || op.SigV4Service != "s3" || op.Method != "POST" || expires <= 0 || expires > 15*time.Minute || expires%time.Second != 0 || policy.MinBytes < 0 || policy.MaxBytes <= 0 || policy.MinBytes > policy.MaxBytes {
 		return out, types.NewError(types.InvalidArgument)
 	}
 	call, cancel := context.WithTimeout(ctx, r.config.CallTimeout)
@@ -62,13 +78,26 @@ func (r *Runtime) PresignS3Post(ctx context.Context, op Operation, in Request, p
 			return out, e
 		}
 	}
-	if len(in.Refs) != 1 || in.Refs[0].Validate() != nil || in.Refs[0].Scope != in.Scope || in.Refs[0].Service != "s3" || in.Refs[0].APIGeneration != op.APIGeneration || in.Refs[0].Parent == nil || policy.Key != in.Refs[0].ID || policy.Bucket != in.Refs[0].Parent.ID || strings.Contains(policy.Key, "${") {
+	if len(in.Refs) != 1 || in.Refs[0].Validate() != nil || in.Refs[0].Scope != in.Scope || in.Refs[0].Service != "s3" || in.Refs[0].APIGeneration != op.APIGeneration {
+		return out, types.NewError(types.ScopeMismatch)
+	}
+	keyValue := policy.Key
+	if template {
+		ref := in.Refs[0]
+		if ref.Parent != nil || (ref.Kind != "bucket_name" && ref.Kind != "bucket_vhost_name") || policy.Bucket != ref.ID || policy.Key != "" {
+			return out, types.NewError(types.ScopeMismatch)
+		}
+		if len(policy.Prefix) == 0 || len(policy.Prefix) > 1024-len("${filename}") || !utf8.ValidString(policy.Prefix) || strings.Contains(policy.Prefix, "${") {
+			return out, types.NewError(types.InvalidArgument)
+		}
+		keyValue = policy.Prefix + "${filename}"
+	} else if in.Refs[0].Parent == nil || policy.Key != in.Refs[0].ID || policy.Bucket != in.Refs[0].Parent.ID || strings.Contains(policy.Key, "${") || policy.Prefix != "" {
 		return out, types.NewError(types.ScopeMismatch)
 	}
 	if !strings.HasPrefix(in.Path, "/") || strings.ContainsAny(in.Path, "?#") {
 		return out, types.NewError(types.InvalidArgument)
 	}
-	total := len(policy.Bucket) + len(policy.Key)
+	total := len(policy.Bucket) + len(keyValue)
 	for k, v := range policy.Fields {
 		if !(k == "Content-Type" || strings.HasPrefix(k, "x-amz-meta-") && len(k) > len("x-amz-meta-")) || !utf8.ValidString(v) {
 			return out, types.NewError(types.InvalidArgument)
@@ -96,7 +125,7 @@ func (r *Runtime) PresignS3Post(ctx context.Context, op Operation, in Request, p
 	if !entry.material.ExpiresAt.IsZero() && !until.Before(entry.material.ExpiresAt) {
 		return out, types.NewError(types.Unauthenticated)
 	}
-	fields := map[string]string{"key": policy.Key, "X-Amz-Algorithm": "AWS4-HMAC-SHA256", "X-Amz-Date": now.Format("20060102T150405Z"), "X-Amz-Credential": string(entry.material.AccessKey.Reveal()) + "/" + now.Format("20060102") + "/" + in.Scope.Pool + "/s3/aws4_request"}
+	fields := map[string]string{"key": keyValue, "X-Amz-Algorithm": "AWS4-HMAC-SHA256", "X-Amz-Date": now.Format("20060102T150405Z"), "X-Amz-Credential": string(entry.material.AccessKey.Reveal()) + "/" + now.Format("20060102") + "/" + in.Scope.Pool + "/s3/aws4_request"}
 	if !entry.material.SessionToken.Empty() {
 		fields["X-Amz-Security-Token"] = string(entry.material.SessionToken.Reveal())
 	}
@@ -109,7 +138,13 @@ func (r *Runtime) PresignS3Post(ctx context.Context, op Operation, in Request, p
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
+	if template {
+		conditions = append(conditions, []string{"starts-with", "$key", policy.Prefix})
+	}
 	for _, k := range keys {
+		if template && k == "key" {
+			continue
+		}
 		conditions = append(conditions, map[string]string{k: fields[k]})
 	}
 	raw, e := json.Marshal(struct {
