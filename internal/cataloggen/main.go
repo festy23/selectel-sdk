@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"1c-cloud":                     {"cloud_1c", "v2", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -173,6 +174,10 @@ func generate() error {
 				}
 				effect := "mutation"
 				if method == "get" || method == "head" || method == "options" || name == "audit-logs" {
+					effect = "read"
+				}
+				// Pinned OneC description: validates mount options before creating a volume.
+				if name == "1c-cloud" && method == "post" && path == "/clusters/volumes/verify" {
 					effect = "read"
 				}
 				var sourceOperation struct {

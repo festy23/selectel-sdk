@@ -1,0 +1,47 @@
+{
+  "operation_id": "cloud_1c.v2.clusters.update",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/{id}",
+    "method": "PATCH",
+    "body": "Raw ClusterSpec, not a spec wrapper. All source-required nested fields validated; explicit false/empty preserved.",
+    "reference": "Exact pinned cluster ref; no parent"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed PatchClusterResponse; ID/projectId checked, accepted exact caller ref retained on decode errors",
+    "sensitive_fields": [
+      "cluster.state.health.issues[].metricThresholdBreach.metric.value",
+      "cluster.state.health.issues[].metricThresholdBreach.threshold"
+    ],
+    "number_protection": "Source JSON numbers are lexically validated and stored in onec.ProtectedNumber without precision conversion; formatting/JSON/Text redacts, Reveal is explicit"
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "no mutation replay on any unknown response",
+  "pagination": null,
+  "wait": {
+    "goals": [
+      "cluster.active"
+    ],
+    "source_states": "ClusterStatus enum; ACTIVE / DELETED are respective explicit goal success, ERRORED failure; UNSPECIFIED/missing/new states unknown",
+    "absence": "No undocumented 404 absence goal",
+    "restrictions": "Receipt-bound goal filtered by originating capability; exact ref and endpoint only"
+  },
+  "recovery": {
+    "kind": "exact resource observation; unknown outcome remains indeterminate; no replay or authorship inference"
+  }
+}

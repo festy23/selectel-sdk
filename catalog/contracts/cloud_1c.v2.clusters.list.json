@@ -1,0 +1,44 @@
+{
+  "operation_id": "cloud_1c.v2.clusters.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters",
+    "query": {
+      "cursor.cursor": "exact SDK cursor wire pointer, omitted initially",
+      "cursor.limit": "effective bounded page size as uint64 string"
+    }
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Generated typed clusters, exact IDs/projectId, duplicate IDs rejected, source cursor next/total preserved as exact uint64 strings; items have caller scope refs",
+    "sensitive_fields": [
+      "clusters[].state.health.issues[].metricThresholdBreach.metric.value",
+      "clusters[].state.health.issues[].metricThresholdBreach.threshold"
+    ],
+    "number_protection": "Source JSON numbers are lexically validated and stored in onec.ProtectedNumber without precision conversion; formatting/JSON/Text redacts, Reveal is explicit"
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": {
+    "continuation": "returned cursor.next forwarded unchanged; SDK cursor scope/endpoint/revision/fingerprint",
+    "terminal": "Unconfirmed: no absent/empty/zero sentinel invented; no complete collection claim, no-progress protocol error preserves observed items",
+    "bounds": "Config PageSize/MaxItems/MaxPages/CollectionTimeout/MaxJSONBytes"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

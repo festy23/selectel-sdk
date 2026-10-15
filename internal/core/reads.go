@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+func (r *Runtime) CallTimeout() time.Duration       { return r.config.CallTimeout }
 func (r *Runtime) CollectionTimeout() time.Duration { return r.config.CollectionTimeout }
 func (r *Runtime) MetricSampleLimit() uint          { return r.config.MaxMetricSamples }
 

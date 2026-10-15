@@ -1,0 +1,32 @@
+{
+  "operation_id": "cloud_1c.v2.datastore_flavors_constraints.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/datastore-flavors/constraints",
+    "query": {}
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed GetDatastoreFlavorConstraintsResponse/DatastoreFlavorConstraints/ResourceConstraint; exact int64 strings and optional min/max presence retained",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

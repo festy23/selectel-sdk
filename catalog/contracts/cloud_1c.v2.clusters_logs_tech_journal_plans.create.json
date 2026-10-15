@@ -1,0 +1,49 @@
+{
+  "operation_id": "cloud_1c.v2.clusters_logs_tech_journal_plans.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/{id}/logs/tech-journal/plans",
+    "method": "POST",
+    "body": "CreateTechJournalLogPlanBody with protected logConfig.rawXml; optional UTC start/end and ordered interval; caller cluster anchor",
+    "reference": "Exact validated cluster parent before I/O",
+    "precondition": "Caller creates documented CNAME pointing to cluster web-publication hostname with TTL300 before calling; SDK performs no DNS changes",
+    "protected_input": "Private wireBody reveals only explicit protected source strings; format=byte/PEM descriptions preserved as caller wire string without implicit base64/X509 conversion"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed CreateTechJournalLogPlanResponse.logPlan; minimally scan acknowledged ID and available clusterId before independent DTO decode; exact caller parent retained",
+    "sensitive_fields": [
+      "request.logConfig.rawXml",
+      "logPlan.configData"
+    ],
+    "number_protection": "Source JSON numbers are lexically validated and stored in onec.ProtectedNumber without precision conversion; formatting/JSON/Text redacts, Reveal is explicit"
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "no mutation replay on any unknown response",
+  "pagination": null,
+  "wait": {
+    "goals": [
+      "journal_plan.running"
+    ],
+    "status": "Exact child ID in finite native ListJournalPlans; one CallTimeout and collection bounds",
+    "source_states": "RUNNING success; SCHEDULED pending; ERRORED/CANCELLED/STOPPED/FINISHED failure for running goal; missing/UNSPECIFIED/future raw states unknown",
+    "limits": "No actual log delivery/readiness claim; scheduled plans may remain pending until scheduled time"
+  },
+  "recovery": {
+    "kind": "Exact acknowledged journal_plan child plus caller parent only; parent-only unknown unavailable"
+  }
+}

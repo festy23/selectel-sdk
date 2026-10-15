@@ -1,0 +1,40 @@
+{
+  "operation_id": "cloud_1c.v2.clusters_volumes_verify.create",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/volumes/verify",
+    "method": "POST",
+    "body": "VerifyClusterVolumeSpecRequest.spec; protected S3 accessKeyId/secretAccessKey reveal only private wire encoder",
+    "reference": "No owner/resource adoption from source spec.clusterId"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed empty VerifyClusterVolumeSpecResponse; no resource creation/readiness claimed",
+    "sensitive_fields": [
+      "request.spec.s3.accessKeyId",
+      "request.spec.s3.secretAccessKey"
+    ],
+    "number_protection": "Source JSON numbers are lexically validated and stored in onec.ProtectedNumber without precision conversion; formatting/JSON/Text redacts, Reveal is explicit"
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "Bounded safe validation-only read; source describes verification before creating volume; no mutation receipt",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

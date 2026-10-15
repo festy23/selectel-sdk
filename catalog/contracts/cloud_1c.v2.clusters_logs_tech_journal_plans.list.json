@@ -1,0 +1,38 @@
+{
+  "operation_id": "cloud_1c.v2.clusters_logs_tech_journal_plans.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/{id}/logs/tech-journal/plans",
+    "reference": "Explicit exact caller cluster anchor; any supplied clusterId matches; parent never inferred"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed finite logPlans collection; IDs and source clusterId checked, explicit caller parent refs, UTC timestamps; future status strings preserved",
+    "sensitive_fields": [
+      "logPlans[].configData"
+    ]
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": {
+    "provider": "Finite logPlans array, no provider cursor/limit documented",
+    "local": "FixedIterator enforces PageSize/MaxItems/MaxPages/CollectionTimeout and MaxJSONBytes; partial local page retains SDK replay cursor+skip",
+    "consistency": "Best effort reread; no snapshot guarantee"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

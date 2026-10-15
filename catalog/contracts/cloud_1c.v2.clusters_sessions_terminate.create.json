@@ -1,0 +1,45 @@
+{
+  "operation_id": "cloud_1c.v2.clusters_sessions_terminate.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/{id}/sessions/terminate",
+    "method": "POST",
+    "body": "Typed TerminateClusterSessionBody: exactly one nonempty sessionId or explicit filter; no implicit all-sessions default. Explicit empty filter means all sessions per source. Protected reason reveals only wire.",
+    "reference": "Explicit caller cluster anchor; source sessionId retained as caller exact session ref, filter never adopts session refs",
+    "precondition": "Caller creates documented CNAME pointing to cluster web-publication hostname with TTL300 before calling; SDK performs no DNS changes",
+    "protected_input": "Private wireBody reveals only explicit protected source strings; format=byte/PEM descriptions preserved as caller wire string without implicit base64/X509 conversion"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed empty TerminateClusterSessionResponse, retained receipt on all errors; acceptance does not prove session termination",
+    "sensitive_fields": [
+      "request.reason"
+    ],
+    "number_protection": "Source JSON numbers are lexically validated and stored in onec.ProtectedNumber without precision conversion; formatting/JSON/Text redacts, Reveal is explicit"
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "no mutation replay on any unknown response",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "limitation": "Source provides no terminated session state or causal completion token; no absence/name lookup success claimed"
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "observation": "Caller may explicitly inspect exact IDs with ListClusterSessions; receipt refs retained, no replay or implicit recovery"
+  }
+}

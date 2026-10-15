@@ -1,0 +1,45 @@
+{
+  "operation_id": "cloud_1c.v2.clusters_sessions.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/{id}/sessions",
+    "reference": "Explicit exact caller cluster anchor; any supplied clusterId matches; parent never inferred",
+    "query": {
+      "infobaseId": "optional string, absence and explicit empty preserved"
+    }
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Finite typed sessions array, exact session ID with caller cluster parent; source infobase filter validated when present, no inferred infobase owner; exact signed/unsigned64 strings protected; UTC timestamps",
+    "sensitive_fields": [
+      "sessions[].username",
+      "sessions[].clientIp",
+      "sessions[].appType",
+      "sessions[].locale",
+      "sessions[].integer-string telemetry"
+    ]
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": {
+    "provider": "Finite sessions array; no provider cursor/limit documented",
+    "local": "FixedIterator enforces PageSize/MaxItems/MaxPages/CollectionTimeout and MaxJSONBytes; partial local page retains SDK replay cursor+skip",
+    "consistency": "Best effort reread; no snapshot guarantee"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

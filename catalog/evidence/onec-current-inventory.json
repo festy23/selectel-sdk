@@ -1,0 +1,743 @@
+{
+  "source_uri": "https://docs.selectel.ru/api/1c-cloud.json",
+  "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+  "inventory_complete": false,
+  "coverage_ratio": null,
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/metrics/api-keys",
+      "operation_id": "listMetricsAPIKeys",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/metrics/api-keys",
+      "operation_id": "createMetricsAPIKey",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/metrics/api-keys/{id}",
+      "operation_id": "deleteMetricsApiKey",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "PATCH",
+      "path": "/metrics/api-keys/{id}",
+      "operation_id": "patchMetricsAPIkey",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/service/config",
+      "operation_id": "getServiceConfig",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.service_config.list"
+    },
+    {
+      "method": "GET",
+      "path": "/service/endpoints",
+      "operation_id": "getServiceEndpoints",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.service_endpoints.list"
+    },
+    {
+      "method": "GET",
+      "path": "/service/regions",
+      "operation_id": "getServiceRegions",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.service_regions.list"
+    },
+    {
+      "method": "POST",
+      "path": "/backup/backups",
+      "operation_id": "createBackup",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/backup/backups/infobases/{id}",
+      "operation_id": "listInfobaseBackups",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/backup/backups/{id}",
+      "operation_id": "deleteBackup",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/backup/backups/{id}/download-url",
+      "operation_id": "getBackupDownloadURL",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/backup/dt/dump",
+      "operation_id": "createDT",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/backup/dt/restore",
+      "operation_id": "restoreFromDT",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/backup/dt/upload-url",
+      "operation_id": "getDTUploadURL",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/backup/infobases",
+      "operation_id": "listBackedUpInfobases",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/backup/plan",
+      "operation_id": "createBackupPlan",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "PUT",
+      "path": "/backup/plan",
+      "operation_id": "updateBackupPlan",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "PATCH",
+      "path": "/backup/plan/{infobaseId}",
+      "operation_id": "patchBackupPlan",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/backup/plans",
+      "operation_id": "listBackupPlans",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/backup/restore",
+      "operation_id": "restoreFromBackup",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/backup/restore/status/{infobaseId}",
+      "operation_id": "getInfobaseRestoreStatus",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/backup/supported-regions/vaults",
+      "operation_id": "listBackupVaultSupportedRegions",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/backup/vaults",
+      "operation_id": "listBackupVaults",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/backup/vaults",
+      "operation_id": "createBackupVault",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/backup/vaults/verify",
+      "operation_id": "verifyBackupVaultSpec",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/backup/vaults/{id}",
+      "operation_id": "getBackupVault",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/backup/vaults/{id}",
+      "operation_id": "deleteBackupVault",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "PATCH",
+      "path": "/backup/vaults/{id}",
+      "operation_id": "patchBackupVault",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/cluster-flavors",
+      "operation_id": "listClusterFlavors",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_flavors.list"
+    },
+    {
+      "method": "GET",
+      "path": "/cluster-flavors/constraints",
+      "operation_id": "listClusterFlavorConstraints",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_flavors_constraints.list"
+    },
+    {
+      "method": "GET",
+      "path": "/cluster-platforms",
+      "operation_id": "listClusterPlatforms",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_platforms.list"
+    },
+    {
+      "method": "GET",
+      "path": "/cluster-proxies",
+      "operation_id": "listClusterProxies",
+      "owner_issue": 65,
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.cluster_proxies.list"
+    },
+    {
+      "method": "POST",
+      "path": "/cluster-proxies",
+      "operation_id": "createClusterProxy",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_proxies.create"
+    },
+    {
+      "method": "GET",
+      "path": "/cluster-proxies/network-share/project",
+      "operation_id": "getProjectIDForNetworkSharing",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_proxies_network_share_project.list"
+    },
+    {
+      "method": "GET",
+      "path": "/cluster-proxies/{id}",
+      "operation_id": "getClusterProxy",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_proxies.get"
+    },
+    {
+      "method": "DELETE",
+      "path": "/cluster-proxies/{id}",
+      "operation_id": "deleteClusterProxy",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_proxies.delete"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters",
+      "operation_id": "listClusters",
+      "owner_issue": 65,
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.clusters.list"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters",
+      "operation_id": "createCluster",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters.create"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/logs/tech-journal/predefined-configs",
+      "operation_id": "listPredefinedTechJournalLogConfigs",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_predefined_configs.list"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/volumes/supported-regions",
+      "operation_id": "listClusterVolumeSupportedRegions",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_volumes_supported_regions.list"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/volumes/verify",
+      "operation_id": "listClusterVolumeSpec",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_volumes_verify.create"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/{id}",
+      "operation_id": "getCluster",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters.get"
+    },
+    {
+      "method": "DELETE",
+      "path": "/clusters/{id}",
+      "operation_id": "deleteCluster",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters.delete"
+    },
+    {
+      "method": "PATCH",
+      "path": "/clusters/{id}",
+      "operation_id": "patchCluster",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters.update"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/config",
+      "operation_id": "changeClusterConfig",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_config.create"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/{id}/domains",
+      "operation_id": "listClusterDomains",
+      "owner_issue": 65,
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.clusters_domains.list"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/domains",
+      "operation_id": "registerClusterDomain",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_domains.create"
+    },
+    {
+      "method": "DELETE",
+      "path": "/clusters/{id}/domains/{domainId}",
+      "operation_id": "deleteClusterDomain",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_domains.delete"
+    },
+    {
+      "method": "PATCH",
+      "path": "/clusters/{id}/domains/{domainId}",
+      "operation_id": "patchClusterDomain",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_domains.update"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/domains/{domainId}/transfer",
+      "operation_id": "transferClusterDomain",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_domains_transfer.create"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/{id}/logs/tech-journal/config",
+      "operation_id": "getTechJournalLogsConfig",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_config.list"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/{id}/logs/tech-journal/plans",
+      "operation_id": "listTechJournalLogPlans",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_plans.list"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/logs/tech-journal/plans",
+      "operation_id": "createTechJournalLogPlan",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_plans.create"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/logs/tech-journal/plans/{planId}/disable",
+      "operation_id": "disableTechJournalLogPlan",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_logs_tech_journal_plans_disable.create"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/{id}/maintenance",
+      "operation_id": "listClusterMaintenanceEvents",
+      "owner_issue": 65,
+      "status": "partial",
+      "binding": "cloud_1c.v2.clusters_maintenance.list",
+      "remaining": "Terminal cursor semantics absent from pinned source"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/{id}/metrics",
+      "operation_id": "getClusterMetrics",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_metrics.list"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/resize",
+      "operation_id": "resizeCluster",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_resize.create"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/restart",
+      "operation_id": "restartCluster",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_restart.create"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/{id}/sessions",
+      "operation_id": "listClusterSessions",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_sessions.list"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/sessions/terminate",
+      "operation_id": "terminateClusterSession",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_sessions_terminate.create"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/upgrade",
+      "operation_id": "upgradeCluster",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_upgrade.create"
+    },
+    {
+      "method": "GET",
+      "path": "/clusters/{id}/volumes",
+      "operation_id": "listClusterVolumes",
+      "owner_issue": 65,
+      "status": "partial",
+      "binding": "cloud_1c.v2.clusters_volumes.list",
+      "remaining": "Terminal cursor semantics absent from pinned source"
+    },
+    {
+      "method": "POST",
+      "path": "/clusters/{id}/volumes",
+      "operation_id": "mountClusterVolume",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_volumes.create"
+    },
+    {
+      "method": "DELETE",
+      "path": "/clusters/{id}/volumes/{volumeId}",
+      "operation_id": "unmountClusterVolume",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_volumes.delete"
+    },
+    {
+      "method": "GET",
+      "path": "/datastore-flavors",
+      "operation_id": "listDatastoreFlavors",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastore_flavors.list"
+    },
+    {
+      "method": "GET",
+      "path": "/datastore-flavors/constraints",
+      "operation_id": "listDatastoreFlavorConstraints",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastore_flavors_constraints.list"
+    },
+    {
+      "method": "GET",
+      "path": "/datastore-types",
+      "operation_id": "listDatastoreTypes",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastore_types.list"
+    },
+    {
+      "method": "GET",
+      "path": "/datastores",
+      "operation_id": "listDatastores",
+      "owner_issue": 65,
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.datastores.list"
+    },
+    {
+      "method": "POST",
+      "path": "/datastores",
+      "operation_id": "createDatastore",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores.create"
+    },
+    {
+      "method": "GET",
+      "path": "/datastores/{id}",
+      "operation_id": "getDatastore",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores.get"
+    },
+    {
+      "method": "DELETE",
+      "path": "/datastores/{id}",
+      "operation_id": "deleteDatastore",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores.delete"
+    },
+    {
+      "method": "PATCH",
+      "path": "/datastores/{id}",
+      "operation_id": "patchDatastore",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores.update"
+    },
+    {
+      "method": "GET",
+      "path": "/datastores/{id}/maintenance",
+      "operation_id": "listDatastoreMaintenanceEvents",
+      "owner_issue": 65,
+      "status": "partial",
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.datastores_maintenance.list"
+    },
+    {
+      "method": "POST",
+      "path": "/datastores/{id}/resize",
+      "operation_id": "resizeDatastore",
+      "owner_issue": 65,
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores_resize.create"
+    },
+    {
+      "method": "GET",
+      "path": "/infobases",
+      "operation_id": "listInfobases",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/infobases",
+      "operation_id": "createInfobase",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/infobases/{id}",
+      "operation_id": "getInfobase",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/infobases/{id}",
+      "operation_id": "deleteInfobase",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "PATCH",
+      "path": "/infobases/{id}",
+      "operation_id": "patchInfobase",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/infobases/{id}/scheduled-jobs/allow",
+      "operation_id": "allowInfobaseScheduledJobs",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/infobases/{id}/scheduled-jobs/deny",
+      "operation_id": "denyInfobaseScheduledJobs",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/infobases/{id}/sessions/allow",
+      "operation_id": "allowInfobaseSessions",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/infobases/{id}/sessions/deny",
+      "operation_id": "denyInfobaseSessions",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/infobases/{id}/transfer",
+      "operation_id": "transferInfobase",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/infobases/{id}/web-pub/config",
+      "operation_id": "getInfobaseWebPublicationConfig",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/infobases/{id}/web-pub/config",
+      "operation_id": "updateInfobaseWebPublicationConfig",
+      "owner_issue": 66,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/license/activated/{clusterId}",
+      "operation_id": "listActivatedLicenses",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/license/rent",
+      "operation_id": "listLicensesRents",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/license/rent",
+      "operation_id": "rentLicense",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/license/rent/price",
+      "operation_id": "calculateLicensesRentPrice",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/license/rent/{id}",
+      "operation_id": "getLicenseRent",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/license/rent/{rentId}",
+      "operation_id": "cancelLicenseRent",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/license/{clusterId}/activate",
+      "operation_id": "activateLicense",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/license/{id}",
+      "operation_id": "getLicenseActivation",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/license/{licenseId}/deactivate",
+      "operation_id": "deactivateLicense",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/usage",
+      "operation_id": "getServiceUsage",
+      "owner_issue": 67,
+      "status": "unimplemented"
+    }
+  ],
+  "issue_65_checkpoint": {
+    "implemented": 42,
+    "partial": 7,
+    "unimplemented": 0,
+    "remaining_owner_issue": 65,
+    "limitation": "All enumerated operations bound; seven cursor terminal contracts unresolved; whole public inventory unknown, no full coverage claim"
+  }
+}

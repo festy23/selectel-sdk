@@ -1,0 +1,43 @@
+{
+  "operation_id": "cloud_1c.v2.clusters_maintenance.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject",
+    "ref_validation": "For caller-provided refs, exact ID/URL binding match before credential lookup and HTTP; no redirect or selecting a ref-supplied endpoint"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/{id}/maintenance",
+    "query": {
+      "cursor.cursor": "exact SDK cursor wire pointer, omitted initially",
+      "cursor.limit": "effective bounded page size as uint64 string"
+    },
+    "reference": "Exact independent cluster ref; endpoint and ancestor identity validated before credentials/HTTP"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed ListClusterMntEventsResponse/ClusterMntEvent/spec/state/tasks; id/projectId/spec.clusterId checked; event refs retain caller-provided cluster parent; UTC timestamps; tasks are enum metadata, not causal provider operation IDs",
+    "sensitive_fields": [
+      "events.spec.description"
+    ]
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": {
+    "continuation": "returned cursor.next forwarded unchanged; SDK cursor scope/endpoint/revision/fingerprint",
+    "terminal": "Unconfirmed: no absent/empty/zero sentinel invented; no complete collection claim, no-progress protocol error preserves observed items",
+    "bounds": "Config PageSize/MaxItems/MaxPages/CollectionTimeout/MaxJSONBytes"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

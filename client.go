@@ -16,6 +16,7 @@ import (
 	"github.com/festy23/selectel-sdk/logs"
 	"github.com/festy23/selectel-sdk/metrics"
 	"github.com/festy23/selectel-sdk/mks"
+	"github.com/festy23/selectel-sdk/onec"
 	"github.com/festy23/selectel-sdk/operations"
 	"github.com/festy23/selectel-sdk/projects"
 	"github.com/festy23/selectel-sdk/registry"
@@ -81,6 +82,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Scope.AccountID != c.scope.AccountID {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
+	if ref.Service == "cloud_1c" {
+		return c.onecHandle(ref, nil)
+	}
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
@@ -103,6 +107,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
 	}
+	if capability.Service == "cloud_1c" {
+		return onec.Bind(c.runtime, receipt.Scope).Resume(receipt)
+	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)
 	}
@@ -115,6 +122,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if capability.Effect != "mutation" || capability.APIGeneration != ref.APIGeneration {
 		return nil, types.NewError(types.InvalidArgument)
+	}
+	if ref.Service == "cloud_1c" {
+		return c.onecHandle(ref, &receipt)
 	}
 	if ref.Service == "compute" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, &receipt)
@@ -175,4 +185,28 @@ func New(config Config) (*Client, error) {
 }
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
+}
+
+func (p ProjectClient) OneC() *onec.Client { return onec.Bind(p.client.runtime, p.client.scope) }
+
+func (r RegionalClient) OneC() *onec.Client { return onec.Bind(r.client.runtime, r.client.scope) }
+
+func (c *Client) onecHandle(ref types.ResourceRef, receipt *types.Receipt) (*operations.Handle, error) {
+	service := onec.Bind(c.runtime, ref.Scope)
+	switch ref.Kind {
+	case "cluster":
+		return service.ClusterHandle(ref, receipt)
+	case "datastore":
+		return service.DatastoreHandle(ref, receipt)
+	case "cluster_proxy":
+		return service.ClusterProxyHandle(ref, receipt)
+	case "journal_plan":
+		return service.JournalPlanHandle(ref, receipt)
+	case "cluster_volume":
+		return service.ClusterVolumeHandle(ref, receipt)
+	case "cluster_domain":
+		return service.ClusterDomainHandle(ref, receipt)
+	default:
+		return nil, types.NewError(types.CapabilityUnavailable)
+	}
 }

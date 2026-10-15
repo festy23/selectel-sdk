@@ -31,7 +31,7 @@ Service ID является стабильным именем пакета и к
 | `backups` | [Scheduled backup / restore](https://docs.selectel.ru/api/scheduled-backups/) | cloudbackup-go / HTTP |
 | `dedicated` | [Dedicated servers](https://docs.selectel.ru/api/dedicated/) | dedicated-go/v2 / HTTP |
 | `vmware` | [VMware access](https://docs.selectel.ru/api/vmware/) | Документированный Cloud Director adapter |
-| `cloud_1c` | [Облако 1С](https://docs.selectel.ru/api/1c-cloud/) | HTTP |
+| `cloud_1c` | [Облако 1С](https://docs.selectel.ru/api/1c-cloud/) | HTTP; [SDK contract](onec.md) |
 | `dns` | [Текущий DNS](https://docs.selectel.ru/api/dns-actual/), [legacy](https://docs.selectel.ru/api/dns-legacy/) | domains-go / HTTP |
 | `cdn` | [CDN](https://docs.selectel.ru/api/cdn/) | HTTP |
 | `email` | [Почтовый сервис](https://docs.selectel.ru/api/email-service/) | HTTP / документированный почтовый протокол |
