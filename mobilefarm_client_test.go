@@ -594,3 +594,159 @@ func TestMobileFarmFirewallOrderPreservesCallerOrderAndAllTrustworthyAcceptedIDs
 		t.Fatalf("order %+v %v", out, e)
 	}
 }
+
+func TestMobileFarmAssignDevicePreservesUnknownResponseWithoutInventedAssociation(t *testing.T) {
+	calls := 0
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		body, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/mobfarm/api/v3/users/devices" || string(body) != `{"serial":"serial-1","timeout":32400000}` {
+			t.Fatalf("assign %s %s", r.URL, body)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"opaque":"synthetic-private-assignment"}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	ref := mobileFarmUserRef()
+	ref.Scope.ProjectID = "test-project"
+	ref.Kind = "device"
+	ref.ID = "serial-1"
+	var input mobilefarm.AddUserDeviceRequest
+	_ = json.Unmarshal([]byte(`{"serial":"serial-1","timeout":32400000}`), &input)
+	out, e := p.MobileFarm().AssignDevice(context.Background(), ref, input, types.CallOptions{})
+	if types.ErrorCode(e) != types.Incomplete || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref || out.Data.HTTPStatus != 200 {
+		t.Fatalf("assign %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out)
+	if strings.Contains(string(safe)+fmt.Sprintf("%+v %#v", out, out), "synthetic-private-assignment") {
+		t.Fatal("assignment leaked")
+	}
+}
+
+func TestMobileFarmReleaseDevicePreservesAcceptedPartialAndUnknownNeverReplays(t *testing.T) {
+	for _, accepted := range []bool{true, false} {
+		t.Run(fmt.Sprint(accepted), func(t *testing.T) {
+			calls := 0
+			c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+				calls++
+				if r.Method != "DELETE" || r.URL.Path != "/mobfarm/api/v3/users/devices/serial-1" {
+					t.Fatalf("release %s", r.URL)
+				}
+				if !accepted {
+					return nil, io.ErrUnexpectedEOF
+				}
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"unknown":true}`))}, nil
+			}))
+			p, _ := c.Project("test-project")
+			ref := mobileFarmUserRef()
+			ref.Scope.ProjectID = "test-project"
+			ref.Kind = "device"
+			ref.ID = "serial-1"
+			out, e := p.MobileFarm().ReleaseDevice(context.Background(), ref, types.CallOptions{})
+			outcome := types.Unknown
+			if accepted {
+				outcome = types.Accepted
+			}
+			if e == nil || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != outcome || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref || out.Receipt.Recovery != "unavailable" {
+				t.Fatalf("release %+v %v", out, e)
+			}
+			if accepted && types.ErrorCode(e) != types.Incomplete {
+				t.Fatalf("accepted error %v", e)
+			}
+		})
+	}
+}
+
+func TestMobileFarmStopRemoteConnectIsAcceptanceOnlyAndNeverOpensReturnedLocation(t *testing.T) {
+	calls := 0
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.Method != "DELETE" || r.URL.Path != "/mobfarm/api/v3/users/devices/serial-1/remote-connect" {
+			t.Fatalf("stop %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{"Location": []string{"https://unconfirmed.invalid/synthetic-private"}}, Body: io.NopCloser(strings.NewReader(`{"remoteConnectUrl":"synthetic-private-url"}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	ref := mobileFarmUserRef()
+	ref.Scope.ProjectID = "test-project"
+	ref.Kind = "device"
+	ref.ID = "serial-1"
+	out, e := p.MobileFarm().StopRemoteConnect(context.Background(), ref, types.CallOptions{})
+	if types.ErrorCode(e) != types.Incomplete || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("stop %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmStartRemoteConnectReturnsProtectedURLWithoutConnecting(t *testing.T) {
+	calls := 0
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.Method != "POST" || r.URL.Path != "/mobfarm/api/v3/users/devices/serial-1/remote-connect" {
+			t.Fatalf("start %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"remoteConnectUrl":"synthetic-private-adb-url"}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	ref := mobileFarmUserRef()
+	ref.Scope.ProjectID = "test-project"
+	ref.Kind = "device"
+	ref.ID = "serial-1"
+	out, e := p.MobileFarm().StartRemoteConnect(context.Background(), ref, types.CallOptions{})
+	if e != nil || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref || out.Data.RemoteConnectURL == nil || string(out.Data.RemoteConnectURL.Reveal()) != "synthetic-private-adb-url" {
+		t.Fatalf("start %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out)
+	diagnostics := string(safe) + fmt.Sprintf("%+v %#v %x", out, out, out.Data.RemoteConnectURL)
+	for _, v := range []string{"synthetic-private-adb-url", fmt.Sprint([]byte("synthetic-private-adb-url")), fmt.Sprintf("%#v", []byte("synthetic-private-adb-url"))} {
+		if strings.Contains(diagnostics, v) {
+			t.Fatal("remote URL leaked")
+		}
+	}
+}
+
+func TestMobileFarmDeviceAccessMutationsValidateExactRefBeforeCredentials(t *testing.T) {
+	credentialCalls, wireCalls := 0, 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+		credentialCalls++
+		return credentials.Material{}, io.ErrUnexpectedEOF
+	}), Transport: transportFunc(func(*http.Request) (*http.Response, error) { wireCalls++; return nil, io.ErrUnexpectedEOF })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	ref := mobileFarmUserRef()
+	ref.Scope.ProjectID = "test-project"
+	ref.Kind = "device"
+	ref.ID = "serial-1"
+	ref.EndpointURL = "https://unconfirmed.invalid"
+	var input mobilefarm.AddUserDeviceRequest
+	_ = json.Unmarshal([]byte(`{"serial":"serial-1"}`), &input)
+	calls := []struct {
+		name string
+		call func() (*types.Receipt, error)
+	}{
+		{"assign", func() (*types.Receipt, error) {
+			out, e := p.MobileFarm().AssignDevice(context.Background(), ref, input, types.CallOptions{})
+			return out.Receipt, e
+		}},
+		{"release", func() (*types.Receipt, error) {
+			out, e := p.MobileFarm().ReleaseDevice(context.Background(), ref, types.CallOptions{})
+			return out.Receipt, e
+		}},
+		{"start", func() (*types.Receipt, error) {
+			out, e := p.MobileFarm().StartRemoteConnect(context.Background(), ref, types.CallOptions{})
+			return out.Receipt, e
+		}},
+		{"stop", func() (*types.Receipt, error) {
+			out, e := p.MobileFarm().StopRemoteConnect(context.Background(), ref, types.CallOptions{})
+			return out.Receipt, e
+		}},
+	}
+	for _, call := range calls {
+		t.Run(call.name, func(t *testing.T) {
+			receipt, e := call.call()
+			if types.ErrorCode(e) != types.EndpointUnavailable || receipt == nil || receipt.Outcome != types.NotSent || receipt.ContractRevision == "" || credentialCalls != 0 || wireCalls != 0 {
+				t.Fatalf("gate %+v %v creds%d wire%d", receipt, e, credentialCalls, wireCalls)
+			}
+		})
+	}
+}

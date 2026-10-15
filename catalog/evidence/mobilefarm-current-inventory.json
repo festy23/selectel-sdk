@@ -316,7 +316,9 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "partial",
+      "binding": "mobile_farm.v3.api_users_devices.create",
+      "remaining_contract": "200 response schema missing; owned #69, protected bounded acceptance only; Swagger/blog shape discrepancy for assignment"
     },
     {
       "method": "DELETE",
@@ -326,7 +328,9 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "partial",
+      "binding": "mobile_farm.v3.api_users_devices.delete",
+      "remaining_contract": "200 response schema missing; owned #69, protected bounded acceptance only; Swagger/blog shape discrepancy for assignment"
     },
     {
       "method": "POST",
@@ -336,7 +340,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_users_devices_remote_connect.create"
     },
     {
       "method": "DELETE",
@@ -346,7 +351,9 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "partial",
+      "binding": "mobile_farm.v3.api_users_devices_remote_connect.delete",
+      "remaining_contract": "200 response schema missing; owned #69, protected bounded acceptance only; Swagger/blog shape discrepancy for assignment"
     }
   ]
 }

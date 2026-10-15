@@ -1,0 +1,39 @@
+{
+  "operation_id": "mobile_farm.v3.api_users_devices_remote_connect.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "project IAM view only",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v3/users/devices/{serial}/remote-connect",
+    "method": "POST",
+    "auth": "iam_project; no fallback",
+    "body": "none"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed optional protected remoteConnectUrl; source has no required URL. Only exact caller device ref retained, URL never a ref or followed connection. No claimed connection/readiness.",
+    "sensitive_fields": [
+      "response.remoteConnectUrl"
+    ]
+  },
+  "errors": {
+    "mapping": "Shared safe status taxonomy with documented400/401/403/404/409 as applicable; receipt on every mutation error including pre-I/O, no provider raw diagnostics."
+  },
+  "retry": "No replay; one resource attempt on unknown outcome. Documented 4xx rejection statuses retain rejected receipt;500/transport/decode failures preserve uncertainty/acceptance as applicable.",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No source causal observation/replay proof; exact device may be explicitly observed, but cannot prove session assignment/release/connection by inference."
+  }
+}

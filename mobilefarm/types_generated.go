@@ -39,6 +39,39 @@ func (v *ADBKey) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type AddUserDeviceRequest struct {
+	Serial  *string        `json:"serial,omitempty"`
+	Timeout *types.Integer `json:"timeout,omitempty"`
+}
+
+func (v AddUserDeviceRequest) Validate() error {
+	if v.Serial == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *AddUserDeviceRequest) normalize() {
+}
+func (v *AddUserDeviceRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire AddUserDeviceRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = AddUserDeviceRequest(value)
+	v.normalize()
+	return nil
+}
+
 type CreateADBKeyRequest struct {
 	PublicKey *types.ProtectedValue `json:"publicKey,omitempty"`
 	Title     *string               `json:"title,omitempty"`
@@ -108,6 +141,35 @@ func (v *GetTicketResponse) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = GetTicketResponse(value)
+	v.normalize()
+	return nil
+}
+
+type StartRemoteConnectResponse struct {
+	RemoteConnectURL *types.ProtectedValue `json:"remoteConnectUrl,omitempty"`
+}
+
+func (v StartRemoteConnectResponse) Validate() error {
+	return nil
+}
+func (v *StartRemoteConnectResponse) normalize() {
+}
+func (v *StartRemoteConnectResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire StartRemoteConnectResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = StartRemoteConnectResponse(value)
 	v.normalize()
 	return nil
 }
