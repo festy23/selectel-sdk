@@ -35,6 +35,7 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"registry-oci GET /v2/{name}/referrers/{digest}":                   "registry_data.oci_v1.referrers.list",
 	"registry-oci GET /v2/":                                            "registry_data.oci_v1.version.get",
 	"registry-oci GET /v2/{name}/tags/list":                            "registry_data.oci_v1.tags.list",
 	"registry-oci DELETE /v2/{name}/blobs/uploads/{reference}":         "registry_data.oci_v1.uploads.cancel_native",

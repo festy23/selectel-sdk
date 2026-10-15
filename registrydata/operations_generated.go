@@ -7,6 +7,7 @@ import (
 )
 
 var ociOperations = map[string]core.Operation{
+	"registry_data.oci_v1.referrers.list":        {ID: "registry_data.oci_v1.referrers.list", Service: "registry_data", APIGeneration: "oci_v1", Method: "GET", Effect: "read", Auth: types.Basic, OCI: true, ErrorProtocol: "oci", RequireProject: true, Success: []int{200}, Rejected: []int{}},
 	"registry_data.oci_v1.version.get":           {ID: "registry_data.oci_v1.version.get", Service: "registry_data", APIGeneration: "oci_v1", Method: "GET", Effect: "read", ErrorCodes: map[int]types.Code{404: types.EndpointUnavailable}, Auth: types.Basic, OCI: true, ErrorProtocol: "oci", RequireProject: true, Success: []int{200}, Rejected: []int{}},
 	"registry_data.oci_v1.tags.list":             {ID: "registry_data.oci_v1.tags.list", Service: "registry_data", APIGeneration: "oci_v1", Method: "GET", Effect: "read", Auth: types.Basic, OCI: true, ErrorProtocol: "oci", RequireProject: true, Success: []int{200}, Rejected: []int{}},
 	"registry_data.oci_v1.uploads.cancel_native": {ID: "registry_data.oci_v1.uploads.cancel_native", Service: "registry_data", APIGeneration: "oci_v1", Method: "DELETE", Effect: "mutation", Auth: types.Basic, OCI: true, ErrorProtocol: "oci", RequireProject: true, Success: []int{204}, Rejected: []int{400, 401, 403, 404}},

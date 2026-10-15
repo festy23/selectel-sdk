@@ -29,3 +29,11 @@ receipt-only recovery/early revision from `379458e`, and bounded pagination erro
 prefix preservation from `a49e66b`. No unrelated service feature is copied.
 New private OCI authentication and opaque session-query paths need both review
 axes, including budget/cancellation, compiled scopes, redirects and no replay.
+
+
+Referrers descriptors/platform models are pinned to OCI Image Spec v1.1.1 commit
+147f9c13cedb47a0c4d9a11a222961073d585877; the licensed primary schema/docs snapshots
+and revision record live in `assets/image-spec-*`. The generator asserts descriptor
+and platform property sets so edits cannot silently omit newly pinned fields.
+RFC5988 is retained as `assets/rfc5988.txt` for bounded continuation parsing. These
+are source facts, not proof of current Selectel optional endpoint availability.

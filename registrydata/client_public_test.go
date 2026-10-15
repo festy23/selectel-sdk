@@ -1722,3 +1722,303 @@ func TestMountRejectsForeignLocationAndPreservesProtectedResult(t *testing.T) {
 		})
 	}
 }
+func TestReferrersTypedDescriptorsAndArtifactTypeWire(t *testing.T) {
+	const subject = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	const referred = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	calls := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		if r.Method != "GET" || r.URL.Path != "/v2/reg/repo/referrers/"+subject || r.URL.Query().Get("artifactType") != "application/vnd.example.sbom" || r.URL.Query().Has("n") {
+			t.Fatal(r.Method, r.URL)
+		}
+		out := response(200, `{"schemaVersion":2,"mediaType":"application/vnd.oci.image.index.v1+json","annotations":{"secret":"protected-index"},"manifests":[{"mediaType":"application/vnd.oci.image.manifest.v1+json","size":9007199254740993,"digest":"`+referred+`","artifactType":"application/vnd.example.sbom","annotations":{"secret":"protected-descriptor"},"urls":["https://external.invalid/private"],"data":"cHJvdGVjdGVk","platform":{"architecture":"amd64","os":"linux","os.version":"1","os.features":["feature"],"variant":"v1"}}]}`)
+		out.Header.Set("Content-Type", "application/vnd.oci.image.index.v1+json")
+		out.Header.Set("OCI-Filters-Applied", "artifactType")
+		return out, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	d, _ := registrydata.ParseDigest(subject)
+	ref, _ := c.Manifests.Digest(repo, d)
+	artifact := "application/vnd.example.sbom"
+	it, err := c.Referrers.List(ref, registrydata.ReferrerOptions{ArtifactType: &artifact}, pagination.Options{MaxItems: 5, MaxPages: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	out, err := it.Collect(context.Background())
+	if err != nil || !out.Complete || len(out.Items) != 1 || calls != 2 {
+		t.Fatal(out, err, calls)
+	}
+	v := out.Items[0]
+	if v.Address.ID != referred || v.Size.String() != "9007199254740993" || v.ArtifactType == nil || *v.ArtifactType != artifact || v.Platform == nil || *v.Platform.Architecture != "amd64" || v.Data == nil || v.Annotations == nil || len(v.URLs) != 1 || len(out.ProviderPages) != 1 || out.ProviderPages[0].OCIReferrersIndex == nil {
+		t.Fatal(out)
+	}
+	raw, _ := json.Marshal(out)
+	if strings.Contains(string(raw), "protected-index") || strings.Contains(string(raw), "protected-descriptor") || strings.Contains(string(raw), "external.invalid") || strings.Contains(string(raw), "cHJvdGVjdGVk") {
+		t.Fatal("protected referrer metadata exposed")
+	}
+	for _, value := range []any{out, v, v.Annotations, *v.Annotations, v.URLs, v.Data, out.ProviderPages[0], out.ProviderPages[0].OCIReferrersIndex, *out.ProviderPages[0].OCIReferrersIndex} {
+		for _, format := range []string{"%v", "%+v", "%#v"} {
+			text := fmt.Sprintf(format, value)
+			if strings.Contains(text, "protected-index") || strings.Contains(text, "protected-descriptor") || strings.Contains(text, "external.invalid") || strings.Contains(text, "cHJvdGVjdGVk") || strings.Contains(text, "112 114 111 116") || strings.Contains(text, "0x70, 0x72, 0x6f") {
+				t.Fatal("protected formatting exposed metadata")
+			}
+		}
+	}
+}
+
+func TestReferrersLinkCursorPreservesOpaqueQueryAndFilterSnapshot(t *testing.T) {
+	const subject = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	const first = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	const nextQuery = "artifactType=application%2Fvnd.example.sbom&cursor=opaque%2fsecret+token&n=1"
+	pages := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		pages++
+		digest := first
+		if pages == 2 {
+			if r.URL.RawQuery != nextQuery {
+				t.Fatal(r.URL.RawQuery)
+			}
+			digest = subject
+		}
+		out := response(200, `{"schemaVersion":2,"manifests":[{"mediaType":"application/vnd.oci.image.manifest.v1+json","size":1,"digest":"`+digest+`","artifactType":"application/vnd.example.sbom"}]}`)
+		out.Header.Set("Content-Type", string(registrydata.OCIIndex))
+		if pages == 1 {
+			out.Header.Set("Link", `<https://foreign.invalid/prev>; rel="prev", </v2/reg/repo/referrers/`+subject+`?`+nextQuery+`>; rel="next"; title="quoted, title"`)
+		}
+		return out, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	d, _ := registrydata.ParseDigest(subject)
+	ref, _ := c.Manifests.Digest(repo, d)
+	artifact := "application/vnd.example.sbom"
+	it, err := c.Referrers.List(ref, registrydata.ReferrerOptions{ArtifactType: &artifact}, pagination.Options{MaxItems: 1, MaxPages: 3})
+	if err != nil {
+		t.Fatal(err)
+	}
+	artifact = "application/changed"
+	out, err := it.Collect(context.Background())
+	if types.ErrorCode(err) != types.Incomplete || out.NextCursor == nil || out.NextCursor.SensitiveWire == nil || len(out.Items) != 1 || pages != 1 {
+		t.Fatal(out, err, pages)
+	}
+	raw, _ := json.Marshal(out.NextCursor)
+	if strings.Contains(string(raw), "opaque") || out.NextCursor.WireCursor != "" {
+		t.Fatal("opaque cursor leaked")
+	}
+	artifact = "application/vnd.example.sbom"
+	resumed, err := c.Referrers.List(ref, registrydata.ReferrerOptions{ArtifactType: &artifact}, pagination.Options{MaxItems: 5, MaxPages: 3, Cursor: out.NextCursor})
+	if err != nil {
+		t.Fatal(err)
+	}
+	remaining, err := resumed.Collect(context.Background())
+	if err != nil || !remaining.Complete || len(remaining.Items) != 1 || remaining.Items[0].Address.ID != subject || pages != 2 {
+		t.Fatal(remaining, err, pages)
+	}
+}
+func TestReferrersMalformedDescriptorRetainsValidatedPrefix(t *testing.T) {
+	const digest = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	for _, suffix := range []string{`,"annotations":null`, `,"urls":[null]`, `,"annotations":{"key":null}`, `,"platform":{"architecture":"amd64","os":"linux","os.features":[null]}`, `,"data":"not-base64!"`} {
+		t.Run(suffix, func(t *testing.T) {
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				v := response(200, `{"schemaVersion":2,"manifests":[{"mediaType":"application/vnd.oci.image.manifest.v1+json","size":1,"digest":"`+digest+`"},{"mediaType":"application/vnd.oci.image.manifest.v1+json","size":1,"digest":"`+digest+`"`+suffix+`}]}`)
+				v.Header.Set("Content-Type", string(registrydata.OCIIndex))
+				return v, nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			d, _ := registrydata.ParseDigest(digest)
+			subject, _ := c.Manifests.Digest(repo, d)
+			it, e := c.Referrers.List(subject, registrydata.ReferrerOptions{}, pagination.Options{MaxItems: 5, MaxPages: 1})
+			if e != nil {
+				t.Fatal(e)
+			}
+			out, e := it.Collect(context.Background())
+			if types.ErrorCode(e) != types.ProtocolError || out.Complete || len(out.Items) != 1 {
+				t.Fatal(out, e)
+			}
+		})
+	}
+}
+func TestReferrersUnappliedFilterIsLocalAnd404DoesNotFallback(t *testing.T) {
+	const subject = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	for _, status := range []int{200, 404} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				calls++
+				if !strings.Contains(r.URL.Path, "/referrers/") {
+					t.Fatal("implicit fallback", r.URL)
+				}
+				out := response(status, `{"schemaVersion":2,"manifests":[{"mediaType":"application/vnd.oci.image.manifest.v1+json","size":1,"digest":"`+subject+`","artifactType":"other/type"}]}`)
+				out.Header.Set("Content-Type", string(registrydata.OCIIndex))
+				return out, nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			digest, _ := registrydata.ParseDigest(subject)
+			ref, _ := c.Manifests.Digest(repo, digest)
+			artifact := "application/vnd.example.sbom"
+			it, err := c.Referrers.List(ref, registrydata.ReferrerOptions{ArtifactType: &artifact}, pagination.Options{MaxItems: 1, MaxPages: 1})
+			if err != nil {
+				t.Fatal(err)
+			}
+			out, err := it.Collect(context.Background())
+			if calls != 1 || len(out.Items) != 0 {
+				t.Fatal(out, err, calls)
+			}
+			if status == 404 {
+				if types.ErrorCode(err) != types.NotFound || out.Complete {
+					t.Fatal(out, err)
+				}
+			} else if err != nil || !out.Complete || len(out.ProviderPages) != 1 {
+				t.Fatal(out, err)
+			}
+		})
+	}
+}
+func TestReferrersRejectUnsafeOrAmbiguousLinkWithoutFollowing(t *testing.T) {
+	const subject = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	for _, test := range []struct {
+		link string
+		code types.Code
+	}{
+		{`<https://foreign.invalid/v2/reg/repo/referrers/` + subject + `?cursor=x>; rel="next"`, types.ScopeMismatch},
+		{`</v2/reg/other/referrers/` + subject + `?cursor=x>; rel="next"`, types.ScopeMismatch},
+		{`<?scope=repository%3Aforeign%3Adelete>; rel="next"`, types.ScopeMismatch},
+		{`<?cursor=x>; rel="next", <?cursor=y>; rel="next"`, types.ProtocolError},
+		{"<?cursor=x>; rel=\"next\"\r\nX-Foreign: y", types.ProtocolError},
+	} {
+		t.Run(test.link, func(t *testing.T) {
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				calls++
+				if calls != 1 {
+					t.Fatal("unsafe continuation followed")
+				}
+				v := response(200, `{"schemaVersion":2,"manifests":[{"mediaType":"application/vnd.oci.image.manifest.v1+json","size":1,"digest":"`+subject+`"}]}`)
+				v.Header.Set("Content-Type", string(registrydata.OCIIndex))
+				v.Header.Set("Link", test.link)
+				return v, nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			d, _ := registrydata.ParseDigest(subject)
+			ref, _ := c.Manifests.Digest(repo, d)
+			it, e := c.Referrers.List(ref, registrydata.ReferrerOptions{}, pagination.Options{MaxItems: 5, MaxPages: 5})
+			if e != nil {
+				t.Fatal(e)
+			}
+			out, e := it.Collect(context.Background())
+			if types.ErrorCode(e) != test.code || out.Complete || len(out.Items) != 1 || calls != 1 {
+				t.Fatal(out, e, calls)
+			}
+		})
+	}
+}
+func TestReferrersCursorScopeAndEndpointIsolationBeforeHTTP(t *testing.T) {
+	const digest = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	calls := 0
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		calls++
+		v := response(200, `{"schemaVersion":2,"manifests":[]}`)
+		v.Header.Set("Content-Type", string(registrydata.OCIIndex))
+		v.Header.Set("Link", `<?cursor=next>; rel="next"`)
+		return v, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	d, _ := registrydata.ParseDigest(digest)
+	subject, _ := c.Manifests.Digest(repo, d)
+	artifact := "application/example"
+	it, e := c.Referrers.List(subject, registrydata.ReferrerOptions{ArtifactType: &artifact}, pagination.Options{MaxItems: 1, MaxPages: 1})
+	if e != nil {
+		t.Fatal(e)
+	}
+	out, e := it.Collect(context.Background())
+	if types.ErrorCode(e) != types.Incomplete || out.NextCursor == nil || len(out.ProviderPages) != 1 {
+		t.Fatal(out, e)
+	}
+	changed := "application/other"
+	if _, e = c.Referrers.List(subject, registrydata.ReferrerOptions{ArtifactType: &changed}, pagination.Options{Cursor: out.NextCursor}); types.ErrorCode(e) != types.ScopeMismatch || calls != 1 {
+		t.Fatal(e, calls)
+	}
+	other := subject
+	other.EndpointURL = "https://other.invalid"
+	parent := *subject.Parent
+	parent.EndpointURL = other.EndpointURL
+	namespace := *parent.Parent
+	namespace.EndpointURL = other.EndpointURL
+	parent.Parent = &namespace
+	other.Parent = &parent
+	if _, e = c.Referrers.List(other, registrydata.ReferrerOptions{ArtifactType: &artifact}, pagination.Options{Cursor: out.NextCursor}); types.ErrorCode(e) != types.ScopeMismatch || calls != 1 {
+		t.Fatal(e, calls)
+	}
+}
+func TestReferrersMaxItemsReplaysOnlyUnreadDescriptors(t *testing.T) {
+	const first = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	const second = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		v := response(200, `{"schemaVersion":2,"manifests":[{"mediaType":"application/vnd.oci.image.manifest.v1+json","size":1,"digest":"`+first+`"},{"mediaType":"application/vnd.oci.image.manifest.v1+json","size":1,"digest":"`+second+`"}]}`)
+		v.Header.Set("Content-Type", string(registrydata.OCIIndex))
+		return v, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	d, _ := registrydata.ParseDigest(first)
+	subject, _ := c.Manifests.Digest(repo, d)
+	it, e := c.Referrers.List(subject, registrydata.ReferrerOptions{}, pagination.Options{MaxItems: 1, MaxPages: 1})
+	if e != nil {
+		t.Fatal(e)
+	}
+	out, e := it.Collect(context.Background())
+	if types.ErrorCode(e) != types.Incomplete || len(out.Items) != 1 || out.NextCursor == nil || out.NextCursor.Skip != 1 {
+		t.Fatal(out, e)
+	}
+	resumed, e := c.Referrers.List(subject, registrydata.ReferrerOptions{}, pagination.Options{MaxItems: 5, MaxPages: 1, Cursor: out.NextCursor})
+	if e != nil {
+		t.Fatal(e)
+	}
+	remaining, e := resumed.Collect(context.Background())
+	if e != nil || !remaining.Complete || len(remaining.Items) != 1 || remaining.Items[0].Address.ID != second {
+		t.Fatal(remaining, e)
+	}
+}
+func TestReferrersMultipleAppliedFilterHeadersArePreserved(t *testing.T) {
+	const subject = "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+	_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/v2/" {
+			return response(200, ""), nil
+		}
+		out := response(200, `{"schemaVersion":2,"manifests":[]}`)
+		out.Header.Set("Content-Type", string(registrydata.OCIIndex))
+		out.Header["Oci-Filters-Applied"] = []string{"unknown-filter", "artifactType"}
+		return out, nil
+	})
+	repo, _ := c.Repository("reg", "repo")
+	d, _ := registrydata.ParseDigest(subject)
+	ref, _ := c.Manifests.Digest(repo, d)
+	artifact := "application/example"
+	it, e := c.Referrers.List(ref, registrydata.ReferrerOptions{ArtifactType: &artifact}, pagination.Options{MaxItems: 1, MaxPages: 1})
+	if e != nil {
+		t.Fatal(e)
+	}
+	out, e := it.Collect(context.Background())
+	if e != nil || !out.Complete || len(out.ProviderPages) != 1 || out.ProviderPages[0].OCIFiltersApplied == nil || string(out.ProviderPages[0].OCIFiltersApplied.Reveal()) != "unknown-filter,artifactType" {
+		t.Fatal(out, e)
+	}
+}

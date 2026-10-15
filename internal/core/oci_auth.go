@@ -87,6 +87,11 @@ func ociScope(op Operation, in Request, endpoint types.EndpointBinding) (string,
 	}
 	expectedMethod, action, effect := "", "", ""
 	switch op.ID {
+	case "registry_data.oci_v1.referrers.list":
+		if op.Method != "GET" || op.Effect != "read" || ref.Kind != "manifest_digest" || in.Path != "/v2/"+namespace+"/referrers/"+url.PathEscape(ref.ID) {
+			return "", types.NewError(types.InvalidArgument)
+		}
+		return "repository:" + namespace + ":pull", nil
 	case "registry_data.oci_v1.tags.list":
 		if op.Method != "GET" || op.Effect != "read" || ref.Kind != "repository" || in.Path != "/v2/"+namespace+"/tags/list" {
 			return "", types.NewError(types.InvalidArgument)

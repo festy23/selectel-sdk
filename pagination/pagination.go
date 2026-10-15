@@ -42,12 +42,14 @@ type Page[T any] struct {
 
 // ProviderMetadata retains documented fields consumed by SDK pagination.
 type ProviderMetadata struct {
-	TotalCount      *types.Integer        `json:"totalCount,omitempty"`
-	PreviousToken   *types.ProtectedValue `json:"prev_cursor,omitempty"`
-	ReportedCount   *types.Integer        `json:"count,omitempty"`
-	ForwardToken    *types.ProtectedValue `json:"nextForwardToken,omitempty"`
-	BackwardToken   *types.ProtectedValue `json:"nextBackwardToken,omitempty"`
-	SearchedStreams []LogStreamStatus     `json:"searchedLogStreams,omitzero"`
+	OCIReferrersIndex *types.ProtectedJSON  `json:"oci_referrers_index,omitempty"`
+	OCIFiltersApplied *types.ProtectedValue `json:"oci_filters_applied,omitempty"`
+	TotalCount        *types.Integer        `json:"totalCount,omitempty"`
+	PreviousToken     *types.ProtectedValue `json:"prev_cursor,omitempty"`
+	ReportedCount     *types.Integer        `json:"count,omitempty"`
+	ForwardToken      *types.ProtectedValue `json:"nextForwardToken,omitempty"`
+	BackwardToken     *types.ProtectedValue `json:"nextBackwardToken,omitempty"`
+	SearchedStreams   []LogStreamStatus     `json:"searchedLogStreams,omitzero"`
 }
 type LogStreamStatus struct {
 	Name     *string `json:"logStreamName,omitempty"`
@@ -289,7 +291,7 @@ func (i *Iterator[T]) Collect(ctx context.Context) (Collection[T], error) {
 	for {
 		page, err := i.Next(call)
 		out.Items = append(out.Items, page.Items...)
-		if page.Provider.TotalCount != nil || page.Provider.PreviousToken != nil || page.Provider.ReportedCount != nil || page.Provider.ForwardToken != nil || page.Provider.BackwardToken != nil || page.Provider.SearchedStreams != nil {
+		if page.Provider.OCIReferrersIndex != nil || page.Provider.OCIFiltersApplied != nil || page.Provider.TotalCount != nil || page.Provider.PreviousToken != nil || page.Provider.ReportedCount != nil || page.Provider.ForwardToken != nil || page.Provider.BackwardToken != nil || page.Provider.SearchedStreams != nil {
 			out.ProviderPages = append(out.ProviderPages, page.Provider)
 		}
 		if page.Metadata.EndpointID != "" {

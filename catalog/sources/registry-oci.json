@@ -17,6 +17,15 @@
     "content-negotiation.md": "38c54464135f29a5e7d0b3065d3b8d85e0df6970f8b05cf221d5bc6687d937ed",
     "distribution-api.md": "140f85a6b36e6b0dfe0728dff09b6ed4884d15aa64c046ac1a788aa1954f0215",
     "distribution-spec.md": "360b29820869bfaac5f73ebfa30669c9172c069ef619f8c6689acc3bcef6f719",
+    "image-spec-LICENSE": "b0a3f39513927db306adabea11d14c23f079d4febcea241d123a68d1a0d45418",
+    "image-spec-descriptor.md": "89399b5ffabfeb9688b66de9afcf08b60691710d94d0f5b061cb30e6fbc75428",
+    "image-spec-image-index.md": "abbd4ecefe1d85588ae98393600a20b618cc190d630bb534d596c9a642584bf9",
+    "image-spec-revision.txt": "67beadbab1a6af9a0f77c604b0e20ee9f72cbeb93b1abc1b955cbffbbc0a6e73",
+    "image-spec-schema-content-descriptor.json": "d7838a1fd129ff35f2d6461bfd8424e783c1e0185473d2547c09f2d5e8bb4ad4",
+    "image-spec-schema-defs-descriptor.json": "00d6be02b7a6661c5e7e8e50afa0a2926a092f4ba8ecedb5d8c29a4b372a927b",
+    "image-spec-schema-defs.json": "23b4abe55230e4bc7f521dc08e5261e9f1aece585059d6581300e9c56eb1420e",
+    "image-spec-schema-image-index-schema.json": "1a4641a610933fac77db9af7a83664d54883efac180f8867efd0497048e1a82e",
+    "rfc5988.txt": "c48657057de93fe894b0573f292af4024495e336fb253373e56856e6d0426681",
     "selectel-data-origin.json": "7ec968046b9cc6bd95c496042f7193106263c83a77466faffd50a1d15dbade94",
     "token-auth.md": "f0a23288bcb4fe5ce662b18578e5436d7834b66b6dd648e36ca186e443ddee86"
   },
@@ -33,6 +42,61 @@
     }
   },
   "paths": {
+    "/v2/{name}/referrers/{digest}": {
+      "get": {
+        "operationId": "registry_data.oci_v1.referrers.list",
+        "x-operation-locator": "OCI1.1.1 listing referrers / end-12a/end-12b",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "digest",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artifactType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "source status 200"
+          },
+          "401": {
+            "description": "source status 401"
+          },
+          "403": {
+            "description": "source status 403"
+          },
+          "404": {
+            "description": "source status 404"
+          }
+        },
+        "x-source-uri": "https://github.com/opencontainers/distribution-spec/blob/a139cc423184af6078077b9b7ee336eddbd03f8f/spec.md",
+        "security": [
+          {
+            "basicAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/v2/": {
       "get": {
         "operationId": "registry_data.oci_v1.version.get",

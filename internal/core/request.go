@@ -46,7 +46,7 @@ type Request struct {
 	Scope types.Scope
 	Path  string
 	Query url.Values
-	// OCISessionQuery retains opaque provider-issued upload state without query normalization.
+	// OCISessionQuery retains opaque provider-issued upload/referrers state without query normalization.
 	OCISessionQuery    string
 	Body               []byte
 	BodyStream         io.Reader
@@ -175,7 +175,7 @@ func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request
 		return out, types.NewError(types.InvalidArgument)
 	} // No undocumented replay/header injection.
 	if in.OCISessionQuery != "" {
-		allowed := op.OCI && (op.ID == "registry_data.oci_v1.uploads.cancel_native" || op.ID == "registry_data.oci_v1.uploads.status" || op.ID == "registry_data.oci_v1.uploads.append" || op.ID == "registry_data.oci_v1.uploads.finalize")
+		allowed := op.OCI && ((op.ID == "registry_data.oci_v1.referrers.list" && op.Method == "GET" && op.Effect == "read") || op.ID == "registry_data.oci_v1.uploads.cancel_native" || op.ID == "registry_data.oci_v1.uploads.status" || op.ID == "registry_data.oci_v1.uploads.append" || op.ID == "registry_data.oci_v1.uploads.finalize")
 		if !allowed || len(in.Query) > 0 || strings.ContainsAny(in.OCISessionQuery, "#\r\n") {
 			return out, types.NewError(types.InvalidArgument)
 		}

@@ -15,6 +15,7 @@ type Client struct {
 	Blobs     *Blobs
 	Uploads   *Uploads
 	Tags      *Tags
+	Referrers *Referrers
 }
 type Manifests struct{ client *Client }
 
@@ -24,6 +25,7 @@ func Bind(r *core.Runtime, s types.Scope) *Client {
 	c.Blobs = &Blobs{c}
 	c.Uploads = &Uploads{c}
 	c.Tags = &Tags{c}
+	c.Referrers = &Referrers{c}
 	return c
 }
 

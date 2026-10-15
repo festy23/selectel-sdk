@@ -6,6 +6,37 @@ import (
 	"io"
 )
 
+type ReferrerOptions struct {
+	ArtifactType *string `json:"artifact_type,omitempty"`
+}
+type ReferrerPlatform struct {
+	Architecture *string  `json:"architecture,omitempty"`
+	OS           *string  `json:"os,omitempty"`
+	OSVersion    *string  `json:"os.version,omitempty"`
+	OSFeatures   []string `json:"os.features,omitempty"`
+	Variant      *string  `json:"variant,omitempty"`
+}
+type Referrer struct {
+	Address      types.ResourceRef      `json:"address"`
+	Digest       Digest                 `json:"digest"`
+	Size         types.Integer          `json:"size"`
+	MediaType    string                 `json:"mediaType"`
+	ArtifactType *string                `json:"artifactType,omitempty"`
+	Annotations  *types.ProtectedJSON   `json:"annotations,omitempty"`
+	URLs         []types.ProtectedValue `json:"urls,omitempty"`
+	Data         *types.ProtectedValue  `json:"data,omitempty"`
+	Platform     *ReferrerPlatform      `json:"platform,omitempty"`
+}
+type referrerWire struct {
+	Digest       *string                `json:"digest"`
+	Size         *types.Integer         `json:"size"`
+	MediaType    *string                `json:"mediaType"`
+	ArtifactType *string                `json:"artifactType,omitempty"`
+	Annotations  *types.ProtectedJSON   `json:"annotations,omitempty"`
+	URLs         []types.ProtectedValue `json:"urls,omitempty"`
+	Data         *types.ProtectedValue  `json:"data,omitempty"`
+	Platform     *ReferrerPlatform      `json:"platform,omitempty"`
+}
 type VersionInfo struct {
 	Supported           bool    `json:"supported"`
 	DistributionVersion *string `json:"distribution_version,omitempty"`

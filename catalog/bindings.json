@@ -4595,7 +4595,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.manifests.get.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4608,6 +4608,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4639,7 +4640,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.manifests.head.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4652,6 +4653,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4683,7 +4685,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.manifests.replace.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4696,6 +4698,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4727,7 +4730,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.manifests.delete.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4740,6 +4743,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4771,7 +4775,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.blobs.get.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4784,6 +4788,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4815,7 +4820,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.blobs.head.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4828,6 +4833,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4859,7 +4865,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.blobs.delete.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4872,6 +4878,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4903,7 +4910,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.start.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4916,6 +4923,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4947,7 +4955,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.status.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -4960,6 +4968,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -4991,7 +5000,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.append.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -5004,6 +5013,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -5035,7 +5045,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.finalize.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -5048,6 +5058,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -5079,7 +5090,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.uploads.cancel_native.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -5092,6 +5103,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -5123,7 +5135,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.version.get.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -5136,6 +5148,7 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",
@@ -5167,7 +5180,7 @@
     "covered_schema_ref": "contracts/registry_data.oci_v1.tags.list.json#/request",
     "excluded_variants": [
       "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
-      "Confirmed protocol omissions (referrers/subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
     ],
     "files": [
       "client.go",
@@ -5180,6 +5193,52 @@
       "registrydata/blobs.go",
       "registrydata/uploads.go",
       "registrydata/discovery.go",
+      "registrydata/referrers.go",
+      "registrydata/handle.go",
+      "operations/handle.go",
+      "pagination/pagination.go",
+      "docs/modules/selectelsdk/registry-data.md",
+      "internal/registryocigen/generate.py",
+      "internal/endpoints/registry_data_generated.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/oci_auth.go",
+      "internal/core/auth.go",
+      "internal/core/runtime.go",
+      "internal/core/config.go",
+      "internal/cataloggen/main.go",
+      "generate.go"
+    ],
+    "evidence_files": [
+      "registrydata/client_public_test.go"
+    ],
+    "evidence_ref": "registrydata/client_public_test.go",
+    "recovery": false,
+    "wait_goals": []
+  },
+  "registry_data.oci_v1.referrers.list": {
+    "go_method": "registrydata.Referrers.List",
+    "input_type": "types.ResourceRef, registrydata.ReferrerOptions, pagination.Options",
+    "output_type": "pagination.Iterator[registrydata.Referrer]",
+    "status": "partial",
+    "contract_ref": "contracts/registry_data.oci_v1.referrers.list.json",
+    "covered_schema_ref": "contracts/registry_data.oci_v1.referrers.list.json#/request",
+    "excluded_variants": [
+      "Cross-origin or custom auth-query realms require primary Selectel topology evidence; explicit compatibility restriction",
+      "Confirmed protocol omissions (subject workflow, hints/extended Link) remain owned #50; Selectel availability/topology evidence #74, P1 acceptance #75; no whole OCI coverage claim"
+    ],
+    "files": [
+      "client.go",
+      "registrydata/client.go",
+      "registrydata/digest.go",
+      "registrydata/types_generated.go",
+      "registrydata/operations_generated.go",
+      "registrydata/manifests.go",
+      "registrydata/manifest_write.go",
+      "registrydata/blobs.go",
+      "registrydata/uploads.go",
+      "registrydata/discovery.go",
+      "registrydata/referrers.go",
       "registrydata/handle.go",
       "operations/handle.go",
       "pagination/pagination.go",

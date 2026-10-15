@@ -37,9 +37,9 @@ used for catalog generation; it is not presented as an official OpenAPI schema.
 
 ## Selected protocol surface and limitations
 
-The 14 remote operations are version check; tags list; manifest Get/Head/Put/
+The 15 remote operations are version check; tags list; referrers list; manifest Get/Head/Put/
 Delete (explicit DeleteTag variant); blob Download/Head/Delete; upload Start,
-Status, Append, Finalize and explicit Distribution `CancelNative`. All 14 are
+Status, Append, Finalize and explicit Distribution `CancelNative`. All 15 are
 partial in the capability catalog. Selectel documents Docker push/pull, but does
 not publish an exhaustive OCI endpoint/realm/offload inventory. No live server
 availability or full OCI coverage is inferred.
@@ -98,7 +98,7 @@ last equal to the last returned tag. Extensions, extra query and multiple Links
 are excluded. Invalid namespace/row/Link preserves an already validated bounded
 prefix and the original terminal error, without another request.
 
-Protocol-confirmed omissions retained under **#50**: referrers/artifactType pagination and subject
+Protocol-confirmed omissions retained under **#50**: explicit subject/referrers-tag
 fallback workflow; optional chunk-min-length/other metadata; extended Link
 syntax and additional content formats/algorithms. These are not described as
 provider-unsupported. In particular Put sends exactly one manifest mutation;
@@ -162,7 +162,7 @@ The additional requested-blob auth proof is accepted only for the compiled start
 operation with exactly one digest query value matching that ref; no general
 caller-controlled auth bypass or cross-origin trust is introduced.
 
-Confirmed remaining protocol work remains owned by #50: referrers and
+Confirmed remaining protocol work remains owned by #50: explicit
 manifest-subject fallback, optional hints/metadata, extended Link forms and further
 formats/algorithms. Selectel optional variant availability and actual realm/offload
 topology still require #74 evidence; #75 retains partial acceptance qualifications.
@@ -203,6 +203,57 @@ receipts recover without I/O. Protected session query is saved separately by the
 caller for explicit continuation; receipt refs do not reconstruct it.
 
 Current Selectel mount availability is still unknown; this explicit protocol
-variant does not claim otherwise. Referrers/subject fallback, optional hints,
+variant does not claim otherwise. Explicit subject/tag fallback, optional hints,
 extended Links and additional formats remain #50 work; topology/availability #74
-and final partial acceptance #75 remain open. All14 selected bindings stay partial.
+and final partial acceptance #75 remain open. All 15 selected bindings stay partial.
+
+
+## Explicit referrers API reads
+
+`Referrers.List(subjectManifestDigestRef, ReferrerOptions, pagination.Options)`
+addresses OCI1.1.1 end-12a/b in one exact repository/project/endpoint. The compiled
+GET requests pull access only. A404 is returned to the caller: no hidden GET of a
+fallback tag, empty-list assumption or management discovery occurs. Optional
+Selectel availability remains unknown and this 15th binding remains partial.
+
+Models are generated against pinned OCI Distribution1.1.1 and OCI Image Spec1.1.1
+commit 147f9c13cedb47a0c4d9a11a222961073d585877. Each Referrer retains a caller-view
+exact manifest address, parsed digest, exact Integer size, mediaType/artifactType,
+platform architecture/OS/version/features/variant, protected annotations/URLs and
+protected encoded inline data. Required fields, nonnegative int64 size, annotation
+string values, base64 syntax and known non-null JSON shapes are checked. This is
+metadata observation: no referenced URL is followed, no manifest subject/content
+is fetched, and no descriptor/inline-data digest or ownership verification is
+claimed. Data Reveal returns its source base64 string, not decoded content.
+
+The complete source image index (including unknown metadata/extensions) and
+OCI-Filters-Applied text are retained protected in `Page.Provider` and
+`Collection.ProviderPages`, including successful empty pages. Unknown index data
+is not promoted to typed coverage. Response Content-Type and body schemaVersion 2
+are required as documented; the optional body mediaType must agree if present.
+
+ArtifactType is copied before fingerprinting and I/O. The exact optional value is
+sent on the initial request. If the server does not advertise the filter as
+applied, the iterator filters descriptors locally; if it claims artifactType but
+returns a nonmatching descriptor, the collection is incomplete with protocol
+error and only the validated prefix. No server page-size/n/last query is invented.
+
+Source Link determines continuation, even on empty/short pages. Bounded RFC5988
+parsing accepts multiple header values/links, quoted commas, relation lists and
+case-insensitive registered next; duplicate next or alternate anchor context are
+explicitly unsupported. Only same-origin, exact subject path is followed. Opaque
+query bytes remain unchanged through the compiled private OCI query slot, and
+cursor state stays protected. Reserved auth/mutation/view query names and changed
+artifactType are rejected; an omitted artifactType on a provider Link is permitted
+while the immutable local filter still applies. No other public raw-query or auth
+bypass is exposed.
+
+Cursor semantics include the full subject/ref parent/endpoint and filter snapshot,
+plus common revision/view bounds. MaxItems truncation yields replay+skip rather
+than false completeness; malformed rows or unsafe Links preserve only a bounded
+validated prefix and the original error without extra I/O. No Link means terminal
+according to the source contract. MaxPages/collection budget/body limit and normal
+safe-read retries/cancellation apply. Further protocol work remains explicit
+subject/tag fallback and publishing workflows, hints/metadata, extended Tag Link
+forms and additional content formats/algorithms (#50); source topology/availability
+#74 and P1 acceptance #75 remain open. No live requests were made.

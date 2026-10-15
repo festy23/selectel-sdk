@@ -75,7 +75,11 @@ func TestSerializedCatalogHasVersionAndUncertainCoverage(t *testing.T) {
 }
 
 func TestRegistryOCIExplicitPartialBindings(t *testing.T) {
-	ids := []string{"version.get", "tags.list", "uploads.start", "uploads.status", "uploads.append", "uploads.finalize", "uploads.cancel_native", "blobs.get", "blobs.head", "blobs.delete", "manifests.get", "manifests.head", "manifests.replace", "manifests.delete"}
+	own, e := catalog.Default().List(catalog.Filter{Service: "registry_data"})
+	if e != nil || len(own) != 15 {
+		t.Fatal(own, e)
+	}
+	ids := []string{"referrers.list", "version.get", "tags.list", "uploads.start", "uploads.status", "uploads.append", "uploads.finalize", "uploads.cancel_native", "blobs.get", "blobs.head", "blobs.delete", "manifests.get", "manifests.head", "manifests.replace", "manifests.delete"}
 	c := catalog.Default()
 	for _, id := range ids {
 		cap, e := c.Describe("registry_data.oci_v1." + id)
