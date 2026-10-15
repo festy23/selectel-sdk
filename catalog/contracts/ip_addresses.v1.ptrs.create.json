@@ -1,0 +1,102 @@
+{
+  "operation_id": "ip_addresses.v1.ptrs.create",
+  "source_revision": "e8043681a667a1978f5b7966cffdc9300d485a20e6474a3da20c9d52d4b75aba",
+  "endpoint": "https://api.selectel.ru/ipam/v1 from URL table direct link to ip-addresses; schema-relative paths / and /{ptr_id}",
+  "auth": "account static_token X-Token only; no IAM fallback",
+  "request": {
+    "method": "POST",
+    "path": "/",
+    "schema": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/RecordPTRCreate"
+          }
+        }
+      },
+      "required": true
+    },
+    "parameters": []
+  },
+  "response": {
+    "source": {
+      "200": {
+        "description": "The PTR record has been returned.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RecordPTRRead"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad request. Fix the request and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Bad or expired token. You can reissue the token and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "409": {
+        "description": "A PTR record with the same IP already exists.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "422": {
+        "description": "Validation error. Fix the request and try again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Server is not responding. Please try again later.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "mapping": "exact integer IDs/user_id/TTL; protected content; identity-first accepted receipt",
+    "sensitive_fields": [
+      "content"
+    ]
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "404": "not_found",
+    "409": "conflict",
+    "422": "invalid_argument",
+    "500": "provider_error read/unknown sent mutation",
+    "provider_text": "discarded"
+  },
+  "retry": "safe bounded reads only; no mutation replay",
+  "recovery": "exact numeric provider ID only; no IP/name search or adoption",
+  "pagination": "offset advances by observed item count until empty provider page; bounded prefixes; count-only response unknown",
+  "wait": "existence/absence only, no reverse-DNS propagation claim"
+}
