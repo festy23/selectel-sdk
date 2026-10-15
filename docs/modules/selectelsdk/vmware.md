@@ -44,3 +44,8 @@ vendor SDK не закрывают #68. Никаких live Cloud Director вы�
 Remaining scope закреплён native blocking children #107 (version-bound auth и
 supported inventory), #108 (vApp/VM/task lifecycle), #109 (network/storage).
 #108/#109 blocked by #107; #68 blocked by всеми тремя и не закрывается этим subset.
+
+Сам bootstrap не отправляет version=36.3: unversioned GET /api/versions
+подтверждён Selectel и [current vendor operation, since 1.5](https://developer.broadcom.com/xapis/vmware-cloud-director-api/latest/doc/operations/GET-SupportedVersions.html).
+36.3 operation URL недоступен; readable 36.3 type задаёт XML representation.
+Generation v36_3 обозначает compiled adapter, а не обнаруженную deployed version.

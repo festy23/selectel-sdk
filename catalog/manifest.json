@@ -10659,7 +10659,7 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "ff722e89eefcbac1a2c6d2bb46e316564136e9e8b8d7aef56893ca4fc162d5a8",
+    "contract_revision": "4b82d59ceb332c5a67c0be8b04de183d03c09a7aba033d611d2e203b821cabd4",
     "effect": "read",
     "endpoint_recipe_ref": null,
     "error_binding_ref": "sources/vmware-cloud-director.json#/paths/~1api~1org~1{orgId}/get/responses",
@@ -10693,7 +10693,7 @@
     "service": "vmware",
     "source": {
       "operation_locator": "GET /api/org/{orgId}",
-      "revision": "5ad46392b106e895368ba7353dcc1aedfa7c6b8fe3ceea8d0f01390a29976865",
+      "revision": "6631fe8f5bd75656985668c146cb0287fd6b5b5d77e4ea1e9b1b01f6e015d1a8",
       "uri": "https://docs.selectel.ru/api/vmware/"
     },
     "verification": {
@@ -10712,7 +10712,7 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "eceb74873186d88608859b32509c4af32b20e3d6ea0d261a2c431f54a49cbe49",
+    "contract_revision": "555272daf268f2c5504777d5068fb11f0b629b3ae37234d9c48b77dbe3ab4f34",
     "effect": "read",
     "endpoint_recipe_ref": null,
     "error_binding_ref": "sources/vmware-cloud-director.json#/paths/~1api~1query/get/responses",
@@ -10746,7 +10746,7 @@
     "service": "vmware",
     "source": {
       "operation_locator": "GET /api/query",
-      "revision": "5ad46392b106e895368ba7353dcc1aedfa7c6b8fe3ceea8d0f01390a29976865",
+      "revision": "6631fe8f5bd75656985668c146cb0287fd6b5b5d77e4ea1e9b1b01f6e015d1a8",
       "uri": "https://docs.selectel.ru/api/vmware/"
     },
     "verification": {
@@ -10765,7 +10765,7 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "faec8c83f3d2ffdd5770d9b68a143421e3576a13cf7c14ec76b45b76718a5283",
+    "contract_revision": "b1199268e83bea9116d6267f04db9bb3880ab6fe6d558837cfd247d134d98b5d",
     "effect": "mutation",
     "endpoint_recipe_ref": null,
     "error_binding_ref": "sources/vmware-cloud-director.json#/paths/~1api~1vApp~1vm-{vmId}~1power~1action~1powerOff/post/responses",
@@ -10799,7 +10799,7 @@
     "service": "vmware",
     "source": {
       "operation_locator": "POST /api/vApp/vm-{vmId}/power/action/powerOff",
-      "revision": "5ad46392b106e895368ba7353dcc1aedfa7c6b8fe3ceea8d0f01390a29976865",
+      "revision": "6631fe8f5bd75656985668c146cb0287fd6b5b5d77e4ea1e9b1b01f6e015d1a8",
       "uri": "https://docs.selectel.ru/api/vmware/"
     },
     "verification": {
@@ -10818,7 +10818,7 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "6c576dde35d9a6b77546af3a73c2b2ecdce9c264b195e1bd772f9afa51ab634d",
+    "contract_revision": "90aa99bfcfde13670e8038a7725979f9e6960423c1a0b335a54e134ef043c04a",
     "effect": "mutation",
     "endpoint_recipe_ref": null,
     "error_binding_ref": "sources/vmware-cloud-director.json#/paths/~1api~1vApp~1vm-{vmId}~1power~1action~1powerOn/post/responses",
@@ -10852,7 +10852,7 @@
     "service": "vmware",
     "source": {
       "operation_locator": "POST /api/vApp/vm-{vmId}/power/action/powerOn",
-      "revision": "5ad46392b106e895368ba7353dcc1aedfa7c6b8fe3ceea8d0f01390a29976865",
+      "revision": "6631fe8f5bd75656985668c146cb0287fd6b5b5d77e4ea1e9b1b01f6e015d1a8",
       "uri": "https://docs.selectel.ru/api/vmware/"
     },
     "verification": {
@@ -10871,7 +10871,7 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "cb1687132bb6dfe9198e0de63f60fe4b1b2d36f946f8d5b99f9614cd5dfef86e",
+    "contract_revision": "975374d229942f2754b1c2147ae9407212fc3787f4356636c7eba85fe66bc5c4",
     "effect": "mutation",
     "endpoint_recipe_ref": null,
     "error_binding_ref": "sources/vmware-cloud-director.json#/paths/~1cloudapi~11.0.0~1sessions~1/post/responses",
@@ -10905,7 +10905,7 @@
     "service": "vmware",
     "source": {
       "operation_locator": "POST /cloudapi/1.0.0/sessions/",
-      "revision": "5ad46392b106e895368ba7353dcc1aedfa7c6b8fe3ceea8d0f01390a29976865",
+      "revision": "6631fe8f5bd75656985668c146cb0287fd6b5b5d77e4ea1e9b1b01f6e015d1a8",
       "uri": "https://docs.selectel.ru/api/vmware/"
     },
     "verification": {
@@ -10924,7 +10924,7 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "e097e103dcb9312d246cb859e18c77a27b1d28c316d5c82f0d0946863d7bf614",
+    "contract_revision": "e785eb1a517c0353496bc194b3b30010e2f15df3d6430249012981edd48b43a4",
     "effect": "mutation",
     "endpoint_recipe_ref": null,
     "error_binding_ref": "sources/vmware-cloud-director.json#/paths/~1cloudapi~11.0.0~1sessions~1/delete/responses",
@@ -10958,7 +10958,7 @@
     "service": "vmware",
     "source": {
       "operation_locator": "DELETE /cloudapi/1.0.0/sessions/",
-      "revision": "5ad46392b106e895368ba7353dcc1aedfa7c6b8fe3ceea8d0f01390a29976865",
+      "revision": "6631fe8f5bd75656985668c146cb0287fd6b5b5d77e4ea1e9b1b01f6e015d1a8",
       "uri": "https://docs.selectel.ru/api/vmware/"
     },
     "verification": {
@@ -10980,7 +10980,7 @@
     "contract_artifact_revisions": {
       "contracts/vmware.v36_3.versions.list.json": "a4ea3baf426ae668f3ed949cda07545046f8c8978b1439f870fc6b70805f2c1d"
     },
-    "contract_revision": "7d1c563441de4ec6d8966d811fa8a6838baf900c0e7304b7ed7bb85210c0f8f3",
+    "contract_revision": "d09a2050705e3de1d4b5ee44da126b1fe476eb0847707953001533dac760ae46",
     "effect": "read",
     "endpoint_recipe_ref": "contracts/vmware.v36_3.versions.list.json#/endpoint",
     "error_binding_ref": "contracts/vmware.v36_3.versions.list.json#/errors",
@@ -11014,13 +11014,13 @@
     "service": "vmware",
     "source": {
       "operation_locator": "GET /api/versions",
-      "revision": "5ad46392b106e895368ba7353dcc1aedfa7c6b8fe3ceea8d0f01390a29976865",
+      "revision": "6631fe8f5bd75656985668c146cb0287fd6b5b5d77e4ea1e9b1b01f6e015d1a8",
       "uri": "https://docs.selectel.ru/api/vmware/"
     },
     "verification": {
-      "contract_revision": "7d1c563441de4ec6d8966d811fa8a6838baf900c0e7304b7ed7bb85210c0f8f3",
+      "contract_revision": "d09a2050705e3de1d4b5ee44da126b1fe476eb0847707953001533dac760ae46",
       "evidence_ref": "vmware_client_test.go",
-      "implementation_revision": "d22e37fcad338e9f171b834f6f12d2de4a5709a903c4e660624ed3f72497a01f",
+      "implementation_revision": "004db61806ef88ed1a97120755afff95d85cf08159c7381a6b267d0bd47a3d95",
       "level": "offline"
     },
     "wait_goals": []

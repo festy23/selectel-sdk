@@ -8,7 +8,7 @@
   "x-source-uris": [
     "https://docs.selectel.ru/api/vmware/",
     "https://developer.broadcom.com/xapis/vmware-cloud-director-api/36.3/doc/types/SupportedVersionsType.html",
-    "https://developer.broadcom.com/xapis/vmware-cloud-director-api/36.3/doc/operations/GET-SupportedVersions.html"
+    "https://developer.broadcom.com/xapis/vmware-cloud-director-api/latest/doc/operations/GET-SupportedVersions.html"
   ],
   "x-inventory-complete": false,
   "paths": {
@@ -185,5 +185,6 @@
       }
     }
   },
-  "x-inventory-note": "Eight Selectel examples, seven distinct method/path operations; VDC/VM queries are source parameter variants, not two coverage operations."
+  "x-inventory-note": "Eight Selectel examples, seven distinct method/path operations; VDC/VM queries are source parameter variants, not two coverage operations.",
+  "x-discovery-source-note": "Discovery request is unversioned GET /api/versions, matching Selectel example and current vendor operation since1.5; version36.3 source Type is pinned separately. No deployed36.3 support/selection inferred."
 }
