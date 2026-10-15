@@ -39,5 +39,11 @@
   "kubeconfig_gap": "Schema204bodyless versus SDK ExtractRaw payload; response contract reconciliation owned#71/#74/#76, no invented200shape.",
   "inventory_complete": false,
   "coverage_ratio": null,
-  "task_page_gap": "OpenAPI Offset/Limit case, snake-case flags versus camel-case descriptions, SDK List ignores pagination/count. End rule and count semantics not established; bounded typed page remains partial, never infers completion/cursor. Owned#71/#74/#76."
+  "task_page_gap": "OpenAPI Offset/Limit case, snake-case flags versus camel-case descriptions, SDK List ignores pagination/count. End rule and count semantics not established; bounded typed page remains partial, never infers completion/cursor. Owned#71/#74/#76.",
+  "remaining_issue": 116,
+  "downstream_ownership": [
+    71,
+    74,
+    76
+  ]
 }

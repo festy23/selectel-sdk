@@ -62,3 +62,21 @@ func (c *Client) DeleteCluster(ctx context.Context, ref types.ResourceRef, optio
 	}
 	return out, e
 }
+
+// GetKubeconfig is a source gate: schema204/bodyless and official SDK raw payload
+// disagree. No credentials or HTTP are used until that contract is reconciled.
+func (c *Client) GetKubeconfig(ctx context.Context, ref types.ResourceRef, options types.CallOptions) (types.Result[types.ProtectedValue], error) {
+	op := core.Operation{ID: "mks.v1.clusters_kubeconfig.list", Service: "mks", APIGeneration: "v1", Method: "GET", Effect: "read", Auth: types.IAMProject, RequireProject: true, RequireLocation: true, Success: []int{204}}
+	op, bindErr := c.runtime.BindDocumented(op, c.scope)
+	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: resourcePath(ref) + "/kubeconfig", Refs: []types.ResourceRef{ref}, Options: options, Validate: func() error {
+		if bindErr != nil {
+			return bindErr
+		}
+		if e := c.validateRoot(ref, "cluster", op); e != nil {
+			return e
+		}
+		return types.NewError(types.CapabilityUnavailable)
+	}}, func([]byte, types.EndpointBinding) (core.Decoded[types.ProtectedValue], error) {
+		return core.Decoded[types.ProtectedValue]{}, types.NewError(types.CapabilityUnavailable)
+	})
+}

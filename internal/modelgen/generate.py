@@ -51,7 +51,9 @@ for case, (family, initial, top_name) in CASES.items():
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
     if package in {"mks", "mkslegacy"}:
-        resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "SwaggerNode", "Task", "RegistryWithMeta"}
+        resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
+    if package == "mkslegacy":
+        resource_roots.update({"SwaggerNode", "RegistryWithMeta"})
     pending = dict(roots)
     emitted = {}
     imports = {"types": "github.com/festy23/selectel-sdk/types", "json": "encoding/json"}

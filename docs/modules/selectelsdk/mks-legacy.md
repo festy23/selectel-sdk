@@ -3,7 +3,7 @@
 `Project(id).Location(region,pool).MKSLegacy()` selects MKS generation `v1`.
 It does not convert v2 refs or fall back between generations. Source inventory
 contains28 operations from the current published [legacy schema](https://docs.selectel.ru/api/managed-kubernetes-legacy.json).
-The current slice implements twenty-six operations plus one partial task-page read; kubeconfig remains unimplemented pending its source contract
+The current MKS v1 slice has26 implemented and2 partial bindings (task page and kubeconfig source gate); it is not complete
 are unimplemented. Whole legacy inventory including DNS/storage is incomplete,
 coverage_ratio=null; published sources are not live deployment verification.
 
@@ -88,3 +88,22 @@ caller anchors, never list-diff adoption. Replace preserves explicit empty array
 DeleteAllRegistryIntegrations is explicit collection action, while
 DeleteRegistryIntegration requires exact native association ref;204 is only
 acceptance, not an absence or readiness guarantee.
+
+GetKubeconfig is a local source gate returning CapabilityUnavailable after exact
+caller ref checks, before CredentialSource lookup or HTTP. Its partial binding
+does not implement the remote download; status/content/stream contract remains
+unknown. No YAML payload or successful status is invented to resolve the conflict.
+
+## Remaining family slices
+
+The native child/blocking issues of #71 are [MKS source contracts](https://github.com/festy23/selectel-sdk/issues/116),
+[DNS legacy v1](https://github.com/festy23/selectel-sdk/issues/117) and
+[old storage availability/protocols](https://github.com/festy23/selectel-sdk/issues/118).
+DNS19 operations are imported as unimplemented in the machine catalog. Official
+domains-go confirms its account Selectel Token/X-Token and HTTPSv1 endpoint,
+distinct from current project-scoped DNSv2. The outdated/migration message is not
+withdrawal evidence. Public source articles and20/21 recognized old-storage table
+rows are pinned in catalog/evidence/legacy-family-source-dispositions.json;
+they are discovery evidence, not unique operation counts or coverage claims.
+Old-storage operational bindings remain absent pending #118. #71 remains
+incomplete, and only References #71 is justified for this implementation subset.

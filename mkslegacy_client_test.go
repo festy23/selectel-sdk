@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	sdk "github.com/festy23/selectel-sdk"
+	"github.com/festy23/selectel-sdk/credentials"
 	"github.com/festy23/selectel-sdk/mkslegacy"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
@@ -751,5 +752,23 @@ func TestMKSLegacyRegistryDeleteSingleRequiresNativeAssociationRef(t *testing.T)
 	out, e = v.MKSLegacy().DeleteRegistryIntegration(context.Background(), integration, types.CallOptions{})
 	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].Kind != "registry_integration" || calls != 1 {
 		t.Fatalf("delete one %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyKubeconfigSourceGapRefusesBeforeCredentialsAndHTTP(t *testing.T) {
+	lookups, calls := 0, 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+		lookups++
+		return credentials.Material{}, types.NewError(types.CredentialsUnavailable)
+	}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) { calls++; return nil, io.ErrUnexpectedEOF })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	out, e := v.MKSLegacy().GetKubeconfig(context.Background(), cluster, types.CallOptions{})
+	if types.ErrorCode(e) != types.CapabilityUnavailable || !out.Data.Empty() || lookups != 0 || calls != 0 {
+		t.Fatalf("kubeconfig %+v %v lookup%d http%d", out, e, lookups, calls)
 	}
 }
