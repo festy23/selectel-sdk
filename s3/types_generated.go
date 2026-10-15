@@ -75,8 +75,12 @@ type HeadObjectOptions struct {
 	VersionID                   *types.ProtectedValue
 	IfMatch, IfNoneMatch, Range *string
 }
-type DeleteObjectOptions struct{ VersionID *types.ProtectedValue }
+type DeleteObjectOptions struct {
+	VersionID *types.ProtectedValue
+	IfMatch   *string
+}
 type CopyOptions struct {
+	SourceIfModifiedSince, SourceIfUnmodifiedSince                            *time.Time
 	SourceVersionID                                                           *types.ProtectedValue
 	MetadataDirective, SourceIfMatch, SourceIfNoneMatch, IfMatch, IfNoneMatch *string
 	Metadata                                                                  map[string]types.ProtectedValue

@@ -12,6 +12,7 @@
     "mapping": "typed SDK subset; common CallOptions retained; unsupported or unknown AWS variants never forwarded",
     "covered_native_fields": [
       "Bucket",
+      "IfMatch",
       "Key",
       "VersionId"
     ],
@@ -30,7 +31,6 @@
     "excluded_variants": [
       "AWS input BypassGovernanceRetention: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input ExpectedBucketOwner: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
-      "AWS input IfMatch: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input IfMatchLastModifiedTime: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input IfMatchSize: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input MFA: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",

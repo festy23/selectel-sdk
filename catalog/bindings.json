@@ -5095,7 +5095,6 @@
     "excluded_variants": [
       "AWS input BypassGovernanceRetention: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input ExpectedBucketOwner: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
-      "AWS input IfMatch: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input IfMatchLastModifiedTime: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input IfMatchSize: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input MFA: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
@@ -5163,8 +5162,6 @@
       "AWS input ContentDisposition: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input ContentEncoding: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input ContentLanguage: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
-      "AWS input CopySourceIfModifiedSince: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
-      "AWS input CopySourceIfUnmodifiedSince: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input CopySourceSSECustomerAlgorithm: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input CopySourceSSECustomerKey: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",
       "AWS input CopySourceSSECustomerKeyMD5: Selectel support/semantics unconfirmed or delegated advanced variant; not forwarded; evidence owner #74, P1 implementation / acceptance #75",

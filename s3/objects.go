@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 func versionQuery(v *types.ProtectedValue) url.Values {
@@ -38,7 +39,12 @@ func (c *Objects) Head(ctx context.Context, r types.ResourceRef, in HeadObjectOp
 	})
 }
 func (c *Objects) Delete(ctx context.Context, r types.ResourceRef, in DeleteObjectOptions, o types.CallOptions) (types.Result[ObjectInfo], error) {
-	result, err := invoke(c.client, ctx, "objects.delete", "DELETE", r, versionQuery(in.VersionID), nil, nil, []int{204}, o, nil, func(_ context.Context, b io.Reader, _ types.EndpointBinding, _ int, h http.Header) (core.Decoded[ObjectInfo], error) {
+	h := http.Header{}
+	var encode error
+	if in.IfMatch != nil {
+		encode = header(h, "If-Match", *in.IfMatch)
+	}
+	result, err := invoke(c.client, ctx, "objects.delete", "DELETE", r, versionQuery(in.VersionID), h, nil, []int{204}, o, func() error { return encode }, func(_ context.Context, b io.Reader, _ types.EndpointBinding, _ int, h http.Header) (core.Decoded[ObjectInfo], error) {
 		return core.Decoded[ObjectInfo]{Data: mutationHeaders(h, r)}, emptyBody(b)
 	})
 	if result.Receipt != nil && in.VersionID != nil {
@@ -67,6 +73,17 @@ func (c *Objects) Copy(ctx context.Context, source, target types.ResourceRef, in
 			if e := header(h, v.k, *v.v); e != nil {
 				encode = e
 			}
+		}
+	}
+	for _, condition := range []struct {
+		key   string
+		value *time.Time
+	}{
+		{"X-Amz-Copy-Source-If-Modified-Since", in.SourceIfModifiedSince},
+		{"X-Amz-Copy-Source-If-Unmodified-Since", in.SourceIfUnmodifiedSince},
+	} {
+		if condition.value != nil {
+			h.Set(condition.key, condition.value.UTC().Format(http.TimeFormat))
 		}
 	}
 	return invoke(s, ctx, "objects.copy", "PUT", target, nil, h, nil, []int{200}, o, func() error {

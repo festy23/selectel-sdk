@@ -16,8 +16,8 @@ covered={
 'CreateBucket':{'Bucket','CreateBucketConfiguration','ObjectLockEnabledForBucket'},'DeleteBucket':{'Bucket'},'HeadBucket':{'Bucket'},'GetBucketLocation':{'Bucket'},
 'ListBuckets':{'ContinuationToken','MaxBuckets','Prefix','BucketRegion'},
 'PutObject':{'Bucket','Key','Body','ContentLength','ContentType','ContentMD5','Metadata','IfMatch','IfNoneMatch'},
-'GetObject':{'Bucket','Key','Range','IfMatch','IfNoneMatch','VersionId'},'HeadObject':{'Bucket','Key','Range','IfMatch','IfNoneMatch','VersionId'},'DeleteObject':{'Bucket','Key','VersionId'},'DeleteObjects':{'Bucket','Delete'},
-'CopyObject':{'Bucket','Key','CopySource','Metadata','MetadataDirective','ContentType','IfMatch','IfNoneMatch','CopySourceIfMatch','CopySourceIfNoneMatch'},
+'GetObject':{'Bucket','Key','Range','IfMatch','IfNoneMatch','VersionId'},'HeadObject':{'Bucket','Key','Range','IfMatch','IfNoneMatch','VersionId'},'DeleteObject':{'Bucket','Key','VersionId','IfMatch'},'DeleteObjects':{'Bucket','Delete'},
+'CopyObject':{'Bucket','Key','CopySource','Metadata','MetadataDirective','ContentType','IfMatch','IfNoneMatch','CopySourceIfMatch','CopySourceIfNoneMatch','CopySourceIfModifiedSince','CopySourceIfUnmodifiedSince'},
 'ListObjects':{'Bucket','Delimiter','EncodingType','Marker','MaxKeys','Prefix'},'ListObjectsV2':{'Bucket','ContinuationToken','Delimiter','EncodingType','FetchOwner','MaxKeys','Prefix','StartAfter'}}
 def native_fields(native,kind):
  text=(A/('api_op_'+native+'.go.txt')).read_text();match=re.search(r'type '+native+kind+r' struct \{(.*?)\n\}',text,re.S);assert match,native
@@ -68,8 +68,8 @@ type DeleteFailure struct{Key string `json:"key"`;VersionID *types.ProtectedValu
 type DeleteManyResponse struct{Deleted []DeleteResult `json:"deleted"`;Errors []DeleteFailure `json:"errors"`;Complete bool `json:"complete"`}
 type UploadOptions struct{ContentType *types.ProtectedValue;Metadata map[string]types.ProtectedValue;ContentMD5,IfMatch,IfNoneMatch *string}
 type HeadObjectOptions struct{VersionID *types.ProtectedValue;IfMatch,IfNoneMatch,Range *string}
-type DeleteObjectOptions struct{VersionID *types.ProtectedValue}
-type CopyOptions struct{SourceVersionID *types.ProtectedValue;MetadataDirective,SourceIfMatch,SourceIfNoneMatch,IfMatch,IfNoneMatch *string;Metadata map[string]types.ProtectedValue;ContentType *types.ProtectedValue}
+type DeleteObjectOptions struct{VersionID *types.ProtectedValue;IfMatch *string}
+type CopyOptions struct{SourceIfModifiedSince,SourceIfUnmodifiedSince *time.Time;SourceVersionID *types.ProtectedValue;MetadataDirective,SourceIfMatch,SourceIfNoneMatch,IfMatch,IfNoneMatch *string;Metadata map[string]types.ProtectedValue;ContentType *types.ProtectedValue}
 type ObjectInfo struct{ContentLength *types.Integer `json:"content_length,omitempty"`;CacheControl,ContentDisposition,ContentEncoding,ContentLanguage,Expires *types.ProtectedValue;ContentRange,AcceptRanges,StorageClass *string;DeleteMarker *bool `json:"delete_marker,omitempty"`;SourceVersionID *types.ProtectedValue `json:"source_version_id,omitempty"`;NotModified bool `json:"not_modified,omitempty"`;LastModified *string `json:"last_modified,omitempty"`;Ref *types.ResourceRef `json:"ref,omitempty"`;ETag *string `json:"etag,omitempty"`;VersionID *types.ProtectedValue `json:"version_id,omitempty"`;ContentType *types.ProtectedValue `json:"content_type,omitempty"`;Metadata map[string]types.ProtectedValue `json:"metadata,omitempty"`}
 type DownloadOptions struct{MaxBytes int64;Range,IfMatch,IfNoneMatch *string;VersionID *types.ProtectedValue}
 type Transfer struct{NotModified bool `json:"not_modified,omitempty"`;Object ObjectInfo `json:"object"`;Bytes int64 `json:"bytes"`;Complete bool `json:"complete"`}

@@ -10,6 +10,7 @@ Primary Selectel pages, retrieved 2026-10-15:
 - [Published endpoints](https://docs.selectel.ru/api/urls/): `assets/selectel-urls.html`.
 - [Addressing styles](https://docs.selectel.ru/s3/buckets/addressing-types/): `assets/selectel-addressing.html`.
 - [Bucket creation/naming](https://docs.selectel.ru/s3/buckets/create-bucket/): `assets/selectel-create-bucket.html`.
+- [Conditional operations](https://docs.selectel.ru/s3/objects/conditional-requests/): `assets/selectel-conditional.html`; exact COPY source-date conditions and DELETE If-Match.
 - [Limits](https://docs.selectel.ru/s3/about/limitations/): `assets/selectel-limits.html`.
 - [Object Lock guide](https://docs.selectel.ru/s3/buckets/object-lock/): advanced variants remain evidence work for #46/#74; no retention API inferred here.
 

@@ -726,3 +726,48 @@ func TestListV1DelimiterCanFallbackToLastKeyWhenMarkerOmitted(t *testing.T) {
 		t.Fatal(calls)
 	}
 }
+
+func TestConfirmedConditionalCopyDatesAndDeleteIfMatch(t *testing.T) {
+	calls := 0
+	after := time.Date(2026, 10, 1, 3, 4, 5, 0, time.FixedZone("offset", 3600))
+	before := after.Add(time.Hour)
+	etag := `"expected"`
+	_, c := clients(t, func(r *http.Request) (*http.Response, error) {
+		calls++
+		switch r.Method {
+		case "PUT":
+			if r.Header.Get("X-Amz-Copy-Source-If-Modified-Since") != after.UTC().Format(http.TimeFormat) || r.Header.Get("X-Amz-Copy-Source-If-Unmodified-Since") != before.UTC().Format(http.TimeFormat) {
+				t.Fatalf("missing source date conditions: %v", r.Header)
+			}
+			return response(412, `<Error><Code>PreconditionFailed</Code><Message>must discard</Message></Error>`), nil
+		case "DELETE":
+			if r.Header.Get("If-Match") != etag {
+				t.Fatal("missing delete If-Match")
+			}
+			return response(412, `<Error><Code>PreconditionFailed</Code></Error>`), nil
+		default:
+			t.Fatal(r.Method)
+			return nil, nil
+		}
+	})
+	bucket, _ := c.Bucket("test-bucket")
+	src, _ := c.Object(bucket, "source")
+	dst, _ := c.Object(bucket, "target")
+	var sdkerr *types.SDKError
+	copied, e := c.Objects.Copy(context.Background(), src, dst, s3.CopyOptions{SourceIfModifiedSince: &after, SourceIfUnmodifiedSince: &before}, types.CallOptions{})
+	if (!errors.As(e, &sdkerr) || sdkerr.Code != types.Conflict) || copied.Receipt == nil || copied.Receipt.Outcome != types.Rejected {
+		t.Fatal(e, copied.Receipt)
+	}
+	deleted, e := c.Objects.Delete(context.Background(), dst, s3.DeleteObjectOptions{IfMatch: &etag}, types.CallOptions{})
+	if (!errors.As(e, &sdkerr) || sdkerr.Code != types.Conflict) || deleted.Receipt == nil || deleted.Receipt.Outcome != types.Rejected {
+		t.Fatal(e, deleted.Receipt)
+	}
+	if calls != 2 {
+		t.Fatal(calls)
+	}
+	bad := "etag\r\nInjected: yes"
+	notSent, e := c.Objects.Delete(context.Background(), dst, s3.DeleteObjectOptions{IfMatch: &bad}, types.CallOptions{})
+	if (!errors.As(e, &sdkerr) || sdkerr.Code != types.InvalidArgument) || notSent.Receipt == nil || notSent.Receipt.Outcome != types.NotSent || calls != 2 {
+		t.Fatal(e, calls)
+	}
+}
