@@ -107,3 +107,13 @@ Legacy access_list action исключён именно из compiled2.73: pinne
 Все modern2.73 bindings помечены partial: upstream wire mappings подтверждены,
 но exact Selectel modern route/body/microversion availability не доказана CLI
 сценариями. Пробел принадлежит #70 с reconciliation #74 и acceptance #76.
+
+AllowAccess сканирует returned id/share_id до остальных полей и сохраняет rule
+с exact caller share parent при accepted malformed response. Unknown outcome
+содержит только caller anchor; повторного allow и inferred rule нет. Request
+access_to и metadata раскрываются только в private wire renderer. DenyAccess
+требует exact rule ref с caller parent и не угадывает share из rule ID. Bodyless202
+подтверждает acceptance, не применение ACL или завершение удаления. Recovery и
+wait goals отсутствуют: exact observation доступен явно через ListAccessRules,
+без автоматического replay. Upstream допускает driver-specific access types;
+Selectel guide подтверждает IP сценарий, остальные driver contracts не доказаны.

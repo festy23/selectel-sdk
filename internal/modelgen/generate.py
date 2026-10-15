@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-    "filestorage": ("file-storage-manila", {"ShareType":"ShareType", "Share":"Share", "ShareNetwork":"ShareNetwork", "NetworkCreateRequest":"NetworkCreateRequest", "AccessRule":"AccessRule"}, None),
+    "filestorage": ("file-storage-manila", {"ShareType":"ShareType", "Share":"Share", "ShareNetwork":"ShareNetwork", "NetworkCreateRequest":"NetworkCreateRequest", "AccessRule":"AccessRule", "AccessCreateRequest":"AccessCreateRequest"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",

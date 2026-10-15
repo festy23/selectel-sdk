@@ -1,0 +1,47 @@
+{
+  "operation_id": "filestorage.v2_73.shares.allow",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "v2_73",
+    "microversion": "2.73",
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/shares/{share_id}/action",
+    "mapping": "Exact caller share ref, body.allow_access maps required access_type/access_to, optional access_level and metadata. Protected target revealed only for wire; metadata string dictionary. No caller ref conversion or fallback."
+  },
+  "response": {
+    "successful_statuses": [
+      200,
+      202
+    ],
+    "mapping": "access envelope generated2.73 fields. Scan returned id+share_id first; share_id must equal explicit caller. Preserve independently trustworthy created rule ref parent caller share on accepted malformed field. Unknown only caller anchor, no adoption/replay/readiness.",
+    "sensitive_fields": [
+      "description",
+      "share_network_subnets.cidr",
+      "share_network_subnets.gateway"
+    ]
+  },
+  "errors": {
+    "mapping": "Safe shared status taxonomy, documented400/401/403/413quota/422 are Rejected;500/transport remain Unknown without replay. Local validation returns revision-bound NotSent0attempts/noCredentialHTTP. All accepted identities remain in receipt on decoding or association error."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No safe causal replay proof for network/defaultsubnet creation; no name lookup or adoption, caller may observe exact refs explicitly when supported."
+  },
+  "limitations": [
+    "Firstparty Neutron-backed networkcreation subset only; fulldeploymentinventory and2.74/2.75 unresolved under#70.",
+    "No automatic preflight quota reservation, quota increase, networking changes or readiness claim; provider413 rejection preserved.",
+    "Reviewed protected wire renderer from OneC PR106 adapted with explicit known Nullable primitive cases; unknown Nullable types failclosed. Reviewed PR97 earlyContractRevision fix reused without volume features.",
+    "Modern2.73 wire counterpart pinned upstream; Selectel availability for this exact microversion/shape unconfirmed. Owned source reconciliation #70/#74/#76; not complete provider capability."
+  ]
+}

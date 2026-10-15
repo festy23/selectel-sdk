@@ -425,3 +425,86 @@ func TestFileStorageAccessRuleForeignParentNeverAdopted(t *testing.T) {
 		t.Fatalf("generation %v calls%d", e, calls)
 	}
 }
+
+func TestFileStorageAllowRetainsAcceptedRuleBeforeBadProtectedField(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		raw, _ := io.ReadAll(r.Body)
+		if string(raw) != `{"allow_access":{"access_level":"ro","access_to":"192.0.2.1","access_type":"ip"}}` {
+			t.Fatalf("body %s", raw)
+		}
+		return &http.Response{StatusCode: 202, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"access":{"id":"created-rule","share_id":"share-1","access_level":"ro","access_to":17,"access_type":"ip","state":"queued","access_key":null,"created_at":null,"updated_at":null,"metadata":{}}}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	share := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share", ID: "share-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	accessType, level := "ip", "ro"
+	target := types.Protect([]byte("192.0.2.1"))
+	out, e := v.FileStorage().AllowAccess(context.Background(), share, filestorage.AccessCreateRequest{AccessType: &accessType, AccessLevel: &level, AccessTo: &target}, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.ResourceRefs[1].ID != "created-rule" || out.Receipt.ResourceRefs[1].Parent == nil || *out.Receipt.ResourceRefs[1].Parent != share || calls != 1 {
+		t.Fatalf("allow %+v %v", out, e)
+	}
+}
+
+func TestFileStorageAllowUnknownNeverReplaysOrInfersRule(t *testing.T) {
+	writes := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		writes++
+		return nil, io.ErrUnexpectedEOF
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	share := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share", ID: "share-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	kind := "ip"
+	target := types.Protect([]byte("192.0.2.1"))
+	out, e := v.FileStorage().AllowAccess(context.Background(), share, filestorage.AccessCreateRequest{AccessType: &kind, AccessTo: &target}, types.CallOptions{})
+	if types.ErrorCode(e) != types.UnknownOutcome || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != share || out.Receipt.Recovery != "unavailable" || writes != 1 {
+		t.Fatalf("unknown %+v %v writes%d", out, e, writes)
+	}
+}
+
+func TestFileStorageDenyRequiresExactRuleParentAndPreservesReceipt(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		raw, _ := io.ReadAll(r.Body)
+		if string(raw) != `{"deny_access":{"access_id":"rule-1"}}` || r.URL.Path != "/share/v2/shares/share-1/action" {
+			t.Fatalf("deny %s %s", r.URL, raw)
+		}
+		return &http.Response{StatusCode: 202, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	share := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share", ID: "share-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	rule := share
+	rule.Kind = "access_rule"
+	rule.ID = "rule-1"
+	out, e := v.FileStorage().DenyAccess(context.Background(), rule, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatalf("missing parent %+v %v", out, e)
+	}
+	rule.Parent = &share
+	out, e = v.FileStorage().DenyAccess(context.Background(), rule, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != "rule-1" || out.Receipt.ResourceRefs[0].Parent == nil || calls != 1 {
+		t.Fatalf("deny %+v %v", out, e)
+	}
+}

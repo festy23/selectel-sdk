@@ -8,6 +8,47 @@ import (
 	"github.com/festy23/selectel-sdk/types"
 )
 
+type AccessCreateRequest struct {
+	AccessLevel *string               `json:"access_level,omitempty"`
+	AccessTo    *types.ProtectedValue `json:"access_to,omitempty"`
+	AccessType  *string               `json:"access_type,omitempty"`
+	Metadata    *types.ProtectedJSON  `json:"metadata,omitempty"`
+}
+
+func (v AccessCreateRequest) Validate() error {
+	if v.AccessTo == nil || v.AccessType == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Metadata != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.Metadata.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	return nil
+}
+func (v *AccessCreateRequest) normalize() {
+}
+func (v *AccessCreateRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire AccessCreateRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = AccessCreateRequest(value)
+	v.normalize()
+	return nil
+}
+
 type AccessRule struct {
 	AccessKey   *types.Nullable[types.ProtectedValue] `json:"access_key,omitempty"`
 	AccessLevel *string                               `json:"access_level,omitempty"`
