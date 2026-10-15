@@ -569,3 +569,62 @@ func TestMKSLegacyNodeReinstallAcknowledgementKeepsOnlyExactNode(t *testing.T) {
 		t.Fatalf("reinstall %+v %v", out, e)
 	}
 }
+
+func TestMKSLegacyTaskGetUsesExplicitClusterParentAndProtectsErrorDetails(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/v1/clusters/legacy-cluster/tasks/task-1" || r.URL.Query().Get("with_error_details") != "true" || r.URL.Query().Get("with_task_details") != "false" {
+			t.Fatalf("task %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"task":{"id":"task-1","cluster_id":"legacy-cluster","nodegroup_id":"metadata-group","status":"future-task-state","error_details":{"code":9007199254740993,"name":"synthetic-private-error","details":"synthetic-private-details"}}}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	task := cluster
+	task.Kind = "task"
+	task.ID = "task-1"
+	task.Parent = &cluster
+	yes, no := true, false
+	out, e := v.MKSLegacy().GetTask(context.Background(), task, mkslegacy.TaskOptions{WithErrorDetails: &yes, WithTaskDetails: &no}, types.CallOptions{})
+	if e != nil || out.Data.Ref == nil || out.Data.Ref.Parent == nil || out.Data.Ref.Parent.ID != "legacy-cluster" || out.Data.Status == nil || *out.Data.Status != "future-task-state" || out.Data.ErrorDetails == nil || out.Data.ErrorDetails.Code == nil || out.Data.ErrorDetails.Code.String() != "9007199254740993" {
+		t.Fatalf("task %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out)
+	if strings.Contains(string(safe)+fmt.Sprintf("%+v %#v", out, out), "synthetic-private-") {
+		t.Fatal("task error leaked")
+	}
+}
+
+func TestMKSLegacyTaskPagePreservesNativeQueryAndNeverGuessesCompletion(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		q := r.URL.Query()
+		if q.Get("Offset") != "0" || q.Get("Limit") != "2" || q.Get("with_error_details") != "false" || q.Has("offset") || q.Has("limit") {
+			t.Fatalf("task page %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"count":9007199254740993,"tasks":[]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	offset, _ := types.ParseInteger("0")
+	limit, _ := types.ParseInteger("2")
+	details := false
+	out, e := v.MKSLegacy().ListTasksPage(context.Background(), cluster, mkslegacy.TaskListOptions{Offset: &offset, Limit: &limit, WithErrorDetails: &details}, types.CallOptions{})
+	if types.ErrorCode(e) != types.Incomplete || out.Done || out.NextCursor != nil || out.Provider.ReportedCount == nil || out.Provider.ReportedCount.String() != "9007199254740993" || calls != 1 {
+		t.Fatalf("task page %+v %v calls%d", out, e, calls)
+	}
+}

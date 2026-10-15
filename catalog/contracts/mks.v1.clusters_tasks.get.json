@@ -1,0 +1,40 @@
+{
+  "operation_id": "mks.v1.clusters_tasks.get",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/clusters/{cluster_id}/tasks/{task_id}",
+    "mapping": "Exact caller v1 task ref with cluster parent. Optional with_error_details/with_task_details snake-case query follows parameter table, false preserved. No camel-case fallback."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Generated task envelope; exact task/cluster IDs required. Task parent is explicit caller cluster, nodegroup_id remains metadata. Unknown status retained and error details protected; no task correlation/readiness inferred.",
+    "sensitive_fields": [
+      "error_details.name",
+      "error_details.details"
+    ]
+  },
+  "errors": {
+    "mapping": "Bounded safe reads, source404not_found; sanitized common HTTP taxonomy, no raw provider error text."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio",
+    "Parameter tables use snake-case flags but response descriptions use camel-case. Compiled mapping follows explicit parameters; alternate spelling is unimplemented and never automatic fallback, owned#71/#74/#76."
+  ]
+}

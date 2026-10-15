@@ -3,7 +3,7 @@
 `Project(id).Location(region,pool).MKSLegacy()` selects MKS generation `v1`.
 It does not convert v2 refs or fall back between generations. Source inventory
 contains28 operations from the current published [legacy schema](https://docs.selectel.ru/api/managed-kubernetes-legacy.json).
-The current slice implements twenty operations: eight cluster operations, three configuration reads, six nodegroup operations and three node operations; the remaining8 operations
+The current slice implements twenty-one operations plus one partial task-page read: cluster/configuration/nodegroup/node operations and GetTask; the remaining6 operations
 are unimplemented. Whole legacy inventory including DNS/storage is incomplete,
 coverage_ratio=null; published sources are not live deployment verification.
 
@@ -67,3 +67,13 @@ node resource paths omit the v2 /nodes segment, and no conversion is inferred.
 GetNode/DeleteNode/ReinstallNode use native v1 routes without /nodes. OS-server
 IDs remain metadata. Unknown500/transport retains cloned caller hierarchy
 without replay or raw provider error text;204 is acceptance, not completion.
+
+GetTask uses explicit caller cluster parent, preserves raw unknown status and
+protected error name/details with exact numeric code. nodegroup_id remains
+metadata, not an inferred parent. Compiled flags follow snake-case parameter
+tables; camel-case descriptions are recorded as source discrepancy, no fallback.
+ListTasksPage performs one bounded read and always returns Incomplete with
+Done=false and no invented NextCursor, even for an empty page. Offset/Limit use
+exact capitalized source names and int64 bounds. count is ReportedCount, never
+TotalCount or proof of completion. Traversal/end-rule reconciliation remains
+owned #71/#74/#76; this binding is partial rather than falsely complete.

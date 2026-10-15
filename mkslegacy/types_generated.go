@@ -880,3 +880,89 @@ func (v SwaggerOIDC) Validate() error {
 }
 func (v *SwaggerOIDC) normalize() {
 }
+
+type Task struct {
+	ClusterID    *string            `json:"cluster_id,omitempty"`
+	ErrorDetails *TaskErrorDetails  `json:"error_details,omitempty"`
+	ID           *string            `json:"id,omitempty"`
+	NodegroupID  *string            `json:"nodegroup_id,omitempty"`
+	StartedAt    *time.Time         `json:"started_at,omitempty"`
+	Status       *string            `json:"status,omitempty"`
+	TaskData     *TaskTaskDetails   `json:"task_data,omitempty"`
+	Type         *string            `json:"type,omitempty"`
+	UpdatedAt    *time.Time         `json:"updated_at,omitempty"`
+	Ref          *types.ResourceRef `json:"ref,omitempty"`
+}
+
+func (v Task) Validate() error {
+	if v.ErrorDetails != nil {
+		if err := v.ErrorDetails.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TaskData != nil {
+		if err := v.TaskData.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *Task) normalize() {
+	if v.ErrorDetails != nil {
+		v.ErrorDetails.normalize()
+	}
+	if v.StartedAt != nil {
+		instant := v.StartedAt.UTC()
+		v.StartedAt = &instant
+	}
+	if v.TaskData != nil {
+		v.TaskData.normalize()
+	}
+	if v.UpdatedAt != nil {
+		instant := v.UpdatedAt.UTC()
+		v.UpdatedAt = &instant
+	}
+}
+func (v *Task) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire Task
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = Task(value)
+	v.normalize()
+	return nil
+}
+
+type TaskErrorDetails struct {
+	Code    *types.Integer        `json:"code,omitempty"`
+	Details *types.ProtectedValue `json:"details,omitempty"`
+	Name    *types.ProtectedValue `json:"name,omitempty"`
+}
+
+func (v TaskErrorDetails) Validate() error {
+	return nil
+}
+func (v *TaskErrorDetails) normalize() {
+}
+
+type TaskTaskDetails struct {
+	LocationName  *string `json:"location_name,omitempty"`
+	NodegroupType *string `json:"nodegroup_type,omitempty"`
+	ServiceUuid   *string `json:"service_uuid,omitempty"`
+}
+
+func (v TaskTaskDetails) Validate() error {
+	return nil
+}
+func (v *TaskTaskDetails) normalize() {
+}

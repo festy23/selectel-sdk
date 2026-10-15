@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
- "mkslegacy": ("managed-kubernetes-legacy", {"Cluster":"Cluster", "ClusterDetailed":"DetailedCluster", "KubeVersion":"KubeVersion", "AvailableAdmissionControllers":"AdmissionControllers", "AvailableFeatureGates":"FeatureGates", "SwaggerClusterCreateStruct":"ClusterCreateSpec", "SwaggerClusterUpdateStruct":"ClusterUpdateSpec", "Nodegroup":"Nodegroup", "NodegroupDetailed":"DetailedNodegroup", "SwaggerNode":"Node", "NodegroupUpdate":"NodegroupUpdate"},None),
+ "mkslegacy": ("managed-kubernetes-legacy", {"Cluster":"Cluster", "ClusterDetailed":"DetailedCluster", "KubeVersion":"KubeVersion", "AvailableAdmissionControllers":"AdmissionControllers", "AvailableFeatureGates":"FeatureGates", "SwaggerClusterCreateStruct":"ClusterCreateSpec", "SwaggerClusterUpdateStruct":"ClusterUpdateSpec", "Nodegroup":"Nodegroup", "NodegroupDetailed":"DetailedNodegroup", "SwaggerNode":"Node", "NodegroupUpdate":"NodegroupUpdate", "Task":"Task"},None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
