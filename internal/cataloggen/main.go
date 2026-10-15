@@ -278,6 +278,60 @@ func generate() error {
 	if err := json.Unmarshal(raw, &registry); err != nil {
 		return err
 	}
+	// Discovery-only families are SDK-owned evidence records, never operation rows.
+	discoveryRaw, err := os.ReadFile(filepath.Join(dir, "contracts", "service-discovery.json"))
+	if err != nil {
+		return err
+	}
+	var discovery struct {
+		Sources  map[string]map[string]any `json:"sources"`
+		Families map[string]struct {
+			Availability     string           `json:"availability"`
+			SourceIDs        []string         `json:"source_ids"`
+			Versions         []map[string]any `json:"versions"`
+			InventoryCount   *uint            `json:"inventory_count"`
+			MissingContracts []string         `json:"missing_contracts"`
+			FollowupIssues   []string         `json:"followup_issues"`
+		} `json:"families"`
+	}
+	if err := json.Unmarshal(discoveryRaw, &discovery); err != nil {
+		return err
+	}
+	ids := make([]string, 0, len(discovery.Families))
+	for id := range discovery.Families {
+		ids = append(ids, id)
+	}
+	sort.Strings(ids)
+	for _, id := range ids {
+		fact := discovery.Families[id]
+		var row map[string]any
+		for _, existing := range registry {
+			if existing["id"] == id {
+				row = existing
+				break
+			}
+		}
+		if row == nil {
+			row = map[string]any{"id": id}
+			registry = append(registry, row)
+		}
+		sources := make([]map[string]any, 0, len(fact.SourceIDs))
+		uris := make([]string, 0, len(fact.SourceIDs))
+		for _, sourceID := range fact.SourceIDs {
+			source, ok := discovery.Sources[sourceID]
+			if !ok {
+				return fmt.Errorf("unknown discovery source %s", sourceID)
+			}
+			sources = append(sources, source)
+			uri, ok := source["uri"].(string)
+			if !ok {
+				return fmt.Errorf("missing discovery source URI %s", sourceID)
+			}
+			uris = append(uris, uri)
+		}
+		row["availability"], row["source_uris"] = fact.Availability, uris
+		row["discovery"] = map[string]any{"evidence_ref": "contracts/service-discovery.json#/families/" + id, "revision": hash(discoveryRaw), "sources": sources, "versions": fact.Versions, "inventory_count": fact.InventoryCount, "missing_contracts": fact.MissingContracts, "followup_issues": fact.FollowupIssues}
+	}
 	for _, r := range registry {
 		r["inventory_complete"] = complete[r["id"].(string)]
 	}

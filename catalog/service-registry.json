@@ -299,8 +299,314 @@
   },
   {
     "availability": "discovery_pending",
+    "discovery": {
+      "evidence_ref": "contracts/service-discovery.json#/families/kms",
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/127"
+      ],
+      "inventory_count": null,
+      "missing_contracts": [
+        "Authoritative public KMS contract or provider disposition",
+        "Actual API generation/auth/endpoint/operation inventory, if confirmed",
+        "No inference from Secrets Manager, upstream Barbican, package mirrors, missing pages or permission failures"
+      ],
+      "revision": "f9f20543ef3930e2604134d06f252bb6f4f6ed713c4cf45d23695e9f2fd55d3e",
+      "sources": [
+        {
+          "facts": [
+            "Bounded index sweep recorded public API page links; missing navigation entries do not prove absent or withdrawn APIs.",
+            "Secrets Manager, certificates, VMware and legacy API pages have distinct owners; KMS crypto operations are not inferred from Secrets Manager."
+          ],
+          "locator": "Public API index navigation",
+          "revision": "1a76c0cf3ffae25ec494f693c17a5cd17682ed6e5405d3a05f0e1a77c3856659",
+          "role": "first_party_documentation_index",
+          "uri": "https://docs.selectel.ru/api/"
+        },
+        {
+          "facts": [
+            "This survey did not establish a user operation endpoint recipe for Heat/Placement/Gnocchi/KMS; no host/catalog service type is guessed."
+          ],
+          "locator": "Documented base URL map examined for Heat/Placement/Gnocchi/KMS",
+          "revision": "0fce7c721dab50c8064b780548cccf2f9e822978a1d7cc1d73e9f1ca54177b4f",
+          "role": "first_party_endpoint_map_search",
+          "uri": "https://docs.selectel.ru/api/urls/"
+        },
+        {
+          "facts": [
+            "Sitemap search is a bounded discovery surface, not proof of API absence or API operation inventory.",
+            "Placement-group pages refer to cloud-server Nova groups, not proof of Placement API support."
+          ],
+          "locator": "Sitemap paths searched for heat/placement/gnocchi/kms/vds/ml-platform/trino/redash/hive",
+          "revision": "7cdd0293a99f3893eedf2b851c2d02deadd2a2396f76646aecbab228b8c41b8f",
+          "role": "first_party_sitemap_search",
+          "uri": "https://docs.selectel.ru/sitemap.xml"
+        }
+      ],
+      "versions": []
+    },
     "id": "kms",
     "inventory_complete": false,
-    "source_uris": []
+    "source_uris": [
+      "https://docs.selectel.ru/api/",
+      "https://docs.selectel.ru/api/urls/",
+      "https://docs.selectel.ru/sitemap.xml"
+    ]
+  },
+  {
+    "availability": "discovery_pending",
+    "discovery": {
+      "evidence_ref": "contracts/service-discovery.json#/families/heat",
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/124"
+      ],
+      "inventory_count": null,
+      "missing_contracts": [
+        "Selectel user-accessible operation inventory and effective policy",
+        "Scope/auth and endpoint recipe per operation",
+        "Full request/response/error/status/replay/wait contracts"
+      ],
+      "revision": "f9f20543ef3930e2604134d06f252bb6f4f6ed713c4cf45d23695e9f2fd55d3e",
+      "sources": [
+        {
+          "facts": [
+            "Heat Zed API1.0; Placement Zed API1.0 maximum microversion1.39; Gnocchi release4.5 API1.0.",
+            "Component listing does not establish Selectel user policy, endpoint, auth, operation inventory or actual deployment patch.",
+            "Manila is separately owned by #70; Nova placement/server groups are not the Placement API."
+          ],
+          "locator": "openstack-components-versions / Heat, Placement, Gnocchi rows",
+          "revision": "1a379ca0505fcc422d2b3fb6495a7699f09d41769c531b6d5e95b2483889d68b",
+          "role": "first_party_component_version",
+          "uri": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli.md"
+        },
+        {
+          "facts": [
+            "Upstream reference includes stacks, resources, events and templates; this is not a Selectel-supported operation denominator or deployment patch claim."
+          ],
+          "locator": "Heat 19.0.0 upstream v1 API index",
+          "revision": "894711550192d4f5e2265d8734ae52d4a3250468",
+          "role": "upstream_reference_only",
+          "uri": "https://raw.githubusercontent.com/openstack/heat/894711550192d4f5e2265d8734ae52d4a3250468/api-ref/source/v1/index.rst"
+        },
+        {
+          "facts": [
+            "Initial Zed reference versions are Heat19.0.0 and Placement8.0.0; this does not pin the Selectel deployment patch or operation support."
+          ],
+          "locator": "Heat19.0.0 and Placement8.0.0 initial Zed releases",
+          "revision": "dd031694c511e6ce5ef179c85e756734cb534ba06261654747213e336f38b802",
+          "role": "upstream_release_reference",
+          "uri": "https://releases.openstack.org/zed/"
+        },
+        {
+          "facts": [
+            "This survey did not establish a user operation endpoint recipe for Heat/Placement/Gnocchi/KMS; no host/catalog service type is guessed."
+          ],
+          "locator": "Documented base URL map examined for Heat/Placement/Gnocchi/KMS",
+          "revision": "0fce7c721dab50c8064b780548cccf2f9e822978a1d7cc1d73e9f1ca54177b4f",
+          "role": "first_party_endpoint_map_search",
+          "uri": "https://docs.selectel.ru/api/urls/"
+        }
+      ],
+      "versions": [
+        {
+          "api_version": "1.0",
+          "component": "Heat",
+          "release": "Zed"
+        }
+      ]
+    },
+    "id": "heat",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli.md",
+      "https://raw.githubusercontent.com/openstack/heat/894711550192d4f5e2265d8734ae52d4a3250468/api-ref/source/v1/index.rst",
+      "https://releases.openstack.org/zed/",
+      "https://docs.selectel.ru/api/urls/"
+    ]
+  },
+  {
+    "availability": "discovery_pending",
+    "discovery": {
+      "evidence_ref": "contracts/service-discovery.json#/families/gnocchi",
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/126"
+      ],
+      "inventory_count": null,
+      "missing_contracts": [
+        "Selectel telemetry operation inventory, scope/auth and user endpoint",
+        "Aggregation/time/measure/resource/error/replay/bounds contracts",
+        "Separation from Prometheus Metrics #60; no implicit ingestion or endpoint alias"
+      ],
+      "revision": "f9f20543ef3930e2604134d06f252bb6f4f6ed713c4cf45d23695e9f2fd55d3e",
+      "sources": [
+        {
+          "facts": [
+            "Heat Zed API1.0; Placement Zed API1.0 maximum microversion1.39; Gnocchi release4.5 API1.0.",
+            "Component listing does not establish Selectel user policy, endpoint, auth, operation inventory or actual deployment patch.",
+            "Manila is separately owned by #70; Nova placement/server groups are not the Placement API."
+          ],
+          "locator": "openstack-components-versions / Heat, Placement, Gnocchi rows",
+          "revision": "1a379ca0505fcc422d2b3fb6495a7699f09d41769c531b6d5e95b2483889d68b",
+          "role": "first_party_component_version",
+          "uri": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli.md"
+        },
+        {
+          "facts": [
+            "Upstream4.5.0 reference is distinct from the latest gnocchiclient7.x documentation linked by the provider; neither establishes Selectel-supported operations or permissions.",
+            "Gnocchi is not considered covered by the SDK Prometheus Metrics service."
+          ],
+          "locator": "Gnocchi4.5.0 upstream REST documentation source",
+          "revision": "eaa83d6867cc5be11908936a6f72d1dbd3162207",
+          "role": "upstream_reference_only",
+          "uri": "https://raw.githubusercontent.com/gnocchixyz/gnocchi/eaa83d6867cc5be11908936a6f72d1dbd3162207/doc/source/rest.yaml"
+        },
+        {
+          "facts": [
+            "This survey did not establish a user operation endpoint recipe for Heat/Placement/Gnocchi/KMS; no host/catalog service type is guessed."
+          ],
+          "locator": "Documented base URL map examined for Heat/Placement/Gnocchi/KMS",
+          "revision": "0fce7c721dab50c8064b780548cccf2f9e822978a1d7cc1d73e9f1ca54177b4f",
+          "role": "first_party_endpoint_map_search",
+          "uri": "https://docs.selectel.ru/api/urls/"
+        }
+      ],
+      "versions": [
+        {
+          "api_version": "1.0",
+          "component": "Gnocchi",
+          "release": "4.5"
+        }
+      ]
+    },
+    "id": "gnocchi",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli.md",
+      "https://raw.githubusercontent.com/gnocchixyz/gnocchi/eaa83d6867cc5be11908936a6f72d1dbd3162207/doc/source/rest.yaml",
+      "https://docs.selectel.ru/api/urls/"
+    ]
+  },
+  {
+    "availability": "discovery_pending",
+    "discovery": {
+      "evidence_ref": "contracts/service-discovery.json#/families/hive_metastore",
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/128"
+      ],
+      "inventory_count": null,
+      "missing_contracts": [
+        "Distinct Thrift and Iceberg REST operation inventory, auth and protocol revisions",
+        "Plain private HTTP8080/Thrift9083 versus SDK HTTPS-only and agreed transport test boundaries",
+        "No cluster lifecycle/control plane inferred from data integration; no whole upstream API imported"
+      ],
+      "revision": "f9f20543ef3930e2604134d06f252bb6f4f6ed713c4cf45d23695e9f2fd55d3e",
+      "sources": [
+        {
+          "facts": [
+            "Hive Metastore4.2.0; private-subnet Thrift port9083 and Iceberg REST HTTP port8080 are documented.",
+            "Exact supported operation/auth/REST-spec revision and SDK safe transport boundary remain unconfirmed.",
+            "Cluster control-plane API is not inferred from these data endpoints."
+          ],
+          "locator": "Versions and connection protocols",
+          "revision": "89a0730bbab7cc5d2b2c06830da212e79d3b3b00a592a2c7a78bbb18c86de67d",
+          "role": "first_party_data_integration",
+          "uri": "https://docs.selectel.ru/cloud-for-hive-metastore/about/about-cloud-for-hive-metastore.md"
+        },
+        {
+          "facts": [
+            "Hive Metastore4.2.0; private-subnet Thrift port9083 and Iceberg REST HTTP port8080 are documented.",
+            "Exact supported operation/auth/REST-spec revision and SDK safe transport boundary remain unconfirmed.",
+            "Cluster control-plane API is not inferred from these data endpoints."
+          ],
+          "locator": "Versions and connection protocols",
+          "revision": "f1540cdce1c8d1fe8a769ce9ab41f47091ebe61dec32aefe7deb579bfa7e2870",
+          "role": "first_party_data_integration",
+          "uri": "https://docs.selectel.ru/cloud-for-hive-metastore/manage/connect-to-cluster.md"
+        }
+      ],
+      "versions": [
+        {
+          "component": "Hive Metastore",
+          "release": "4.2.0"
+        }
+      ]
+    },
+    "id": "hive_metastore",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/cloud-for-hive-metastore/about/about-cloud-for-hive-metastore.md",
+      "https://docs.selectel.ru/cloud-for-hive-metastore/manage/connect-to-cluster.md"
+    ]
+  },
+  {
+    "availability": "discovery_pending",
+    "discovery": {
+      "evidence_ref": "contracts/service-discovery.json#/families/placement",
+      "followup_issues": [
+        "https://github.com/festy23/selectel-sdk/issues/125"
+      ],
+      "inventory_count": null,
+      "missing_contracts": [
+        "Selectel user-accessible operations and effective user/admin policy",
+        "Per-method microversion, auth/scope and endpoint",
+        "Typed request/response/error/replay/receipt mappings; Nova server groups are owned by #31, not this family"
+      ],
+      "revision": "f9f20543ef3930e2604134d06f252bb6f4f6ed713c4cf45d23695e9f2fd55d3e",
+      "sources": [
+        {
+          "facts": [
+            "Heat Zed API1.0; Placement Zed API1.0 maximum microversion1.39; Gnocchi release4.5 API1.0.",
+            "Component listing does not establish Selectel user policy, endpoint, auth, operation inventory or actual deployment patch.",
+            "Manila is separately owned by #70; Nova placement/server groups are not the Placement API."
+          ],
+          "locator": "openstack-components-versions / Heat, Placement, Gnocchi rows",
+          "revision": "1a379ca0505fcc422d2b3fb6495a7699f09d41769c531b6d5e95b2483889d68b",
+          "role": "first_party_component_version",
+          "uri": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli.md"
+        },
+        {
+          "facts": [
+            "Pinned upstream reference supports microversions through1.39. Provider policy/operations must still be confirmed."
+          ],
+          "locator": "Placement8.0.0 VERSIONS maximum1.39",
+          "revision": "5ec38f6d3b76619fac442a85a9b5c73dc606b83a",
+          "role": "upstream_reference_only",
+          "uri": "https://raw.githubusercontent.com/openstack/placement/5ec38f6d3b76619fac442a85a9b5c73dc606b83a/placement/microversion.py"
+        },
+        {
+          "facts": [
+            "Initial Zed reference versions are Heat19.0.0 and Placement8.0.0; this does not pin the Selectel deployment patch or operation support."
+          ],
+          "locator": "Heat19.0.0 and Placement8.0.0 initial Zed releases",
+          "revision": "dd031694c511e6ce5ef179c85e756734cb534ba06261654747213e336f38b802",
+          "role": "upstream_release_reference",
+          "uri": "https://releases.openstack.org/zed/"
+        },
+        {
+          "facts": [
+            "This survey did not establish a user operation endpoint recipe for Heat/Placement/Gnocchi/KMS; no host/catalog service type is guessed."
+          ],
+          "locator": "Documented base URL map examined for Heat/Placement/Gnocchi/KMS",
+          "revision": "0fce7c721dab50c8064b780548cccf2f9e822978a1d7cc1d73e9f1ca54177b4f",
+          "role": "first_party_endpoint_map_search",
+          "uri": "https://docs.selectel.ru/api/urls/"
+        }
+      ],
+      "versions": [
+        {
+          "api_version": "1.0",
+          "component": "Placement",
+          "max_microversion": "1.39",
+          "release": "Zed"
+        }
+      ]
+    },
+    "id": "placement",
+    "inventory_complete": false,
+    "source_uris": [
+      "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli.md",
+      "https://raw.githubusercontent.com/openstack/placement/5ec38f6d3b76619fac442a85a9b5c73dc606b83a/placement/microversion.py",
+      "https://releases.openstack.org/zed/",
+      "https://docs.selectel.ru/api/urls/"
+    ]
   }
 ]

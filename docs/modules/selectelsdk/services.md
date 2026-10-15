@@ -45,6 +45,10 @@ Service ID является стабильным именем пакета и к
 | `certificates` | [Пользовательские](https://docs.selectel.ru/api/certificates-manager/), [Let's Encrypt](https://docs.selectel.ru/api/lets-encrypt-certificates/) | secretsmanager-go / HTTP |
 | `mobile_farm` | [Мобильная ферма](https://docs.selectel.ru/api/mobile-farm/) | HTTP |
 | `tickets` | [Тикеты](https://docs.selectel.ru/api/tickets/), [вложения](https://docs.selectel.ru/api/tickets-attachments/) | HTTP / stream transfer |
+| `heat` | Selectel component matrix: Zed / API 1.0 | discovery_pending; user contract не подтверждён |
+| `placement` | Selectel component matrix: Zed / API 1.0, max 1.39 | discovery_pending; отдельно от Nova server groups |
+| `gnocchi` | Selectel component matrix: 4.5 / API 1.0 | discovery_pending; отдельно от Prometheus metrics |
+| `hive_metastore` | Selectel Hive Metastore 4.2.0, Thrift / Iceberg REST integration | discovery_pending; auth/operations/transport не согласованы |
 | `kms` | Публичный контракт не подтверждён | discovery_pending; методы encrypt/decrypt отсутствуют |
 
 OpenStack, AWS, OCI и VMware операции входят в покрытие только в пределах
