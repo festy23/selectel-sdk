@@ -49,7 +49,8 @@
     "mapping": "core HTTP mapping; raw messages/body discarded; accepted malformed/body-limit error retains Receipt",
     "guardrail": "422 nested error.code=guardrail_rejected -> rejected receipt, provider_error with compiled ProviderCode; optional bounded diagnostic body never erased known HTTP rejection; x-gateway-request-id safe metadata",
     "consumer": "incomplete with raw callback error discarded",
-    "500": "known compiled nested internal_error retained as ProviderCode inside UnknownOutcome; CauseCode=provider_error, unknown receipt/no automatic replay; raw message/request body discarded"
+    "500": "known compiled nested internal_error retained as ProviderCode inside UnknownOutcome; CauseCode=provider_error, unknown receipt/no automatic replay; raw message/request body discarded",
+    "diagnostic_cancellation": "context.AfterFunc interrupts blocked optional error Read using synchronized once-only Close; HTTP422 remains Rejected with canceled/deadline error, HTTP500 remains UnknownOutcome with context cause; both Result and SDKError retain the same receipt; no replay or extra credential/resource I/O"
   },
   "retry": "all model POST mutations: no automatic replay, no idempotency assumptions",
   "recovery": "unavailable; no observation API inferred",

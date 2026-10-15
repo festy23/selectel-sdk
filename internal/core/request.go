@@ -351,6 +351,9 @@ func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request
 			}
 			return out, nil
 		}
+		// Reviewed OCI fix 8c3deead: error diagnostics share a synchronized
+		// once-only closer so cancellation can interrupt a blocked Read.
+		closeErrorBody := sync.OnceFunc(func() { _ = resp.Body.Close() })
 		providerError := statusError(status)
 		if code, ok := op.ErrorCodes[status]; ok {
 			providerError = types.NewError(code)
@@ -362,9 +365,11 @@ func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request
 			if out.Receipt != nil && containsStatus(op.Rejected, status) {
 				out.Receipt.Outcome = types.Rejected
 			}
+			stopClose := context.AfterFunc(call, closeErrorBody)
 			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
+			stopClose()
+			closeErrorBody()
 			if call.Err() != nil {
-				resp.Body.Close()
 				return out, types.ContextError(call.Err())
 			}
 			if readErr == nil {
@@ -381,7 +386,7 @@ func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request
 		if op.ErrorProtocol == "cloudwatch" {
 			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
 			if readErr != nil {
-				resp.Body.Close()
+				closeErrorBody()
 				if call.Err() != nil {
 					return out, types.ContextError(call.Err())
 				}
@@ -389,7 +394,7 @@ func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request
 			}
 			providerError = cloudwatchError(status, raw)
 		}
-		resp.Body.Close() // Provider error payloads are not retained or logged.
+		closeErrorBody() // Provider error payloads are not retained or logged.
 		if out.Receipt != nil && containsStatus(op.Rejected, status) {
 			out.Receipt.Outcome = types.Rejected
 		}

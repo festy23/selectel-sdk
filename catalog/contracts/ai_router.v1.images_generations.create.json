@@ -32,7 +32,8 @@
   },
   "errors": {
     "mapping": "core HTTP mapping; raw messages/body discarded; accepted malformed/body-limit error retains Receipt",
-    "guardrail": "422 nested guardrail_rejected, compiled code only, JSON before any streaming"
+    "guardrail": "422 nested guardrail_rejected, compiled code only, JSON before any streaming",
+    "diagnostic_cancellation": "context.AfterFunc interrupts blocked optional error Read using synchronized once-only Close; HTTP422 remains Rejected with canceled/deadline error, HTTP500 remains UnknownOutcome with context cause; both Result and SDKError retain the same receipt; no replay or extra credential/resource I/O"
   },
   "retry": "all model POST mutations: no automatic replay, no idempotency assumptions",
   "recovery": "unavailable; no observation API inferred",

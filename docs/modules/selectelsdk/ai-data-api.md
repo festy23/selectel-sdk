@@ -124,7 +124,12 @@ nested error.code guardrail_rejected сохраняется как compiled Prov
 Rejected; JSON приходит до SSE и не вызывает consume. Optional diagnostic body
 ограничен: неизвестные коды, raw message и body отбрасываются. Failure этого
 необязательного чтения не стирает известный HTTP rejection. x-gateway-request-id
-сохраняется только как ограниченный safe request ID. Compiled internal_error сохраняется также внутри UnknownOutcome без изменения
+сохраняется только как ограниченный safe request ID. Optional error-body Read также прерывается context/budget через synchronized
+once-only Close; 422 сохраняет Rejected, 500 — UnknownOutcome/context cause,
+один receipt присутствует и в Result, и в SDKError, без повторного I/O. Pattern
+узко переиспользован из reviewed OCI fix 8c3deead (без OCI service).
+
+Compiled internal_error сохраняется также внутри UnknownOutcome без изменения
 unknown receipt или запрета replay. Context cancellation сохраняется; никакой raw transport/callback error message не выводится.
 
 ## Поток и внутренний seam
