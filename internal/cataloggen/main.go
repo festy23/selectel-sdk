@@ -235,7 +235,7 @@ func generate() error {
 					if b.Recovery {
 						row["recovery_contract_ref"] = b.ContractRef + "#/recovery"
 					}
-					row["limitations"] = []string{"Verification does not establish live availability"}
+					row["limitations"] = append([]string{"Verification does not establish live availability"}, b.Limitations...)
 				}
 				canonical, err := json.Marshal(row)
 				if err != nil {
@@ -288,6 +288,7 @@ func generate() error {
 }
 
 type binding struct {
+	Limitations      []string `json:"limitations"`
 	GoMethod         string   `json:"go_method"`
 	InputType        string   `json:"input_type"`
 	OutputType       string   `json:"output_type"`

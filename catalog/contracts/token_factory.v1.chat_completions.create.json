@@ -15,9 +15,11 @@
     "excluded_variants": [
       "streaming",
       "multimodal content",
-      "tools/prediction/reasoning/options beyond text messages",
+      "tools/prediction/options beyond text messages",
       "full upstream request/response surface"
-    ]
+    ],
+    "token_bound": "optional caller max_tokens as nonnegative exact Integer; no model limit guessed; absent omitted",
+    "reasoning": "Router only: explicit nested reasoning.effort=low from first-party quickstart; absent omitted, unsupported services/effort rejected locally"
   },
   "response": {
     "mapping_source": "ai/types_generated.go",

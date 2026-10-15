@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-    "ai": ("ai-router", {"ChatCompletion": "ChatCompletion", "ChatChunk": "ChatChunk"}, None),
+    "ai": ("ai-router", {"ChatCompletion": "ChatCompletion", "ChatChunk": "ChatChunk", "Completion": "Completion", "EmbeddingsResponse": "EmbeddingsResponse", "RerankResponse": "RerankResponse", "Transcription": "Transcription", "ImagesResponse": "ImagesResponse"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -36,7 +36,7 @@ CASES = {
     "registry_v1": ("craas", "registry.Registry", "V1Registry"),
     "audit": ("audit-logs", "LogResponse", "Event"),
 }
-ACRONYMS = {"id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "cni": "CNI", "cpu": "CPU", "vcpus": "VCPUs", "ram": "RAM", "api": "API", "x509": "X509"}
+ACRONYMS = {"json": "JSON", "id": "ID", "ip": "IP", "url": "URL", "oidc": "OIDC", "cni": "CNI", "cpu": "CPU", "vcpus": "VCPUs", "ram": "RAM", "api": "API", "x509": "X509"}
 
 
 def name(text):
@@ -80,6 +80,14 @@ for case, (family, initial, top_name) in CASES.items():
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
         kind = schema.get("type")
+        if package == "ai" and schema.get("x-protected-integers"):
+            return "TokenIDs", False
+        if package == "ai" and schema.get("x-protected-number"):
+            return "ProtectedNumber", False
+        if package == "ai" and schema.get("x-protected-document"):
+            return "Document", False
+        if package == "ai" and schema.get("x-protected-vector"):
+            return "Vector", False
         if package == "ai" and schema.get("x-protected"):
             return "types.ProtectedValue", False
         if package == "mks" and ((field == "user_data" and kind == "string") or (type_name.startswith("TaskErrorDetails") and field in {"name", "details"})):

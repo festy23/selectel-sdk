@@ -13,6 +13,7 @@ import (
 
 	sdk "github.com/festy23/selectel-sdk"
 	"github.com/festy23/selectel-sdk/ai"
+	"github.com/festy23/selectel-sdk/catalog"
 	"github.com/festy23/selectel-sdk/credentials"
 	"github.com/festy23/selectel-sdk/types"
 )
@@ -215,6 +216,12 @@ func TestAIModelPOSTNeverReplaysOrInventsRecovery(t *testing.T) {
 				if types.ErrorCode(err) != tc.code || calls != 1 || result.Receipt == nil || result.Receipt.Outcome != tc.outcome || result.Receipt.Attempts != 1 || result.Receipt.Recovery != "unavailable" || len(result.Receipt.ResourceRefs) != 0 {
 					t.Fatalf("error=%v result=%+v calls=%d", err, result, calls)
 				}
+				if service == "ai_router" && tc.status == 500 {
+					var known *types.SDKError
+					if !errors.As(err, &known) || known.ProviderCode != "internal_error" {
+						t.Fatalf("known provider code lost: %+v", err)
+					}
+				}
 				if strings.Contains(fmt.Sprintf("%+v %#v", err, result), "synthetic-private-output") {
 					t.Fatal("raw output leaked")
 				}
@@ -236,5 +243,76 @@ func TestAIDataCatalogPreservesProjectRequirements(t *testing.T) {
 		if !slices.Contains(capability.ScopeRequirements, "project") || capability.Auth.Scheme != types.ProtocolSpecific || capability.Effect != "mutation" {
 			t.Fatalf("catalog scope/auth/effect mismatch: %+v", capability)
 		}
+	}
+}
+
+func TestAIChatExplicitReasoningAndTokenBound(t *testing.T) {
+	maximum, _ := types.ParseInteger("16")
+	for _, service := range []string{"ai_router", "dedicated_inference"} {
+		t.Run(service, func(t *testing.T) {
+			scope := types.Scope{AccountID: "test-account"}
+			if service == "dedicated_inference" {
+				scope.ProjectID = "project-one"
+			}
+			c, err := sdk.New(sdk.Config{AccountID: scope.AccountID, EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "dedicated_inference", APIGeneration: "v1", Scope: scope}: {ID: "explicit", URL: "https://inference.invalid/v1", Scope: scope, APIGeneration: "v1", Audience: credentials.SelectelAudience}}, Credentials: credentials.SourceFunc(func(_ context.Context, r types.AuthRequest) (credentials.Material, error) {
+				return credentials.Material{Identity: "key", Revision: "one", Binding: scope, Audience: r.Audience, Scheme: credentials.BearerToken, Token: types.Protect([]byte("key"))}, nil
+			}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+				var wire struct {
+					MaxTokens int `json:"max_tokens"`
+					Reasoning *struct {
+						Effort string `json:"effort"`
+					} `json:"reasoning"`
+				}
+				if json.NewDecoder(r.Body).Decode(&wire) != nil || wire.MaxTokens != 16 {
+					t.Fatal("explicit token limit lost")
+				}
+				if service == "ai_router" {
+					if wire.Reasoning == nil || wire.Reasoning.Effort != "low" {
+						t.Fatal("reasoning effort lost")
+					}
+				} else if wire.Reasoning != nil {
+					t.Fatal("unrequested reasoning default")
+				}
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"id":"c","object":"chat.completion","created":1,"model":"m","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"answer"}}]}`))}, nil
+			})})
+			if err != nil {
+				t.Fatal(err)
+			}
+			req := ai.ChatRequest{Model: "m", Messages: []ai.Message{{Role: "user", Content: types.Protect([]byte("question"))}}, MaxTokens: &maximum}
+			if service == "ai_router" {
+				req.Reasoning = &ai.Reasoning{Effort: "low"}
+			}
+			if service == "ai_router" {
+				_, err = c.Account().AIRouter().Chat(context.Background(), req)
+			} else {
+				p, _ := c.Project(scope.ProjectID)
+				_, err = p.Inference().Chat(context.Background(), req)
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+		})
+	}
+}
+
+func TestAIDataCatalogDoesNotEquateCompatibleSubsetWithCompleteAPI(t *testing.T) {
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for service, count := range map[string]int{"ai_router": 2, "dedicated_inference": 5, "token_factory": 1} {
+		rows, err := c.Catalog().List(catalog.Filter{Service: service})
+		if err != nil || len(rows) != count {
+			t.Fatalf("%s count=%d error=%v", service, len(rows), err)
+		}
+		for _, row := range rows {
+			if row.Implementation.Status != "partial" || row.Effect != "mutation" || row.GoMethod == nil || !slices.Contains(row.Limitations, "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support") {
+				t.Fatalf("overclaimed %s: %+v", service, row)
+			}
+		}
+	}
+	summary := c.Catalog().Summary()
+	if summary.InventoryComplete || summary.CoverageRatio != nil {
+		t.Fatal("unknown denominator reported complete")
 	}
 }

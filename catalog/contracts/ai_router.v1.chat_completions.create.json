@@ -14,13 +14,16 @@
     "mapping": "explicit model/text messages; Chat stream=false; StreamChat stream=true/Accept text/event-stream; explicit positive per-event/total/event-count limits; no business defaults",
     "excluded_variants": [
       "multimodal content",
-      "tools/prediction/reasoning/options beyond text messages",
+      "tools/prediction/options beyond text messages",
       "full upstream request/response surface"
     ],
     "methods": [
-      "Chat",
-      "StreamChat"
-    ]
+      "ai.RouterClient.Chat",
+      "ai.RouterClient.StreamChat"
+    ],
+    "token_bound": "optional caller max_tokens as nonnegative exact Integer; no model limit guessed; absent omitted",
+    "reasoning": "Router only: explicit nested reasoning.effort=low from first-party quickstart; absent omitted, unsupported services/effort rejected locally",
+    "stream_parameters": "ai.ChatRequest plus explicit ai.StreamOptions bounds and func(ai.ChatChunk) error consume"
   },
   "response": {
     "mapping_source": "ai/types_generated.go",
@@ -36,12 +39,17 @@
     "completeness": "bounded JSON, partial parameter surface; unknown Selectel-specific full response/deployment inventory",
     "usage": "exact Integer counters, optional usage; absent is not zero",
     "refs": "completion/model IDs remain protected metadata; no resource/task ref or wait",
-    "stream": "typed protected ChatChunk callback, optional exact Usage, bounded retained prefix; Complete only at compiled [DONE]; EOF/malformed/limit/cancellation/consumer-error retains accepted receipt and incomplete summary"
+    "stream": "typed protected ChatChunk callback, optional exact Usage, bounded retained prefix; Complete only at compiled [DONE]; EOF/malformed/limit/cancellation/consumer-error retains accepted receipt and incomplete summary",
+    "variants": {
+      "ai.RouterClient.Chat": "types.Result[ai.ChatCompletion]",
+      "ai.RouterClient.StreamChat": "types.Result[ai.StreamSummary] and protected ai.ChatChunk callbacks"
+    }
   },
   "errors": {
     "mapping": "core HTTP mapping; raw messages/body discarded; accepted malformed/body-limit error retains Receipt",
     "guardrail": "422 nested error.code=guardrail_rejected -> rejected receipt, provider_error with compiled ProviderCode; optional bounded diagnostic body never erased known HTTP rejection; x-gateway-request-id safe metadata",
-    "consumer": "incomplete with raw callback error discarded"
+    "consumer": "incomplete with raw callback error discarded",
+    "500": "known compiled nested internal_error retained as ProviderCode inside UnknownOutcome; CauseCode=provider_error, unknown receipt/no automatic replay; raw message/request body discarded"
   },
   "retry": "all model POST mutations: no automatic replay, no idempotency assumptions",
   "recovery": "unavailable; no observation API inferred",

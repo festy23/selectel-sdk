@@ -180,3 +180,22 @@ func (b *aiBlockingBody) Close() error {
 	b.closeOnce.Do(func() { close(b.closed) })
 	return nil
 }
+
+func TestAIRouterStreamInvalidBoundsAreNotSent(t *testing.T) {
+	for _, limits := range []ai.StreamOptions{{}, {MaxEvents: 1, MaxEventBytes: 2, MaxBytes: 1}, {MaxEvents: 1, MaxEventBytes: 1, MaxBytes: ^uint64(0)}} {
+		t.Run(fmt.Sprint(limits), func(t *testing.T) {
+			ioCalls := 0
+			c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+				ioCalls++
+				return credentials.Material{}, nil
+			}), Transport: transportFunc(func(*http.Request) (*http.Response, error) { ioCalls++; return nil, context.Canceled })})
+			if err != nil {
+				t.Fatal(err)
+			}
+			result, err := c.Account().AIRouter().StreamChat(context.Background(), ai.ChatRequest{Model: "m", Messages: []ai.Message{{Role: "user", Content: types.Protect([]byte("p"))}}}, limits, func(ai.ChatChunk) error { return nil })
+			if types.ErrorCode(err) != types.InvalidArgument || ioCalls != 0 || result.Receipt == nil || result.Receipt.Outcome != types.NotSent || result.Receipt.Attempts != 0 || result.Receipt.ContractRevision == "" {
+				t.Fatalf("error=%v receipt=%+v I/O=%d", err, result.Receipt, ioCalls)
+			}
+		})
+	}
+}

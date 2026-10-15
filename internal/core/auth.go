@@ -82,7 +82,12 @@ func (r *Runtime) authorize(ctx context.Context, request types.AuthRequest) (*au
 		return nil, types.NewError(types.Unauthenticated)
 	}
 	if material.Scheme != credentials.IAMPassword && material.Scheme != credentials.IAMToken {
-		return &authEntry{material: material, metadata: types.AuthMetadata{Scope: request.Scope, Verification: "caller_asserted", Scheme: string(material.Scheme), AcquiredAt: now}}, nil
+		metadata := types.AuthMetadata{Scope: request.Scope, Verification: "caller_asserted", Scheme: string(material.Scheme), AcquiredAt: now}
+		if material.Scheme == credentials.BearerToken && !material.ExpiresAt.IsZero() {
+			expiry := material.ExpiresAt.UTC()
+			metadata.ExpiresAt = &expiry
+		}
+		return &authEntry{material: material, metadata: metadata}, nil
 	}
 	if material.Scheme == credentials.IAMToken && !now.Before(material.ExpiresAt) {
 		return nil, types.NewError(types.Unauthenticated)

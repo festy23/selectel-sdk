@@ -5,6 +5,7 @@ package ai
 import (
 	"context"
 	"encoding/json"
+	"math/big"
 	"net/http"
 	"strings"
 
@@ -25,9 +26,14 @@ type Message struct {
 	Role    string               `json:"role"`
 	Content types.ProtectedValue `json:"content"`
 }
+type Reasoning struct {
+	Effort string `json:"effort"`
+}
 type ChatRequest struct {
-	Model    string    `json:"model"`
-	Messages []Message `json:"messages"`
+	Reasoning *Reasoning     `json:"reasoning,omitempty"`
+	MaxTokens *types.Integer `json:"max_tokens,omitempty"`
+	Model     string         `json:"model"`
+	Messages  []Message      `json:"messages"`
 }
 
 type dataClient struct {
@@ -105,11 +111,22 @@ func chatBody(c *dataClient, request ChatRequest, stream bool) ([]byte, error) {
 		Content string `json:"content"`
 	}
 	wire := struct {
-		Model    string        `json:"model"`
-		Messages []wireMessage `json:"messages"`
-		Stream   bool          `json:"stream"`
-	}{Model: request.Model, Stream: stream, Messages: make([]wireMessage, 0, len(request.Messages))}
+		Model     string         `json:"model"`
+		Messages  []wireMessage  `json:"messages"`
+		Stream    bool           `json:"stream"`
+		Reasoning *Reasoning     `json:"reasoning,omitempty"`
+		MaxTokens *types.Integer `json:"max_tokens,omitempty"`
+	}{Model: request.Model, Stream: stream, Reasoning: request.Reasoning, MaxTokens: request.MaxTokens, Messages: make([]wireMessage, 0, len(request.Messages))}
 	if strings.TrimSpace(request.Model) == "" || len(request.Messages) == 0 || (!c.requireProject && c.scope.ProjectID != "") || (c.requireProject && c.scope.ProjectID == "") {
+		validation = types.NewError(types.InvalidArgument)
+	}
+	if request.MaxTokens != nil {
+		n, ok := new(big.Int).SetString(request.MaxTokens.String(), 10)
+		if !ok || n.Sign() < 0 {
+			validation = types.NewError(types.InvalidArgument)
+		}
+	}
+	if request.Reasoning != nil && (c.service != "ai_router" || request.Reasoning.Effort != "low") {
 		validation = types.NewError(types.InvalidArgument)
 	}
 	for _, m := range request.Messages {

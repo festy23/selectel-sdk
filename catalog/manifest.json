@@ -8,21 +8,23 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/ai_router.v1.chat_completions.create.json": "b2f5d9620a62c285cc7f944a7f8718cc2bc9d49bf31245530f387a4edb792bc2"
+      "contracts/ai_router.v1.chat_completions.create.json": "c6ec2268fdc575620cbaf84f7027b091b0f856f4d3b5bb851b3a445852d38b7d"
     },
-    "contract_revision": "e3b9680d87811375415f1aedafc612fb8fe92bb411871168c4ed1df5b162fbaf",
+    "contract_revision": "58a5a356dc6b1fcbd9c759abc9f5b5ee1f27f191653ca305b39ddf771db3cc68",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/ai_router.v1.chat_completions.create.json#/endpoint",
     "error_binding_ref": "contracts/ai_router.v1.chat_completions.create.json#/errors",
-    "go_method": "ai.RouterClient.Chat / StreamChat",
+    "go_method": "ai.RouterClient.Chat",
     "implementation": {
-      "binding": "ai.RouterClient.Chat / StreamChat",
+      "binding": "ai.RouterClient.Chat",
       "status": "partial"
     },
     "input_schema_ref": "sources/ai-router.json#/paths/~1chat~1completions/post",
     "input_type": "ai.ChatRequest",
     "limitations": [
-      "Verification does not establish live availability"
+      "Verification does not establish live availability",
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
     ],
     "operation_id": "ai_router.v1.chat_completions.create",
     "output_schema_ref": "sources/ai-router.json#/paths/~1chat~1completions/post/responses",
@@ -32,7 +34,7 @@
       "covered_schema_ref": "sources/ai-router.json#/paths/~1chat~1completions/post",
       "excluded_variants": [
         "multimodal content",
-        "tools/prediction/reasoning/options beyond text messages",
+        "tools/prediction/options beyond text messages",
         "full upstream request/response surface"
       ]
     },
@@ -55,13 +57,13 @@
     "service": "ai_router",
     "source": {
       "operation_locator": "POST /chat/completions",
-      "revision": "d86cfabc9f147b6acf6be8fc494ad6f9bbd1120c1a8b6d34a4776a2cae9083fa",
+      "revision": "eca555a4cdd33285982204d7fa75c56c5d44bafec26d6b52a30d10a8973aebe4",
       "uri": "https://docs.selectel.ru/en/ai-router/quickstart/"
     },
     "verification": {
-      "contract_revision": "e3b9680d87811375415f1aedafc612fb8fe92bb411871168c4ed1df5b162fbaf",
+      "contract_revision": "58a5a356dc6b1fcbd9c759abc9f5b5ee1f27f191653ca305b39ddf771db3cc68",
       "evidence_ref": "ai_data_test.go",
-      "implementation_revision": "25b4d682cdfe9c7369e134cc37d77b09cbf8f5febdff8e6bbdcd1e145b9c39cc",
+      "implementation_revision": "08e5831986de486c683d84d5b6e7bb0a6f5f5d123b9f094a52c9a35c3c1883da",
       "level": "offline"
     },
     "wait_goals": []
@@ -74,48 +76,61 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "00f6fe29a1d1a69a769954edf96b8844863bc61ab3bf76afb2e1c53b7d1b3c0d",
+    "contract_artifact_revisions": {
+      "contracts/ai_router.v1.images_generations.create.json": "f87dcedecafece0488f3bb968e840a32281642f3f92e0baeef410b3f10d0606f"
+    },
+    "contract_revision": "7325c23308a1fe52ec489917f7de3b64e8051175ee4b31e148542cef46f5c91d",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/ai-router.json#/paths/~1images~1generations/post/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/ai_router.v1.images_generations.create.json#/endpoint",
+    "error_binding_ref": "contracts/ai_router.v1.images_generations.create.json#/errors",
+    "go_method": "ai.RouterClient.Images",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "ai.RouterClient.Images",
+      "status": "partial"
     },
     "input_schema_ref": "sources/ai-router.json#/paths/~1images~1generations/post",
-    "input_type": null,
+    "input_type": "ai.ImageRequest",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability",
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
     ],
     "operation_id": "ai_router.v1.images_generations.create",
     "output_schema_ref": "sources/ai-router.json#/paths/~1images~1generations/post/responses",
-    "output_type": null,
+    "output_type": "ai.ImageResult",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
-      "excluded_variants": []
+      "covered_schema_ref": "sources/ai-router.json#/paths/~1images~1generations/post",
+      "excluded_variants": [
+        "image options/edits/variations/streaming beyond selected compatible generation wire",
+        "Whole provider inventory and deployment-specific availability remain unverified"
+      ]
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/ai_router.v1.images_generations.create.json#/retry",
+    "request_binding_ref": "contracts/ai_router.v1.images_generations.create.json#/request",
     "resource": "images_generations",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/ai_router.v1.images_generations.create.json#/response",
     "scope_requirements": [
       "account"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "prompt/input/query/documents/audio",
+      "model-derived text/vector/score/token IDs",
+      "image URL/base64/revised prompt",
+      "provider/raw callback messages"
+    ],
     "service": "ai_router",
     "source": {
       "operation_locator": "POST /images/generations",
-      "revision": "d86cfabc9f147b6acf6be8fc494ad6f9bbd1120c1a8b6d34a4776a2cae9083fa",
+      "revision": "eca555a4cdd33285982204d7fa75c56c5d44bafec26d6b52a30d10a8973aebe4",
       "uri": "https://docs.selectel.ru/en/ai-router/quickstart/"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "7325c23308a1fe52ec489917f7de3b64e8051175ee4b31e148542cef46f5c91d",
+      "evidence_ref": "ai_images_test.go",
+      "implementation_revision": "942076ad41892eb2a056ef45321d3d20e5eba497f67ebf7e4a68bedfbe175a81",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -177,7 +192,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5e5f82e36802c58c84462c93a98feb355b5f975d7904858a8cf74827ce4bd4f0",
+      "implementation_revision": "07d212355999adb47e0d8c470f9da1558647163cfdfdcc6166de15e503276eb2",
       "level": "offline"
     },
     "wait_goals": []
@@ -339,7 +354,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "54c921f1f0f43e1fe3118e93528947f7a9d4830d1368c12796c60e7593a98445",
+      "implementation_revision": "392329416d9106aaec44621347503b104439b63afcbf1c9903c80d43f9c0620e",
       "level": "offline"
     },
     "wait_goals": []
@@ -395,7 +410,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "ffb652762b12a1a81c9b5488397eed8a93f01028f20bcc25847c1b71c040c3f3",
+      "implementation_revision": "a4be9165aacefc9117a0eba7474adad3573e17bf8f21ff846c867bead7aa7444",
       "level": "offline"
     },
     "wait_goals": []
@@ -504,7 +519,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "f2e44ef5ef547071640b31a626ae00a29ab1fa5f67c3baf8732483ba3d375655",
+      "implementation_revision": "7c6435176273ac1fa6e77c87b87212a759b5ea79ff1a89dc7412a4b19502dd98",
       "level": "offline"
     },
     "wait_goals": []
@@ -571,7 +586,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "1ebb796a4847f09f9f2c5c08fff46c262215be4d63878cbca4c16f930e0d9fb9",
+      "implementation_revision": "b620ef91f9b80be95cb968ea4628b285c64c260631f85b2c08bfe9b2961f3db8",
       "level": "offline"
     },
     "wait_goals": [
@@ -637,7 +652,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "abcdbd2a232eaad62b3ab5c009a8d5ad81f4a0063825ebd1762c918a10beb741",
+      "implementation_revision": "a3a7e4fbac9924b2cf1e3af77964dd3f14157cb4028fb42e878d5189764ba478",
       "level": "offline"
     },
     "wait_goals": [
@@ -703,7 +718,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "c1d0d05c3ac1977daab906f0ff029f1ce8cfdfc94d05740c4ff231356b65b7af",
+      "implementation_revision": "02c62f2db64deec61ef541c663f5f19f4db7c83482f57a9b655959b1f4ce3371",
       "level": "offline"
     },
     "wait_goals": []
@@ -769,7 +784,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "d2abfe8f8812a76bdae371a0a67cb1c9f0b0a2beddf63af4f92191b9a6b0a8ab",
+      "implementation_revision": "030d7ef4d482a4ba50acb37216255f5776a6ccb697e6cc03382809c2c57c5024",
       "level": "offline"
     },
     "wait_goals": []
@@ -2287,7 +2302,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "64fb32ecc8fc8cb1326b1b1e7aaa6700c22430c85651e159e4eda877023205b8",
+      "implementation_revision": "ed2c4176c52e3ad838a5b92abb8632d6b835c1e686a033a0e400e2daefe85c50",
       "level": "offline"
     },
     "wait_goals": []
@@ -5108,49 +5123,62 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "8a2b8c49ec0b119d4b325b989b5db4c20ef7736a7c953b83e2d2010807b0356b",
+    "contract_artifact_revisions": {
+      "contracts/dedicated_inference.v1.audio_transcriptions.create.json": "ae3596d2d5677a3d5e2b734837395950c640ed7c9c2deaeb1efdd07defdb3034"
+    },
+    "contract_revision": "dc8317bdebb62e20f242e1b566f1354be6450028f80b9eed0f0f40cc276fe3a0",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/dedicated-inference.json#/paths/~1audio~1transcriptions/post/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/dedicated_inference.v1.audio_transcriptions.create.json#/endpoint",
+    "error_binding_ref": "contracts/dedicated_inference.v1.audio_transcriptions.create.json#/errors",
+    "go_method": "ai.InferenceClient.Transcribe",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "ai.InferenceClient.Transcribe",
+      "status": "partial"
     },
     "input_schema_ref": "sources/dedicated-inference.json#/paths/~1audio~1transcriptions/post",
-    "input_type": null,
+    "input_type": "ai.TranscriptionRequest",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability",
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
     ],
     "operation_id": "dedicated_inference.v1.audio_transcriptions.create",
     "output_schema_ref": "sources/dedicated-inference.json#/paths/~1audio~1transcriptions/post/responses",
-    "output_type": null,
+    "output_type": "ai.TranscriptionResult",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
-      "excluded_variants": []
+      "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1audio~1transcriptions/post",
+      "excluded_variants": [
+        "text/srt/vtt/diarized formats and other OpenAI options not confirmed by selected first-party examples",
+        "Whole provider inventory and deployment-specific availability remain unverified"
+      ]
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/dedicated_inference.v1.audio_transcriptions.create.json#/retry",
+    "request_binding_ref": "contracts/dedicated_inference.v1.audio_transcriptions.create.json#/request",
     "resource": "audio_transcriptions",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/dedicated_inference.v1.audio_transcriptions.create.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "prompt/input/query/documents/audio",
+      "model-derived text/vector/score/token IDs",
+      "image URL/base64/revised prompt",
+      "provider/raw callback messages"
+    ],
     "service": "dedicated_inference",
     "source": {
       "operation_locator": "POST /audio/transcriptions",
-      "revision": "1e44c584fe653315977162598da9b29690552376250d0d975bf467d39a156631",
+      "revision": "cfdb6cb459f2cd0c329f3446da3f6cc0b655822d31684d193bb2780695ab02d5",
       "uri": "https://docs.selectel.ru/en/dedicated-inference/manage/interaction-modes/"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "dc8317bdebb62e20f242e1b566f1354be6450028f80b9eed0f0f40cc276fe3a0",
+      "evidence_ref": "ai_inference_test.go",
+      "implementation_revision": "3b1898f6aa31fef3cf9840b3b6164f98bc1edb35b0fde5f1c833c3d7fb1f6b50",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -5163,9 +5191,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/dedicated_inference.v1.chat_completions.create.json": "11dc1aafface1b7371231605c71618451b3061babe79957724e9c4189cec3719"
+      "contracts/dedicated_inference.v1.chat_completions.create.json": "2907da89319b49c81ab9d64c3461ed1fa747e491d90b3c3f8dffe0898c5afaf4"
     },
-    "contract_revision": "33af4b8c883e8837db52e6b5a009bfaece2bbf75e341be776a3c793c772fdf80",
+    "contract_revision": "e675260c9149433b120a3961a74d6908aabaea2ad74b712ffd2c988ea7790699",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/dedicated_inference.v1.chat_completions.create.json#/endpoint",
     "error_binding_ref": "contracts/dedicated_inference.v1.chat_completions.create.json#/errors",
@@ -5177,7 +5205,9 @@
     "input_schema_ref": "sources/dedicated-inference.json#/paths/~1chat~1completions/post",
     "input_type": "ai.ChatRequest",
     "limitations": [
-      "Verification does not establish live availability"
+      "Verification does not establish live availability",
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
     ],
     "operation_id": "dedicated_inference.v1.chat_completions.create",
     "output_schema_ref": "sources/dedicated-inference.json#/paths/~1chat~1completions/post/responses",
@@ -5188,7 +5218,7 @@
       "excluded_variants": [
         "streaming",
         "multimodal content",
-        "tools/prediction/reasoning/options beyond text messages",
+        "tools/prediction/options beyond text messages",
         "full upstream request/response surface"
       ]
     },
@@ -5212,13 +5242,13 @@
     "service": "dedicated_inference",
     "source": {
       "operation_locator": "POST /chat/completions",
-      "revision": "1e44c584fe653315977162598da9b29690552376250d0d975bf467d39a156631",
+      "revision": "cfdb6cb459f2cd0c329f3446da3f6cc0b655822d31684d193bb2780695ab02d5",
       "uri": "https://docs.selectel.ru/en/dedicated-inference/manage/interaction-modes/"
     },
     "verification": {
-      "contract_revision": "33af4b8c883e8837db52e6b5a009bfaece2bbf75e341be776a3c793c772fdf80",
+      "contract_revision": "e675260c9149433b120a3961a74d6908aabaea2ad74b712ffd2c988ea7790699",
       "evidence_ref": "ai_data_test.go",
-      "implementation_revision": "3bc43ab63330f6a9e916e66708dbb5af20558a366f9d5714dc8aeac48ca151d7",
+      "implementation_revision": "d0df98c2dbb2072caa346e5c4aea05c4824af81f862c5c9d7d4c8a59db2c35e6",
       "level": "offline"
     },
     "wait_goals": []
@@ -5231,49 +5261,62 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "fe9effc4f1363dba9a015936949b61086df233bc4f9f987834c64e5202b66702",
+    "contract_artifact_revisions": {
+      "contracts/dedicated_inference.v1.completions.create.json": "7ecca61eb5809d31335413a7d65b737b63cfb8003882394bd98541cfdb841d3a"
+    },
+    "contract_revision": "da6ca5cc616fe1ec320d193049e8f63e2077367041cf9f53326816caa05d14a9",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/dedicated-inference.json#/paths/~1completions/post/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/dedicated_inference.v1.completions.create.json#/endpoint",
+    "error_binding_ref": "contracts/dedicated_inference.v1.completions.create.json#/errors",
+    "go_method": "ai.InferenceClient.Complete",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "ai.InferenceClient.Complete",
+      "status": "partial"
     },
     "input_schema_ref": "sources/dedicated-inference.json#/paths/~1completions/post",
-    "input_type": null,
+    "input_type": "ai.CompletionRequest",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability",
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
     ],
     "operation_id": "dedicated_inference.v1.completions.create",
     "output_schema_ref": "sources/dedicated-inference.json#/paths/~1completions/post/responses",
-    "output_type": null,
+    "output_type": "ai.Completion",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
-      "excluded_variants": []
+      "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1completions/post",
+      "excluded_variants": [
+        "array prompts/suffix/echo/logprobs/best_of/streaming beyond selected text request",
+        "Whole provider inventory and deployment-specific availability remain unverified"
+      ]
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/dedicated_inference.v1.completions.create.json#/retry",
+    "request_binding_ref": "contracts/dedicated_inference.v1.completions.create.json#/request",
     "resource": "completions",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/dedicated_inference.v1.completions.create.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "prompt/input/query/documents/audio",
+      "model-derived text/vector/score/token IDs",
+      "image URL/base64/revised prompt",
+      "provider/raw callback messages"
+    ],
     "service": "dedicated_inference",
     "source": {
       "operation_locator": "POST /completions",
-      "revision": "1e44c584fe653315977162598da9b29690552376250d0d975bf467d39a156631",
+      "revision": "cfdb6cb459f2cd0c329f3446da3f6cc0b655822d31684d193bb2780695ab02d5",
       "uri": "https://docs.selectel.ru/en/dedicated-inference/manage/interaction-modes/"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "da6ca5cc616fe1ec320d193049e8f63e2077367041cf9f53326816caa05d14a9",
+      "evidence_ref": "ai_inference_test.go",
+      "implementation_revision": "10aa70b62c8c0055641c33d509f95dbcd22a881a47af57538b0a787eb780ba95",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -5285,49 +5328,62 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "203c2f599b0ef210123cea281034781e033fcb2fb39a81e3c0e86e8eac069f0e",
+    "contract_artifact_revisions": {
+      "contracts/dedicated_inference.v1.embeddings.create.json": "056d087a56a8c084eaa82400f89052f24cd9f74b0cb0bd0d903eb72f67bbc613"
+    },
+    "contract_revision": "bca9ded7be8724792210bc5c6eb478c8746166e9440bb85dd0ab55dacf95bda0",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/dedicated-inference.json#/paths/~1embeddings/post/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/dedicated_inference.v1.embeddings.create.json#/endpoint",
+    "error_binding_ref": "contracts/dedicated_inference.v1.embeddings.create.json#/errors",
+    "go_method": "ai.InferenceClient.Embed",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "ai.InferenceClient.Embed",
+      "status": "partial"
     },
     "input_schema_ref": "sources/dedicated-inference.json#/paths/~1embeddings/post",
-    "input_type": null,
+    "input_type": "ai.EmbeddingRequest",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability",
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
     ],
     "operation_id": "dedicated_inference.v1.embeddings.create",
     "output_schema_ref": "sources/dedicated-inference.json#/paths/~1embeddings/post/responses",
-    "output_type": null,
+    "output_type": "ai.EmbeddingResult",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
-      "excluded_variants": []
+      "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1embeddings/post",
+      "excluded_variants": [
+        "scalar/tokenized/multimodal input, base64 embedding representation and dimensions beyond confirmed float request",
+        "Whole provider inventory and deployment-specific availability remain unverified"
+      ]
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/dedicated_inference.v1.embeddings.create.json#/retry",
+    "request_binding_ref": "contracts/dedicated_inference.v1.embeddings.create.json#/request",
     "resource": "embeddings",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/dedicated_inference.v1.embeddings.create.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "prompt/input/query/documents/audio",
+      "model-derived text/vector/score/token IDs",
+      "image URL/base64/revised prompt",
+      "provider/raw callback messages"
+    ],
     "service": "dedicated_inference",
     "source": {
       "operation_locator": "POST /embeddings",
-      "revision": "1e44c584fe653315977162598da9b29690552376250d0d975bf467d39a156631",
+      "revision": "cfdb6cb459f2cd0c329f3446da3f6cc0b655822d31684d193bb2780695ab02d5",
       "uri": "https://docs.selectel.ru/en/dedicated-inference/manage/interaction-modes/"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "bca9ded7be8724792210bc5c6eb478c8746166e9440bb85dd0ab55dacf95bda0",
+      "evidence_ref": "ai_inference_test.go",
+      "implementation_revision": "17f4bc7fc5653d9718d13e972d0277cef41a5d8be9ac1b1104c0f94c1bc9b6c7",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -5339,49 +5395,62 @@
       "scheme": "protocol_specific"
     },
     "availability": "documented",
-    "contract_revision": "34fce719ab9e806addeebc78086404e6e0415e8eba34797a0af3b87c835b5c3e",
+    "contract_artifact_revisions": {
+      "contracts/dedicated_inference.v1.rerank.create.json": "b1091b4930218684d47a594686d9d61af36e4b8689aa444c812f8a9659853a41"
+    },
+    "contract_revision": "281c8d9fb72d51902605c4cb0b81368b2384635e656965499803880f657a43d0",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/dedicated-inference.json#/paths/~1rerank/post/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/dedicated_inference.v1.rerank.create.json#/endpoint",
+    "error_binding_ref": "contracts/dedicated_inference.v1.rerank.create.json#/errors",
+    "go_method": "ai.InferenceClient.Rerank",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "ai.InferenceClient.Rerank",
+      "status": "partial"
     },
     "input_schema_ref": "sources/dedicated-inference.json#/paths/~1rerank/post",
-    "input_type": null,
+    "input_type": "ai.RerankRequest",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability",
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
     ],
     "operation_id": "dedicated_inference.v1.rerank.create",
     "output_schema_ref": "sources/dedicated-inference.json#/paths/~1rerank/post/responses",
-    "output_type": null,
+    "output_type": "ai.RerankResponse",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
-      "excluded_variants": []
+      "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1rerank/post",
+      "excluded_variants": [
+        "image/multimodal documents, top_n/return_documents/return_embeddings parameters beyond first-party request",
+        "Whole provider inventory and deployment-specific availability remain unverified"
+      ]
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/dedicated_inference.v1.rerank.create.json#/retry",
+    "request_binding_ref": "contracts/dedicated_inference.v1.rerank.create.json#/request",
     "resource": "rerank",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/dedicated_inference.v1.rerank.create.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "prompt/input/query/documents/audio",
+      "model-derived text/vector/score/token IDs",
+      "image URL/base64/revised prompt",
+      "provider/raw callback messages"
+    ],
     "service": "dedicated_inference",
     "source": {
       "operation_locator": "POST /rerank",
-      "revision": "1e44c584fe653315977162598da9b29690552376250d0d975bf467d39a156631",
+      "revision": "cfdb6cb459f2cd0c329f3446da3f6cc0b655822d31684d193bb2780695ab02d5",
       "uri": "https://docs.selectel.ru/en/dedicated-inference/manage/interaction-modes/"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "281c8d9fb72d51902605c4cb0b81368b2384635e656965499803880f657a43d0",
+      "evidence_ref": "ai_inference_test.go",
+      "implementation_revision": "aed832c5827b1ce1608fd51192603accb5e13638c0d32814849f35bf026e2ec0",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -5449,7 +5518,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "08648ecc40f5fa7fea2cc0c78ebceaa5a44d3c2a611d11515df777824fed280d",
+      "implementation_revision": "fe89ef9355c94a8515b8ef50652af69b025b64e482593153055f2b2a758f1cc5",
       "level": "offline"
     },
     "wait_goals": []
@@ -5519,7 +5588,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "af55d7e1c8928e56f6017e25c29d29b9dfb8faf71d8d866b19b48a0a63dec90a",
+      "implementation_revision": "627fda1b2f2055c14aebd97779125d24b08920a6f0118d25e7e5b298efb285b1",
       "level": "offline"
     },
     "wait_goals": []
@@ -5586,7 +5655,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c9171ac73d550b6c785dfcf4861c6b028b175735ea0d6b8b4d26457ac77fb2e1",
+      "implementation_revision": "6c56cee038ef378c639b100d728b9f5b23b41ee4b9a37a03fb033126e6b0d3f1",
       "level": "offline"
     },
     "wait_goals": []
@@ -5653,7 +5722,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "2fd5c28c88ab49d32162d7d92292bdf2adfb750cfb42a592412e4c12a05fbd50",
+      "implementation_revision": "0c83fc40785f0e4370509aaaf5df7ac7fa9230847acf5e5d0799e3db0589914f",
       "level": "offline"
     },
     "wait_goals": []
@@ -5719,7 +5788,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "1a5f282486a913f98d59e4142aa65ec8100c9ee5d8ddc00ef4eff31236d56973",
+      "implementation_revision": "9015b4e7e31db25cb3afe07a324b44eb838b7ccd73e86b407d30c4a20f27c970",
       "level": "offline"
     },
     "wait_goals": []
@@ -5785,7 +5854,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "df4617178788b8b2707ca66664434f9a621f163515d3ac5a9f722428f2d4a6a1",
+      "implementation_revision": "945c958758d56a85bbe909ae886004e7bc62317a6e20f68952c8589f75b696e6",
       "level": "offline"
     },
     "wait_goals": []
@@ -5850,7 +5919,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "047f7ece02114bce731656d9f709a82abd24bd7b949d879defa639f830488801",
+      "implementation_revision": "b792b30f0d59ca703234888c103cc0a00efce44cd3036568ddae81bbc8e448e5",
       "level": "offline"
     },
     "wait_goals": []
@@ -5907,7 +5976,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "4e8e0a24529c4f1db2e85ebc798cd3aac73e8be8fa81b60c93859ea3b74eb38c",
+      "implementation_revision": "2f7d0fd6758bed85a2e41fe4905f0ec186fd7846c09f5f6acb9bb279e8a482a0",
       "level": "offline"
     },
     "wait_goals": []
@@ -5966,7 +6035,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d9b36a1426020d6aad858ed1d8ddd81cb9bb07c6e4278ecc47399be74fe9aead",
+      "implementation_revision": "fddb7694e0b9f9f06ca817aac00d5657da6aab3ae841f40cd2c14779b2f11273",
       "level": "offline"
     },
     "wait_goals": [
@@ -6025,7 +6094,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "68a36536833a93ba3960aac9d3f853d7c0b20cdc50511f8eb70dcfed0852add0",
+      "implementation_revision": "b98829923b498acdd0677e0039f1ddbed73f06509bc1fd7e0fc02ce24bda04e2",
       "level": "offline"
     },
     "wait_goals": [
@@ -6086,7 +6155,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "b98a7661d619629a6ef918fa6a3fa9616723c552daf9203b0d7081c5094da785",
+      "implementation_revision": "442edf7157558b50745f106467afea889ee4bf506ca52ebc8b7c65fd598e3f15",
       "level": "offline"
     },
     "wait_goals": [
@@ -6145,7 +6214,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0e405bbb574cdc5cb97950704ec8f617cc68b5b02d8230281b51a4078246b17b",
+      "implementation_revision": "4563e57da6e5d44fb11559399f25f70a43ee45d51777ef5bee8d459c61415bca",
       "level": "offline"
     },
     "wait_goals": []
@@ -6204,7 +6273,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "f99970a4f525c135e5f69810fe99fafab9194d2717141efe6f4ce79c97071ab9",
+      "implementation_revision": "ace4a9cf51b61b875a3ff275efc5a9c69b5b50643627a773c6793c1fab2c7bf5",
       "level": "offline"
     },
     "wait_goals": [
@@ -6265,7 +6334,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "f8168de3f3b41a0f59e4f52db6471704b90f639998dff9c14b30ee3354cd5da4",
+      "implementation_revision": "d3e24d6a9a6e38f5d751e59ec5f86d3f3eb41ac7c9c19926a4e51aa9367f1736",
       "level": "offline"
     },
     "wait_goals": [
@@ -6326,7 +6395,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "228db3120e56f19babda9f5f925fdade3786ab956c0b36d49137928776db81ce",
+      "implementation_revision": "8d54ef454d2d75dfd3e610fef6a897a53e2e2c3e09506d579775c14e7ee52f45",
       "level": "offline"
     },
     "wait_goals": []
@@ -6383,7 +6452,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee01b6f601a8b55d49db53bcc75f3844a023545699d4e5562f54c0ee7e8adf27",
+      "implementation_revision": "6b76e590c9f329f2775f1202bebab9192f8c459ef1a6fa7709565607b6225da8",
       "level": "offline"
     },
     "wait_goals": []
@@ -6440,7 +6509,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9036f9d7e1644125285f017a70be28e9cb7cf40448812017d5d2c47343ec02e2",
+      "implementation_revision": "afdb0312ed4cfee4bfb5f2e70983b735b532266a6d9eba81ad2bbef01d9ffceb",
       "level": "offline"
     },
     "wait_goals": [
@@ -6501,7 +6570,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6f194ffaa96b8a5f6eea430962fa59f2b1827acce8402fadbac35c20d600fff7",
+      "implementation_revision": "df29ec7618b5a05e3c9182eae628406081f5cfcff94d99d22f45db4b5db69df1",
       "level": "offline"
     },
     "wait_goals": [
@@ -6560,7 +6629,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "13850fc6e1c16e771f3f98161aaeba0633ec06380422a2a7b54fda75ec846073",
+      "implementation_revision": "4504aace8b15f51429bc74961cf764afc5c7c01507dec797ee6bd210b051f9e3",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +6686,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cff7ee2b870ded031ce9187fa3da00d3c6cc274366f4a77ec21d74219a615764",
+      "implementation_revision": "06899a7b8a27d882abd2faebe3a238d5fb25242f161c2fa57aa4ae76314de9b6",
       "level": "offline"
     },
     "wait_goals": [
@@ -6676,7 +6745,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d9429eba2491c8f043148a4f56d092b24fc32e7e00bf2a2d412efd56987cf945",
+      "implementation_revision": "3cb698bf4be1991c8f6db2243ddfb75857364150a0f2b0d9cd69a724a694b691",
       "level": "offline"
     },
     "wait_goals": [
@@ -6735,7 +6804,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "84815f79295ebc4c9c7cfe05ba8fa4d71363ffd92fee00b30caaee83b4e766ca",
+      "implementation_revision": "0c4949e7bd84ee61d003637208de92ff6d8cc111c5300c558ed61103c91821cf",
       "level": "offline"
     },
     "wait_goals": []
@@ -6792,7 +6861,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ed8f3b2b5198c4dfc063bb27a982f62f0e16033787c6a65fd64c6fd45dd2b3ac",
+      "implementation_revision": "32431714c3eeb553dabbb747d03841b864637aded5f2cb633bc376a78cce0f0e",
       "level": "offline"
     },
     "wait_goals": []
@@ -6849,7 +6918,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1896106545a163dfb2d96736dc02c10d1ed1072b50cb79e894207e1f49355615",
+      "implementation_revision": "a5e02eea0ed0910b79d621ec1b48888ea16a922ae25ec59e6600fae8d70bd9eb",
       "level": "offline"
     },
     "wait_goals": [
@@ -6908,7 +6977,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e9705dbd9ec6080b0f4163c559e90fbe99b501f58211848590242619356cd564",
+      "implementation_revision": "da010c588d03b06b0cc0b446f8a48ab05bfb10ad05788d830fc26bbffd245ee5",
       "level": "offline"
     },
     "wait_goals": []
@@ -6965,7 +7034,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "a990f056c19af94c0cfd58891b18657bbecdf6932f267a8099810670f2a31d24",
+      "implementation_revision": "de5a1180fd862732b639bd1ad65d8b2b34ded2b799c28204563b1d42c7aac64d",
       "level": "offline"
     },
     "wait_goals": []
@@ -7022,7 +7091,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "3720d66bf9fdd3af6cc8a9831ec1f5f3d66bb85d370c2af603401f1711ebb7f2",
+      "implementation_revision": "f8feac5d7e163ab3bb7180853ea8fa9cb5a7c6503072aba51e3e02a97d14b3ec",
       "level": "offline"
     },
     "wait_goals": []
@@ -7079,7 +7148,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bab70a00efd5cf4b0585410b61a52f1668729d37864d6c7159006ba239575eb2",
+      "implementation_revision": "4491400cf63df25ca68f396527dc5a94c84f97b3052b410a2cd8734f1d7e085f",
       "level": "offline"
     },
     "wait_goals": []
@@ -7136,7 +7205,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2655bf0c42613b6d74060e8ec8b3d7067485233be351727b309d4d52b85ba3ec",
+      "implementation_revision": "830337ac409505a82c99a79809827ac16c52be76f68fec7ae85ccd202278460c",
       "level": "offline"
     },
     "wait_goals": []
@@ -7193,7 +7262,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1c2758aa302c7a9c6e02946e65c2a89fcd3729e6fab6138e234f29077eed3f5a",
+      "implementation_revision": "71c2abd2c7cb8f14a20fae09e18c4ded22ac88c8d9c73f3b381ddede03eeb9d0",
       "level": "offline"
     },
     "wait_goals": [
@@ -7255,7 +7324,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "44c1bea52a99f1a8a02ea35c531db028bfbd14f79aa8397b21f1c81a3913a310",
+      "implementation_revision": "73c7db3512ea58c2b1a195bea1912047f306e13d96813180f8104bb6bb56214f",
       "level": "offline"
     },
     "wait_goals": [
@@ -7317,7 +7386,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "332e70b5084c207821367c1e3620a6914d8a1096c66d8bc73392592c02f69e24",
+      "implementation_revision": "72ca4108457a3a1161642626ca3da8c9bd224591d8a7d8269c336697af765bdc",
       "level": "offline"
     },
     "wait_goals": [
@@ -7378,7 +7447,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "148258c326f8630bc46a55f047d84dc4ecff469a5adfbf60f1b654873ce66326",
+      "implementation_revision": "9df80064fc28e95af5536b2ac5cd89fc72acea033a71abd9c077d6935803365a",
       "level": "offline"
     },
     "wait_goals": [
@@ -7439,7 +7508,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "05ff5050d6967d19f1ad6a00f5ef1ff316221f74796b9966c06bab8814a5dbde",
+      "implementation_revision": "fbde982ec50a47eeb4d967f7d0007e593e0178b6524de1195edab41c484fcf27",
       "level": "offline"
     },
     "wait_goals": [
@@ -7498,7 +7567,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2510ed97cb805a87c57642f98142d76e746cc78749b55ad8ae6dfd9725a9ecab",
+      "implementation_revision": "725f7d5ba8e8da4ab66b1fe14c8d725098496db638da8e1b56a1bc79bdfb693c",
       "level": "offline"
     },
     "wait_goals": []
@@ -7555,7 +7624,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0ad69e548f5720c05e73ea3355b3e697a59b4127b7fb9102ef4de959ab36f42e",
+      "implementation_revision": "c5b488fe390e01d42b49fee8cbd70d4e0dbb9a76e46bc661e3632fe56dc95749",
       "level": "offline"
     },
     "wait_goals": []
@@ -8300,7 +8369,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "1759fe023b0404853207fd41456c92536a1244583d260a1be1e8c4dc3066c415",
+      "implementation_revision": "667440d92c51e2925684baa750c31f97779e43cfa411112996ec857e510ba4a4",
       "level": "offline"
     },
     "wait_goals": []
@@ -8356,7 +8425,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "af6d18dc7c0213aab03666a08bf7315ae8b4076796e8453475e7183ab2b84ae9",
+      "implementation_revision": "5737c086aac55ec13dcd213064ebc7b7068cd3ac170f2e0f6cd648345dbafd1f",
       "level": "offline"
     },
     "wait_goals": []
@@ -8412,7 +8481,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c97bf71f76e03010c7c0c52c7a763620a051aef21e1c5698abca668f5b7879f8",
+      "implementation_revision": "a70318fc059e2c6917d9a4e799cfbcf60d045827058963dbefa1079630c6090a",
       "level": "offline"
     },
     "wait_goals": []
@@ -8468,7 +8537,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "24942f404e8557b4a20c8aac23c9e4b315b5ea5c761e7e65443e39a81e7cc791",
+      "implementation_revision": "80e6308638ab22d2386881dce207b87f13be5aea21e82bf5cca16439f58bfa03",
       "level": "offline"
     },
     "wait_goals": []
@@ -8524,7 +8593,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "deffcdad0bf6b46b2ba8d2a35694280d8f8eb2a01fdd6dea59bc175e7bddade1",
+      "implementation_revision": "e6118ff4b8085a3d3c1791f4b5b4ff96030e9f66a21b573679c9d66494ec42f5",
       "level": "offline"
     },
     "wait_goals": []
@@ -8952,7 +9021,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "f90d6f7fa2a7f9f5bc4125ec4660d9611561ebef53c63ceca539ca08533cfc5a",
+      "implementation_revision": "5189ddcd64157159996a414a358bd6695fb9e2632eb41f2fe8e52bf7a3c8a746",
       "level": "offline"
     },
     "wait_goals": []
@@ -9009,7 +9078,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d1391307bd34e58373410174383b176db8f9793fca7aba625af2f59778c5110b",
+      "implementation_revision": "08ae795b6389320a5f72193a63276565b2272eb63b64fd671abb43738ac19f7b",
       "level": "offline"
     },
     "wait_goals": []
@@ -9066,7 +9135,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "f04276503e51584866963759c97d33b80e1934827a922b28e079d3e211694980",
+      "implementation_revision": "fe869bdd4e838a465d6fb6da901f7ba4db73896685472ca79a4081700e51da05",
       "level": "offline"
     },
     "wait_goals": []
@@ -9123,7 +9192,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "9e2ce9ce23ffb3a45c22a0e209141559cfc2d9a684e559d24d7077891387dc02",
+      "implementation_revision": "7ac9720044ca7b95b361a653ba848c1eda9081c9d402cd75bc0d98fa5039c34c",
       "level": "offline"
     },
     "wait_goals": []
@@ -9990,7 +10059,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "ae747512a5dec0a1962036754469416682c5488800cdc354a54fc061c610f923",
+      "implementation_revision": "9a48b880c2c2d0bd6663745a33bf5889cf1f82d62497ddd625438915e7e6a0b6",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +10658,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "13f2bd49522a5dffb8ca64254d6dbd307d3a1b7d389f5f9b4fa63c1b988487bb",
+      "implementation_revision": "623879b021b377a35f86be910eb8d74bd5f966fc9c8425cfbf97a456207a5351",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +10715,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "37e01cd0efedd9394dc78a84d5054455231916170609975bb22a3feb3b0d74bd",
+      "implementation_revision": "cc70bf1908d32606d1f291482c9d257d12f099e02349ec16e9d0a7427a0ec38c",
       "level": "offline"
     },
     "wait_goals": []
@@ -10705,7 +10774,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "5e9afef0e84f9c05df2965d9c60bab8dec4fd6ba7ac7e5efdd11077151474678",
+      "implementation_revision": "82edc4b868a2d9bd3653691350ba3f4c3d00d025b2198373618c7e9aa4ab63fa",
       "level": "offline"
     },
     "wait_goals": []
@@ -10762,7 +10831,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "fb58cc794ed32c035cc0205ad65862f3bd0a72608d3cb91b318e502b72b075f4",
+      "implementation_revision": "ad2c0269bc160c195be38aa97f4e466daff244c7c9574bd7dc27304a9b483f43",
       "level": "offline"
     },
     "wait_goals": []
@@ -10819,7 +10888,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "3cd207720e0bc9ff6ffa93eb109607952acdd49805fa770f8c7c6d469ffe4eac",
+      "implementation_revision": "871f01746f6db5f1394d4b239bd0afd915b97554b394d42586c398135b232144",
       "level": "offline"
     },
     "wait_goals": []
@@ -10878,7 +10947,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "f5948d85dff373496cca85451ef724f8655ba6b93b063647be5fb0a0cefc41e6",
+      "implementation_revision": "972f0472a816ad49bd658f7136ef01f25301801754ebf49afff37d20bbc18fe0",
       "level": "offline"
     },
     "wait_goals": []
@@ -10937,7 +11006,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "edcdcbed7b410461958adc45506258f60f5308b504aa9ad0f567cbffdff900ac",
+      "implementation_revision": "37269d96e891592d00c8fc6e24ce266f073431a300d7a328d59a788f337e2b90",
       "level": "offline"
     },
     "wait_goals": []
@@ -10994,7 +11063,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "fc2f97c4fcb3d2e0981fb57255b19560bf2f66e1ad0a11a941096f3532155599",
+      "implementation_revision": "9febce2fbda6c9c0f27e522e60c51290d4a51ec8204f2ed2c26efadd7bfbe2d8",
       "level": "offline"
     },
     "wait_goals": []
@@ -11051,7 +11120,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "375c2d949671f061031d24ba3d241b5447dcd4c13b6bf81965ba5e5ac4ef1297",
+      "implementation_revision": "d87f411095991c3400384ecf8c4da98f2969af0de9f55df425bff86d65cc7f2c",
       "level": "offline"
     },
     "wait_goals": []
@@ -11065,9 +11134,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/token_factory.v1.chat_completions.create.json": "241f7a43181ba1554f973f7aeb8d97c76c813e940b32ddee280321f8fc67886e"
+      "contracts/token_factory.v1.chat_completions.create.json": "3dfd032c493fc37cb1f874e6c8975584579412dccf7f55b8d0f44d0a2b40a88b"
     },
-    "contract_revision": "4e425e5a160794f77d6623966c4a1b3e7e8ade8414d012d27687cab9ccd14b7e",
+    "contract_revision": "b0a2e5dc8230c5a03e4ac63b10db4cbf9e64bbcb995043f5d81e107c115e2182",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/token_factory.v1.chat_completions.create.json#/endpoint",
     "error_binding_ref": "contracts/token_factory.v1.chat_completions.create.json#/errors",
@@ -11079,7 +11148,9 @@
     "input_schema_ref": "sources/token-factory.json#/paths/~1chat~1completions/post",
     "input_type": "ai.ChatRequest",
     "limitations": [
-      "Verification does not establish live availability"
+      "Verification does not establish live availability",
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
     ],
     "operation_id": "token_factory.v1.chat_completions.create",
     "output_schema_ref": "sources/token-factory.json#/paths/~1chat~1completions/post/responses",
@@ -11090,7 +11161,7 @@
       "excluded_variants": [
         "streaming",
         "multimodal content",
-        "tools/prediction/reasoning/options beyond text messages",
+        "tools/prediction/options beyond text messages",
         "full upstream request/response surface"
       ]
     },
@@ -11114,13 +11185,13 @@
     "service": "token_factory",
     "source": {
       "operation_locator": "POST /chat/completions",
-      "revision": "54a7fd70a23d70230c34a5ec2d6ced2cb283216df7b957eb5d9c97c49b8e94f7",
+      "revision": "6a5fa4aed4d87c24ae9f94eaebb5bda0d0b8f032fd23cf7f7a53ee8bc81fd4e1",
       "uri": "https://docs.selectel.ru/en/token-factory/quickstart/"
     },
     "verification": {
-      "contract_revision": "4e425e5a160794f77d6623966c4a1b3e7e8ade8414d012d27687cab9ccd14b7e",
+      "contract_revision": "b0a2e5dc8230c5a03e4ac63b10db4cbf9e64bbcb995043f5d81e107c115e2182",
       "evidence_ref": "ai_data_test.go",
-      "implementation_revision": "04abcc84e188157348d69c37589cd15abc838d2ce952d2de952cf5ada69a4ec5",
+      "implementation_revision": "9022927830358f0c4d889540ea639ad9f30b5c5346d34ca5e13c8be5d104807c",
       "level": "offline"
     },
     "wait_goals": []

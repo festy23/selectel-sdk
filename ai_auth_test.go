@@ -85,3 +85,20 @@ func TestAIBearerExplicitEnvironment(t *testing.T) {
 		t.Fatalf("metadata=%+v error=%v", result, err)
 	}
 }
+
+func TestAIBearerExpiryIsCallerAssertedMetadata(t *testing.T) {
+	expiry := time.Now().UTC().Add(time.Hour).Truncate(time.Second)
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(_ context.Context, r types.AuthRequest) (credentials.Material, error) {
+		return credentials.Material{Identity: "key", Revision: "one", Binding: r.Scope, Audience: r.Audience, Scheme: credentials.BearerToken, Token: types.Protect([]byte("synthetic-key")), ExpiresAt: expiry}, nil
+	}), Transport: transportFunc(func(*http.Request) (*http.Response, error) {
+		t.Fatal("unexpected auth HTTP")
+		return nil, context.Canceled
+	})})
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := c.Authenticate(context.Background(), types.AuthRequest{Scope: types.Scope{AccountID: "test-account"}, Mode: types.ProtocolSpecific, Service: "ai_router", Audience: credentials.SelectelAudience})
+	if err != nil || metadata.ExpiresAt == nil || !metadata.ExpiresAt.Equal(expiry) || metadata.Verification != "caller_asserted" {
+		t.Fatalf("metadata=%+v error=%v", metadata, err)
+	}
+}

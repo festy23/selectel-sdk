@@ -116,6 +116,10 @@ func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request
 				cause := types.ErrorCode(err)
 				e := types.NewError(types.UnknownOutcome)
 				e.CauseCode = cause
+				var known *types.SDKError
+				if errors.As(err, &known) {
+					e.ProviderCode = known.ProviderCode
+				}
 				err = e
 			}
 		}
