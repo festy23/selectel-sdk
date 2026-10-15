@@ -16,7 +16,7 @@
     "shared": "normal HTTP mapping; raw provider text discarded"
   },
   "retry": "bounded safe read under shared collection budget",
-  "pagination": "one fixed provider array; structured byte limit, MaxItems/MaxPages, incomplete collection/local replay skip cursor; cursor binds scope/endpoint/generation/contract; provider snapshots not promised on replay",
+  "pagination": "one fixed provider array; structured byte limit, MaxItems/MaxPages, incomplete collection/local replay skip cursor; cursor binds scope/endpoint ID and resolved URL/generation/contract; provider snapshots not promised on replay",
   "recovery": "Root Resource/Resume validate account/project/generation/kind/endpoint, operation/effect/revision and receipt/ref agreement. Metadata Get observes exact address only. Unknown remains indeterminate; no name lookup/adoption/replay. Known no-ref terminal receipt Recover conclusive without I/O; no resource state/wait inferred.",
   "wait": {
     "goals": []

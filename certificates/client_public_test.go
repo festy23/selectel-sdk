@@ -532,3 +532,47 @@ func TestCertificateUnknownRecoveryDoesNotInferAbsenceFromAuth404(t *testing.T) 
 		t.Fatal(observed, e, calls)
 	}
 }
+
+func TestCertificateListCursorBindsResolvedEndpointURL(t *testing.T) {
+	scope := types.Scope{AccountID: "a", ProjectID: "p"}
+	newClient := func(endpoint string, calls *int) *certificates.Client {
+		_, c := certificateClient(t, wireTransport(func(r *http.Request) (*http.Response, error) {
+			if r.URL.String() != endpoint+"/certs" {
+				t.Fatal(r.URL)
+			}
+			return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`[{"id":"a"},{"id":"b"}]`))}, nil
+		}), func(cfg *sdk.Config) {
+			cfg.EndpointOverrides = map[types.EndpointKey]types.EndpointBinding{
+				{Service: "certificates", APIGeneration: "user_v1", Scope: scope}: {ID: "same-id", URL: endpoint, Scope: scope, APIGeneration: "user_v1", Audience: "selectel"},
+			}
+			transport := cfg.Transport
+			cfg.Transport = wireTransport(func(r *http.Request) (*http.Response, error) { *calls++; return transport.RoundTrip(r) })
+		})
+		return c
+	}
+	firstCalls := 0
+	first := newClient("https://first.invalid/prefix", &firstCalls)
+	it, err := first.List(pagination.Options{MaxItems: 1, MaxPages: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := it.Collect(context.Background())
+	if types.ErrorCode(err) != types.Incomplete || page.NextCursor == nil || len(page.Items) != 1 {
+		t.Fatal(page, err)
+	}
+	foreignCalls := 0
+	foreign := newClient("https://second.invalid/prefix", &foreignCalls)
+	if _, err = foreign.List(pagination.Options{Cursor: page.NextCursor}); types.ErrorCode(err) != types.ScopeMismatch || foreignCalls != 0 {
+		t.Fatalf("foreign endpoint accepted: err=%v HTTP=%d", err, foreignCalls)
+	}
+	originalCalls := 0
+	original := newClient("https://first.invalid/prefix", &originalCalls)
+	resumed, err := original.List(pagination.Options{MaxItems: 5, MaxPages: 1, Cursor: page.NextCursor})
+	if err != nil {
+		t.Fatal(err)
+	}
+	rest, err := resumed.Collect(context.Background())
+	if err != nil || !rest.Complete || len(rest.Items) != 1 || rest.Items[0].Ref.ID != "b" || originalCalls == 0 {
+		t.Fatal(rest, err, originalCalls)
+	}
+}

@@ -48,7 +48,8 @@ provider error_text/status_text are discarded from SDK errors/diagnostics.
 
 List exposes a bounded iterator over the documented single array response; no
 remote limit/offset filters are invented. Local truncation reports Incomplete
-with a scope/endpoint/generation/revision-bound replay+skip cursor. Malformed rows
+with a replay+skip cursor bound to scope, endpoint ID and resolved URL, generation,
+and contract revision. Malformed rows
 preserve an already validated bounded prefix and original error. Replaying a
 cursor reads a fresh provider list; it does not promise a provider snapshot.
 

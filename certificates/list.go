@@ -13,7 +13,9 @@ func (c *Client) List(options pagination.Options) (*pagination.Iterator[Certific
 	if e != nil {
 		return nil, e
 	}
-	plan, e := c.runtime.PagePlan(op.ID, op.APIGeneration, c.scope, op.EndpointID, struct{}{})
+	plan, e := c.runtime.PagePlan(op.ID, op.APIGeneration, c.scope, op.EndpointID, struct {
+		EndpointURL string `json:"endpoint_url"`
+	}{EndpointURL: op.FixedEndpoint})
 	if e != nil {
 		return nil, e
 	}
