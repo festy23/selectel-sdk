@@ -72,42 +72,43 @@
               ]
             }
           }
-        }
+        },
+        "x-source-mapping": "Typed source-pinned wire mapping; Selectel exact variant availability/source reconciliation remains partial #70/#74/#76. "
       }
     },
     "/shares/detail": {
       "get": {
         "operationId": "ListSharesDetailed",
         "x-operation-locator": "GET /v2/shares/detail microversion2.73",
-        "x-source-mapping": "Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; currently unimplemented"
+        "x-source-mapping": "Typed source-pinned wire mapping; Selectel exact variant availability/source reconciliation remains partial #70/#74/#76. Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; initial source inventory"
       }
     },
     "/shares": {
       "post": {
         "operationId": "CreateShare",
         "x-operation-locator": "POST /v2/shares microversion2.73",
-        "x-source-mapping": "Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; currently unimplemented"
+        "x-source-mapping": "Typed source-pinned wire mapping; Selectel exact variant availability/source reconciliation remains partial #70/#74/#76. Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; initial source inventory"
       }
     },
     "/share-networks/detail": {
       "get": {
         "operationId": "ListNetworksDetailed",
         "x-operation-locator": "GET /v2/share-networks/detail microversion2.73",
-        "x-source-mapping": "Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; currently unimplemented"
+        "x-source-mapping": "Typed source-pinned wire mapping; Selectel exact variant availability/source reconciliation remains partial #70/#74/#76. Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; initial source inventory"
       }
     },
     "/share-networks": {
       "post": {
         "operationId": "CreateNetwork",
         "x-operation-locator": "POST /v2/share-networks microversion2.73",
-        "x-source-mapping": "Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; currently unimplemented"
+        "x-source-mapping": "Typed source-pinned wire mapping; Selectel exact variant availability/source reconciliation remains partial #70/#74/#76. Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; initial source inventory"
       }
     },
     "/share-access-rules": {
       "get": {
         "operationId": "ListAccessRules",
         "x-operation-locator": "GET /v2/share-access-rules microversion2.73",
-        "x-source-mapping": "Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; currently unimplemented"
+        "x-source-mapping": "Typed source-pinned wire mapping; Selectel exact variant availability/source reconciliation remains partial #70/#74/#76. Selectelfirstparty CLI scenario mapped to pinnedManila2.73 protocol; initial source inventory"
       }
     }
   },
@@ -589,6 +590,20 @@
       "required": [
         "share_proto",
         "size"
+      ]
+    },
+    "ExtendRequest": {
+      "type": "object",
+      "properties": {
+        "new_size": {
+          "type": "integer"
+        },
+        "force": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "new_size"
       ]
     }
   },

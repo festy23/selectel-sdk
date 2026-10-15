@@ -1,5 +1,4 @@
 {
-  "confirmed_scenario_operation_count": 9,
   "inventory_complete": false,
   "coverage_ratio": null,
   "version_source": "https://docs.selectel.ru/cloud-servers/tools/openstack-cli/about-openstack-cli/",
@@ -13,7 +12,7 @@
   "operations": [
     {
       "source_file": "catalog/sources/file-storage-manila-allow.json",
-      "source_revision": "bbfa824e8164a8734960f339a4126ebda10f9ea67dfff09f69c9d493ebb5139c",
+      "source_revision": "84fe2d75df8a864adc93a9eb23ebff3e06aa0b372e657c3403f041b796493584",
       "method": "POST",
       "path": "/shares/{share_id}/action",
       "microversion": "2.73",
@@ -24,7 +23,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila-deny.json",
-      "source_revision": "70be5f0bef86169694fcf7c31660f035c819249d35a2665f9aea537d0a116a29",
+      "source_revision": "ed82f32e231702420196d54b8c963e2f781e774a37ac3ee28e93367f3f48a817",
       "method": "POST",
       "path": "/shares/{share_id}/action",
       "microversion": "2.73",
@@ -35,17 +34,18 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila-extend.json",
-      "source_revision": "2f239b12781addc5a9bf0d7d4fb74f333c7b53c77eea2fb760c10d21d40eeee4",
+      "source_revision": "066117317e4534fa58ec4420ba1ef36f53fae6ed78db08e94bba140020699bf1",
       "method": "POST",
       "path": "/shares/{share_id}/action",
       "microversion": "2.73",
-      "native_action": "os-extend",
-      "source_locator": "POST /v2/shares/{share_id}/action body.os-extend microversion2.73",
-      "status": "unimplemented"
+      "native_action": "extend",
+      "source_locator": "POST /v2/shares/{share_id}/action body.extend microversion2.73",
+      "status": "partial",
+      "binding": "filestorage.v2_73.shares.extend"
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "58b139dee4256feda4d3d379cad163ecc190c6bf64a061113c8fcdbaa1dfa608",
+      "source_revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
       "method": "GET",
       "path": "/types",
       "microversion": "2.73",
@@ -56,7 +56,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "58b139dee4256feda4d3d379cad163ecc190c6bf64a061113c8fcdbaa1dfa608",
+      "source_revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
       "method": "GET",
       "path": "/shares/detail",
       "microversion": "2.73",
@@ -67,7 +67,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "58b139dee4256feda4d3d379cad163ecc190c6bf64a061113c8fcdbaa1dfa608",
+      "source_revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
       "method": "POST",
       "path": "/shares",
       "microversion": "2.73",
@@ -78,7 +78,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "58b139dee4256feda4d3d379cad163ecc190c6bf64a061113c8fcdbaa1dfa608",
+      "source_revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
       "method": "GET",
       "path": "/share-networks/detail",
       "microversion": "2.73",
@@ -89,7 +89,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "58b139dee4256feda4d3d379cad163ecc190c6bf64a061113c8fcdbaa1dfa608",
+      "source_revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
       "method": "POST",
       "path": "/share-networks",
       "microversion": "2.73",
@@ -100,7 +100,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "58b139dee4256feda4d3d379cad163ecc190c6bf64a061113c8fcdbaa1dfa608",
+      "source_revision": "ca4b794a3a91e2d0b8d382deed4623b517a064b3159b2a72d97217aee84598f9",
       "method": "GET",
       "path": "/share-access-rules",
       "microversion": "2.73",
@@ -108,6 +108,19 @@
       "source_locator": "GET /v2/share-access-rules microversion2.73",
       "status": "partial",
       "binding": "filestorage.v2_73.share_access_rules.list"
+    },
+    {
+      "source_file": "catalog/sources/file-storage-manila-extend-legacy.json",
+      "source_revision": "56d702ef82cc30662b3f58ab06dd040bd8adf090df267fbf6ae6c73a3dce74b1",
+      "method": "POST",
+      "path": "/shares/{share_id}/action",
+      "microversion": null,
+      "generation": "legacy_os_extend",
+      "native_action": "os-extend",
+      "source_locator": "POST /share/v2/shares/{share_id}/action body.os-extend no negotiation header",
+      "status": "partial",
+      "binding": "filestorage.legacy_os_extend.shares.extend",
+      "limitation": "Firstparty projectlessroute + os-prefix + no negotiation conflicts with pinned upstream profile; not v2_0 compatibility proof or extra provider capability."
     }
   ],
   "availability_source_gap": {
@@ -117,5 +130,22 @@
       76
     ],
     "detail": "Modern2.73 counterparts are upstream confirmed; exact Selectel wire/microversion availability unconfirmed. CLI scenarios do not prove modern variants."
+  },
+  "modern_scenario_counterpart_count": 9,
+  "legacy_wire_variant_count": 1,
+  "provider_capability_denominator": null,
+  "remaining_owned_gaps": {
+    "owner_issue": 70,
+    "downstream": [
+      74,
+      76
+    ],
+    "contracts": [
+      "Selectel Zed/max2.75 versus pinned upstream Zed/max2.73",
+      "Exact Selectel modern2.73 route/body availability for9counterparts",
+      "Legacy firstparty os-extend/projectless/no-header versus upstream version matrix",
+      "Full provider operation inventory including quota/lifecycle/wait goals",
+      "Share create snapshot/group/scheduler-hints deployment variants"
+    ]
   }
 }

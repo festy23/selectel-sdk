@@ -1,0 +1,41 @@
+{
+  "operation_id": "filestorage.legacy_os_extend.shares.extend",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/en/file-storage/manage/resize-storage/",
+    "base": "https://<pool>.cloud.api.selcloud.ru/share/v2",
+    "scope": "explicit account/project/region/pool; Russian documented pool template only, exact override elsewhere",
+    "generation": "legacy_os_extend",
+    "microversion": null,
+    "auth": "iam_project",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/shares/{share_id}/action",
+    "mapping": "Exact caller legacy_os_extend share ref, projectless path as firstparty curl, body.os-extend.new_size exact positive Integer. No negotiation header, exactly as firstparty example. No force field, auto conversion, fallback or replay. Generation is wire-variant identity, not upstream2.0 assertion."
+  },
+  "response": {
+    "successful_statuses": [
+      202
+    ],
+    "mapping": "Pinned controller bodyless202 acceptance only, receipt retains exact caller share; unknown never replays. No completion/size reached claim.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Safe shared status taxonomy, documented400/401/403/413quota/422 are Rejected;500/transport remain Unknown without replay. Local validation returns revision-bound NotSent0attempts/noCredentialHTTP. All accepted identities remain in receipt on decoding or association error."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No safe causal replay proof for network/defaultsubnet creation; no name lookup or adoption, caller may observe exact refs explicitly when supported."
+  },
+  "limitations": [
+    "Source discrepancy owner#70/#74/#76: upstream os-prefix only2.0\u20132.6 while projectlessroute starts2.60, firstparty curl omits negotiation header. Cannot assert compatible upstream microversion or deployment validation.",
+    "Status/body contract uses pinned action202 bodyless acceptance, exact deployed response remains source-reconciliation gap. No quota preflight/wait/readiness.",
+    "One legacy wire variant of resize, not an additional provider capability or complete legacy inventory."
+  ]
+}

@@ -28,7 +28,7 @@ func TestOfflineCatalogIsImmutableAndDoesNotOverclaim(t *testing.T) {
 		t.Fatal("catalog is mutable")
 	}
 	s := c.Summary()
-	if s.InventoryComplete || s.CoverageRatio != nil || s.Implemented != 53 || s.Partial != 19 {
+	if s.InventoryComplete || s.CoverageRatio != nil || s.Implemented != 53 || s.Partial != 21 {
 		t.Fatal("unknown denominator advertised as covered")
 	}
 	if _, err := c.List(catalog.Filter{Verification: "unknown"}); types.ErrorCode(err) != types.InvalidArgument {
@@ -69,7 +69,7 @@ func TestSerializedCatalogHasVersionAndUncertainCoverage(t *testing.T) {
 			CoverageRatio     *float64 `json:"coverage_ratio"`
 		} `json:"summary"`
 	}
-	if json.Unmarshal(b, &doc) != nil || doc.SchemaVersion != 1 || len(doc.Operations) != 200 || doc.Summary.InventoryComplete || doc.Summary.CoverageRatio != nil {
+	if json.Unmarshal(b, &doc) != nil || doc.SchemaVersion != 1 || len(doc.Operations) != 201 || doc.Summary.InventoryComplete || doc.Summary.CoverageRatio != nil {
 		t.Fatal("serialized catalog loses contract or overclaims coverage")
 	}
 }

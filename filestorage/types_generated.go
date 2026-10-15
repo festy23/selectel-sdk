@@ -106,6 +106,39 @@ func (v *AccessRule) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type ExtendRequest struct {
+	Force   *bool          `json:"force,omitempty"`
+	NewSize *types.Integer `json:"new_size,omitempty"`
+}
+
+func (v ExtendRequest) Validate() error {
+	if v.NewSize == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *ExtendRequest) normalize() {
+}
+func (v *ExtendRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ExtendRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ExtendRequest(value)
+	v.normalize()
+	return nil
+}
+
 type Link struct {
 	Href *types.ProtectedValue `json:"href,omitempty"`
 	Rel  *string               `json:"rel,omitempty"`

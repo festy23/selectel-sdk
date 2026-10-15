@@ -566,3 +566,99 @@ func TestFileStorageCreateShareGatesUnconfirmedOriginVariantsBeforeIO(t *testing
 		t.Fatalf("origin %+v %v", out, e)
 	}
 }
+
+func TestFileStorageModernExtendKeepsExactSizeAndNeverUsesLegacyAction(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		raw, _ := io.ReadAll(r.Body)
+		if string(raw) != `{"extend":{"force":false,"new_size":9007199254740993}}` || r.Header.Get("X-OpenStack-Manila-API-Version") != "2.73" {
+			t.Fatalf("extend %s %s", r.Header, raw)
+		}
+		return &http.Response{StatusCode: 202, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	share := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share", ID: "share-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	size, _ := types.ParseInteger("9007199254740993")
+	force := false
+	out, e := v.FileStorage().Extend(context.Background(), share, filestorage.ExtendRequest{NewSize: &size, Force: &force}, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != share || calls != 1 {
+		t.Fatalf("extend %+v %v", out, e)
+	}
+}
+
+func TestFileStorageLegacyExtendUsesOnlyDocumentedWireWithoutNegotiation(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		raw, _ := io.ReadAll(r.Body)
+		if string(raw) != `{"os-extend":{"new_size":150}}` || r.Header.Get("X-OpenStack-Manila-API-Version") != "" || r.URL.Path != "/share/v2/shares/share-1/action" {
+			t.Fatalf("legacy %s %s %s", r.URL, r.Header, raw)
+		}
+		return &http.Response{StatusCode: 202, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	share := types.ResourceRef{Service: "filestorage", APIGeneration: "v2_73", Kind: "share", ID: "share-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage.v2_73:ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+	size, _ := types.ParseInteger("150")
+	out, e := v.FileStorage().ExtendLegacy(context.Background(), share, size, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatalf("conversion %+v %v", out, e)
+	}
+	share.APIGeneration = "legacy_os_extend"
+	share.EndpointID = "selectel-filestorage.legacy_os_extend:ru-9"
+	out, e = v.FileStorage().ExtendLegacy(context.Background(), share, size, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != share || out.Metadata.APIGeneration != "legacy_os_extend" || calls != 1 {
+		t.Fatalf("legacy %+v %v", out, e)
+	}
+}
+
+func TestFileStorageResizeUnknownPreservesExactGenerationWithoutReplay(t *testing.T) {
+	for _, legacy := range []bool{false, true} {
+		t.Run(fmt.Sprint(legacy), func(t *testing.T) {
+			writes := 0
+			c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/identity/v3/auth/tokens" {
+					return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+				}
+				writes++
+				return nil, io.ErrUnexpectedEOF
+			})})
+			if e != nil {
+				t.Fatal(e)
+			}
+			p, _ := c.Project("test-project")
+			v, _ := p.Location("spb", "ru-9")
+			gen := "v2_73"
+			if legacy {
+				gen = "legacy_os_extend"
+			}
+			share := types.ResourceRef{Service: "filestorage", APIGeneration: gen, Kind: "share", ID: "share-1", Scope: types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}, EndpointID: "selectel-filestorage." + gen + ":ru-9", EndpointURL: "https://ru-9.cloud.api.selcloud.ru/share/v2"}
+			size, _ := types.ParseInteger("150")
+			var receipt *types.Receipt
+			if legacy {
+				out, err := v.FileStorage().ExtendLegacy(context.Background(), share, size, types.CallOptions{})
+				receipt, e = out.Receipt, err
+			} else {
+				out, err := v.FileStorage().Extend(context.Background(), share, filestorage.ExtendRequest{NewSize: &size}, types.CallOptions{})
+				receipt, e = out.Receipt, err
+			}
+			if types.ErrorCode(e) != types.UnknownOutcome || receipt == nil || receipt.Outcome != types.Unknown || len(receipt.ResourceRefs) != 1 || receipt.ResourceRefs[0] != share || receipt.Recovery != "unavailable" || writes != 1 {
+				t.Fatalf("unknown %+v %v writes%d", receipt, e, writes)
+			}
+		})
+	}
+}

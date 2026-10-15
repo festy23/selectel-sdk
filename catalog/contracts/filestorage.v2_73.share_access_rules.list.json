@@ -21,8 +21,9 @@
     ],
     "mapping": "Finite access_list array from pinned2.73 controller; generated fields/protected nullable access_key and access_to, unknown state preserved. Parent is exact explicit caller share. Optional returned share_id must match caller. No readiness assertion.",
     "sensitive_fields": [
-      "extra_specs",
-      "required_extra_specs"
+      "access_to",
+      "access_key",
+      "metadata"
     ]
   },
   "errors": {

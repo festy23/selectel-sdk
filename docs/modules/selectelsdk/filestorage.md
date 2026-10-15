@@ -16,10 +16,10 @@
 подтверждают access create/list/delete.
 [Увеличение размера](https://docs.selectel.ru/en/file-storage/manage/resize-storage/)
 подтверждает project IAM, endpoint `https://<pool>.cloud.api.selcloud.ru/share/v2`
-и `os-extend`. SDK фиксирует 9 отдельных операций этих сценариев; три разных
-POST action имеют отдельные source assets и canonical mappings, хотя wire path
-совпадает. Это не алиасы. В текущем срезе implemented ListTypes, ListNetworks, CreateNetwork и ListShares, остальные
-5 unimplemented; весь inventory неизвестен, coverage_ratio=null.
+и `os-extend`. SDK фиксирует 9 modern2.73 scenario counterparts и 1 отдельный
+legacy wire variant. Все 10 bindings partial: typed offline mapping выполнен,
+exact Selectel version/variant availability не доказана. Это не 10 provider
+capabilities и не полный API inventory; coverage_ratio=null. #70 не закрывается.
 
 Default endpoint recipe применяется только к известным российским cloud pools;
 для других локаций нужен точный caller override, host не выводится по аналогии.
@@ -126,3 +126,19 @@ Size сохраняется Integer в source единицах GiB; маркет
 в выдуманный точный cap. Явные NFS/CIFS — wire protocols, не mount-version strings.
 Returned root id/project_id сохраняются до decode остальных полей; доступные
 network/type echoes должны совпасть с selections. Acceptance не означает ready.
+
+
+Extend modern отправляет body.extend и явный header2.73; force допускается
+pinned source начиная2.64. ExtendLegacy — отдельная generation legacy_os_extend,
+body.os-extend и **отсутствующий** negotiation header, как first-party curl.
+Это не upstream v2_0: projectless route появился2.60, os-prefix ограничен2.0–2.6,
+а пример Selectel не задаёт header. Несовместимость источников остаётся partial
+source gap #70/#74/#76. Caller должен самостоятельно передать exact ref нужного
+поколения; SDK не конвертирует ref и не делает fallback. Вариант учтён внутри
+resize сценария #70; #71 сохраняет общий audit иных legacy APIs.
+
+Оба resize варианта принимают только положительный точный Integer new_size.
+202 без тела — source-bound acceptance, не завершение увеличения. Unknown
+сохраняет caller ref и никогда не повторяется. Readiness/operation wait goals,
+quota reads/preflight, остальной lifecycle и полный provider inventory остаются
+неподтверждёнными/не реализованными; shrinking не выводится из upstream API.

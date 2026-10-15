@@ -11,7 +11,7 @@
       "post": {
         "operationId": "deny",
         "x-operation-locator": "POST /v2/shares/{share_id}/action body.deny_access microversion2.73",
-        "x-source-mapping": "firstparty CLI access create/delete or directos-extendcurl, currentlyunimplemented"
+        "x-source-mapping": "Typed source-pinned wire mapping; Selectel exact variant availability/source reconciliation remains partial #70/#74/#76. firstparty CLI access create/delete or directos-extendcurl, initial source inventory"
       }
     }
   }
