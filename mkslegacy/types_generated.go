@@ -284,6 +284,37 @@ func (v *KubeVersion) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type KubernetesOptions struct {
+	AdmissionControllers    []string              `json:"admission_controllers,omitzero"`
+	AuditLogs               *AuditLogs            `json:"audit_logs,omitempty"`
+	EnablePodSecurityPolicy *bool                 `json:"enable_pod_security_policy,omitempty"`
+	FeatureGates            []string              `json:"feature_gates,omitzero"`
+	OIDC                    *OIDC                 `json:"oidc,omitempty"`
+	X509CaCertificates      *types.ProtectedValue `json:"x509_ca_certificates,omitempty"`
+}
+
+func (v KubernetesOptions) Validate() error {
+	if v.AuditLogs != nil {
+		if err := v.AuditLogs.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.OIDC != nil {
+		if err := v.OIDC.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *KubernetesOptions) normalize() {
+	if v.AuditLogs != nil {
+		v.AuditLogs.normalize()
+	}
+	if v.OIDC != nil {
+		v.OIDC.normalize()
+	}
+}
+
 type KubernetesOptionsView struct {
 	AdmissionControllers    []string              `json:"admission_controllers,omitzero"`
 	AuditLogs               *AuditLogs            `json:"audit_logs,omitempty"`
@@ -313,6 +344,72 @@ func (v *KubernetesOptionsView) normalize() {
 	if v.OIDC != nil {
 		v.OIDC.normalize()
 	}
+}
+
+type NodegroupCreate struct {
+	AffinityPolicy            *string               `json:"affinity_policy,omitempty"`
+	AutoscaleMaxNodes         *types.Integer        `json:"autoscale_max_nodes,omitempty"`
+	AutoscaleMinNodes         *types.Integer        `json:"autoscale_min_nodes,omitempty"`
+	AvailabilityZone          *string               `json:"availability_zone,omitempty"`
+	Count                     *types.Integer        `json:"count,omitempty"`
+	Cpus                      *types.Integer        `json:"cpus,omitempty"`
+	EnableAutoscale           *bool                 `json:"enable_autoscale,omitempty"`
+	FlavorID                  *string               `json:"flavor_id,omitempty"`
+	InstallNvidiaDevicePlugin *bool                 `json:"install_nvidia_device_plugin,omitempty"`
+	KeypairName               *string               `json:"keypair_name,omitempty"`
+	Labels                    map[string]string     `json:"labels,omitzero"`
+	LocalVolume               *bool                 `json:"local_volume,omitempty"`
+	Preemptible               *bool                 `json:"preemptible,omitempty"`
+	RAMMb                     *types.Integer        `json:"ram_mb,omitempty"`
+	Taints                    []NodegroupTaint      `json:"taints,omitzero"`
+	UserData                  *types.ProtectedValue `json:"user_data,omitempty"`
+	VolumeGb                  *types.Integer        `json:"volume_gb,omitempty"`
+	VolumeType                *string               `json:"volume_type,omitempty"`
+}
+
+func (v NodegroupCreate) Validate() error {
+	if v.AvailabilityZone == nil || v.Count == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	for _, item := range v.Taints {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *NodegroupCreate) normalize() {
+	for i := range v.Taints {
+		v.Taints[i].normalize()
+	}
+}
+
+type NodegroupTaint struct {
+	Effect *string `json:"effect,omitempty"`
+	Key    *string `json:"key,omitempty"`
+	Value  *string `json:"value,omitempty"`
+}
+
+func (v NodegroupTaint) Validate() error {
+	return nil
+}
+func (v *NodegroupTaint) normalize() {
+}
+
+type OIDC struct {
+	CaCerts       *types.ProtectedValue `json:"ca_certs,omitempty"`
+	ClientID      *string               `json:"client_id,omitempty"`
+	Enabled       *bool                 `json:"enabled,omitempty"`
+	GroupsClaim   *string               `json:"groups_claim,omitempty"`
+	IssuerURL     *types.ProtectedValue `json:"issuer_url,omitempty"`
+	ProviderName  *string               `json:"provider_name,omitempty"`
+	UsernameClaim *string               `json:"username_claim,omitempty"`
+}
+
+func (v OIDC) Validate() error {
+	return nil
+}
+func (v *OIDC) normalize() {
 }
 
 type OIDCView struct {
@@ -364,4 +461,75 @@ func (v RegistryWithMeta) Validate() error {
 	return nil
 }
 func (v *RegistryWithMeta) normalize() {
+}
+
+type ClusterCreateSpec struct {
+	AdditionalSoftware            *types.ProtectedJSON `json:"additional_software,omitempty"`
+	ClusterType                   *string              `json:"cluster_type,omitempty"`
+	CNICiliumSettings             *CNICiliumSettings   `json:"cni_cilium_settings,omitempty"`
+	CNIType                       *string              `json:"cni_type,omitempty"`
+	EnableAutorepair              *bool                `json:"enable_autorepair,omitempty"`
+	EnablePatchVersionAutoUpgrade *bool                `json:"enable_patch_version_auto_upgrade,omitempty"`
+	KubeVersion                   *string              `json:"kube_version,omitempty"`
+	KubernetesOptions             *KubernetesOptions   `json:"kubernetes_options,omitempty"`
+	MaintenanceWindowStart        *string              `json:"maintenance_window_start,omitempty"`
+	Name                          *string              `json:"name,omitempty"`
+	NetworkID                     *string              `json:"network_id,omitempty"`
+	Nodegroups                    []NodegroupCreate    `json:"nodegroups,omitzero"`
+	PrivateKubeAPI                *bool                `json:"private_kube_api,omitempty"`
+	Region                        *string              `json:"region,omitempty"`
+	SubnetID                      *string              `json:"subnet_id,omitempty"`
+	Zonal                         *bool                `json:"zonal,omitempty"`
+}
+
+func (v ClusterCreateSpec) Validate() error {
+	if v.KubeVersion == nil || v.Name == nil || v.Nodegroups == nil || v.Region == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.CNICiliumSettings != nil {
+		if err := v.CNICiliumSettings.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.KubernetesOptions != nil {
+		if err := v.KubernetesOptions.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.Nodegroups {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterCreateSpec) normalize() {
+	if v.CNICiliumSettings != nil {
+		v.CNICiliumSettings.normalize()
+	}
+	if v.KubernetesOptions != nil {
+		v.KubernetesOptions.normalize()
+	}
+	for i := range v.Nodegroups {
+		v.Nodegroups[i].normalize()
+	}
+}
+func (v *ClusterCreateSpec) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ClusterCreateSpec
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ClusterCreateSpec(value)
+	v.normalize()
+	return nil
 }

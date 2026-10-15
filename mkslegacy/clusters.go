@@ -1,6 +1,7 @@
 package mkslegacy
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"github.com/festy23/selectel-sdk/internal/core"
@@ -40,4 +41,24 @@ func (c *Client) validateRoot(ref types.ResourceRef, kind string, op core.Operat
 		return types.NewError(types.ScopeMismatch)
 	}
 	return nil
+}
+
+func (c *Client) DeleteCluster(ctx context.Context, ref types.ResourceRef, options types.CallOptions) (types.Result[struct{}], error) {
+	op := core.Operation{ID: "mks.v1.clusters.delete", Service: "mks", APIGeneration: "v1", Method: "DELETE", Effect: "mutation", Auth: types.IAMProject, RequireProject: true, RequireLocation: true, Success: []int{204}, NoContentSuccess: []int{204}, Rejected: []int{404}}
+	op, bindErr := c.runtime.BindDocumented(op, c.scope)
+	out, e := core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/clusters/" + url.PathEscape(ref.ID), Refs: []types.ResourceRef{ref}, Options: options, Validate: func() error {
+		if bindErr != nil {
+			return bindErr
+		}
+		return c.validateRoot(ref, "cluster", op)
+	}}, func(raw []byte, _ types.EndpointBinding) (core.Decoded[struct{}], error) {
+		if len(bytes.TrimSpace(raw)) != 0 {
+			return core.Decoded[struct{}]{}, types.NewError(types.ProtocolError)
+		}
+		return core.Decoded[struct{}]{}, nil
+	})
+	if out.Receipt != nil {
+		out.Receipt.Recovery = "unavailable"
+	}
+	return out, e
 }

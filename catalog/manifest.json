@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "170b40df3b600ab1007398bc63d0cb6e77e763ffd1b970c33b7a0dd2e66ba1e5",
+      "implementation_revision": "78f5eab78839b3b3bcf382e883cdf8c52096a01ab8fb4e6cc4d816099e39974d",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "3f3d4c6e6223c457b92961194f7c4505a9ec20ddbf010ef046c1f26bd08a3e44",
+      "implementation_revision": "93405d619272b2c69eb111404e8732d71c12264ff8a9d6f0b3ceb0f8585f958a",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7a61546bf2cccac3f0600864195844a507562e8c8dea8f2ce5a10ff553b4694b",
+      "implementation_revision": "8f2cbb476303a37d5ce4400d0d08c9cfea34c0fe463e9cd7a7327f8f2bb5ffa4",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,7 +384,7 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "686a7bffe27b38b614bd821c78115804c2dc81091f0d3d126fa8118abeaa230e",
+      "implementation_revision": "c9253cab402e50e1d12ce078d8ae6a06792db6f5963dfa81fcef186b0dc62627",
       "level": "offline"
     },
     "wait_goals": []
@@ -451,7 +451,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "26f2a3acb274f70697780bb48d6821f296b88b43588f9a936bc015a931f4c3a9",
+      "implementation_revision": "bc4b211ce77ac319b9feac31bb8fff2892fd33c261479eb222fc0cd37f5a86b8",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +517,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "98d0b9e837e5eb39acd5e3ba04f235a953008a14c0c37d8d3dbd6e9a63f2d692",
+      "implementation_revision": "dd70abb6e266bc73b686c192d91b5f14cf164be530599e4d525c684701f8bff8",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +583,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "d2a1a31d887ad981c24f95cd69d21b44434666d0033de30886c3f24a2b7d34e4",
+      "implementation_revision": "fbbe1a49cc27f719f8331d398b7b35f539c8cdcb878a033f1073cdba5eb47a64",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +649,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "1f661fd48231bf59caf5881b76fddcfb6013f8dd95741f1882c3e4d55ea99675",
+      "implementation_revision": "5c6be65b581a4dd308e41337271d8d9ca0acea616fa228ac40b85fdff675ec52",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +2167,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6939a59c8c9a32dbf0776cf75b7839244495127f26d50371c82c61780f376f05",
+      "implementation_revision": "6e941752babc685501eeaadbb637be8da6cff2357b3ac89bd2b867dd2ae85e0a",
       "level": "offline"
     },
     "wait_goals": []
@@ -5044,7 +5044,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "fbb1782f0f1965a700f6c114c473639a3614e32a0937f5b4562bd114f2e96d48",
+      "implementation_revision": "13c5944d339ece00ffb8e4890a8c0f5d3a654cac6f4d139eef8bbea2d81fe437",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +5114,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "0031a5989fc41aad4c6ecb592f494d734bb74084012affa6008d99da09b95990",
+      "implementation_revision": "426dcecef0fdd5fcff40a5ec7662baab0bd476d341d49ad3c6e0c3739de6a8f0",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +5181,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "96ef58f4e2f40d74774253a69b91a3f2feb8d9db304dcf26dcc90438dd420815",
+      "implementation_revision": "0e7a89cd41103f96ae0b7d32d54e1339c1fac44edc37d14c67d8ff94666ac2e7",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +5248,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "edcf7028410af194a1763767132f40d7da26dc74b6438a5c1356f913e6249269",
+      "implementation_revision": "d713065bba8002f19c4d1b67c461db4e44868280b2cba98df217113a353f510b",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +5314,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "5d2a48fca6c37b89d62b70e2c9d016862b6460e8522f276c3830c0fda3ae5ec0",
+      "implementation_revision": "6391e79e57d1e94f5ac63b66163e6ee00a90c148b290dabdb84872455aa54848",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +5380,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "9da066986f98ddf26ae4c670b7719642f47156003bd91e55a7d5b485b84035b8",
+      "implementation_revision": "9cab880988bd8343001fcb40a91df4270c52aab89d64c0d59da55c8493b2035a",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +5445,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ebb2eb7608a0156b26ef5992896ca0343f51fd1bb2c1fd1507be25b716eb7c7f",
+      "implementation_revision": "c0c5d02739606668dc73f42e020f1f484148ae7e4a35aaf8382502c16e880201",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +5502,7 @@
     "verification": {
       "contract_revision": "8ddac3b2b2d3b39d6de3879d7f219dfa8bc08557da4486d42bfa9854f3273ebd",
       "evidence_ref": "mkslegacy_client_test.go",
-      "implementation_revision": "e201952b5ba8a89e0f1e38a098e7d1c31c414bda0dcc67e81e8e67640dc661e0",
+      "implementation_revision": "58d92b55f6e6bf2b0f6d39c21dba37b47b2f1f47abaa6d0bc90a760c7c846d44",
       "level": "offline"
     },
     "wait_goals": []
@@ -5515,38 +5515,46 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "a1994c2f8019c300e4d939897265534b218416467e9b7a4017339832d1a21738",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters.create.json": "e56549c6cb7d27d81ad889f11681b86811bb8e68dd8ee457e07e28d31f1c11e9"
+    },
+    "contract_revision": "30d2d814159a169d3fc58a1c7c907bbd857a0a09d14daac4a8ba277a98545f1a",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/post/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters.create.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters.create.json#/errors",
+    "go_method": "mkslegacy.Client.CreateCluster",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "mkslegacy.Client.CreateCluster",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/post",
-    "input_type": null,
+    "input_type": "mkslegacy.ClusterCreateSpec, types.CallOptions",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "mks.v1.clusters.create",
     "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/post/responses",
-    "output_type": null,
+    "output_type": "mkslegacy.DetailedCluster",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters/post",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters.create.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters.create.json#/request",
     "resource": "clusters",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/mks.v1.clusters.create.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
     "service": "mks",
     "source": {
       "operation_locator": "POST /clusters",
@@ -5554,10 +5562,10 @@
       "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "30d2d814159a169d3fc58a1c7c907bbd857a0a09d14daac4a8ba277a98545f1a",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "c79579e261c14bd6b3eee7c88372fbd2259133eb419ffc2a71c43e7d24704b57",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -5569,38 +5577,46 @@
       "scheme": "iam_project"
     },
     "availability": "documented",
-    "contract_revision": "aa68a573a5e5b3c99b19727281635f4a379cfca7c3fd7e986ecb78882a505010",
+    "contract_artifact_revisions": {
+      "contracts/mks.v1.clusters.delete.json": "b58a6a6980de68cc1e07dd94591b787f781e3f9adc2155af4736911d188cb5e0"
+    },
+    "contract_revision": "5cef0ebb62e0d5e471bc654333eddf3d42e3390d386b5a0155bb21a2bb359069",
     "effect": "mutation",
-    "endpoint_recipe_ref": null,
-    "error_binding_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/delete/responses",
-    "go_method": null,
+    "endpoint_recipe_ref": "contracts/mks.v1.clusters.delete.json#/endpoint",
+    "error_binding_ref": "contracts/mks.v1.clusters.delete.json#/errors",
+    "go_method": "mkslegacy.Client.DeleteCluster",
     "implementation": {
-      "binding": null,
-      "status": "unimplemented"
+      "binding": "mkslegacy.Client.DeleteCluster",
+      "status": "implemented"
     },
     "input_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/delete",
-    "input_type": null,
+    "input_type": "types.ResourceRef, types.CallOptions",
     "limitations": [
-      "No callable service binding"
+      "Verification does not establish live availability"
     ],
     "operation_id": "mks.v1.clusters.delete",
     "output_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/delete/responses",
-    "output_type": null,
+    "output_type": "struct{}",
     "pagination_contract_ref": null,
     "parameter_support": {
-      "covered_schema_ref": null,
+      "covered_schema_ref": "sources/managed-kubernetes-legacy.json#/paths/~1clusters~1{cluster_id}/delete",
       "excluded_variants": []
     },
     "recovery_contract_ref": null,
-    "replay_policy_ref": null,
-    "request_binding_ref": null,
+    "replay_policy_ref": "contracts/mks.v1.clusters.delete.json#/retry",
+    "request_binding_ref": "contracts/mks.v1.clusters.delete.json#/request",
     "resource": "clusters",
-    "response_binding_ref": null,
+    "response_binding_ref": "contracts/mks.v1.clusters.delete.json#/response",
     "scope_requirements": [
       "account",
       "project"
     ],
-    "sensitive_fields": [],
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ],
     "service": "mks",
     "source": {
       "operation_locator": "DELETE /clusters/{cluster_id}",
@@ -5608,10 +5624,10 @@
       "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
     },
     "verification": {
-      "contract_revision": null,
-      "evidence_ref": null,
-      "implementation_revision": null,
-      "level": "none"
+      "contract_revision": "5cef0ebb62e0d5e471bc654333eddf3d42e3390d386b5a0155bb21a2bb359069",
+      "evidence_ref": "mkslegacy_client_test.go",
+      "implementation_revision": "6d324655c05ca21d8ca84ab681b27f0c8374dd3c173c92635a9302d2463b38fc",
+      "level": "offline"
     },
     "wait_goals": []
   },
@@ -5672,7 +5688,7 @@
     "verification": {
       "contract_revision": "73abb9c813703ca067e9553ecd2dc940c44b6bd1c672c7da9d71199fdfbfdc16",
       "evidence_ref": "mkslegacy_client_test.go",
-      "implementation_revision": "20c26ac673fb0749179def4afb6d229840db76268f5a61f43c40bd1c99caa684",
+      "implementation_revision": "0d52be92575dfee0b389577c466e133da01e955614968a05e346e8b72ea7f941",
       "level": "offline"
     },
     "wait_goals": []
@@ -5734,7 +5750,7 @@
     "verification": {
       "contract_revision": "277e32591b6c2907be46915bcf1c77e7df1ee4bfe47867ec376d83ab8123b42d",
       "evidence_ref": "mkslegacy_client_test.go",
-      "implementation_revision": "4d077a3fb7845a4a404ac4e6945baeec75ef981889c436d781f641d613506d6f",
+      "implementation_revision": "5e2b2efd18370813ae5f11f7d946e6e4d6c37c5ddceded4f716b5930fdeb80b3",
       "level": "offline"
     },
     "wait_goals": []
@@ -6925,7 +6941,7 @@
     "verification": {
       "contract_revision": "bed845f379407276fc42bd4a5f1e1f62906130409630fbae76026911c59b2c12",
       "evidence_ref": "mkslegacy_client_test.go",
-      "implementation_revision": "196e04662b1c83f99e23160e6ee4b21487de800c92449a78a2d1c79ec2ace8e7",
+      "implementation_revision": "c19ea6130e622a6f2e8d6ff721ce98ec92827747426be0473f842edf358be117",
       "level": "offline"
     },
     "wait_goals": []
@@ -6982,7 +6998,7 @@
     "verification": {
       "contract_revision": "52ebc8f0afa5382d1b2e32ea2ec6577f26a22e3c09caa5a3691ae5adb4de0859",
       "evidence_ref": "mkslegacy_client_test.go",
-      "implementation_revision": "d4a0da3798cbe4624b069a739fc9235db0f09edc86f0e45bd2a8f6bce03883fd",
+      "implementation_revision": "7afa69a1029552bf6e447f8634cc8efe8836b140ecaf2d109e94e8286002f758",
       "level": "offline"
     },
     "wait_goals": []
@@ -7039,7 +7055,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "3ed97e2071ddeb074aa9e84ea1ef9573494cd50c5a874e6edd61ed2016c27702",
+      "implementation_revision": "6a58c639f7c055a6855ddda1e9632e801d45173c5d3f111f4e4ca2b59265d915",
       "level": "offline"
     },
     "wait_goals": []
@@ -7098,7 +7114,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "a287965c7029ec4fbb43ce2e949467627b3da1ccd61f440aef2f8b1b05bb72a2",
+      "implementation_revision": "9aeda3a5562e15b8ae5e501f8abd922262650872901ce7bb6deedead84c21d5a",
       "level": "offline"
     },
     "wait_goals": [
@@ -7157,7 +7173,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "f3001378e05ef20ffb45a57493daab2c0880106f43c5cf0ed40c7b57ad58b040",
+      "implementation_revision": "883991957970abd793caf6e08aea7121131ae90780f7b2b9054c4c953559048e",
       "level": "offline"
     },
     "wait_goals": [
@@ -7218,7 +7234,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7ccc49d380113470b35450cdba399a34f2d59a8ca09eb758e524fbe74ce88221",
+      "implementation_revision": "971533c18e2498ad908e40bbb6d18c2dd8f5a9a39e39aec5eafb3b73b92a38fb",
       "level": "offline"
     },
     "wait_goals": [
@@ -7277,7 +7293,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "b8baeab779e790966410111fe4964e2fd8a6ba663d1c2003cd349cef91b5ca1c",
+      "implementation_revision": "20f516ba13d9fd8deeb699f7899339cf83de4d7bceff472df51eca7717dbccce",
       "level": "offline"
     },
     "wait_goals": []
@@ -7336,7 +7352,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "a41685edb8dfed782ee63ac58ef7144b93615e02488ebfe8a8df98750e66b07e",
+      "implementation_revision": "0c5a6cb1be828e07f966339cf0a85bd0430a05cd15fdceec40a8c3c9a8f1d736",
       "level": "offline"
     },
     "wait_goals": [
@@ -7397,7 +7413,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1b720b2e0013e389519897982c47cfe83ab00c4a0c08b6da6f1b79199ddfb465",
+      "implementation_revision": "8bff0acb8d2ed74fe4c85a6e6b434721eaf5043af5a1e70dfa3f9db56426f25e",
       "level": "offline"
     },
     "wait_goals": [
@@ -7458,7 +7474,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "4de1940b11ac73ee5af2dc14f3bb13fe898950b6d29291dadc4ea978536e531a",
+      "implementation_revision": "0915a5fb6cd6be1730637031a314785659a89f7e9ddacfe17dc1649b2e84fac9",
       "level": "offline"
     },
     "wait_goals": []
@@ -7515,7 +7531,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "4dd7d336a9cc504b53985dd98d181cf0c51b654d8a805e07f59836f1287a040a",
+      "implementation_revision": "da3403cfcf3bd8f197ba81efb6805282fb04010e6c397a308bc49de840435c8c",
       "level": "offline"
     },
     "wait_goals": []
@@ -7572,7 +7588,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "902df2a888325c73f9022e3f5cc556562671ecb1fa238d5e7c37e19e14490ef3",
+      "implementation_revision": "e429abc4719da2b73cc6c99a774497a8293a7c8c226cbb9eb1627eacbf5de580",
       "level": "offline"
     },
     "wait_goals": [
@@ -7633,7 +7649,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "f1698d7df7a6b9e06247c1a89c49ad67e9692e6be3c3b8ba9aabb80a5a9f42b3",
+      "implementation_revision": "7ceaad598cfeac40b58065c04485d528a5a3bbb5a665a085dd71c54bb311539c",
       "level": "offline"
     },
     "wait_goals": [
@@ -7692,7 +7708,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c1881340e111ef806aad54d1e7cb3ae6f0cf8233fb79daac900cc1feb070d85c",
+      "implementation_revision": "73a6696f84d1ddfc3abaac255ee12de8e633db0885e54e935251052a4269e2a1",
       "level": "offline"
     },
     "wait_goals": []
@@ -7749,7 +7765,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5670b06544cf12d32e4e532ba8dcdeb6d223572a3237713ce6dac439229cd7fa",
+      "implementation_revision": "4c215a3c56d12756f745ca3b090ba80eb851d797e6b940efc426c4fc34fe291f",
       "level": "offline"
     },
     "wait_goals": [
@@ -7808,7 +7824,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c5483525dc63762500682e4bdc22f2d95e490799b5677dd7ec06860505bc8957",
+      "implementation_revision": "b2ce4f5b0e06ec2a2de1a898a9f1d1734d2ab3468c1e4f4e8ac9fbc51c0b2d6c",
       "level": "offline"
     },
     "wait_goals": [
@@ -7867,7 +7883,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "95be68e648005a1ac5d37e60bbb1cd99e8919eb711a31e7ec4252d20e753247f",
+      "implementation_revision": "0a9a5988d07d4a3095ed15af01dc4fb3f66e4d908c1cd93e6f9ca94d9558ec0c",
       "level": "offline"
     },
     "wait_goals": []
@@ -7924,7 +7940,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "756192afa17c5d89e93fe13bf877095733d5e507ff09c75e3b1aa6d8d755aa59",
+      "implementation_revision": "4788590f7992343a48d8d8ece9e4c5d55b9662ca13ff7825944e26c0f8a2ca63",
       "level": "offline"
     },
     "wait_goals": []
@@ -7981,7 +7997,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "faed2c30356c03846a68847d8577391109ac63eb4906ffd2348e0e4dfdc5e96a",
+      "implementation_revision": "c04b996c8e45d552041a31f247f310fb7fe05bcb1b9f59561bf32f95965a6069",
       "level": "offline"
     },
     "wait_goals": [
@@ -8040,7 +8056,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "b48c410644cecce3cec1ab86333902bbef5c3ea5c376635041ffd3aab32e5098",
+      "implementation_revision": "6214218ee3c5b45feb0835616e448beafe9002b54fdb10c0a0542d80d5073ca2",
       "level": "offline"
     },
     "wait_goals": []
@@ -8097,7 +8113,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "18fb0c3fabf1f89204558a2d4df0d14d516576e4143ec096c41bf3e2db15ddfa",
+      "implementation_revision": "712f3adab2906d84356d35bbc8eeaeac4e372095b7c2f8b93d99b67d8b02e745",
       "level": "offline"
     },
     "wait_goals": []
@@ -8154,7 +8170,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "fc56001be53063404a4fa7da9ada822032955fa8411fab5e1b6464b2e91b6eac",
+      "implementation_revision": "a9c950e34ed4a35010f40de1b3a93bca11d782bdf6fd39d397265a92bf3398a7",
       "level": "offline"
     },
     "wait_goals": []
@@ -8211,7 +8227,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d08e9feae36cc8b24c1c5fcaf3d947020e17e743af8ab04076aac01e63aed3d4",
+      "implementation_revision": "50260ef1951181dd1f401d8d61f8f7aef988a15b3064883ffab49e2896c17e29",
       "level": "offline"
     },
     "wait_goals": []
@@ -8268,7 +8284,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "06090b87d0a79151517c4b64e4a05d8e98f95d700af77df2ccd7a21c4b2384a7",
+      "implementation_revision": "9168faf3bc2bbd23c4a013574622608604f0a877c97ecf4bef8298c6c203f83f",
       "level": "offline"
     },
     "wait_goals": []
@@ -8325,7 +8341,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "421ce6bbd9a0ef4b50d4cc2cf7b5fbe79fb60f00e0e3a340a31fa1d016fa851f",
+      "implementation_revision": "7dd60904254b2a5749247203800d2910aa4d020763ba5538696e90712767e432",
       "level": "offline"
     },
     "wait_goals": [
@@ -8387,7 +8403,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "3b47bf8eb78c357c6c26d38efcefebd795fb26978ba2b24e7d838079a051c1c8",
+      "implementation_revision": "0636bb961332e94da91f4c799a3997b59369b49cb91f1fa41eb79061895d4adc",
       "level": "offline"
     },
     "wait_goals": [
@@ -8449,7 +8465,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6eb80a1cd195f061d19ce39dbeb66749a9f8688a66275dee854e40946bbf2df2",
+      "implementation_revision": "c080982bbc50b7d1dffc8f33778ced955d4955b5d3a9ea267176bb5bbec97702",
       "level": "offline"
     },
     "wait_goals": [
@@ -8510,7 +8526,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "f744302df62c15d6579f37154b457e4ef6377e71c4e611067366b63441978533",
+      "implementation_revision": "30b4cf73a8c8d7b286a060fe5b07911b448e03dba14a7326e65f50b4b911417f",
       "level": "offline"
     },
     "wait_goals": [
@@ -8571,7 +8587,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0b533cc861652317690a7d63375076b33a5c28c2326f53825bc58104fb09ee72",
+      "implementation_revision": "62c4ad58ff195befdd4576de5628bee87263ea85d1bf5c96b9b9017fd9f4cdd4",
       "level": "offline"
     },
     "wait_goals": [
@@ -8630,7 +8646,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0265b1631055f7dab4bc05a35deb6ab706408fcebfd6cec25223856846918ce2",
+      "implementation_revision": "5489e431974717a05222aac70448251ac56ab48407653d0e34bc7e265827ddda",
       "level": "offline"
     },
     "wait_goals": []
@@ -8687,7 +8703,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "956e399f90b3ec597fdf354f93d3527acc694871fbd6a16e6a705aa0e3385636",
+      "implementation_revision": "b9d4441c06c893b8ac52d30e4b7ab43fc2cee1174b62da7261cf107a6016335d",
       "level": "offline"
     },
     "wait_goals": []
@@ -9432,7 +9448,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "61535dff307dc2563ec0881fd7209328d219c94114bec5debd8393731ef1fbb1",
+      "implementation_revision": "56b2ab74df044f12b5fe801b47d242ab13c569a98b60db298bdce57c8920dd6b",
       "level": "offline"
     },
     "wait_goals": []
@@ -9488,7 +9504,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3b9f66c6de9c8bd927cf258a0616be9649ee324d055a895911a3f0e6acb37160",
+      "implementation_revision": "5cfd5a6a1196b870ab7386c9bed776f4154609355ffec8414cd3ece94527914b",
       "level": "offline"
     },
     "wait_goals": []
@@ -9544,7 +9560,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "30cbdc81bcf4321fd0aca2508e5ade7315e340965ef8d296ce24f6e96c47c910",
+      "implementation_revision": "b953e00448393baa1621e96dd9738f8acf2eb8103675257d1c00a0ace627f9cb",
       "level": "offline"
     },
     "wait_goals": []
@@ -9600,7 +9616,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "1490b5d163316520ff380b9b132a5c0e9003db46153354b91f1aa9ce73f6a0db",
+      "implementation_revision": "1bcea76b07bdbd2ce6399af661e99f0bf7106b8549eaa71af4cc842c850c49e7",
       "level": "offline"
     },
     "wait_goals": []
@@ -9656,7 +9672,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "f57698ec59c0764278a436d83813a8aa201034ab1a7a44bf424486d171e11b0f",
+      "implementation_revision": "e822537b939970adaf5f5c59e16277ca8799ea0fd5dfd4da94bd3b95cdb2a552",
       "level": "offline"
     },
     "wait_goals": []
@@ -10084,7 +10100,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "0adda4ee9e4ce5d2d299f44de2feeec82d0eabda5e78dbcaf101dca1973e0b1e",
+      "implementation_revision": "47101a6cd27f2955c1ca78c2672eb41f21bcb35809e04ac6ca400514ed93a579",
       "level": "offline"
     },
     "wait_goals": []
@@ -10141,7 +10157,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "004adb2d0446be28a0231c271ca6f10bd049d32f82b4cc076795e26b9d920d6c",
+      "implementation_revision": "e529b9242087c5aa321d0c04179da396271fa6d1886d571f552ec40e8174ed2a",
       "level": "offline"
     },
     "wait_goals": []
@@ -10198,7 +10214,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9a7df46b8af1d5a8e7fd5e4514f42a64d2583b219cf7ecce33c5a53c327d86e",
+      "implementation_revision": "58b7132c778c0b53598e5f31805e582e2a6a2aa0ed2dec5b10e6e1709e945586",
       "level": "offline"
     },
     "wait_goals": []
@@ -10255,7 +10271,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "239b4e5b7161d4cf51563a02c6af43ded765f0cccc22e53c0e4c6faebe963db8",
+      "implementation_revision": "f411715d640096e83b3343295cd2aedb058559ba8260ed0aefd2a4e4ec3b8c72",
       "level": "offline"
     },
     "wait_goals": []
@@ -11122,7 +11138,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "649e6d6012abf9676c8a6366ac4b254b68d85acac4db77dc849c8dc38ff914ee",
+      "implementation_revision": "2b485a11ffe9110be25a0599efc647328998fdafb7a75180d0bbdde42335fb3c",
       "level": "offline"
     },
     "wait_goals": []
@@ -11721,7 +11737,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "f8f91734c5f1caf901eeb1cd970c9cb5ad9d0afcd92e88df00cf90cd7b8bc4d0",
+      "implementation_revision": "e55175a9038fe17d7c21f630c3be44f5d96a425110b48c1f44010b05ab14819e",
       "level": "offline"
     },
     "wait_goals": []
@@ -11778,7 +11794,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "f530fb849f6973bbb6de3debc5489ac1d4b81bda5312df32737d74acd9443de7",
+      "implementation_revision": "5536f4f744f69fd82b6f27869c4c3ef939fe31aca474c2aeecf7096da7fcfc91",
       "level": "offline"
     },
     "wait_goals": []
@@ -11837,7 +11853,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "965d7aa85de21b1d1c05db93f5fad33a4df15d3f5d2c9262e0a619789036ed32",
+      "implementation_revision": "74138cac7ed91c6aa9ab17095c1c5e0d107f6bdaa94d37c3d374d9d046d9d0eb",
       "level": "offline"
     },
     "wait_goals": []
@@ -11894,7 +11910,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "702558d87d76cd519249e4d2426b9b909cd256278005bd98dee0ecb629cb7367",
+      "implementation_revision": "b658cf4f8eba081cd76af6c40f4487189b27ea019a0d79608277d09324d89f76",
       "level": "offline"
     },
     "wait_goals": []
@@ -11951,7 +11967,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "ed5c4195c9bf50f0553ce20e6edde8fddee3c60c53b36c9970a19c2cb0e5a8e4",
+      "implementation_revision": "77565a80627fa4279e81c375762b950bf0e14c5d1cbd8c1935d8c9ffb97b8d24",
       "level": "offline"
     },
     "wait_goals": []
@@ -12010,7 +12026,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "83748808a3f2aa276975217504769cdbf2036dc0d648a325b4ae6ed64100eff6",
+      "implementation_revision": "fe618b0ec6a32b82e352d0b2b3cd357acf54764692d390ea8770948f5615224d",
       "level": "offline"
     },
     "wait_goals": []
@@ -12069,7 +12085,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "cacb71d0ec22f48385a787184709fee4c37fca04df2d2c06cd08670ae50eeaf7",
+      "implementation_revision": "4dd0f4f6cd33d90dd07f9b9c8194a4b95b2b217a8f4c804496d80c692e246003",
       "level": "offline"
     },
     "wait_goals": []
@@ -12126,7 +12142,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "7c1feeb71f53242ec46f5bd539ff6f6906c19c425be730bba40ab099d8f925f5",
+      "implementation_revision": "937c80b70c89f019760828e422ca14c79f62639cdd387c9743412ca60a7cbd3e",
       "level": "offline"
     },
     "wait_goals": []
@@ -12183,7 +12199,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "13497e1fa650874b88c9a1c2c7aa37cfbbc6c823bbec2bcd08ab21c7af40a071",
+      "implementation_revision": "421a6e3e49d1e4919d4830c5b9064c28af5a29d050c72d9d56ba5f0c9a888796",
       "level": "offline"
     },
     "wait_goals": []

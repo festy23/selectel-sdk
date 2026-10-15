@@ -3,7 +3,7 @@
 `Project(id).Location(region,pool).MKSLegacy()` selects MKS generation `v1`.
 It does not convert v2 refs or fall back between generations. Source inventory
 contains28 operations from the current published [legacy schema](https://docs.selectel.ru/api/managed-kubernetes-legacy.json).
-The current slice implements ListClusters/GetCluster and three configuration reads; the remaining23 operations
+The current slice implements ListClusters/GetCluster, three configuration reads and CreateCluster/DeleteCluster; the remaining21 operations
 are unimplemented. Whole legacy inventory including DNS/storage is incomplete,
 coverage_ratio=null; published sources are not live deployment verification.
 
@@ -33,8 +33,19 @@ File Storage legacy resize remains #70/PR115 and is not duplicated here.
 
 No cloud resources, old credential auth endpoints or kubeconfigs were contacted.
 All tests use the public Client with synthetic credentials and only transport
-replacement. There are no v1 mutation/wait claims in this initial slice.
+replacement. No v1 wait goals are claimed.
 
 ListKubeVersions, ListAdmissionControllers and ListFeatureGates expose bounded
 finite source arrays. Native capitalized KubeVersionMinor/Names fields are
 preserved; Names is an array, and no default configuration is invented.
+
+CreateCluster validates the generated native request tree, caller pool and
+base64 user_data, forwarding the protected value unchanged only at the private
+wire boundary. An accepted identity (id/project_id/region) is scanned before
+other fields so malformed unrelated fields do not lose the created root ref.
+DeleteCluster204 is acceptance, not an absence assertion. Unknown mutations
+never replay or infer a new resource; exact known refs and receipts survive.
+The narrow reviewed early ContractRevision fix from PR97 commit
+379458e4f658b1216137fea4acce5dae6027d320 (delta82121d740a2788930ce7c4934d449c35b096966d)
+is reused in internal/core/request.go; no volume feature code is included.
+Private wire rendering follows the existing baseline mks serializer.
