@@ -78,6 +78,9 @@ func (r *Runtime) authorize(ctx context.Context, request types.AuthRequest) (*au
 		return nil, err
 	}
 	now := time.Now().UTC()
+	if material.Scheme == credentials.S3 && !material.ExpiresAt.IsZero() && !now.Before(material.ExpiresAt) {
+		return nil, types.NewError(types.Unauthenticated)
+	}
 	if material.Scheme != credentials.IAMPassword && material.Scheme != credentials.IAMToken {
 		return &authEntry{material: material, metadata: types.AuthMetadata{Scope: request.Scope, Verification: "caller_asserted", Scheme: string(material.Scheme), AcquiredAt: now}}, nil
 	}

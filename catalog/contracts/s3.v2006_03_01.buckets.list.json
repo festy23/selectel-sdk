@@ -1,0 +1,65 @@
+{
+  "operation_id": "s3.v2006_03_01.buckets.list",
+  "source_revision": "b4a39f02e6f8eef1b29b2731726eb76fa416926c5ec89378a70070505ad995c6",
+  "endpoint": "explicit Selectel regional S3 URL; default path-style, immutable WithVirtualHosted selects bucket-host derivation; both saved as exact refs with no redirect/fallback/AWS defaults",
+  "auth": "s3_sigv4 scope account/project/region/pool; signing region=pool/service=s3",
+  "request": {
+    "method": "GET",
+    "path": "/",
+    "query_selector": null,
+    "header_selector": null,
+    "native_model": "AWS Go SDK service/s3 v1.114.3 ListBuckets",
+    "mapping": "typed SDK subset; common CallOptions retained; unsupported or unknown AWS variants never forwarded",
+    "covered_native_fields": [
+      "BucketRegion",
+      "ContinuationToken",
+      "MaxBuckets",
+      "Prefix"
+    ],
+    "native_fields": [
+      "BucketRegion",
+      "ContinuationToken",
+      "MaxBuckets",
+      "Prefix"
+    ],
+    "excluded_variants": [
+      "NativePagination max-buckets/prefix/bucket-region/continuation request variant has AWS SDK wire evidence only; current Selectel availability unknown"
+    ]
+  },
+  "response": {
+    "mapping": "typed XML/header mapping, protected metadata; addressed names/keys are explicit requested addresses, never creation proof",
+    "sensitive_fields": [
+      "metadata",
+      "version_id",
+      "signed_url"
+    ],
+    "native_fields": [
+      "Buckets",
+      "ContinuationToken",
+      "Owner",
+      "Prefix",
+      "ResultMetadata"
+    ],
+    "limitation": "Only source-confirmed basic Selectel header/XML subset is typed; advanced AWS output fields are not claimed complete. Provider timestamps retain raw source strings; SDK observation times are UTC time.Time."
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied except known authentication machine codes",
+    "404": "not_found",
+    "409": "conflict",
+    "412": "conflict",
+    "416": "invalid_argument",
+    "429": "rate_limited",
+    "503 SlowDown": "rate_limited; bounded safe-read retry",
+    "copy HTTP200 Error": "provider_error with Accepted acknowledgement retained; no success claim",
+    "delete-many HTTP200 mixed": "provider_error/partial_success, exact per-item results preserved, Accepted acknowledgement retained",
+    "provider_message": "discarded; optional XML diagnostics cannot bypass normal status/retry/cancellation"
+  },
+  "retry": "bounded reads before response streaming; mutations never replay; redirects protocol_error",
+  "recovery": "Exact named bucket/key address only; never creation or contents proof. Known outcomes conclusive without I/O; unknown bulk or version-selected delete RecoveryUnavailable; version arguments are not serialized into generic key refs.",
+  "wait": "existence/absence only; no object contents/write ownership proof",
+  "pagination": "bounded pages and source continuation only; protected opaque cursor",
+  "shared_provenance": "reviewed Swift DoResponse 8a07c83 plus reviewed receipt support379458e",
+  "local_presign": null
+}

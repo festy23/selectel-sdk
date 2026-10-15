@@ -7,4 +7,4 @@ require (
 	github.com/gophercloud/gophercloud/v2 v2.13.0
 )
 
-require github.com/aws/smithy-go v1.28.5 // indirect
+require github.com/aws/smithy-go v1.28.5

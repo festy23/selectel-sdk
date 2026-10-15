@@ -25,7 +25,7 @@ Service ID является стабильным именем пакета и к
 | `databases` | [Managed databases](https://docs.selectel.ru/api/managed-databases/) | dbaas-go / HTTP; поколения разделены по engine |
 | `registry` | [Реестры, репозитории, токены](https://docs.selectel.ru/api/craas/) | craas-go / HTTP |
 | `registry_data` | [OCI distribution](https://github.com/opencontainers/distribution-spec) в Selectel | Protocol adapter; отдельный от registry management |
-| `s3` | [S3 subset Selectel](https://docs.selectel.ru/api/object-storage-s3/) | AWS SDK Go v2 |
+| `s3` | [S3 subset Selectel](https://docs.selectel.ru/api/object-storage-s3/), [SDK contract](s3.md) | AWS SigV4 / Smithy / HTTP protocol adapter |
 | `swift` | [Swift](https://docs.selectel.ru/api/object-storage-swift/), [old](https://docs.selectel.ru/api/object-storage-swift-old/) | Protocol adapter; old явно выбран |
 | `object_storage` | [Management](https://docs.selectel.ru/api/object-storage/), [old](https://docs.selectel.ru/api/selectel-storage-old/) | HTTP; old явно выбран |
 | `backups` | [Scheduled backup / restore](https://docs.selectel.ru/api/scheduled-backups/) | cloudbackup-go / HTTP |
