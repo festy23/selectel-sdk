@@ -456,3 +456,38 @@ func TestMobileFarmUserProxyDeletePreservesExplicitParent(t *testing.T) {
 		t.Fatalf("delete %+v %v", out, e)
 	}
 }
+
+func TestMobileFarmTicketProtectsSingleDeliveryValueWithoutResourceIdentity(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "POST" || r.URL.Path != "/mobfarm/api/v2/auth/tickets" {
+			t.Fatalf("ticket %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"success":true,"description":"synthetic-private-description","ticket":"synthetic-private-ticket"}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	out, e := p.MobileFarm().IssueTicket(context.Background(), types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 0 || string(out.Data.Ticket.Reveal()) != "synthetic-private-ticket" {
+		t.Fatalf("ticket %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out)
+	diagnostics := string(safe) + fmt.Sprintf("%+v %#v %x", out.Data, out.Data, out.Data.Ticket)
+	for _, secret := range []string{"synthetic-private-ticket", "synthetic-private-description"} {
+		if strings.Contains(diagnostics, secret) || strings.Contains(diagnostics, fmt.Sprint([]byte(secret))) || strings.Contains(diagnostics, fmt.Sprintf("%#v", []byte(secret))) {
+			t.Fatal("ticket leaked")
+		}
+	}
+}
+
+func TestMobileFarmTicketUnknownNeverReplaysAndMissingProjectHasReceipt(t *testing.T) {
+	calls := 0
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) { calls++; return nil, io.ErrUnexpectedEOF }))
+	out, e := c.Account().MobileFarm().IssueTicket(context.Background(), types.CallOptions{})
+	if e == nil || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatalf("gate %+v %v", out, e)
+	}
+	p, _ := c.Project("test-project")
+	out, e = p.MobileFarm().IssueTicket(context.Background(), types.CallOptions{})
+	if e == nil || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || len(out.Receipt.ResourceRefs) != 0 || out.Receipt.Recovery != "unavailable" {
+		t.Fatalf("unknown %+v %v calls%d", out, e, calls)
+	}
+}

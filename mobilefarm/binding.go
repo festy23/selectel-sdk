@@ -3,6 +3,7 @@ package mobilefarm
 import (
 	"github.com/festy23/selectel-sdk/internal/core"
 	"github.com/festy23/selectel-sdk/types"
+	"strings"
 )
 
 type authPolicy uint8
@@ -20,7 +21,11 @@ func (c *Client) binding(id, method, effect string, policy authPolicy, success, 
 	if policy == projectOnly || policy == accountOrProject && c.scope.ProjectID != "" {
 		mode = types.IAMProject
 	}
-	op := core.Operation{ID: id, Service: "mobile_farm", APIGeneration: "v3", Method: method, Effect: effect, Auth: mode, RequireProject: policy == projectOnly, Success: success, Rejected: rejected, NoContentSuccess: noContent}
+	generation := "v3"
+	if strings.HasPrefix(id, "mobile_farm.v2.") {
+		generation = "v2"
+	}
+	op := core.Operation{ID: id, Service: "mobile_farm", APIGeneration: generation, Method: method, Effect: effect, Auth: mode, RequireProject: policy == projectOnly, Success: success, Rejected: rejected, NoContentSuccess: noContent}
 	op, e := c.runtime.BindDocumented(op, c.scope)
 	if e != nil {
 		return op, e

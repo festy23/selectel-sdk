@@ -299,7 +299,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v2.api_auth_tickets.create"
     },
     {
       "method": "POST",

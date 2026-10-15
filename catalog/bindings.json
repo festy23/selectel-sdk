@@ -5101,5 +5101,42 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "mobile_farm.v2.api_auth_tickets.create": {
+    "go_method": "mobilefarm.Client.IssueTicket",
+    "input_type": "types.CallOptions",
+    "output_type": "mobilefarm.GetTicketResponse",
+    "contract_ref": "contracts/mobile_farm.v2.api_auth_tickets.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mobilefarm/client.go",
+      "mobilefarm/devices.go",
+      "mobilefarm/protected.go",
+      "mobilefarm/types_generated.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "internal/endpoints/locations.go",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go",
+      "catalog/sources/mobile-farm.json",
+      "mobilefarm/adb.go",
+      "mobilefarm/binding.go",
+      "mobilefarm/wire.go",
+      "mobilefarm/types.go",
+      "catalog/catalog.go",
+      "mobilefarm/proxy.go",
+      "mobilefarm/ticket.go"
+    ],
+    "evidence_files": [
+      "mobilefarm_client_test.go",
+      "catalog/evidence/mobilefarm-current-inventory.json"
+    ],
+    "evidence_ref": "mobilefarm_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
   }
 }

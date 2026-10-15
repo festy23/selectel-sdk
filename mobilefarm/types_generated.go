@@ -78,6 +78,40 @@ func (v *CreateADBKeyRequest) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type GetTicketResponse struct {
+	Description *types.ProtectedValue `json:"description,omitempty"`
+	Success     *bool                 `json:"success,omitempty"`
+	Ticket      *types.ProtectedValue `json:"ticket,omitempty"`
+}
+
+func (v GetTicketResponse) Validate() error {
+	if v.Description == nil || v.Success == nil || v.Ticket == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *GetTicketResponse) normalize() {
+}
+func (v *GetTicketResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire GetTicketResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = GetTicketResponse(value)
+	v.normalize()
+	return nil
+}
+
 type Status struct {
 	ACTIVE      *types.Number `json:"ACTIVE,omitempty"`
 	BUSY        *types.Number `json:"BUSY,omitempty"`
