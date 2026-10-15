@@ -31,6 +31,11 @@ func (c *LogExports) Iterate(in ExportListOptions, o pagination.Options) (*pagin
 			return nil, types.NewError(types.InvalidArgument)
 		}
 	}
+	// The iterator owns the original semantic request for all pages and cursors.
+	if in.OrderBy != nil {
+		order := *in.OrderBy
+		in.OrderBy = &order
+	}
 	semantic := struct {
 		Offset      uint64
 		OrderBy     *string

@@ -509,3 +509,52 @@ func TestManagementErrorMappingRedirectAndCursorBinding(t *testing.T) {
 		t.Fatal(e)
 	}
 }
+
+func TestLogExportIteratorOwnsOriginalOrderAndCursorSemantics(t *testing.T) {
+	calls := 0
+	_, c := client(t, func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Query().Get("order_by") != "created desc" {
+			t.Fatal("caller mutation changed iterator order", r.URL)
+		}
+		expectedOffset := map[int]string{1: "0", 2: "1", 3: "1"}[calls]
+		if r.URL.Query().Get("offset") != expectedOffset {
+			t.Fatal(r.URL)
+		}
+		if calls == 1 {
+			return response(200, `{"tasks":[{"task":{"id":"first"}}]}`), nil
+		}
+		return response(200, `{"tasks":[]}`), nil
+	})
+	order := "created desc"
+	it, e := c.LogExports.Iterate(objectstorage.ExportListOptions{OrderBy: &order}, pagination.Options{PageSize: 1, MaxItems: 3, MaxPages: 3})
+	if e != nil {
+		t.Fatal(e)
+	}
+	order = "changed before first Next"
+	first, e := it.Next(context.Background())
+	if e != nil || first.NextCursor == nil {
+		t.Fatal(e)
+	}
+	order = "changed between Next calls"
+	last, e := it.Next(context.Background())
+	if e != nil || !last.Done {
+		t.Fatal(e)
+	}
+	original := "created desc"
+	resumed, e := c.LogExports.Iterate(objectstorage.ExportListOptions{OrderBy: &original}, pagination.Options{PageSize: 1, MaxItems: 3, MaxPages: 3, Cursor: first.NextCursor})
+	if e != nil {
+		t.Fatal("original semantics no longer match cursor", e)
+	}
+	original = "changed resumed caller variable"
+	if _, e = resumed.Next(context.Background()); e != nil {
+		t.Fatal(e)
+	}
+	changed := "created asc"
+	if _, e = c.LogExports.Iterate(objectstorage.ExportListOptions{OrderBy: &changed}, pagination.Options{Cursor: first.NextCursor}); types.ErrorCode(e) != types.ScopeMismatch {
+		t.Fatal("different ordering accepted cursor", e)
+	}
+	if calls != 3 {
+		t.Fatal(calls)
+	}
+}
