@@ -176,7 +176,7 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 		mode = in.Options.AuthMode
 	}
 	authReq := types.AuthRequest{Scope: in.Scope, Mode: mode, Service: op.Service, Audience: credentials.SelectelAudience}
-	entry, authErr := r.authorize(call, authReq)
+	entry, authErr := r.authorizeOperation(call, op, authReq)
 	if authErr != nil {
 		return out, authErr
 	}
@@ -399,6 +399,9 @@ func (r *Runtime) resolve(op Operation, in Request, entry *authEntry) (types.End
 }
 
 func authorizeHeader(req *http.Request, e *authEntry, op Operation, in Request) error {
+	if anonymousVersions(op) && e.metadata.Scheme == "anonymous" {
+		return nil
+	}
 	switch e.material.Scheme {
 	case credentials.IAMPassword, credentials.IAMToken:
 		req.Header.Set("X-Auth-Token", string(e.token.Reveal()))
@@ -569,4 +572,25 @@ func cloneRefs(refs []types.ResourceRef) []types.ResourceRef {
 		}
 	}
 	return out
+}
+
+// anonymousVersions is an immutable compiled protocol exception, never a caller
+// auth override. Other ProtocolSpecific operations remain capability-gated.
+func anonymousVersions(op Operation) bool {
+	return op.ID == "vmware.v36_3.versions.list" && op.Service == "vmware" && op.APIGeneration == "v36_3" && op.Auth == types.ProtocolSpecific && op.Method == http.MethodGet && op.Effect == "read"
+}
+func (r *Runtime) authorizeOperation(ctx context.Context, op Operation, request types.AuthRequest) (*authEntry, error) {
+	if !anonymousVersions(op) {
+		return r.authorize(ctx, request)
+	}
+	if e := request.Validate(); e != nil {
+		return nil, e
+	}
+	if request.Scope.AccountID != r.config.AccountID || request.Audience != credentials.SelectelAudience {
+		return nil, types.NewError(types.ScopeMismatch)
+	}
+	if e := ctx.Err(); e != nil {
+		return nil, types.ContextError(e)
+	}
+	return &authEntry{metadata: types.AuthMetadata{Scope: request.Scope, Scheme: "anonymous", Verification: "caller_asserted", AcquiredAt: time.Now().UTC()}}, nil
 }

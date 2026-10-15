@@ -4585,5 +4585,32 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "vmware.v36_3.versions.list": {
+    "go_method": "vmware.Client.Versions",
+    "input_type": "types.CallOptions",
+    "output_type": "vmware.SupportedVersions",
+    "contract_ref": "contracts/vmware.v36_3.versions.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "vmware/client.go",
+      "vmware/xml.go",
+      "vmware/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/core/reads.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "catalog/sources/vmware-cloud-director.json"
+    ],
+    "evidence_files": [
+      "vmware_client_test.go",
+      "catalog/evidence/vmware-current-inventory.json"
+    ],
+    "evidence_ref": "vmware_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
   }
 }

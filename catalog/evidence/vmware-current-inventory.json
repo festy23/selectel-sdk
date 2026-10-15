@@ -1,0 +1,30 @@
+{
+  "inventory_complete": false,
+  "coverage_ratio": null,
+  "source_uris": [
+    "https://docs.selectel.ru/api/vmware/",
+    "https://developer.broadcom.com/xapis/vmware-cloud-director-api/36.3/",
+    "https://developer.broadcom.com/xapis/vmware-cloud-director-api/latest/doc/operations/GET-SupportedVersions.html"
+  ],
+  "api_version": "36.3 is the Selectel example version; deployed current non-deprecated versions must be explicitly observed, never assumed",
+  "selectel_examples": [
+    "GET /api/versions",
+    "POST /cloudapi/1.0.0/sessions/",
+    "DELETE /cloudapi/1.0.0/sessions/",
+    "GET /api/org/{orgId}",
+    "GET /api/query?type=orgVdc",
+    "GET /api/query?type=vm&fields=name,containerName&filter=isVAppTemplate==false",
+    "POST /api/vApp/vm-{vmId}/power/action/powerOn",
+    "POST /api/vApp/vm-{vmId}/power/action/powerOff"
+  ],
+  "confirmed_binding": "vmware.v36_3.versions.list",
+  "remaining": "Seven other Selectel examples (six other method/path operations, including two query parameter variants) plus task/VM observation require exact-version reconciliation. Full Selectel-supported vApp/VM/network/storage inventory unknown; upstream includes tenant-inaccessible APIs. No vendor count as deployment denominator.",
+  "raw_schema_limitation": "The version-specific versions.xsd link resolves to documentation shell; direct urllib vendor docs request returned403 while indexed primary reference is readable. Normalized schema is SDK-owned transcription, not claimed vendor OpenAPI/XSD download. Exact36.3 GET-SupportedVersions operation route also unavailable; unversioned discovery method/status/auth from current official operation since1.5 and the Selectel example; DTO namespace/representation from readable36.3 SupportedVersionsType. Discovery never claims that36.3 is currently deployed.",
+  "confirmed_example_count": 8,
+  "confirmed_distinct_method_path_count": 7,
+  "remaining_children": {
+    "107": "version-bound auth/query/task contracts and Selectel-supported operation inventory",
+    "108": "confirmed vApp/VM lifecycle and task recovery; blocked by107",
+    "109": "confirmed network/storage lifecycle; blocked by107"
+  }
+}

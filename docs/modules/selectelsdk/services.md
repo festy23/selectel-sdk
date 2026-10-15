@@ -30,7 +30,7 @@ Service ID является стабильным именем пакета и к
 | `object_storage` | [Management](https://docs.selectel.ru/api/object-storage/), [old](https://docs.selectel.ru/api/selectel-storage-old/) | HTTP; old явно выбран |
 | `backups` | [Scheduled backup / restore](https://docs.selectel.ru/api/scheduled-backups/) | cloudbackup-go / HTTP |
 | `dedicated` | [Dedicated servers](https://docs.selectel.ru/api/dedicated/) | dedicated-go/v2 / HTTP |
-| `vmware` | [VMware access](https://docs.selectel.ru/api/vmware/) | Документированный Cloud Director adapter |
+| `vmware` | [VMware access](https://docs.selectel.ru/api/vmware/) | [Cloud Director subset](vmware.md), полный inventory пока неизвестен |
 | `cloud_1c` | [Облако 1С](https://docs.selectel.ru/api/1c-cloud/) | HTTP |
 | `dns` | [Текущий DNS](https://docs.selectel.ru/api/dns-actual/), [legacy](https://docs.selectel.ru/api/dns-legacy/) | domains-go / HTTP |
 | `cdn` | [CDN](https://docs.selectel.ru/api/cdn/) | HTTP |

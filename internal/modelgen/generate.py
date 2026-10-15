@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+"vmware": ("vmware-cloud-director", {"SupportedVersions":"SupportedVersions"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -126,7 +127,13 @@ for case, (family, initial, top_name) in CASES.items():
             tag = "omitzero" if collection else "omitempty"
             if not collection:
                 go_type = "*" + go_type
-            fields.append(f'\t{field_name} {go_type} `json:"{wire},{tag}"`')
+            xml_tag = ""
+            if package == "vmware":
+                xml_name = value["x-xml"]
+                if ",attr" not in xml_name:
+                    xml_name = "http://www.vmware.com/vcloud/versions " + xml_name
+                xml_tag = f' xml:"{xml_name}"'
+            fields.append(f'\t{field_name} {go_type} `json:"{wire},{tag}"{xml_tag}`')
             if wire in schema.get("required", []):
                 required.append(f"v.{field_name} == nil")
         if reference in resource_roots:

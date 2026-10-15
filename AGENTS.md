@@ -37,3 +37,19 @@ Apply operation-specific wait goals and preserve incomplete collections.
 Keep credentials, secret values, kubeconfig, user-data and raw telemetry out of
 Git and diagnostic output. Use protected values only at the explicit request or
 caller-directed reveal boundary.
+
+## Agent skills
+
+### Issue tracker
+
+For specifications and tasks, use GitHub Issues in festy23/selectel-sdk.
+Read docs/agents/issue-tracker.md before tracker operations.
+
+### Triage labels
+
+Before classifying issues, read docs/agents/triage-labels.md.
+
+### Domain docs
+
+Single-context layout: CONTEXT.md and docs/adr/.
+Before exploring the codebase, read docs/agents/domain.md.
