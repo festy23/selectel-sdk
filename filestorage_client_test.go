@@ -286,3 +286,90 @@ func TestFileStorageNetworkCreateRetainsAllReturnedDefaultSubnetIDsBeforeDecode(
 		t.Fatalf("child %+v", child)
 	}
 }
+
+func fileStorageShareJSON(id, project string) string {
+	return strings.NewReplacer("@ID@", id, "@PROJECT@", project).Replace(`{"id":"@ID@","project_id":"@PROJECT@","size":50,"created_at":"2022-01-01T00:00:00","status":"future-provider-state","share_proto":"NFS","name":null,"description":null,"availability_zone":null,"snapshot_id":null,"share_network_id":null,"share_type":null,"volume_type":null,"share_type_name":null,"task_state":null,"access_rules_status":null,"replication_type":null,"user_id":null,"share_group_id":null,"source_share_group_snapshot_member_id":null,"progress":null,"scheduled_to_be_deleted_at":null,"metadata":{"synthetic":"private-share-metadata"},"links":[],"is_public":false,"has_replicas":false,"snapshot_support":false,"create_share_from_snapshot_support":false,"revert_to_snapshot_support":false,"mount_snapshot_support":false,"is_soft_deleted":false}`)
+}
+
+func TestFileStorageSharesKeepUnknownStateExactCountAndEmptyPageEndRule(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		if r.URL.Path != "/share/v2/shares/detail" || r.URL.Query().Get("with_count") != "true" || r.URL.Query().Get("metadata") != `{"owner":"synthetic-private-filter"}` {
+			t.Fatalf("shares %s", r.URL)
+		}
+		body := `{"shares":[],"count":9007199254740993}`
+		if r.URL.Query().Get("offset") == "0" {
+			body = `{"shares":[` + fileStorageShareJSON("share-1", "test-project") + `],"count":9007199254740993}`
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(body))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	view, _ := p.Location("spb", "ru-9")
+	count := true
+	var metadata types.ProtectedJSON
+	_ = json.Unmarshal([]byte(`{"owner":"synthetic-private-filter"}`), &metadata)
+	out, e := view.FileStorage().ListShares(context.Background(), filestorage.ShareFilters{WithCount: &count, Metadata: &metadata}, pagination.Options{PageSize: 2})
+	if e != nil || !out.Complete || calls != 2 || len(out.Items) != 1 || out.Items[0].Ref == nil || out.Items[0].Ref.ID != "share-1" || out.Items[0].Ref.Parent != nil || out.Items[0].Status == nil || *out.Items[0].Status != "future-provider-state" || len(out.ProviderPages) != 2 || out.ProviderPages[0].TotalCount == nil || out.ProviderPages[0].TotalCount.String() != "9007199254740993" {
+		t.Fatalf("shares %+v %v calls%d", out, e, calls)
+	}
+	safe, _ := json.Marshal(out)
+	if strings.Contains(string(safe)+fmt.Sprintf("%+v %#v", out, out), "private-share-metadata") || strings.Contains(string(safe), "synthetic-private-filter") {
+		t.Fatal("metadata or filter leaked")
+	}
+}
+
+func TestFileStorageSourceObjectFieldsRejectScalarShapes(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"share_types":[{"id":"type-1","name":"synthetic-type","description":null,"share_type_access:is_public":false,"is_default":false,"extra_specs":"not-an-object","required_extra_specs":{}}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	view, _ := p.Location("spb", "ru-9")
+	out, e := view.FileStorage().ListTypes(context.Background(), filestorage.TypeFilters{}, pagination.Options{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Complete {
+		t.Fatalf("shape %+v %v", out, e)
+	}
+}
+
+func TestFileStorageProtectedFiltersBindCursorWithoutDisclosingSelectors(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"shares":[` + fileStorageShareJSON("share-1", "test-project") + `]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	view, _ := p.Location("spb", "ru-9")
+	var first, second types.ProtectedJSON
+	_ = json.Unmarshal([]byte(`{"owner":"synthetic-secret-first"}`), &first)
+	_ = json.Unmarshal([]byte(`{"owner":"synthetic-secret-second"}`), &second)
+	out, e := view.FileStorage().ListShares(context.Background(), filestorage.ShareFilters{Metadata: &first}, pagination.Options{MaxItems: 1})
+	if types.ErrorCode(e) != types.Incomplete || out.NextCursor == nil || calls != 1 {
+		t.Fatalf("cursor %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out.NextCursor)
+	if strings.Contains(string(safe)+fmt.Sprintf("%+v %#v", out.NextCursor, out.NextCursor), "synthetic-secret-first") {
+		t.Fatal("selector leaked")
+	}
+	_, e = view.FileStorage().ListShares(context.Background(), filestorage.ShareFilters{Metadata: &second}, pagination.Options{Cursor: out.NextCursor})
+	if types.ErrorCode(e) != types.ScopeMismatch || calls != 1 {
+		t.Fatalf("cursor reused across protected filters %v calls%d", e, calls)
+	}
+}

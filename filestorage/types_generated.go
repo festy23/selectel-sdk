@@ -8,6 +8,39 @@ import (
 	"github.com/festy23/selectel-sdk/types"
 )
 
+type Link struct {
+	Href *types.ProtectedValue `json:"href,omitempty"`
+	Rel  *string               `json:"rel,omitempty"`
+}
+
+func (v Link) Validate() error {
+	if v.Href == nil || v.Rel == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *Link) normalize() {
+}
+func (v *Link) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire Link
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = Link(value)
+	v.normalize()
+	return nil
+}
+
 type NetworkCreateRequest struct {
 	AvailabilityZone *string                               `json:"availability_zone,omitempty"`
 	Description      *types.Nullable[types.ProtectedValue] `json:"description,omitempty"`
@@ -43,6 +76,160 @@ func (v *NetworkCreateRequest) UnmarshalJSON(raw []byte) error {
 		value.Name = types.Null[string]()
 	}
 	*v = NetworkCreateRequest(value)
+	v.normalize()
+	return nil
+}
+
+type Share struct {
+	AccessRulesStatus                *types.Nullable[string]               `json:"access_rules_status,omitempty"`
+	AvailabilityZone                 *types.Nullable[string]               `json:"availability_zone,omitempty"`
+	CreateShareFromSnapshotSupport   *types.Nullable[bool]                 `json:"create_share_from_snapshot_support,omitempty"`
+	CreatedAt                        *string                               `json:"created_at,omitempty"`
+	Description                      *types.Nullable[types.ProtectedValue] `json:"description,omitempty"`
+	HasReplicas                      *types.Nullable[bool]                 `json:"has_replicas,omitempty"`
+	Host                             *types.Nullable[types.ProtectedValue] `json:"host,omitempty"`
+	ID                               *string                               `json:"id,omitempty"`
+	IsPublic                         *types.Nullable[bool]                 `json:"is_public,omitempty"`
+	IsSoftDeleted                    *types.Nullable[bool]                 `json:"is_soft_deleted,omitempty"`
+	Links                            []Link                                `json:"links,omitzero"`
+	Metadata                         *types.ProtectedJSON                  `json:"metadata,omitempty"`
+	MountSnapshotSupport             *types.Nullable[bool]                 `json:"mount_snapshot_support,omitempty"`
+	Name                             *types.Nullable[string]               `json:"name,omitempty"`
+	Progress                         *types.Nullable[string]               `json:"progress,omitempty"`
+	ProjectID                        *string                               `json:"project_id,omitempty"`
+	ReplicationType                  *types.Nullable[string]               `json:"replication_type,omitempty"`
+	RevertToSnapshotSupport          *types.Nullable[bool]                 `json:"revert_to_snapshot_support,omitempty"`
+	ScheduledToBeDeletedAt           *types.Nullable[string]               `json:"scheduled_to_be_deleted_at,omitempty"`
+	ShareGroupID                     *types.Nullable[string]               `json:"share_group_id,omitempty"`
+	ShareNetworkID                   *types.Nullable[string]               `json:"share_network_id,omitempty"`
+	ShareProto                       *string                               `json:"share_proto,omitempty"`
+	ShareServerID                    *types.Nullable[string]               `json:"share_server_id,omitempty"`
+	ShareType                        *types.Nullable[string]               `json:"share_type,omitempty"`
+	ShareTypeName                    *types.Nullable[string]               `json:"share_type_name,omitempty"`
+	Size                             *types.Integer                        `json:"size,omitempty"`
+	SnapshotID                       *types.Nullable[string]               `json:"snapshot_id,omitempty"`
+	SnapshotSupport                  *types.Nullable[bool]                 `json:"snapshot_support,omitempty"`
+	SourceShareGroupSnapshotMemberID *types.Nullable[string]               `json:"source_share_group_snapshot_member_id,omitempty"`
+	Status                           *string                               `json:"status,omitempty"`
+	TaskState                        *types.Nullable[string]               `json:"task_state,omitempty"`
+	UserID                           *types.Nullable[string]               `json:"user_id,omitempty"`
+	VolumeType                       *types.Nullable[string]               `json:"volume_type,omitempty"`
+	Ref                              *types.ResourceRef                    `json:"ref,omitempty"`
+}
+
+func (v Share) Validate() error {
+	if v.AccessRulesStatus == nil || v.AvailabilityZone == nil || v.CreateShareFromSnapshotSupport == nil || v.CreatedAt == nil || v.Description == nil || v.HasReplicas == nil || v.ID == nil || v.IsPublic == nil || v.IsSoftDeleted == nil || v.Links == nil || v.Metadata == nil || v.MountSnapshotSupport == nil || v.Name == nil || v.Progress == nil || v.ProjectID == nil || v.ReplicationType == nil || v.RevertToSnapshotSupport == nil || v.ScheduledToBeDeletedAt == nil || v.ShareGroupID == nil || v.ShareNetworkID == nil || v.ShareProto == nil || v.ShareType == nil || v.ShareTypeName == nil || v.Size == nil || v.SnapshotID == nil || v.SnapshotSupport == nil || v.SourceShareGroupSnapshotMemberID == nil || v.Status == nil || v.TaskState == nil || v.UserID == nil || v.VolumeType == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	for _, item := range v.Links {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Metadata != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.Metadata.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	return nil
+}
+func (v *Share) normalize() {
+	for i := range v.Links {
+		v.Links[i].normalize()
+	}
+}
+func (v *Share) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire Share
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if field, exists := fields["access_rules_status"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.AccessRulesStatus = types.Null[string]()
+	}
+	if field, exists := fields["availability_zone"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.AvailabilityZone = types.Null[string]()
+	}
+	if field, exists := fields["create_share_from_snapshot_support"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.CreateShareFromSnapshotSupport = types.Null[bool]()
+	}
+	if field, exists := fields["description"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Description = types.Null[types.ProtectedValue]()
+	}
+	if field, exists := fields["has_replicas"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.HasReplicas = types.Null[bool]()
+	}
+	if field, exists := fields["host"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Host = types.Null[types.ProtectedValue]()
+	}
+	if field, exists := fields["is_public"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.IsPublic = types.Null[bool]()
+	}
+	if field, exists := fields["is_soft_deleted"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.IsSoftDeleted = types.Null[bool]()
+	}
+	if field, exists := fields["mount_snapshot_support"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.MountSnapshotSupport = types.Null[bool]()
+	}
+	if field, exists := fields["name"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Name = types.Null[string]()
+	}
+	if field, exists := fields["progress"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.Progress = types.Null[string]()
+	}
+	if field, exists := fields["replication_type"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.ReplicationType = types.Null[string]()
+	}
+	if field, exists := fields["revert_to_snapshot_support"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.RevertToSnapshotSupport = types.Null[bool]()
+	}
+	if field, exists := fields["scheduled_to_be_deleted_at"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.ScheduledToBeDeletedAt = types.Null[string]()
+	}
+	if field, exists := fields["share_group_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.ShareGroupID = types.Null[string]()
+	}
+	if field, exists := fields["share_network_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.ShareNetworkID = types.Null[string]()
+	}
+	if field, exists := fields["share_server_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.ShareServerID = types.Null[string]()
+	}
+	if field, exists := fields["share_type"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.ShareType = types.Null[string]()
+	}
+	if field, exists := fields["share_type_name"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.ShareTypeName = types.Null[string]()
+	}
+	if field, exists := fields["snapshot_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.SnapshotID = types.Null[string]()
+	}
+	if field, exists := fields["snapshot_support"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.SnapshotSupport = types.Null[bool]()
+	}
+	if field, exists := fields["source_share_group_snapshot_member_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.SourceShareGroupSnapshotMemberID = types.Null[string]()
+	}
+	if field, exists := fields["task_state"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.TaskState = types.Null[string]()
+	}
+	if field, exists := fields["user_id"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.UserID = types.Null[string]()
+	}
+	if field, exists := fields["volume_type"]; exists && bytes.Equal(bytes.TrimSpace(field), []byte("null")) {
+		value.VolumeType = types.Null[string]()
+	}
+	*v = Share(value)
 	v.normalize()
 	return nil
 }
@@ -199,6 +386,18 @@ type ShareType struct {
 func (v ShareType) Validate() error {
 	if v.Description == nil || v.ExtraSpecs == nil || v.ID == nil || v.IsDefault == nil || v.Name == nil || v.RequiredExtraSpecs == nil || v.ShareTypeAccessIsPublic == nil {
 		return types.NewError(types.ProtocolError)
+	}
+	if v.ExtraSpecs != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.ExtraSpecs.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	if v.RequiredExtraSpecs != nil {
+		var object map[string]json.RawMessage
+		if json.Unmarshal(v.RequiredExtraSpecs.Reveal(), &object) != nil || object == nil {
+			return types.NewError(types.ProtocolError)
+		}
 	}
 	return nil
 }

@@ -43,7 +43,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "1b2e3fe0bf6a4c52cdf1eb961e8f6d08877df088721ad5ddb7d8afa248031cd5",
+      "source_revision": "62efe6e982c0e925ad52e96c7a986996cf6ce2c0d207d4b695deaa77c5575543",
       "method": "GET",
       "path": "/types",
       "microversion": "2.73",
@@ -54,17 +54,18 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "1b2e3fe0bf6a4c52cdf1eb961e8f6d08877df088721ad5ddb7d8afa248031cd5",
+      "source_revision": "62efe6e982c0e925ad52e96c7a986996cf6ce2c0d207d4b695deaa77c5575543",
       "method": "GET",
       "path": "/shares/detail",
       "microversion": "2.73",
       "native_action": null,
       "source_locator": "GET /v2/shares/detail microversion2.73",
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "filestorage.v2_73.shares.list"
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "1b2e3fe0bf6a4c52cdf1eb961e8f6d08877df088721ad5ddb7d8afa248031cd5",
+      "source_revision": "62efe6e982c0e925ad52e96c7a986996cf6ce2c0d207d4b695deaa77c5575543",
       "method": "POST",
       "path": "/shares",
       "microversion": "2.73",
@@ -74,7 +75,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "1b2e3fe0bf6a4c52cdf1eb961e8f6d08877df088721ad5ddb7d8afa248031cd5",
+      "source_revision": "62efe6e982c0e925ad52e96c7a986996cf6ce2c0d207d4b695deaa77c5575543",
       "method": "GET",
       "path": "/share-networks/detail",
       "microversion": "2.73",
@@ -85,7 +86,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "1b2e3fe0bf6a4c52cdf1eb961e8f6d08877df088721ad5ddb7d8afa248031cd5",
+      "source_revision": "62efe6e982c0e925ad52e96c7a986996cf6ce2c0d207d4b695deaa77c5575543",
       "method": "POST",
       "path": "/share-networks",
       "microversion": "2.73",
@@ -96,7 +97,7 @@
     },
     {
       "source_file": "catalog/sources/file-storage-manila.json",
-      "source_revision": "1b2e3fe0bf6a4c52cdf1eb961e8f6d08877df088721ad5ddb7d8afa248031cd5",
+      "source_revision": "62efe6e982c0e925ad52e96c7a986996cf6ce2c0d207d4b695deaa77c5575543",
       "method": "GET",
       "path": "/share-access-rules",
       "microversion": "2.73",

@@ -74,11 +74,19 @@ func offsetCollection[T any](c *Client, ctx context.Context, op core.Operation, 
 		}
 		nextRequest.Query.Set("offset", strconv.FormatUint(offset, 10))
 		nextRequest.Query.Set("limit", strconv.FormatUint(uint64(size), 10))
+		var reportedCount *types.Integer
 		out, e := core.DoJSON(c.runtime, ctx, op, nextRequest, func(raw []byte, ep types.EndpointBinding) (core.Decoded[[]T], error) {
 			var envelope map[string]json.RawMessage
 			var items []T
 			if json.Unmarshal(raw, &envelope) != nil || json.Unmarshal(envelope[field], &items) != nil || items == nil {
 				return core.Decoded[[]T]{}, types.NewError(types.ProtocolError)
+			}
+			if countRaw, present := envelope["count"]; present {
+				var count types.Integer
+				if json.Unmarshal(countRaw, &count) != nil {
+					return core.Decoded[[]T]{}, types.NewError(types.ProtocolError)
+				}
+				reportedCount = &count
 			}
 			for i := range items {
 				if e := validate(&items[i], ep); e != nil {
@@ -90,7 +98,7 @@ func offsetCollection[T any](c *Client, ctx context.Context, op core.Operation, 
 		if e != nil {
 			return pagination.SourcePage[T]{Metadata: out.Metadata}, e
 		}
-		page := pagination.SourcePage[T]{Items: out.Data, Done: len(out.Data) == 0, Metadata: out.Metadata}
+		page := pagination.SourcePage[T]{Items: out.Data, Done: len(out.Data) == 0, Metadata: out.Metadata, Provider: pagination.ProviderMetadata{TotalCount: reportedCount}}
 		if !page.Done {
 			advance := uint64(len(out.Data))
 			if offset > ^uint64(0)-advance {

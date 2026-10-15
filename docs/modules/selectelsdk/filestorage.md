@@ -18,8 +18,8 @@
 подтверждает project IAM, endpoint `https://<pool>.cloud.api.selcloud.ru/share/v2`
 и `os-extend`. SDK фиксирует 9 отдельных операций этих сценариев; три разных
 POST action имеют отдельные source assets и canonical mappings, хотя wire path
-совпадает. Это не алиасы. В текущем срезе implemented ListTypes, ListNetworks и CreateNetwork, остальные
-6 unimplemented; весь inventory неизвестен, coverage_ratio=null.
+совпадает. Это не алиасы. В текущем срезе implemented ListTypes, ListNetworks, CreateNetwork и ListShares, остальные
+5 unimplemented; весь inventory неизвестен, coverage_ratio=null.
 
 Default endpoint recipe применяется только к известным российским cloud pools;
 для других локаций нужен точный caller override, host не выводится по аналогии.
@@ -80,3 +80,18 @@ primitive cases, чтобы request null/secret не превратились в
 Неизвестные Nullable types отклоняются. Reviewed PR97 early receipt revision fix
 379458e4f658b1216137fea4acce5dae6027d320 (delta от82121d740a2788930ce7c4934d449c35b096966d)
 применён только к internal/core/request.go; volume feature-код не переносился.
+
+
+ListShares сохраняет versioned2.73 response fields и raw unknown status без
+readiness classification. Project каждого ряда проверяется до root ref; публичные
+или административные selectors не разрешают adoption foreign project resources.
+Metadata, links href, description и host защищены; required nullable fields
+отличаются от missing. Deprecated flat export locations не переносятся в2.73 DTO.
+API reference указывает202 для list, pinned controller/WSGI default200; обе формы
+привязаны к одному source-bound typed response. Count хранится точным Integer
+и служит только информацией. Он не доказывает конец обхода или coverage denominator.
+
+Protected metadata/extra-spec selectors раскрываются только для wire query и
+private cursor hashing. Сам cursor не содержит selector; другой secret selector
+даёт другой fingerprint и отклоняет reuse до credential/resource I/O. Shared
+source object validators не допускают scalar вместо schema object.
