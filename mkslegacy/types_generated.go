@@ -633,8 +633,8 @@ func (v *OIDCView) normalize() {
 }
 
 type RegistriesIntegration struct {
-	Registries []RegistryWithMeta `json:"registries,omitzero"`
-	Status     *string            `json:"status,omitempty"`
+	Registries []RegistryIntegration `json:"registries,omitzero"`
+	Status     *string               `json:"status,omitempty"`
 }
 
 func (v RegistriesIntegration) Validate() error {
@@ -650,16 +650,102 @@ func (v *RegistriesIntegration) normalize() {
 		v.Registries[i].normalize()
 	}
 }
-
-type RegistryWithMeta struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-}
-
-func (v RegistryWithMeta) Validate() error {
+func (v *RegistriesIntegration) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire RegistriesIntegration
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = RegistriesIntegration(value)
+	v.normalize()
 	return nil
 }
-func (v *RegistryWithMeta) normalize() {
+
+type Registry struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (v Registry) Validate() error {
+	return nil
+}
+func (v *Registry) normalize() {
+}
+
+type RegistryCreateSpec struct {
+	Registries []Registry `json:"registries,omitzero"`
+}
+
+func (v RegistryCreateSpec) Validate() error {
+	for _, item := range v.Registries {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *RegistryCreateSpec) normalize() {
+	for i := range v.Registries {
+		v.Registries[i].normalize()
+	}
+}
+func (v *RegistryCreateSpec) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire RegistryCreateSpec
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = RegistryCreateSpec(value)
+	v.normalize()
+	return nil
+}
+
+type RegistryIntegration struct {
+	ID   *string            `json:"id,omitempty"`
+	Name *string            `json:"name,omitempty"`
+	Ref  *types.ResourceRef `json:"ref,omitempty"`
+}
+
+func (v RegistryIntegration) Validate() error {
+	return nil
+}
+func (v *RegistryIntegration) normalize() {
+}
+func (v *RegistryIntegration) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire RegistryIntegration
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = RegistryIntegration(value)
+	v.normalize()
+	return nil
 }
 
 type SwaggerAuditLogs struct {
@@ -879,6 +965,43 @@ func (v SwaggerOIDC) Validate() error {
 	return nil
 }
 func (v *SwaggerOIDC) normalize() {
+}
+
+type RegistryUpdateSpec struct {
+	Registries []Registry `json:"registries,omitzero"`
+}
+
+func (v RegistryUpdateSpec) Validate() error {
+	for _, item := range v.Registries {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *RegistryUpdateSpec) normalize() {
+	for i := range v.Registries {
+		v.Registries[i].normalize()
+	}
+}
+func (v *RegistryUpdateSpec) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire RegistryUpdateSpec
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = RegistryUpdateSpec(value)
+	v.normalize()
+	return nil
 }
 
 type Task struct {

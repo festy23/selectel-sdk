@@ -47,6 +47,10 @@ func resourcePathDepth(ref types.ResourceRef, depth int) string {
 		if ref.Parent != nil {
 			return resourcePathDepth(*ref.Parent, depth+1) + "/" + segment(ref.ID)
 		}
+	case "registry_integration":
+		if ref.Parent != nil {
+			return resourcePathDepth(*ref.Parent, depth+1) + "/registries/" + segment(ref.ID)
+		}
 	case "task":
 		if ref.Parent != nil {
 			return resourcePathDepth(*ref.Parent, depth+1) + "/tasks/" + segment(ref.ID)

@@ -1,0 +1,36 @@
+{
+  "operation_id": "mks.v1.clusters_registries.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/clusters/{cluster_id}/registries",
+    "mapping": "Exact caller v1 cluster, native registry integration observation."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Direct generated RegistriesIntegration object. Native association refs are mks/v1/registry_integration with explicit caller cluster parent; never Registry service ownership. Unknown status preserved; scan all independently trustworthy IDs before other fields, no task/readiness inference.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Source409conflict and shared sanitized HTTP taxonomy; bounded safe read with no raw provider error text."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio"
+  ]
+}

@@ -35,6 +35,7 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"managed-kubernetes-legacy DELETE /clusters/{cluster_id}/registries/{registry_id}":                    "mks.v1.registry_integrations.delete",
 	"managed-kubernetes-legacy GET /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}":            "mks.v1.nodes.get",
 	"managed-kubernetes-legacy DELETE /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}":         "mks.v1.nodes.delete",
 	"managed-kubernetes-legacy POST /clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}/reinstall": "mks.v1.nodes.reinstall",

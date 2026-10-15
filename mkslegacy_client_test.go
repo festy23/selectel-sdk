@@ -628,3 +628,128 @@ func TestMKSLegacyTaskPagePreservesNativeQueryAndNeverGuessesCompletion(t *testi
 		t.Fatalf("task page %+v %v calls%d", out, e, calls)
 	}
 }
+
+func TestMKSLegacyRegistryReadBindsNativeAssociationNotRegistryOwnership(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/v1/clusters/legacy-cluster/registries" {
+			t.Fatalf("registries %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"status":"future-integration-state","registries":[{"id":"registry-1","name":"synthetic-registry"}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	out, e := v.MKSLegacy().GetRegistryIntegrations(context.Background(), cluster, types.CallOptions{})
+	if e != nil || out.Data.Status == nil || *out.Data.Status != "future-integration-state" || len(out.Data.Registries) != 1 || out.Data.Registries[0].Ref == nil || out.Data.Registries[0].Ref.Service != "mks" || out.Data.Registries[0].Ref.Kind != "registry_integration" || out.Data.Registries[0].Ref.Parent == nil || *out.Data.Registries[0].Ref.Parent != cluster {
+		t.Fatalf("registry %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyRegistryCreateScansAllAcceptedAssociationIDsBeforeFields(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || string(raw) != `{"registries":[{"id":"registry-1"}]}` {
+			t.Fatalf("integrate %s %s", r.Method, raw)
+		}
+		return &http.Response{StatusCode: 201, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"status":17,"registries":[{"id":12},{"id":"registry-1","name":17},{"id":"registry-2"},{"id":"registry-2"}]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	id := "registry-1"
+	out, e := v.MKSLegacy().CreateRegistryIntegrations(context.Background(), cluster, mkslegacy.RegistryCreateSpec{Registries: []mkslegacy.Registry{{ID: &id}}}, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 3 || out.Receipt.ResourceRefs[1].Kind != "registry_integration" || out.Receipt.ResourceRefs[1].Parent == nil || out.Receipt.ResourceRefs[2].ID != "registry-2" {
+		t.Fatalf("integrate %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyRegistryReplacePreservesExplicitEmptySelection(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "PUT" || string(raw) != `{"registries":[]}` {
+			t.Fatalf("replace %s %s", r.Method, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"status":"ACTIVE","registries":[]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	out, e := v.MKSLegacy().ReplaceRegistryIntegrations(context.Background(), cluster, mkslegacy.RegistryUpdateSpec{Registries: []mkslegacy.Registry{}}, types.CallOptions{})
+	if e != nil || len(out.Data.Registries) != 0 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != cluster {
+		t.Fatalf("replace %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyRegistryDeleteAllUsesExplicitCollectionAction(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.Method != "DELETE" || r.URL.Path != "/v1/clusters/legacy-cluster/registries" {
+			t.Fatalf("delete all %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	out, e := v.MKSLegacy().DeleteAllRegistryIntegrations(context.Background(), cluster, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != cluster {
+		t.Fatalf("delete all %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyRegistryDeleteSingleRequiresNativeAssociationRef(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		if r.Method != "DELETE" || r.URL.Path != "/v1/clusters/legacy-cluster/registries/registry-1" {
+			t.Fatalf("delete one %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	integration := cluster
+	integration.ID = "registry-1"
+	integration.Kind = "registry_integration"
+	integration.Parent = &cluster
+	foreign := integration
+	foreign.Service = "registry"
+	out, e := v.MKSLegacy().DeleteRegistryIntegration(context.Background(), foreign, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatalf("foreign namespace %+v %v", out, e)
+	}
+	out, e = v.MKSLegacy().DeleteRegistryIntegration(context.Background(), integration, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].Kind != "registry_integration" || calls != 1 {
+		t.Fatalf("delete one %+v %v", out, e)
+	}
+}

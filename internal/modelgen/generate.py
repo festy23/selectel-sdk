@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
- "mkslegacy": ("managed-kubernetes-legacy", {"Cluster":"Cluster", "ClusterDetailed":"DetailedCluster", "KubeVersion":"KubeVersion", "AvailableAdmissionControllers":"AdmissionControllers", "AvailableFeatureGates":"FeatureGates", "SwaggerClusterCreateStruct":"ClusterCreateSpec", "SwaggerClusterUpdateStruct":"ClusterUpdateSpec", "Nodegroup":"Nodegroup", "NodegroupDetailed":"DetailedNodegroup", "SwaggerNode":"Node", "NodegroupUpdate":"NodegroupUpdate", "Task":"Task"},None),
+ "mkslegacy": ("managed-kubernetes-legacy", {"Cluster":"Cluster", "ClusterDetailed":"DetailedCluster", "KubeVersion":"KubeVersion", "AvailableAdmissionControllers":"AdmissionControllers", "AvailableFeatureGates":"FeatureGates", "SwaggerClusterCreateStruct":"ClusterCreateSpec", "SwaggerClusterUpdateStruct":"ClusterUpdateSpec", "Nodegroup":"Nodegroup", "NodegroupDetailed":"DetailedNodegroup", "SwaggerNode":"Node", "NodegroupUpdate":"NodegroupUpdate", "Task":"Task", "RegistriesIntegration":"RegistriesIntegration", "RegistryWithMeta":"RegistryIntegration", "RegistryCreateIntegrationsStruct":"RegistryCreateSpec", "SwaggerUpdateRegistriesIntegrationStruct":"RegistryUpdateSpec"},None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -51,7 +51,7 @@ for case, (family, initial, top_name) in CASES.items():
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
     if package in {"mks", "mkslegacy"}:
-        resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "SwaggerNode", "Task"}
+        resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "SwaggerNode", "Task", "RegistryWithMeta"}
     pending = dict(roots)
     emitted = {}
     imports = {"types": "github.com/festy23/selectel-sdk/types", "json": "encoding/json"}

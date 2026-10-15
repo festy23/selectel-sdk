@@ -3,7 +3,7 @@
 `Project(id).Location(region,pool).MKSLegacy()` selects MKS generation `v1`.
 It does not convert v2 refs or fall back between generations. Source inventory
 contains28 operations from the current published [legacy schema](https://docs.selectel.ru/api/managed-kubernetes-legacy.json).
-The current slice implements twenty-one operations plus one partial task-page read: cluster/configuration/nodegroup/node operations and GetTask; the remaining6 operations
+The current slice implements twenty-six operations plus one partial task-page read; kubeconfig remains unimplemented pending its source contract
 are unimplemented. Whole legacy inventory including DNS/storage is incomplete,
 coverage_ratio=null; published sources are not live deployment verification.
 
@@ -77,3 +77,14 @@ Done=false and no invented NextCursor, even for an empty page. Offset/Limit use
 exact capitalized source names and int64 bounds. count is ReportedCount, never
 TotalCount or proof of completion. Traversal/end-rule reconciliation remains
 owned #71/#74/#76; this binding is partial rather than falsely complete.
+
+Five registry integration operations use native MKS association refs beneath an
+explicit caller cluster. They never assert ownership of a Registry-service
+resource or manufacture its endpoint. Create/replace scan all trustworthy native
+association IDs before other fields; malformed/duplicate rows do not lose later
+independent IDs in an accepted receipt. These are observed association refs, not
+causal proof that every returned link was newly created. Unknown only retains
+caller anchors, never list-diff adoption. Replace preserves explicit empty array.
+DeleteAllRegistryIntegrations is explicit collection action, while
+DeleteRegistryIntegration requires exact native association ref;204 is only
+acceptance, not an absence or readiness guarantee.
