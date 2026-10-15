@@ -1,0 +1,333 @@
+{
+  "source_uri": "https://docs.selectel.ru/api/mobile-farm.json",
+  "revision": "d5e6d1cb35d1807234fa84096e7c50d6a120191fe1b2eeff521996588e9aa9cf",
+  "endpoint_source": "https://docs.selectel.ru/api/urls/#\u043c\u043e\u0431\u0438\u043b\u044c\u043d\u0430\u044f-\u0444\u0435\u0440\u043c\u0430",
+  "example_source": "https://selectel.ru/blog/tutorials/compose-ui-test-for-android/",
+  "inventory_complete": false,
+  "coverage_ratio": null,
+  "baseline_operation_count": 30,
+  "current_operation_count": 30,
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api/v3/devices/available",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_devices_available.list"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/devices",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/devices",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_devices.list"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/devices/{serial}",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/devices/{serial}",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_devices.get"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/devices/{serial}",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/devices/{serial}/settings",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/devices/{serial}/tariff",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/firewall-rules",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/firewall-rules",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/firewall-rules/{id}",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/firewall-rules/{id}",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v3/firewall-rules/order",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/keys/proxy",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        },
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/keys/proxy",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        },
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/keys/proxy/{fingerprint}",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        },
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/users/{user_id}/keys/proxy",
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/users/{user_id}/keys/proxy",
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/users/{user_id}/keys/proxy/{fingerprint}",
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/keys/adb",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        },
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/keys/adb",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        },
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/keys/adb/{fingerprint}",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        },
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/users/{userId}/keys/adb",
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/users/{userId}/keys/adb",
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/users/{userId}/keys/adb/{fingerprint}",
+      "security": [
+        {
+          "iam_token_account_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/auth/tickets",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/users/devices",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/users/devices/{serial}",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/users/devices/{serial}/remote-connect",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/users/devices/{serial}/remote-connect",
+      "security": [
+        {
+          "iam_token_project_scoped": []
+        }
+      ],
+      "status": "unimplemented"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "operation_id": "mobile_farm.v3.api_devices.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "explicit account/project, IAMProject required",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v3/devices",
+    "method": "GET",
+    "auth": "project-scoped IAM X-Auth-Token, no implicit account fallback",
+    "query": null
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed complete source schema pagination.Collection[mobilefarm.SmallDevice]; device serial must match supplied exact ref, lists bind only returned serials to caller project; owner metadata never creates parent",
+    "sensitive_fields": [
+      "owner.name",
+      "phone.*",
+      "remoteConnectUrl",
+      "channel",
+      "operator",
+      "reverseForwards[]",
+      "battery.*"
+    ],
+    "numbers": "Source integer/number lexical precision retained; protected battery values reveal explicitly",
+    "status_shape": "SmallDevice.status is source Status object, Device.status is source integer; never silently coerce these distinct contracts"
+  },
+  "errors": {
+    "mapping": "Documented400\u2192invalid_argument,401\u2192unauthenticated,403\u2192permission_denied; bounded shared status errors exclude provider raw fields/messages; malformed response\u2192protocol_error, foreign serial\u2192scope_mismatch"
+  },
+  "retry": "Shared bounded safe reads only; auth/endpoint/cancellation/CallTimeout preserved",
+  "pagination": {
+    "provider": "Finite root array, no source page/limit parameters",
+    "local": "FixedIterator root-array adapter enforces PageSize/MaxItems/MaxPages/CollectionTimeout; truncation keeps items and incomplete/SDK cursor; body MaxJSONBytes applies"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

@@ -1,0 +1,2887 @@
+{
+  "info": {
+    "description": "Managing real mobile devices: adding and deleting devices, getting detailed device information, managing ADB keys, and more.",
+    "title": "Mobile Farm API",
+    "version": "1.1.0"
+  },
+  "basePath": "/mobfarm/",
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "securityDefinitions": {
+    "iam_token_account_scoped": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "description": "IAM token for account"
+    },
+    "iam_token_project_scoped": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "description": "IAM token for project"
+    }
+  },
+  "swagger": "2.0",
+  "paths": {
+    "/api/v3/devices/available": {
+      "get": {
+        "description": "Returns a list of available mobile devices that you can add to a project.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "collectionFormat": "multi",
+            "description": "Fields of filters to return in response",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "fields",
+            "type": "array"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of available devices",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/entity.AvailableDevice"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "summary": "List available devices",
+        "tags": [
+          "Devices"
+        ]
+      }
+    },
+    "/api/v3/devices": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Adds devices to the project based on the provided filters.",
+        "parameters": [
+          {
+            "description": "Body",
+            "in": "body",
+            "name": "filters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.Order"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Devices have been added to the project.",
+            "schema": {
+              "$ref": "#/definitions/entity.CreateOkResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "402": {
+            "description": "Payment is required. Top up your balance and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "Selected devices are not available.",
+            "schema": {
+              "$ref": "#/definitions/entity.CreateConflictResponse"
+            }
+          }
+        },
+        "summary": "Add devices to project",
+        "tags": [
+          "Devices"
+        ],
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ]
+      },
+      "get": {
+        "description": "Returns a list of devices in a project.",
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of devices in a project.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/entity.SmallDevice"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "summary": "List devices",
+        "tags": [
+          "Devices"
+        ],
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ]
+      }
+    },
+    "/api/v3/devices/{serial}": {
+      "delete": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Removes a device from the project using its serial number.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "The serial number of the device.",
+            "in": "path",
+            "name": "serial",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Body",
+            "in": "body",
+            "name": "removeDevice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.DeviceRemoveBody"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Device's autopay is set off. Returns only for monthly subscribed devices.",
+            "schema": {
+              "$ref": "#/definitions/entity.SmallDevice"
+            }
+          },
+          "204": {
+            "description": "Device has been removed."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Device has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "Invalid slot identifier. Fix the slot identifier and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerDeviceConflictError"
+            }
+          },
+          "429": {
+            "description": "Rate limit has been exceeded. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerDeviceConflictError"
+            }
+          }
+        },
+        "summary": "Remove device from project",
+        "tags": [
+          "Devices"
+        ]
+      },
+      "get": {
+        "description": "Returns information about a device by its serial number.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "The serial number of the device.",
+            "in": "path",
+            "name": "serial",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Information about the device has been returned.",
+            "schema": {
+              "$ref": "#/definitions/entity.Device"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "summary": "Get device information",
+        "tags": [
+          "Devices"
+        ]
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Replaces the device based on the provided filters.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "The serial number of the device.",
+            "in": "path",
+            "name": "serial",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Body",
+            "in": "body",
+            "name": "replaceDevice",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.DeviceReplaceBody"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Device has been replaced.",
+            "schema": {
+              "$ref": "#/definitions/entity.SmallDevice"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Device has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "Invalid slot identifier. Fix the slot identifier and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerDeviceConflictError"
+            }
+          },
+          "429": {
+            "description": "Rate limit has been exceeded. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerDeviceConflictError"
+            }
+          }
+        },
+        "summary": "Replace device",
+        "tags": [
+          "Devices"
+        ]
+      }
+    },
+    "/api/v3/devices/{serial}/settings": {
+      "patch": {
+        "summary": "Change device settings",
+        "operationId": "changeDeviceSettings",
+        "description": "Updates settings on the specified device. This operation is asynchronous. The response indicates that the change request has been accepted for processing.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serial",
+            "in": "path",
+            "description": "The serial number of the device.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "changeSettings",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.DeviceSettingsChangeBody"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Request has been accepted. The changes will take effect shortly."
+          },
+          "204": {
+            "description": "Nothing to change."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights for this device.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Device has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "405": {
+            "description": "Requested action is not allowed for the current device state. Device should have `status = 3`, `ready = true`, `present = true`, and `owner = current user`.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "Invalid slot identifier. Fix the slot identifier and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "Devices"
+        ]
+      }
+    },
+    "/api/v3/devices/{serial}/tariff": {
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Updates a tariffication of the device.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "The serial number of the device.",
+            "in": "path",
+            "name": "serial",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Body",
+            "in": "body",
+            "name": "changeService",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.Billing"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Device's tariffication has been updated.",
+            "schema": {
+              "$ref": "#/definitions/entity.SmallDevice"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Device has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "Invalid slot identifier. Fix the slot identifier and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerDeviceConflictError"
+            }
+          },
+          "429": {
+            "description": "Rate limit has been exceeded. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerDeviceConflictError"
+            }
+          }
+        },
+        "summary": "Update device tariffication",
+        "tags": [
+          "Devices"
+        ]
+      }
+    },
+    "/api/v3/firewall-rules": {
+      "get": {
+        "summary": "List firewall rules",
+        "operationId": "listFirewallRules",
+        "description": "Returns a list of all firewall rules configured for the current project.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of firewall rules.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entity.Rule"
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights for this project.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "Proxy firewall"
+        ]
+      },
+      "post": {
+        "summary": "Create firewall rule",
+        "operationId": "createFirewallRule",
+        "description": "Creates a new firewall rule in the current project. The maximum number of rules per project is 100.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.FirewallRuleBodyReq"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Rule has been updated and moved to the first position with the highest priority.",
+            "schema": {
+              "$ref": "#/definitions/entity.Rule"
+            }
+          },
+          "201": {
+            "description": "Rule has been created.",
+            "schema": {
+              "$ref": "#/definitions/entity.Rule"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights for this project.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "Project has reached the limit of 100 firewall rules.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "Proxy firewall"
+        ]
+      }
+    },
+    "/api/v3/firewall-rules/{id}": {
+      "delete": {
+        "summary": "Delete firewall rule",
+        "operationId": "deleteFirewallRule",
+        "description": "Deletes a firewall rule by its unique identifier.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the firewall rule to delete.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Rule has been deleted."
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights for this project.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Firewall rule has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "Proxy firewall"
+        ]
+      },
+      "put": {
+        "summary": "Update firewall rule",
+        "operationId": "updateFirewallRule",
+        "description": "Updates one or more fields of a firewall rule. Only the fields provided in the request body are modified.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the firewall rule to update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.FirewallRuleBodyReq"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Rule has been updated.",
+            "schema": {
+              "$ref": "#/definitions/entity.Rule"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights for this project.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Firewall rule has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "Proxy firewall"
+        ]
+      }
+    },
+    "/api/v3/firewall-rules/order": {
+      "patch": {
+        "summary": "Reorder firewall rules",
+        "operationId": "reorderFirewallRules",
+        "description": "Updates the execution priority of firewall rules by submitting an ordered list of rule identifiers. The first identifier in the list receives the highest priority.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.FirewallRulePriorityBodyReq"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Rule priorities have been updated.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entity.Rule"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights for this project.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "One or more firewall rules have not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "Priority conflict has occurred. For example, duplicate priorities after reordering.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "Proxy firewall"
+        ]
+      }
+    },
+    "/api/v3/keys/proxy": {
+      "get": {
+        "summary": "List proxy tokens",
+        "operationId": "listProxyTokens",
+        "description": "Returns a list of proxy tokens belonging to the current user. Each token includes metadata such as fingerprint, name, active status, and associated device serial numbers. Token secrets are not exposed in this response.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of proxy tokens has been returned.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entity.ProxyTokenInfo"
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Proxy tokens"
+        ]
+      },
+      "post": {
+        "summary": "Create proxy token",
+        "operationId": "createProxyToken",
+        "description": "Creates a proxy token for the current user. The generated token secret is returned in the response body and cannot be retrieved afterwards. The token name must be unique per user.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.CreateProxyTokenReq"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Proxy token has been created. The response body contains the full token object, including the secret. Save the secret, as it cannot be retrieved later.",
+            "schema": {
+              "$ref": "#/definitions/entity.ProxyToken"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "409": {
+            "description": "Token with the provided name already exists for this user.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "Proxy tokens"
+        ]
+      }
+    },
+    "/api/v3/keys/proxy/{fingerprint}": {
+      "delete": {
+        "summary": "Delete proxy token",
+        "operationId": "deleteProxyToken",
+        "description": "Deletes the specified proxy token using its unique fingerprint. Any active connections that rely on this token are immediately terminated.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "fingerprint",
+            "in": "path",
+            "description": "Unique fingerprint of the proxy token to delete.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Proxy token has been deleted. The response body contains the metadata of the removed token.",
+            "schema": {
+              "$ref": "#/definitions/entity.ProxyTokenInfo"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "No proxy token with the provided fingerprint exists for this user.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "Proxy tokens"
+        ]
+      }
+    },
+    "/api/v3/users/{user_id}/keys/proxy": {
+      "get": {
+        "summary": "List proxy tokens for user",
+        "operationId": "listUserProxyTokens",
+        "description": "Returns a list of proxy tokens belonging to the specified user. Each token includes metadata such as fingerprint, name, active status, and associated device serial numbers. Token secrets are not exposed in this response. This method is available only to user administrators.",
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "Unique identifier of the user whose proxy tokens are being listed.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of proxy tokens.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entity.ProxyTokenInfo"
+              }
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required administrative rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "User has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "User proxy tokens"
+        ]
+      },
+      "post": {
+        "summary": "Create proxy token for user",
+        "operationId": "createUserProxyToken",
+        "description": "Creates a new proxy token for the specified user. The generated token secret is returned in the response body and is not retrievable afterwards. The token name must be unique per user. This method is available only to user administrators.",
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "Unique identifier of the user for whom the proxy token is being created.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.CreateProxyTokenReq"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Proxy token has been created.",
+            "schema": {
+              "$ref": "#/definitions/entity.ProxyToken"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required administrative rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "User has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "Proxy token with the provided name already exists for this user.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "429": {
+            "description": "Too many requests. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "User proxy tokens"
+        ]
+      }
+    },
+    "/api/v3/users/{user_id}/keys/proxy/{fingerprint}": {
+      "delete": {
+        "summary": "Delete user proxy token",
+        "operationId": "deleteUserProxyToken",
+        "description": "Deletes the specified proxy token belonging to the specified user. Any active connections that rely on this token are immediately terminated. This method is available only to user administrators.",
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "Unique identifier of the user whose proxy token is being deleted.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fingerprint",
+            "in": "path",
+            "description": "Unique fingerprint of the proxy token to delete.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Proxy token has been deleted.",
+            "schema": {
+              "$ref": "#/definitions/entity.ProxyTokenInfo"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required administrative rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "User or proxy token has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "tags": [
+          "User proxy tokens"
+        ]
+      }
+    },
+    "/api/v3/keys/adb": {
+      "get": {
+        "description": "Returns a list of ADB keys, including their fingerprints and titles.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Fingerprints and titles associated with ADB keys.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/AdbKey"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List ADB keys",
+        "tags": [
+          "ADB keys"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Stores an ADB public key, enabling debug access.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "input",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateAdbKeyRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Fingerprint and title associated with the provided public key.",
+            "schema": {
+              "$ref": "#/definitions/AdbKey"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "ADB key with this fingerprint already exists.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Store ADB key",
+        "tags": [
+          "ADB keys"
+        ]
+      }
+    },
+    "/api/v3/keys/adb/{fingerprint}": {
+      "delete": {
+        "description": "Deletes an ADB public key associated with the provided fingerprint.",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          },
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "Fingerprint of the ADB key.",
+            "in": "path",
+            "name": "fingerprint",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "ADB key has been deleted."
+          },
+          "400": {
+            "description": "Invalid fingerprint. Replace the fingerprint and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "ADB key has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Delete ADB key",
+        "tags": [
+          "ADB keys"
+        ]
+      }
+    },
+    "/api/v3/users/{userId}/keys/adb": {
+      "get": {
+        "description": "Retrieves a list of ADB keys associated with a specific user, including their fingerprints and titles.",
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "User identifier.",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Fingerprints and titles associated with ADB keys.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/AdbKey"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid user identifier. Replace the identifier and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "User has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "List ADB keys for specified user",
+        "tags": [
+          "User ADB keys"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Stores an ADB public key for a specified user, enabling debug access.",
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "User identifier.",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "input",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateAdbKeyRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Fingerprint and title associated with the provided public key.",
+            "schema": {
+              "$ref": "#/definitions/AdbKey"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "User has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "409": {
+            "description": "ADB key with this fingerprint already exists.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Store ADB key for specified user",
+        "tags": [
+          "User ADB keys"
+        ]
+      }
+    },
+    "/api/v3/users/{userId}/keys/adb/{fingerprint}": {
+      "delete": {
+        "description": "Deletes a specific ADB key for a specified user based on the provided fingerprint.",
+        "security": [
+          {
+            "iam_token_account_scoped": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": "User identifier.",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Fingerprint of the ADB key.",
+            "in": "path",
+            "name": "fingerprint",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "ADB key has been deleted."
+          },
+          "400": {
+            "description": "Invalid user identifier. Replace the identifier and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "User or ADB key has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "Delete ADB key for specified user",
+        "tags": [
+          "User ADB keys"
+        ]
+      }
+    },
+    "/api/v2/auth/tickets": {
+      "post": {
+        "parameters": [],
+        "description": "Issues a new websocket authorization ticket. The ticket allows you to control a device remotely.",
+        "tags": [
+          "WebSocket authorization"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket to authorize in websockets has been issued.",
+            "schema": {
+              "$ref": "#/definitions/GetTicketResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error occurred. Please check the request and try again later or contact support.",
+            "schema": {
+              "$ref": "#/definitions/ApiError"
+            }
+          }
+        },
+        "summary": "Issue websocket authorization ticket",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ]
+      }
+    },
+    "/api/v3/users/devices": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddUserDeviceRequest"
+            }
+          }
+        ],
+        "description": "Assigns a device to a user. Works only for Android devices.",
+        "tags": [
+          "User devices"
+        ],
+        "responses": {
+          "200": {
+            "description": "Device has been assigned to the user."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Device has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          },
+          "504": {
+            "description": "Device is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "summary": "Assign device to user",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ]
+      }
+    },
+    "/api/v3/users/devices/{serial}": {
+      "delete": {
+        "parameters": [
+          {
+            "name": "serial",
+            "in": "path",
+            "description": "The serial number of the device.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "description": "Removes a device from the user and makes it available for other users. Works only for Android devices.",
+        "tags": [
+          "User devices"
+        ],
+        "responses": {
+          "200": {
+            "description": "Device has been removed from the user."
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Device has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          },
+          "504": {
+            "description": "Device is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "summary": "Remove device from user",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ]
+      }
+    },
+    "/api/v3/users/devices/{serial}/remote-connect": {
+      "post": {
+        "parameters": [
+          {
+            "name": "serial",
+            "in": "path",
+            "description": "The serial number of the device.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "description": "Starts an ADB remote connect session. Works only for Android devices.",
+        "tags": [
+          "User devices"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "ADB remote connect session has started.",
+            "schema": {
+              "$ref": "#/definitions/StartRemoteConnectResponse"
+            }
+          },
+          "400": {
+            "description": "Remote connection is not supported for the device.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Device has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          },
+          "504": {
+            "description": "Device is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          }
+        },
+        "summary": "Start ADB remote connect session",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "serial",
+            "in": "path",
+            "description": "The serial number of the device.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "description": "Ends an ADB remote connect session. Works only for Android devices.",
+        "tags": [
+          "User devices"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "ADB remote connect session has ended."
+          },
+          "400": {
+            "description": "Remote connection is not supported for the device.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "401": {
+            "description": "Bad or expired token. You can reissue the token and try again.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "404": {
+            "description": "Device has not been found.",
+            "schema": {
+              "$ref": "#/definitions/httputils.SwaggerGenericError"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later."
+          }
+        },
+        "summary": "End ADB remote connect session",
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AdbKey": {
+      "properties": {
+        "fingerprint": {
+          "type": "string",
+          "description": "Fingerprint of the ADB key."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title or identifier associated with the ADB key."
+        }
+      },
+      "type": "object"
+    },
+    "CreateAdbKeyRequest": {
+      "properties": {
+        "publicKey": {
+          "minLength": 1,
+          "type": "string",
+          "description": "The public key associated with the ADB key."
+        },
+        "title": {
+          "maxLength": 255,
+          "minLength": 1,
+          "type": "string",
+          "description": "The title associated with the ADB key."
+        }
+      },
+      "required": [
+        "publicKey"
+      ],
+      "type": "object"
+    },
+    "Success": {
+      "required": [
+        "success",
+        "description"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Indicates whether the request was processed successfully."
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "GetTicketResponse": {
+      "required": [
+        "success",
+        "description",
+        "ticket"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Indicates whether the request was processed successfully."
+        },
+        "description": {
+          "type": "string",
+          "description": ""
+        },
+        "ticket": {
+          "type": "string",
+          "description": "The ticket UUID."
+        }
+      }
+    },
+    "StartRemoteConnectResponse": {
+      "properties": {
+        "remoteConnectUrl": {
+          "type": "string",
+          "description": "Information about the device has been returned."
+        }
+      },
+      "type": "object"
+    },
+    "AddUserDeviceRequest": {
+      "required": [
+        "serial"
+      ],
+      "properties": {
+        "serial": {
+          "type": "string",
+          "description": "The serial number of the device."
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Device timeout in milliseconds. If the device remains idle for this period, it will be automatically disconnected. The default timeout is 9 hours (32,400,000 milliseconds)."
+        }
+      },
+      "type": "object"
+    },
+    "Status": {
+      "properties": {
+        "ACTIVE": {
+          "type": "number",
+          "description": "`0`: The device is active and ready."
+        },
+        "IN_USE": {
+          "type": "number",
+          "description": "`1`: The device is in use by current user."
+        },
+        "BUSY": {
+          "type": "number",
+          "description": "`2`: The device is owned by someone else."
+        },
+        "MAINTENANCE": {
+          "type": "number",
+          "description": "`3`: The device is under maintenance."
+        },
+        "ERROR": {
+          "type": "number",
+          "description": "`4`: The device is in an error state. Try again later, replace the device, or contact the support."
+        }
+      }
+    },
+    "FieldError": {
+      "required": [
+        "type",
+        "value",
+        "msg",
+        "path",
+        "location"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Indicates this is a field-level validation error."
+        },
+        "value": {
+          "type": "string",
+          "description": "The actual value that failed validation."
+        },
+        "msg": {
+          "type": "string",
+          "description": "Human-readable error message describing why validation failed."
+        },
+        "path": {
+          "type": "string",
+          "description": "The field name or nested path where the error occurred."
+        },
+        "location": {
+          "type": "string",
+          "description": "The location in the HTTP request where the invalid field was found. Available values are body, query, params, headers, cookies."
+        }
+      }
+    },
+    "ApiError": {
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": ""
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FieldError"
+          }
+        }
+      }
+    },
+    "entity.App": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The application identifier of the browser."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the browser application."
+        },
+        "selected": {
+          "type": "boolean",
+          "description": "Indicates if the application is selected."
+        },
+        "system": {
+          "type": "boolean",
+          "description": "Indicates if the application is a system app."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of browser application."
+        }
+      },
+      "type": "object"
+    },
+    "entity.AvailableDevice": {
+      "properties": {
+        "count": {
+          "type": "integer",
+          "description": "The number of devices with the same specifications."
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "The manufacturer of the device."
+        },
+        "marketName": {
+          "type": "string",
+          "description": "The market name of the device."
+        },
+        "osVersion": {
+          "type": "string",
+          "description": "The version of the operating system the device runs on."
+        },
+        "platform": {
+          "type": "string",
+          "description": "The device operating system. Available values are Android and iOS."
+        },
+        "sdk": {
+          "type": "string",
+          "description": "The SDK version of the operating system."
+        },
+        "abi": {
+          "type": "string",
+          "description": "The application binary interface (ABI) of the device."
+        },
+        "cpuPlatform": {
+          "type": "string",
+          "description": "The CPU platform of the device."
+        },
+        "resolution": {
+          "type": "string",
+          "description": "The device screen resolution in the \"height x width\" format."
+        }
+      },
+      "type": "object"
+    },
+    "entity.Battery": {
+      "properties": {
+        "health": {
+          "type": "string",
+          "description": "The health status of the battery."
+        },
+        "level": {
+          "type": "integer",
+          "description": "The battery level (0-100)."
+        },
+        "scale": {
+          "type": "integer",
+          "description": "The maximum value of the battery level. The default value is 100."
+        },
+        "source": {
+          "type": "string",
+          "description": "The source of the battery charge."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the battery."
+        },
+        "temp": {
+          "type": "integer",
+          "description": "The battery temperature in degrees Celsius."
+        },
+        "voltage": {
+          "type": "number",
+          "description": "The voltage of the battery."
+        }
+      },
+      "type": "object"
+    },
+    "entity.Billing": {
+      "properties": {
+        "autoPayDateTime": {
+          "type": "string",
+          "description": "The next payment date. Applicable only to a monthly subscription."
+        },
+        "type": {
+          "type": "string",
+          "description": "The tariffication type for the device. Available values are minutes, hours, and months."
+        },
+        "updates": {
+          "$ref": "#/definitions/entity.Update"
+        }
+      },
+      "type": "object"
+    },
+    "entity.Browser": {
+      "properties": {
+        "apps": {
+          "items": {
+            "$ref": "#/definitions/entity.App"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "entity.CreateConflictResponse": {
+      "properties": {
+        "availableDevices": {
+          "items": {
+            "$ref": "#/definitions/entity.Filter"
+          },
+          "type": "array"
+        },
+        "unavailableDevices": {
+          "items": {
+            "$ref": "#/definitions/entity.Filter"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "entity.CreateOkResponse": {
+      "properties": {
+        "devices": {
+          "items": {
+            "$ref": "#/definitions/entity.SmallDevice"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "entity.CreateProxyTokenReq": {
+      "description": "Request body for creating a new proxy token.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable name for the proxy token.\nMust be unique per user (case-insensitive).\nLength: 1–255 characters (trimmed).\n",
+          "example": "My VPN Token"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "entity.Device": {
+      "properties": {
+        "abi": {
+          "type": "string",
+          "description": "The application binary interface (ABI) of the device."
+        },
+        "adminStatus": {
+          "type": "string",
+          "description": "The current administrative status of the device. Available values are Maintenance and Ok."
+        },
+        "airplaneMode": {
+          "type": "boolean",
+          "description": "Indicates if airplane mode is enabled."
+        },
+        "battery": {
+          "$ref": "#/definitions/entity.Battery",
+          "description": "Information about the device's battery status and health."
+        },
+        "browser": {
+          "$ref": "#/definitions/entity.Browser",
+          "description": "Browser applications installed on the device."
+        },
+        "channel": {
+          "type": "string",
+          "description": "The channel identifier."
+        },
+        "cpuPlatform": {
+          "type": "string",
+          "description": "The CPU platform."
+        },
+        "display": {
+          "$ref": "#/definitions/entity.Display",
+          "description": "Display properties."
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "The manufacturer of the device."
+        },
+        "marketName": {
+          "type": "string",
+          "description": "The market name of the device."
+        },
+        "meta": {
+          "$ref": "#/definitions/entity.Meta",
+          "description": "General information about the device including tariffication and slot identifier."
+        },
+        "mfProxy": {
+          "type": "boolean",
+          "description": "Indicates whether proxying is enabled."
+        },
+        "network": {
+          "$ref": "#/definitions/entity.Network",
+          "description": "Network connectivity information."
+        },
+        "openGLESVersion": {
+          "type": "string",
+          "description": "The version of OpenGL for Embedded Systems (ES)."
+        },
+        "operator": {
+          "type": "string",
+          "description": "Operator information."
+        },
+        "osVersion": {
+          "type": "string",
+          "description": "The version of the operating system the device runs on."
+        },
+        "owner": {
+          "$ref": "#/definitions/entity.Owner",
+          "description": "Device owner information."
+        },
+        "phone": {
+          "$ref": "#/definitions/entity.Phone",
+          "description": "Device telephony capabilities and cellular network information."
+        },
+        "platform": {
+          "type": "string",
+          "description": "The platform of the device."
+        },
+        "presenceChangedAt": {
+          "type": "string",
+          "description": "The timestamp of the last presence change."
+        },
+        "present": {
+          "type": "boolean",
+          "description": "Indicates if the device is connected."
+        },
+        "product": {
+          "type": "string",
+          "description": "The product identifier."
+        },
+        "ready": {
+          "type": "boolean",
+          "description": "Indicates if the device is ready for use."
+        },
+        "remoteConnect": {
+          "type": "boolean",
+          "description": "Indicates if remote connection is enabled."
+        },
+        "remoteConnectUrl": {
+          "type": "string",
+          "description": "The URL for remote ADB connection."
+        },
+        "resolution": {
+          "type": "string",
+          "description": "The device screen resolution in the \"height x width\" format."
+        },
+        "reverseForwards": {
+          "description": "List of active reverse port forwards from device to host.",
+          "items": {
+            "type": "string",
+            "description": "A reverse forward rule."
+          },
+          "type": "array"
+        },
+        "sdk": {
+          "type": "string",
+          "description": "The SDK version."
+        },
+        "serial": {
+          "type": "string",
+          "description": "The serial number of the device."
+        },
+        "status": {
+          "type": "integer",
+          "description": "The current status of the device."
+        },
+        "statusChangedAt": {
+          "type": "string",
+          "description": "The timestamp of the last status change."
+        },
+        "usage": {
+          "type": "string",
+          "description": "Indicates whether a service user uses the device. Available values are automation and null."
+        },
+        "usageChangedAt": {
+          "type": "string",
+          "description": "The last time when a service user started or stopped using the device, depending on what happened last."
+        },
+        "wifiAutoConnectFeatureAvailable": {
+          "type": "boolean",
+          "description": "Indicates whether a device can be connected to Wi-Fi programmatically."
+        }
+      },
+      "type": "object"
+    },
+    "entity.DeviceRemoveBody": {
+      "properties": {
+        "slotID": {
+          "type": "string",
+          "description": "The slot identifier."
+        }
+      },
+      "type": "object"
+    },
+    "entity.DeviceReplaceBody": {
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/entity.FilterReplace"
+        },
+        "slotId": {
+          "type": "string",
+          "description": "The slot identifier."
+        }
+      },
+      "type": "object"
+    },
+    "entity.Display": {
+      "properties": {
+        "density": {
+          "type": "number",
+          "description": "The display density."
+        },
+        "fps": {
+          "type": "number",
+          "description": "The frames per second."
+        },
+        "height": {
+          "type": "integer",
+          "description": "The height of the display in pixels."
+        },
+        "rotation": {
+          "type": "integer",
+          "description": "The rotation of the display."
+        },
+        "secure": {
+          "type": "boolean",
+          "description": "Indicates if the display is secure."
+        },
+        "size": {
+          "type": "number",
+          "description": "The size of the display in inches."
+        },
+        "url": {
+          "type": "string",
+          "description": "The WebSocket URL for the display screen stream."
+        },
+        "width": {
+          "type": "integer",
+          "description": "The width of the display in pixels."
+        },
+        "xdpi": {
+          "type": "number",
+          "description": "The x dots per inch (DPI) of the display."
+        },
+        "ydpi": {
+          "type": "number",
+          "description": "The y dots per inch (DPI) of the display."
+        }
+      },
+      "type": "object"
+    },
+    "entity.Filter": {
+      "properties": {
+        "count": {
+          "type": "integer",
+          "description": "The number of devices with the same specifications."
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "The manufacturer of the device."
+        },
+        "marketName": {
+          "type": "string",
+          "description": "The market name of the device."
+        },
+        "osVersion": {
+          "type": "string",
+          "description": "The version of the operating system the device runs on."
+        },
+        "platform": {
+          "type": "string",
+          "description": "The device operating system. Available values are Android and iOS."
+        },
+        "sdk": {
+          "type": "string",
+          "description": "The SDK version of the operating system."
+        },
+        "abi": {
+          "type": "string",
+          "description": "The application binary interface (ABI) of the device."
+        },
+        "cpuPlatform": {
+          "type": "string",
+          "description": "The CPU platform of the device."
+        },
+        "resolution": {
+          "type": "string",
+          "description": "The device screen resolution in the \"height x width\" format."
+        }
+      },
+      "type": "object"
+    },
+    "entity.FilterReplace": {
+      "properties": {
+        "manufacturer": {
+          "type": "string",
+          "description": "The manufacturer of the device."
+        },
+        "marketName": {
+          "type": "string",
+          "description": "The market name of the device."
+        },
+        "osVersion": {
+          "type": "string",
+          "description": "The version of the operating system the device runs on."
+        },
+        "platform": {
+          "type": "string",
+          "description": "The device operating system. Available values are Android and iOS."
+        },
+        "sdk": {
+          "type": "string",
+          "description": "The SDK version of the operating system."
+        },
+        "abi": {
+          "type": "string",
+          "description": "The application binary interface (ABI) of the device."
+        },
+        "cpuPlatform": {
+          "type": "string",
+          "description": "The CPU platform of the device."
+        },
+        "resolution": {
+          "type": "string",
+          "description": "The device screen resolution in the \"height x width\" format."
+        }
+      },
+      "type": "object"
+    },
+    "entity.FirewallRuleBodyReq": {
+      "description": "Request body for creating (POST) or updating (PATCH) a firewall rule.\nAll fields are required for creation. For updates, you may send only the fields to be changed.\n",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "Specifies whether to permit (allow) or block (deny) traffic matching this rule.",
+          "enum": [
+            "allow",
+            "deny"
+          ],
+          "example": "allow"
+        },
+        "address": {
+          "type": "string",
+          "description": "Destination address. Available values are IPv4, IPv6, subnet, domain, or \"*\".\n",
+          "example": "192.168.1.0/24"
+        },
+        "ports": {
+          "type": "string",
+          "description": "Destination port. Available values are a single port, a range (e.g., \"8000:9000\"), or \"*\".\n",
+          "example": "443"
+        }
+      },
+      "type": "object"
+    },
+    "entity.FirewallRulePriorityBodyReq": {
+      "description": "Request body for reordering firewall rules by priority.",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "description": "List of rule identifiers in the desired order of execution priority.\nThe first rule in the list has the highest priority.\nPriority is important only for IP-based rules when overlapping subnets exist (e.g., denying `172.0.0.1` but allowing `172.0.0.0/24`).\n",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "fwr-test-rule",
+            "fwr-test-2-rule"
+          ]
+        }
+      },
+      "required": [
+        "ids"
+      ],
+      "type": "object"
+    },
+    "entity.LifeTime": {
+      "properties": {
+        "start": {
+          "type": "string",
+          "description": "The start time of the slot."
+        },
+        "stop": {
+          "type": "string",
+          "description": "The stop time of the slot."
+        }
+      },
+      "type": "object"
+    },
+    "entity.Meta": {
+      "properties": {
+        "billing": {
+          "$ref": "#/definitions/entity.Billing",
+          "description": "Device billing information."
+        },
+        "slot": {
+          "$ref": "#/definitions/entity.Slot",
+          "description": "Abstract unit to which a device belongs. If you have a monthly subscription, you can replace devices in a slot."
+        }
+      },
+      "type": "object"
+    },
+    "entity.Network": {
+      "properties": {
+        "connected": {
+          "type": "boolean",
+          "description": "Indicates if the device is connected to a network."
+        },
+        "failover": {
+          "type": "boolean",
+          "description": "Indicates if fail over is enabled."
+        },
+        "roaming": {
+          "type": "boolean",
+          "description": "Indicates if the device is roaming."
+        },
+        "subtype": {
+          "type": "string",
+          "description": "The network subtype."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of network connection."
+        }
+      },
+      "type": "object"
+    },
+    "entity.Order": {
+      "properties": {
+        "billingType": {
+          "type": "string",
+          "description": "The tariffication type for the device. Available values are minutes, hours, and months."
+        },
+        "filters": {
+          "items": {
+            "$ref": "#/definitions/entity.Filter"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "entity.Owner": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Identifier of the user who controls the device."
+        }
+      },
+      "type": "object"
+    },
+    "entity.Phone": {
+      "properties": {
+        "iccid": {
+          "type": "string",
+          "description": "The integrated circuit card identifier (ICCID) of the phone."
+        },
+        "imei": {
+          "type": "string",
+          "description": "The international mobile equipment identity (IMEI) of the phone."
+        },
+        "imsi": {
+          "type": "string",
+          "description": "The international mobile subscriber identity (IMSI) of the phone."
+        },
+        "network": {
+          "type": "string",
+          "description": "The network information."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "The phone number."
+        }
+      },
+      "type": "object"
+    },
+    "entity.ProxyToken": {
+      "description": "Full token object returned only immediately after creation. The `token` field contains the actual secret value and is never returned again.",
+      "properties": {
+        "active": {
+          "type": "boolean",
+          "description": "Indicates whether the token is currently active (enabled). Inactive tokens cannot forward traffic.",
+          "example": true
+        },
+        "fingerprint": {
+          "type": "string",
+          "description": "Unique immutable identifier of the token (hash of the public key or generated ID). Used as a path parameter for delete/update operations.",
+          "example": "fp_someformat"
+        },
+        "name": {
+          "type": "string",
+          "description": "Token name.",
+          "example": "My VPN Token"
+        },
+        "token": {
+          "type": "string",
+          "description": "The proxy token secret. This value is only returned after creation. Store it securely, as it cannot be retrieved later.",
+          "example": "daxyz789..."
+        }
+      },
+      "required": [
+        "active",
+        "fingerprint",
+        "name",
+        "token"
+      ],
+      "type": "object"
+    },
+    "entity.ProxyTokenInfo": {
+      "description": "Token metadata returned in list responses. The actual `token` secret is omitted for security, but associated device serials are shown.",
+      "properties": {
+        "active": {
+          "type": "boolean",
+          "description": "Indicates whether the token is active.",
+          "example": true
+        },
+        "fingerprint": {
+          "type": "string",
+          "description": "Unique token identifier.",
+          "example": "fp_someformat"
+        },
+        "name": {
+          "type": "string",
+          "description": "Token name.",
+          "example": "My VPN Token"
+        },
+        "serials": {
+          "type": "array",
+          "description": "List of device serial numbers that are currently using this proxy token to forward traffic.",
+          "items": {
+            "type": "string",
+            "example": "384408c62079441faf74b7adcd9336b5"
+          },
+          "example": [
+            "384408c62079441faf74b7adcd9336b5",
+            "863e94cb8ae3481a9e0f279981cb7104"
+          ]
+        }
+      },
+      "required": [
+        "active",
+        "fingerprint",
+        "name",
+        "serials"
+      ],
+      "type": "object"
+    },
+    "entity.Rule": {
+      "description": "Full firewall rule object returned by the server.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique system-generated rule identifier.",
+          "example": "fwr-7f9a1b2c"
+        },
+        "action": {
+          "type": "string",
+          "description": "Action applied to matching traffic.",
+          "enum": [
+            "allow",
+            "deny"
+          ],
+          "example": "allow"
+        },
+        "address": {
+          "type": "string",
+          "description": "Destination address. Available values are IPv4, IPv6, subnet, domain, or \"*\".",
+          "example": "192.168.1.0/24"
+        },
+        "ports": {
+          "type": "string",
+          "description": "Destination port. Available values are a single port, a range (e.g., \"8000:9000\"), or \"*\".",
+          "example": "443"
+        }
+      },
+      "required": [
+        "id",
+        "action",
+        "address",
+        "ports"
+      ],
+      "type": "object"
+    },
+    "entity.Slot": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The slot identifier."
+        }
+      },
+      "description": "Abstract unit to which a device belongs. If you have a monthly subscription, you can replace devices in a slot.",
+      "type": "object"
+    },
+    "entity.SmallDevice": {
+      "properties": {
+        "adminStatus": {
+          "type": "string",
+          "description": "The current administrative status of the device."
+        },
+        "cpuPlatform": {
+          "type": "string",
+          "description": "The CPU platform of the device."
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "The manufacturer of the device."
+        },
+        "marketName": {
+          "type": "string",
+          "description": "The market name of the device."
+        },
+        "meta": {
+          "$ref": "#/definitions/entity.Meta"
+        },
+        "osVersion": {
+          "type": "string",
+          "description": "The version of the operating system the device runs on."
+        },
+        "owner": {
+          "$ref": "#/definitions/entity.Owner"
+        },
+        "platform": {
+          "type": "string",
+          "description": "The platform of the device's operating system."
+        },
+        "present": {
+          "type": "boolean",
+          "description": "Indicates if the device is currently available."
+        },
+        "ready": {
+          "type": "boolean",
+          "description": "Indicates if the device is ready for use."
+        },
+        "resolution": {
+          "type": "string",
+          "description": "The device screen resolution in the \"height x width\" format."
+        },
+        "sdk": {
+          "type": "string",
+          "description": "The SDK version of the operating system."
+        },
+        "serial": {
+          "type": "string",
+          "description": "The serial number of the device."
+        },
+        "status": {
+          "$ref": "#/definitions/Status"
+        }
+      },
+      "type": "object"
+    },
+    "entity.Update": {
+      "properties": {
+        "at": {
+          "type": "string",
+          "description": "The date and time of the next update."
+        },
+        "type": {
+          "type": "string",
+          "description": "The tariffication of the group. Available values are minutes, hours and months."
+        }
+      },
+      "type": "object"
+    },
+    "entity.DeviceSettingsChangeBody": {
+      "description": "Request body for changing device settings. At least one of the fields (`proxy` or `wifi`) must be provided.",
+      "properties": {
+        "proxy": {
+          "description": "Proxy tunnel configuration. `token_fingerprint` is required only when `enable = true`.",
+          "$ref": "#/definitions/entity.DeviceProxySettings"
+        },
+        "wifi": {
+          "type": "boolean",
+          "description": "Indicates whether the Wi-Fi configuration should be added or removed on the device. If true, the Wi-Fi configuration is added or enabled. If false, it is removed or disabled."
+        }
+      },
+      "type": "object"
+    },
+    "entity.DeviceProxySettings": {
+      "description": "Proxy tunnel configuration for the device.",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "description": "Indicates whether the proxy tunnel configuration should be added or removed on the device. If true, the proxy tunnel is added or enabled. If false, it is removed or disabled."
+        },
+        "token_fingerprint": {
+          "type": "string",
+          "description": "Unique fingerprint of the existing and active proxy token to be used for the tunnel. Required when `enable` is `true`.",
+          "example": "fp_someformat"
+        }
+      },
+      "type": "object"
+    },
+    "httputils.SwaggerDeviceConflictError": {
+      "properties": {
+        "error": {
+          "properties": {
+            "conflictDevice": {
+              "$ref": "#/definitions/entity.Device"
+            },
+            "message": {
+              "type": "string",
+              "description": "A human-readable error message describing why request failed."
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "httputils.SwaggerGenericError": {
+      "properties": {
+        "error": {
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "A human-readable error message describing why request failed."
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "tags": [
+    {
+      "name": "ADB keys",
+      "description": "Manages all available RSA keys for Android Debug Bridge (ADB)."
+    },
+    {
+      "name": "User ADB keys",
+      "description": "Manages RSA keys for Android Debug Bridge (ADB) of a specific user. Applicable only to user administrators."
+    },
+    {
+      "name": "Devices",
+      "description": "Manages mobile devices."
+    },
+    {
+      "name": "User devices",
+      "description": "Manages devices used by a user."
+    },
+    {
+      "name": "WebSocket authorization",
+      "description": "Issues WebSocket authorization tickets."
+    },
+    {
+      "name": "Proxy tokens",
+      "description": "Manages all proxy tokens that are used for routing device traffic to the client."
+    },
+    {
+      "name": "User proxy tokens",
+      "description": "Manages proxy tokens that are used for routing device traffic to a specific user's client. Accessible only to `iam_admin`."
+    },
+    {
+      "name": "Proxy firewall",
+      "description": "Manages project-scoped proxy firewall rules for traffic forwarding."
+    }
+  ]
+}

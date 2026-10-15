@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"mobile-farm":                  {"mobile_farm", "v3", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -144,6 +145,9 @@ func generate() error {
 				if len(parts) > 0 && regexp.MustCompile(`^v[0-9]+$`).MatchString(parts[0]) {
 					generation = parts[0]
 				}
+				if name == "mobile-farm" && len(parts) > 1 && parts[0] == "api" && regexp.MustCompile(`^v[0-9]+$`).MatchString(parts[1]) {
+					generation = parts[1]
+				}
 				resource := slug(path)
 				action := map[string]string{"get": "get", "post": "create", "put": "replace", "patch": "update", "delete": "delete", "head": "head", "options": "options"}[method]
 				if method == "get" && !strings.HasSuffix(strings.TrimRight(path, "/"), "}") {
@@ -176,14 +180,38 @@ func generate() error {
 					effect = "read"
 				}
 				var sourceOperation struct {
-					Effect  string `json:"x-effect"`
-					Locator string `json:"x-operation-locator"`
+					Effect   string                       `json:"x-effect"`
+					Security []map[string]json.RawMessage `json:"security"`
+					Locator  string                       `json:"x-operation-locator"`
 				}
 				if err := json.Unmarshal(methods[method], &sourceOperation); err != nil {
 					return err
 				}
 				if sourceOperation.Effect != "" {
 					effect = sourceOperation.Effect
+				}
+				authMode := f.Mode
+				if name == "mobile-farm" {
+					project, account := false, false
+					for _, alternative := range sourceOperation.Security {
+						for scheme := range alternative {
+							switch scheme {
+							case "iam_token_project_scoped":
+								project = true
+							case "iam_token_account_scoped":
+								account = true
+							default:
+								return fmt.Errorf("unknown mobile-farm auth scheme %s", scheme)
+							}
+						}
+					}
+					if !project && !account {
+						return fmt.Errorf("mobile-farm auth missing %s", path)
+					}
+					if !project {
+						authMode = "iam_account"
+						scope = []string{"account"}
+					}
 				}
 				locator := strings.ToUpper(method) + " " + path
 				if sourceOperation.Locator != "" {
@@ -193,7 +221,7 @@ func generate() error {
 					"operation_id": id, "service": f.Service, "api_generation": generation, "resource": resource, "action": action, "effect": effect, "availability": "documented",
 					"source":    map[string]any{"uri": sourceURI, "revision": revision, "operation_locator": locator},
 					"go_method": nil, "input_type": nil, "output_type": nil, "input_schema_ref": pointer, "output_schema_ref": pointer + "/responses",
-					"scope_requirements": scope, "auth": map[string]any{"scheme": f.Mode, "audience": "selectel"},
+					"scope_requirements": scope, "auth": map[string]any{"scheme": authMode, "audience": "selectel"},
 					"endpoint_recipe_ref": nil, "request_binding_ref": nil, "response_binding_ref": nil, "error_binding_ref": pointer + "/responses", "replay_policy_ref": nil,
 					"pagination_contract_ref": nil, "wait_goals": []string{}, "recovery_contract_ref": nil, "sensitive_fields": []string{},
 					"parameter_support": map[string]any{"covered_schema_ref": nil, "excluded_variants": []string{}}, "limitations": []string{"No callable service binding"},

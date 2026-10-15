@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -51,6 +52,8 @@ for case, (family, initial, top_name) in CASES.items():
     resource_roots = set(roots)
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
+    if package == "mobilefarm":
+        resource_roots = {"entity.Device", "entity.SmallDevice", "AdbKey", "entity.ProxyToken", "entity.ProxyTokenInfo", "entity.Rule"}
     pending = dict(roots)
     emitted = {}
     imports = {"types": "github.com/festy23/selectel-sdk/types", "json": "encoding/json"}
@@ -70,7 +73,7 @@ for case, (family, initial, top_name) in CASES.items():
         if "$ref" in schema:
             reference = schema["$ref"].split("/")[-1]
             if reference not in pending:
-                pending[reference] = name(reference)
+                pending[reference] = name(reference.rsplit(".",1)[-1]) if package=="mobilefarm" else name(reference)
             referenced = resolve(definitions[reference])
             if referenced.get("properties"):
                 return pending[reference], False
@@ -81,6 +84,10 @@ for case, (family, initial, top_name) in CASES.items():
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False
+        if package == "mobilefarm" and kind == "string" and (field in {"ticket", "token", "remoteConnectUrl", "publicKey", "channel", "operator", "reverseForwards"} or type_name.startswith("Phone") or type_name.startswith("Owner") or (field in {"message", "msg", "value", "description"} and ("Error" in type_name or type_name in {"SuccessDescription", "GetTicketResponseDescription"}))):
+            return "types.ProtectedValue", False
+        if package == "mobilefarm" and type_name.startswith("Battery") and kind in {"integer", "number"}:
+            return ("ProtectedInteger" if kind=="integer" else "ProtectedNumber"), False
         if kind == "array":
             inner, _ = field_type(schema["items"], type_name + "Item", "")
             return "[]" + inner, True
@@ -164,7 +171,7 @@ for case, (family, initial, top_name) in CASES.items():
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or (package == "mobilefarm" and reference in resource_roots):
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'

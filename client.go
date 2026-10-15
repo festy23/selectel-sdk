@@ -16,6 +16,7 @@ import (
 	"github.com/festy23/selectel-sdk/logs"
 	"github.com/festy23/selectel-sdk/metrics"
 	"github.com/festy23/selectel-sdk/mks"
+	"github.com/festy23/selectel-sdk/mobilefarm"
 	"github.com/festy23/selectel-sdk/operations"
 	"github.com/festy23/selectel-sdk/projects"
 	"github.com/festy23/selectel-sdk/registry"
@@ -48,6 +49,12 @@ func (p ProjectClient) Secrets() *secrets.Client {
 	return secrets.Bind(p.client.runtime, p.client.scope)
 }
 func (a AccountClient) Scope() types.Scope { return a.client.scope }
+func (a AccountClient) MobileFarm() *mobilefarm.Client {
+	return mobilefarm.Bind(a.client.runtime, a.client.scope)
+}
+func (p ProjectClient) MobileFarm() *mobilefarm.Client {
+	return mobilefarm.Bind(p.client.runtime, p.client.scope)
+}
 func (a AccountClient) Billing() *billing.Client {
 	return billing.Bind(a.client.runtime, a.client.scope)
 }

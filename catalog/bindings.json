@@ -4585,5 +4585,95 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "mobile_farm.v3.api_devices_available.list": {
+    "go_method": "mobilefarm.Client.AvailableDevices",
+    "input_type": "[]string, pagination.Options",
+    "output_type": "pagination.Collection[mobilefarm.AvailableDevice]",
+    "contract_ref": "contracts/mobile_farm.v3.api_devices_available.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mobilefarm/client.go",
+      "mobilefarm/devices.go",
+      "mobilefarm/protected.go",
+      "mobilefarm/types_generated.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "internal/endpoints/locations.go",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go",
+      "catalog/sources/mobile-farm.json"
+    ],
+    "evidence_files": [
+      "mobilefarm_client_test.go",
+      "catalog/evidence/mobilefarm-current-inventory.json"
+    ],
+    "evidence_ref": "mobilefarm_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
+  },
+  "mobile_farm.v3.api_devices.list": {
+    "go_method": "mobilefarm.Client.ListDevices",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Collection[mobilefarm.SmallDevice]",
+    "contract_ref": "contracts/mobile_farm.v3.api_devices.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mobilefarm/client.go",
+      "mobilefarm/devices.go",
+      "mobilefarm/protected.go",
+      "mobilefarm/types_generated.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "internal/endpoints/locations.go",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go",
+      "catalog/sources/mobile-farm.json"
+    ],
+    "evidence_files": [
+      "mobilefarm_client_test.go",
+      "catalog/evidence/mobilefarm-current-inventory.json"
+    ],
+    "evidence_ref": "mobilefarm_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
+  },
+  "mobile_farm.v3.api_devices.get": {
+    "go_method": "mobilefarm.Client.GetDevice",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "mobilefarm.Device",
+    "contract_ref": "contracts/mobile_farm.v3.api_devices.get.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mobilefarm/client.go",
+      "mobilefarm/devices.go",
+      "mobilefarm/protected.go",
+      "mobilefarm/types_generated.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "internal/endpoints/locations.go",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go",
+      "catalog/sources/mobile-farm.json"
+    ],
+    "evidence_files": [
+      "mobilefarm_client_test.go",
+      "catalog/evidence/mobilefarm-current-inventory.json"
+    ],
+    "evidence_ref": "mobilefarm_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
   }
 }
