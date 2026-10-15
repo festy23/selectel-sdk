@@ -1,0 +1,108 @@
+{
+  "operation_id": "registry.v1.token.create",
+  "effect": "mutation",
+  "source_revision": "a6e68b67cd861617e5d66304891d4523f685593b36fbcdb4538ffc76de2bb314",
+  "native_operation": "createAuthenticationToken",
+  "sdk_revision": "8f0d0cba0b59360f344b3b2d32157b1549c2645a",
+  "endpoint": "existing explicit project/location registry recipe, /api once; no generation fallback/redirect; v2 exact refs pin URL/ID, changed override endpoint_unavailable before target I/O",
+  "auth": "explicit project IAM; credential-source management auth distinct from protected legacy token path input; no automatic S3/OCI auth substitution",
+  "request": {
+    "method": "POST",
+    "path": "/v1/token",
+    "parameters": [
+      {
+        "description": "Token time-to-live (TTL):\n * `12h` \u2014 Token expires in 12 hours.\n * `1y` \u2014 Token expires in 1 year.\n",
+        "in": "query",
+        "name": "ttl",
+        "schema": {
+          "default": "12h",
+          "enum": [
+            "12h",
+            "1y"
+          ],
+          "type": "string"
+        }
+      },
+      {
+        "description": "Returns the token as a Docker configuration in JSON format.",
+        "in": "query",
+        "name": "docker-config",
+        "schema": {
+          "default": false,
+          "type": "boolean"
+        }
+      }
+    ],
+    "body": null,
+    "mapping": "nil omitted; false/empty preserved; source-required request fields and finite query enums validated before credentials/HTTP; TTL only12h/1y; no inserted defaults; opaque path components escaped once (dot-only safe); v1 credential input never persisted in refs/receipts. v2 ID refs require exact scope/service/generation/kind/no-parent",
+    "sensitive_fields": []
+  },
+  "response": {
+    "source": {
+      "201": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/token"
+            }
+          }
+        },
+        "description": "Token has been created successfully."
+      },
+      "400": {
+        "content": {
+          "application/json": {
+            "examples": {
+              "ErrInvalidCreateTokenTTL": {
+                "$ref": "#/components/examples/ErrInvalidCreateTokenTTL"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/registry.commonBadRequest"
+            }
+          }
+        },
+        "description": "Bad request. Fix the request and try again."
+      },
+      "500": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/registry.commonServerError"
+            }
+          }
+        },
+        "description": "Server is not responding. Please try again later."
+      }
+    },
+    "dto_source": "registry/token_types_generated.go",
+    "mapping": "Legacy token with protected token string, optional exact Integer expireAt Unix timestamp and expireIn seconds; explicit CreateDockerConfig returns whole protected JSON configuration without interpreting undocumented internal keys",
+    "numbers": "v1 timestamp seconds and remaining duration remain exact Integer, no lossy conversion or invented epoch/offset",
+    "timestamps": "v2 RFC3339 explicit offset required, time.Time normalized UTC; no invented timezone",
+    "sensitive_fields": [
+      "token",
+      "docker_config"
+    ]
+  },
+  "errors": {
+    "shared": "401 IAM refresh;403 permission_denied;404 not_found;409 conflict;429 rate_limited;400 and other unmapped status provider_error. No source machine codes or provider-text parsing invented",
+    "mutation": "only documented4xx rejection plus shared auth statuses conclusively rejected; unconfirmed rejection/transport/5xx unknown_outcome,no replay. Malformed accepted body protocol_error with Receipt and trustworthy original/provider ID retained",
+    "rejected_statuses": [
+      400
+    ]
+  },
+  "retry": "bounded safe reads only; mutations never replay",
+  "pagination": null,
+  "wait": {
+    "goals": [],
+    "meaning": "exact v2 delete absence only; no credential validity/rotation/refresh/revocation readiness proof"
+  },
+  "recovery": {
+    "legacy": "no secret in plain ResourceRef; unknown v1 recovery unavailable. Explicit protected-input Get observational only",
+    "v2": "root Resource/Resume exact ID Get; unknown remains indeterminate regardless observed status, no name lookup/adoption/replay. Known terminal receipts conclusive without I/O, including absent refs/endpoints with schema/account/revision/effect validation",
+    "shared_provenance": "operations.BindReceipt and early revision copied from reviewed379458e; pagination error-prefix behavior from revieweda49e66b"
+  },
+  "source_gaps": [
+    "Docker-config internal JSON schema not specified; preserved whole as protected JSON, no internal-field interpretation or token-ID proof"
+  ]
+}

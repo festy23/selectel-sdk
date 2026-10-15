@@ -23,7 +23,7 @@ Service ID является стабильным именем пакета и к
 | `private_dns` | [Приватный DNS](https://docs.selectel.ru/api/private-dns/) | private-dns-go / HTTP |
 | `mks` | [Текущий v2](https://docs.selectel.ru/api/managed-kubernetes/), [legacy v1](https://docs.selectel.ru/api/managed-kubernetes-legacy/) | HTTP v2; mks-go v1 |
 | `databases` | [Managed databases](https://docs.selectel.ru/api/managed-databases/) | dbaas-go / HTTP; поколения разделены по engine |
-| `registry` | [Реестры, репозитории, токены](https://docs.selectel.ru/api/craas/) | craas-go / HTTP |
+| `registry` | [Token contract](registry-tokens.md); [Реестры, репозитории, токены](https://docs.selectel.ru/api/craas/) | craas-go / HTTP |
 | `registry_data` | [OCI distribution](https://github.com/opencontainers/distribution-spec) в Selectel | Protocol adapter; отдельный от registry management |
 | `s3` | [S3 subset Selectel](https://docs.selectel.ru/api/object-storage-s3/) | AWS SDK Go v2 |
 | `swift` | [Swift](https://docs.selectel.ru/api/object-storage-swift/), [old](https://docs.selectel.ru/api/object-storage-swift-old/) | Protocol adapter; old явно выбран |
