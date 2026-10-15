@@ -47,3 +47,8 @@ establish optional conditional HTTP support or atomicity on Selectel.
 OCI-Chunk-Min-Length advisory POST response metadata follows pinned
 `distribution-spec.md` chunked upload lines337–368. It does not enforce a final
 chunk minimum or establish live Selectel advertisement.
+
+Tag pagination reuses bounded RFC5988 quote/angle splitting for multiple Links
+and relation/extension parameters, while preserving exact same-endpoint/path and
+n/last semantics. Optional n with last follows distribution-spec tag pagination.
+This is a documented parser subset, not full RFC5988 implementation.

@@ -24,7 +24,7 @@
     "rejected_statuses": []
   },
   "retry": "bounded safe reads; no mutation replay, rollback or source fallback",
-  "pagination": "Bounded PageSize/MaxItems/MaxPages and collection budget. Prefer validated next Link even for short page; supported Link has one same-origin/same-path n/last target, matching returned last tag and requested size. Without Link short page ends, full page probes after last tag. Scope mismatch/malformed row preserves validated bounded prefix and original error; no extra I/O. Strict supported Link subset excludes extensions/multiple links.",
+  "pagination": "Bounded PageSize/MaxItems/MaxPages and collection budget. Prefer validated next Link even for short page; supported Link has one same-origin/same-path n/last target, matching returned last tag and requested size. Without Link short page ends, full page probes after last tag. Scope mismatch/malformed row preserves validated bounded prefix and original error; no extra I/O. RFC5988 bounded multiple header/link values, MIME-compatible quoted/token parameters and relation lists are accepted; unsupported parameter grammar remains partial; registered next is case-insensitive. Only one unanchored next may be selected; other relations are never followed. n may be absent (source optional with last), otherwise matches bounded page size; next requests always retain SDK page size. Unknown query/duplicate next/unsafe target retains prefix error.",
   "recovery": "Root Resource/Resume validate exact scope, generation, parents, endpoint and receipt operation/revision/effect. Known no-ref/multi-ref receipts Recover conclusive with no I/O; unknown content-address receipts observe exact HEAD only, never mutation replay/adoption/creation proof. Start/Append/Cancel receipt alone lacks protected Location/query: unknown session Status/Recover unavailable; Finalize retains caller-requested blob digest address before I/O and observes only exact HEAD without creation proof; caller-held UploadSession supports explicit exact Status offset observation, not mutation outcome proof. No wait goals inferred.",
   "wait": {
     "goals": []
@@ -33,7 +33,7 @@
   "remaining": {
     "confirmed_protocol_not_in_this_subset": [
       "Additional optional response metadata",
-      "Extended/multiple Link syntax; additional image formats/digest algorithms"
+      "Remaining Link parameter grammar outside MIME-compatible quoted/token subset; additional image formats/digest algorithms"
     ],
     "selectel_source_unknown": [
       "actual Bearer realm/service topology and custom query requirements",

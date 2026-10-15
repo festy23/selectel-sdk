@@ -7,7 +7,6 @@ import (
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
 	"io"
-	"mime"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -89,37 +88,16 @@ func (c *Tags) List(repo types.ResourceRef, options pagination.Options) (*pagina
 				previous = tag
 				out = append(out, child(repo, "manifest_tag", tag))
 			}
-			link, e := header(h, "Link", c.client.runtime.StructuredLimit())
+			hasNext, e := tagNext(h, repo, path, previous, size, len(out), c.client.runtime.StructuredLimit())
 			if e != nil {
 				return decoded(e)
 			}
-			if link != "" {
-				// The supported next-link subset carries only the source-defined n/last.
-				start, end := strings.Index(link, "<"), strings.Index(link, ">")
-				if start != 0 || end < 1 || len(out) == 0 {
-					return decoded(types.NewError(types.ProtocolError))
-				}
-				_, params, e := mime.ParseMediaType("application/octet-stream" + link[end+1:])
-				if e != nil || len(params) != 1 || params["rel"] != "next" {
-					return decoded(types.NewError(types.ProtocolError))
-				}
-				u, e := url.Parse(link[1:end])
-				if e != nil || u.User != nil || u.Fragment != "" || u.Opaque != "" {
-					return decoded(types.NewError(types.ProtocolError))
-				}
-				base, _ := url.Parse(repo.EndpointURL)
-				requestURL, _ := url.Parse(strings.TrimRight(repo.EndpointURL, "/") + path)
-				u = requestURL.ResolveReference(u)
-				q, e := url.ParseQuery(u.RawQuery)
-				if e != nil || !sameOrigin(base, u) || u.EscapedPath() != strings.TrimRight(base.EscapedPath(), "/")+path || len(q) != 2 || len(q["n"]) != 1 || len(q["last"]) != 1 || q.Get("n") != strconv.FormatUint(uint64(size), 10) || q.Get("last") != previous {
-					return decoded(types.NewError(types.ScopeMismatch))
-				}
-				next = previous
-			} else if uint(len(out)) == size {
+			if hasNext || uint(len(out)) == size {
 				next = previous
 			} else {
 				done = true
 			}
+
 			return decoded(nil)
 		})
 		return pagination.SourcePage[types.ResourceRef]{Items: prefix, Next: next, Done: done, Metadata: result.Metadata}, e

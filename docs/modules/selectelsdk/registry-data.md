@@ -93,13 +93,16 @@ goals, image push orchestration, rollback or automatic replay are inferred.
 Tags lists snapshot the complete repository ref before fingerprinting. Pagination
 uses bounded n/last and prefers a validated next Link even on a short page.
 Without Link a short page ends; a full page probes after the last returned tag.
-The supported Link subset has one rel="next", same origin/path, n unchanged and
-last equal to the last returned tag. Extensions, extra query and multiple Links
-are excluded. Invalid namespace/row/Link preserves an already validated bounded
+The supported Link subset selects one unanchored next relation, same origin/path,
+n absent or unchanged and last equal to the last returned tag. Source permits
+absent n with last; the SDK sends its bounded n on the next request. RFC5988 multiple
+header/link values, quoted commas/escapes, relation lists and MIME-compatible
+quoted/token extension parameters are accepted. Registered next is case-insensitive.
+Other relations are ignored without fetching their URLs. Duplicate next, anchor
+context, extra query and parameter syntax outside that subset are rejected. Invalid namespace/row/Link preserves an already validated bounded
 prefix and the original terminal error, without another request.
 
-Protocol-confirmed omissions retained under **#50**: other optional metadata; extended Link
-syntax and additional content formats/algorithms. These are not described as
+Protocol-confirmed omissions retained under **#50**: other optional metadata; remaining parameter grammar variants and additional content formats/algorithms. These are not described as
 provider-unsupported. In particular Put sends exactly one manifest mutation;
 subject/referrers fallback indexing uses explicit local preparation and caller-directed Get/Put stages, described below.
 Primary Selectel evidence still needed under **#74**: actual token realm/service
@@ -161,7 +164,7 @@ The additional requested-blob auth proof is accepted only for the compiled start
 operation with exactly one digest query value matching that ref; no general
 caller-controlled auth bypass or cross-origin trust is introduced.
 
-Confirmed remaining protocol work remains owned by #50: other optional metadata, extended Link forms and further
+Confirmed remaining protocol work remains owned by #50: other optional metadata, remaining Link parameter grammar and further
 formats/algorithms. Selectel optional variant availability and actual realm/offload
 topology still require #74 evidence; #75 retains partial acceptance qualifications.
 
@@ -202,7 +205,7 @@ caller for explicit continuation; receipt refs do not reconstruct it.
 
 Current Selectel mount availability is still unknown; this explicit protocol
 variant does not claim otherwise. Other optional metadata,
-extended Links and additional formats remain #50 work; topology/availability #74
+remaining Link parameter grammar and additional formats remain #50 work; topology/availability #74
 and final partial acceptance #75 remain open. All 15 selected bindings stay partial.
 
 
@@ -251,8 +254,7 @@ plus common revision/view bounds. MaxItems truncation yields replay+skip rather
 than false completeness; malformed rows or unsafe Links preserve only a bounded
 validated prefix and the original error without extra I/O. No Link means terminal
 according to the source contract. MaxPages/collection budget/body limit and normal
-safe-read retries/cancellation apply. Further protocol work remains other optional metadata, extended Tag Link
-forms and additional content formats/algorithms (#50); source topology/availability
+safe-read retries/cancellation apply. Further protocol work remains other optional metadata, remaining Link parameter grammar and additional content formats/algorithms (#50); source topology/availability
 #74 and P1 acceptance #75 remain open. No live requests were made.
 
 
@@ -360,3 +362,13 @@ with SHOULD and expressly permits a final chunk of any size. The caller decides
 chunk boundaries and retains normal receipts/errors; no additional HTTP or replay
 is introduced. Actual Selectel hint availability remains evidence #74, acceptance
 #75; all15 remote bindings remain partial.
+
+
+The Tag Link syntax expansion reuses the reviewed bounded quote/angle-aware
+splitter from referrers. It never exposes raw next URLs or allows a Link parameter
+to override auth, scope, endpoint, repository or page bounds. The terminal error
+preserves the validated page prefix/cursor and triggers no further HTTP. RFC5988
+snapshot in registryocigen assets is the syntax source; OCI1.1.1 tag pagination
+explicitly permits n omission when last is present. Unsupported parameter grammar
+and context changes remain explicit partial protocol coverage, not a claim that
+Selectel rejects them or a claim of full RFC5988 parsing.

@@ -2586,3 +2586,83 @@ func TestUploadHintIsAdvisoryAndAppendCarriesSnapshot(t *testing.T) {
 		t.Fatal("hint alias")
 	}
 }
+
+func TestTagLinksAcceptBoundedExtendedSyntax(t *testing.T) {
+	for _, links := range [][]string{
+		{`<?last=a>; rel=next; title="optional n"`},
+		{`<?n=2&last=a>; rel="prev next"; title="title, with comma"; type="application/json"`},
+		{`<https://foreign.invalid/ignored>; rel=prev`, `<?n=2&last=a>; rel=NEXT; title*=utf-8'en'next%20page`},
+		{`<?n=2&last=a>; rel=next; example="escaped\\value", <https://foreign.invalid/ignored>; rel="https://example.org/custom"`},
+	} {
+		t.Run(strings.Join(links, "|"), func(t *testing.T) {
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				calls++
+				if r.URL.Path != "/v2/reg/repo/tags/list" || r.URL.Query().Get("n") != "2" {
+					t.Fatal(r.URL)
+				}
+				if calls == 2 {
+					if r.URL.Query().Get("last") != "a" {
+						t.Fatal(r.URL)
+					}
+					return response(200, `{"name":"reg/repo","tags":[]}`), nil
+				}
+				out := response(200, `{"name":"reg/repo","tags":["a"]}`)
+				out.Header["Link"] = links
+				return out, nil
+			})
+			repo, _ := c.Repository("reg", "repo")
+			it, e := c.Tags.List(repo, pagination.Options{PageSize: 2, MaxItems: 5, MaxPages: 3})
+			if e != nil {
+				t.Fatal(e)
+			}
+			out, e := it.Collect(context.Background())
+			if e != nil || !out.Complete || len(out.Items) != 1 || calls != 2 {
+				t.Fatal(out, e, calls)
+			}
+		})
+	}
+}
+
+func TestTagExtendedLinksRetainPrefixOnUnsafeNext(t *testing.T) {
+	for _, test := range []struct {
+		name  string
+		links []string
+		code  types.Code
+	}{
+		{"duplicate-next", []string{`<?n=2&last=a>; rel=next, <?n=2&last=a>; rel=next`}, types.ProtocolError},
+		{"anchor", []string{`<?n=2&last=a>; rel=next; anchor=""`}, types.ProtocolError},
+		{"foreign", []string{`<https://foreign.invalid/v2/reg/repo/tags/list?n=2&last=a>; rel="prev next"`}, types.ScopeMismatch},
+		{"wrongpath", []string{`</v2/other/repo/tags/list?n=2&last=a>; rel=next`}, types.ScopeMismatch},
+		{"changedsize", []string{`<?n=3&last=a>; rel=next`}, types.ScopeMismatch},
+		{"duplicatedquery", []string{`<?n=2&last=a&last=a>; rel=next`}, types.ScopeMismatch},
+		{"unknownquery", []string{`<?n=2&last=a&token=secret>; rel=next`}, types.ScopeMismatch},
+		{"malformedquote", []string{`<?n=2&last=a>; rel=next; title="unfinished`}, types.ProtocolError},
+		{"bounded", []string{`<?n=2&last=a>; rel=next; title="` + strings.Repeat("x", 257) + `"`}, types.ResponseLimit},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/v2/" {
+					return response(200, ""), nil
+				}
+				calls++
+				out := response(200, `{"name":"reg/repo","tags":["a"]}`)
+				out.Header["Link"] = test.links
+				return out, nil
+			}, func(cfg *sdk.Config) { cfg.MaxJSONBytes = 256 })
+			repo, _ := c.Repository("reg", "repo")
+			it, e := c.Tags.List(repo, pagination.Options{PageSize: 2, MaxItems: 5, MaxPages: 3})
+			if e != nil {
+				t.Fatal(e)
+			}
+			out, e := it.Collect(context.Background())
+			if types.ErrorCode(e) != test.code || out.Complete || len(out.Items) != 1 || out.NextCursor == nil || calls != 1 {
+				t.Fatal(out, e, calls)
+			}
+		})
+	}
+}
