@@ -549,3 +549,48 @@ func TestMobileFarmFirewallUpdateUsesPutAndRejectsForeignAcceptedIdentity(t *tes
 		t.Fatalf("update %+v %v", out, e)
 	}
 }
+
+func TestMobileFarmFirewallDeletePreservesAcceptanceButReportsUnknownResponseContract(t *testing.T) {
+	calls := 0
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.Method != "DELETE" || r.URL.Path != "/mobfarm/api/v3/firewall-rules/rule-1" {
+			t.Fatalf("delete %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"unknown":"synthetic-private-result"}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	ref := mobileFarmUserRef()
+	ref.Scope.ProjectID = "test-project"
+	ref.Kind = "firewall_rule"
+	ref.ID = "rule-1"
+	out, e := p.MobileFarm().DeleteFirewallRule(context.Background(), ref, types.CallOptions{})
+	if types.ErrorCode(e) != types.Incomplete || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref || out.Data.HTTPStatus != 200 || string(out.Data.Body.Reveal()) != `{"unknown":"synthetic-private-result"}` {
+		t.Fatalf("delete %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out)
+	if strings.Contains(string(safe)+fmt.Sprintf("%+v %#v", out, out), "synthetic-private-result") {
+		t.Fatal("unknown response leaked")
+	}
+}
+
+func TestMobileFarmFirewallOrderPreservesCallerOrderAndAllTrustworthyAcceptedIDs(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		body, _ := io.ReadAll(r.Body)
+		if r.Method != "PATCH" || r.URL.Path != "/mobfarm/api/v3/firewall-rules/order" || string(body) != `{"ids":["rule-2","rule-1"]}` {
+			t.Fatalf("order %s %s", r.URL, body)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`[{"id":"rule-2","action":false},{"id":"rule-1","action":"allow","address":"*","ports":"443"}]`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	a := mobileFarmUserRef()
+	a.Scope.ProjectID = "test-project"
+	a.Kind = "firewall_rule"
+	a.ID = "rule-2"
+	b := a
+	b.ID = "rule-1"
+	out, e := p.MobileFarm().ReorderFirewallRules(context.Background(), []types.ResourceRef{a, b}, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.ResourceRefs[0].ID != "rule-2" || out.Receipt.ResourceRefs[1].ID != "rule-1" {
+		t.Fatalf("order %+v %v", out, e)
+	}
+}

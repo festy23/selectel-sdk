@@ -121,7 +121,9 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "partial",
+      "binding": "mobile_farm.v3.api_firewall_rules.delete",
+      "remaining_contract": "200 response schema absent; typed protected acceptance only, no completion"
     },
     {
       "method": "PUT",
@@ -142,7 +144,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_firewall_rules_order.update"
     },
     {
       "method": "GET",

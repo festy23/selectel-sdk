@@ -546,8 +546,8 @@
     ],
     "contract_revision": "f684fa0c0223a6e87e1123be34bad3cc9fc91f191ab1a004fd45b89b4d309118",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "87785baa485a25f450cf1fc70a5252aa0a5f3a72d44cbb41d7cec2dd47370595",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "e3c3c3e571205caf99d6722b835287ff5aa2e1433d532b639c86ad4be30def7a",
     "level": "offline",
     "result": "passed"
   },
@@ -558,7 +558,7 @@
     ],
     "contract_revision": "f5e13cbb1eb10e57a67713b77e034420ca44fad75d14073aebd5f77979df4028",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
     "implementation_revision": "24c7c301919645312e97facb652e4340716555f795f84af65e428a2eb2c635e2",
     "level": "offline",
     "result": "passed"
@@ -570,7 +570,7 @@
     ],
     "contract_revision": "5af62fec9f2ff4dff73707108757c4138e5b14ec59f1862d09943ee75681068a",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
     "implementation_revision": "521d108ec9e7b306e254b3395893dd03e138d188a149389eb48343b0af7a63c7",
     "level": "offline",
     "result": "passed"
@@ -582,7 +582,7 @@
     ],
     "contract_revision": "5d20dbd85a04010bf10805c99a24a9a08ba7fb9536bf3af7355f27fb1389c985",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
     "implementation_revision": "d6efaaf9b00dff032f0cdcd319922dcc6145addfabfd6cab9d9470ddd606ce41",
     "level": "offline",
     "result": "passed"
@@ -594,8 +594,20 @@
     ],
     "contract_revision": "f9201a74c064925c9c5cfc8feb0eb9465f93405b95d347931c3f61d0a8450080",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "ced7a951f2bd1381b5ffff896a22f53a60e5e08642ed3855ac9ed1a06485cf4a",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "7a7b87cfe188820cd08e236e09425da983c093851b07b211ea06d9084031e030",
+    "level": "offline",
+    "result": "passed"
+  },
+  "mobile_farm.v3.api_firewall_rules.delete": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "af1f87041660ab1c70b79f2cf7ded19a9f8caacde52fc11e7e7e68fafacc7abe",
+    "evidence_ref": "mobilefarm_client_test.go",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "117d38b8652a5f88e19368823b972af9845895e7319adb8d5dc4e5bd418d0e1e",
     "level": "offline",
     "result": "passed"
   },
@@ -606,8 +618,8 @@
     ],
     "contract_revision": "5a16cfd04a427486e2529f0fc6b1aead45178abad771c81876d8a2eceb312da7",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "ff901aae41b499d5f9c7f6f37788ad7ba6c8d85a662ab9c1d1b59144bc2caea7",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "b29262cb431b10361be4c86a6c88840ea1311b9211d9199e1aba42dfa09ac112",
     "level": "offline",
     "result": "passed"
   },
@@ -618,8 +630,20 @@
     ],
     "contract_revision": "a62972e9f23deb1f5d5bda010e6ec061c62d262a97c35088c6cf1971aec3e8e5",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "c4cc1dd064fa2c970c9370c868b67d353e183ab474692eabbbd26a600cf456f7",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "088a6755b0b43cb06c65cbf08b4110059a0f3ab7efe9a3e55dd2957b4b5aa390",
+    "level": "offline",
+    "result": "passed"
+  },
+  "mobile_farm.v3.api_firewall_rules_order.update": {
+    "commands": [
+      "go test -race ./...",
+      "go vet ./..."
+    ],
+    "contract_revision": "07e565bc34f8e421fe0043bedb61be042d1575e952897c7b3215c68567599cb5",
+    "evidence_ref": "mobilefarm_client_test.go",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "4286924b586fade485739395c82f1ad3727ab0aa4a83692c1b5beb2a4cfbc180",
     "level": "offline",
     "result": "passed"
   },
@@ -630,8 +654,8 @@
     ],
     "contract_revision": "f25b0a9a466c3a38e3eade2def6da63880a8db0d035cfec20dde92a5e2ab96c5",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "dd1626ab0da11c00e4bab8ffb075f9981d816e86348d8e7fc0ae879a982d0026",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "5f0ff0c6457cf3d7f1d0b9a72fd55b15b8640001f646763daae39b01fafa3407",
     "level": "offline",
     "result": "passed"
   },
@@ -642,8 +666,8 @@
     ],
     "contract_revision": "353f1ac2e4bab7441738c578b10e5cb06999b32f665c38819f2ae2361fc37360",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "afede7526822ed87f6f689269bc4110b7319c0e0a4b3e8c428a1d66ffcd991b1",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "7302ce0607387622adf12f1311508d604b7eca885a832e7e96f05a0fd23c7cbe",
     "level": "offline",
     "result": "passed"
   },
@@ -654,8 +678,8 @@
     ],
     "contract_revision": "11d4886f88b189f9a94079d527b31609fa54303e80d8e04c1b397c52077ec38b",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "31d5ebeb556d4e0fdf77b05bad37365d66ad230e9b4f624decdfb0e7c07fb885",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "cf7ba3459936b39dd0b2b2d0ca2f6caf7ffe4171a454dcfc739a4bc112dcbaa2",
     "level": "offline",
     "result": "passed"
   },
@@ -666,8 +690,8 @@
     ],
     "contract_revision": "0e7f10df3d46b37af591b68f5ee669d0446f51caff694359d6ba364b01ff7058",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "91442122337e294c285f618c86ee072364b6bacc3add1e3dca5cea1a143ad9a1",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "3a0c19f0ce68666eacf5ed2428ae398a1bf6828c6c4af9787cff8d91f56813fa",
     "level": "offline",
     "result": "passed"
   },
@@ -678,8 +702,8 @@
     ],
     "contract_revision": "76fceeb513690344248046831dfd50fd391f5704add06da047bdf0d891933ccb",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "dac1881d6e10408e8bc20e3bf9eb375f06c328cbfab8e75ceba69ff4a4bb94e6",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "cb44b2e467019084fa770d4de0a3ae9d638d327d0e06ea7a26b346d711d70c71",
     "level": "offline",
     "result": "passed"
   },
@@ -690,8 +714,8 @@
     ],
     "contract_revision": "5e7f84460193cca80ea8348cdf464a268afb75a48a4b3b2d4c1661681effe203",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "69d098144745fa8ecfe0a2f3db4ad157a24085fb7f9d4719142b410d403bbb79",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "3eeca8b09821f0bee76c2f41e938ac561012ee8b7b4e22ba47d3956b63b211a9",
     "level": "offline",
     "result": "passed"
   },
@@ -702,8 +726,8 @@
     ],
     "contract_revision": "fadf6ec53d3d7fb16e2cb3cca9f8b965c993cce1bd19334f200d8574e02707a0",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "0bb40a48bb6bfb8e519575f68948b02a9cdb8b26599f8ce4d2a466d94300484f",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "024c9f6ad60331141fbe8513d5b926a5be3d77b8675d2f64974a18ddfd958eae",
     "level": "offline",
     "result": "passed"
   },
@@ -714,8 +738,8 @@
     ],
     "contract_revision": "c9ab89b20a1b092d423e6c03ef9c60991692119684707e4a795f38a9a0355f55",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "664c691a96833da23423d3b396737de62dd29f2de9b82d425b9862bff5fdc7b4",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "fe9fb61d59a3424e9b2f3c791194f8a7cfdb23fd3ebd589dcc6a1edfcb742260",
     "level": "offline",
     "result": "passed"
   },
@@ -726,8 +750,8 @@
     ],
     "contract_revision": "7cbec57a0e601833b54d190cc1deb9732c37bee4c2cf42aa9c5aa3d966cff6b7",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "330f5f60a12c00d4f2ecb7b393c3163948479213b8878f88cb4169d70f411177",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "6ebd47f29d857a5ec9913da949634f51a5b06d448f47fdaa4acd46ff563b349b",
     "level": "offline",
     "result": "passed"
   },
@@ -738,8 +762,8 @@
     ],
     "contract_revision": "9f82c9819a11a18a9bf06f47f4ed662c9f5db0ae5c70e79f98e01a06b43e2e3f",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "2d62f5e6f846bf29da745aafddb6d705ee38a7824714be82ae2ec6571ca4669f",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "e0d489bb3b8e29268260d6deca39dabe1a2911877a0ef38edf84a05986e886b8",
     "level": "offline",
     "result": "passed"
   },
@@ -750,8 +774,8 @@
     ],
     "contract_revision": "378ed0a605cc7faa1473c47fc9b2bfb8c19de26d99c01fcdff1e8e3217f7c870",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "395069f998a11d9abcd47712e85a47bf2a366d505588467dc056b73bfb2aaffb",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "b97376c7aa84b5115ba395662e15e72659e990b9e32d7c1a09e9c38e33b9794a",
     "level": "offline",
     "result": "passed"
   },
@@ -762,8 +786,8 @@
     ],
     "contract_revision": "c9c1c5798f587778c574b8f15e10857bc581b5db235f28f3efab5f7271649386",
     "evidence_ref": "mobilefarm_client_test.go",
-    "evidence_revision": "b3d79fc10d190ce88de0e0ea91eee064b03a3274b126609ed911a3f3aec5a032",
-    "implementation_revision": "92e4d145cd45294573a0307d0edf116be144d24e8bcb599fd4a007ccc74e7415",
+    "evidence_revision": "09b02727102dc388a4337f47d6b1d89a6bc293722140899aa6ad429247f96ef2",
+    "implementation_revision": "814a936aa85f499a32301f91186516202a03df9bccc4d91d34c2c1ce41186c35",
     "level": "offline",
     "result": "passed"
   },
