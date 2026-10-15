@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
- "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse", "CreateClusterRequest":"CreateClusterRequest", "CreateClusterResponse":"CreateClusterResponse", "ListClustersResponse":"ListClustersResponse", "DeleteClusterResponse":"DeleteClusterResponse", "PatchClusterResponse":"PatchClusterResponse", "RestartClusterResponse":"RestartClusterResponse", "ChangeClusterConfigBody":"ChangeClusterConfigBody", "ChangeClusterConfigResponse":"ChangeClusterConfigResponse", "ResizeClusterBody":"ResizeClusterBody", "ResizeClusterResponse":"ResizeClusterResponse", "UpgradeClusterBody":"UpgradeClusterBody", "UpgradeClusterResponse":"UpgradeClusterResponse", "GetClusterFlavorConstraintsResponse":"GetClusterFlavorConstraintsResponse", "GetRegionsResponse":"GetRegionsResponse", "GetServiceConfigResponse":"GetServiceConfigResponse", "GetDatastoreResponse":"GetDatastoreResponse", "CreateDatastoreRequest":"CreateDatastoreRequest", "CreateDatastoreResponse":"CreateDatastoreResponse", "DeleteDatastoreResponse":"DeleteDatastoreResponse", "PatchDatastoreResponse":"PatchDatastoreResponse", "ResizeDatastoreBody":"ResizeDatastoreBody", "ResizeDatastoreResponse":"ResizeDatastoreResponse", "GetDatastoreFlavorConstraintsResponse":"GetDatastoreFlavorConstraintsResponse", "ListDatastoresResponse":"ListDatastoresResponse", "ListDatastoreMntEventsResponse":"ListDatastoreMntEventsResponse", "GetProjectIDForNetworkSharingResponse":"GetProjectIDForNetworkSharingResponse", "GetClusterProxyResponse":"GetClusterProxyResponse", "CreateClusterProxyRequest":"CreateClusterProxyRequest", "CreateClusterProxyResponse":"CreateClusterProxyResponse", "DeleteClusterProxyResponse":"DeleteClusterProxyResponse", "ListClusterProxiesResponse":"ListClusterProxiesResponse", "ListClusterDomainsResponse":"ListClusterDomainsResponse", "RegisterClusterDomainBody":"RegisterClusterDomainBody", "RegisterClusterDomainResponse":"RegisterClusterDomainResponse", "PatchClusterDomainResponse":"PatchClusterDomainResponse", "DeleteClusterDomainResponse":"DeleteClusterDomainResponse", "TransferClusterDomainBody":"TransferClusterDomainBody", "TransferClusterDomainResponse":"TransferClusterDomainResponse", "VerifyClusterVolumeSpecRequest":"VerifyClusterVolumeSpecRequest", "VerifyClusterVolumeSpecResponse":"VerifyClusterVolumeSpecResponse", "ListClusterVolumesResponse":"ListClusterVolumesResponse", "MountClusterVolumeBody":"MountClusterVolumeBody", "MountClusterVolumeResponse":"MountClusterVolumeResponse", "UnmountClusterVolumeResponse":"UnmountClusterVolumeResponse", "ListPredefinedTechJournalLogConfigsResponse":"ListPredefinedTechJournalLogConfigsResponse", "GetTechJournalLogsConfigResponse":"GetTechJournalLogsConfigResponse", "ListTechJournalLogPlansResponse":"ListTechJournalLogPlansResponse", "CreateTechJournalLogPlanBody":"CreateTechJournalLogPlanBody", "CreateTechJournalLogPlanResponse":"CreateTechJournalLogPlanResponse", "DisableTechJournalLogPlanResponse":"DisableTechJournalLogPlanResponse"}, None),
+ "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse", "CreateClusterRequest":"CreateClusterRequest", "CreateClusterResponse":"CreateClusterResponse", "ListClustersResponse":"ListClustersResponse", "DeleteClusterResponse":"DeleteClusterResponse", "PatchClusterResponse":"PatchClusterResponse", "RestartClusterResponse":"RestartClusterResponse", "ChangeClusterConfigBody":"ChangeClusterConfigBody", "ChangeClusterConfigResponse":"ChangeClusterConfigResponse", "ResizeClusterBody":"ResizeClusterBody", "ResizeClusterResponse":"ResizeClusterResponse", "UpgradeClusterBody":"UpgradeClusterBody", "UpgradeClusterResponse":"UpgradeClusterResponse", "GetClusterFlavorConstraintsResponse":"GetClusterFlavorConstraintsResponse", "GetRegionsResponse":"GetRegionsResponse", "GetServiceConfigResponse":"GetServiceConfigResponse", "GetDatastoreResponse":"GetDatastoreResponse", "CreateDatastoreRequest":"CreateDatastoreRequest", "CreateDatastoreResponse":"CreateDatastoreResponse", "DeleteDatastoreResponse":"DeleteDatastoreResponse", "PatchDatastoreResponse":"PatchDatastoreResponse", "ResizeDatastoreBody":"ResizeDatastoreBody", "ResizeDatastoreResponse":"ResizeDatastoreResponse", "GetDatastoreFlavorConstraintsResponse":"GetDatastoreFlavorConstraintsResponse", "ListDatastoresResponse":"ListDatastoresResponse", "ListDatastoreMntEventsResponse":"ListDatastoreMntEventsResponse", "GetProjectIDForNetworkSharingResponse":"GetProjectIDForNetworkSharingResponse", "GetClusterProxyResponse":"GetClusterProxyResponse", "CreateClusterProxyRequest":"CreateClusterProxyRequest", "CreateClusterProxyResponse":"CreateClusterProxyResponse", "DeleteClusterProxyResponse":"DeleteClusterProxyResponse", "ListClusterProxiesResponse":"ListClusterProxiesResponse", "ListClusterDomainsResponse":"ListClusterDomainsResponse", "RegisterClusterDomainBody":"RegisterClusterDomainBody", "RegisterClusterDomainResponse":"RegisterClusterDomainResponse", "PatchClusterDomainResponse":"PatchClusterDomainResponse", "DeleteClusterDomainResponse":"DeleteClusterDomainResponse", "TransferClusterDomainBody":"TransferClusterDomainBody", "TransferClusterDomainResponse":"TransferClusterDomainResponse", "VerifyClusterVolumeSpecRequest":"VerifyClusterVolumeSpecRequest", "VerifyClusterVolumeSpecResponse":"VerifyClusterVolumeSpecResponse", "ListClusterVolumesResponse":"ListClusterVolumesResponse", "MountClusterVolumeBody":"MountClusterVolumeBody", "MountClusterVolumeResponse":"MountClusterVolumeResponse", "UnmountClusterVolumeResponse":"UnmountClusterVolumeResponse", "ListPredefinedTechJournalLogConfigsResponse":"ListPredefinedTechJournalLogConfigsResponse", "GetTechJournalLogsConfigResponse":"GetTechJournalLogsConfigResponse", "ListTechJournalLogPlansResponse":"ListTechJournalLogPlansResponse", "CreateTechJournalLogPlanBody":"CreateTechJournalLogPlanBody", "CreateTechJournalLogPlanResponse":"CreateTechJournalLogPlanResponse", "DisableTechJournalLogPlanResponse":"DisableTechJournalLogPlanResponse", "ListClusterMntEventsResponse":"ListClusterMntEventsResponse", "GetClusterMetricsResponse":"GetClusterMetricsResponse", "TimeRange":"TimeRange", "ListClusterSessionsResponse":"ListClusterSessionsResponse", "TerminateClusterSessionBody":"TerminateClusterSessionBody", "TerminateClusterSessionResponse":"TerminateClusterSessionResponse"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -51,7 +51,7 @@ for case, (family, initial, top_name) in CASES.items():
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
     if package == "onec":
-        resource_roots = {"Cluster", "Datastore", "ClusterProxy", "ClusterDomain", "ClusterVolume", "TechJournalLogPlan", "DatastoreMntEvent"}
+        resource_roots = {"Cluster", "Datastore", "ClusterProxy", "ClusterDomain", "ClusterVolume", "TechJournalLogPlan", "DatastoreMntEvent", "ClusterMntEvent", "ClusterSession"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -86,6 +86,15 @@ for case, (family, initial, top_name) in CASES.items():
             return "types.ProtectedValue", False
         if package == "onec" and kind == "string" and ((type_name.startswith("TechJournalLogsConfig") and field == "rawXml") or (type_name.startswith("TechJournalLogPlan") and field == "configData")):
             return "types.ProtectedValue", False
+        if package == "onec" and kind == "string" and type_name.startswith("ClusterSession"):
+            if schema.get("format") in {"int64", "uint64"}:
+                return ("ProtectedInt64String" if schema["format"] == "int64" else "ProtectedUint64String"), False
+            if field in {"username", "clientIp", "appType", "locale"}:
+                return "types.ProtectedValue", False
+        if package == "onec" and kind == "string" and type_name == "TerminateClusterSessionBodyReason":
+            return "types.ProtectedValue", False
+        if package == "onec" and kind == "string" and type_name == "ClusterMetricInstance":
+            return "types.ProtectedValue", False
         if package == "onec" and kind == "string" and type_name.startswith("X509Keypair") and field in {"certificate", "key"}:
             return "types.ProtectedValue", False
         if package == "onec" and kind == "string" and ((type_name.startswith("S3VolumeOptions") and field in {"accessKeyId", "secretAccessKey"}) or (type_name.startswith("ClusterVolumeState") and field in {"reason", "mountPath"})):
@@ -103,7 +112,7 @@ for case, (family, initial, top_name) in CASES.items():
         if kind == "integer":
             return "types.Integer", False
         if kind == "number":
-            if package == "onec" and type_name in {"MetricValue", "MetricThresholdBreachThreshold", "ClusterMetricValue"}:
+            if package == "onec":
                 return "ProtectedNumber", False
             return "types.Number", False
         if kind == "boolean":
@@ -159,6 +168,9 @@ for case, (family, initial, top_name) in CASES.items():
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
             if package == "onec" and nested.get("type") == "string" and nested.get("format") in {"int64", "uint64"}:
+                if type_name == "ClusterSession":
+                    code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
+                    continue
                 parser = "ParseUint" if nested["format"] == "uint64" else "ParseInt"
                 code += f"\tif v.{field_name} != nil {{ if _, err := strconv.{parser}(*v.{field_name}, 10, 64); err != nil {{ return types.NewError(types.ProtocolError) }} }}\n"
             if resolve(nested).get("properties"):
@@ -184,6 +196,8 @@ for case, (family, initial, top_name) in CASES.items():
                 item = definitions.get(item.get("$ref", "").split("/")[-1], item)
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
+                elif package == "onec" and resolve(item).get("format") == "date-time":
+                    code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i] = v.{field_name}[i].UTC() }}\n"
         code += "}\n"
         if reference in roots or (package == "onec" and reference in resource_roots):
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"

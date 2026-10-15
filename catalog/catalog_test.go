@@ -28,7 +28,7 @@ func TestOfflineCatalogIsImmutableAndDoesNotOverclaim(t *testing.T) {
 		t.Fatal("catalog is mutable")
 	}
 	s := c.Summary()
-	if s.InventoryComplete || s.CoverageRatio != nil || s.Implemented != 92 || s.Partial != 17 {
+	if s.InventoryComplete || s.CoverageRatio != nil || s.Implemented != 95 || s.Partial != 18 {
 		t.Fatal("unknown denominator advertised as covered")
 	}
 	if _, err := c.List(catalog.Filter{Verification: "unknown"}); types.ErrorCode(err) != types.InvalidArgument {

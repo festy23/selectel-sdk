@@ -1,0 +1,41 @@
+{
+  "operation_id": "cloud_1c.v2.clusters_metrics.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/clusters/{id}/metrics",
+    "reference": "Explicit exact cluster anchor; endpoint/generation/scope before credentials/HTTP",
+    "query": {
+      "timeRange.start": "optional UTC RFC3339Nano timestamp",
+      "timeRange.end": "optional UTC RFC3339Nano timestamp; start<=end"
+    }
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed GetClusterMetricsResponse metrics groups/timeSeries/aggregates/bounds, lexical exact ProtectedNumber for all JSON numbers; no metric/resource adoption; timestamps UTC",
+    "sensitive_fields": [
+      "metrics.*[].instance",
+      "metrics.*[].timeSeries.values",
+      "metrics.*[].aggregates.*",
+      "metrics.*[].bounds.*"
+    ]
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

@@ -186,3 +186,30 @@ decode failure; parent-only unknown не даёт recovery. Disable имеет �
 capability. Scheduled не означает running; CANCELLED/STOPPED/FINISHED завершают
 stopped, ERRORED — failure. Отсутствие exact ID не доказывает отмены; unknown source
 states сохраняются. Никакой log delivery или XML-семантики вне source не обещано.
+
+Cluster maintenance сохраняет source event IDs, explicit cluster parent,
+projectId/clusterId checks, UTC и protected description. Event/task metadata
+не становится causal operation ref и не обещает отсутствующего event Get/Wait.
+Metrics возвращает typed groups/time series/aggregates/bounds: все JSON numbers
+защищены и сохраняются лексически, instance metadata защищена, timestamps UTC.
+Optional timeRange.start/end передаются как UTC RFC3339Nano с проверкой порядка.
+
+Sessions list — finite bounded source collection с optional infobaseId filter,
+exact session refs с caller cluster parent, UTC и protected username/IP/app/locale
+и int64/uint64-string telemetry. `TerminateClusterSessions` требует ровно один
+явный sessionId или filter; zero-value body не завершает все сессии. Только явно
+переданный пустой filter `{}` означает все сессии по pinned source. Reason защищён
+и раскрывается в wire. Receipt сохраняет caller session ref для ID selector,
+но accepted/empty response не доказывает завершения. Отсутствует documented
+terminated state/causal completion token: wait/recovery unavailable, автоматическое
+повторение или превращение отсутствия в списке в completion не выполняется.
+
+Checkpoint #65: все 49 принадлежащих задаче native operations имеют bindings;
+42 implemented, 7 partial. Partial — ListClusters, ListDatastores,
+ListDatastoreMaintenanceEvents, ListClusterProxies, ListClusterDomains,
+ListClusterVolumes, ListClusterMaintenanceEvents. Для каждого недостаёт terminal
+cursor contract (next sentinel/empty/zero/omission/end condition); pinned schema
+CursorResponse и официальная API-страница не определяют его. Эти семь gaps остаются
+owned #65, а не перекладываются на #66/#67. Остальные 47 operations snapshot
+сохраняют ownership #66 (12) и #67 (35), пока unimplemented в этой ветке.
+Полнота публичного API неизвестна, denominator/coverage ratio остаётся null.

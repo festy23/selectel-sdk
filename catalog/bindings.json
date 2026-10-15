@@ -6034,5 +6034,139 @@
       "journal_plan.stopped"
     ],
     "recovery": true
+  },
+  "cloud_1c.v2.clusters_maintenance.list": {
+    "go_method": "onec.Client.ListClusterMaintenanceEvents",
+    "input_type": "types.ResourceRef, pagination.Options",
+    "output_type": "onec.ClusterMaintenanceListing",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_maintenance.list.json",
+    "status": "partial",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/lists.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/maintenance.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get",
+    "excluded_variants": [
+      "Terminal cursor semantics absent from pinned primary contract"
+    ]
+  },
+  "cloud_1c.v2.clusters_metrics.list": {
+    "go_method": "onec.Client.GetClusterMetrics",
+    "input_type": "types.ResourceRef, onec.TimeRange, types.CallOptions",
+    "output_type": "onec.GetClusterMetricsResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_metrics.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/volumes.go",
+      "onec/journal.go",
+      "onec/metrics.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.clusters_sessions.list": {
+    "go_method": "onec.Client.ListClusterSessions",
+    "input_type": "types.ResourceRef, *string, pagination.Options",
+    "output_type": "pagination.Collection[onec.ClusterSession]",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_sessions.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/resume.go",
+      "onec/volumes.go",
+      "onec/journal.go",
+      "onec/sessions.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.clusters_sessions_terminate.create": {
+    "go_method": "onec.Client.TerminateClusterSessions",
+    "input_type": "types.ResourceRef, onec.TerminateClusterSessionBody, types.CallOptions",
+    "output_type": "onec.TerminateClusterSessionResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters_sessions_terminate.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go",
+      "onec/protected.go",
+      "onec/proxies.go",
+      "onec/resume.go",
+      "onec/domains.go",
+      "onec/wire.go",
+      "internal/core/reads.go",
+      "pagination/pagination.go",
+      "onec/volumes.go",
+      "onec/journal.go",
+      "onec/sessions.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
   }
 }

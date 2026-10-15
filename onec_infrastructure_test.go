@@ -1773,3 +1773,142 @@ func TestOneCJournalDisableRetainsExactPlanAndOperationSpecificGoal(t *testing.T
 		t.Fatalf("disabled %+v %v", waited, err)
 	}
 }
+
+func TestOneCClusterMaintenanceRetainsParentMetadataAndPartialCursor(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/maintenance" {
+			t.Fatalf("maintenance %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"events":[{"id":"event-1","projectId":"test-project","spec":{"clusterId":"cluster-1","description":"synthetic-maintenance-detail","scheduledFor":"2026-10-15T12:00:00+03:00"},"state":{"status":"CLUSTER_MNT_STATUS_RUNNING"}}],"cursor":{"next":"50","total":"1"}}`))}, nil
+	}))
+	out, err := regional.ListClusterMaintenanceEvents(context.Background(), cluster, pagination.Options{MaxPages: 1})
+	if types.ErrorCode(err) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0].Ref.Parent.ID != "cluster-1" || out.Items[0].Spec.ScheduledFor.Location() != time.UTC {
+		t.Fatalf("cluster maintenance %+v %v", out, err)
+	}
+	safe, _ := json.Marshal(out.Items[0])
+	if strings.Contains(string(safe), "synthetic-maintenance-detail") {
+		t.Fatal("maintenance description leaked")
+	}
+}
+
+func TestOneCClusterMetricsKeepExactProtectedSamplesAndUTCQuery(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/metrics" || r.URL.Query().Get("timeRange.start") != "2026-10-15T09:00:00Z" {
+			t.Fatalf("metrics query %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"metrics":{"step":"60","cpuUsage":[{"instance":"synthetic-private-instance","timeSeries":{"timestamps":["2026-10-15T12:00:00+03:00"],"values":[12345678901234567890.123456789]},"aggregates":{"min":12345678901234567890.123456789},"bounds":{"max":12345678901234567890.123456789}}]}}`))}, nil
+	}))
+	start := time.Date(2026, 10, 15, 12, 0, 0, 0, time.FixedZone("synthetic", 3*3600))
+	out, err := regional.GetClusterMetrics(context.Background(), cluster, onec.TimeRange{Start: &start}, types.CallOptions{})
+	if err != nil || out.Data.Metrics == nil || len(out.Data.Metrics.CPUUsage) != 1 {
+		t.Fatalf("metrics %+v %v", out, err)
+	}
+	metric := out.Data.Metrics.CPUUsage[0]
+	if string(metric.TimeSeries.Values[0].Reveal()) != "12345678901234567890.123456789" || metric.TimeSeries.Timestamps[0].Location() != time.UTC {
+		t.Fatal("metric precision/time lost")
+	}
+	safe, _ := json.Marshal(metric)
+	if strings.Contains(string(safe), "12345678901234567890") || strings.Contains(fmt.Sprintf("%+v %#v", metric, metric), "synthetic-private-instance") {
+		t.Fatal("metric data leaked")
+	}
+}
+
+func TestOneCSessionListingUsesFiniteFilterAndProtectsUserTelemetry(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/clusters/cluster-1/sessions" || r.URL.Query().Get("infobaseId") != "infobase-1" {
+			t.Fatalf("sessions %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"sessions":[{"sessionId":"session-1","infobaseId":"infobase-1","username":"synthetic-session-user","clientIp":"synthetic-client-ip","totalCpuTime":"18446744073709551615","currentMem":"-9223372036854775808","startedAt":"2026-10-15T12:00:00+03:00"}]}`))}, nil
+	}))
+	filter := "infobase-1"
+	out, err := regional.ListClusterSessions(context.Background(), cluster, &filter, pagination.Options{})
+	if err != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref.Parent.ID != "cluster-1" || out.Items[0].StartedAt.Location() != time.UTC || string(out.Items[0].TotalCPUTime.Reveal()) != "18446744073709551615" || string(out.Items[0].CurrentMem.Reveal()) != "-9223372036854775808" {
+		t.Fatalf("sessions %+v %v", out, err)
+	}
+	safe, _ := json.Marshal(out.Items[0])
+	if strings.Contains(string(safe), "synthetic-session-user") || strings.Contains(string(safe), "18446744073709551615") {
+		t.Fatal("session telemetry leaked")
+	}
+}
+
+func TestOneCSessionTerminationRequiresExplicitSelectorAndNeverReplaysUnknown(t *testing.T) {
+	calls := 0
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v2/clusters/cluster-1/sessions/terminate" || !strings.Contains(string(raw), `"sessionId":"session-1"`) || !strings.Contains(string(raw), `"reason":"synthetic-private-reason"`) {
+			t.Fatalf("termination wire %s", r.URL)
+		}
+		return nil, io.ErrUnexpectedEOF
+	}))
+	out, err := regional.TerminateClusterSessions(context.Background(), cluster, onec.TerminateClusterSessionBody{}, types.CallOptions{})
+	if types.ErrorCode(err) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.Attempts != 0 || calls != 0 {
+		t.Fatalf("implicit termination %+v %v", out, err)
+	}
+	var spec onec.TerminateClusterSessionBody
+	_ = json.Unmarshal([]byte(`{"sessionId":"session-1","reason":"synthetic-private-reason"}`), &spec)
+	out, err = regional.TerminateClusterSessions(context.Background(), cluster, spec, types.CallOptions{})
+	if types.ErrorCode(err) != types.UnknownOutcome || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || len(out.Receipt.ResourceRefs) != 2 || calls != 1 {
+		t.Fatalf("unknown termination %+v %v calls%d", out, err, calls)
+	}
+	safe, _ := json.Marshal(spec)
+	if strings.Contains(string(safe), "synthetic-private-reason") {
+		t.Fatal("termination reason leaked")
+	}
+}
+
+func TestOneCExplicitEmptySessionFilterUsesNativeAllSessionsBody(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || string(raw) != `{"filter":{}}` {
+			t.Fatalf("explicit filter wire %s", raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{}`))}, nil
+	}))
+	out, err := regional.TerminateClusterSessions(context.Background(), cluster, onec.TerminateClusterSessionBody{Filter: &onec.ClusterSessionFilter{}}, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.Recovery != "unavailable" {
+		t.Fatalf("explicit all %+v %v", out, err)
+	}
+}
+
+func TestOneCDomainTransferRejectsForeignTargetBeforeCredentialLookup(t *testing.T) {
+	for _, dimension := range []string{"scope", "service", "generation", "endpoint"} {
+		t.Run(dimension, func(t *testing.T) {
+			scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+			endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+			lookups, calls := 0, 0
+			c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(ctx context.Context, r types.AuthRequest) (credentials.Material, error) {
+				lookups++
+				return source().Lookup(ctx, r)
+			}), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(*http.Request) (*http.Response, error) { calls++; return nil, context.Canceled })})
+			if err != nil {
+				t.Fatal(err)
+			}
+			p, _ := c.Project("test-project")
+			regional, _ := p.Location("spb", "ru-9")
+			cluster := types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "cluster", ID: "cluster-1", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+			ref := cluster
+			ref.Kind = "cluster_domain"
+			ref.ID = "domain-1"
+			ref.Parent = &cluster
+			target := cluster
+			target.ID = "cluster-2"
+			switch dimension {
+			case "scope":
+				target.Scope.ProjectID = "foreign"
+			case "service":
+				target.Service = "mks"
+			case "generation":
+				target.APIGeneration = "other"
+			case "endpoint":
+				target.EndpointURL += "/foreign"
+			}
+			var spec onec.TransferClusterDomainBody
+			_ = json.Unmarshal([]byte(`{"targetClusterId":"cluster-2"}`), &spec)
+			out, err := regional.OneC().TransferClusterDomain(context.Background(), ref, target, spec, types.CallOptions{})
+			if err == nil || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.Attempts != 0 || out.Receipt.ContractRevision == "" || lookups != 0 || calls != 0 {
+				t.Fatalf("target gate %+v %v lookup%d calls%d", out, err, lookups, calls)
+			}
+		})
+	}
+}

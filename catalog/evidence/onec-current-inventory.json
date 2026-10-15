@@ -37,21 +37,24 @@
       "path": "/service/config",
       "operation_id": "getServiceConfig",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.service_config.list"
     },
     {
       "method": "GET",
       "path": "/service/endpoints",
       "operation_id": "getServiceEndpoints",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.service_endpoints.list"
     },
     {
       "method": "GET",
       "path": "/service/regions",
       "operation_id": "getServiceRegions",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.service_regions.list"
     },
     {
       "method": "POST",
@@ -205,21 +208,24 @@
       "path": "/cluster-flavors",
       "operation_id": "listClusterFlavors",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_flavors.list"
     },
     {
       "method": "GET",
       "path": "/cluster-flavors/constraints",
       "operation_id": "listClusterFlavorConstraints",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_flavors_constraints.list"
     },
     {
       "method": "GET",
       "path": "/cluster-platforms",
       "operation_id": "listClusterPlatforms",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_platforms.list"
     },
     {
       "method": "GET",
@@ -227,35 +233,40 @@
       "operation_id": "listClusterProxies",
       "owner_issue": 65,
       "status": "partial",
-      "remaining": "Terminal cursor semantics absent from pinned source"
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.cluster_proxies.list"
     },
     {
       "method": "POST",
       "path": "/cluster-proxies",
       "operation_id": "createClusterProxy",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_proxies.create"
     },
     {
       "method": "GET",
       "path": "/cluster-proxies/network-share/project",
       "operation_id": "getProjectIDForNetworkSharing",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_proxies_network_share_project.list"
     },
     {
       "method": "GET",
       "path": "/cluster-proxies/{id}",
       "operation_id": "getClusterProxy",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_proxies.get"
     },
     {
       "method": "DELETE",
       "path": "/cluster-proxies/{id}",
       "operation_id": "deleteClusterProxy",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.cluster_proxies.delete"
     },
     {
       "method": "GET",
@@ -263,14 +274,16 @@
       "operation_id": "listClusters",
       "owner_issue": 65,
       "status": "partial",
-      "remaining": "Terminal cursor semantics absent from pinned source"
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.clusters.list"
     },
     {
       "method": "POST",
       "path": "/clusters",
       "operation_id": "createCluster",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters.create"
     },
     {
       "method": "GET",
@@ -301,28 +314,32 @@
       "path": "/clusters/{id}",
       "operation_id": "getCluster",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters.get"
     },
     {
       "method": "DELETE",
       "path": "/clusters/{id}",
       "operation_id": "deleteCluster",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters.delete"
     },
     {
       "method": "PATCH",
       "path": "/clusters/{id}",
       "operation_id": "patchCluster",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters.update"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/config",
       "operation_id": "changeClusterConfig",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_config.create"
     },
     {
       "method": "GET",
@@ -330,28 +347,32 @@
       "operation_id": "listClusterDomains",
       "owner_issue": 65,
       "status": "partial",
-      "remaining": "Terminal cursor semantics absent from pinned source"
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.clusters_domains.list"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/domains",
       "operation_id": "registerClusterDomain",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_domains.create"
     },
     {
       "method": "DELETE",
       "path": "/clusters/{id}/domains/{domainId}",
       "operation_id": "deleteClusterDomain",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_domains.delete"
     },
     {
       "method": "PATCH",
       "path": "/clusters/{id}/domains/{domainId}",
       "operation_id": "patchClusterDomain",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_domains.update"
     },
     {
       "method": "POST",
@@ -398,49 +419,57 @@
       "path": "/clusters/{id}/maintenance",
       "operation_id": "listClusterMaintenanceEvents",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "partial",
+      "binding": "cloud_1c.v2.clusters_maintenance.list",
+      "remaining": "Terminal cursor semantics absent from pinned source"
     },
     {
       "method": "GET",
       "path": "/clusters/{id}/metrics",
       "operation_id": "getClusterMetrics",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_metrics.list"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/resize",
       "operation_id": "resizeCluster",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_resize.create"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/restart",
       "operation_id": "restartCluster",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_restart.create"
     },
     {
       "method": "GET",
       "path": "/clusters/{id}/sessions",
       "operation_id": "listClusterSessions",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_sessions.list"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/sessions/terminate",
       "operation_id": "terminateClusterSession",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_sessions_terminate.create"
     },
     {
       "method": "POST",
       "path": "/clusters/{id}/upgrade",
       "operation_id": "upgradeCluster",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.clusters_upgrade.create"
     },
     {
       "method": "GET",
@@ -448,7 +477,8 @@
       "operation_id": "listClusterVolumes",
       "owner_issue": 65,
       "status": "partial",
-      "binding": "cloud_1c.v2.clusters_volumes.list"
+      "binding": "cloud_1c.v2.clusters_volumes.list",
+      "remaining": "Terminal cursor semantics absent from pinned source"
     },
     {
       "method": "POST",
@@ -471,21 +501,24 @@
       "path": "/datastore-flavors",
       "operation_id": "listDatastoreFlavors",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastore_flavors.list"
     },
     {
       "method": "GET",
       "path": "/datastore-flavors/constraints",
       "operation_id": "listDatastoreFlavorConstraints",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastore_flavors_constraints.list"
     },
     {
       "method": "GET",
       "path": "/datastore-types",
       "operation_id": "listDatastoreTypes",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastore_types.list"
     },
     {
       "method": "GET",
@@ -493,35 +526,40 @@
       "operation_id": "listDatastores",
       "owner_issue": 65,
       "status": "partial",
-      "remaining": "Terminal cursor semantics absent from pinned source"
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.datastores.list"
     },
     {
       "method": "POST",
       "path": "/datastores",
       "operation_id": "createDatastore",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores.create"
     },
     {
       "method": "GET",
       "path": "/datastores/{id}",
       "operation_id": "getDatastore",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores.get"
     },
     {
       "method": "DELETE",
       "path": "/datastores/{id}",
       "operation_id": "deleteDatastore",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores.delete"
     },
     {
       "method": "PATCH",
       "path": "/datastores/{id}",
       "operation_id": "patchDatastore",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores.update"
     },
     {
       "method": "GET",
@@ -529,14 +567,16 @@
       "operation_id": "listDatastoreMaintenanceEvents",
       "owner_issue": 65,
       "status": "partial",
-      "remaining": "Terminal cursor semantics absent from pinned source"
+      "remaining": "Terminal cursor semantics absent from pinned source",
+      "binding": "cloud_1c.v2.datastores_maintenance.list"
     },
     {
       "method": "POST",
       "path": "/datastores/{id}/resize",
       "operation_id": "resizeDatastore",
       "owner_issue": 65,
-      "status": "implemented"
+      "status": "implemented",
+      "binding": "cloud_1c.v2.datastores_resize.create"
     },
     {
       "method": "GET",
@@ -692,5 +732,12 @@
       "owner_issue": 67,
       "status": "unimplemented"
     }
-  ]
+  ],
+  "issue_65_checkpoint": {
+    "implemented": 42,
+    "partial": 7,
+    "unimplemented": 0,
+    "remaining_owner_issue": 65,
+    "limitation": "All enumerated operations bound; seven cursor terminal contracts unresolved; whole public inventory unknown, no full coverage claim"
+  }
 }

@@ -9,6 +9,29 @@ import (
 	"time"
 )
 
+type Aggregates struct {
+	Avg *ProtectedNumber `json:"avg,omitempty"`
+	Max *ProtectedNumber `json:"max,omitempty"`
+	Min *ProtectedNumber `json:"min,omitempty"`
+}
+
+func (v Aggregates) Validate() error {
+	return nil
+}
+func (v *Aggregates) normalize() {
+}
+
+type Bounds struct {
+	Max *ProtectedNumber `json:"max,omitempty"`
+	Min *ProtectedNumber `json:"min,omitempty"`
+}
+
+func (v Bounds) Validate() error {
+	return nil
+}
+func (v *Bounds) normalize() {
+}
+
 type ChangeClusterConfigBody struct {
 	Config *ClusterConfig `json:"config,omitempty"`
 }
@@ -331,6 +354,211 @@ func (v *ClusterFlavorConstraints) normalize() {
 	}
 }
 
+type ClusterMetric struct {
+	Aggregates *Aggregates           `json:"aggregates,omitempty"`
+	Bounds     *Bounds               `json:"bounds,omitempty"`
+	Instance   *types.ProtectedValue `json:"instance,omitempty"`
+	TimeSeries *TimeSeries           `json:"timeSeries,omitempty"`
+}
+
+func (v ClusterMetric) Validate() error {
+	if v.Aggregates != nil {
+		if err := v.Aggregates.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Bounds != nil {
+		if err := v.Bounds.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TimeSeries != nil {
+		if err := v.TimeSeries.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterMetric) normalize() {
+	if v.Aggregates != nil {
+		v.Aggregates.normalize()
+	}
+	if v.Bounds != nil {
+		v.Bounds.normalize()
+	}
+	if v.TimeSeries != nil {
+		v.TimeSeries.normalize()
+	}
+}
+
+type ClusterMetrics struct {
+	CPUUsage       []ClusterMetric `json:"cpuUsage,omitzero"`
+	CPUUsagePct    []ClusterMetric `json:"cpuUsagePct,omitzero"`
+	DiskUsage      []ClusterMetric `json:"diskUsage,omitzero"`
+	DiskUsagePct   []ClusterMetric `json:"diskUsagePct,omitzero"`
+	MemoryUsage    []ClusterMetric `json:"memoryUsage,omitzero"`
+	MemoryUsagePct []ClusterMetric `json:"memoryUsagePct,omitzero"`
+	RxBandwidth    []ClusterMetric `json:"rxBandwidth,omitzero"`
+	Step           *string         `json:"step,omitempty"`
+	TxBandwidth    []ClusterMetric `json:"txBandwidth,omitzero"`
+}
+
+func (v ClusterMetrics) Validate() error {
+	for _, item := range v.CPUUsage {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.CPUUsagePct {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.DiskUsage {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.DiskUsagePct {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.MemoryUsage {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.MemoryUsagePct {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.RxBandwidth {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Step != nil {
+		if _, err := strconv.ParseUint(*v.Step, 10, 64); err != nil {
+			return types.NewError(types.ProtocolError)
+		}
+	}
+	for _, item := range v.TxBandwidth {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterMetrics) normalize() {
+	for i := range v.CPUUsage {
+		v.CPUUsage[i].normalize()
+	}
+	for i := range v.CPUUsagePct {
+		v.CPUUsagePct[i].normalize()
+	}
+	for i := range v.DiskUsage {
+		v.DiskUsage[i].normalize()
+	}
+	for i := range v.DiskUsagePct {
+		v.DiskUsagePct[i].normalize()
+	}
+	for i := range v.MemoryUsage {
+		v.MemoryUsage[i].normalize()
+	}
+	for i := range v.MemoryUsagePct {
+		v.MemoryUsagePct[i].normalize()
+	}
+	for i := range v.RxBandwidth {
+		v.RxBandwidth[i].normalize()
+	}
+	for i := range v.TxBandwidth {
+		v.TxBandwidth[i].normalize()
+	}
+}
+
+type ClusterMntEvent struct {
+	CreatedAt *time.Time            `json:"createdAt,omitempty"`
+	ID        *string               `json:"id,omitempty"`
+	ProjectID *string               `json:"projectId,omitempty"`
+	Spec      *ClusterMntEventSpec  `json:"spec,omitempty"`
+	State     *ClusterMntEventState `json:"state,omitempty"`
+	Ref       *types.ResourceRef    `json:"ref,omitempty"`
+}
+
+func (v ClusterMntEvent) Validate() error {
+	if v.Spec != nil {
+		if err := v.Spec.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.State != nil {
+		if err := v.State.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterMntEvent) normalize() {
+	if v.CreatedAt != nil {
+		instant := v.CreatedAt.UTC()
+		v.CreatedAt = &instant
+	}
+	if v.Spec != nil {
+		v.Spec.normalize()
+	}
+	if v.State != nil {
+		v.State.normalize()
+	}
+}
+func (v *ClusterMntEvent) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ClusterMntEvent
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ClusterMntEvent(value)
+	v.normalize()
+	return nil
+}
+
+type ClusterMntEventSpec struct {
+	ClusterID    *string               `json:"clusterId,omitempty"`
+	Description  *types.ProtectedValue `json:"description,omitempty"`
+	ScheduledFor *time.Time            `json:"scheduledFor,omitempty"`
+	Tasks        []string              `json:"tasks,omitzero"`
+}
+
+func (v ClusterMntEventSpec) Validate() error {
+	return nil
+}
+func (v *ClusterMntEventSpec) normalize() {
+	if v.ScheduledFor != nil {
+		instant := v.ScheduledFor.UTC()
+		v.ScheduledFor = &instant
+	}
+}
+
+type ClusterMntEventState struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (v ClusterMntEventState) Validate() error {
+	return nil
+}
+func (v *ClusterMntEventState) normalize() {
+}
+
 type ClusterPlatform struct {
 	Deprecated *bool   `json:"deprecated,omitempty"`
 	Version    *string `json:"version,omitempty"`
@@ -434,6 +662,152 @@ func (v ClusterProxyState) Validate() error {
 	return nil
 }
 func (v *ClusterProxyState) normalize() {
+}
+
+type ClusterSession struct {
+	AppType                              *types.ProtectedValue  `json:"appType,omitempty"`
+	ClientIP                             *types.ProtectedValue  `json:"clientIp,omitempty"`
+	CurrentCPUTime                       *ProtectedUint64String `json:"currentCpuTime,omitempty"`
+	CurrentMem                           *ProtectedInt64String  `json:"currentMem,omitempty"`
+	HibernatingSessionTerminationTimeout *ProtectedUint64String `json:"hibernatingSessionTerminationTimeout,omitempty"`
+	Hibernation                          *bool                  `json:"hibernation,omitempty"`
+	InfobaseID                           *string                `json:"infobaseId,omitempty"`
+	LastActiveAt                         *time.Time             `json:"lastActiveAt,omitempty"`
+	Locale                               *types.ProtectedValue  `json:"locale,omitempty"`
+	PassiveSessionHibernationTimeout     *ProtectedUint64String `json:"passiveSessionHibernationTimeout,omitempty"`
+	SessionID                            *string                `json:"sessionId,omitempty"`
+	SessionNumber                        *ProtectedInt64String  `json:"sessionNumber,omitempty"`
+	StartedAt                            *time.Time             `json:"startedAt,omitempty"`
+	TotalBytes                           *ProtectedUint64String `json:"totalBytes,omitempty"`
+	TotalBytesLastFiveMin                *ProtectedUint64String `json:"totalBytesLastFiveMin,omitempty"`
+	TotalCalls                           *ProtectedUint64String `json:"totalCalls,omitempty"`
+	TotalCallsLastFiveMin                *ProtectedUint64String `json:"totalCallsLastFiveMin,omitempty"`
+	TotalCPUTime                         *ProtectedUint64String `json:"totalCpuTime,omitempty"`
+	TotalCPUTimeLastFiveMin              *ProtectedUint64String `json:"totalCpuTimeLastFiveMin,omitempty"`
+	TotalDbmsBytes                       *ProtectedUint64String `json:"totalDbmsBytes,omitempty"`
+	TotalDbmsBytesLastFiveMin            *ProtectedUint64String `json:"totalDbmsBytesLastFiveMin,omitempty"`
+	TotalMem                             *ProtectedInt64String  `json:"totalMem,omitempty"`
+	TotalMemLastFiveMin                  *ProtectedInt64String  `json:"totalMemLastFiveMin,omitempty"`
+	Username                             *types.ProtectedValue  `json:"username,omitempty"`
+	Ref                                  *types.ResourceRef     `json:"ref,omitempty"`
+}
+
+func (v ClusterSession) Validate() error {
+	if v.CurrentCPUTime != nil {
+		if err := v.CurrentCPUTime.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.CurrentMem != nil {
+		if err := v.CurrentMem.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.HibernatingSessionTerminationTimeout != nil {
+		if err := v.HibernatingSessionTerminationTimeout.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.PassiveSessionHibernationTimeout != nil {
+		if err := v.PassiveSessionHibernationTimeout.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.SessionNumber != nil {
+		if err := v.SessionNumber.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalBytes != nil {
+		if err := v.TotalBytes.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalBytesLastFiveMin != nil {
+		if err := v.TotalBytesLastFiveMin.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalCalls != nil {
+		if err := v.TotalCalls.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalCallsLastFiveMin != nil {
+		if err := v.TotalCallsLastFiveMin.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalCPUTime != nil {
+		if err := v.TotalCPUTime.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalCPUTimeLastFiveMin != nil {
+		if err := v.TotalCPUTimeLastFiveMin.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalDbmsBytes != nil {
+		if err := v.TotalDbmsBytes.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalDbmsBytesLastFiveMin != nil {
+		if err := v.TotalDbmsBytesLastFiveMin.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalMem != nil {
+		if err := v.TotalMem.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.TotalMemLastFiveMin != nil {
+		if err := v.TotalMemLastFiveMin.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ClusterSession) normalize() {
+	if v.LastActiveAt != nil {
+		instant := v.LastActiveAt.UTC()
+		v.LastActiveAt = &instant
+	}
+	if v.StartedAt != nil {
+		instant := v.StartedAt.UTC()
+		v.StartedAt = &instant
+	}
+}
+func (v *ClusterSession) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ClusterSession
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ClusterSession(value)
+	v.normalize()
+	return nil
+}
+
+type ClusterSessionFilter struct {
+	InfobaseID *string `json:"infobaseId,omitempty"`
+}
+
+func (v ClusterSessionFilter) Validate() error {
+	return nil
+}
+func (v *ClusterSessionFilter) normalize() {
 }
 
 type ClusterSpec struct {
@@ -1459,6 +1833,43 @@ func (v *GetClusterFlavorConstraintsResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type GetClusterMetricsResponse struct {
+	Metrics *ClusterMetrics `json:"metrics,omitempty"`
+}
+
+func (v GetClusterMetricsResponse) Validate() error {
+	if v.Metrics != nil {
+		if err := v.Metrics.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *GetClusterMetricsResponse) normalize() {
+	if v.Metrics != nil {
+		v.Metrics.normalize()
+	}
+}
+func (v *GetClusterMetricsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire GetClusterMetricsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = GetClusterMetricsResponse(value)
+	v.normalize()
+	return nil
+}
+
 type GetClusterProxyResponse struct {
 	ClusterProxy *ClusterProxy `json:"clusterProxy,omitempty"`
 }
@@ -1879,6 +2290,52 @@ func (v *ListClusterDomainsResponse) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type ListClusterMntEventsResponse struct {
+	Cursor *CursorResponse   `json:"cursor,omitempty"`
+	Events []ClusterMntEvent `json:"events,omitzero"`
+}
+
+func (v ListClusterMntEventsResponse) Validate() error {
+	if v.Cursor != nil {
+		if err := v.Cursor.Validate(); err != nil {
+			return err
+		}
+	}
+	for _, item := range v.Events {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListClusterMntEventsResponse) normalize() {
+	if v.Cursor != nil {
+		v.Cursor.normalize()
+	}
+	for i := range v.Events {
+		v.Events[i].normalize()
+	}
+}
+func (v *ListClusterMntEventsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListClusterMntEventsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListClusterMntEventsResponse(value)
+	v.normalize()
+	return nil
+}
+
 type ListClusterProxiesResponse struct {
 	ClusterProxies []ClusterProxy  `json:"clusterProxies,omitzero"`
 	Cursor         *CursorResponse `json:"cursor,omitempty"`
@@ -1921,6 +2378,43 @@ func (v *ListClusterProxiesResponse) UnmarshalJSON(raw []byte) error {
 		return types.NewError(types.ProtocolError)
 	}
 	*v = ListClusterProxiesResponse(value)
+	v.normalize()
+	return nil
+}
+
+type ListClusterSessionsResponse struct {
+	Sessions []ClusterSession `json:"sessions,omitzero"`
+}
+
+func (v ListClusterSessionsResponse) Validate() error {
+	for _, item := range v.Sessions {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ListClusterSessionsResponse) normalize() {
+	for i := range v.Sessions {
+		v.Sessions[i].normalize()
+	}
+}
+func (v *ListClusterSessionsResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ListClusterSessionsResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ListClusterSessionsResponse(value)
 	v.normalize()
 	return nil
 }
@@ -2880,6 +3374,56 @@ func (v TechJournalLogsConfig) Validate() error {
 func (v *TechJournalLogsConfig) normalize() {
 }
 
+type TerminateClusterSessionBody struct {
+	Filter    *ClusterSessionFilter `json:"filter,omitempty"`
+	Reason    *types.ProtectedValue `json:"reason,omitempty"`
+	SessionID *string               `json:"sessionId,omitempty"`
+}
+
+func (v TerminateClusterSessionBody) Validate() error {
+	if v.Filter != nil {
+		if err := v.Filter.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *TerminateClusterSessionBody) normalize() {
+	if v.Filter != nil {
+		v.Filter.normalize()
+	}
+}
+func (v *TerminateClusterSessionBody) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire TerminateClusterSessionBody
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = TerminateClusterSessionBody(value)
+	v.normalize()
+	return nil
+}
+
+type TerminateClusterSessionResponse struct{}
+
+func (v TerminateClusterSessionResponse) Validate() error { return nil }
+func (v *TerminateClusterSessionResponse) UnmarshalJSON(raw []byte) error {
+	var object map[string]json.RawMessage
+	if json.Unmarshal(raw, &object) != nil || object == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+
 type TimeOfDay struct {
 	Hours   *types.Integer `json:"hours,omitempty"`
 	Minutes *types.Integer `json:"minutes,omitempty"`
@@ -2891,6 +3435,58 @@ func (v TimeOfDay) Validate() error {
 	return nil
 }
 func (v *TimeOfDay) normalize() {
+}
+
+type TimeRange struct {
+	End   *time.Time `json:"end,omitempty"`
+	Start *time.Time `json:"start,omitempty"`
+}
+
+func (v TimeRange) Validate() error {
+	return nil
+}
+func (v *TimeRange) normalize() {
+	if v.End != nil {
+		instant := v.End.UTC()
+		v.End = &instant
+	}
+	if v.Start != nil {
+		instant := v.Start.UTC()
+		v.Start = &instant
+	}
+}
+func (v *TimeRange) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire TimeRange
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = TimeRange(value)
+	v.normalize()
+	return nil
+}
+
+type TimeSeries struct {
+	Timestamps []time.Time       `json:"timestamps,omitzero"`
+	Values     []ProtectedNumber `json:"values,omitzero"`
+}
+
+func (v TimeSeries) Validate() error {
+	return nil
+}
+func (v *TimeSeries) normalize() {
+	for i := range v.Timestamps {
+		v.Timestamps[i] = v.Timestamps[i].UTC()
+	}
 }
 
 type TransferClusterDomainBody struct {
