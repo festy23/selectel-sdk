@@ -4625,7 +4625,8 @@
       "onec/discovery.go",
       "internal/core/reads.go",
       "internal/core/pagination.go",
-      "pagination/pagination.go"
+      "pagination/pagination.go",
+      "onec/datastores.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4650,7 +4651,8 @@
       "catalog/sources/1c-cloud.json",
       "onec/mutations.go",
       "onec/handles.go",
-      "operations/handle.go"
+      "operations/handle.go",
+      "onec/datastores.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4707,7 +4709,8 @@
       "catalog/sources/1c-cloud.json",
       "onec/mutations.go",
       "onec/handles.go",
-      "operations/handle.go"
+      "operations/handle.go",
+      "onec/datastores.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
@@ -4994,5 +4997,92 @@
     ],
     "evidence_ref": "onec_infrastructure_test.go",
     "verification": "offline"
+  },
+  "cloud_1c.v2.datastores.get": {
+    "go_method": "onec.Client.GetDatastore",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.GetDatastoreResponse",
+    "contract_ref": "contracts/cloud_1c.v2.datastores.get.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/discovery.go",
+      "internal/core/reads.go",
+      "internal/core/pagination.go",
+      "pagination/pagination.go",
+      "onec/datastores.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.datastores.create": {
+    "go_method": "onec.Client.CreateDatastore",
+    "input_type": "onec.CreateDatastoreRequest, types.CallOptions",
+    "output_type": "onec.CreateDatastoreResponse",
+    "contract_ref": "contracts/cloud_1c.v2.datastores.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "datastore.active"
+    ],
+    "recovery": true
+  },
+  "cloud_1c.v2.datastores.delete": {
+    "go_method": "onec.Client.DeleteDatastore",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.DeleteDatastoreResponse",
+    "contract_ref": "contracts/cloud_1c.v2.datastores.delete.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go",
+      "onec/datastores.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "datastore.deleted"
+    ],
+    "recovery": true
   }
 }

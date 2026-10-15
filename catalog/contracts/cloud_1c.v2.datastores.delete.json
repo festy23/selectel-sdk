@@ -1,0 +1,42 @@
+{
+  "operation_id": "cloud_1c.v2.datastores.delete",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/datastores/{id}",
+    "body": null,
+    "reference": "Exact independent datastore ref, no parent, pinned endpoint",
+    "prerequisite": "Linked infobases must be removed beforehand per source; never implicit cascade"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed DeleteDatastoreResponse, exact ID/projectId checked; accepted exact caller ref retained",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "no mutation replay on any unknown response",
+  "pagination": null,
+  "wait": {
+    "goals": [
+      "datastore.deleted"
+    ],
+    "source_states": "DatastoreStatus enum; DELETED confirms goal; ERRORED fails; documented transitions pending; missing/UNSPECIFIED/new values unknown",
+    "absence": "No invented 404 absence success",
+    "restrictions": "Originating receipt capability only"
+  },
+  "recovery": {
+    "kind": "exact resource observation; unknown outcome remains indeterminate; no replay or authorship inference"
+  }
+}

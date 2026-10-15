@@ -1,0 +1,41 @@
+{
+  "operation_id": "cloud_1c.v2.datastores.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "exact regional project",
+    "path": "/datastores",
+    "method": "POST",
+    "body": "CreateDatastoreRequest with required spec; required name/flavor, exact int64 node/flavor strings; absent type/nodeCount remain absent, no inserted defaults",
+    "reference": "Created datastore is independent; no inferred cluster parent"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed CreateDatastoreResponse; trustworthy ID scanned before unrelated decode failure; foreign projectId excluded; accepted receipt retained",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "no mutation replay on any unknown response",
+  "pagination": null,
+  "wait": {
+    "goals": [
+      "datastore.active"
+    ],
+    "source_states": "DatastoreStatus: ACTIVE succeeds, ERRORED/DELETED fail, documented transitions pending, missing/UNSPECIFIED/new values unknown",
+    "absence": "404 is not readiness or deletion proof"
+  },
+  "recovery": {
+    "kind": "exact resource observation; unknown outcome remains indeterminate; no replay or authorship inference"
+  }
+}

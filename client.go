@@ -83,7 +83,7 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
 	if ref.Service == "cloud_1c" {
-		return onec.Bind(c.runtime, ref.Scope).ClusterHandle(ref, nil)
+		return c.onecHandle(ref, nil)
 	}
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
@@ -121,7 +121,7 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 		return nil, types.NewError(types.InvalidArgument)
 	}
 	if ref.Service == "cloud_1c" {
-		return onec.Bind(c.runtime, ref.Scope).ClusterHandle(ref, &receipt)
+		return c.onecHandle(ref, &receipt)
 	}
 	if ref.Service == "compute" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, &receipt)
@@ -187,3 +187,15 @@ func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (t
 func (p ProjectClient) OneC() *onec.Client { return onec.Bind(p.client.runtime, p.client.scope) }
 
 func (r RegionalClient) OneC() *onec.Client { return onec.Bind(r.client.runtime, r.client.scope) }
+
+func (c *Client) onecHandle(ref types.ResourceRef, receipt *types.Receipt) (*operations.Handle, error) {
+	service := onec.Bind(c.runtime, ref.Scope)
+	switch ref.Kind {
+	case "cluster":
+		return service.ClusterHandle(ref, receipt)
+	case "datastore":
+		return service.DatastoreHandle(ref, receipt)
+	default:
+		return nil, types.NewError(types.CapabilityUnavailable)
+	}
+}

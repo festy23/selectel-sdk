@@ -65,3 +65,41 @@ version/config. Проверка прикладной готовности и с
 fixed-page collection и SDK cursor+skip для локального продолжения.
 `includeDeprecated` сохраняет различие absence/false/true.
 `GetClusterFlavorConstraints` возвращает source min/max как точные int64 строки.
+
+Datastore — независимый ресурс project/location; SDK не создаёт cluster parent
+из совпавшего ID или вложенной metadata. `GetDatastore`, `CreateDatastore`,
+`DeleteDatastore` сохраняют source DTO и точные refs. Datastore receipt получает
+только datastore goals: ACTIVE / DELETED с указанным в source смыслом,
+ERRORED — failure; 404 не заменяет DELETED. Смешение cluster/datastore kind
+в receipt отклоняется до I/O, даже если account/project/endpoint совпали.
+
+Пример чтения с уже явно выбранными credentials и региональным endpoint:
+
+```go
+scope := types.Scope{AccountID: accountID, ProjectID: projectID, Region: "spb", Pool: "ru-9"}
+endpoint := types.EndpointBinding{
+    ID: "caller-selected-onec", URL: regionalAPIBase, // validated caller choice, includes /v2
+    Scope: scope, APIGeneration: "v2", Audience: "selectel",
+}
+client, err := selectelsdk.New(selectelsdk.Config{
+    AccountID: accountID, Credentials: credentialSource,
+    EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{
+        {Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint,
+    },
+})
+if err != nil { panic(err) }
+project, err := client.Project(projectID)
+if err != nil { panic(err) }
+regional, err := project.Location(scope.Region, scope.Pool)
+if err != nil { panic(err) }
+ref := types.ResourceRef{
+    Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "datastore", ID: datastoreID,
+    EndpointID: endpoint.ID, EndpointURL: endpoint.URL,
+}
+result, err := regional.OneC().GetDatastore(ctx, ref, types.CallOptions{})
+if err != nil { panic(err) }
+_ = result // caller consumes the typed response
+```
+
+`regionalAPIBase` выбирает вызывающая сторона после bootstrap discovery;
+фрагмент не выполняет автоматического выбора или cloud mutation.

@@ -486,21 +486,21 @@
       "path": "/datastores",
       "operation_id": "createDatastore",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "GET",
       "path": "/datastores/{id}",
       "operation_id": "getDatastore",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "DELETE",
       "path": "/datastores/{id}",
       "operation_id": "deleteDatastore",
       "owner_issue": 65,
-      "status": "unimplemented"
+      "status": "implemented"
     },
     {
       "method": "PATCH",

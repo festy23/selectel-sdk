@@ -542,3 +542,103 @@ func TestOneCServiceConfigIsMetadataAndDoesNotSelectDefaultRegion(t *testing.T) 
 		t.Fatalf("service config %+v %v calls%d", out, err, calls)
 	}
 }
+
+const onecDatastoreFixture = `{"datastore":{"id":"store-1","projectId":"test-project","spec":{"name":"store","flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"},"nodeCount":"1","enableStorageAutoScaling":false},"state":{"status":"DATASTORE_STATUS_ACTIVE"}}}`
+
+func TestOneCDatastoreReadHasIndependentScopedIdentity(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "GET" || r.URL.Path != "/v2/datastores/store-1" {
+			t.Fatalf("datastore wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecDatastoreFixture))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "datastore"
+	ref.ID = "store-1"
+	out, err := regional.GetDatastore(context.Background(), ref, types.CallOptions{})
+	if err != nil || out.Data.Datastore == nil || out.Data.Datastore.Ref == nil || *out.Data.Datastore.Ref != ref || *out.Data.Datastore.Spec.NodeCount != "1" || *out.Data.Datastore.Spec.EnableStorageAutoScaling || *out.Data.Datastore.State.Status != "DATASTORE_STATUS_ACTIVE" {
+		t.Fatalf("datastore %+v %v", out, err)
+	}
+}
+
+func TestOneCDatastoreCreationDoesNotInferClusterParentOrDefaults(t *testing.T) {
+	_, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		raw, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/v2/datastores" || string(raw) != `{"spec":{"enableStorageAutoScaling":false,"flavor":{"diskGb":"20","ramMb":"4096","vCpu":"2"},"name":"store"}}` {
+			t.Fatalf("create datastore wire %s %s %s", r.Method, r.URL, raw)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecDatastoreFixture))}, nil
+	}))
+	var spec onec.CreateDatastoreRequest
+	if json.Unmarshal([]byte(`{"spec":{"name":"store","flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"},"enableStorageAutoScaling":false}}`), &spec) != nil {
+		t.Fatal("fixture")
+	}
+	out, err := regional.CreateDatastore(context.Background(), spec, types.CallOptions{})
+	if err != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].Kind != "datastore" || out.Receipt.ResourceRefs[0].ID != "store-1" || out.Receipt.ResourceRefs[0].Parent != nil || out.Receipt.ResourceRefs[0].Scope != cluster.Scope {
+		t.Fatalf("create datastore %+v %v", out, err)
+	}
+}
+
+func TestOneCDatastoreDeletionWaitKeepsIndependentIdentity(t *testing.T) {
+	writes, reads := 0, 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path != "/v2/datastores/store-1" {
+			t.Fatalf("datastore delete wire %s", r.URL)
+		}
+		state := "DATASTORE_STATUS_DELETING"
+		switch r.Method {
+		case "DELETE":
+			writes++
+		case "GET":
+			reads++
+			state = "DATASTORE_STATUS_DELETED"
+		default:
+			t.Fatalf("unexpected method%s", r.Method)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(strings.Replace(onecDatastoreFixture, "DATASTORE_STATUS_ACTIVE", state, 1)))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "datastore"
+	ref.ID = "store-1"
+	out, err := regional.DeleteDatastore(context.Background(), ref, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("delete datastore %+v", out)
+	}
+	h, err := c.Resume(*out.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = h.Wait(context.Background(), "datastore.active")
+	if types.ErrorCode(err) != types.CapabilityUnavailable || writes != 1 || reads != 0 {
+		t.Fatalf("foreign goal %v writes%d reads%d", err, writes, reads)
+	}
+	waited, err := h.Wait(context.Background(), "datastore.deleted")
+	if err != nil || !waited.Complete || waited.Last == nil || waited.Last.Ref != ref || waited.Last.ProviderState != "DATASTORE_STATUS_DELETED" || writes != 1 || reads != 1 {
+		t.Fatalf("datastore wait %+v %v writes%d reads%d", waited, err, writes, reads)
+	}
+}
+
+func TestOneCReceiptCannotObserveDifferentResourceKindInSameService(t *testing.T) {
+	calls := 0
+	c, regional, cluster := onecRegionalFixture(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(onecDatastoreFixture))}, nil
+	}))
+	ref := cluster
+	ref.Kind = "datastore"
+	ref.ID = "store-1"
+	accepted, err := regional.DeleteDatastore(context.Background(), ref, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	forged := *accepted.Receipt
+	forged.ResourceRefs = append([]types.ResourceRef{}, forged.ResourceRefs...)
+	forged.ResourceRefs[0].Kind = "cluster"
+	_, err = c.Resume(forged)
+	if types.ErrorCode(err) != types.CapabilityUnavailable || calls != 1 {
+		t.Fatalf("cross-kind receipt %v calls%d", err, calls)
+	}
+}
