@@ -27,7 +27,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_devices.create"
     },
     {
       "method": "GET",
@@ -48,7 +49,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_devices.delete"
     },
     {
       "method": "GET",
@@ -69,7 +71,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_devices.replace"
     },
     {
       "method": "PATCH",
@@ -79,7 +82,9 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "partial",
+      "binding": "mobile_farm.v3.api_devices_settings.update",
+      "remaining_contract": "202 response shape absent; owned #69;204 confirmed bodyless, no inferred long-operation task/readiness"
     },
     {
       "method": "PATCH",
@@ -89,7 +94,8 @@
           "iam_token_project_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_devices_tariff.update"
     },
     {
       "method": "GET",

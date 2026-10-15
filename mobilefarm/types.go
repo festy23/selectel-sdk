@@ -12,3 +12,10 @@ type UnmodeledResponse struct {
 	HTTPStatus int                  `json:"http_status"`
 	Body       types.ProtectedValue `json:"body"`
 }
+
+// DeviceRemoval keeps the source's 200 monthly-autopay update distinct from the
+// 204 bodyless removal acknowledgement; neither implies observed readiness.
+type DeviceRemoval struct {
+	HTTPStatus int          `json:"http_status"`
+	Device     *SmallDevice `json:"device,omitempty"`
+}

@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice", "AdbKey":"ADBKey", "CreateAdbKeyRequest":"CreateADBKeyRequest", "entity.ProxyTokenInfo":"ProxyTokenInfo", "entity.ProxyToken":"ProxyToken", "entity.CreateProxyTokenReq":"CreateProxyTokenRequest", "GetTicketResponse":"GetTicketResponse", "AddUserDeviceRequest":"AddUserDeviceRequest", "StartRemoteConnectResponse":"StartRemoteConnectResponse", "entity.Rule":"FirewallRule", "entity.FirewallRuleBodyReq":"FirewallRuleRequest", "entity.FirewallRulePriorityBodyReq":"FirewallRuleOrderRequest"}, None),
+"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice", "AdbKey":"ADBKey", "CreateAdbKeyRequest":"CreateADBKeyRequest", "entity.ProxyTokenInfo":"ProxyTokenInfo", "entity.ProxyToken":"ProxyToken", "entity.CreateProxyTokenReq":"CreateProxyTokenRequest", "GetTicketResponse":"GetTicketResponse", "entity.DeviceRemoveBody":"DeviceRemoveRequest", "entity.DeviceReplaceBody":"DeviceReplaceRequest", "entity.DeviceSettingsChangeBody":"DeviceSettingsRequest", "entity.Order":"DeviceOrder", "entity.CreateOkResponse":"CreateDevicesResponse", "AddUserDeviceRequest":"AddUserDeviceRequest", "StartRemoteConnectResponse":"StartRemoteConnectResponse", "entity.Rule":"FirewallRule", "entity.FirewallRuleBodyReq":"FirewallRuleRequest", "entity.FirewallRulePriorityBodyReq":"FirewallRuleOrderRequest"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",

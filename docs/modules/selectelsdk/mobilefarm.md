@@ -28,10 +28,11 @@ MAINTENANCE/ERROR numeric members; полный Device.status — integer. DTO �
 Remote ADB URL, owner/phone/forwarding details и battery telemetry защищены. Числа
 сохраняются лексически без float64; Reveal — явная caller-directed граница.
 
-Текущий slice содержит три device чтения, шесть ADB, шесть proxy operations auth ticket v2 и firewall list/create/update/reorder; StartRemoteConnect, 4 partial operations (firewall DELETE + assign/release/stop remote) и остальные 5 device operations остаются unimplemented
-до source-bound TDD slices, обязательных проверок и двух review. Transfers и device
-connections не выполнялись; remoteConnectUrl возвращается как protected data,
-SDK не открывает ADB/WebSocket соединение автоматически. Offline не означает live.
+Текущий scope охватывает все30операций pinned inventory:25implemented/5partial,
+0unimplemented. Частичны firewall DELETE200, assign/release/stopremote200 и
+settings202: source response schemas отсутствуют. Inventory целиком неизвестен,
+coverage_ratio=null; это не complete API claim. Connections/live не выполнялись;
+remoteConnectUrl возвращается protected, SDK не открывает ADB/WebSocket.
 
 
 ADB current-user list/store/delete доступны в account и project views; explicit
@@ -64,3 +65,26 @@ Firewall create требует все три поля по source prose; update 
 Firewall reorder передаёт явные caller refs в заданном порядке; ответ не доказывает полноту списка или порядок. Идентичности сканируются до независимых полей. DELETE200 не имеет source schema: UnmodeledResponse сохраняет bounded protected body и подтверждённый status, всегда Incomplete с Accepted receipt/exact caller ref. Отсутствие schema не трактуется как bodyless или completion. Remaining response contract принадлежит #69.
 
 AssignDevice, ReleaseDevice и StopRemoteConnect имеют200 без schema. Блог Selectel для assign вызывает response.json(), поэтому отсутствие schema не доказывает отсутствие тела; orphan Success DTO не привязывается догадкой. #69 владеет тремя missing response contracts. Bounded protected acceptance-only ответы всегда Incomplete, сохраняют caller device ref без user/session association. StartRemoteConnect возвращает source optional protected URL; не подключается к нему и не обещает readiness. Все4пути проверяют exact endpoint до credentials/HTTP; unknown не повторяется.
+
+
+Device Order/Replace/Remove/Settings/Tariff используют generated source DTOs.
+Order сканирует все trustworthy serials до независимых полей; malformed row не
+теряет последующие IDs. Replacement может вернуть другой serial и сохраняет
+original+returned refs без inferred ownership. Remove200 означает monthly
+autopay update с typed SmallDevice;204 bodyless отличается по status. Settings204
+bodyless,202 unknown schema — protected bounded partial даже при пустом теле.
+Никакой status не доказывает readiness/connection и не разрешает replay.
+
+Узко переиспользован reviewed DoJSONStatus adapter PR91 head300a4f0aa467c3651f199fa3cf0877597d4f9777
+(только internal/core/request.go delta от7f8dd2a), сохраняющий текущий reviewed
+earlyreceipt ContractRevision fix. Existing DoJSON delegates to status adapter;
+budget/auth/cancellation/no-replay/receipt сохраняют общий путь. Будущая интеграция
+P1 ErrorProtocol/diagnostic handling затронет тот же request.go; её unmerged diff
+не копировался. Review scope отдельно включает root-array FixedIterator seam и
+Catalog.Auth.Alternatives deep-copy metadata без runtime fallback.
+
+Remaining source contracts принадлежат #69: firewall DELETE200 response,
+user assignment200 (Swagger no schema vs official blog response.json()), user
+release200, stopremote200 и settings202. Не привязан orphan Success DTO, нет
+bodyless/completion предположений или выдуманных session associations. Только
+источник с конкретным schema/status mapping может перевести эти5partial вimplemented.

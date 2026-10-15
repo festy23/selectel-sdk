@@ -293,6 +293,43 @@ func (v *Browser) normalize() {
 	}
 }
 
+type CreateDevicesResponse struct {
+	Devices []SmallDevice `json:"devices,omitzero"`
+}
+
+func (v CreateDevicesResponse) Validate() error {
+	for _, item := range v.Devices {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *CreateDevicesResponse) normalize() {
+	for i := range v.Devices {
+		v.Devices[i].normalize()
+	}
+}
+func (v *CreateDevicesResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire CreateDevicesResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = CreateDevicesResponse(value)
+	v.normalize()
+	return nil
+}
+
 type CreateProxyTokenRequest struct {
 	Name *string `json:"name,omitempty"`
 }
@@ -444,6 +481,122 @@ func (v *Device) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type DeviceProxySettings struct {
+	Enable           *bool   `json:"enable,omitempty"`
+	TokenFingerprint *string `json:"token_fingerprint,omitempty"`
+}
+
+func (v DeviceProxySettings) Validate() error {
+	return nil
+}
+func (v *DeviceProxySettings) normalize() {
+}
+
+type DeviceRemoveRequest struct {
+	SlotID *string `json:"slotID,omitempty"`
+}
+
+func (v DeviceRemoveRequest) Validate() error {
+	return nil
+}
+func (v *DeviceRemoveRequest) normalize() {
+}
+func (v *DeviceRemoveRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DeviceRemoveRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DeviceRemoveRequest(value)
+	v.normalize()
+	return nil
+}
+
+type DeviceReplaceRequest struct {
+	Filter *FilterReplace `json:"filter,omitempty"`
+	SlotID *string        `json:"slotId,omitempty"`
+}
+
+func (v DeviceReplaceRequest) Validate() error {
+	if v.Filter != nil {
+		if err := v.Filter.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *DeviceReplaceRequest) normalize() {
+	if v.Filter != nil {
+		v.Filter.normalize()
+	}
+}
+func (v *DeviceReplaceRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DeviceReplaceRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DeviceReplaceRequest(value)
+	v.normalize()
+	return nil
+}
+
+type DeviceSettingsRequest struct {
+	Proxy *DeviceProxySettings `json:"proxy,omitempty"`
+	Wifi  *bool                `json:"wifi,omitempty"`
+}
+
+func (v DeviceSettingsRequest) Validate() error {
+	if v.Proxy != nil {
+		if err := v.Proxy.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *DeviceSettingsRequest) normalize() {
+	if v.Proxy != nil {
+		v.Proxy.normalize()
+	}
+}
+func (v *DeviceSettingsRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DeviceSettingsRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DeviceSettingsRequest(value)
+	v.normalize()
+	return nil
+}
+
 type Display struct {
 	Density  *types.Number  `json:"density,omitempty"`
 	Fps      *types.Number  `json:"fps,omitempty"`
@@ -461,6 +614,41 @@ func (v Display) Validate() error {
 	return nil
 }
 func (v *Display) normalize() {
+}
+
+type Filter struct {
+	Abi          *string        `json:"abi,omitempty"`
+	Count        *types.Integer `json:"count,omitempty"`
+	CPUPlatform  *string        `json:"cpuPlatform,omitempty"`
+	Manufacturer *string        `json:"manufacturer,omitempty"`
+	MarketName   *string        `json:"marketName,omitempty"`
+	OsVersion    *string        `json:"osVersion,omitempty"`
+	Platform     *string        `json:"platform,omitempty"`
+	Resolution   *string        `json:"resolution,omitempty"`
+	Sdk          *string        `json:"sdk,omitempty"`
+}
+
+func (v Filter) Validate() error {
+	return nil
+}
+func (v *Filter) normalize() {
+}
+
+type FilterReplace struct {
+	Abi          *string `json:"abi,omitempty"`
+	CPUPlatform  *string `json:"cpuPlatform,omitempty"`
+	Manufacturer *string `json:"manufacturer,omitempty"`
+	MarketName   *string `json:"marketName,omitempty"`
+	OsVersion    *string `json:"osVersion,omitempty"`
+	Platform     *string `json:"platform,omitempty"`
+	Resolution   *string `json:"resolution,omitempty"`
+	Sdk          *string `json:"sdk,omitempty"`
+}
+
+func (v FilterReplace) Validate() error {
+	return nil
+}
+func (v *FilterReplace) normalize() {
 }
 
 type FirewallRuleRequest struct {
@@ -568,6 +756,44 @@ func (v Network) Validate() error {
 	return nil
 }
 func (v *Network) normalize() {
+}
+
+type DeviceOrder struct {
+	BillingType *string  `json:"billingType,omitempty"`
+	Filters     []Filter `json:"filters,omitzero"`
+}
+
+func (v DeviceOrder) Validate() error {
+	for _, item := range v.Filters {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *DeviceOrder) normalize() {
+	for i := range v.Filters {
+		v.Filters[i].normalize()
+	}
+}
+func (v *DeviceOrder) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DeviceOrder
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DeviceOrder(value)
+	v.normalize()
+	return nil
 }
 
 type Owner struct {

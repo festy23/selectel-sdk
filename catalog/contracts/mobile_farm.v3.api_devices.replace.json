@@ -1,0 +1,39 @@
+{
+  "operation_id": "mobile_farm.v3.api_devices.replace",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "project IAM view only",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v3/devices/{serial}",
+    "method": "PUT",
+    "auth": "iam_project; no fallback",
+    "body": "types.ResourceRef, mobilefarm.DeviceReplaceRequest source DTO fields; private wire encoder preserves optional false/empty collections and native timestamp strings, no SDK defaults. Exact caller root device ref checked before I/O where provided."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed SmallDevice returned replacement serial may differ from caller original serial. Preserve caller original and independently trustworthy returned replacement ref before unrelated decoding. No inferred owner, readiness or replay.",
+    "sensitive_fields": [
+      "response.owner"
+    ]
+  },
+  "errors": {
+    "mapping": "Shared safe SDK status taxonomy and HTTPStatus, documented400/401/402(payment)/403/404/405/409/429 as applicable; provider raw messages/filter bodies omitted. Confirmed rejections retain Rejected receipt; unknown one attempt without replay; decode failures preserve accepted receipt and trustworthy refs."
+  },
+  "retry": "No replay; one resource attempt on unknown outcome. Documented 4xx rejection statuses retain rejected receipt;500/transport/decode failures preserve uncertainty/acceptance as applicable.",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No causal mutation observation/replay proof; explicit exact-ref Get may observe device but does not prove task completion or retry safety."
+  }
+}

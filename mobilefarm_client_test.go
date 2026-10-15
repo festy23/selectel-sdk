@@ -750,3 +750,181 @@ func TestMobileFarmDeviceAccessMutationsValidateExactRefBeforeCredentials(t *tes
 		})
 	}
 }
+
+func TestMobileFarmRemoveDeviceSelectsStatusSpecificBodyContract(t *testing.T) {
+	for _, status := range []int{200, 204} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+				body, _ := io.ReadAll(r.Body)
+				if r.Method != "DELETE" || r.URL.Path != "/mobfarm/api/v3/devices/serial-1" || string(body) != `{"slotID":"slot-1"}` {
+					t.Fatalf("remove %s %s", r.URL, body)
+				}
+				return &http.Response{StatusCode: status, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"serial":"serial-1"}`))}, nil
+			}))
+			p, _ := c.Project("test-project")
+			ref := mobileFarmUserRef()
+			ref.Scope.ProjectID = "test-project"
+			ref.Kind = "device"
+			ref.ID = "serial-1"
+			var input mobilefarm.DeviceRemoveRequest
+			_ = json.Unmarshal([]byte(`{"slotID":"slot-1"}`), &input)
+			out, e := p.MobileFarm().RemoveDevice(context.Background(), ref, input, types.CallOptions{})
+			if out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+				t.Fatalf("receipt %+v %v", out, e)
+			}
+			if status == 200 {
+				if e != nil || out.Data.HTTPStatus != 200 || out.Data.Device == nil || out.Data.Device.Ref == nil || *out.Data.Device.Ref != ref {
+					t.Fatalf("monthly %+v %v", out, e)
+				}
+			} else if types.ErrorCode(e) != types.ProtocolError {
+				t.Fatalf("204body %+v %v", out, e)
+			}
+		})
+	}
+}
+
+func TestMobileFarmRemoveDeviceEmptyBodyIsOnlyValidFor204(t *testing.T) {
+	for _, status := range []int{200, 204} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			c := mobileFarmTestClient(t, transportFunc(func(*http.Request) (*http.Response, error) {
+				return &http.Response{StatusCode: status, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+			}))
+			p, _ := c.Project("test-project")
+			ref := mobileFarmUserRef()
+			ref.Scope.ProjectID = "test-project"
+			ref.Kind = "device"
+			ref.ID = "serial-1"
+			out, e := p.MobileFarm().RemoveDevice(context.Background(), ref, mobilefarm.DeviceRemoveRequest{}, types.CallOptions{})
+			if out.Receipt == nil || out.Receipt.Outcome != types.Accepted {
+				t.Fatalf("receipt %+v %v", out, e)
+			}
+			if status == 204 {
+				if e != nil || out.Data.HTTPStatus != 204 || out.Data.Device != nil {
+					t.Fatalf("204 %+v %v", out, e)
+				}
+			} else if types.ErrorCode(e) != types.ProtocolError {
+				t.Fatalf("200 %+v %v", out, e)
+			}
+		})
+	}
+}
+
+func TestMobileFarmDeviceSettingsDistinguishes202PartialFrom204Bodyless(t *testing.T) {
+	for _, status := range []int{202, 204} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			calls := 0
+			c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+				calls++
+				body, _ := io.ReadAll(r.Body)
+				if r.Method != "PATCH" || r.URL.Path != "/mobfarm/api/v3/devices/serial-1/settings" || string(body) != `{"wifi":false}` {
+					t.Fatalf("settings %s %s", r.URL, body)
+				}
+				payload := `{"unknown":"synthetic-private-setting"}`
+				if status == 204 {
+					payload = ""
+				}
+				return &http.Response{StatusCode: status, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+			}))
+			p, _ := c.Project("test-project")
+			ref := mobileFarmUserRef()
+			ref.Scope.ProjectID = "test-project"
+			ref.Kind = "device"
+			ref.ID = "serial-1"
+			out, e := p.MobileFarm().ChangeDeviceSettings(context.Background(), ref, mobilefarm.DeviceSettingsRequest{}, types.CallOptions{})
+			if types.ErrorCode(e) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+				t.Fatalf("empty %+v %v", out, e)
+			}
+			var bad mobilefarm.DeviceSettingsRequest
+			_ = json.Unmarshal([]byte(`{"proxy":{"enable":true}}`), &bad)
+			out, e = p.MobileFarm().ChangeDeviceSettings(context.Background(), ref, bad, types.CallOptions{})
+			if types.ErrorCode(e) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+				t.Fatalf("proxy %+v %v", out, e)
+			}
+			var input mobilefarm.DeviceSettingsRequest
+			_ = json.Unmarshal([]byte(`{"wifi":false}`), &input)
+			out, e = p.MobileFarm().ChangeDeviceSettings(context.Background(), ref, input, types.CallOptions{})
+			if out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Data.HTTPStatus != status {
+				t.Fatalf("settings %+v %v", out, e)
+			}
+			if status == 202 {
+				if types.ErrorCode(e) != types.Incomplete {
+					t.Fatalf("202 %v", e)
+				}
+			} else if e != nil {
+				t.Fatalf("204 %v", e)
+			}
+		})
+	}
+}
+
+func TestMobileFarmTariffPreservesNativePaymentStringAndExactDevice(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		body, _ := io.ReadAll(r.Body)
+		if r.Method != "PATCH" || r.URL.Path != "/mobfarm/api/v3/devices/serial-1/tariff" || !strings.Contains(string(body), `"autoPayDateTime":"native-date-without-zone"`) {
+			t.Fatalf("tariff %s %s", r.URL, body)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"serial":"serial-1","ready":false}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	ref := mobileFarmUserRef()
+	ref.Scope.ProjectID = "test-project"
+	ref.Kind = "device"
+	ref.ID = "serial-1"
+	var input mobilefarm.Billing
+	_ = json.Unmarshal([]byte(`{"type":"months","autoPayDateTime":"native-date-without-zone"}`), &input)
+	out, e := p.MobileFarm().ChangeDeviceTariff(context.Background(), ref, input, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Data.Ref == nil || *out.Data.Ref != ref || out.Data.Ready == nil || *out.Data.Ready {
+		t.Fatalf("tariff %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmReplaceDeviceRetainsReturnedReplacementIdentityOnDecodeError(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		body, _ := io.ReadAll(r.Body)
+		if r.Method != "PUT" || r.URL.Path != "/mobfarm/api/v3/devices/serial-1" || string(body) != `{"filter":{"platform":"Android"},"slotId":"slot-1"}` {
+			t.Fatalf("replace %s %s", r.URL, body)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"serial":"serial-2","owner":{"name":false}}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	ref := mobileFarmUserRef()
+	ref.Scope.ProjectID = "test-project"
+	ref.Kind = "device"
+	ref.ID = "serial-1"
+	var input mobilefarm.DeviceReplaceRequest
+	_ = json.Unmarshal([]byte(`{"filter":{"platform":"Android"},"slotId":"slot-1"}`), &input)
+	out, e := p.MobileFarm().ReplaceDevice(context.Background(), ref, input, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.ResourceRefs[0] != ref || out.Receipt.ResourceRefs[1].ID != "serial-2" || out.Receipt.ResourceRefs[1].Parent != nil {
+		t.Fatalf("replace %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmOrderDevicesScansAllTrustworthyIDsBeforeDecodingFields(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		body, _ := io.ReadAll(r.Body)
+		if r.Method != "POST" || r.URL.Path != "/mobfarm/api/v3/devices" || string(body) != `{"billingType":"hours","filters":[{"count":2,"platform":"Android"}]}` {
+			t.Fatalf("order %s %s", r.URL, body)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"devices":[{"serial":false},{"serial":"serial-1","owner":{"name":false}},{"serial":"serial-2"}]}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	var input mobilefarm.DeviceOrder
+	_ = json.Unmarshal([]byte(`{"billingType":"hours","filters":[{"count":2,"platform":"Android"}]}`), &input)
+	out, e := p.MobileFarm().OrderDevices(context.Background(), input, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.ResourceRefs[0].ID != "serial-1" || out.Receipt.ResourceRefs[1].ID != "serial-2" || out.Receipt.ResourceRefs[1].Parent != nil {
+		t.Fatalf("order %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmOrderDevicesReturnsSourceShapesAndExactRootRefs(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(*http.Request) (*http.Response, error) {
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"devices":[{"serial":"serial-1","ready":false,"status":{"ACTIVE":0},"owner":{"name":"synthetic-private-owner"}},{"serial":"serial-2"}]}`))}, nil
+	}))
+	p, _ := c.Project("test-project")
+	var input mobilefarm.DeviceOrder
+	_ = json.Unmarshal([]byte(`{"billingType":"hours","filters":[]}`), &input)
+	out, e := p.MobileFarm().OrderDevices(context.Background(), input, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Data.Devices) != 2 || out.Data.Devices[0].Ref == nil || out.Data.Devices[0].Ref.ID != "serial-1" || out.Data.Devices[0].Ref.Parent != nil || out.Data.Devices[0].Ready == nil || *out.Data.Devices[0].Ready {
+		t.Fatalf("order %+v %v", out, e)
+	}
+}
