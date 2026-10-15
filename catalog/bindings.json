@@ -4585,5 +4585,72 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "mks.v1.clusters.list": {
+    "go_method": "mkslegacy.Client.ListClusters",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Collection[mkslegacy.Cluster]",
+    "contract_ref": "contracts/mks.v1.clusters.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mkslegacy/client.go",
+      "mkslegacy/types_generated.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/core/pagination.go",
+      "internal/endpoints/locations.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "pagination/pagination.go",
+      "catalog/sources/managed-kubernetes-legacy.json",
+      "types/protected.go",
+      "types/protected_json.go",
+      "types/contracts.go",
+      "types/errors.go"
+    ],
+    "evidence_files": [
+      "mkslegacy_client_test.go",
+      "catalog/evidence/mks-legacy-source-reconciliation.json"
+    ],
+    "evidence_ref": "mkslegacy_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
+  },
+  "mks.v1.clusters.get": {
+    "go_method": "mkslegacy.Client.GetCluster",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "mkslegacy.DetailedCluster",
+    "contract_ref": "contracts/mks.v1.clusters.get.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "mkslegacy/client.go",
+      "mkslegacy/types_generated.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/core/pagination.go",
+      "internal/endpoints/locations.go",
+      "internal/modelgen/generate.py",
+      "internal/cataloggen/main.go",
+      "pagination/pagination.go",
+      "catalog/sources/managed-kubernetes-legacy.json",
+      "types/protected.go",
+      "types/protected_json.go",
+      "types/contracts.go",
+      "types/errors.go",
+      "mkslegacy/clusters.go"
+    ],
+    "evidence_files": [
+      "mkslegacy_client_test.go",
+      "catalog/evidence/mks-legacy-source-reconciliation.json"
+    ],
+    "evidence_ref": "mkslegacy_client_test.go",
+    "verification": "offline",
+    "wait_goals": [],
+    "recovery": false
   }
 }
