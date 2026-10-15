@@ -276,6 +276,43 @@ func (v CursorResponse) Validate() error {
 func (v *CursorResponse) normalize() {
 }
 
+type DeleteClusterResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v DeleteClusterResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *DeleteClusterResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *DeleteClusterResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire DeleteClusterResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = DeleteClusterResponse(value)
+	v.normalize()
+	return nil
+}
+
 type Endpoint struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 	Protocol *string `json:"protocol,omitempty"`

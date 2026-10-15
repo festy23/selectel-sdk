@@ -219,3 +219,113 @@ func TestOneCClusterListingDoesNotInventTerminalSentinels(t *testing.T) {
 		})
 	}
 }
+
+func TestOneCClusterDeletionPreservesExactAcceptedReference(t *testing.T) {
+	scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+	endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+	calls := 0
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		if r.Method != "DELETE" || r.URL.Path != "/v2/clusters/cluster-1" {
+			t.Fatalf("delete wire %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"cluster":{"id":"cluster-1","projectId":"test-project","spec":{"name":"test","platform":{},"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}},"state":{"status":"CLUSTER_STATUS_DELETING"}}}`))}, nil
+	})})
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, _ := c.Project("test-project")
+	regional, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "cluster", ID: "cluster-1", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+	out, err := regional.OneC().DeleteCluster(context.Background(), ref, types.CallOptions{})
+	if err != nil || calls != 1 || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref || out.Data.Cluster == nil || out.Data.Cluster.Ref == nil || *out.Data.Cluster.Ref != ref || *out.Data.Cluster.State.Status != "CLUSTER_STATUS_DELETING" {
+		t.Fatalf("delete result %+v %v calls%d", out, err, calls)
+	}
+}
+
+func TestOneCClusterDeletionWaitUsesSourceStateAndReceiptGoal(t *testing.T) {
+	scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+	endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+	writes, reads := 0, 0
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), PollInterval: time.Millisecond, EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/v2/clusters/cluster-1" {
+			t.Fatalf("unexpected wait path %s", r.URL)
+		}
+		state := "CLUSTER_STATUS_DELETING"
+		switch r.Method {
+		case "DELETE":
+			writes++
+		case "GET":
+			reads++
+			if reads > 1 {
+				state = "CLUSTER_STATUS_DELETED"
+			}
+		default:
+			t.Fatalf("unexpected method%s", r.Method)
+		}
+		payload := `{"cluster":{"id":"cluster-1","projectId":"test-project","spec":{"name":"test","platform":{},"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}},"state":{"status":"` + state + `"}}}`
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+	})})
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, _ := c.Project("test-project")
+	regional, _ := p.Location("spb", "ru-9")
+	ref := types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "cluster", ID: "cluster-1", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+	accepted, err := regional.OneC().DeleteCluster(context.Background(), ref, types.CallOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	h, err := c.Resume(*accepted.Receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = h.Wait(context.Background(), "cluster.active")
+	if types.ErrorCode(err) != types.CapabilityUnavailable || writes != 1 || reads != 0 {
+		t.Fatalf("invalid receipt goal: %v writes%d reads%d", err, writes, reads)
+	}
+	waited, err := h.Wait(context.Background(), "cluster.deleted")
+	if err != nil || !waited.Complete || waited.Receipt == nil || waited.Receipt.CallID != accepted.Receipt.CallID || waited.Last == nil || waited.Last.ProviderState != "CLUSTER_STATUS_DELETED" || reads != 2 || writes != 1 {
+		t.Fatalf("wait %+v %v writes%d reads%d", waited, err, writes, reads)
+	}
+}
+
+func TestOneCClusterObservationPreservesUnknownAndMissingStates(t *testing.T) {
+	for _, tc := range []struct{ stateJSON, raw string }{{``, ""}, {`,"state":null`, ""}, {`,"state":{"status":"FUTURE_PROVIDER_STATE"}`, "FUTURE_PROVIDER_STATE"}, {`,"state":{"status":"CLUSTER_STATUS_UNSPECIFIED"}`, "CLUSTER_STATUS_UNSPECIFIED"}} {
+		t.Run(tc.raw+tc.stateJSON, func(t *testing.T) {
+			scope := types.Scope{AccountID: "test-account", ProjectID: "test-project", Region: "spb", Pool: "ru-9"}
+			endpoint := types.EndpointBinding{ID: "synthetic-onec-ru9", URL: "https://synthetic.onec.example/v2", Scope: scope, APIGeneration: "v2", Audience: "selectel"}
+			calls := 0
+			c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), EndpointOverrides: map[types.EndpointKey]types.EndpointBinding{{Service: "cloud_1c", APIGeneration: "v2", Scope: scope}: endpoint}, Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/identity/v3/auth/tokens" {
+					return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+				}
+				calls++
+				payload := `{"cluster":{"id":"cluster-1","projectId":"test-project","spec":{"name":"test","platform":{},"flavor":{"vCpu":"2","ramMb":"4096","diskGb":"20"}}` + tc.stateJSON + `}}`
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
+			})})
+			if err != nil {
+				t.Fatal(err)
+			}
+			ref := types.ResourceRef{Scope: scope, Service: "cloud_1c", APIGeneration: "v2", Kind: "cluster", ID: "cluster-1", EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
+			h, err := c.Resource(ref)
+			if err != nil || calls != 0 {
+				t.Fatalf("handle creation %v calls%d", err, calls)
+			}
+			status, err := h.Status(context.Background())
+			if err != nil || status.ProviderState != tc.raw || status.Classification != "unknown" {
+				t.Fatalf("observation %+v %v", status, err)
+			}
+			waited, err := h.Wait(context.Background(), "cluster.active")
+			if types.ErrorCode(err) != types.StateUnknown || waited.Complete || waited.Receipt != nil {
+				t.Fatalf("unknown wait %+v %v", waited, err)
+			}
+		})
+	}
+}

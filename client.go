@@ -82,6 +82,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Scope.AccountID != c.scope.AccountID {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
+	if ref.Service == "cloud_1c" {
+		return onec.Bind(c.runtime, ref.Scope).ClusterHandle(ref, nil)
+	}
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
@@ -116,6 +119,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if capability.Effect != "mutation" || capability.APIGeneration != ref.APIGeneration {
 		return nil, types.NewError(types.InvalidArgument)
+	}
+	if ref.Service == "cloud_1c" {
+		return onec.Bind(c.runtime, ref.Scope).ClusterHandle(ref, &receipt)
 	}
 	if ref.Service == "compute" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, &receipt)

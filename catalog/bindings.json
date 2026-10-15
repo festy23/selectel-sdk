@@ -4644,14 +4644,20 @@
       "internal/core/auth.go",
       "internal/modelgen/generate.py",
       "catalog/sources/1c-cloud.json",
-      "onec/mutations.go"
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go"
     ],
     "evidence_files": [
       "onec_infrastructure_test.go",
       "catalog/evidence/onec-current-inventory.json"
     ],
     "evidence_ref": "onec_infrastructure_test.go",
-    "verification": "offline"
+    "verification": "offline",
+    "wait_goals": [
+      "cluster.active"
+    ],
+    "recovery": true
   },
   "cloud_1c.v2.clusters.list": {
     "go_method": "onec.Client.ListClusters",
@@ -4680,5 +4686,34 @@
     "excluded_variants": [
       "Terminal cursor semantics absent from pinned primary contract"
     ]
+  },
+  "cloud_1c.v2.clusters.delete": {
+    "go_method": "onec.Client.DeleteCluster",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.DeleteClusterResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters.delete.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go",
+      "onec/handles.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline",
+    "wait_goals": [
+      "cluster.deleted"
+    ],
+    "recovery": true
   }
 }

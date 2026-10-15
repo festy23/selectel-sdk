@@ -38,3 +38,14 @@ next используется как pointer; отсутствие next, `"0"` �
 означают конец: pinned Swagger/API-page не определяют terminal sentinel.
 Эта операция остаётся partial; лимиты дают incomplete, отсутствие прогресса —
 protocol_error с сохранёнными наблюдёнными элементами, `Complete=false`.
+
+`DeleteCluster` не выполняет cascade: провайдер требует предварительно удалить
+связанные инфобазы. Receipt подтверждает принятие; `DELETING` ещё не конец.
+`Client.Resource(ref)` / `Client.Resume(receipt)` наблюдают точный cluster через
+GetCluster с исходным endpoint. `cluster.active` завершается на ACTIVE,
+`cluster.deleted` — на DELETED; 404 не объявляется доказательством удаления.
+ERRORED — failure, документированные переходные состояния — pending,
+UNSPECIFIED/неизвестный/missing/null status — unknown с исходной строкой.
+Receipt-bound цели ограничены originating capability: Create → active,
+Delete → deleted. Unknown outcome остаётся indeterminate после наблюдения;
+наличие ресурса не доказывает авторство, mutation никогда не повторяется.

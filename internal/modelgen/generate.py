@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
- "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse", "CreateClusterRequest":"CreateClusterRequest", "CreateClusterResponse":"CreateClusterResponse", "ListClustersResponse":"ListClustersResponse"}, None),
+ "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse", "CreateClusterRequest":"CreateClusterRequest", "CreateClusterResponse":"CreateClusterResponse", "ListClustersResponse":"ListClustersResponse", "DeleteClusterResponse":"DeleteClusterResponse"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
