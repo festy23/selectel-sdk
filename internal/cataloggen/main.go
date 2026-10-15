@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"lets-encrypt-certificates":    {"certificates", "le_v1", "iam_project", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -34,6 +35,9 @@ var families = map[string]family{
 	"prometheus-metrics":           {"metrics", "prometheus", "basic", false},
 }
 var overrides = map[string]string{
+	"lets-encrypt-certificates GET /":                                  "certificates.le_v1.certificates.list",
+	"lets-encrypt-certificates POST /issue":                            "certificates.le_v1.certificates.issue",
+	"lets-encrypt-certificates DELETE /{id}":                           "certificates.le_v1.certificates.delete",
 	"cloud-projects-and-resources GET /v2/projects":                    "projects.v2.projects.list",
 	"managed-kubernetes GET /v2/clusters":                              "mks.v2.clusters.list",
 	"managed-databases GET /datastores":                                "databases.v1.datastores.list",

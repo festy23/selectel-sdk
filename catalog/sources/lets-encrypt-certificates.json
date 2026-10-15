@@ -1,0 +1,306 @@
+{
+  "basePath": "/certs/le/",
+  "definitions": {
+    "lecertificate.Status": {
+      "enum": [
+        "creating",
+        "validating",
+        "issuing",
+        "active",
+        "renewing",
+        "deleted",
+        "error",
+        "invalid"
+      ],
+      "type": "string",
+      "x-enum-varnames": [
+        "Creating",
+        "Validating",
+        "Issuing",
+        "Active",
+        "Renewing",
+        "Deleted",
+        "Error",
+        "Invalid"
+      ]
+    },
+    "response.LeCert": {
+      "properties": {
+        "created_at": {
+          "description": "Creation timestamp.",
+          "example": "2022-02-02 22:22:22.222",
+          "type": "string"
+        },
+        "deleted_at": {
+          "description": "Deletion timestamp.",
+          "example": "2022-02-02 22:22:22.222",
+          "type": "string"
+        },
+        "domains": {
+          "description": "List of domain names for which the certificate issuing.",
+          "example": [
+            "*.example.com",
+            "example.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "error_description": {
+          "description": "Error details if failed.",
+          "example": "some error",
+          "type": "string"
+        },
+        "expire_at": {
+          "description": "Expiration timestamp.",
+          "example": "2023-10-02T22:22:22.222Z",
+          "type": "string"
+        },
+        "id": {
+          "description": "Unique certificate ID.",
+          "example": "2872c5e4-d571-44c3-acaf-e2ea2c48bd94",
+          "type": "string"
+        },
+        "knox_cert_id": {
+          "description": "ID of the certificate in the knox.",
+          "example": "2872c5e4-d571-44c3-acaf-e2ea2c48bd94",
+          "type": "string"
+        },
+        "name": {
+          "description": "Certificate display name.",
+          "example": "Cert for example",
+          "type": "string"
+        },
+        "project_id": {
+          "description": "ID of the project that owns this resource.",
+          "example": "2872c5e4-d571-44c3-acaf-e2ea2c48bd94",
+          "type": "string"
+        },
+        "status": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/lecertificate.Status"
+            }
+          ],
+          "description": "Status of Let's Encrypt® certificate issuing.",
+          "example": "issuing"
+        },
+        "updated_at": {
+          "description": "Last update timestamp.",
+          "example": "2022-02-02 22:22:22.222",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version counter.",
+          "example": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "response.ListLeCerts": {
+      "properties": {
+        "items": {
+          "description": "List of Let’s Encrypt® Certificates.",
+          "items": {
+            "$ref": "#/definitions/response.LeCert"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "rest.IssueRequest": {
+      "properties": {
+        "domains": {
+          "description": "List of domain names for which the certificate issuing.",
+          "example": [
+            "*.example.com",
+            "example.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "Certificate display name.",
+          "example": "Cert for example",
+          "type": "string"
+        }
+      },
+      "required": [
+        "domains",
+        "name"
+      ],
+      "type": "object"
+    },
+    "resterr.ErrResponse": {
+      "properties": {
+        "error_text": {
+          "description": "Text of the error.",
+          "example": "Some error text",
+          "type": "string"
+        },
+        "status_text": {
+          "description": "Text of the status.",
+          "example": "Some error status",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "info": {
+    "contact": {},
+    "description": "Managing Let's Encrypt® certificates: issuing, deleting, and listing",
+    "title": "Let’s Encrypt® Certificates API",
+    "version": "v1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "description": "Returns a list of Let's Encrypt® certificates.",
+        "operationId": "listLetsEncryptCertificates",
+        "responses": {
+          "200": {
+            "description": "List of Let's Encrypt® certificates.",
+            "schema": {
+              "$ref": "#/definitions/response.ListLeCerts"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "List Let's Encrypt® certificates"
+      }
+    },
+    "/{id}": {
+      "delete": {
+        "description": "Deletes Let's Encrypt® certificate by ID.",
+        "operationId": "deleteLetsEncryptCertificate",
+        "parameters": [
+          {
+            "description": "Let's Encrypt® certificate ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Let's Encrypt® Certificate successfully deleted."
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "404": {
+            "description": "The Let's Encrypt® certificate was not found.",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Delete Let's Encrypt® certificate"
+      }
+    },
+    "/issue": {
+      "post": {
+        "description": "Issues new Let's Encrypt® certificate and puts it in the storage.",
+        "operationId": "issueNewLetsEncryptCertificate",
+        "parameters": [
+          {
+            "description": "Issue a Let's Encrypt® certificate for a zone in DNS Hosting. Existed Let's Encrypt® certificates in DNS Hosting (legacy) are supported, but new certificates will not be issued, please use DNS Hosting.",
+            "in": "query",
+            "name": "dnsv2",
+            "type": "boolean"
+          },
+          {
+            "description": "Request with certificate issuing information.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/rest.IssueRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The Let's Encrypt® certificate.",
+            "schema": {
+              "$ref": "#/definitions/response.LeCert"
+            }
+          },
+          "400": {
+            "description": "Bad request. Fix the request and try again.",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "403": {
+            "description": "Access is forbidden. Make sure you have the required rights.",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Server is not responding. Please try again later.",
+            "schema": {
+              "$ref": "#/definitions/resterr.ErrResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "iam_token_project_scoped": []
+          }
+        ],
+        "summary": "Issue new Let's Encrypt® certificate"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "iam_token_project_scoped": {
+      "description": "IAM token for project",
+      "in": "header",
+      "name": "X-Auth-Token",
+      "type": "apiKey"
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "swagger": "2.0"
+}
