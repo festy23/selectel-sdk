@@ -31,7 +31,8 @@ shapes привязаны к официальному openai-python
 `Account().AIRouter().Chat(ctx, ai.ChatRequest)` отправляет POST
 `https://api.selectel.ru/aig/v1/chat/completions`, JSON model/messages/stream=false.
 Поддержан text content ролей user/system/assistant/developer. Multipart,
-multimodal, tools, prediction, reasoning и streaming не входят в этот срез.
+multimodal, tools, prediction и reasoning не входят в этот срез. Streaming
+Router описан отдельно ниже.
 Модель всегда выбирает caller. Нет автоматического выбора модели/провайдера.
 Защищённые content раскрываются только при построении wire body. Ответ содержит
 source-bound typed choices, защищённые content/refusal/ID/model и точные Integer
@@ -51,15 +52,58 @@ prompt/output. Completion ID не преобразуется в наблюдае
 Без документированного recovery API recovery unavailable, неизвестный исход
 не повторяется и не восстанавливается поиском по имени.
 
+`Project(id).TokenFactory().Chat` использует подтверждённый preview endpoint
+`https://preview.tf.selcloud.ru/v1`. `Project(id).Inference().Chat` требует точного
+endpoint override generation v1 (base уже заканчивается `/v1`), иначе возвращает
+`endpoint_unavailable` с NotSent receipt до lookup. Модель и ключ выбираются
+caller; project не добавляется в недокументированный wire header/body. Binding
+ключа project-specific, без вывода принадлежности из непрозрачного key.
+Все три Chat используют один text-only response mapping.
+
+Router 422 guardrail_rejected сохраняется как compiled ProviderCode и rejected
+receipt. Optional diagnostic JSON ограничен MaxJSONBytes: неизвестные коды и raw
+message отбрасываются; failure необязательного чтения не стирает известный HTTP
+rejection. x-gateway-request-id включён в ограниченные safe request IDs.
+
 ## Открытый source scope
 
 Владельцы оставшихся контрактов: #72, reconciliation #74, приемка #76.
 В inventory пока перечислены восемь first-party data routes: Router chat/images,
 Dedicated completions/chat/embeddings/rerank/transcriptions, Token Factory chat.
 Это не полный denominator. Streaming Router подтвержден masking guide: JSON422
-`guardrail_rejected` приходит до SSE. Полный chunk/terminal/usage контракт нужно
-связать с совместимым источником до реализации. Images endpoint указан там же,
+`guardrail_rejected` приходит до SSE. Chunk/terminal/usage связаны с pinned совместимым источником ниже; полная
+Selectel-specific event surface неизвестна. Images endpoint указан там же,
 но ни schema всех параметров, ни Selectel-specific response не опубликованы.
 Для Dedicated endpoint задаётся caller явно; hostname из имени сервиса не выводим.
 Token Factory private preview указан в quickstart/overview, тогда как общий index
 показывает public preview: доступ SDK не предоставляет, расхождение сохраняется.
+
+## Router stream
+
+`Account().AIRouter().StreamChat(ctx, request, limits, consume)` отправляет тот же
+chat route с stream=true и Accept text/event-stream. Это режим одной операции,
+а не дополнительная provider capability. Typed chunks соответствуют pinned
+OpenAI `ChatCompletionChunk`; terminal marker `[DONE]` подтверждён pinned
+официальным `_streaming.py`. Это compatible wire evidence, не live проверка
+deployment и не доказательство всех provider-specific events/options.
+
+Caller задаёт положительные MaxEvents/MaxEventBytes/MaxBytes. Лимиты,
+TransferTimeout и context ограничивают чтение. При malformed/EOF без `[DONE]`,
+лимите, отмене или ошибке consume сохраняются уже переданные events/usage,
+Complete=false и accepted receipt; raw body/error текста не сохраняются.
+Consume получает защищённые typed поля и раскрывает content явно. Возврат
+ошибки прекращает чтение с `incomplete`, без сообщения этой ошибки в diagnostics.
+JSON422 guardrail до SSE не вызывает consume. Usage опционален, отсутствие
+не означает нулевое потребление. `[DONE]` означает конец совместимого потока,
+не readiness ресурса, сохранение данных или гарантию server cancellation.
+
+Внутренний seam DoResponse узко переиспользован из reviewed
+[Swift PR96](https://github.com/festy23/selectel-sdk/pull/96), head
+8a07c839deabb098f81ac3ea016607736f23b24c: synchronous response decoder, общий
+budget/auth/receipt/no-replay, body ownership и Close при context cancellation.
+DoJSON остаётся совместимым adapter с прежним JSON limit. Swift service не
+включён. Ранний contract revision для NotSent receipts — reviewed overlap
+[PR97](https://github.com/festy23/selectel-sdk/pull/97),
+379458e4f658b1216137fea4acce5dae6027d320. Future integration request.go должен
+сохранить эти изменения, Bearer authorization и Router-only diagnostic decoder
+совместно с независимым numeric ErrorProtocol других веток; fallback auth нет.

@@ -11,12 +11,15 @@
     "binding_source": "ai/client.go",
     "wire_selector": "POST /chat/completions",
     "auth": "protocol_specific BearerToken; no static/IAM substitution",
-    "mapping": "explicit model; text role/content messages; stream false; no business defaults",
+    "mapping": "explicit model/text messages; Chat stream=false; StreamChat stream=true/Accept text/event-stream; explicit positive per-event/total/event-count limits; no business defaults",
     "excluded_variants": [
-      "streaming",
       "multimodal content",
       "tools/prediction/reasoning/options beyond text messages",
       "full upstream request/response surface"
+    ],
+    "methods": [
+      "Chat",
+      "StreamChat"
     ]
   },
   "response": {
@@ -32,11 +35,13 @@
     ],
     "completeness": "bounded JSON, partial parameter surface; unknown Selectel-specific full response/deployment inventory",
     "usage": "exact Integer counters, optional usage; absent is not zero",
-    "refs": "completion/model IDs remain protected metadata; no resource/task ref or wait"
+    "refs": "completion/model IDs remain protected metadata; no resource/task ref or wait",
+    "stream": "typed protected ChatChunk callback, optional exact Usage, bounded retained prefix; Complete only at compiled [DONE]; EOF/malformed/limit/cancellation/consumer-error retains accepted receipt and incomplete summary"
   },
   "errors": {
     "mapping": "core HTTP mapping; raw messages/body discarded; accepted malformed/body-limit error retains Receipt",
-    "guardrail": "first-party 422 JSON, rejected with no replay; code mapping pending next slice"
+    "guardrail": "422 nested error.code=guardrail_rejected -> rejected receipt, provider_error with compiled ProviderCode; optional bounded diagnostic body never erased known HTTP rejection; x-gateway-request-id safe metadata",
+    "consumer": "incomplete with raw callback error discarded"
   },
   "retry": "all model POST mutations: no automatic replay, no idempotency assumptions",
   "recovery": "unavailable; no observation API inferred",

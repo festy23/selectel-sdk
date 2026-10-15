@@ -181,3 +181,11 @@ func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (t
 func (a AccountClient) AIRouter() *ai.RouterClient {
 	return ai.BindRouter(a.client.runtime, a.client.scope)
 }
+
+func (p ProjectClient) TokenFactory() *ai.TokenFactoryClient {
+	return ai.BindTokenFactory(p.client.runtime, p.client.scope)
+}
+
+func (p ProjectClient) Inference() *ai.InferenceClient {
+	return ai.BindInference(p.client.runtime, p.client.scope)
+}

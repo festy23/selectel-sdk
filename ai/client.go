@@ -30,30 +30,44 @@ type ChatRequest struct {
 	Messages []Message `json:"messages"`
 }
 
+type dataClient struct {
+	runtime                       *core.Runtime
+	scope                         types.Scope
+	service, endpoint, endpointID string
+	requireProject                bool
+}
+type TokenFactoryClient struct {
+	runtime *core.Runtime
+	scope   types.Scope
+}
+
+func BindTokenFactory(r *core.Runtime, s types.Scope) *TokenFactoryClient {
+	return &TokenFactoryClient{r, s}
+}
+func (c *TokenFactoryClient) Chat(ctx context.Context, request ChatRequest) (types.Result[ChatCompletion], error) {
+	return chat(&dataClient{runtime: c.runtime, scope: c.scope, service: "token_factory", endpoint: "https://preview.tf.selcloud.ru/v1", endpointID: "selectel-token-factory-v1", requireProject: true}, ctx, request)
+}
 func (c *RouterClient) Chat(ctx context.Context, request ChatRequest) (types.Result[ChatCompletion], error) {
-	op := core.Operation{ID: "ai_router.v1.chat_completions.create", Service: "ai_router", APIGeneration: "v1", Method: http.MethodPost, Effect: "mutation", Auth: types.ProtocolSpecific, Success: []int{200}, Rejected: []int{400, 401, 403, 404, 409, 422, 429}, FixedEndpoint: "https://api.selectel.ru/aig/v1", EndpointID: "selectel-ai-router-v1", Headers: http.Header{"Accept": {"application/json"}, "Content-Type": {"application/json"}}}
+	return chat(&dataClient{runtime: c.runtime, scope: c.scope, service: "ai_router", endpoint: "https://api.selectel.ru/aig/v1", endpointID: "selectel-ai-router-v1"}, ctx, request)
+}
+
+func chat(c *dataClient, ctx context.Context, request ChatRequest) (types.Result[ChatCompletion], error) {
+	op := core.Operation{ID: c.service + ".v1.chat_completions.create", Service: c.service, APIGeneration: "v1", Method: http.MethodPost, Effect: "mutation", Auth: types.ProtocolSpecific, Success: []int{200}, Rejected: []int{400, 401, 403, 404, 409, 422, 429}, FixedEndpoint: c.endpoint, EndpointID: c.endpointID, RequireProject: c.requireProject, Headers: http.Header{"Accept": {"application/json"}, "Content-Type": {"application/json"}}}
+	if c.service == "ai_router" {
+		op.ErrorProtocol = "ai_router"
+	}
 	var validation error
-	type wireMessage struct {
-		Role    string `json:"role"`
-		Content string `json:"content"`
-	}
-	wire := struct {
-		Model    string        `json:"model"`
-		Messages []wireMessage `json:"messages"`
-		Stream   bool          `json:"stream"`
-	}{Model: request.Model, Messages: make([]wireMessage, 0, len(request.Messages))}
-	if strings.TrimSpace(request.Model) == "" || len(request.Messages) == 0 || c.scope.ProjectID != "" || c.scope.Region != "" || c.scope.Pool != "" {
-		validation = types.NewError(types.InvalidArgument)
-	}
-	for _, m := range request.Messages {
-		if m.Role != "user" && m.Role != "system" && m.Role != "assistant" && m.Role != "developer" {
-			validation = types.NewError(types.InvalidArgument)
+	if c.endpoint == "" {
+		bound, e := c.runtime.BindDocumented(op, c.scope)
+		if e != nil {
+			validation = e
+		} else {
+			op = bound
 		}
-		wire.Messages = append(wire.Messages, wireMessage{Role: m.Role, Content: string(m.Content.Reveal())})
 	}
-	body, marshalErr := json.Marshal(wire)
-	if marshalErr != nil {
-		validation = types.NewError(types.InvalidArgument)
+	body, requestErr := chatBody(c, request, false)
+	if requestErr != nil {
+		validation = requestErr
 	}
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: "/chat/completions", Body: body, Validate: func() error { return validation }}, func(raw []byte, _ types.EndpointBinding) (core.Decoded[ChatCompletion], error) {
 		var out ChatCompletion
@@ -72,4 +86,42 @@ func (c *RouterClient) Chat(ctx context.Context, request ChatRequest) (types.Res
 		}
 		return core.Decoded[ChatCompletion]{Data: out}, nil
 	})
+}
+
+type InferenceClient struct {
+	runtime *core.Runtime
+	scope   types.Scope
+}
+
+func BindInference(r *core.Runtime, s types.Scope) *InferenceClient { return &InferenceClient{r, s} }
+func (c *InferenceClient) Chat(ctx context.Context, request ChatRequest) (types.Result[ChatCompletion], error) {
+	return chat(&dataClient{runtime: c.runtime, scope: c.scope, service: "dedicated_inference", requireProject: true}, ctx, request)
+}
+
+func chatBody(c *dataClient, request ChatRequest, stream bool) ([]byte, error) {
+	var validation error
+	type wireMessage struct {
+		Role    string `json:"role"`
+		Content string `json:"content"`
+	}
+	wire := struct {
+		Model    string        `json:"model"`
+		Messages []wireMessage `json:"messages"`
+		Stream   bool          `json:"stream"`
+	}{Model: request.Model, Stream: stream, Messages: make([]wireMessage, 0, len(request.Messages))}
+	if strings.TrimSpace(request.Model) == "" || len(request.Messages) == 0 || (!c.requireProject && c.scope.ProjectID != "") || (c.requireProject && c.scope.ProjectID == "") {
+		validation = types.NewError(types.InvalidArgument)
+	}
+	for _, m := range request.Messages {
+		if m.Role != "user" && m.Role != "system" && m.Role != "assistant" && m.Role != "developer" {
+			validation = types.NewError(types.InvalidArgument)
+		}
+		wire.Messages = append(wire.Messages, wireMessage{Role: m.Role, Content: string(m.Content.Reveal())})
+	}
+	body, marshalErr := json.Marshal(wire)
+	if marshalErr != nil {
+		validation = types.NewError(types.InvalidArgument)
+	}
+
+	return body, validation
 }

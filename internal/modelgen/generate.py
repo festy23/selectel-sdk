@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-    "ai": ("ai-router", {"ChatCompletion": "ChatCompletion"}, None),
+    "ai": ("ai-router", {"ChatCompletion": "ChatCompletion", "ChatChunk": "ChatChunk"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",

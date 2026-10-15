@@ -30,6 +30,59 @@ func (v *ChatChoice) normalize() {
 	}
 }
 
+type ChatChunk struct {
+	Choices []ChunkChoice         `json:"choices,omitzero"`
+	Created *types.Integer        `json:"created,omitempty"`
+	ID      *types.ProtectedValue `json:"id,omitempty"`
+	Model   *types.ProtectedValue `json:"model,omitempty"`
+	Object  *string               `json:"object,omitempty"`
+	Usage   *Usage                `json:"usage,omitempty"`
+}
+
+func (v ChatChunk) Validate() error {
+	if v.Choices == nil || v.Created == nil || v.ID == nil || v.Model == nil || v.Object == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	for _, item := range v.Choices {
+		if err := item.Validate(); err != nil {
+			return err
+		}
+	}
+	if v.Usage != nil {
+		if err := v.Usage.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ChatChunk) normalize() {
+	for i := range v.Choices {
+		v.Choices[i].normalize()
+	}
+	if v.Usage != nil {
+		v.Usage.normalize()
+	}
+}
+func (v *ChatChunk) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ChatChunk
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ChatChunk(value)
+	v.normalize()
+	return nil
+}
+
 type ChatCompletion struct {
 	Choices []ChatChoice          `json:"choices,omitzero"`
 	Created *types.Integer        `json:"created,omitempty"`
@@ -83,6 +136,18 @@ func (v *ChatCompletion) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
+type ChatDelta struct {
+	Content *types.ProtectedValue `json:"content,omitempty"`
+	Refusal *types.ProtectedValue `json:"refusal,omitempty"`
+	Role    *string               `json:"role,omitempty"`
+}
+
+func (v ChatDelta) Validate() error {
+	return nil
+}
+func (v *ChatDelta) normalize() {
+}
+
 type ChatMessage struct {
 	Content *types.ProtectedValue `json:"content,omitempty"`
 	Refusal *types.ProtectedValue `json:"refusal,omitempty"`
@@ -96,6 +161,29 @@ func (v ChatMessage) Validate() error {
 	return nil
 }
 func (v *ChatMessage) normalize() {
+}
+
+type ChunkChoice struct {
+	Delta        *ChatDelta     `json:"delta,omitempty"`
+	FinishReason *string        `json:"finish_reason,omitempty"`
+	Index        *types.Integer `json:"index,omitempty"`
+}
+
+func (v ChunkChoice) Validate() error {
+	if v.Delta == nil || v.Index == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Delta != nil {
+		if err := v.Delta.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *ChunkChoice) normalize() {
+	if v.Delta != nil {
+		v.Delta.normalize()
+	}
 }
 
 type Usage struct {

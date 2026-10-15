@@ -168,7 +168,7 @@ func generate() error {
 				resource, action = idParts[2], idParts[3]
 				pointer := "sources/" + filepath.Base(file) + "#/paths/" + strings.ReplaceAll(strings.ReplaceAll(path, "~", "~0"), "/", "~1") + "/" + method
 				scope := []string{"account"}
-				if f.Mode == "iam_project" {
+				if f.Mode == "iam_project" || f.Service == "dedicated_inference" || f.Service == "token_factory" {
 					scope = append(scope, "project")
 				}
 				if f.Mode == "s3_sigv4" || f.Mode == "basic" {

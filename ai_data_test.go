@@ -3,9 +3,11 @@ package selectelsdk_test
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
 	"strings"
 	"testing"
 
@@ -69,5 +71,170 @@ func TestAIRouterChatLocalValidationRetainsReceipt(t *testing.T) {
 	result, err := c.Account().AIRouter().Chat(context.Background(), ai.ChatRequest{})
 	if types.ErrorCode(err) != types.InvalidArgument || calls != 0 || result.Receipt == nil || result.Receipt.Outcome != types.NotSent || result.Receipt.Attempts != 0 || result.Receipt.ContractRevision == "" {
 		t.Fatalf("error=%v result=%+v calls=%d", err, result, calls)
+	}
+}
+
+func TestTokenFactoryChatUsesExactProjectKey(t *testing.T) {
+	scope := types.Scope{AccountID: "test-account", ProjectID: "project-one"}
+	var calls int
+	c, err := sdk.New(sdk.Config{AccountID: scope.AccountID, Credentials: credentials.SourceFunc(func(_ context.Context, r types.AuthRequest) (credentials.Material, error) {
+		if r.Scope != scope || r.Service != "token_factory" {
+			t.Fatalf("auth %+v", r)
+		}
+		return credentials.Material{Identity: "key", Revision: "one", Binding: scope, Audience: r.Audience, Scheme: credentials.BearerToken, Token: types.Protect([]byte("synthetic-key"))}, nil
+	}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.String() != "https://preview.tf.selcloud.ru/v1/chat/completions" || r.Header.Get("Authorization") != "Bearer synthetic-key" {
+			t.Fatal("wrong model endpoint/auth")
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"id":"c","object":"chat.completion","created":1,"model":"m","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"answer"}}]}`))}, nil
+	})})
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, _ := c.Project(scope.ProjectID)
+	result, err := p.TokenFactory().Chat(context.Background(), ai.ChatRequest{Model: "m", Messages: []ai.Message{{Role: "user", Content: types.Protect([]byte("question"))}}})
+	if err != nil || calls != 1 || result.Receipt == nil || result.Receipt.Outcome != types.Accepted || result.Receipt.Scope != scope || result.Data.Usage != nil {
+		t.Fatalf("error=%v result=%+v", err, result)
+	}
+}
+
+func TestInferenceChatRequiresExplicitEndpoint(t *testing.T) {
+	scope := types.Scope{AccountID: "test-account", ProjectID: "project-one"}
+	for _, configured := range []bool{false, true} {
+		t.Run(fmt.Sprint(configured), func(t *testing.T) {
+			var lookups, calls int
+			endpoints := map[types.EndpointKey]types.EndpointBinding{}
+			if configured {
+				endpoints[types.EndpointKey{Service: "dedicated_inference", APIGeneration: "v1", Scope: scope}] = types.EndpointBinding{ID: "explicit-inference", URL: "https://inference.example.invalid/v1", APIGeneration: "v1", Scope: scope, Audience: credentials.SelectelAudience}
+			}
+			c, err := sdk.New(sdk.Config{AccountID: scope.AccountID, EndpointOverrides: endpoints, Credentials: credentials.SourceFunc(func(_ context.Context, r types.AuthRequest) (credentials.Material, error) {
+				lookups++
+				if r.Scope != scope || r.Service != "dedicated_inference" {
+					t.Fatalf("auth %+v", r)
+				}
+				return credentials.Material{Identity: "key", Revision: "one", Binding: scope, Audience: r.Audience, Scheme: credentials.BearerToken, Token: types.Protect([]byte("synthetic-key"))}, nil
+			}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+				calls++
+				if r.URL.String() != "https://inference.example.invalid/v1/chat/completions" || r.Header.Get("Authorization") != "Bearer synthetic-key" {
+					t.Fatal("wrong model endpoint/auth")
+				}
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"id":"c","object":"chat.completion","created":1,"model":"m","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"answer"}}]}`))}, nil
+			})})
+			if err != nil {
+				t.Fatal(err)
+			}
+			p, _ := c.Project(scope.ProjectID)
+			result, err := p.Inference().Chat(context.Background(), ai.ChatRequest{Model: "m", Messages: []ai.Message{{Role: "user", Content: types.Protect([]byte("question"))}}})
+			if !configured {
+				if types.ErrorCode(err) != types.EndpointUnavailable || lookups != 0 || calls != 0 || result.Receipt == nil || result.Receipt.Outcome != types.NotSent {
+					t.Fatalf("error=%v result=%+v lookups=%d calls=%d", err, result, lookups, calls)
+				}
+				return
+			}
+			if err != nil || calls != 1 || result.Receipt == nil || result.Receipt.Endpoint == nil || result.Receipt.Endpoint.ID != "explicit-inference" || result.Receipt.Outcome != types.Accepted {
+				t.Fatalf("error=%v result=%+v", err, result)
+			}
+		})
+	}
+}
+
+func TestAIRouterGuardrailRejectedBeforeSSE(t *testing.T) {
+	calls := 0
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", ReadMaxAttempts: 5, Credentials: credentials.SourceFunc(func(_ context.Context, r types.AuthRequest) (credentials.Material, error) {
+		return credentials.Material{Identity: "key", Revision: "one", Binding: r.Scope, Audience: r.Audience, Scheme: credentials.BearerToken, Token: types.Protect([]byte("synthetic-key"))}, nil
+	}), Transport: transportFunc(func(*http.Request) (*http.Response, error) {
+		calls++
+		return &http.Response{StatusCode: 422, Header: http.Header{"Content-Type": {"application/json"}, "X-Gateway-Request-Id": {"synthetic-request-id"}}, Body: io.NopCloser(strings.NewReader(`{"error":{"code":"guardrail_rejected","message":"synthetic-private-provider-message"}}`))}, nil
+	})})
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := c.Account().AIRouter().Chat(context.Background(), ai.ChatRequest{Model: "m", Messages: []ai.Message{{Role: "user", Content: types.Protect([]byte("question"))}}})
+	var e *types.SDKError
+	if !errors.As(err, &e) || e.ProviderCode != "guardrail_rejected" || e.HTTPStatus != 422 || calls != 1 || result.Receipt == nil || result.Receipt.Outcome != types.Rejected || len(result.Metadata.RequestIDs) != 1 || result.Metadata.RequestIDs[0] != "synthetic-request-id" {
+		t.Fatalf("error=%+v result=%+v calls=%d", err, result, calls)
+	}
+	if strings.Contains(fmt.Sprintf("%+v %#v", err, result), "synthetic-private-provider-message") {
+		t.Fatal("provider content leaked")
+	}
+}
+
+func TestAIModelPOSTNeverReplaysOrInventsRecovery(t *testing.T) {
+	for _, service := range []string{"ai_router", "token_factory", "dedicated_inference"} {
+		for _, tc := range []struct {
+			name    string
+			status  int
+			body    string
+			code    types.Code
+			outcome types.Outcome
+		}{
+			{"connection lost", 0, "", types.UnknownOutcome, types.Unknown},
+			{"accepted malformed", 200, `{"choices":[]}`, types.ProtocolError, types.Accepted},
+			{"server failure", 500, `{"error":{"code":"internal_error","message":"synthetic-private-output"}}`, types.UnknownOutcome, types.Unknown},
+			{"rate limited", 429, `{"error":"synthetic-private-output"}`, types.RateLimited, types.Rejected},
+			{"redirect", 303, "", types.UnknownOutcome, types.Unknown},
+		} {
+			t.Run(service+"/"+tc.name, func(t *testing.T) {
+				scope := types.Scope{AccountID: "test-account"}
+				if service != "ai_router" {
+					scope.ProjectID = "project-one"
+				}
+				var calls int
+				cfg := sdk.Config{AccountID: scope.AccountID, ReadMaxAttempts: 5, Credentials: credentials.SourceFunc(func(_ context.Context, r types.AuthRequest) (credentials.Material, error) {
+					return credentials.Material{Identity: "key", Revision: "one", Binding: scope, Audience: r.Audience, Scheme: credentials.BearerToken, Token: types.Protect([]byte("synthetic-key"))}, nil
+				}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+					calls++
+					if r.URL.Host == "foreign.invalid" {
+						t.Fatal("followed redirect")
+					}
+					if tc.status == 0 {
+						return nil, io.ErrUnexpectedEOF
+					}
+					return &http.Response{StatusCode: tc.status, Header: http.Header{"Location": {"https://foreign.invalid/"}}, Body: io.NopCloser(strings.NewReader(tc.body))}, nil
+				})}
+				if service == "dedicated_inference" {
+					cfg.EndpointOverrides = map[types.EndpointKey]types.EndpointBinding{{Service: service, APIGeneration: "v1", Scope: scope}: {ID: "explicit", URL: "https://inference.invalid/v1", Scope: scope, APIGeneration: "v1", Audience: credentials.SelectelAudience}}
+				}
+				c, err := sdk.New(cfg)
+				if err != nil {
+					t.Fatal(err)
+				}
+				req := ai.ChatRequest{Model: "m", Messages: []ai.Message{{Role: "user", Content: types.Protect([]byte("question"))}}}
+				var result types.Result[ai.ChatCompletion]
+				switch service {
+				case "ai_router":
+					result, err = c.Account().AIRouter().Chat(context.Background(), req)
+				case "token_factory":
+					p, _ := c.Project(scope.ProjectID)
+					result, err = p.TokenFactory().Chat(context.Background(), req)
+				case "dedicated_inference":
+					p, _ := c.Project(scope.ProjectID)
+					result, err = p.Inference().Chat(context.Background(), req)
+				}
+				if types.ErrorCode(err) != tc.code || calls != 1 || result.Receipt == nil || result.Receipt.Outcome != tc.outcome || result.Receipt.Attempts != 1 || result.Receipt.Recovery != "unavailable" || len(result.Receipt.ResourceRefs) != 0 {
+					t.Fatalf("error=%v result=%+v calls=%d", err, result, calls)
+				}
+				if strings.Contains(fmt.Sprintf("%+v %#v", err, result), "synthetic-private-output") {
+					t.Fatal("raw output leaked")
+				}
+			})
+		}
+	}
+}
+
+func TestAIDataCatalogPreservesProjectRequirements(t *testing.T) {
+	c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, service := range []string{"token_factory", "dedicated_inference"} {
+		capability, err := c.Catalog().Describe(service + ".v1.chat_completions.create")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !slices.Contains(capability.ScopeRequirements, "project") || capability.Auth.Scheme != types.ProtocolSpecific || capability.Effect != "mutation" {
+			t.Fatalf("catalog scope/auth/effect mismatch: %+v", capability)
+		}
 	}
 }
