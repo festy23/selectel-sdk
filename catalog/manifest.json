@@ -6523,9 +6523,9 @@
     },
     "availability": "documented",
     "contract_artifact_revisions": {
-      "contracts/mks.v1.clusters.create.json": "e56549c6cb7d27d81ad889f11681b86811bb8e68dd8ee457e07e28d31f1c11e9"
+      "contracts/mks.v1.clusters.create.json": "9812cbe66e61a6850825a54f29f6404e2041077b5ae12a113e2632a6b48b6929"
     },
-    "contract_revision": "30d2d814159a169d3fc58a1c7c907bbd857a0a09d14daac4a8ba277a98545f1a",
+    "contract_revision": "c2b8bff527852fb29fbcb3917fb1d6560636d408c3408d78385f35287326ea9e",
     "effect": "mutation",
     "endpoint_recipe_ref": "contracts/mks.v1.clusters.create.json#/endpoint",
     "error_binding_ref": "contracts/mks.v1.clusters.create.json#/errors",
@@ -6569,9 +6569,9 @@
       "uri": "https://docs.selectel.ru/api/managed-kubernetes-legacy.json"
     },
     "verification": {
-      "contract_revision": "30d2d814159a169d3fc58a1c7c907bbd857a0a09d14daac4a8ba277a98545f1a",
+      "contract_revision": "c2b8bff527852fb29fbcb3917fb1d6560636d408c3408d78385f35287326ea9e",
       "evidence_ref": "mkslegacy_client_test.go",
-      "implementation_revision": "1d34901d6aaaa426dd822356b030e794e7ec352b56ddf027847d4c84c5ae9a45",
+      "implementation_revision": "017263ed18002e1e7d63201fcf6e78ca3e1d03c5dcebabd40d801e5c619d6c2c",
       "level": "offline"
     },
     "wait_goals": []

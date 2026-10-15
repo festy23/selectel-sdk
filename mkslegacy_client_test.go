@@ -772,3 +772,24 @@ func TestMKSLegacyKubeconfigSourceGapRefusesBeforeCredentialsAndHTTP(t *testing.
 		t.Fatalf("kubeconfig %+v %v lookup%d http%d", out, e, lookups, calls)
 	}
 }
+
+func TestMKSLegacyCreateRejectsDeclaredClusterTypeEnumBeforeCredentials(t *testing.T) {
+	lookups := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+		lookups++
+		return credentials.Material{}, types.NewError(types.CredentialsUnavailable)
+	}), Transport: transportFunc(func(*http.Request) (*http.Response, error) {
+		t.Fatal("unexpected HTTP")
+		return nil, io.ErrUnexpectedEOF
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	name, version, pool, kind := "synthetic-cluster", "1.30.1", "ru-9", "not-a-source-cluster-type"
+	out, e := v.MKSLegacy().CreateCluster(context.Background(), mkslegacy.ClusterCreateSpec{Name: &name, KubeVersion: &version, Region: &pool, Nodegroups: []mkslegacy.NodegroupCreate{}, ClusterType: &kind}, types.CallOptions{})
+	if types.ErrorCode(e) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || lookups != 0 {
+		t.Fatalf("enum %+v %v lookups%d", out, e, lookups)
+	}
+}

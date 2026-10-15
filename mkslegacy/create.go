@@ -26,6 +26,9 @@ func (c *Client) CreateCluster(ctx context.Context, input ClusterCreateSpec, opt
 		if !regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9-]{0,31}$`).MatchString(*input.Name) {
 			return types.NewError(types.InvalidArgument)
 		}
+		if input.ClusterType != nil && *input.ClusterType != "BASIC" && *input.ClusterType != "HIGH_AVAILABILITY" && *input.ClusterType != "HIGH_AVAILABILITY_MULTI_AZ" {
+			return types.NewError(types.InvalidArgument)
+		}
 		for _, group := range input.Nodegroups {
 			if group.UserData != nil {
 				if _, e := base64.StdEncoding.DecodeString(string(group.UserData.Reveal())); e != nil {

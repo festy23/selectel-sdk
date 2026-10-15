@@ -12,7 +12,7 @@
   "request": {
     "method": "POST",
     "path": "/clusters",
-    "mapping": "Generated SwaggerClusterCreateStruct and all nested fields in body.cluster. Required region must equal caller pool; source nodegroups validated, protected base64 user_data forwarded once, no provider defaults inserted."
+    "mapping": "Generated SwaggerClusterCreateStruct and all nested fields in body.cluster. Required region must equal caller pool; source nodegroups validated, protected base64 user_data forwarded once, no provider defaults inserted. Declared cluster_type enum is validated before credentials; no enum default is inserted."
   },
   "response": {
     "successful_statuses": [
