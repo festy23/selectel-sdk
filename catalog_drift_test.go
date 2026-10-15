@@ -42,7 +42,7 @@ func TestCatalogSourceDriftInvalidatesPublicVerification(t *testing.T) {
 import("context";"encoding/json";"net/http";"os";sdk "github.com/festy23/selectel-sdk";"github.com/festy23/selectel-sdk/credentials";"github.com/festy23/selectel-sdk/types")
 type noHTTP struct{}
 func(noHTTP)RoundTrip(*http.Request)(*http.Response,error){panic("unexpected HTTP")}
-func main(){c,e:=sdk.New(sdk.Config{AccountID:"synthetic",Credentials:credentials.SourceFunc(func(context.Context,types.AuthRequest)(credentials.Material,error){panic("unexpected credentials")}),Transport:noHTTP{}});if e!=nil{panic(e)};if len(os.Args)>1 {for _,check:=range c.Catalog().Audit().BindingChecks{if check.OperationID=="billing.v3.balances.get"{if e=json.NewEncoder(os.Stdout).Encode(check);e!=nil{panic(e)};return}};panic("check missing")};r,e:=c.Catalog().Describe("billing.v3.balances.get");if e!=nil{panic(e)};if e=json.NewEncoder(os.Stdout).Encode(r);e!=nil{panic(e)}}`
+func main(){c,e:=sdk.New(sdk.Config{AccountID:"synthetic",Credentials:credentials.SourceFunc(func(context.Context,types.AuthRequest)(credentials.Material,error){panic("unexpected credentials")}),Transport:noHTTP{}});if e!=nil{panic(e)};if len(os.Args)>1 && os.Args[1]=="report"{if e=json.NewEncoder(os.Stdout).Encode(c.Catalog().Audit());e!=nil{panic(e)};return};if len(os.Args)>1 {for _,check:=range c.Catalog().Audit().BindingChecks{if check.OperationID=="billing.v3.balances.get"{if e=json.NewEncoder(os.Stdout).Encode(check);e!=nil{panic(e)};return}};panic("check missing")};r,e:=c.Catalog().Describe("billing.v3.balances.get");if e!=nil{panic(e)};if e=json.NewEncoder(os.Stdout).Encode(r);e!=nil{panic(e)}}`
 	if err = os.WriteFile(filepath.Join(dir, "main.go"), []byte(program), 0600); err != nil {
 		t.Fatal(err)
 	}
@@ -118,6 +118,35 @@ func main(){c,e:=sdk.New(sdk.Config{AccountID:"synthetic",Credentials:credential
 	}
 	if strings.Join(check.Issues, ",") != "covered_schema_reference_missing,public_method_declaration_missing" {
 		t.Fatalf("stale binding not diagnosed: %+v", check)
+	}
+
+	// A binding with no canonical source operation must remain visible as a
+	// reconciliation problem, without fabricating a provider operation row.
+	bindings["billing.v3.missing.get"] = bindings["billing.v3.balances.get"]
+	bindingRaw, err = json.Marshal(bindings)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(bindingFile, bindingRaw, 0600); err != nil {
+		t.Fatal(err)
+	}
+	run("run", "./internal/cataloggen")
+	var report struct {
+		OrphanBindings []string `json:"orphan_bindings"`
+		Sources        []struct{ Documented int }
+	}
+	if err = json.Unmarshal(run("run", "./cmd/driftprobe", "report"), &report); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Join(report.OrphanBindings, ",") != "billing.v3.missing.get" {
+		t.Fatalf("unmapped binding silently dropped: %+v", report.OrphanBindings)
+	}
+	count := 0
+	for _, src := range report.Sources {
+		count += src.Documented
+	}
+	if count != 191 {
+		t.Fatalf("orphan became provider operation: %d", count)
 	}
 
 }

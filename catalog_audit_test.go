@@ -116,6 +116,9 @@ func TestCatalogAuditChecksEveryCallableMappingWithoutPromotingCoverage(t *testi
 		t.Fatal(err)
 	}
 	report := c.Catalog().Audit()
+	if len(report.OrphanBindings) != 0 || len(report.ReconciliationIssues) != 0 {
+		t.Fatalf("shipped binding/source join is unresolved: %+v", report)
+	}
 	if len(report.BindingChecks) != 64 {
 		t.Fatalf("callable binding audit lost records: %d", len(report.BindingChecks))
 	}

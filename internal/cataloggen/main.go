@@ -277,6 +277,18 @@ func generate() error {
 			}
 		}
 	}
+	// Preserve the other side of the source/binding join; an orphan is not a
+	// provider operation and must not silently disappear from reconciliation.
+	orphans := []string{}
+	for id := range bindings {
+		if !seen[id] {
+			orphans = append(orphans, id)
+		}
+	}
+	sort.Strings(orphans)
+	if err := writeJSON(filepath.Join(dir, "contracts", "binding-reconciliation.json"), map[string]any{"orphan_bindings": orphans}); err != nil {
+		return err
+	}
 	sort.Slice(rows, func(i, j int) bool { return rows[i]["operation_id"].(string) < rows[j]["operation_id"].(string) })
 	if err := writeJSON(filepath.Join(dir, "manifest.json"), rows); err != nil {
 		return err

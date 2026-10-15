@@ -169,3 +169,19 @@ Regression fixture меняет pinned source revision и stale binding лока
 копии, регенерирует SDK и наблюдает verification/diagnostics через публичный
 Client. Подмены внутренних компонентов и cloud calls нет. Full canonical
 inventory и неразобранные source variants остаются открытыми в #74.
+
+## Bindings вне source inventory
+
+`Audit().OrphanBindings` содержит отсортированные keys из bindings.json, для
+которых генератор не нашёл canonical source operation. Такие записи сохраняются
+в [binding-reconciliation.json](../../../catalog/contracts/binding-reconciliation.json),
+не превращаются в provider operations и не увеличивают coverage. Генератор
+сравнивает две стороны join независимо от implementation status. Отсутствующее
+или некорректное reconciliation evidence отражается в `ReconciliationIssues`
+как `binding_reconciliation_evidence_unavailable`; пустой список orphans при
+такой diagnostic не подтверждает успешную сверку.
+
+Regression fixture добавляет binding с отсутствующей source operation,
+регенерирует SDK и наблюдает ровно этот orphan через public Client, сохраняя
+191 source operation в baseline. Это проверка только pinned source/binding join;
+не полный census всех upstream операций или некаталогизированных Go methods.

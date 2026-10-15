@@ -38,18 +38,35 @@ type BindingCheck struct {
 
 // AuditReport keeps source reconciliation separate from whole API coverage.
 type AuditReport struct {
-	BindingChecks      []BindingCheck `json:"binding_checks"`
-	Sources            []SourceAudit  `json:"sources"`
-	InventoryComplete  bool           `json:"inventory_complete"`
-	CoverageRatio      *float64       `json:"coverage_ratio"`
-	IncompleteFamilies []string       `json:"incomplete_families"`
+	OrphanBindings       []string       `json:"orphan_bindings"`
+	ReconciliationIssues []string       `json:"reconciliation_issues"`
+	BindingChecks        []BindingCheck `json:"binding_checks"`
+	Sources              []SourceAudit  `json:"sources"`
+	InventoryComplete    bool           `json:"inventory_complete"`
+	CoverageRatio        *float64       `json:"coverage_ratio"`
+	IncompleteFamilies   []string       `json:"incomplete_families"`
 }
 
 // Audit groups canonical active operations by exact source URI and revision.
 // It performs no I/O and does not infer aliases, versions or provider availability.
 func (c Catalog) Audit() AuditReport {
 	summary := c.Summary()
+	var reconciliation struct {
+		OrphanBindings *[]string `json:"orphan_bindings"`
+	}
+	reconciliationRaw, reconciliationErr := assets.ReadFile("contracts/binding-reconciliation.json")
+	if reconciliationErr == nil {
+		reconciliationErr = json.Unmarshal(reconciliationRaw, &reconciliation)
+	}
+
 	out := AuditReport{Sources: []SourceAudit{}, InventoryComplete: summary.InventoryComplete, CoverageRatio: summary.CoverageRatio, IncompleteFamilies: summary.IncompleteFamilies}
+	out.OrphanBindings = []string{}
+	out.ReconciliationIssues = []string{}
+	if reconciliationErr != nil || reconciliation.OrphanBindings == nil {
+		out.ReconciliationIssues = append(out.ReconciliationIssues, "binding_reconciliation_evidence_unavailable")
+	} else {
+		out.OrphanBindings = append(out.OrphanBindings, (*reconciliation.OrphanBindings)...)
+	}
 	type sourceKey struct{ uri, revision string }
 	grouped := map[sourceKey]*SourceAudit{}
 	var methods map[string]struct {
