@@ -57,28 +57,6 @@
         "x-operation-locator": "GET /api/org/{orgId}"
       }
     },
-    "/api/query?type=orgVdc": {
-      "get": {
-        "operationId": "vdc_query",
-        "responses": {
-          "default": {
-            "description": "Response contract not reconciled; no callable binding claimed"
-          }
-        },
-        "x-operation-locator": "GET /api/query?type=orgVdc"
-      }
-    },
-    "/api/query?type=vm&fields=name,containerName&filter=isVAppTemplate==false": {
-      "get": {
-        "operationId": "vm_query",
-        "responses": {
-          "default": {
-            "description": "Response contract not reconciled; no callable binding claimed"
-          }
-        },
-        "x-operation-locator": "GET /api/query?type=vm&fields=name,containerName&filter=isVAppTemplate==false"
-      }
-    },
     "/api/vApp/vm-{vmId}/power/action/powerOn": {
       "post": {
         "operationId": "power_on",
@@ -99,6 +77,39 @@
           }
         },
         "x-operation-locator": "POST /api/vApp/vm-{vmId}/power/action/powerOff"
+      }
+    },
+    "/api/query": {
+      "get": {
+        "operationId": "query",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "type": "string",
+            "enum": [
+              "orgVdc",
+              "vm"
+            ],
+            "required": true
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Version-specific record envelopes/pagination/errors unreconciled; no callable binding claimed"
+          }
+        },
+        "x-operation-locator": "GET /api/query"
       }
     }
   },
@@ -173,5 +184,6 @@
         }
       }
     }
-  }
+  },
+  "x-inventory-note": "Eight Selectel examples, seven distinct method/path operations; VDC/VM queries are source parameter variants, not two coverage operations."
 }

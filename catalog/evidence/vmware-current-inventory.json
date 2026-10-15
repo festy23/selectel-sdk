@@ -17,6 +17,13 @@
     "POST /api/vApp/vm-{vmId}/power/action/powerOff"
   ],
   "confirmed_binding": "vmware.v36_3.versions.list",
-  "remaining": "Seven example operation contracts plus task/VM reads require exact version schema reconciliation; full Selectel-supported vApp/VM/network/storage inventory is unknown. Upstream reference explicitly includes tenant-inaccessible APIs; never use vendor count as deployment denominator. #68 remains owner; no full/closure claim.",
-  "raw_schema_limitation": "The version-specific versions.xsd link resolves to documentation shell; direct urllib vendor docs request returned403 while indexed primary reference is readable. Normalized schema is SDK-owned transcription, not claimed vendor OpenAPI/XSD download."
+  "remaining": "Seven other Selectel examples (six other method/path operations, including two query parameter variants) plus task/VM observation require exact-version reconciliation. Full Selectel-supported vApp/VM/network/storage inventory unknown; upstream includes tenant-inaccessible APIs. No vendor count as deployment denominator.",
+  "raw_schema_limitation": "The version-specific versions.xsd link resolves to documentation shell; direct urllib vendor docs request returned403 while indexed primary reference is readable. Normalized schema is SDK-owned transcription, not claimed vendor OpenAPI/XSD download.",
+  "confirmed_example_count": 8,
+  "confirmed_distinct_method_path_count": 7,
+  "remaining_children": {
+    "107": "version-bound auth/query/task contracts and Selectel-supported operation inventory",
+    "108": "confirmed vApp/VM lifecycle and task recovery; blocked by107",
+    "109": "confirmed network/storage lifecycle; blocked by107"
+  }
 }

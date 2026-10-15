@@ -69,7 +69,7 @@ func TestSerializedCatalogHasVersionAndUncertainCoverage(t *testing.T) {
 			CoverageRatio     *float64 `json:"coverage_ratio"`
 		} `json:"summary"`
 	}
-	if json.Unmarshal(b, &doc) != nil || doc.SchemaVersion != 1 || len(doc.Operations) != 199 || doc.Summary.InventoryComplete || doc.Summary.CoverageRatio != nil {
+	if json.Unmarshal(b, &doc) != nil || doc.SchemaVersion != 1 || len(doc.Operations) != 198 || doc.Summary.InventoryComplete || doc.Summary.CoverageRatio != nil {
 		t.Fatal("serialized catalog loses contract or overclaims coverage")
 	}
 }
