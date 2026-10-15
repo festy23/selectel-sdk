@@ -367,15 +367,23 @@ func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request
 			}
 			return out, nil
 		}
+		// A documented rejection is conclusive as soon as its status arrives;
+		// optional diagnostics cannot turn that known refusal into Unknown.
+		if out.Receipt != nil && containsStatus(op.Rejected, status) {
+			out.Receipt.Outcome = types.Rejected
+		}
+		closeErrorBody := sync.OnceFunc(func() { _ = resp.Body.Close() })
 		providerError := statusError(status)
 		if code, ok := op.ErrorCodes[status]; ok {
 			providerError = types.NewError(code)
 			providerError.HTTPStatus = status
 		}
 		if op.ErrorProtocol == "oci" {
+			stopClose := context.AfterFunc(call, closeErrorBody)
 			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
+			stopClose()
+			closeErrorBody()
 			if call.Err() != nil {
-				resp.Body.Close()
 				return out, types.ContextError(call.Err())
 			}
 			if readErr == nil {
@@ -393,10 +401,7 @@ func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request
 			}
 			providerError = cloudwatchError(status, raw)
 		}
-		resp.Body.Close() // Provider error payloads are not retained or logged.
-		if out.Receipt != nil && containsStatus(op.Rejected, status) {
-			out.Receipt.Outcome = types.Rejected
-		}
+		closeErrorBody() // Provider error payloads are not retained or logged.
 		if status == http.StatusUnauthorized {
 			r.invalidate(entry, in.Scope)
 			if op.Effect == "read" && !refreshed && entry.material.Scheme == credentials.IAMPassword && attempt < maxAttempts {

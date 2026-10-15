@@ -21,7 +21,7 @@
     ]
   },
   "errors": {
-    "shared": "normal HTTP status mapping and bounded safe-read retry; first errors[0].code from pinned OCI allowlist retained exactly; provider message/detail discarded. Diagnostic read/decode failure does not suppress401/403/503 status semantics",
+    "shared": "normal HTTP status mapping and bounded safe-read retry; first errors[0].code from pinned OCI allowlist retained exactly; provider message/detail discarded. Diagnostic read/decode failure does not suppress401/403/503 status semantics; cancellation closes optional diagnostic body once under whole call/transfer budget; documented rejection status is retained before diagnostics",
     "mutation": "only source rejected statuses conclusive; transport/5xx unknown,no replay; malformed201/202 remains Accepted",
     "rejected_statuses": []
   },

@@ -124,3 +124,9 @@ manifest, err := service.Manifests.Get(ctx, tag, registrydata.ManifestReadOption
 For upload, call Start, then explicit Append/Finalize using the returned protected
 session; retain every mutation Receipt on both success and error. The library
 performs no cloud call merely by constructing repository/content refs.
+
+Optional OCI error diagnostics remain inside the whole call/transfer budget.
+Cancellation closes a blocking diagnostic body once; a source-documented
+rejection is recorded before diagnostic processing and remains Rejected even
+when cancellation prevents reading its optional provider code. Cancellation
+does not authorize a retry or change the already known mutation refusal.

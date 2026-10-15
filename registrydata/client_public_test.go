@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -1228,5 +1229,121 @@ func TestUnknownFinalizeRetainsRequestedBlobAddressWithoutCreationProof(t *testi
 	observation, e := handle.Recover(context.Background())
 	if types.ErrorCode(e) != types.UnknownOutcome || observation.ProofStatus != "indeterminate" || puts != 1 || heads != 1 {
 		t.Fatal(observation, e, puts, heads)
+	}
+}
+
+type blockingDiagnosticBody struct {
+	started, closed  chan struct{}
+	reading, closing sync.Once
+	closeCalls       atomic.Int32
+}
+
+func (b *blockingDiagnosticBody) Read([]byte) (int, error) {
+	b.reading.Do(func() { close(b.started) })
+	<-b.closed
+	return 0, io.ErrClosedPipe
+}
+func (b *blockingDiagnosticBody) Close() error {
+	b.closeCalls.Add(1)
+	b.closing.Do(func() { close(b.closed) })
+	return nil
+}
+
+func TestOCIDiagnosticBodyCancellationClosesOnceAndRetainsKnownRejection(t *testing.T) {
+	for _, stage := range []string{"call-503", "transfer-503", "cancel-403", "cancel-404"} {
+		t.Run(stage, func(t *testing.T) {
+			body := &blockingDiagnosticBody{started: make(chan struct{}), closed: make(chan struct{})}
+			t.Cleanup(func() {
+				select {
+				case <-body.closed:
+				default:
+					body.Close()
+				}
+			})
+			calls := 0
+			_, c := dataClient(t, func(r *http.Request) (*http.Response, error) {
+				calls++
+				if calls == 1 {
+					return response(200, ""), nil
+				}
+				status := 503
+				if stage == "cancel-403" {
+					status = 403
+				}
+				if stage == "cancel-404" {
+					status = 404
+				}
+				v := response(status, "")
+				v.Body = body
+				return v, nil
+			}, func(cfg *sdk.Config) {
+				cfg.ReadMaxAttempts = 3
+				cfg.CallTimeout = time.Second
+				cfg.TransferTimeout = time.Second
+				if stage == "call-503" {
+					cfg.CallTimeout = 20 * time.Millisecond
+				}
+				if stage == "transfer-503" {
+					cfg.TransferTimeout = 20 * time.Millisecond
+				}
+			})
+			repo, _ := c.Repository("reg", "repo")
+			tag, _ := c.Manifests.Tag(repo, "latest")
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			type completed struct {
+				receipt *types.Receipt
+				err     error
+			}
+			done := make(chan completed, 1)
+			go func() {
+				switch stage {
+				case "call-503":
+					v, e := c.Version(ctx, types.CallOptions{})
+					done <- completed{v.Receipt, e}
+				case "transfer-503":
+					v, e := c.Manifests.Get(ctx, tag, registrydata.ManifestReadOptions{}, types.CallOptions{})
+					done <- completed{v.Receipt, e}
+				default:
+					v, e := c.Manifests.DeleteTag(ctx, tag, types.CallOptions{})
+					done <- completed{v.Receipt, e}
+				}
+			}()
+			select {
+			case <-body.started:
+			case out := <-done:
+				t.Fatalf("diagnostic not read: %v", out.err)
+			case <-time.After(time.Second):
+				t.Fatal("diagnostic not started")
+			}
+			if strings.HasPrefix(stage, "cancel-") {
+				cancel()
+			}
+			select {
+			case out := <-done:
+				want := types.DeadlineExceeded
+				if strings.HasPrefix(stage, "cancel-") {
+					want = types.Canceled
+					if out.receipt == nil || out.receipt.Outcome != types.Rejected {
+						t.Fatalf("known rejection lost: %+v %v", out.receipt, out.err)
+					}
+					var detail *types.SDKError
+					status := 403
+					if stage == "cancel-404" {
+						status = 404
+					}
+					if !errors.As(out.err, &detail) || detail.HTTPStatus != status || detail.Receipt == nil || detail.Receipt.Outcome != types.Rejected {
+						t.Fatal("structured refusal lost", out.err)
+					}
+				}
+				if types.ErrorCode(out.err) != want || calls != 2 || body.closeCalls.Load() != 1 {
+					t.Fatal(out.err, calls, body.closeCalls.Load())
+				}
+			case <-time.After(time.Second):
+				body.Close()
+				out := <-done
+				t.Fatalf("whole-response cancellation blocked; receipt=%+v err=%v", out.receipt, out.err)
+			}
+		})
 	}
 }
