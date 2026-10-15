@@ -119,3 +119,23 @@ region. Permission/availability для caller определяется конк�
 Native SDK method list и Terraform resource list не являются знаменателем
 API coverage. При изменении API source новая версия каталога сохраняет старые
 идентификаторы, добавляет новые и явно отмечает withdrawn операции.
+
+## Локальная сверка закреплённого subset
+
+`Client.Catalog().Audit()` группирует active documented OperationContracts по
+точной паре source URI/revision. Для каждой группы возвращаются counts,
+canonical IDs без callable binding и partial bindings с `GoMethod`,
+`CoveredSchemaRef`, `ExcludedVariants`. Partial не включается в implemented.
+Массивы сортируются и являются независимыми копиями; credentials/HTTP не нужны.
+
+Это проекция встроенного каталога, не обнаружение live API и не доказательство
+полноты upstream SDK/API. Две revisions одного URI не объединяются. Audit не
+считает convenience helpers дополнительными remote operations и не изобретает
+alias/deprecated mappings. Неописанные семейства/варианты остаются неизвестными;
+общие completeness/ratio следуют Summary, неизвестный denominator даёт null.
+Discovery_pending family всегда входит в IncompleteFamilies, даже без
+OperationContracts; отсутствие операций не делает неизвестный inventory полным.
+
+Срез #74 не завершён: полный canonical mapping всех официальных SDK и protocol
+operations, source drift и проверка public-method coverage требуют дальнейшей
+сверки. [Очередь пробелов](catalog-reconciliation.md) сохраняет владельцев.
