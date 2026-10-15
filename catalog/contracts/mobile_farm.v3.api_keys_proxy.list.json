@@ -1,0 +1,37 @@
+{
+  "operation_id": "mobile_farm.v3.api_keys_proxy.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "account or project view, corresponding explicit IAM; no fallback",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v3/keys/proxy",
+    "method": "GET",
+    "auth": "account or project view, corresponding explicit IAM; no fallback",
+    "body": "none"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed ProxyTokenInfo fingerprint/name/active/serials; create additionally returns single-delivery protected token. Exact fingerprint scanned before unrelated fields; caller user parent only on explicit user-admin path. Delete validates returned fingerprint against exact caller ref; foreign refs never adopted. Required false and empty serials retained.",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Shared status taxonomy with documented400/401/403/404/409/429 as applicable, safe provider diagnostics; mutation receipt retained even pre-I/O validation and post-acceptance decoding failures."
+  },
+  "retry": "Bounded safe reads only",
+  "pagination": {
+    "provider": "Finite native root array with no page/limit parameters",
+    "local": "Bounded FixedIterator; truncation returns observed items and incomplete/SDK cursor"
+  },
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}

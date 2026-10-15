@@ -197,42 +197,74 @@ func (v *Browser) normalize() {
 	}
 }
 
+type CreateProxyTokenRequest struct {
+	Name *string `json:"name,omitempty"`
+}
+
+func (v CreateProxyTokenRequest) Validate() error {
+	if v.Name == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *CreateProxyTokenRequest) normalize() {
+}
+func (v *CreateProxyTokenRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire CreateProxyTokenRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = CreateProxyTokenRequest(value)
+	v.normalize()
+	return nil
+}
+
 type Device struct {
-	Abi                             *string               `json:"abi,omitempty"`
-	AdminStatus                     *string               `json:"adminStatus,omitempty"`
-	AirplaneMode                    *bool                 `json:"airplaneMode,omitempty"`
-	Battery                         *Battery              `json:"battery,omitempty"`
-	Browser                         *Browser              `json:"browser,omitempty"`
-	Channel                         *types.ProtectedValue `json:"channel,omitempty"`
-	CPUPlatform                     *string               `json:"cpuPlatform,omitempty"`
-	Display                         *Display              `json:"display,omitempty"`
-	Manufacturer                    *string               `json:"manufacturer,omitempty"`
-	MarketName                      *string               `json:"marketName,omitempty"`
-	Meta                            *Meta                 `json:"meta,omitempty"`
-	MfProxy                         *bool                 `json:"mfProxy,omitempty"`
-	Network                         *Network              `json:"network,omitempty"`
-	OpenGLESVersion                 *string               `json:"openGLESVersion,omitempty"`
-	Operator                        *types.ProtectedValue `json:"operator,omitempty"`
-	OsVersion                       *string               `json:"osVersion,omitempty"`
-	Owner                           *Owner                `json:"owner,omitempty"`
-	Phone                           *Phone                `json:"phone,omitempty"`
-	Platform                        *string               `json:"platform,omitempty"`
-	PresenceChangedAt               *string               `json:"presenceChangedAt,omitempty"`
-	Present                         *bool                 `json:"present,omitempty"`
-	Product                         *string               `json:"product,omitempty"`
-	Ready                           *bool                 `json:"ready,omitempty"`
-	RemoteConnect                   *bool                 `json:"remoteConnect,omitempty"`
-	RemoteConnectURL                *types.ProtectedValue `json:"remoteConnectUrl,omitempty"`
-	Resolution                      *string               `json:"resolution,omitempty"`
-	ReverseForwards                 []string              `json:"reverseForwards,omitzero"`
-	Sdk                             *string               `json:"sdk,omitempty"`
-	Serial                          *string               `json:"serial,omitempty"`
-	Status                          *types.Integer        `json:"status,omitempty"`
-	StatusChangedAt                 *string               `json:"statusChangedAt,omitempty"`
-	Usage                           *string               `json:"usage,omitempty"`
-	UsageChangedAt                  *string               `json:"usageChangedAt,omitempty"`
-	WifiAutoConnectFeatureAvailable *bool                 `json:"wifiAutoConnectFeatureAvailable,omitempty"`
-	Ref                             *types.ResourceRef    `json:"ref,omitempty"`
+	Abi                             *string                `json:"abi,omitempty"`
+	AdminStatus                     *string                `json:"adminStatus,omitempty"`
+	AirplaneMode                    *bool                  `json:"airplaneMode,omitempty"`
+	Battery                         *Battery               `json:"battery,omitempty"`
+	Browser                         *Browser               `json:"browser,omitempty"`
+	Channel                         *types.ProtectedValue  `json:"channel,omitempty"`
+	CPUPlatform                     *string                `json:"cpuPlatform,omitempty"`
+	Display                         *Display               `json:"display,omitempty"`
+	Manufacturer                    *string                `json:"manufacturer,omitempty"`
+	MarketName                      *string                `json:"marketName,omitempty"`
+	Meta                            *Meta                  `json:"meta,omitempty"`
+	MfProxy                         *bool                  `json:"mfProxy,omitempty"`
+	Network                         *Network               `json:"network,omitempty"`
+	OpenGLESVersion                 *string                `json:"openGLESVersion,omitempty"`
+	Operator                        *types.ProtectedValue  `json:"operator,omitempty"`
+	OsVersion                       *string                `json:"osVersion,omitempty"`
+	Owner                           *Owner                 `json:"owner,omitempty"`
+	Phone                           *Phone                 `json:"phone,omitempty"`
+	Platform                        *string                `json:"platform,omitempty"`
+	PresenceChangedAt               *string                `json:"presenceChangedAt,omitempty"`
+	Present                         *bool                  `json:"present,omitempty"`
+	Product                         *string                `json:"product,omitempty"`
+	Ready                           *bool                  `json:"ready,omitempty"`
+	RemoteConnect                   *bool                  `json:"remoteConnect,omitempty"`
+	RemoteConnectURL                *types.ProtectedValue  `json:"remoteConnectUrl,omitempty"`
+	Resolution                      *string                `json:"resolution,omitempty"`
+	ReverseForwards                 []types.ProtectedValue `json:"reverseForwards,omitzero"`
+	Sdk                             *string                `json:"sdk,omitempty"`
+	Serial                          *string                `json:"serial,omitempty"`
+	Status                          *types.Integer         `json:"status,omitempty"`
+	StatusChangedAt                 *string                `json:"statusChangedAt,omitempty"`
+	Usage                           *string                `json:"usage,omitempty"`
+	UsageChangedAt                  *string                `json:"usageChangedAt,omitempty"`
+	WifiAutoConnectFeatureAvailable *bool                  `json:"wifiAutoConnectFeatureAvailable,omitempty"`
+	Ref                             *types.ResourceRef     `json:"ref,omitempty"`
 }
 
 func (v Device) Validate() error {
@@ -398,6 +430,78 @@ func (v Phone) Validate() error {
 	return nil
 }
 func (v *Phone) normalize() {
+}
+
+type ProxyToken struct {
+	Active      *bool                 `json:"active,omitempty"`
+	Fingerprint *string               `json:"fingerprint,omitempty"`
+	Name        *string               `json:"name,omitempty"`
+	Token       *types.ProtectedValue `json:"token,omitempty"`
+	Ref         *types.ResourceRef    `json:"ref,omitempty"`
+}
+
+func (v ProxyToken) Validate() error {
+	if v.Active == nil || v.Fingerprint == nil || v.Name == nil || v.Token == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *ProxyToken) normalize() {
+}
+func (v *ProxyToken) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ProxyToken
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ProxyToken(value)
+	v.normalize()
+	return nil
+}
+
+type ProxyTokenInfo struct {
+	Active      *bool              `json:"active,omitempty"`
+	Fingerprint *string            `json:"fingerprint,omitempty"`
+	Name        *string            `json:"name,omitempty"`
+	Serials     []string           `json:"serials,omitzero"`
+	Ref         *types.ResourceRef `json:"ref,omitempty"`
+}
+
+func (v ProxyTokenInfo) Validate() error {
+	if v.Active == nil || v.Fingerprint == nil || v.Name == nil || v.Serials == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *ProxyTokenInfo) normalize() {
+}
+func (v *ProxyTokenInfo) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ProxyTokenInfo
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ProxyTokenInfo(value)
+	v.normalize()
+	return nil
 }
 
 type Slot struct {

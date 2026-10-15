@@ -1,0 +1,39 @@
+{
+  "operation_id": "mobile_farm.v3.api_keys_proxy.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/urls/",
+    "base": "https://api.selectel.ru/mobfarm",
+    "selection": "Published global endpoint or exact scoped override; no inferred region/pool",
+    "scope": "account or project view, corresponding explicit IAM; no fallback",
+    "redirects": "reject",
+    "ref_validation": "Caller ResourceRef scope/service/generation/kind/endpointID/URL and root shape checked before credential/resource I/O"
+  },
+  "request": {
+    "path": "/api/v3/keys/proxy",
+    "method": "POST",
+    "auth": "account or project view, corresponding explicit IAM; no fallback",
+    "body": "CreateProxyTokenRequest name with trimmed Unicode length1..255; original caller spelling sent unchanged"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Typed ProxyTokenInfo fingerprint/name/active/serials; create additionally returns single-delivery protected token. Exact fingerprint scanned before unrelated fields; caller user parent only on explicit user-admin path. Delete validates returned fingerprint against exact caller ref; foreign refs never adopted. Required false and empty serials retained.",
+    "sensitive_fields": [
+      "response.token"
+    ]
+  },
+  "errors": {
+    "mapping": "Shared status taxonomy with documented400/401/403/404/409/429 as applicable, safe provider diagnostics; mutation receipt retained even pre-I/O validation and post-acceptance decoding failures."
+  },
+  "retry": "No replay; one resource attempt on unknown outcome. Documented 4xx rejection statuses retain rejected receipt;500/transport/decode failures preserve uncertainty/acceptance as applicable.",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": {
+    "kind": "unavailable",
+    "reason": "No direct token Get/status or causal proof; single-delivery secret cannot be recreated; no replay, name lookup or inferred adoption."
+  }
+}

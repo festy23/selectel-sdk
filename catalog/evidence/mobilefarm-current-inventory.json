@@ -152,7 +152,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_keys_proxy.list"
     },
     {
       "method": "POST",
@@ -165,7 +166,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_keys_proxy.create"
     },
     {
       "method": "DELETE",
@@ -178,7 +180,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_keys_proxy.delete"
     },
     {
       "method": "GET",
@@ -188,7 +191,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_users_keys_proxy.list"
     },
     {
       "method": "POST",
@@ -198,7 +202,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_users_keys_proxy.create"
     },
     {
       "method": "DELETE",
@@ -208,7 +213,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_users_keys_proxy.delete"
     },
     {
       "method": "GET",

@@ -46,7 +46,7 @@ func TestMobileFarmGetDevicePreservesExactRefAndProtectsAccessAndOwner(t *testin
 		if r.URL.Path != "/mobfarm/api/v3/devices/serial-1" || r.Method != "GET" {
 			t.Fatalf("device wire %s", r.URL)
 		}
-		payload := `{"serial":"serial-1","status":0,"present":true,"ready":true,"remoteConnectUrl":"synthetic-private-adb-url","owner":{"name":"synthetic-private-owner"},"phone":{"phoneNumber":"synthetic-private-phone"},"battery":{"level":42,"voltage":3.1415926535897932384626}}`
+		payload := `{"serial":"serial-1","status":0,"present":true,"ready":true,"remoteConnectUrl":"synthetic-private-adb-url","owner":{"name":"synthetic-private-owner"},"phone":{"phoneNumber":"synthetic-private-phone"},"reverseForwards":["synthetic-private-forward"],"battery":{"level":42,"voltage":3.1415926535897932384626}}`
 		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(payload))}, nil
 	})})
 	if e != nil {
@@ -59,7 +59,7 @@ func TestMobileFarmGetDevicePreservesExactRefAndProtectsAccessAndOwner(t *testin
 		t.Fatalf("device %+v %v", out, e)
 	}
 	safe, _ := json.Marshal(out.Data)
-	for _, secret := range []string{"synthetic-private-adb-url", "synthetic-private-owner", "synthetic-private-phone", "3.1415926535897932384626"} {
+	for _, secret := range []string{"synthetic-private-adb-url", "synthetic-private-owner", "synthetic-private-phone", "synthetic-private-forward", "3.1415926535897932384626"} {
 		if strings.Contains(string(safe), secret) || strings.Contains(fmt.Sprintf("%+v %#v", out.Data, out.Data), secret) {
 			t.Fatal("device output leaked")
 		}
@@ -297,5 +297,162 @@ func TestMobileFarmADBInvalidSourceLengthsReturnNotSentBeforeCredentialIO(t *tes
 		if types.ErrorCode(e) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.ContractRevision == "" || lookups != 0 || calls != 0 {
 			t.Fatalf("source length gate %+v %v", out, e)
 		}
+	}
+}
+
+func TestMobileFarmProxyListExposesMetadataButNeverServerSecret(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/mobfarm/api/v3/keys/proxy" || r.Method != "GET" {
+			t.Fatalf("proxy list %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`[{"fingerprint":"proxy-1","name":"synthetic-token","active":false,"serials":[],"token":"synthetic-unexpected-secret"}]`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	out, e := c.Account().MobileFarm().ListProxyTokens(context.Background(), pagination.Options{})
+	if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref.ID != "proxy-1" || out.Items[0].Active == nil || *out.Items[0].Active || out.Items[0].Serials == nil {
+		t.Fatalf("proxy inventory %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out)
+	if strings.Contains(string(safe), "synthetic-unexpected-secret") {
+		t.Fatal("unexpected server token escaped metadata DTO")
+	}
+}
+
+func TestMobileFarmProxyCreationSecretOnlyCrossesExplicitRevealBoundary(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.URL.Path != "/mobfarm/api/v3/keys/proxy" || r.Method != "POST" || string(raw) != `{"name":"synthetic-token"}` {
+			t.Fatalf("create proxy %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"fingerprint":"proxy-1","name":"synthetic-token","active":true,"token":"synthetic-created-secret"}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	var input mobilefarm.CreateProxyTokenRequest
+	_ = json.Unmarshal([]byte(`{"name":"synthetic-token"}`), &input)
+	out, e := c.Account().MobileFarm().CreateProxyToken(context.Background(), input, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != "proxy-1" || string(out.Data.Token.Reveal()) != "synthetic-created-secret" {
+		t.Fatalf("proxy create %+v %v", out, e)
+	}
+	safe, _ := json.Marshal(out)
+	formatted := fmt.Sprintf("%v %+v %#v %x", out.Data.Token, out.Data.Token, out.Data.Token, out.Data.Token)
+	for _, encoding := range []string{"synthetic-created-secret", fmt.Sprint([]byte("synthetic-created-secret")), fmt.Sprintf("%#v", []byte("synthetic-created-secret"))} {
+		if strings.Contains(string(safe)+formatted, encoding) {
+			t.Fatal("proxy secret escaped diagnostics")
+		}
+	}
+}
+
+func TestMobileFarmProxyDeleteRejectsForeignFingerprintAfterAcceptance(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/mobfarm/api/v3/keys/proxy/proxy-1" || r.Method != "DELETE" {
+			t.Fatalf("proxy deletion %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"fingerprint":"foreign-proxy","name":"synthetic-token","active":false,"serials":[]}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	ref := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "mobile_farm", APIGeneration: "v3", Kind: "proxy_token", ID: "proxy-1", EndpointID: "selectel-mobile-farm:v3", EndpointURL: "https://api.selectel.ru/mobfarm"}
+	out, e := c.Account().MobileFarm().DeleteProxyToken(context.Background(), ref, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != ref {
+		t.Fatalf("proxy delete mismatch %+v %v", out, e)
+	}
+}
+
+func mobileFarmTestClient(t *testing.T, wire transportFunc) *sdk.Client {
+	t.Helper()
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		return wire(r)
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	return c
+}
+func mobileFarmUserRef() types.ResourceRef {
+	return types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "mobile_farm", APIGeneration: "v3", Kind: "user", ID: "user-1", EndpointID: "selectel-mobile-farm:v3", EndpointURL: "https://api.selectel.ru/mobfarm"}
+}
+
+func TestMobileFarmUserProxyListIsAccountScopedAndParentBound(t *testing.T) {
+	calls := 0
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.Method != "GET" || r.URL.Path != "/mobfarm/api/v3/users/user-1/keys/proxy" {
+			t.Fatalf("userproxylist %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`[{"fingerprint":"proxy-1","name":"synthetic-token","active":true,"serials":[]}]`))}, nil
+	}))
+	user := mobileFarmUserRef()
+	p, _ := c.Project("test-project")
+	if _, e := p.MobileFarm().ListUserProxyTokens(context.Background(), user, pagination.Options{}); types.ErrorCode(e) != types.ScopeMismatch || calls != 0 {
+		t.Fatalf("userproxy gate %v", e)
+	}
+	out, e := c.Account().MobileFarm().ListUserProxyTokens(context.Background(), user, pagination.Options{})
+	if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref.Parent == nil || *out.Items[0].Ref.Parent != user {
+		t.Fatalf("user proxy list %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmUserProxyCreateRetainsIdentityBeforeMalformedFields(t *testing.T) {
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.Method != "POST" || r.URL.Path != "/mobfarm/api/v3/users/user-1/keys/proxy" {
+			t.Fatalf("create %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"fingerprint":"proxy-1","name":false,"token":"synthetic-secret"}`))}, nil
+	}))
+	var input mobilefarm.CreateProxyTokenRequest
+	_ = json.Unmarshal([]byte(`{"name":"synthetic-token"}`), &input)
+	user := mobileFarmUserRef()
+	out, e := c.Account().MobileFarm().CreateUserProxyToken(context.Background(), user, input, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 {
+		t.Fatalf("create %+v %v", out, e)
+	}
+	child := out.Receipt.ResourceRefs[1]
+	if child.ID != "proxy-1" || child.Parent == nil || *child.Parent != user {
+		t.Fatalf("identity %+v", child)
+	}
+}
+
+func TestMobileFarmUserProxyDeletePreservesExplicitParent(t *testing.T) {
+	calls := 0
+	c := mobileFarmTestClient(t, transportFunc(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.Method != "DELETE" || r.URL.Path != "/mobfarm/api/v3/users/user-1/keys/proxy/proxy-1" {
+			t.Fatalf("delete %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"fingerprint":"proxy-1","name":"synthetic-token","active":false,"serials":[]}`))}, nil
+	}))
+	user := mobileFarmUserRef()
+	ref := user
+	ref.Kind = "proxy_token"
+	ref.ID = "proxy-1"
+	ref.Parent = &user
+	bad := ref
+	foreign := user
+	foreign.Service = "unrelated"
+	bad.Parent = &foreign
+	out, e := c.Account().MobileFarm().DeleteUserProxyToken(context.Background(), bad, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || calls != 0 {
+		t.Fatalf("gate %+v %v", out, e)
+	}
+	out, e = c.Account().MobileFarm().DeleteUserProxyToken(context.Background(), ref, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || out.Data.Ref == nil || out.Data.Ref.Parent == nil || *out.Data.Ref.Parent != user {
+		t.Fatalf("delete %+v %v", out, e)
 	}
 }

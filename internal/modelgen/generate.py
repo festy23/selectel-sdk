@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice", "AdbKey":"ADBKey", "CreateAdbKeyRequest":"CreateADBKeyRequest"}, None),
+"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice", "AdbKey":"ADBKey", "CreateAdbKeyRequest":"CreateADBKeyRequest", "entity.ProxyTokenInfo":"ProxyTokenInfo", "entity.ProxyToken":"ProxyToken", "entity.CreateProxyTokenReq":"CreateProxyTokenRequest"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -84,7 +84,7 @@ for case, (family, initial, top_name) in CASES.items():
             return "types.ProtectedValue", False
         if field == "parameters" and package == "audit":
             return "types.ProtectedValue", False
-        if package == "mobilefarm" and kind == "string" and (field in {"ticket", "token", "remoteConnectUrl", "publicKey", "channel", "operator", "reverseForwards"} or type_name.startswith("Phone") or type_name.startswith("Owner") or (field in {"message", "msg", "value", "description"} and ("Error" in type_name or type_name in {"SuccessDescription", "GetTicketResponseDescription"}))):
+        if package == "mobilefarm" and kind == "string" and (field in {"ticket", "token", "remoteConnectUrl", "publicKey", "channel", "operator", "reverseForwards"} or type_name.startswith("DeviceReverseForwards") or type_name.startswith("Phone") or type_name.startswith("Owner") or (field in {"message", "msg", "value", "description"} and ("Error" in type_name or type_name in {"SuccessDescription", "GetTicketResponseDescription"}))):
             return "types.ProtectedValue", False
         if package == "mobilefarm" and type_name.startswith("Battery") and kind in {"integer", "number"}:
             return ("ProtectedInteger" if kind=="integer" else "ProtectedNumber"), False
