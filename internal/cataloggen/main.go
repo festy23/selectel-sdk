@@ -191,6 +191,7 @@ func generate() error {
 					effect = sourceOperation.Effect
 				}
 				authMode := f.Mode
+				var authAlternatives []string
 				if name == "mobile-farm" {
 					project, account := false, false
 					for _, alternative := range sourceOperation.Security {
@@ -208,9 +209,12 @@ func generate() error {
 					if !project && !account {
 						return fmt.Errorf("mobile-farm auth missing %s", path)
 					}
-					if !project {
+					if account {
 						authMode = "iam_account"
 						scope = []string{"account"}
+						if project {
+							authAlternatives = []string{"iam_project"}
+						}
 					}
 				}
 				locator := strings.ToUpper(method) + " " + path
@@ -225,6 +229,9 @@ func generate() error {
 					"endpoint_recipe_ref": nil, "request_binding_ref": nil, "response_binding_ref": nil, "error_binding_ref": pointer + "/responses", "replay_policy_ref": nil,
 					"pagination_contract_ref": nil, "wait_goals": []string{}, "recovery_contract_ref": nil, "sensitive_fields": []string{},
 					"parameter_support": map[string]any{"covered_schema_ref": nil, "excluded_variants": []string{}}, "limitations": []string{"No callable service binding"},
+				}
+				if len(authAlternatives) > 0 {
+					row["auth"].(map[string]any)["alternatives"] = authAlternatives
 				}
 				b, implemented := bindings[id]
 				if implemented {

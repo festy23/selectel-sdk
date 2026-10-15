@@ -5,7 +5,78 @@ package mobilefarm
 import (
 	"encoding/json"
 	"github.com/festy23/selectel-sdk/types"
+	"unicode/utf8"
 )
+
+type ADBKey struct {
+	Fingerprint *string            `json:"fingerprint,omitempty"`
+	Title       *string            `json:"title,omitempty"`
+	Ref         *types.ResourceRef `json:"ref,omitempty"`
+}
+
+func (v ADBKey) Validate() error {
+	return nil
+}
+func (v *ADBKey) normalize() {
+}
+func (v *ADBKey) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire ADBKey
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = ADBKey(value)
+	v.normalize()
+	return nil
+}
+
+type CreateADBKeyRequest struct {
+	PublicKey *types.ProtectedValue `json:"publicKey,omitempty"`
+	Title     *string               `json:"title,omitempty"`
+}
+
+func (v CreateADBKeyRequest) Validate() error {
+	if v.PublicKey == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.PublicKey != nil && (utf8.RuneCount(v.PublicKey.Reveal()) < 1) {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Title != nil && (utf8.RuneCountInString(*v.Title) < 1 || utf8.RuneCountInString(*v.Title) > 255) {
+		return types.NewError(types.ProtocolError)
+	}
+	return nil
+}
+func (v *CreateADBKeyRequest) normalize() {
+}
+func (v *CreateADBKeyRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire CreateADBKeyRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = CreateADBKeyRequest(value)
+	v.normalize()
+	return nil
+}
 
 type Status struct {
 	ACTIVE      *types.Number `json:"ACTIVE,omitempty"`

@@ -65,3 +65,19 @@ func (c *Client) ListDevices(ctx context.Context, options pagination.Options) (p
 	}
 	return iterator.Collect(ctx)
 }
+
+func (c *Client) validateUserChild(ref types.ResourceRef, kind string, op core.Operation) error {
+	if e := ref.Validate(); e != nil {
+		return e
+	}
+	if ref.Scope != c.scope || ref.Service != "mobile_farm" || ref.APIGeneration != op.APIGeneration {
+		return types.NewError(types.ScopeMismatch)
+	}
+	if ref.Kind != kind || ref.Parent == nil {
+		return types.NewError(types.InvalidArgument)
+	}
+	if ref.EndpointID != op.EndpointID || ref.EndpointURL != op.FixedEndpoint {
+		return types.NewError(types.EndpointUnavailable)
+	}
+	return c.validateRef(*ref.Parent, "user", op)
+}

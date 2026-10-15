@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice"}, None),
+"mobilefarm": ("mobile-farm", {"entity.AvailableDevice":"AvailableDevice", "entity.Device":"Device", "entity.SmallDevice":"SmallDevice", "AdbKey":"ADBKey", "CreateAdbKeyRequest":"CreateADBKeyRequest"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -147,6 +147,14 @@ for case, (family, initial, top_name) in CASES.items():
             value = resolve(value)
             ref = value.get("$ref", "").split("/")[-1]
             nested = definitions.get(ref, value)
+            if package == "mobilefarm" and nested.get("type") == "string" and ("minLength" in nested or "maxLength" in nested):
+                imports["utf8"] = "unicode/utf8"
+                go_field_type, _ = field_type(value, type_name + field_name, wire)
+                length = f"utf8.RuneCount(v.{field_name}.Reveal())" if go_field_type == "types.ProtectedValue" else f"utf8.RuneCountInString(*v.{field_name})"
+                bounds = []
+                if "minLength" in nested: bounds.append(f"{length} < {nested['minLength']}")
+                if "maxLength" in nested: bounds.append(f"{length} > {nested['maxLength']}")
+                code += f"\tif v.{field_name} != nil && ({' || '.join(bounds)}) {{ return types.NewError(types.ProtocolError) }}\n"
             if resolve(nested).get("properties"):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
             elif nested.get("type") == "array":

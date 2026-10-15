@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	sdk "github.com/festy23/selectel-sdk"
+	"github.com/festy23/selectel-sdk/credentials"
+	"github.com/festy23/selectel-sdk/mobilefarm"
 	"github.com/festy23/selectel-sdk/pagination"
 	"github.com/festy23/selectel-sdk/types"
 	"io"
@@ -81,5 +83,219 @@ func TestMobileFarmListDevicesKeepsNativeSmallStatusShapeAndExactScopedSerial(t 
 	out, e := p.MobileFarm().ListDevices(context.Background(), pagination.Options{MaxItems: 1})
 	if types.ErrorCode(e) != types.Incomplete || out.Complete || len(out.Items) != 1 || out.Items[0].Ref.ID != "serial-1" || out.Items[0].Ref.Scope.ProjectID != "test-project" || out.Items[0].Ref.Parent != nil || out.Items[0].Status.ACTIVE.String() != "0" {
 		t.Fatalf("device inventory %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmADBListsUseExplicitAccountOrProjectView(t *testing.T) {
+	for _, project := range []string{"", "test-project"} {
+		t.Run("project="+project, func(t *testing.T) {
+			var requested types.AuthRequest
+			c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(ctx context.Context, r types.AuthRequest) (credentials.Material, error) {
+				requested = r
+				return source().Lookup(ctx, r)
+			}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+				if r.URL.Path == "/identity/v3/auth/tokens" {
+					return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+				}
+				if r.URL.Path != "/mobfarm/api/v3/keys/adb" || r.Method != "GET" {
+					t.Fatalf("ADB list %s", r.URL)
+				}
+				return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`[{"fingerprint":"fingerprint-1","title":"synthetic-key"}]`))}, nil
+			})})
+			if e != nil {
+				t.Fatal(e)
+			}
+			scoped := c.Account().MobileFarm()
+			expected := types.IAMAccount
+			if project != "" {
+				p, _ := c.Project(project)
+				scoped = p.MobileFarm()
+				expected = types.IAMProject
+			}
+			out, e := scoped.ListADBKeys(context.Background(), pagination.Options{})
+			if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref.ID != "fingerprint-1" || out.Items[0].Ref.Scope.ProjectID != project || requested.Mode != expected {
+				t.Fatalf("ADB list %+v %v auth%+v", out, e, requested)
+			}
+		})
+	}
+}
+
+func TestMobileFarmStoreADBKeyRetainsAcceptedFingerprintBeforeUnrelatedDecode(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		raw, _ := io.ReadAll(r.Body)
+		if r.URL.Path != "/mobfarm/api/v3/keys/adb" || r.Method != "POST" || !strings.Contains(string(raw), `"publicKey":"synthetic-public-key"`) {
+			t.Fatalf("store ADB wire %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"fingerprint":"fingerprint-1","title":42}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	var input mobilefarm.CreateADBKeyRequest
+	_ = json.Unmarshal([]byte(`{"publicKey":"synthetic-public-key","title":"synthetic-title"}`), &input)
+	safe, _ := json.Marshal(input)
+	if strings.Contains(string(safe), "synthetic-public-key") {
+		t.Fatal("request public key leaked")
+	}
+	out, e := c.Account().MobileFarm().StoreADBKey(context.Background(), input, types.CallOptions{})
+	if types.ErrorCode(e) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != "fingerprint-1" || out.Receipt.ResourceRefs[0].Scope.ProjectID != "" {
+		t.Fatalf("accepted ADB %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmADBDeleteValidatesEndpointBeforeCredentialsAndRetainsReceipt(t *testing.T) {
+	lookups, calls := 0, 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(ctx context.Context, r types.AuthRequest) (credentials.Material, error) {
+		lookups++
+		return source().Lookup(ctx, r)
+	}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		if r.Method != "DELETE" || r.URL.Path != "/mobfarm/api/v3/keys/adb/fingerprint-1" {
+			t.Fatalf("delete ADB %s", r.URL)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	ref := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "mobile_farm", APIGeneration: "v3", Kind: "adb_key", ID: "fingerprint-1", EndpointID: "foreign-endpoint", EndpointURL: "https://api.selectel.ru/mobfarm"}
+	out, e := c.Account().MobileFarm().DeleteADBKey(context.Background(), ref, types.CallOptions{})
+	if types.ErrorCode(e) != types.EndpointUnavailable || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.ContractRevision == "" || lookups != 0 || calls != 0 {
+		t.Fatalf("ADB delete gate %+v %v", out, e)
+	}
+	ref.EndpointID = "selectel-mobile-farm:v3"
+	out, e = c.Account().MobileFarm().DeleteADBKey(context.Background(), ref, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != "fingerprint-1" || calls != 1 {
+		t.Fatalf("ADB delete %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmUserADBListRequiresAccountScopeAndRetainsCallerUserParent(t *testing.T) {
+	calls := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			if requestedScope(r).ProjectID != "" {
+				t.Fatal("user admin fetched project token")
+			}
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		if r.URL.Path != "/mobfarm/api/v3/users/user-1/keys/adb" || r.Method != "GET" {
+			t.Fatalf("user ADB path %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`[{"fingerprint":"fingerprint-1","title":"synthetic-user-key"}]`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	user := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "mobile_farm", APIGeneration: "v3", Kind: "user", ID: "user-1", EndpointID: "selectel-mobile-farm:v3", EndpointURL: "https://api.selectel.ru/mobfarm"}
+	p, _ := c.Project("test-project")
+	if _, e := p.MobileFarm().ListUserADBKeys(context.Background(), user, pagination.Options{}); types.ErrorCode(e) != types.ScopeMismatch || calls != 0 {
+		t.Fatalf("user scope gate %v", e)
+	}
+	out, e := c.Account().MobileFarm().ListUserADBKeys(context.Background(), user, pagination.Options{})
+	if e != nil || !out.Complete || len(out.Items) != 1 || out.Items[0].Ref.Parent == nil || *out.Items[0].Ref.Parent != user {
+		t.Fatalf("user ADB %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmUserADBStoreUnknownNeverReplaysOrInventsFingerprint(t *testing.T) {
+	writes := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		writes++
+		raw, _ := io.ReadAll(r.Body)
+		if r.URL.Path != "/mobfarm/api/v3/users/user-1/keys/adb" || r.Method != "POST" || !strings.Contains(string(raw), `"publicKey":"synthetic-user-public-key"`) {
+			t.Fatalf("user ADB store %s", r.URL)
+		}
+		return nil, io.ErrUnexpectedEOF
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	user := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "mobile_farm", APIGeneration: "v3", Kind: "user", ID: "user-1", EndpointID: "selectel-mobile-farm:v3", EndpointURL: "https://api.selectel.ru/mobfarm"}
+	var input mobilefarm.CreateADBKeyRequest
+	_ = json.Unmarshal([]byte(`{"publicKey":"synthetic-user-public-key"}`), &input)
+	out, e := c.Account().MobileFarm().StoreUserADBKey(context.Background(), user, input, types.CallOptions{})
+	if types.ErrorCode(e) != types.UnknownOutcome || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0] != user || writes != 1 || out.Receipt.Recovery != "unavailable" {
+		t.Fatalf("unknown user ADB %+v %v writes%d", out, e, writes)
+	}
+}
+
+func TestMobileFarmUserADBDeleteRejectsForeignParentAndUsesExactNestedPath(t *testing.T) {
+	lookups, calls := 0, 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(ctx context.Context, r types.AuthRequest) (credentials.Material, error) {
+		lookups++
+		return source().Lookup(ctx, r)
+	}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		calls++
+		if r.URL.Path != "/mobfarm/api/v3/users/user-1/keys/adb/fingerprint-1" || r.Method != "DELETE" {
+			t.Fatalf("nested ADB delete %s", r.URL)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	user := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "foreign", APIGeneration: "v3", Kind: "user", ID: "user-1", EndpointID: "selectel-mobile-farm:v3", EndpointURL: "https://api.selectel.ru/mobfarm"}
+	ref := user
+	ref.Service = "mobile_farm"
+	ref.Kind = "adb_key"
+	ref.ID = "fingerprint-1"
+	ref.Parent = &user
+	out, e := c.Account().MobileFarm().DeleteUserADBKey(context.Background(), ref, types.CallOptions{})
+	if types.ErrorCode(e) != types.ScopeMismatch || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.ContractRevision == "" || lookups != 0 || calls != 0 {
+		t.Fatalf("parent gate %+v %v", out, e)
+	}
+	user.Service = "mobile_farm"
+	out, e = c.Account().MobileFarm().DeleteUserADBKey(context.Background(), ref, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].Parent.ID != "user-1" || calls != 1 {
+		t.Fatalf("nested deletion %+v %v", out, e)
+	}
+}
+
+func TestMobileFarmCatalogAuthAlternativesAreExplicitAndImmutable(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source()})
+	if e != nil {
+		t.Fatal(e)
+	}
+	cap, e := c.Catalog().Describe("mobile_farm.v3.api_keys_adb.list")
+	if e != nil || cap.Auth.Scheme != types.IAMAccount || len(cap.Auth.Alternatives) != 1 || cap.Auth.Alternatives[0] != types.IAMProject || len(cap.ScopeRequirements) != 1 || cap.ScopeRequirements[0] != "account" {
+		t.Fatalf("auth capability %+v %v", cap, e)
+	}
+	cap.Auth.Alternatives[0] = types.Basic
+	fresh, e := c.Catalog().Describe("mobile_farm.v3.api_keys_adb.list")
+	if e != nil || fresh.Auth.Alternatives[0] != types.IAMProject {
+		t.Fatal("caller mutated shared auth catalog")
+	}
+}
+
+func TestMobileFarmADBInvalidSourceLengthsReturnNotSentBeforeCredentialIO(t *testing.T) {
+	lookups, calls := 0, 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+		lookups++
+		return credentials.Material{}, nil
+	}), Transport: transportFunc(func(*http.Request) (*http.Response, error) { calls++; return nil, context.Canceled })})
+	if e != nil {
+		t.Fatal(e)
+	}
+	for _, payload := range []string{`{"publicKey":""}`, `{"publicKey":"synthetic-key","title":""}`, `{"publicKey":"synthetic-key","title":"` + strings.Repeat("x", 256) + `"}`} {
+		var input mobilefarm.CreateADBKeyRequest
+		_ = json.Unmarshal([]byte(payload), &input)
+		out, e := c.Account().MobileFarm().StoreADBKey(context.Background(), input, types.CallOptions{})
+		if types.ErrorCode(e) != types.InvalidArgument || out.Receipt == nil || out.Receipt.Outcome != types.NotSent || out.Receipt.ContractRevision == "" || lookups != 0 || calls != 0 {
+			t.Fatalf("source length gate %+v %v", out, e)
+		}
 	}
 }

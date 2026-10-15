@@ -221,7 +221,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_keys_adb.list"
     },
     {
       "method": "POST",
@@ -234,7 +235,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_keys_adb.create"
     },
     {
       "method": "DELETE",
@@ -247,7 +249,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_keys_adb.delete"
     },
     {
       "method": "GET",
@@ -257,7 +260,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_users_keys_adb.list"
     },
     {
       "method": "POST",
@@ -267,7 +271,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_users_keys_adb.create"
     },
     {
       "method": "DELETE",
@@ -277,7 +282,8 @@
           "iam_token_account_scoped": []
         }
       ],
-      "status": "unimplemented"
+      "status": "implemented",
+      "binding": "mobile_farm.v3.api_users_keys_adb.delete"
     },
     {
       "method": "POST",

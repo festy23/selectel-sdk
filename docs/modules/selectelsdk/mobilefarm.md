@@ -28,7 +28,29 @@ MAINTENANCE/ERROR numeric members; полный Device.status — integer. DTO �
 Remote ADB URL, owner/phone/forwarding details и battery telemetry защищены. Числа
 сохраняются лексически без float64; Reveal — явная caller-directed граница.
 
-Текущий slice содержит три чтения; остальные 27 operations остаются unimplemented
+Текущий slice содержит три device чтения и шесть ADB operations; остальные 21 operations остаются unimplemented
 до source-bound TDD slices, обязательных проверок и двух review. Transfers и device
 connections не выполнялись; remoteConnectUrl возвращается как protected data,
 SDK не открывает ADB/WebSocket соединение автоматически. Offline не означает live.
+
+
+ADB current-user list/store/delete доступны в account и project views; explicit
+user-admin list/store/delete требуют account view и точный user ref. User child
+key refs сохраняют только caller-provided user parent; parent kind/service/gen/
+scope/endpoint проверяются до credential lookup и HTTP. Root key нельзя случайно
+удалить через user-admin path, а nested key — через implicit current-user endpoint.
+Protected publicKey раскрывается только wire encoder, minLength/title length
+генерируются из source. Accepted fingerprint сохраняется до независимого decode
+failure; unknown не повторяется и не восстанавливается по title/public key.
+NoContent204 должен быть пустым. Recovery/wait не обещают отсутствующего key Get.
+
+Catalog.Auth.Alternatives — additive optional enum list из source security;
+для mixed account/project операций минимальный required scope — account,
+primary mode iam_account и alternative iam_project. Реальный scoped view
+выбирает соответствующий IAM режим, автоматического fallback нет. Каталог
+остаётся immutable, включая новый alternatives slice.
+
+Узко переиспользованы reviewed receipt ContractRevision-before-local-validation
+PR97 commit379458e4f658b1216137fea4acce5dae6027d320 (delta82121d740a2788930ce7c4934d449c35b096966d)
+и private protected wire encoder OneC из reviewed PR106 (6028e51 в reviewed
+7cd0b1469adaba5367ee0d92d43b044100ac2aa4). Другие feature изменения не переносились.
