@@ -4585,5 +4585,346 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "certificates.user_v1.certificates.get": {
+    "go_method": "certificates.Get",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "certificates.Certificate",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.certificates.get.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.certificates.get.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": false,
+    "wait_goals": []
+  },
+  "certificates.user_v1.private_key.read": {
+    "go_method": "certificates.ReadPrivateKey",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "types.ProtectedValue",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.private_key.read.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.private_key.read.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/reads.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": false,
+    "wait_goals": []
+  },
+  "certificates.user_v1.pkcs12.read": {
+    "go_method": "certificates.ReadPKCS12",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "types.ProtectedValue",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.pkcs12.read.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.pkcs12.read.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/reads.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": false,
+    "wait_goals": []
+  },
+  "certificates.user_v1.ca_chain.read": {
+    "go_method": "certificates.ReadPublicChain",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "types.ProtectedValue",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.ca_chain.read.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.ca_chain.read.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/reads.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": false,
+    "wait_goals": []
+  },
+  "certificates.user_v1.certificates.upload": {
+    "go_method": "certificates.Upload",
+    "input_type": "certificates.UploadCertificateRequest, types.CallOptions",
+    "output_type": "certificates.Certificate",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.certificates.upload.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.certificates.upload.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/mutations.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": true,
+    "wait_goals": []
+  },
+  "certificates.user_v1.versions.create": {
+    "go_method": "certificates.UpdateVersion",
+    "input_type": "types.ResourceRef, certificates.UpdateCertificateVersionRequest, types.CallOptions",
+    "output_type": "struct{}",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.versions.create.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.versions.create.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/mutations.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": true,
+    "wait_goals": []
+  },
+  "certificates.user_v1.name.update": {
+    "go_method": "certificates.UpdateName",
+    "input_type": "types.ResourceRef, certificates.UpdateCertificateRequest, types.CallOptions",
+    "output_type": "struct{}",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.name.update.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.name.update.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/mutations.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": true,
+    "wait_goals": []
+  },
+  "certificates.user_v1.consumers.add": {
+    "go_method": "certificates.AddConsumers",
+    "input_type": "types.ResourceRef, certificates.UpdateCertificateConsumerRequest, types.CallOptions",
+    "output_type": "struct{}",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.consumers.add.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.consumers.add.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/mutations.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": true,
+    "wait_goals": []
+  },
+  "certificates.user_v1.consumers.remove": {
+    "go_method": "certificates.RemoveConsumers",
+    "input_type": "types.ResourceRef, certificates.UpdateCertificateConsumerRequest, types.CallOptions",
+    "output_type": "struct{}",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.consumers.remove.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.consumers.remove.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/mutations.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": true,
+    "wait_goals": []
+  },
+  "certificates.user_v1.certificates.delete": {
+    "go_method": "certificates.Delete",
+    "input_type": "types.ResourceRef, certificates.DeleteOptions, types.CallOptions",
+    "output_type": "struct{}",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.certificates.delete.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.certificates.delete.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/mutations.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": true,
+    "wait_goals": []
+  },
+  "certificates.user_v1.certificates.list": {
+    "go_method": "certificates.List",
+    "input_type": "pagination.Options",
+    "output_type": "pagination.Iterator[certificates.Certificate]",
+    "status": "implemented",
+    "contract_ref": "contracts/certificates.user_v1.certificates.list.json",
+    "covered_schema_ref": "contracts/certificates.user_v1.certificates.list.json#/request",
+    "excluded_variants": [],
+    "files": [
+      "certificates/client.go",
+      "certificates/handle.go",
+      "certificates/list.go",
+      "certificates/types_generated.go",
+      "client.go",
+      "docs/modules/selectelsdk/certificates.md",
+      "generate.go",
+      "internal/certificategen/generate.py",
+      "internal/core/auth.go",
+      "internal/core/config.go",
+      "internal/core/reads.go",
+      "internal/core/request.go",
+      "internal/core/runtime.go",
+      "operations/handle.go",
+      "pagination/pagination.go"
+    ],
+    "evidence_files": [
+      "certificates/client_public_test.go"
+    ],
+    "evidence_ref": "certificates/client_public_test.go",
+    "recovery": false,
+    "wait_goals": []
   }
 }

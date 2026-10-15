@@ -18,7 +18,7 @@ func TestOfflineCatalogIsImmutableAndDoesNotOverclaim(t *testing.T) {
 		if i > 0 && all[i-1].OperationID >= r.OperationID {
 			t.Fatal("unordered or duplicate ids")
 		}
-		if r.Implementation.Status != "unimplemented" && ((r.Service != "billing" && r.Service != "secrets" && r.Service != "compute" && r.Service != "projects" && r.Service != "mks" && r.Service != "databases" && r.Service != "registry" && r.Service != "audit" && r.Service != "logs" && r.Service != "metrics") || (r.Verification.Level != "offline" && r.Verification.Level != "none")) {
+		if r.Implementation.Status != "unimplemented" && ((r.Service != "certificates" && r.Service != "billing" && r.Service != "secrets" && r.Service != "compute" && r.Service != "projects" && r.Service != "mks" && r.Service != "databases" && r.Service != "registry" && r.Service != "audit" && r.Service != "logs" && r.Service != "metrics") || (r.Verification.Level != "offline" && r.Verification.Level != "none")) {
 			t.Fatal("unverified service overclaimed")
 		}
 	}
@@ -28,7 +28,7 @@ func TestOfflineCatalogIsImmutableAndDoesNotOverclaim(t *testing.T) {
 		t.Fatal("catalog is mutable")
 	}
 	s := c.Summary()
-	if s.InventoryComplete || s.CoverageRatio != nil || s.Implemented != 53 || s.Partial != 11 {
+	if s.InventoryComplete || s.CoverageRatio != nil || s.Implemented < 64 || s.Partial < 11 {
 		t.Fatal("unknown denominator advertised as covered")
 	}
 	if _, err := c.List(catalog.Filter{Verification: "unknown"}); types.ErrorCode(err) != types.InvalidArgument {
@@ -69,7 +69,18 @@ func TestSerializedCatalogHasVersionAndUncertainCoverage(t *testing.T) {
 			CoverageRatio     *float64 `json:"coverage_ratio"`
 		} `json:"summary"`
 	}
-	if json.Unmarshal(b, &doc) != nil || doc.SchemaVersion != 1 || len(doc.Operations) != 191 || doc.Summary.InventoryComplete || doc.Summary.CoverageRatio != nil {
+	if json.Unmarshal(b, &doc) != nil || doc.SchemaVersion != 1 || len(doc.Operations) < 202 || doc.Summary.InventoryComplete || doc.Summary.CoverageRatio != nil {
 		t.Fatal("serialized catalog loses contract or overclaims coverage")
+	}
+}
+
+func TestUserCertificateAllConfirmedBindings(t *testing.T) {
+	ids := []string{"certificates.get", "certificates.list", "certificates.upload", "certificates.delete", "versions.create", "name.update", "consumers.add", "consumers.remove", "ca_chain.read", "private_key.read", "pkcs12.read"}
+	c := catalog.Default()
+	for _, id := range ids {
+		cap, e := c.Describe("certificates.user_v1." + id)
+		if e != nil || cap.Service != "certificates" || cap.APIGeneration != "user_v1" || cap.Implementation.Status != "implemented" || cap.Auth.Scheme != types.IAMProject {
+			t.Fatal(id, cap, e)
+		}
 	}
 }

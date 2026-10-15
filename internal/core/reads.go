@@ -33,6 +33,8 @@ func (r *Runtime) BindDocumented(op Operation, scope types.Scope) (Operation, er
 	var err error
 	if override, ok := r.config.EndpointOverrides[types.EndpointKey{Service: op.Service, APIGeneration: op.APIGeneration, Scope: scope}]; ok {
 		endpoint = override
+	} else if op.Service == "certificates" && op.APIGeneration == "user_v1" {
+		endpoint = types.EndpointBinding{ID: "selectel-user-certificates", URL: "https://cloud.api.selcloud.ru/certificate-manager/v1", Scope: scope, APIGeneration: "user_v1", Audience: "selectel"}
 	} else if op.Service == "registry" {
 		endpoint, err = endpoints.Registry(scope, op.APIGeneration)
 	} else {
@@ -90,3 +92,6 @@ func Ref(endpoint types.EndpointBinding, service, kind, id string) *types.Resour
 	}
 	return &types.ResourceRef{Scope: endpoint.Scope, Service: service, APIGeneration: endpoint.APIGeneration, Kind: kind, ID: id, EndpointID: endpoint.ID, EndpointURL: endpoint.URL}
 }
+
+// StructuredLimit bounds parsed JSON and typed response header metadata.
+func (r *Runtime) StructuredLimit() uint64 { return r.config.MaxJSONBytes }
