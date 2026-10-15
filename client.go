@@ -20,6 +20,7 @@ import (
 	"github.com/festy23/selectel-sdk/projects"
 	"github.com/festy23/selectel-sdk/registry"
 	"github.com/festy23/selectel-sdk/secrets"
+	"github.com/festy23/selectel-sdk/support"
 	"github.com/festy23/selectel-sdk/types"
 )
 
@@ -46,6 +47,9 @@ func (c *Client) Project(id string) (ProjectClient, error) {
 func (p ProjectClient) Scope() types.Scope { return p.client.scope }
 func (p ProjectClient) Secrets() *secrets.Client {
 	return secrets.Bind(p.client.runtime, p.client.scope)
+}
+func (a AccountClient) Support() *support.Client {
+	return support.Bind(a.client.runtime, a.client.scope)
 }
 func (a AccountClient) Scope() types.Scope { return a.client.scope }
 func (a AccountClient) Billing() *billing.Client {
@@ -81,6 +85,9 @@ func (c *Client) Resource(ref types.ResourceRef) (*operations.Handle, error) {
 	if ref.Scope.AccountID != c.scope.AccountID {
 		return nil, types.NewError(types.ScopeMismatch)
 	}
+	if ref.Service == "tickets" {
+		return support.Bind(c.runtime, ref.Scope).Handle(ref, nil)
+	}
 	if ref.Service == "compute" && ref.APIGeneration == "v2_1" && ref.Kind == "server" {
 		return compute.Bind(c.runtime, ref.Scope).Servers.Handle(ref, nil)
 	}
@@ -102,6 +109,9 @@ func (c *Client) Resume(receipt types.Receipt) (*operations.Handle, error) {
 	}
 	if receipt.Outcome != types.NotSent && receipt.Outcome != types.Rejected && receipt.Outcome != types.Accepted && receipt.Outcome != types.Unknown {
 		return nil, types.NewError(types.InvalidArgument)
+	}
+	if capability.Service == "tickets" {
+		return support.Bind(c.runtime, receipt.Scope).Resume(receipt)
 	}
 	if len(receipt.ResourceRefs) != 1 || receipt.Endpoint == nil {
 		return nil, types.NewError(types.RecoveryUnavailable)

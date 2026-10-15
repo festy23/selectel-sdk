@@ -1,0 +1,34 @@
+{
+  "checked_on": "2026-10-15",
+  "sources": {
+    "tickets": {
+      "uri": "https://docs.selectel.ru/api/tickets.json",
+      "sha256": "9cfd229bdb810e0d533efd3f671edffd77b14ae548c04e0f652c84d7f1e1af77"
+    },
+    "tickets-attachments": {
+      "uri": "https://docs.selectel.ru/api/tickets-attachments.json",
+      "sha256": "5abb6d54d062d905f3170f430b207fa3d9753c34f9545470f0d363a9c5c92ad6"
+    }
+  },
+  "drift": "Both exact source hashes and 20+7 operation counts match the 2026-10-14 additional API inventory baseline.",
+  "api_pages": [
+    "https://docs.selectel.ru/api/tickets/",
+    "https://docs.selectel.ru/api/tickets-attachments/"
+  ],
+  "discrepancies": [
+    "Attachment download defines only422, without success status/body/redirect contract; API page agrees. Further primary-source searches did not establish it. Typed Download validates exact ref but refuses before credential/HTTP/writer I/O; no successful transfer coverage is claimed.",
+    "Ticket schema/API page prefers account IAM and permits static token; https://docs.selectel.ru/api/authorization/ table and prose say tickets/attachments are static-only. SDK defaults to static, exposes explicit schema-bound IAM alternative for ticket methods only, no automatic fallback or live IAM compatibility claim. Attachments are static-only.",
+    "Tickets schema has no host/server/base path; API page uses relative paths and official URL table has no ticket entry. Additional primary searches did not confirm a host. Exact endpoint override required separately for v1/v2; this search limitation does not prove no official endpoint exists. Attachment server is explicitly https://api.selectel.ru/files.",
+    "Current ticket list has page/items_per_page/items but no total/next/end rule. Attachment list is an array without pagination metadata/end rule; state/visibility query schemas are unconstrained. Available bounded page and opaque string filters are supported, no arbitrary structured filter serialization guessed.",
+    "Legacy list page_count confirms terminal pages when present; missing optional page_count has no continuation/terminal proof and remains partial. only_opened prose incorrectly says Closed; SDK preserves exact parameter name/boolean and does not reinterpret it.",
+    "TicketVoteCreateArgs says two-point scale in prose but explicit minimum1/maximum10; SDK follows explicit numeric bounds without inventing a +/-1 restriction.",
+    "Legacy TicketItem.is_client_read has no type but explicit boolean example true; generator pins boolean interpretation from source example. Deprecated CRUD/topics remain separately callable v1, never called withdrawn on an HTTP error."
+  ],
+  "reviewed_shared_reuse": {
+    "nullable": "Only types/nullable.go formatter/MarshalText diff from reviewed P0 PR80 commit4534c4e79c8cc281490f075b0f2e094770d16e8a; direct wrapper diagnostics tested for literal,decimal,hex storage leaks.",
+    "streaming": "Only internal/core/request.go DoResponse/stream/header adapter and internal/core/reads.go StructuredLimit from reviewed Swift PR96 head8a07c839deabb098f81ac3ea016607736f23b24c; no Swift features copied. Public support upload tests exercise static auth, declared length, progress, cancellation/rejection/unknown/no replay, ownership.",
+    "integration": "Overlaps future request.go ErrorProtocol and status adapter integration; do not drop either branch behavior during merge. No unreviewed P1 feature diff copied.",
+    "early_receipt_revision": "Only early ContractRevision initialization from reviewed volumes PR97 commit379458e4f658b1216137fea4acce5dae6027d320 delta82121d740a2788930ce7c4934d449c35b096966d, adapted to DoResponse. Public10mutation RED/GREEN local receipt test covers revision before validation with credentials/HTTP0. No volume/receipt-only Handle feature copied."
+  },
+  "ownership": "All source gaps remain owned by issue64; no external support contact or live operation."
+}

@@ -1,0 +1,105 @@
+{
+  "operation_id": "tickets.v1.tickets.close",
+  "source": "sources/tickets.json#/paths/~1tickets~1{ticket_number}~1close/post",
+  "effect": "mutation",
+  "deprecated": false,
+  "endpoint": {
+    "scope": "explicit account only; no project/location",
+    "generation": "v1",
+    "address": "exact caller endpoint override required; no host/server/basePath confirmed",
+    "source": "https://docs.selectel.ru/api/tickets.json",
+    "search_evidence": "catalog/evidence/support-current-sources.json",
+    "redirects": "never follow automatically; metadata URLs never become inferred targets"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/tickets/{ticket_number}/close",
+    "parameters": [
+      {
+        "in": "path",
+        "name": "ticket_number",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "body": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/TicketCloseArgs"
+          }
+        }
+      }
+    },
+    "model": "ref types.ResourceRef, spec TicketCloseArgs, o types.CallOptions",
+    "auth": "static token X-Token default; attachment static-only. Ticket explicit account IAM X-Auth-Token alternative matches operation schema but general auth table conflicts, deployment compatibility unconfirmed; never automatic fallback.",
+    "validation": "source required/nullability/enums/string/array/ranges/UUID rules before credential/HTTP; exact service/generation/scope/endpoint and explicit parent; protected typed values reveal only at private wire boundary; no generation fallback"
+  },
+  "response": {
+    "models": {
+      "200": {
+        "description": "The ticket has been closed.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Ticket"
+            }
+          }
+        }
+      }
+    },
+    "model": "types.Result[Ticket]",
+    "mapping": "generated source DTOs including inherited/inline/nullable shapes; exact integers; source-optional zero/false distinct from absence, explicit nullable null retained; source ID scanned before independent decoding; source ref injection ignored; free text, URLs, unknown extensions protected",
+    "sensitive_fields": [
+      "*.summary",
+      "*.body",
+      "*.comment",
+      "*.names.*",
+      "*.descriptions.*",
+      "*.localizations.*",
+      "*.original_filename",
+      "*.url",
+      "*.private_presigned_link",
+      "*.antivirus_checks.log",
+      "*.state",
+      "*.visibility",
+      "*.Extra"
+    ],
+    "identity": "ticket number/comment ID/file UUID from acknowledged response only; exact caller refs retained on errors; comments keep caller-provided ticket parent, ticket_number metadata never manufactures parent; foreign identities rejected"
+  },
+  "errors": {
+    "source": "sources/tickets.json#/paths/~1tickets~1{ticket_number}~1close/post/responses",
+    "rejected": [
+      400,
+      401
+    ],
+    "mapping": "shared sanitized HTTP status mapping; opaque provider message/errors/validation data never diagnostics; default does not establish rejection; only documented operation rejections or common auth401 prove rejection"
+  },
+  "retry": {
+    "reads": "bounded shared runtime retries/budget/cancellation",
+    "mutations": "no replay, including lost response, cancellation, 500, auth retry and multipart body; known references require exact observation"
+  },
+  "receipt": "all mutations finalize not_sent/accepted/rejected/unknown on every path; accepted HTTP does not prove user goal; source comment create keeps ticket anchor plus independently acknowledged child ref; never name lookup/adoption",
+  "wait_goals": [
+    "ticket_closed"
+  ],
+  "recovery": {
+    "contract": "exact-reference observation only; unknown outcomes remain indeterminate, no automatic replay; resource ACL/content/vote/AV readiness is not inferred from existence",
+    "receipt_bound": "validate operation/contract revision/endpoint/scope/exact target and filter originating capability.WaitGoals; comment create selects only acknowledged comment with exact caller parent anchor",
+    "goals": "v2 known raw status keys; v1 closed/open goals require explicit is_closed true/false, missing stays unknown; comment/file metadata observation requires source ID, never AV clean/download or support reply readiness"
+  },
+  "pagination": {
+    "contract": "common bounded options and operation/scope/endpoint/revision/filter fingerprints; exact partial-page replay; provider envelope duplicate rows removed; fixed complete source responses only for nonpaginated taxonomy/comments/topics; legacy page_count proof when present; no inferred end for unconfirmed variants",
+    "limitations": []
+  },
+  "transfer": {
+    "upload": "typed multipart field data, caller filename/MIME/actor UUID, exact finite size; do not probe beyond caller bytes or close caller reader; synchronous response decoder owns once-close response; bytes on every return reports consumed input, not server persistence; accepted201 trustworthyfileUUID retained on decode errors",
+    "download": "unavailable before I/O until successful contract confirmed; no guessed200/302, no arbitrary signedURL follow"
+  },
+  "evidence": "catalog/evidence/support-current-sources.json",
+  "limitations": [
+    "Whole service inventory incomplete/coverage_ratio null; offline tests do not establish live deployment or alternative IAM availability; no real tickets/messages/contact/upload/download performed"
+  ]
+}
