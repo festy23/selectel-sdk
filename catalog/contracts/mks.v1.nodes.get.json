@@ -1,0 +1,41 @@
+{
+  "operation_id": "mks.v1.nodes.get",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://github.com/selectel/mks-go/blob/f92a1665d37c52c3a28c70dae39981363d81c623/README.md",
+    "generation": "v1",
+    "auth": "iam_project",
+    "scope": "explicitaccount/project/region/pool",
+    "base": "exact published HTTPSv1 pool endpoint; explicit override elsewhere; no v2 fallback",
+    "redirects": "reject"
+  },
+  "request": {
+    "method": "GET",
+    "path": "/clusters/{cluster_id}/nodegroups/{nodegroup_id}/{node_id}",
+    "mapping": "Exact v1 node ref with explicit group+cluster hierarchy; source route intentionally has no /nodes segment. All ancestor service/generation/scope/endpoint checks before I/O."
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Generated node envelope; id/nodegroup_id must match exact caller. Native node ref retains explicit hierarchy, OS-server ID remains metadata, no inferred compute ref/readiness.",
+    "sensitive_fields": [
+      "additional_software",
+      "kubernetes_options.oidc.ca_certs",
+      "kubernetes_options.x509_ca_certificates",
+      "kubernetes_options.oidc.issuer_url"
+    ]
+  },
+  "errors": {
+    "mapping": "Bounded safe reads, source404not_found; sanitized common HTTP taxonomy, no raw provider error text."
+  },
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null,
+  "limitations": [
+    "published source is not liveavailability proof; no withdrawal claim",
+    "MKSlegacy kubeconfig204/rawbody contradiction and DNS/storagelegacy inventories remain owned#71/#74/#76; full service inventoryunknown/nullratio"
+  ]
+}

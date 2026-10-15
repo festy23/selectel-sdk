@@ -476,3 +476,96 @@ func TestMKSLegacyNodegroupResizePreservesExactDesiredAmount(t *testing.T) {
 		t.Fatalf("resize %+v %v", out, e)
 	}
 }
+
+func TestMKSLegacyNodeGetUsesV1PathWithoutNodesSegment(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.URL.Path != "/v1/clusters/legacy-cluster/nodegroups/group-1/node-1" {
+			t.Fatalf("node %s", r.URL)
+		}
+		return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"node":{"id":"node-1","nodegroup_id":"group-1","os_server_id":"unadopted-os-server"}}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	group := cluster
+	group.ID = "group-1"
+	group.Kind = "nodegroup"
+	group.Parent = &cluster
+	node := group
+	node.ID = "node-1"
+	node.Kind = "node"
+	node.Parent = &group
+	out, e := v.MKSLegacy().GetNode(context.Background(), node, types.CallOptions{})
+	if e != nil || out.Data.Ref == nil || out.Data.Ref.ID != "node-1" || out.Data.Ref.Parent == nil || out.Data.Ref.Parent.ID != "group-1" || out.Data.Ref.Parent.Parent == nil || out.Data.Ref.Parent.Parent.ID != "legacy-cluster" {
+		t.Fatalf("node %+v %v", out, e)
+	}
+}
+
+func TestMKSLegacyNodeDeleteUnknownKeepsClonedExactHierarchyWithoutReplay(t *testing.T) {
+	writes := 0
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		writes++
+		if r.Method != "DELETE" || r.URL.Path != "/v1/clusters/legacy-cluster/nodegroups/group-1/node-1" {
+			t.Fatalf("delete node %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 500, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"message":"synthetic-secret-provider-error"}`))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	group := cluster
+	group.ID = "group-1"
+	group.Kind = "nodegroup"
+	group.Parent = &cluster
+	node := group
+	node.ID = "node-1"
+	node.Kind = "node"
+	node.Parent = &group
+	out, e := v.MKSLegacy().DeleteNode(context.Background(), node, types.CallOptions{})
+	cluster.ID = "caller-mutated-cluster"
+	if types.ErrorCode(e) != types.UnknownOutcome || out.Receipt == nil || out.Receipt.Outcome != types.Unknown || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].Parent.Parent.ID != "legacy-cluster" || writes != 1 || strings.Contains(fmt.Sprint(e), "synthetic-secret-provider-error") {
+		t.Fatalf("delete node %+v %v writes%d", out, e, writes)
+	}
+}
+
+func TestMKSLegacyNodeReinstallAcknowledgementKeepsOnlyExactNode(t *testing.T) {
+	c, e := sdk.New(sdk.Config{AccountID: "test-account", Credentials: source(), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/identity/v3/auth/tokens" {
+			return response(requestedScope(r), time.Now().Add(time.Hour), 201), nil
+		}
+		if r.Method != "POST" || r.URL.Path != "/v1/clusters/legacy-cluster/nodegroups/group-1/node-1/reinstall" {
+			t.Fatalf("reinstall %s %s", r.Method, r.URL)
+		}
+		return &http.Response{StatusCode: 204, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(""))}, nil
+	})})
+	if e != nil {
+		t.Fatal(e)
+	}
+	p, _ := c.Project("test-project")
+	v, _ := p.Location("spb", "ru-9")
+	cluster := types.ResourceRef{Service: "mks", APIGeneration: "v1", Kind: "cluster", ID: "legacy-cluster", Scope: v.Scope(), EndpointID: "selectel-mks.v1:ru-9", EndpointURL: "https://ru-9.mks.selcloud.ru/v1"}
+	group := cluster
+	group.ID = "group-1"
+	group.Kind = "nodegroup"
+	group.Parent = &cluster
+	node := group
+	node.ID = "node-1"
+	node.Kind = "node"
+	node.Parent = &group
+	out, e := v.MKSLegacy().ReinstallNode(context.Background(), node, types.CallOptions{})
+	if e != nil || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != "node-1" || out.Receipt.ProviderOperationRef != nil {
+		t.Fatalf("reinstall %+v %v", out, e)
+	}
+}
