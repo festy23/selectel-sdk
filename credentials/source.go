@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"strings"
 	"time"
 
 	"github.com/festy23/selectel-sdk/types"
@@ -22,6 +23,7 @@ const (
 	StaticToken Scheme = "static_token"
 	S3          Scheme = "s3_sigv4"
 	Basic       Scheme = "basic"
+	BearerToken Scheme = "bearer_token"
 )
 
 // Source implementations must change Revision whenever their material changes.
@@ -92,7 +94,13 @@ func (m Material) Validate(request types.AuthRequest) error {
 			return nil
 		}
 	case types.ProtocolSpecific:
-		return types.NewError(types.CapabilityUnavailable)
+		if m.Scheme == BearerToken && !m.Token.Empty() && m.Binding.ProjectID == request.Scope.ProjectID {
+			token := string(m.Token.Reveal())
+			if strings.IndexFunc(token, func(r rune) bool { return r <= 0x20 || r >= 0x7f }) >= 0 {
+				return types.NewError(types.CredentialsUnavailable)
+			}
+			return nil
+		}
 	}
 	return types.NewError(types.CredentialsUnavailable)
 }

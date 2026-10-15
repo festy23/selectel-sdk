@@ -61,7 +61,7 @@ func (r *Runtime) authorize(ctx context.Context, request types.AuthRequest) (*au
 	if err := ctx.Err(); err != nil {
 		return nil, types.ContextError(err)
 	}
-	if request.Mode == types.ProtocolSpecific {
+	if request.Mode == types.ProtocolSpecific && !aiBearerProtocol(request.Service) {
 		return nil, types.NewError(types.CapabilityUnavailable)
 	}
 	material, err := r.config.Credentials.Lookup(ctx, request)
@@ -78,8 +78,16 @@ func (r *Runtime) authorize(ctx context.Context, request types.AuthRequest) (*au
 		return nil, err
 	}
 	now := time.Now().UTC()
+	if material.Scheme == credentials.BearerToken && !material.ExpiresAt.IsZero() && !now.Before(material.ExpiresAt) {
+		return nil, types.NewError(types.Unauthenticated)
+	}
 	if material.Scheme != credentials.IAMPassword && material.Scheme != credentials.IAMToken {
-		return &authEntry{material: material, metadata: types.AuthMetadata{Scope: request.Scope, Verification: "caller_asserted", Scheme: string(material.Scheme), AcquiredAt: now}}, nil
+		metadata := types.AuthMetadata{Scope: request.Scope, Verification: "caller_asserted", Scheme: string(material.Scheme), AcquiredAt: now}
+		if material.Scheme == credentials.BearerToken && !material.ExpiresAt.IsZero() {
+			expiry := material.ExpiresAt.UTC()
+			metadata.ExpiresAt = &expiry
+		}
+		return &authEntry{material: material, metadata: metadata}, nil
 	}
 	if material.Scheme == credentials.IAMToken && !now.Before(material.ExpiresAt) {
 		return nil, types.NewError(types.Unauthenticated)
@@ -301,4 +309,14 @@ func statusError(status int) *types.SDKError {
 	e := types.NewError(code)
 	e.HTTPStatus = status
 	return e
+}
+
+// These three first-party data APIs explicitly document Bearer API keys.
+// ProtocolSpecific for other services remains unavailable before lookup.
+func aiBearerProtocol(service string) bool {
+	switch service {
+	case "ai_router", "dedicated_inference", "token_factory":
+		return true
+	}
+	return false
 }

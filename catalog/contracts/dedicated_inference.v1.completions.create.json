@@ -1,0 +1,39 @@
+{
+  "operation_id": "dedicated_inference.v1.completions.create",
+  "endpoint": {
+    "source": "https://docs.selectel.ru/en/dedicated-inference/manage/interaction-modes/",
+    "recipe": "exact EndpointOverride only; no endpoint guessed from model/service",
+    "scope": "exact caller project; explicit location if supplied",
+    "generation": "v1",
+    "redirects": "reject"
+  },
+  "request": {
+    "binding_source": "ai/client.go",
+    "wire_selector": "POST /completions",
+    "auth": "protocol_specific BearerToken; no static/IAM substitution",
+    "mapping": "explicit model/protected prompt, optional exact Number temperature and nonnegative Integer max_tokens",
+    "excluded_variants": [
+      "array prompts/suffix/echo/logprobs/best_of/streaming beyond selected text request",
+      "Whole provider inventory and deployment-specific availability remain unverified"
+    ]
+  },
+  "response": {
+    "mapping_source": "ai/types_generated.go and ai/inference.go",
+    "schema_source": "sources/dedicated-inference.json#/definitions/Completion",
+    "sensitive_fields": [
+      "prompt/input/query/documents/audio",
+      "model-derived text/vector/score/token IDs",
+      "image URL/base64/revised prompt",
+      "provider/raw callback messages"
+    ],
+    "completeness": "bounded structured response; embedding/image count mismatch returns incomplete with accepted receipt and typed prefix; no resource/task/ref adoption",
+    "usage": "exact typed counters, discriminated transcription duration/tokens, no absent-as-zero or billing/readiness inference",
+    "refs": "completion/model IDs remain protected metadata; no resource/task ref or wait"
+  },
+  "errors": {
+    "mapping": "core HTTP mapping; raw messages/body discarded; accepted malformed/body-limit error retains Receipt"
+  },
+  "retry": "all model POST mutations: no automatic replay, no idempotency assumptions",
+  "recovery": "unavailable; no observation API inferred",
+  "pagination": null
+}

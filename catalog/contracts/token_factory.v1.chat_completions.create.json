@@ -1,0 +1,45 @@
+{
+  "operation_id": "token_factory.v1.chat_completions.create",
+  "endpoint": {
+    "source": "https://docs.selectel.ru/en/token-factory/quickstart/",
+    "recipe": "fixed https://preview.tf.selcloud.ru/v1 with exact override support",
+    "scope": "exact caller project, caller-asserted key binding",
+    "generation": "v1",
+    "redirects": "reject"
+  },
+  "request": {
+    "binding_source": "ai/client.go",
+    "wire_selector": "POST /chat/completions",
+    "auth": "protocol_specific BearerToken; no static/IAM substitution",
+    "mapping": "explicit model; text role/content messages; stream false; no business defaults",
+    "excluded_variants": [
+      "streaming",
+      "multimodal content",
+      "tools/prediction/options beyond text messages",
+      "full upstream request/response surface"
+    ],
+    "token_bound": "optional caller max_tokens as nonnegative exact Integer; no model limit guessed; absent omitted",
+    "reasoning": "Router only: explicit nested reasoning.effort=low from first-party quickstart; absent omitted, unsupported services/effort rejected locally"
+  },
+  "response": {
+    "mapping_source": "ai/types_generated.go",
+    "schema_source": "sources/token-factory.json#/definitions/ChatCompletion",
+    "sensitive_fields": [
+      "prompt",
+      "messages.content",
+      "choices.message.content",
+      "choices.message.refusal",
+      "id",
+      "model"
+    ],
+    "completeness": "bounded JSON, partial parameter surface; unknown Selectel-specific full response/deployment inventory",
+    "usage": "exact Integer counters, optional usage; absent is not zero",
+    "refs": "completion/model IDs remain protected metadata; no resource/task ref or wait"
+  },
+  "errors": {
+    "mapping": "core HTTP mapping; raw messages/body discarded; accepted malformed/body-limit error retains Receipt"
+  },
+  "retry": "all model POST mutations: no automatic replay, no idempotency assumptions",
+  "recovery": "unavailable; no observation API inferred",
+  "pagination": null
+}

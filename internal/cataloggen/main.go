@@ -21,6 +21,9 @@ type family struct {
 }
 
 var families = map[string]family{
+	"ai-router":                    {"ai_router", "v1", "protocol_specific", false},
+	"dedicated-inference":          {"dedicated_inference", "v1", "protocol_specific", false},
+	"token-factory":                {"token_factory", "v1", "protocol_specific", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -165,7 +168,7 @@ func generate() error {
 				resource, action = idParts[2], idParts[3]
 				pointer := "sources/" + filepath.Base(file) + "#/paths/" + strings.ReplaceAll(strings.ReplaceAll(path, "~", "~0"), "/", "~1") + "/" + method
 				scope := []string{"account"}
-				if f.Mode == "iam_project" {
+				if f.Mode == "iam_project" || f.Service == "dedicated_inference" || f.Service == "token_factory" {
 					scope = append(scope, "project")
 				}
 				if f.Mode == "s3_sigv4" || f.Mode == "basic" {
@@ -232,7 +235,7 @@ func generate() error {
 					if b.Recovery {
 						row["recovery_contract_ref"] = b.ContractRef + "#/recovery"
 					}
-					row["limitations"] = []string{"Verification does not establish live availability"}
+					row["limitations"] = append([]string{"Verification does not establish live availability"}, b.Limitations...)
 				}
 				canonical, err := json.Marshal(row)
 				if err != nil {
@@ -285,6 +288,7 @@ func generate() error {
 }
 
 type binding struct {
+	Limitations      []string `json:"limitations"`
 	GoMethod         string   `json:"go_method"`
 	InputType        string   `json:"input_type"`
 	OutputType       string   `json:"output_type"`

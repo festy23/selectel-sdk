@@ -4585,5 +4585,364 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "ai_router.v1.chat_completions.create": {
+    "go_method": "ai.RouterClient.Chat",
+    "input_type": "ai.ChatRequest",
+    "output_type": "ai.ChatCompletion",
+    "contract_ref": "contracts/ai_router.v1.chat_completions.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/images.go",
+      "ai/inference.go",
+      "ai/protected.go",
+      "ai/stream.go",
+      "ai/transcription.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "go.mod",
+      "go.sum",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/integer.go",
+      "types/protected.go"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go",
+      "ai_error_body_test.go",
+      "ai_images_test.go",
+      "ai_inference_test.go",
+      "ai_stream_test.go"
+    ],
+    "evidence_ref": "ai_data_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/ai-router.json#/paths/~1chat~1completions/post",
+    "excluded_variants": [
+      "multimodal content",
+      "tools/prediction/options beyond text messages",
+      "full upstream request/response surface"
+    ],
+    "limitations": [
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
+    ]
+  },
+  "token_factory.v1.chat_completions.create": {
+    "go_method": "ai.TokenFactoryClient.Chat",
+    "input_type": "ai.ChatRequest",
+    "output_type": "ai.ChatCompletion",
+    "contract_ref": "contracts/token_factory.v1.chat_completions.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/images.go",
+      "ai/inference.go",
+      "ai/protected.go",
+      "ai/stream.go",
+      "ai/transcription.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "go.mod",
+      "go.sum",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/integer.go",
+      "types/protected.go"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go",
+      "ai_images_test.go",
+      "ai_inference_test.go",
+      "ai_stream_test.go"
+    ],
+    "evidence_ref": "ai_data_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/token-factory.json#/paths/~1chat~1completions/post",
+    "excluded_variants": [
+      "streaming",
+      "multimodal content",
+      "tools/prediction/options beyond text messages",
+      "full upstream request/response surface"
+    ],
+    "limitations": [
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
+    ]
+  },
+  "dedicated_inference.v1.chat_completions.create": {
+    "go_method": "ai.InferenceClient.Chat",
+    "input_type": "ai.ChatRequest",
+    "output_type": "ai.ChatCompletion",
+    "contract_ref": "contracts/dedicated_inference.v1.chat_completions.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/images.go",
+      "ai/inference.go",
+      "ai/protected.go",
+      "ai/stream.go",
+      "ai/transcription.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "go.mod",
+      "go.sum",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/integer.go",
+      "types/protected.go"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go",
+      "ai_images_test.go",
+      "ai_inference_test.go",
+      "ai_stream_test.go"
+    ],
+    "evidence_ref": "ai_data_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1chat~1completions/post",
+    "excluded_variants": [
+      "streaming",
+      "multimodal content",
+      "tools/prediction/options beyond text messages",
+      "full upstream request/response surface"
+    ],
+    "limitations": [
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
+    ]
+  },
+  "dedicated_inference.v1.completions.create": {
+    "go_method": "ai.InferenceClient.Complete",
+    "input_type": "ai.CompletionRequest",
+    "output_type": "ai.Completion",
+    "contract_ref": "contracts/dedicated_inference.v1.completions.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/images.go",
+      "ai/inference.go",
+      "ai/protected.go",
+      "ai/stream.go",
+      "ai/transcription.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "go.mod",
+      "go.sum",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/integer.go",
+      "types/protected.go"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go",
+      "ai_images_test.go",
+      "ai_inference_test.go",
+      "ai_stream_test.go"
+    ],
+    "evidence_ref": "ai_inference_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1completions/post",
+    "excluded_variants": [
+      "array prompts/suffix/echo/logprobs/best_of/streaming beyond selected text request",
+      "Whole provider inventory and deployment-specific availability remain unverified"
+    ],
+    "limitations": [
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
+    ]
+  },
+  "dedicated_inference.v1.embeddings.create": {
+    "go_method": "ai.InferenceClient.Embed",
+    "input_type": "ai.EmbeddingRequest",
+    "output_type": "ai.EmbeddingResult",
+    "contract_ref": "contracts/dedicated_inference.v1.embeddings.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/images.go",
+      "ai/inference.go",
+      "ai/protected.go",
+      "ai/stream.go",
+      "ai/transcription.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "go.mod",
+      "go.sum",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/integer.go",
+      "types/protected.go"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go",
+      "ai_images_test.go",
+      "ai_inference_test.go",
+      "ai_stream_test.go"
+    ],
+    "evidence_ref": "ai_inference_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1embeddings/post",
+    "excluded_variants": [
+      "scalar/tokenized/multimodal input, base64 embedding representation and dimensions beyond confirmed float request",
+      "Whole provider inventory and deployment-specific availability remain unverified"
+    ],
+    "limitations": [
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
+    ]
+  },
+  "dedicated_inference.v1.rerank.create": {
+    "go_method": "ai.InferenceClient.Rerank",
+    "input_type": "ai.RerankRequest",
+    "output_type": "ai.RerankResponse",
+    "contract_ref": "contracts/dedicated_inference.v1.rerank.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/images.go",
+      "ai/inference.go",
+      "ai/protected.go",
+      "ai/stream.go",
+      "ai/transcription.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "go.mod",
+      "go.sum",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/integer.go",
+      "types/protected.go"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go",
+      "ai_images_test.go",
+      "ai_inference_test.go",
+      "ai_stream_test.go"
+    ],
+    "evidence_ref": "ai_inference_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1rerank/post",
+    "excluded_variants": [
+      "image/multimodal documents, top_n/return_documents/return_embeddings parameters beyond first-party request",
+      "Whole provider inventory and deployment-specific availability remain unverified"
+    ],
+    "limitations": [
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
+    ]
+  },
+  "dedicated_inference.v1.audio_transcriptions.create": {
+    "go_method": "ai.InferenceClient.Transcribe",
+    "input_type": "ai.TranscriptionRequest",
+    "output_type": "ai.TranscriptionResult",
+    "contract_ref": "contracts/dedicated_inference.v1.audio_transcriptions.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/images.go",
+      "ai/inference.go",
+      "ai/protected.go",
+      "ai/stream.go",
+      "ai/transcription.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "go.mod",
+      "go.sum",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/integer.go",
+      "types/protected.go"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go",
+      "ai_images_test.go",
+      "ai_inference_test.go",
+      "ai_stream_test.go"
+    ],
+    "evidence_ref": "ai_inference_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/dedicated-inference.json#/paths/~1audio~1transcriptions/post",
+    "excluded_variants": [
+      "text/srt/vtt/diarized formats and other OpenAI options not confirmed by selected first-party examples",
+      "Whole provider inventory and deployment-specific availability remain unverified"
+    ],
+    "limitations": [
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
+    ]
+  },
+  "ai_router.v1.images_generations.create": {
+    "go_method": "ai.RouterClient.Images",
+    "input_type": "ai.ImageRequest",
+    "output_type": "ai.ImageResult",
+    "contract_ref": "contracts/ai_router.v1.images_generations.create.json",
+    "status": "partial",
+    "files": [
+      "ai/client.go",
+      "ai/images.go",
+      "ai/inference.go",
+      "ai/protected.go",
+      "ai/stream.go",
+      "ai/transcription.go",
+      "ai/types_generated.go",
+      "client.go",
+      "credentials/loaders.go",
+      "credentials/source.go",
+      "go.mod",
+      "go.sum",
+      "internal/core/auth.go",
+      "internal/core/request.go",
+      "internal/modelgen/generate.py",
+      "types/integer.go",
+      "types/protected.go"
+    ],
+    "evidence_files": [
+      "ai_auth_test.go",
+      "ai_data_test.go",
+      "ai_error_body_test.go",
+      "ai_images_test.go",
+      "ai_inference_test.go",
+      "ai_stream_test.go"
+    ],
+    "evidence_ref": "ai_images_test.go",
+    "verification": "offline",
+    "covered_schema_ref": "sources/ai-router.json#/paths/~1images~1generations/post",
+    "excluded_variants": [
+      "image options/edits/variations/streaming beyond selected compatible generation wire",
+      "Whole provider inventory and deployment-specific availability remain unverified"
+    ],
+    "limitations": [
+      "Narrow first-party entry-mode/compatible response subset; not whole OpenAI/Jina API support",
+      "Source inventory incomplete; no live deployment, model availability, preview enrollment or control-plane API claim"
+    ]
   }
 }

@@ -1,0 +1,313 @@
+{
+  "x-source-uri": "https://docs.selectel.ru/en/token-factory/quickstart/",
+  "x-inventory-kind": "SDK-owned normalized first-party entry operations, not whole provider or OpenAI inventory",
+  "x-retrieved-at": "2026-10-16",
+  "x-first-party-sources": [
+    {
+      "uri": "https://docs.selectel.ru/en/ai-router/about/about-ai-router.md",
+      "sha256": "4b8bc29240b1a0521207db81a15be5b45a12facbee5a5fbd028160ff7d7439d8",
+      "normalized_facts": [
+        "OpenAI-compatible model data API; model chosen by caller; control-panel management does not establish public control-plane API."
+      ],
+      "snapshot_kind": "factual normalized extract; sha256 binds full retrieved public Markdown, not a claim this is provider OpenAPI"
+    },
+    {
+      "uri": "https://docs.selectel.ru/en/ai-router/manage/data-masking.md",
+      "sha256": "6ea7b76c3817ec876abde6dbf252bcc4123c7462115c2b7541c4e7448947fc4d",
+      "normalized_facts": [
+        "POST /chat/completions and /images/generations; protected text fields include messages text, function arguments, prediction, image prompt.",
+        "HTTP422 JSON error.code guardrail_rejected before SSE for stream=true; request not sent to model; x-gateway-request-id correlation.",
+        "HTTP500 nested error.type server_error, code internal_error, message/request_id. No successful response fields added by masking. No unchanged automatic retry of guardrail rejection."
+      ],
+      "snapshot_kind": "factual normalized extract; sha256 binds full retrieved public Markdown, not a claim this is provider OpenAPI"
+    },
+    {
+      "uri": "https://docs.selectel.ru/en/ai-router/quickstart.md",
+      "sha256": "9c1ad704ba6105029b91894df2b53979a93b33db8e5e1fe3c27476d7037fff9b",
+      "normalized_facts": [
+        "POST https://api.selectel.ru/aig/v1/chat/completions; Authorization Bearer API_KEY. JSON model, stream=false, reasoning.effort=low, messages[].role/content. API key created in control panel."
+      ],
+      "snapshot_kind": "factual normalized extract; sha256 binds full retrieved public Markdown, not a claim this is provider OpenAPI"
+    },
+    {
+      "uri": "https://docs.selectel.ru/en/dedicated-inference/about/about-dedicated-inference.md",
+      "sha256": "ad6b9ced4d6a994acc1f328693129590998fa7278be0f3abaaedaf20b57b211c",
+      "normalized_facts": [
+        "Public preview; supports project access model; model data requests use dedicated OpenAI-compatible endpoint. Deployment uses Cloud Platform resources, not token-count billing."
+      ],
+      "snapshot_kind": "factual normalized extract; sha256 binds full retrieved public Markdown, not a claim this is provider OpenAPI"
+    },
+    {
+      "uri": "https://docs.selectel.ru/en/dedicated-inference/manage/interaction-modes.md",
+      "sha256": "ad2af3eb6500526c9bb8d53e1f3e2679a7a771cce5d239922035d62802012be6",
+      "normalized_facts": [
+        "Server-side synchronous HTTP connection; client async examples are concurrent clients, not job API. Endpoint and API key copied from caller-selected inference service.",
+        "Bearer POST /v1/completions: model,prompt,temperature,max_tokens; response choices[].text.",
+        "Bearer POST /v1/chat/completions: model,messages[].role/content, optional max_tokens; response choices[].message.content.",
+        "Bearer POST /v1/embeddings: model,encoding_format e.g.float,input string array.",
+        "Bearer POST /v1/rerank: model,query,documents string array.",
+        "Bearer multipart POST /v1/audio/transcriptions: file,model,language,response_format e.g.json/verbose_json.",
+        "Official compatible API references: OpenAI completions/chat/embeddings/transcriptions and Jina reranker. Available APIs depend on deployed model."
+      ],
+      "snapshot_kind": "factual normalized extract; sha256 binds full retrieved public Markdown, not a claim this is provider OpenAPI"
+    },
+    {
+      "uri": "https://docs.selectel.ru/en/token-factory/about/about-token-factory.md",
+      "sha256": "ef534edc3909b6375a15ef83c91ab79871ff592999209aced86b4b1dcff7b272",
+      "normalized_facts": [
+        "Private preview; supports projects; OpenAI-compatible model data API and project API keys. Deployment, key management and usage analytics described in control panel; no public control-plane route inferred."
+      ],
+      "snapshot_kind": "factual normalized extract; sha256 binds full retrieved public Markdown, not a claim this is provider OpenAPI"
+    },
+    {
+      "uri": "https://docs.selectel.ru/en/token-factory/quickstart.md",
+      "sha256": "912e191de8386b5b7c8527b325ee417555b7d8054fb52bcccf2ef057775f6cd5",
+      "normalized_facts": [
+        "Private preview access requires external support enrollment; SDK neither requests nor grants it.",
+        "Bearer POST https://preview.tf.selcloud.ru/v1/chat/completions; JSON model and messages[].role/content (developer/user). Caller obtains key and model ID in control panel."
+      ],
+      "snapshot_kind": "factual normalized extract; sha256 binds full retrieved public Markdown, not a claim this is provider OpenAPI"
+    }
+  ],
+  "x-compatible-shape-sources": [
+    {
+      "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/src/openai/types/audio/transcription.py",
+      "sha256": "98c658c2e2da91aba51cc50bf263be4e9a1da13e5a3ea0680d023cbb040d041b",
+      "document": "# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.\n\nfrom typing import List, Union, Optional\nfrom typing_extensions import Literal, Annotated, TypeAlias\n\nfrom ..._utils import PropertyInfo\nfrom ..._models import BaseModel\nfrom .transcription_language import TranscriptionLanguage\n\n__all__ = [\"Transcription\", \"Logprob\", \"Usage\", \"UsageTokens\", \"UsageTokensInputTokenDetails\", \"UsageDuration\"]\n\n\nclass Logprob(BaseModel):\n    token: Optional[str] = None\n    \"\"\"The token in the transcription.\"\"\"\n\n    bytes: Optional[List[float]] = None\n    \"\"\"The bytes of the token.\"\"\"\n\n    logprob: Optional[float] = None\n    \"\"\"The log probability of the token.\"\"\"\n\n\nclass UsageTokensInputTokenDetails(BaseModel):\n    \"\"\"Details about the input tokens billed for this request.\"\"\"\n\n    audio_tokens: Optional[int] = None\n    \"\"\"Number of audio tokens billed for this request.\"\"\"\n\n    text_tokens: Optional[int] = None\n    \"\"\"Number of text tokens billed for this request.\"\"\"\n\n\nclass UsageTokens(BaseModel):\n    \"\"\"Usage statistics for models billed by token usage.\"\"\"\n\n    input_tokens: int\n    \"\"\"Number of input tokens billed for this request.\"\"\"\n\n    output_tokens: int\n    \"\"\"Number of output tokens generated.\"\"\"\n\n    total_tokens: int\n    \"\"\"Total number of tokens used (input + output).\"\"\"\n\n    type: Literal[\"tokens\"]\n    \"\"\"The type of the usage object. Always `tokens` for this variant.\"\"\"\n\n    input_token_details: Optional[UsageTokensInputTokenDetails] = None\n    \"\"\"Details about the input tokens billed for this request.\"\"\"\n\n\nclass UsageDuration(BaseModel):\n    \"\"\"Usage statistics for models billed by audio input duration.\"\"\"\n\n    seconds: float\n    \"\"\"Duration of the input audio in seconds.\"\"\"\n\n    type: Literal[\"duration\"]\n    \"\"\"The type of the usage object. Always `duration` for this variant.\"\"\"\n\n\nUsage: TypeAlias = Annotated[Union[UsageTokens, UsageDuration], PropertyInfo(discriminator=\"type\")]\n\n\nclass Transcription(BaseModel):\n    \"\"\"\n    Represents a transcription response returned by model, based on the provided input.\n    \"\"\"\n\n    text: str\n    \"\"\"The transcribed text.\"\"\"\n\n    languages: Optional[List[TranscriptionLanguage]] = None\n    \"\"\"The languages detected in the audio.\n\n    Returned by `gpt-transcribe`. An empty array indicates that no language could be\n    reliably detected.\n    \"\"\"\n\n    logprobs: Optional[List[Logprob]] = None\n    \"\"\"The log probabilities of the tokens in the transcription.\n\n    Only returned with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`\n    if `logprobs` is added to the `include` array.\n    \"\"\"\n\n    usage: Optional[Usage] = None\n    \"\"\"Token usage statistics for the request.\"\"\"\n"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/src/openai/types/chat/chat_completion.py",
+      "sha256": "71b254f0b41d740bbbbc1a94a5298fec7fc58a9fccf2acec1948c2a1f2b62f16",
+      "document": "# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.\n\nfrom typing import Dict, List, Union, Optional\nfrom typing_extensions import Literal, Annotated, TypeAlias\n\nfrom ..._utils import PropertyInfo\nfrom ..._models import BaseModel\nfrom ..shared.metadata import Metadata\nfrom ..completion_usage import CompletionUsage\nfrom .chat_completion_message import ChatCompletionMessage\nfrom .chat_completion_token_logprob import ChatCompletionTokenLogprob\n\n__all__ = [\n    \"ChatCompletion\",\n    \"Choice\",\n    \"ChoiceLogprobs\",\n    \"Moderation\",\n    \"ModerationInput\",\n    \"ModerationInputModerationResults\",\n    \"ModerationInputModerationResultsResult\",\n    \"ModerationInputError\",\n    \"ModerationOutput\",\n    \"ModerationOutputModerationResults\",\n    \"ModerationOutputModerationResultsResult\",\n    \"ModerationOutputError\",\n]\n\n\nclass ChoiceLogprobs(BaseModel):\n    \"\"\"Log probability information for the choice.\"\"\"\n\n    content: Optional[List[ChatCompletionTokenLogprob]] = None\n    \"\"\"A list of message content tokens with log probability information.\"\"\"\n\n    refusal: Optional[List[ChatCompletionTokenLogprob]] = None\n    \"\"\"A list of message refusal tokens with log probability information.\"\"\"\n\n\nclass Choice(BaseModel):\n    finish_reason: Literal[\"stop\", \"length\", \"tool_calls\", \"content_filter\", \"function_call\"]\n    \"\"\"The reason the model stopped generating tokens.\n\n    This will be `stop` if the model hit a natural stop point or a provided stop\n    sequence, `length` if the maximum number of tokens specified in the request was\n    reached, `content_filter` if content was omitted due to a flag from our content\n    filters, `tool_calls` if the model called a tool, or `function_call`\n    (deprecated) if the model called a function. Read the\n    [Model Spec](https://model-spec.openai.com/2025-12-18.html) for more.\n    \"\"\"\n\n    index: int\n    \"\"\"The index of the choice in the list of choices.\"\"\"\n\n    logprobs: Optional[ChoiceLogprobs] = None\n    \"\"\"Log probability information for the choice.\"\"\"\n\n    message: ChatCompletionMessage\n    \"\"\"A chat completion message generated by the model.\"\"\"\n\n\nclass ModerationInputModerationResultsResult(BaseModel):\n    \"\"\"A moderation result produced for the response input or output.\"\"\"\n\n    categories: Dict[str, bool]\n    \"\"\"\n    A dictionary of moderation categories to booleans, True if the input is flagged\n    under this category.\n    \"\"\"\n\n    category_applied_input_types: Dict[str, List[Literal[\"text\", \"image\"]]]\n    \"\"\"Which modalities of input are reflected by the score for each category.\"\"\"\n\n    category_scores: Dict[str, float]\n    \"\"\"A dictionary of moderation categories to scores.\"\"\"\n\n    flagged: bool\n    \"\"\"A boolean indicating whether the content was flagged by any category.\"\"\"\n\n    model: str\n    \"\"\"The moderation model that produced this result.\"\"\"\n\n    type: Literal[\"moderation_result\"]\n    \"\"\"\n    The object type, which was always `moderation_result` for successful moderation\n    results.\n    \"\"\"\n\n\nclass ModerationInputModerationResults(BaseModel):\n    \"\"\"Successful moderation results for the request input or generated output.\"\"\"\n\n    model: str\n    \"\"\"The moderation model used to generate the results.\"\"\"\n\n    results: List[ModerationInputModerationResultsResult]\n    \"\"\"A list of moderation results.\"\"\"\n\n    type: Literal[\"moderation_results\"]\n    \"\"\"The object type, which is always `moderation_results`.\"\"\"\n\n\nclass ModerationInputError(BaseModel):\n    \"\"\"An error produced while attempting moderation.\"\"\"\n\n    code: str\n    \"\"\"The error code.\"\"\"\n\n    message: str\n    \"\"\"The error message.\"\"\"\n\n    type: Literal[\"error\"]\n    \"\"\"The object type, which is always `error`.\"\"\"\n\n\nModerationInput: TypeAlias = Annotated[\n    Union[ModerationInputModerationResults, ModerationInputError], PropertyInfo(discriminator=\"type\")\n]\n\n\nclass ModerationOutputModerationResultsResult(BaseModel):\n    \"\"\"A moderation result produced for the response input or output.\"\"\"\n\n    categories: Dict[str, bool]\n    \"\"\"\n    A dictionary of moderation categories to booleans, True if the input is flagged\n    under this category.\n    \"\"\"\n\n    category_applied_input_types: Dict[str, List[Literal[\"text\", \"image\"]]]\n    \"\"\"Which modalities of input are reflected by the score for each category.\"\"\"\n\n    category_scores: Dict[str, float]\n    \"\"\"A dictionary of moderation categories to scores.\"\"\"\n\n    flagged: bool\n    \"\"\"A boolean indicating whether the content was flagged by any category.\"\"\"\n\n    model: str\n    \"\"\"The moderation model that produced this result.\"\"\"\n\n    type: Literal[\"moderation_result\"]\n    \"\"\"\n    The object type, which was always `moderation_result` for successful moderation\n    results.\n    \"\"\"\n\n\nclass ModerationOutputModerationResults(BaseModel):\n    \"\"\"Successful moderation results for the request input or generated output.\"\"\"\n\n    model: str\n    \"\"\"The moderation model used to generate the results.\"\"\"\n\n    results: List[ModerationOutputModerationResultsResult]\n    \"\"\"A list of moderation results.\"\"\"\n\n    type: Literal[\"moderation_results\"]\n    \"\"\"The object type, which is always `moderation_results`.\"\"\"\n\n\nclass ModerationOutputError(BaseModel):\n    \"\"\"An error produced while attempting moderation.\"\"\"\n\n    code: str\n    \"\"\"The error code.\"\"\"\n\n    message: str\n    \"\"\"The error message.\"\"\"\n\n    type: Literal[\"error\"]\n    \"\"\"The object type, which is always `error`.\"\"\"\n\n\nModerationOutput: TypeAlias = Annotated[\n    Union[ModerationOutputModerationResults, ModerationOutputError], PropertyInfo(discriminator=\"type\")\n]\n\n\nclass Moderation(BaseModel):\n    \"\"\"\n    Moderation results for the request input and generated output, if moderated\n    completions were requested.\n    \"\"\"\n\n    input: ModerationInput\n    \"\"\"Moderation for the request input.\"\"\"\n\n    output: ModerationOutput\n    \"\"\"Moderation for the generated output.\"\"\"\n\n\nclass ChatCompletion(BaseModel):\n    \"\"\"\n    Represents a chat completion response returned by model, based on the provided input.\n    \"\"\"\n\n    id: str\n    \"\"\"A unique identifier for the chat completion.\"\"\"\n\n    choices: List[Choice]\n    \"\"\"A list of chat completion choices.\n\n    Can be more than one if `n` is greater than 1.\n    \"\"\"\n\n    created: int\n    \"\"\"The Unix timestamp (in seconds) of when the chat completion was created.\"\"\"\n\n    model: str\n    \"\"\"The model used for the chat completion.\"\"\"\n\n    object: Literal[\"chat.completion\"]\n    \"\"\"The object type, which is always `chat.completion`.\"\"\"\n\n    metadata: Optional[Metadata] = None\n    \"\"\"Set of 16 key-value pairs that can be attached to an object.\n\n    This can be useful for storing additional information about the object in a\n    structured format, and querying for objects via API or the dashboard.\n\n    Keys are strings with a maximum length of 64 characters. Values are strings with\n    a maximum length of 512 characters.\n    \"\"\"\n\n    moderation: Optional[Moderation] = None\n    \"\"\"\n    Moderation results for the request input and generated output, if moderated\n    completions were requested.\n    \"\"\"\n\n    service_tier: Optional[Literal[\"auto\", \"default\", \"flex\", \"scale\", \"priority\", \"fast\"]] = None\n    \"\"\"Specifies the processing type used for serving the request.\n\n    - If set to 'auto', then the request will be processed with the service tier\n      configured in the Project settings. Unless otherwise configured, the Project\n      will use 'default'.\n    - If set to 'default', then the request will be processed with the standard\n      pricing and performance for the selected model.\n    - If set to\n      '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then\n      the request will be processed with the Flex Processing service tier.\n    - To opt-in to\n      [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the\n      request level, include the `service_tier=fast` or `service_tier=priority`\n      parameter for Responses or Chat Completions. The response will show\n      `service_tier=priority` regardless of if you specify `service_tier=fast` or\n      `priority` in your request.\n    - When not set, the default behavior is 'auto'.\n\n    When the `service_tier` parameter is set, the response body will include the\n    `service_tier` value based on the processing mode actually used to serve the\n    request. This response value may be different from the value set in the\n    parameter.\n    \"\"\"\n\n    system_fingerprint: Optional[str] = None\n    \"\"\"This fingerprint represents the backend configuration that the model runs with.\n\n    Can be used in conjunction with the `seed` request parameter to understand when\n    backend changes have been made that might impact determinism.\n    \"\"\"\n\n    usage: Optional[CompletionUsage] = None\n    \"\"\"Usage statistics for the completion request.\"\"\"\n"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/src/openai/types/chat/chat_completion_chunk.py",
+      "sha256": "6a7cf5c38f379433d05f175ef0601ad0c94bacf5c64168e7ebd44b14d41f22b3",
+      "document": "# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.\n\nfrom typing import Dict, List, Union, Optional\nfrom typing_extensions import Literal, Annotated, TypeAlias\n\nfrom ..._utils import PropertyInfo\nfrom ..._models import BaseModel\nfrom ..completion_usage import CompletionUsage\nfrom .chat_completion_token_logprob import ChatCompletionTokenLogprob\n\n__all__ = [\n    \"ChatCompletionChunk\",\n    \"Choice\",\n    \"ChoiceDelta\",\n    \"ChoiceDeltaAudio\",\n    \"ChoiceDeltaFunctionCall\",\n    \"ChoiceDeltaToolCall\",\n    \"ChoiceDeltaToolCallFunction\",\n    \"ChoiceLogprobs\",\n    \"Moderation\",\n    \"ModerationInput\",\n    \"ModerationInputModerationResults\",\n    \"ModerationInputModerationResultsResult\",\n    \"ModerationInputError\",\n    \"ModerationOutput\",\n    \"ModerationOutputModerationResults\",\n    \"ModerationOutputModerationResultsResult\",\n    \"ModerationOutputError\",\n]\n\n\nclass ChoiceDeltaAudio(BaseModel):\n    \"\"\"A partial audio response.\n\n    Audio chunks may carry an ID, base64 data, or\n    transcript text; the final audio update contains only its expiry timestamp.\n    \"\"\"\n\n    id: Optional[str] = None\n    \"\"\"Unique identifier for this audio response.\"\"\"\n\n    data: Optional[str] = None\n    \"\"\"\n    Base64 encoded audio bytes generated by the model, in the format specified in\n    the request.\n    \"\"\"\n\n    expires_at: Optional[int] = None\n    \"\"\"\n    The Unix timestamp (in seconds) for when this audio response will no longer be\n    accessible on the server for use in multi-turn conversations.\n    \"\"\"\n\n    transcript: Optional[str] = None\n    \"\"\"Transcript text from this audio chunk.\"\"\"\n\n\nclass ChoiceDeltaFunctionCall(BaseModel):\n    \"\"\"Deprecated and replaced by `tool_calls`.\n\n    The name and arguments of a function that should be called, as generated by the model.\n    \"\"\"\n\n    arguments: Optional[str] = None\n    \"\"\"\n    The arguments to call the function with, as generated by the model in JSON\n    format. Note that the model does not always generate valid JSON, and may\n    hallucinate parameters not defined by your function schema. Validate the\n    arguments in your code before calling your function.\n    \"\"\"\n\n    name: Optional[str] = None\n    \"\"\"The name of the function to call.\"\"\"\n\n\nclass ChoiceDeltaToolCallFunction(BaseModel):\n    arguments: Optional[str] = None\n    \"\"\"\n    The arguments to call the function with, as generated by the model in JSON\n    format. Note that the model does not always generate valid JSON, and may\n    hallucinate parameters not defined by your function schema. Validate the\n    arguments in your code before calling your function.\n    \"\"\"\n\n    name: Optional[str] = None\n    \"\"\"The name of the function to call.\"\"\"\n\n\nclass ChoiceDeltaToolCall(BaseModel):\n    index: int\n\n    id: Optional[str] = None\n    \"\"\"The ID of the tool call.\"\"\"\n\n    function: Optional[ChoiceDeltaToolCallFunction] = None\n\n    type: Optional[Literal[\"function\"]] = None\n    \"\"\"The type of the tool. Currently, only `function` is supported.\"\"\"\n\n\nclass ChoiceDelta(BaseModel):\n    \"\"\"\n    A chat completion delta generated by streamed model responses.\n    Streamed audio can arrive in partial updates with an ID, base64 data, or\n    transcript text. The final audio update contains only its expiry timestamp.\n    \"\"\"\n\n    audio: Optional[ChoiceDeltaAudio] = None\n    \"\"\"A partial audio response.\n\n    Audio chunks may carry an ID, base64 data, or transcript text; the final audio\n    update contains only its expiry timestamp.\n    \"\"\"\n\n    content: Optional[str] = None\n    \"\"\"The contents of the chunk message.\"\"\"\n\n    function_call: Optional[ChoiceDeltaFunctionCall] = None\n    \"\"\"Deprecated and replaced by `tool_calls`.\n\n    The name and arguments of a function that should be called, as generated by the\n    model.\n    \"\"\"\n\n    refusal: Optional[str] = None\n    \"\"\"The refusal message generated by the model.\"\"\"\n\n    role: Optional[Literal[\"developer\", \"system\", \"user\", \"assistant\", \"tool\"]] = None\n    \"\"\"The role of the author of this message.\"\"\"\n\n    tool_calls: Optional[List[ChoiceDeltaToolCall]] = None\n\n\nclass ChoiceLogprobs(BaseModel):\n    \"\"\"Log probability information for the choice.\"\"\"\n\n    content: Optional[List[ChatCompletionTokenLogprob]] = None\n    \"\"\"A list of message content tokens with log probability information.\"\"\"\n\n    refusal: Optional[List[ChatCompletionTokenLogprob]] = None\n    \"\"\"A list of message refusal tokens with log probability information.\"\"\"\n\n\nclass Choice(BaseModel):\n    delta: ChoiceDelta\n    \"\"\"\n    A chat completion delta generated by streamed model responses. Streamed audio\n    can arrive in partial updates with an ID, base64 data, or transcript text. The\n    final audio update contains only its expiry timestamp.\n    \"\"\"\n\n    index: int\n    \"\"\"The index of the choice in the list of choices.\"\"\"\n\n    finish_reason: Optional[Literal[\"stop\", \"length\", \"tool_calls\", \"content_filter\", \"function_call\"]] = None\n    \"\"\"The reason the model stopped generating tokens.\n\n    This will be `stop` if the model hit a natural stop point or a provided stop\n    sequence, `length` if the maximum number of tokens specified in the request was\n    reached, `content_filter` if content was omitted due to a flag from our content\n    filters, `tool_calls` if the model called a tool, or `function_call`\n    (deprecated) if the model called a function. Omitted from the final audio update\n    containing only `delta.audio.expires_at`.\n    \"\"\"\n\n    logprobs: Optional[ChoiceLogprobs] = None\n    \"\"\"Log probability information for the choice.\"\"\"\n\n\nclass ModerationInputModerationResultsResult(BaseModel):\n    \"\"\"A moderation result produced for the response input or output.\"\"\"\n\n    categories: Dict[str, bool]\n    \"\"\"\n    A dictionary of moderation categories to booleans, True if the input is flagged\n    under this category.\n    \"\"\"\n\n    category_applied_input_types: Dict[str, List[Literal[\"text\", \"image\"]]]\n    \"\"\"Which modalities of input are reflected by the score for each category.\"\"\"\n\n    category_scores: Dict[str, float]\n    \"\"\"A dictionary of moderation categories to scores.\"\"\"\n\n    flagged: bool\n    \"\"\"A boolean indicating whether the content was flagged by any category.\"\"\"\n\n    model: str\n    \"\"\"The moderation model that produced this result.\"\"\"\n\n    type: Literal[\"moderation_result\"]\n    \"\"\"\n    The object type, which was always `moderation_result` for successful moderation\n    results.\n    \"\"\"\n\n\nclass ModerationInputModerationResults(BaseModel):\n    \"\"\"Successful moderation results for the request input or generated output.\"\"\"\n\n    model: str\n    \"\"\"The moderation model used to generate the results.\"\"\"\n\n    results: List[ModerationInputModerationResultsResult]\n    \"\"\"A list of moderation results.\"\"\"\n\n    type: Literal[\"moderation_results\"]\n    \"\"\"The object type, which is always `moderation_results`.\"\"\"\n\n\nclass ModerationInputError(BaseModel):\n    \"\"\"An error produced while attempting moderation.\"\"\"\n\n    code: str\n    \"\"\"The error code.\"\"\"\n\n    message: str\n    \"\"\"The error message.\"\"\"\n\n    type: Literal[\"error\"]\n    \"\"\"The object type, which is always `error`.\"\"\"\n\n\nModerationInput: TypeAlias = Annotated[\n    Union[ModerationInputModerationResults, ModerationInputError], PropertyInfo(discriminator=\"type\")\n]\n\n\nclass ModerationOutputModerationResultsResult(BaseModel):\n    \"\"\"A moderation result produced for the response input or output.\"\"\"\n\n    categories: Dict[str, bool]\n    \"\"\"\n    A dictionary of moderation categories to booleans, True if the input is flagged\n    under this category.\n    \"\"\"\n\n    category_applied_input_types: Dict[str, List[Literal[\"text\", \"image\"]]]\n    \"\"\"Which modalities of input are reflected by the score for each category.\"\"\"\n\n    category_scores: Dict[str, float]\n    \"\"\"A dictionary of moderation categories to scores.\"\"\"\n\n    flagged: bool\n    \"\"\"A boolean indicating whether the content was flagged by any category.\"\"\"\n\n    model: str\n    \"\"\"The moderation model that produced this result.\"\"\"\n\n    type: Literal[\"moderation_result\"]\n    \"\"\"\n    The object type, which was always `moderation_result` for successful moderation\n    results.\n    \"\"\"\n\n\nclass ModerationOutputModerationResults(BaseModel):\n    \"\"\"Successful moderation results for the request input or generated output.\"\"\"\n\n    model: str\n    \"\"\"The moderation model used to generate the results.\"\"\"\n\n    results: List[ModerationOutputModerationResultsResult]\n    \"\"\"A list of moderation results.\"\"\"\n\n    type: Literal[\"moderation_results\"]\n    \"\"\"The object type, which is always `moderation_results`.\"\"\"\n\n\nclass ModerationOutputError(BaseModel):\n    \"\"\"An error produced while attempting moderation.\"\"\"\n\n    code: str\n    \"\"\"The error code.\"\"\"\n\n    message: str\n    \"\"\"The error message.\"\"\"\n\n    type: Literal[\"error\"]\n    \"\"\"The object type, which is always `error`.\"\"\"\n\n\nModerationOutput: TypeAlias = Annotated[\n    Union[ModerationOutputModerationResults, ModerationOutputError], PropertyInfo(discriminator=\"type\")\n]\n\n\nclass Moderation(BaseModel):\n    \"\"\"Moderation results for the request input and generated output.\n\n    Present\n    on the moderation chunk when moderated completions are requested.\n    \"\"\"\n\n    input: ModerationInput\n    \"\"\"Moderation for the request input.\"\"\"\n\n    output: ModerationOutput\n    \"\"\"Moderation for the generated output.\"\"\"\n\n\nclass ChatCompletionChunk(BaseModel):\n    \"\"\"\n    Represents a streamed chunk of a chat completion response returned\n    by the model, based on the provided input.\n    [Learn more](https://developers.openai.com/api/docs/guides/streaming-responses).\n    \"\"\"\n\n    id: str\n    \"\"\"A unique identifier for the chat completion. Each chunk has the same ID.\"\"\"\n\n    choices: List[Choice]\n    \"\"\"A list of chat completion choices.\n\n    Can contain more than one elements if `n` is greater than 1. Can also be empty\n    for the last chunk if you set `stream_options: {\"include_usage\": true}`.\n    \"\"\"\n\n    created: int\n    \"\"\"The Unix timestamp (in seconds) of when the chat completion was created.\n\n    Each chunk has the same timestamp.\n    \"\"\"\n\n    model: str\n    \"\"\"The model to generate the completion.\"\"\"\n\n    object: Literal[\"chat.completion.chunk\"]\n    \"\"\"The object type, which is always `chat.completion.chunk`.\"\"\"\n\n    moderation: Optional[Moderation] = None\n    \"\"\"Moderation results for the request input and generated output.\n\n    Present on the moderation chunk when moderated completions are requested.\n    \"\"\"\n\n    obfuscation: Optional[str] = None\n    \"\"\"\n    An obfuscation string added to normalize the size of streamed chunks as a\n    mitigation to certain side-channel attacks. The field is included by default and\n    omitted when `stream_options.include_obfuscation` is `false`.\n    \"\"\"\n\n    service_tier: Optional[Literal[\"auto\", \"default\", \"flex\", \"scale\", \"priority\", \"fast\"]] = None\n    \"\"\"Specifies the processing type used for serving the request.\n\n    - If set to 'auto', then the request will be processed with the service tier\n      configured in the Project settings. Unless otherwise configured, the Project\n      will use 'default'.\n    - If set to 'default', then the request will be processed with the standard\n      pricing and performance for the selected model.\n    - If set to\n      '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then\n      the request will be processed with the Flex Processing service tier.\n    - To opt-in to\n      [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the\n      request level, include the `service_tier=fast` or `service_tier=priority`\n      parameter for Responses or Chat Completions. The response will show\n      `service_tier=priority` regardless of if you specify `service_tier=fast` or\n      `priority` in your request.\n    - When not set, the default behavior is 'auto'.\n\n    When the `service_tier` parameter is set, the response body will include the\n    `service_tier` value based on the processing mode actually used to serve the\n    request. This response value may be different from the value set in the\n    parameter.\n    \"\"\"\n\n    system_fingerprint: Optional[str] = None\n    \"\"\"\n    This fingerprint represents the backend configuration that the model runs with.\n    Can be used in conjunction with the `seed` request parameter to understand when\n    backend changes have been made that might impact determinism.\n    \"\"\"\n\n    usage: Optional[CompletionUsage] = None\n    \"\"\"\n    An optional field that will only be present when you set\n    `stream_options: {\"include_usage\": true}` in your request. When present, it\n    contains a null value **except for the last chunk** which contains the token\n    usage statistics for the entire request.\n\n    **NOTE:** If the stream is interrupted or cancelled, you may not receive the\n    final usage chunk which contains the total token usage for the request.\n    \"\"\"\n"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/src/openai/types/chat/chat_completion_message.py",
+      "sha256": "9fb369e540871b3a7ddd5e8acd73cfc03b6973a52245514d750f00a977c74a34",
+      "document": "# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.\n\nfrom typing import List, Optional\nfrom typing_extensions import Literal\n\nfrom ..._models import BaseModel\nfrom .chat_completion_audio import ChatCompletionAudio\nfrom .chat_completion_message_tool_call import ChatCompletionMessageToolCallUnion\n\n__all__ = [\"ChatCompletionMessage\", \"Annotation\", \"AnnotationURLCitation\", \"FunctionCall\"]\n\n\nclass AnnotationURLCitation(BaseModel):\n    \"\"\"A URL citation when using web search.\"\"\"\n\n    end_index: int\n    \"\"\"The index of the last character of the URL citation in the message.\"\"\"\n\n    start_index: int\n    \"\"\"The index of the first character of the URL citation in the message.\"\"\"\n\n    title: str\n    \"\"\"The title of the web resource.\"\"\"\n\n    url: str\n    \"\"\"The URL of the web resource.\"\"\"\n\n\nclass Annotation(BaseModel):\n    \"\"\"A URL citation when using web search.\"\"\"\n\n    type: Literal[\"url_citation\"]\n    \"\"\"The type of the URL citation. Always `url_citation`.\"\"\"\n\n    url_citation: AnnotationURLCitation\n    \"\"\"A URL citation when using web search.\"\"\"\n\n\nclass FunctionCall(BaseModel):\n    \"\"\"Deprecated and replaced by `tool_calls`.\n\n    The name and arguments of a function that should be called, as generated by the model.\n    \"\"\"\n\n    arguments: str\n    \"\"\"\n    The arguments to call the function with, as generated by the model in JSON\n    format. Note that the model does not always generate valid JSON, and may\n    hallucinate parameters not defined by your function schema. Validate the\n    arguments in your code before calling your function.\n    \"\"\"\n\n    name: str\n    \"\"\"The name of the function to call.\"\"\"\n\n\nclass ChatCompletionMessage(BaseModel):\n    \"\"\"A chat completion message generated by the model.\"\"\"\n\n    content: Optional[str] = None\n    \"\"\"The contents of the message.\"\"\"\n\n    refusal: Optional[str] = None\n    \"\"\"The refusal message generated by the model.\"\"\"\n\n    role: Literal[\"assistant\"]\n    \"\"\"The role of the author of this message.\"\"\"\n\n    annotations: Optional[List[Annotation]] = None\n    \"\"\"\n    Annotations for the message, when applicable, as when using the\n    [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).\n    \"\"\"\n\n    audio: Optional[ChatCompletionAudio] = None\n    \"\"\"\n    If the audio output modality is requested, this object contains data about the\n    audio response from the model.\n    [Learn more](https://developers.openai.com/api/docs/guides/audio).\n    \"\"\"\n\n    function_call: Optional[FunctionCall] = None\n    \"\"\"Deprecated and replaced by `tool_calls`.\n\n    The name and arguments of a function that should be called, as generated by the\n    model.\n    \"\"\"\n\n    tool_calls: Optional[List[ChatCompletionMessageToolCallUnion]] = None\n    \"\"\"The tool calls generated by the model, such as function calls.\"\"\"\n"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/src/openai/types/completion.py",
+      "sha256": "36e9df1a57616b6918fb49e50acec84929d5f69ead7e078ca4ed3c29050326b0",
+      "document": "# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.\n\nfrom typing import List, Optional\nfrom typing_extensions import Literal\n\nfrom .._models import BaseModel\nfrom .completion_usage import CompletionUsage\nfrom .completion_choice import CompletionChoice\n\n__all__ = [\"Completion\"]\n\n\nclass Completion(BaseModel):\n    \"\"\"Represents a completion response from the API.\n\n    Note: both the streamed and non-streamed response objects share the same shape (unlike the chat endpoint).\n    \"\"\"\n\n    id: str\n    \"\"\"A unique identifier for the completion.\"\"\"\n\n    choices: List[CompletionChoice]\n    \"\"\"The list of completion choices the model generated for the input prompt.\"\"\"\n\n    created: int\n    \"\"\"The Unix timestamp (in seconds) of when the completion was created.\"\"\"\n\n    model: str\n    \"\"\"The model used for completion.\"\"\"\n\n    object: Literal[\"text_completion\"]\n    \"\"\"The object type, which is always \"text_completion\" \"\"\"\n\n    system_fingerprint: Optional[str] = None\n    \"\"\"This fingerprint represents the backend configuration that the model runs with.\n\n    Can be used in conjunction with the `seed` request parameter to understand when\n    backend changes have been made that might impact determinism.\n    \"\"\"\n\n    usage: Optional[CompletionUsage] = None\n    \"\"\"Usage statistics for the completion request.\"\"\"\n"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/src/openai/types/completion_usage.py",
+      "sha256": "505975694e13d13a3cac7e9b2eff707ef8b125f0de91e32ccc89fc4b7c2161a2",
+      "document": "# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.\n\nfrom typing import Optional\n\nfrom .._models import BaseModel\n\n__all__ = [\"CompletionUsage\", \"CompletionTokensDetails\", \"PromptTokensDetails\"]\n\n\nclass CompletionTokensDetails(BaseModel):\n    \"\"\"Breakdown of tokens used in a completion.\"\"\"\n\n    accepted_prediction_tokens: Optional[int] = None\n    \"\"\"\n    When using Predicted Outputs, the number of tokens in the prediction that\n    appeared in the completion.\n    \"\"\"\n\n    audio_tokens: Optional[int] = None\n    \"\"\"Audio input tokens generated by the model.\"\"\"\n\n    reasoning_tokens: Optional[int] = None\n    \"\"\"Tokens generated by the model for reasoning.\"\"\"\n\n    rejected_prediction_tokens: Optional[int] = None\n    \"\"\"\n    When using Predicted Outputs, the number of tokens in the prediction that did\n    not appear in the completion. However, like reasoning tokens, these tokens are\n    still counted in the total completion tokens for purposes of billing, output,\n    and context window limits.\n    \"\"\"\n\n    text_tokens: Optional[int] = None\n    \"\"\"Text output tokens generated by the model.\"\"\"\n\n\nclass PromptTokensDetails(BaseModel):\n    \"\"\"Breakdown of tokens used in the prompt.\"\"\"\n\n    audio_tokens: Optional[int] = None\n    \"\"\"Audio input tokens present in the prompt.\"\"\"\n\n    cache_write_tokens: Optional[int] = None\n    \"\"\"The unadjusted number of prompt tokens written to cache.\"\"\"\n\n    cached_tokens: Optional[int] = None\n    \"\"\"Cached tokens present in the prompt.\"\"\"\n\n    image_tokens: Optional[int] = None\n    \"\"\"Image input tokens present in the prompt.\"\"\"\n\n    text_tokens: Optional[int] = None\n    \"\"\"Text input tokens present in the prompt.\"\"\"\n\n\nclass CompletionUsage(BaseModel):\n    \"\"\"Usage statistics for the completion request.\"\"\"\n\n    completion_tokens: int\n    \"\"\"Number of tokens in the generated completion.\"\"\"\n\n    prompt_tokens: int\n    \"\"\"Number of tokens in the prompt.\"\"\"\n\n    total_tokens: int\n    \"\"\"Total number of tokens used in the request (prompt + completion).\"\"\"\n\n    completion_tokens_details: Optional[CompletionTokensDetails] = None\n    \"\"\"Breakdown of tokens used in a completion.\"\"\"\n\n    prompt_tokens_details: Optional[PromptTokensDetails] = None\n    \"\"\"Breakdown of tokens used in the prompt.\"\"\"\n"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/src/openai/types/create_embedding_response.py",
+      "sha256": "7a5a25314a25b5fc13361de3f77eecfdcd5c77e52c402955588957bffcebe13c",
+      "document": "# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.\n\nfrom typing import List\nfrom typing_extensions import Literal\n\nfrom .._models import BaseModel\nfrom .embedding import Embedding\n\n__all__ = [\"CreateEmbeddingResponse\", \"Usage\"]\n\n\nclass Usage(BaseModel):\n    \"\"\"The usage information for the request.\"\"\"\n\n    prompt_tokens: int\n    \"\"\"The number of tokens used by the prompt.\"\"\"\n\n    total_tokens: int\n    \"\"\"The total number of tokens used by the request.\"\"\"\n\n\nclass CreateEmbeddingResponse(BaseModel):\n    data: List[Embedding]\n    \"\"\"The list of embeddings generated by the model.\"\"\"\n\n    model: str\n    \"\"\"The name of the model used to generate the embedding.\"\"\"\n\n    object: Literal[\"list\"]\n    \"\"\"The object type, which is always \"list\".\"\"\"\n\n    usage: Usage\n    \"\"\"The usage information for the request.\"\"\"\n"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/src/openai/types/embedding.py",
+      "sha256": "11348ef537cd3994c0395b7ef55640b55504d1b2fe9d5c4deec31a9e160b6942",
+      "document": "# File generated from our OpenAPI spec by Castiron. See CONTRIBUTING.md for details.\n\nfrom typing import List\nfrom typing_extensions import Literal\n\nfrom .._models import BaseModel\n\n__all__ = [\"Embedding\"]\n\n\nclass Embedding(BaseModel):\n    \"\"\"Represents an embedding vector returned by embedding endpoint.\"\"\"\n\n    embedding: List[float]\n    \"\"\"The embedding vector, which is a list of floats.\n\n    The length of vector depends on the model as listed in the\n    [embedding guide](https://developers.openai.com/api/docs/guides/embeddings).\n    \"\"\"\n\n    index: int\n    \"\"\"The index of the embedding in the list of embeddings.\"\"\"\n\n    object: Literal[\"embedding\"]\n    \"\"\"The object type, which is always \"embedding\".\"\"\"\n"
+    }
+  ],
+  "definitions": {
+    "Usage": {
+      "type": "object",
+      "properties": {
+        "prompt_tokens": {
+          "type": "integer"
+        },
+        "completion_tokens": {
+          "type": "integer"
+        },
+        "total_tokens": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens"
+      ]
+    },
+    "ChatMessage": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "x-protected": true
+        },
+        "refusal": {
+          "type": "string",
+          "x-protected": true
+        }
+      },
+      "required": [
+        "role"
+      ]
+    },
+    "ChatChoice": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer"
+        },
+        "finish_reason": {
+          "type": "string"
+        },
+        "message": {
+          "$ref": "#/definitions/ChatMessage"
+        }
+      },
+      "required": [
+        "index",
+        "finish_reason",
+        "message"
+      ]
+    },
+    "ChatCompletion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-protected": true
+        },
+        "object": {
+          "type": "string"
+        },
+        "created": {
+          "type": "integer"
+        },
+        "model": {
+          "type": "string",
+          "x-protected": true
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChatChoice"
+          }
+        },
+        "usage": {
+          "$ref": "#/definitions/Usage"
+        }
+      },
+      "required": [
+        "id",
+        "object",
+        "created",
+        "model",
+        "choices"
+      ]
+    },
+    "ChatRequest": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string"
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "system",
+                  "assistant",
+                  "developer"
+                ]
+              },
+              "content": {
+                "type": "string",
+                "x-protected": true
+              }
+            },
+            "required": [
+              "role",
+              "content"
+            ]
+          }
+        },
+        "stream": {
+          "type": "boolean",
+          "enum": [
+            false
+          ]
+        },
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "model",
+        "messages",
+        "stream"
+      ]
+    }
+  },
+  "paths": {
+    "/chat/completions": {
+      "post": {
+        "summary": "Confirmed first-party data route; only explicitly bound subset callable",
+        "responses": {
+          "200": {
+            "description": "Compatible synchronous model response; successful status compatibility, not deployment probe",
+            "schema": {
+              "$ref": "#/definitions/ChatCompletion"
+            }
+          },
+          "400": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          },
+          "401": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          },
+          "403": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          },
+          "404": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          },
+          "409": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          },
+          "422": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          },
+          "429": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          },
+          "500": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          },
+          "503": {
+            "description": "SDK common HTTP mapping, bounded optional diagnostic payload discarded; no unconfirmed provider-specific error shape claimed"
+          }
+        },
+        "x-effect": "mutation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/ChatRequest"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-compatible-source-license": {
+    "uri": "https://raw.githubusercontent.com/openai/openai-python/e71d781ac5e7b3f365ac130bf338baaf13ae720d/LICENSE",
+    "text": "                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n\n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n\n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common\n      control with that entity. For the purposes of this definition,\n      \"control\" means (i) the power, direct or indirect, to cause the\n      direction or management of such entity, whether by contract or\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n      outstanding shares, or (iii) beneficial ownership of such entity.\n\n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n      exercising permissions granted by this License.\n\n      \"Source\" form shall mean the preferred form for making modifications,\n      including but not limited to software source code, documentation\n      source, and configuration files.\n\n      \"Object\" form shall mean any form resulting from mechanical\n      transformation or translation of a Source form, including but\n      not limited to compiled object code, generated documentation,\n      and conversions to other media types.\n\n      \"Work\" shall mean the work of authorship, whether in Source or\n      Object form, made available under the License, as indicated by a\n      copyright notice that is included in or attached to the work\n      (an example is provided in the Appendix below).\n\n      \"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship. For the purposes\n      of this License, Derivative Works shall not include works that remain\n      separable from, or merely link (or bind by name) to the interfaces of,\n      the Work and Derivative Works thereof.\n\n      \"Contribution\" shall mean any work of authorship, including\n      the original version of the Work and any modifications or additions\n      to that Work or Derivative Works thereof, that is intentionally\n      submitted to Licensor for inclusion in the Work by the copyright owner\n      or by an individual or Legal Entity authorized to submit on behalf of\n      the copyright owner. For the purposes of this definition, \"submitted\"\n      means any form of electronic, verbal, or written communication sent\n      to the Licensor or its representatives, including but not limited to\n      communication on electronic mailing lists, source code control systems,\n      and issue tracking systems that are managed by, or on behalf of, the\n      Licensor for the purpose of discussing and improving the Work, but\n      excluding communication that is conspicuously marked or otherwise\n      designated in writing by the copyright owner as \"Not a Contribution.\"\n\n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n      on behalf of whom a Contribution has been received by Licensor and\n      subsequently incorporated within the Work.\n\n   2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n\n   3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infringed by their\n      Contribution(s) alone or by combination of their Contribution(s)\n      with the Work to which such Contribution(s) was submitted. If You\n      institute patent litigation against any entity (including a\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\n      or a Contribution incorporated within the Work constitutes direct\n      or contributory patent infringement, then any patent licenses\n      granted to You under this License for that Work shall terminate\n      as of the date such litigation is filed.\n\n   4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:\n\n      (a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License; and\n\n      (b) You must cause any modified files to carry prominent notices\n          stating that You changed the files; and\n\n      (c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,\n          excluding those notices that do not pertain to any part of\n          the Derivative Works; and\n\n      (d) If the Work includes a \"NOTICE\" text file as part of its\n          distribution, then any Derivative Works that You distribute must\n          include a readable copy of the attribution notices contained\n          within such NOTICE file, excluding those notices that do not\n          pertain to any part of the Derivative Works, in at least one\n          of the following places: within a NOTICE text file distributed\n          as part of the Derivative Works; within the Source form or\n          documentation, if provided along with the Derivative Works; or,\n          within a display generated by the Derivative Works, if and\n          wherever such third-party notices normally appear. The contents\n          of the NOTICE file are for informational purposes only and\n          do not modify the License. You may add Your own attribution\n          notices within Derivative Works that You distribute, alongside\n          or as an addendum to the NOTICE text from the Work, provided\n          that such additional attribution notices cannot be construed\n          as modifying the License.\n\n      You may add Your own copyright statement to Your modifications and\n      may provide additional or different license terms and conditions\n      for use, reproduction, or distribution of Your modifications, or\n      for any such Derivative Works as a whole, provided Your use,\n      reproduction, and distribution of the Work otherwise complies with\n      the conditions stated in this License.\n\n   5. Submission of Contributions. Unless You explicitly state otherwise,\n      any Contribution intentionally submitted for inclusion in the Work\n      by You to the Licensor shall be under the terms and conditions of\n      this License, without any additional terms or conditions.\n      Notwithstanding the above, nothing herein shall supersede or modify\n      the terms of any separate license agreement you may have executed\n      with Licensor regarding such Contributions.\n\n   6. Trademarks. This License does not grant permission to use the trade\n      names, trademarks, service marks, or product names of the Licensor,\n      except as required for reasonable and customary use in describing the\n      origin of the Work and reproducing the content of the NOTICE file.\n\n   7. Disclaimer of Warranty. Unless required by applicable law or\n      agreed to in writing, Licensor provides the Work (and each\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n      implied, including, without limitation, any warranties or conditions\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n      PARTICULAR PURPOSE. You are solely responsible for determining the\n      appropriateness of using or redistributing the Work and assume any\n      risks associated with Your exercise of permissions under this License.\n\n   8. Limitation of Liability. In no event and under no legal theory,\n      whether in tort (including negligence), contract, or otherwise,\n      unless required by applicable law (such as deliberate and grossly\n      negligent acts) or agreed to in writing, shall any Contributor be\n      liable to You for damages, including any direct, indirect, special,\n      incidental, or consequential damages of any character arising as a\n      result of this License or out of the use or inability to use the\n      Work (including but not limited to damages for loss of goodwill,\n      work stoppage, computer failure or malfunction, or any and all\n      other commercial damages or losses), even if such Contributor\n      has been advised of the possibility of such damages.\n\n   9. Accepting Warranty or Additional Liability. While redistributing\n      the Work or Derivative Works thereof, You may choose to offer,\n      and charge a fee for, acceptance of support, warranty, indemnity,\n      or other liability obligations and/or rights consistent with this\n      License. However, in accepting such obligations, You may act only\n      on Your own behalf and on Your sole responsibility, not on behalf\n      of any other Contributor, and only if You agree to indemnify,\n      defend, and hold each Contributor harmless for any liability\n      incurred by, or claims asserted against, such Contributor by reason\n      of your accepting any such warranty or additional liability.\n\n   END OF TERMS AND CONDITIONS\n\n   APPENDIX: How to apply the Apache License to your work.\n\n      To apply the Apache License to your work, attach the following\n      boilerplate notice, with the fields enclosed by brackets \"[]\"\n      replaced with your own identifying information. (Don't include\n      the brackets!)  The text should be enclosed in the appropriate\n      comment syntax for the file format. We also recommend that a\n      file or class name and description of purpose be included on the\n      same \"printed page\" as the copyright notice for easier\n      identification within third-party archives.\n\n   Copyright 2026 OpenAI\n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License.\n"
+  }
+}
