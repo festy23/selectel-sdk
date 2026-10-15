@@ -16,6 +16,7 @@ import (
 	"github.com/festy23/selectel-sdk/logs"
 	"github.com/festy23/selectel-sdk/metrics"
 	"github.com/festy23/selectel-sdk/mks"
+	"github.com/festy23/selectel-sdk/onec"
 	"github.com/festy23/selectel-sdk/operations"
 	"github.com/festy23/selectel-sdk/projects"
 	"github.com/festy23/selectel-sdk/registry"
@@ -176,3 +177,7 @@ func New(config Config) (*Client, error) {
 func (c *Client) Authenticate(ctx context.Context, request types.AuthRequest) (types.AuthMetadata, error) {
 	return c.runtime.Authenticate(ctx, request)
 }
+
+func (p ProjectClient) OneC() *onec.Client { return onec.Bind(p.client.runtime, p.client.scope) }
+
+func (r RegionalClient) OneC() *onec.Client { return onec.Bind(r.client.runtime, r.client.scope) }

@@ -4585,5 +4585,49 @@
     "verification": "offline",
     "wait_goals": [],
     "recovery": false
+  },
+  "cloud_1c.v2.service_endpoints.list": {
+    "go_method": "onec.Client.Endpoints",
+    "input_type": "types.CallOptions",
+    "output_type": "onec.GetServiceEndpointsResponse",
+    "contract_ref": "contracts/cloud_1c.v2.service_endpoints.list.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
+  },
+  "cloud_1c.v2.clusters.get": {
+    "go_method": "onec.Client.GetCluster",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "output_type": "onec.GetClusterResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters.get.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
   }
 }

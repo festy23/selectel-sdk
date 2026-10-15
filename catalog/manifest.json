@@ -57,7 +57,7 @@
     "verification": {
       "contract_revision": "3fc76985fab030f51247a93015efbe912a65b13d6a1bd4f26e16278f031f1fea",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "2051bec6576bd1ac004ad811ff737c98c13fa1f0bce9a1895009b4d8a3666b5c",
+      "implementation_revision": "ebb77ded9b7762665caaeaa5d42fba0c6a4687dc51e6bb829bb0200a540c8530",
       "level": "offline"
     },
     "wait_goals": []
@@ -219,7 +219,7 @@
     "verification": {
       "contract_revision": "146aa49afcc6938945b7f144d97b116106829adc55f0e122fd457a80c337017d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "6cd120464b360bb1861ec6388fece0ef7db47fb44ac1707845508ea1fa18fbc2",
+      "implementation_revision": "fd04973315f9af2cabc2393bcf82d438fe8ffa632f2a3faaf71c5dba8fcc91dd",
       "level": "offline"
     },
     "wait_goals": []
@@ -275,7 +275,7 @@
     "verification": {
       "contract_revision": "15afb025b45c48ac496fe2104004b06f7000cc96454ddc3819e423cc46c9706d",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "b0cf2f4124a83bf20cce4c6fadee703eb64d443fe87697b3f48fa1d6c0b69459",
+      "implementation_revision": "84de2b3ae4fb9de3fe039e23a9a8b33d1a51572d1140b8504fef9bb872ce2f0a",
       "level": "offline"
     },
     "wait_goals": []
@@ -384,8 +384,5198 @@
     "verification": {
       "contract_revision": "2be9992b7fc31fdf600467c48ad7f737a7448e4b285d231f52c87c14fea838b0",
       "evidence_ref": "billing/client_test.go",
-      "implementation_revision": "7ec30f238ae639fcb405a4a62e236e42008d158ae8b261eeb8025287a73b257c",
+      "implementation_revision": "c2081e42419864fb3e1f4c4a1a124d92cf89b67e83dc0968e44b7b8b81926871",
       "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "8ec4df379ea55275a6a704bb7187a93d918b5a3490969c5c556d26e016e04e59",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1backups/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1backups/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_backups.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1backups/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_backups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /backup/backups",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "1706a2a55ded339a039eca350d85d428f6742d219ee8a648b630c5e1bcdc94b9",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1{id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1{id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_backups.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1{id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_backups",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /backup/backups/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "d281f89e8df58e242d186fdf65c75e753423f524071b86c6e29a22d824d54536",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1{id}~1download-url/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1{id}~1download-url/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_backups_download_url.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1{id}~1download-url/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_backups_download_url",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /backup/backups/{id}/download-url",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "18d4e9b37c4a0fa28e48aaf1d36f94c3fca2461c749c40a3a02a423d606d9816",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1infobases~1{id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1infobases~1{id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_backups_infobases.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1backups~1infobases~1{id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_backups_infobases",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /backup/backups/infobases/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "eca0470f5e5a4e99bbe98b01bf3797408027a6ec7148f85006e66d329abdc9c3",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1dump/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1dump/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_dt_dump.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1dump/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_dt_dump",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /backup/dt/dump",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "b73d60c47b91fc5bdb6461bfc92d9a4b7f23df5a7eeaca2deef5ab6a72fee4ab",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1restore/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1restore/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_dt_restore.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1restore/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_dt_restore",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /backup/dt/restore",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "5661ff883f24e51a19d386eaf40bc3c3807e1eb6134bfad0558211ceaf4ac3ea",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1upload-url/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1upload-url/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_dt_upload_url.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1dt~1upload-url/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_dt_upload_url",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /backup/dt/upload-url",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "ad32c3c493c7fae24702d83950960add9ee59bb994f49bf7cd7377ac0ea91248",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1infobases/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1infobases/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_infobases.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1infobases/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_infobases",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /backup/infobases",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "fd36c212944a4d6508f5bdf32264872c5e7c9afbf8a0d19485bd786f982a936f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1plan/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1plan/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_plan.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1plan/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_plan",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /backup/plan",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "replace",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "385442e831ab996b8941c2c33d4bd0bcd08b90f55639c32d2749de842875f150",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1plan/put/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1plan/put",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_plan.replace",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1plan/put/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_plan",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "PUT /backup/plan",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "3accc5d97ae7e79cca85b070042f75c9a737d3558bb8fb9faa541e203fb92ced",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1plan~1{infobaseId}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1plan~1{infobaseId}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_plan.update",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1plan~1{infobaseId}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_plan",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "PATCH /backup/plan/{infobaseId}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "661a463e89ce573d72c1b481356cc08f569db40724569df881220ed5a7980676",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1plans/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1plans/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_plans.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1plans/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_plans",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /backup/plans",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "b56b3b34926b61cd8d0c5c7d660c5127c05fe1eee24230fb9152d644cb8e1924",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1restore/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1restore/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_restore.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1restore/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_restore",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /backup/restore",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "be6f8854a75276d9285e4e08977d606be9767ed97b615fc67ea16ff8dcdfdb00",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1restore~1status~1{infobaseId}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1restore~1status~1{infobaseId}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_restore_status.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1restore~1status~1{infobaseId}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_restore_status",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /backup/restore/status/{infobaseId}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "066a34127727bff72338718ab2f4c068d8ad333c032e830b7d799a73739f54b1",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1supported-regions~1vaults/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1supported-regions~1vaults/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_supported_regions_vaults.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1supported-regions~1vaults/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_supported_regions_vaults",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /backup/supported-regions/vaults",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "9ba7adbabfc34a364a38ec766eb9d9e37eab49b6ad9417c69b251f5bcd1eb23f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_vaults.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_vaults",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /backup/vaults",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "28620cafe6cf2f9ad49ce2ad0c7930be64cfc887f84494117d114c558c5ba6fa",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_vaults.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_vaults",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /backup/vaults/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "5fabade9db6aea63e7dc5d05d0f36ae088b3826fe8ef4bb4d7866681c0d1a5a8",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_vaults.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_vaults",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /backup/vaults/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "c3b090c0ddae615be31de76af104d79ce3ac1984eb10c3afc288819b97aa73f2",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_vaults.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_vaults",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /backup/vaults",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "3522726aeb86524798581d881e7dc8eaca6d8dda06d24322b2e3d826a02ba7fa",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_vaults.update",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1{id}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_vaults",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "PATCH /backup/vaults/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "6a4583422e9d9ed3c8cf9671ad98032e5f11e676126dda14a3bb0437c4b9800c",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1verify/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1verify/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.backup_vaults_verify.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1backup~1vaults~1verify/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "backup_vaults_verify",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /backup/vaults/verify",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "b3f86cdbce3978942750aff1d53e3245896a2e6e26060480022d03787f24ba19",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1cluster-flavors/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-flavors/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.cluster_flavors.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-flavors/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "cluster_flavors",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /cluster-flavors",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "317ba0e08a6085fd6df8848cc8083285da13cccf1df0d39b35ce533df12d7178",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1cluster-flavors~1constraints/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-flavors~1constraints/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.cluster_flavors_constraints.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-flavors~1constraints/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "cluster_flavors_constraints",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /cluster-flavors/constraints",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "63cdfa09c48947bfcdb0bd7deb008995c45cd7c87de3f636e8409150b8cc0410",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1cluster-platforms/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-platforms/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.cluster_platforms.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-platforms/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "cluster_platforms",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /cluster-platforms",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "a7effd3998dc53c071fc10931377df684c3b2bbcbc77bf944d28a5b70557af1e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.cluster_proxies.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "cluster_proxies",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /cluster-proxies",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "0fa67dc095cfad6d17e434ce4c173936da44adce1e66fe5150cce4aae6e5e7aa",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1{id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1{id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.cluster_proxies.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1{id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "cluster_proxies",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /cluster-proxies/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "dc49cddbf961304a0d1a51414c93e769b55ad7b5251dda60f976e5a665faa189",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1{id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1{id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.cluster_proxies.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1{id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "cluster_proxies",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /cluster-proxies/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "9cd870fe3ec73623883a359644a59bfcf1768ef70bdda02fe9b35a2188b50ebd",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.cluster_proxies.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "cluster_proxies",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /cluster-proxies",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "12de64142d179fa8ef33dd989511c85fac4744a43b2991e4c7ea4f796fb90ba2",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1network-share~1project/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1network-share~1project/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.cluster_proxies_network_share_project.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1cluster-proxies~1network-share~1project/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "cluster_proxies_network_share_project",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /cluster-proxies/network-share/project",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "19af816db24f2799947a29b3759314235727e063a0338ac08b927c263bbe0b9f",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "bf41afa8197ddc98176b6d2754b9eb7ea75750268a7a432d46495541e8fd655b",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /clusters/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.clusters.get.json": "9aea5c5f2559393ddc4248581cf580ae7f5d7ed685bee1f80422119206da8e7d"
+    },
+    "contract_revision": "8c3270340aa95fd7c73185f1aa086342607638330eca959cf5cc3d451d9842a9",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.clusters.get.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.clusters.get.json#/errors",
+    "go_method": "onec.Client.GetCluster",
+    "implementation": {
+      "binding": "onec.Client.GetCluster",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/get",
+    "input_type": "types.ResourceRef, types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cloud_1c.v2.clusters.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/get/responses",
+    "output_type": "onec.GetClusterResponse",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cloud_1c.v2.clusters.get.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.clusters.get.json#/request",
+    "resource": "clusters",
+    "response_binding_ref": "contracts/cloud_1c.v2.clusters.get.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": "8c3270340aa95fd7c73185f1aa086342607638330eca959cf5cc3d451d9842a9",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "836a80c1dd3e8b2b8cf221a684c5da973453afb6b8a86163bf9eeda078eb828f",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "d1702479c1f5d2d6bf9c8542031c753ddcfdd29a0f0dc3fbcfbe8df9702a6ca7",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "fce8150f896937e5be97eaafb1968679fc52f177bd2eb3057697f5999bf49198",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters.update",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "PATCH /clusters/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "85156fb46486a2aac0b027cb7906ff62681990d09d8c3933808e2de859b2934c",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1config/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1config/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_config.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1config/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_config",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/config",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "ae33d2c9b23160716e2b1e60bcf543a0b2a63bbb98963230f1131090191b42ea",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_domains.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_domains",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/domains",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "3ce5c4574178789cb181df17a4d74e14f34d4f9fd8df3ff9e103563382071d42",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_domains.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_domains",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /clusters/{id}/domains/{domainId}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "f8dc8fd8212a65ce9ddcce9f674fa5c13f7cf752d862471905e5c4225b695d4c",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_domains.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_domains",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/{id}/domains",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "552af12df037815192c2b45fd8e3e5490e580e163916a8176ce0d8ad6fb70d02",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_domains.update",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_domains",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "PATCH /clusters/{id}/domains/{domainId}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "3a31e3f7375e19811fbfc61025a083836e28f71d8d1dfdf2b22408ced7d36491",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}~1transfer/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}~1transfer/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_domains_transfer.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1domains~1{domainId}~1transfer/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_domains_transfer",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/domains/{domainId}/transfer",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "189ec2a5fe34ad1f596f0f83d7f4c22de8e990037110e4975f425b12bc4dbd97",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1config/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1config/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_logs_tech_journal_config.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1config/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_logs_tech_journal_config",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/{id}/logs/tech-journal/config",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "7671cfdcc0eebec3bf504ed85f0aff20f4fc54936eeacdd75d2336e608da2f58",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_logs_tech_journal_plans.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_logs_tech_journal_plans",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/logs/tech-journal/plans",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "34623b331c30d8aba53be88920d4805f9f795b33bfda798539a7148e1016e83d",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_logs_tech_journal_plans.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_logs_tech_journal_plans",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/{id}/logs/tech-journal/plans",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "37fff1f11c60d130b96ba72abdd999b886e47299c453ca1eab7253502c511143",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans~1{planId}~1disable/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans~1{planId}~1disable/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_logs_tech_journal_plans_disable.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1logs~1tech-journal~1plans~1{planId}~1disable/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_logs_tech_journal_plans_disable",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/logs/tech-journal/plans/{planId}/disable",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "f50a21d9a02a65d0bde995491109a615b83e1494d547770ca939b7fe3a3a8064",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1logs~1tech-journal~1predefined-configs/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1logs~1tech-journal~1predefined-configs/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_logs_tech_journal_predefined_configs.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1logs~1tech-journal~1predefined-configs/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_logs_tech_journal_predefined_configs",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/logs/tech-journal/predefined-configs",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "3196c9543be634943fd2eb7f9a05b3303fb3cd66681f300d7c26f6ec119e8fc4",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1maintenance/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1maintenance/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_maintenance.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1maintenance/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_maintenance",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/{id}/maintenance",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "a14bb4d364b224f9e4701fcf4aa684179b76628e2fa827f2fbf0f4a0b2f7f586",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1metrics/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1metrics/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_metrics.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1metrics/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_metrics",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/{id}/metrics",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "85959e9f18f0efae5147f4eadb8d06fe258ed9471c8f0e90704638479aa792ac",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1resize/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1resize/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_resize.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1resize/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_resize",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/resize",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "27fa3eeb4782b16972a9089cfa1ad40aac25ebb4dc55e9f6c3402344fdb48833",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1restart/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1restart/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_restart.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1restart/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_restart",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/restart",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "a261e1eeb1876b1cf602355ebd25d3c43673ae23291dc5e4176970a60fb08939",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1sessions/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1sessions/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_sessions.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1sessions/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_sessions",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/{id}/sessions",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "3161bcb50645593b35751e1e6e4cdd66577ffed3c0b9c3509906cc3681a31638",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1sessions~1terminate/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1sessions~1terminate/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_sessions_terminate.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1sessions~1terminate/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_sessions_terminate",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/sessions/terminate",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "c37cc2b4668deedfb9160699fed1a226202173b04f3410bd29b101ba77e19a76",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1upgrade/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1upgrade/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_upgrade.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1upgrade/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_upgrade",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/upgrade",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "8fc195555187786c5e732ecdd57fba216e846b07cc50255168fca024378897a8",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_volumes.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_volumes",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/{id}/volumes",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "7a1a464188ce28a24be08df55b9881a59833a490d6755e69def4a2e60278207d",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes~1{volumeId}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes~1{volumeId}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_volumes.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes~1{volumeId}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_volumes",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /clusters/{id}/volumes/{volumeId}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "8f9519c0bc74af7606400371d65234bfbfc358825b760c4a0a997e0c237aa31f",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_volumes.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1{id}~1volumes/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_volumes",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/{id}/volumes",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "140acde07cf43ee037e95316a0167c6aa3d61787c9b479d11b279721a634a435",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1volumes~1supported-regions/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1volumes~1supported-regions/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_volumes_supported_regions.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1volumes~1supported-regions/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_volumes_supported_regions",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /clusters/volumes/supported-regions",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "0c4deb2ce6a36b37ace4a2f0a188f325030e9f716e23d3475ad9602aad7ac0f5",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1clusters~1volumes~1verify/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1volumes~1verify/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.clusters_volumes_verify.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1clusters~1volumes~1verify/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "clusters_volumes_verify",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /clusters/volumes/verify",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "db55daed741f13cfacb7d50ec73e7b24edf814287b56aefe01a403e9027c842d",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastore_flavors.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastore_flavors",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /datastore-flavors",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "d28a3f08a735abc447c32f9bfc1c0f004de400595b189733c750d78280a4388c",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors~1constraints/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors~1constraints/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastore_flavors_constraints.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-flavors~1constraints/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastore_flavors_constraints",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /datastore-flavors/constraints",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "a270980f5b6964bddfd380b865bbd9ae3be077152afc273429507388bffc108f",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastore-types/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-types/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastore_types.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastore-types/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastore_types",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /datastore-types",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "6507dbd06f5c6626f8fde178f95548ce97b823b7011f803df08bf0f60972ecd3",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastores.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastores",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /datastores",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "9f97a55b5726237d66481e719c00bbe20b0bab9dc2f105aafd7678fa113103bd",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastores.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastores",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /datastores/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "7d46305b22ea6a925304cee23bda5a52a129a00824b6db2e64dba2d2bf65346b",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastores.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastores",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /datastores/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "28705ed2377c64c2436efe9a3b5274df87ae1bd5960fd1bc8ed14daf215e74ac",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastores.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastores",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /datastores",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "ce0984ddd14f4e9b8e1dce91afef5da85ffd50eb3ea7a3275e9c63eda765bff2",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastores.update",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastores",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "PATCH /datastores/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "3c5cba4129b8dbf3452815583e4bd8e84278f5823640d900ed6f1e0ea09daaef",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastores_maintenance.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1maintenance/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastores_maintenance",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /datastores/{id}/maintenance",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "821545675dc0aa9b687eabfbd6c0770af16bd0b60dde166150a6148295438479",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1resize/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1resize/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.datastores_resize.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1datastores~1{id}~1resize/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "datastores_resize",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /datastores/{id}/resize",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "626ee93754511d79486f86538076f36d8781c12cb52a0b9e17f4db29587e1763",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /infobases",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "3c34873bd0818d86e188bc2b1a95fbb4a1ffccd646058ea101e5500de8df26f9",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /infobases/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "0dcc920b999399af89ba7c597e9a947eb8864e4177a36dbb3b6e3c35a69ce5cb",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /infobases/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "59f36f15a43e76b4dacd02b55a487559233f79a8def7fcfefa3e066841019a68",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /infobases",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "301d229d9f0b13c01e7a76f2a7ae92245a07c4f0a997f8e75f5c07a2e0fa9721",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases.update",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "PATCH /infobases/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "06d93da8fb5cd09d9b5f9d3312b4bbde4c68ae550c97f791161ca2cfe99035d2",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1scheduled-jobs~1allow/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1scheduled-jobs~1allow/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases_scheduled_jobs_allow.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1scheduled-jobs~1allow/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases_scheduled_jobs_allow",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /infobases/{id}/scheduled-jobs/allow",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "5f95001678b7d65d4f3b7a4fb8dc92820ee0e426d3a0c8c9b8b6cec3bc80f0b1",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1scheduled-jobs~1deny/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1scheduled-jobs~1deny/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases_scheduled_jobs_deny.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1scheduled-jobs~1deny/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases_scheduled_jobs_deny",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /infobases/{id}/scheduled-jobs/deny",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "2decb39fca74ab8e64467b7d21d076c55d5acfc681ca503da5e00326d845930e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1sessions~1allow/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1sessions~1allow/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases_sessions_allow.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1sessions~1allow/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases_sessions_allow",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /infobases/{id}/sessions/allow",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "422c335903940a1e09a5148960fdd1f6ac9efcebb26374950bb0a69f34925ad0",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1sessions~1deny/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1sessions~1deny/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases_sessions_deny.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1sessions~1deny/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases_sessions_deny",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /infobases/{id}/sessions/deny",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "34f46c13a40a4e2c9db5ab27f86b5ca6399d6af21836300e351255e523301404",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1transfer/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1transfer/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases_transfer.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1transfer/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases_transfer",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /infobases/{id}/transfer",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "dfd2cc1aa1c7c76c87aec1db0e9ee31604e9665c2f839947023e7463044aa9e5",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1web-pub~1config/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1web-pub~1config/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases_web_pub_config.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1web-pub~1config/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases_web_pub_config",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /infobases/{id}/web-pub/config",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "937badfc1a6f72552a4c9f62d12f7bcb1f6f7363e01433c42de05f1bf1139b6d",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1web-pub~1config/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1web-pub~1config/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.infobases_web_pub_config.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1infobases~1{id}~1web-pub~1config/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "infobases_web_pub_config",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /infobases/{id}/web-pub/config",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "2757cd1870317d7cb757f8787dd067e5688e80510ae4dde1fe62e792cfa9d6e0",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1{id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1{id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1{id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /license/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "834221ea27b04e50696c9c5c62bed55b7e6dd5e7912fe36ebfeb81426188bb30",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1{clusterId}~1activate/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1{clusterId}~1activate/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license_activate.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1{clusterId}~1activate/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license_activate",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /license/{clusterId}/activate",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "b666f567462e42c17db184bcc7774c5f8fdf975e3dae12c574f78cad2a757690",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1activated~1{clusterId}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1activated~1{clusterId}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license_activated.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1activated~1{clusterId}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license_activated",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /license/activated/{clusterId}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "5a5ec7a3a821341deb0b8c379b7c44e3cad0891c9d8ad8c8589bf5feb6c162c0",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1{licenseId}~1deactivate/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1{licenseId}~1deactivate/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license_deactivate.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1{licenseId}~1deactivate/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license_deactivate",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /license/{licenseId}/deactivate",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "01c156d244cd1dc1b733125469532529e38fe736b1a3f7c89627a2620945845e",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1rent/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license_rent.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license_rent",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /license/rent",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "0939fc4e0bdb15a1cfe8ce75c684de17490e3ae7489fc4fb2e1b675793590733",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1{rentId}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1{rentId}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license_rent.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1{rentId}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license_rent",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /license/rent/{rentId}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "get",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "b3846bea4ea2955fc12255d420977a72d912c142d6f29b6f7f91165fa2d40a0f",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1{id}/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1{id}/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license_rent.get",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1{id}/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license_rent",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /license/rent/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "0bf1c6afc52ab689ea46cff71f214904a3d9be86c221e9251b0bdc63875e8ff3",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1rent/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license_rent.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license_rent",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /license/rent",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "ffdc43e43d5bf65afce2a4ea162091a0c091b31bbb30ab0ee6ac8760fb102057",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1price/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1price/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.license_rent_price.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1license~1rent~1price/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "license_rent_price",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /license/rent/price",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "create",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "5065899a8b752a7b8c02580ba058498e8a778c9ebc0b7066035f64626db997e8",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys/post/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys/post",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.metrics_api_keys.create",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys/post/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "metrics_api_keys",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "POST /metrics/api-keys",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "delete",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "4ae67d3f81f18437001cc7025c15cf197254b373f61efce61fd35aa766b48482",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys~1{id}/delete/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys~1{id}/delete",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.metrics_api_keys.delete",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys~1{id}/delete/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "metrics_api_keys",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "DELETE /metrics/api-keys/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "028bb9b29f8a896c1b4cdcfb9c83a06d3616925c4447be02df054bcc21cd195e",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.metrics_api_keys.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "metrics_api_keys",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /metrics/api-keys",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "update",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "c0289899ec4352d291b845535e1f9f8699f0db452059f4d21f66bd1cde377624",
+    "effect": "mutation",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys~1{id}/patch/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys~1{id}/patch",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.metrics_api_keys.update",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1metrics~1api-keys~1{id}/patch/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "metrics_api_keys",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "PATCH /metrics/api-keys/{id}",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "7543a398f3e0322cdc7430ffe410b3a7f21768c16e7b043048f01af30e229050",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1service~1config/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1service~1config/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.service_config.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1service~1config/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_config",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /service/config",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_artifact_revisions": {
+      "contracts/cloud_1c.v2.service_endpoints.list.json": "f4e8d2a4a03fa04a2855bea9abbcc6f67b1fd30365e96fe13ad24d1e77893a90"
+    },
+    "contract_revision": "5b779edb0e275215c6eb57a899fe5f07e24d2add0cb3db3f7bac12e5f7ca34c5",
+    "effect": "read",
+    "endpoint_recipe_ref": "contracts/cloud_1c.v2.service_endpoints.list.json#/endpoint",
+    "error_binding_ref": "contracts/cloud_1c.v2.service_endpoints.list.json#/errors",
+    "go_method": "onec.Client.Endpoints",
+    "implementation": {
+      "binding": "onec.Client.Endpoints",
+      "status": "implemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1service~1endpoints/get",
+    "input_type": "types.CallOptions",
+    "limitations": [
+      "Verification does not establish live availability"
+    ],
+    "operation_id": "cloud_1c.v2.service_endpoints.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1service~1endpoints/get/responses",
+    "output_type": "onec.GetServiceEndpointsResponse",
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": "sources/1c-cloud.json#/paths/~1service~1endpoints/get",
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": "contracts/cloud_1c.v2.service_endpoints.list.json#/retry",
+    "request_binding_ref": "contracts/cloud_1c.v2.service_endpoints.list.json#/request",
+    "resource": "service_endpoints",
+    "response_binding_ref": "contracts/cloud_1c.v2.service_endpoints.list.json#/response",
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /service/endpoints",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": "5b779edb0e275215c6eb57a899fe5f07e24d2add0cb3db3f7bac12e5f7ca34c5",
+      "evidence_ref": "onec_infrastructure_test.go",
+      "implementation_revision": "ce895f4d7f9b0271c9d91255bc1d22b37c7bc7603fa62b2eca4c6c17790fcbc6",
+      "level": "offline"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "c8ff5f93f3f9de704f5d4026288260f05c699d5e2b0389b584ea77e1c1ec57a7",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1service~1regions/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1service~1regions/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.service_regions.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1service~1regions/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "service_regions",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /service/regions",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
+    },
+    "wait_goals": []
+  },
+  {
+    "action": "list",
+    "api_generation": "v2",
+    "auth": {
+      "audience": "selectel",
+      "scheme": "iam_project"
+    },
+    "availability": "documented",
+    "contract_revision": "f7aeecaa4c5ba4d02d713f0412fe23460bf7f2d49b692c73b710541e67957b9a",
+    "effect": "read",
+    "endpoint_recipe_ref": null,
+    "error_binding_ref": "sources/1c-cloud.json#/paths/~1usage/get/responses",
+    "go_method": null,
+    "implementation": {
+      "binding": null,
+      "status": "unimplemented"
+    },
+    "input_schema_ref": "sources/1c-cloud.json#/paths/~1usage/get",
+    "input_type": null,
+    "limitations": [
+      "No callable service binding"
+    ],
+    "operation_id": "cloud_1c.v2.usage.list",
+    "output_schema_ref": "sources/1c-cloud.json#/paths/~1usage/get/responses",
+    "output_type": null,
+    "pagination_contract_ref": null,
+    "parameter_support": {
+      "covered_schema_ref": null,
+      "excluded_variants": []
+    },
+    "recovery_contract_ref": null,
+    "replay_policy_ref": null,
+    "request_binding_ref": null,
+    "resource": "usage",
+    "response_binding_ref": null,
+    "scope_requirements": [
+      "account",
+      "project"
+    ],
+    "sensitive_fields": [],
+    "service": "cloud_1c",
+    "source": {
+      "operation_locator": "GET /usage",
+      "revision": "1883867f3c061110d6cad1d7f45f50ea2fe719eb93b3b89cfe7c6514e27e5fdd",
+      "uri": "https://docs.selectel.ru/api/1c-cloud.json"
+    },
+    "verification": {
+      "contract_revision": null,
+      "evidence_ref": null,
+      "implementation_revision": null,
+      "level": "none"
     },
     "wait_goals": []
   },
@@ -451,7 +5641,7 @@
     "verification": {
       "contract_revision": "010bc0cd7cba154ff37053951c9304b5902935d42a4359636c7abaecd52fed11",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "e0d1924611fc6679c163975568407d47bb374da1cc06b0dd93df6c85e248216b",
+      "implementation_revision": "f3dabcaa5b94ec2b8098d37806b9307e70c9814a8f8981315eb8385e0be6d921",
       "level": "offline"
     },
     "wait_goals": [
@@ -517,7 +5707,7 @@
     "verification": {
       "contract_revision": "e054d4f4273d5744ef22e9e4c5d1a6b0fbdc44278cc5dc72cfb129b9f6a844e2",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "4616f0aaa03908917892fbeea75a81caf582483ccdcb1cc0d249a0e15b6be9bd",
+      "implementation_revision": "1f452744de09144e5661826c9d9e7d667900247918900868902ad02f01b00fbb",
       "level": "offline"
     },
     "wait_goals": [
@@ -583,7 +5773,7 @@
     "verification": {
       "contract_revision": "9185c93fbf506e520e3f600ac022783605f8bba630f14d9b5560c47a1e1423ed",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "bbe1322a8984fc321f7bd46ae2294634e15fd132893b76615bde7c42a404b462",
+      "implementation_revision": "4b41d3fef8196f7bd5379ccccf073fe6cf2bcd4d8b595073090b09d1291d4f66",
       "level": "offline"
     },
     "wait_goals": []
@@ -649,7 +5839,7 @@
     "verification": {
       "contract_revision": "369c9ad353966ece54abe4cf52b7c2b6124c07fbfabef08ed7271832ca55bc53",
       "evidence_ref": "compute/servers_test.go",
-      "implementation_revision": "f50b0c4f3992410ce0567d2690ea8c37928290c5f1d21e9dd576846b00691ebf",
+      "implementation_revision": "886d8f96788f1e450c98ab53b3d43a50c21e8088b4db9e74c832f1166f59f5a5",
       "level": "offline"
     },
     "wait_goals": []
@@ -2167,7 +7357,7 @@
     "verification": {
       "contract_revision": "010f65cd3010cc8d9f679d4a8408cdb97047e34731a6cab47a7fe6c3b8426d4c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "b19227a8ee816a01e973a32cc54e861fd00543d2ace30fa8b7e833953269d18c",
+      "implementation_revision": "aef6c60f0e7b867352fc5973f44eae33fec61cc3f9428c6c9bc2c266704deb03",
       "level": "offline"
     },
     "wait_goals": []
@@ -5044,7 +10234,7 @@
     "verification": {
       "contract_revision": "6919f03e92625cea0376a8f55906a5d08cf8c56250f6c85a3456b9aafeebe16e",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "dcb0e4c9b1ee8b4f032be91dec2797efc91a6f591c38fb0af0bd6a0455121eac",
+      "implementation_revision": "2672a43f214362f89f86975220454d4bb9b25cf5b44733494c065c31f31c3d1b",
       "level": "offline"
     },
     "wait_goals": []
@@ -5114,7 +10304,7 @@
     "verification": {
       "contract_revision": "cd30623bf066fdec44a699665f1f862912673c1e63b4694f9e1efe722a516014",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "61b2044cadeb7055eeee76381e1c138f67d94faca58ea5a49038fc21e091ef40",
+      "implementation_revision": "6505f87a41f1f12345cf3923d323ac56c116ce4f043f6dca5dfc49d0f615045c",
       "level": "offline"
     },
     "wait_goals": []
@@ -5181,7 +10371,7 @@
     "verification": {
       "contract_revision": "e04cd2688e93bf2b4a50e4544164fa68f9489f5bcea53ae461bded8aef2142a8",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "ae1eb1c052bc19ff870b8b9ec938e0dc83daf9a266a13df85e2a37a188a459fb",
+      "implementation_revision": "76f247a35b09f726fa8cfaa13221359d664902159f13b8831bbe8d58a1f60c87",
       "level": "offline"
     },
     "wait_goals": []
@@ -5248,7 +10438,7 @@
     "verification": {
       "contract_revision": "ecd8912cac3fa4da12286693b0a006cd06929e6ef943c77c481cf50c2aa562af",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "868beeb7d8060b561e31e2df3b812e42f2eb77dbcc986eca3b6ea9b74565e922",
+      "implementation_revision": "0dceb55df6ee699600ddd757a676aad37998a79f6a63dd95e93180a19ba7ebca",
       "level": "offline"
     },
     "wait_goals": []
@@ -5314,7 +10504,7 @@
     "verification": {
       "contract_revision": "454f6e952097e35a553b9fee1010322b72f966aff46234136393a324b6492603",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "c4d216ef0732ad5e59b7dce44435d7d0331b721d210846da66aeaeff3827a944",
+      "implementation_revision": "63292f8543fd8c1eab7dba48fd5b1c0cc3548833d43da52bbfd8bf1c73ed64a5",
       "level": "offline"
     },
     "wait_goals": []
@@ -5380,7 +10570,7 @@
     "verification": {
       "contract_revision": "23f548279afec959dace1bffdd9853c955bc321134f3b3b15acf39e2ff3155a3",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "274a69480879906f2859ddaabd6d5c0fc609a879365c406ec9ef0fc7428e6484",
+      "implementation_revision": "f06c045f54463981b77cfb17fb865be48a1e250aba1d8c49b2ef33ff47386ea3",
       "level": "offline"
     },
     "wait_goals": []
@@ -5445,7 +10635,7 @@
     "verification": {
       "contract_revision": "0143979fb904e14d487754b1f128f963e93b900065ce8abba7cc2657e1eb8e66",
       "evidence_ref": "telemetry_test.go",
-      "implementation_revision": "adf7ffba7d0c4fdab05ab3a5d5befd83b6203a4f0bcd98873e486023dca4a824",
+      "implementation_revision": "120aa4fef94f1d0e14b92b6718208b69f7e08e65e03c5b53f696a056c3f35f87",
       "level": "offline"
     },
     "wait_goals": []
@@ -5502,7 +10692,7 @@
     "verification": {
       "contract_revision": "7065b08060f8034de9cc6ee35c8ecf30bf01fb0df7634e0772e42f6c9c9d0df1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "badf6df8b739131626e30fdcd31d26f9d21fef53b32268998d55be181387ccbd",
+      "implementation_revision": "e8c4d1cbdef42b889f1353af72cdb07dbd221f77d161ac9e29bd2c258d487a50",
       "level": "offline"
     },
     "wait_goals": []
@@ -5561,7 +10751,7 @@
     "verification": {
       "contract_revision": "5a661934b5c37d414f4a5002f4c0ff2258722cddfc014db78b1d0c2c6589ca7b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "1d821119ca5e43f96119b39c39d10751aa099ea0beff12f998e524990b87cfae",
+      "implementation_revision": "61f9c2cb178f70594745000344ff578f8fb775a10a6e5648fa26da19adcd95eb",
       "level": "offline"
     },
     "wait_goals": [
@@ -5620,7 +10810,7 @@
     "verification": {
       "contract_revision": "49472752a5d03819d9b2b69f733b950d67d731d2f9402002b1b3470ee2a4cea1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "08a570c02ff18e921b429d27754a9735d4e0e0debca3656acbbfa46000e1a796",
+      "implementation_revision": "396a6bc30fc2cde2ee9827760940de89b1fcf5689ccc18c9829df81ef83d5569",
       "level": "offline"
     },
     "wait_goals": [
@@ -5681,7 +10871,7 @@
     "verification": {
       "contract_revision": "5e85aa5381d8bb27c298348f9f2a82d637f921172d0fef0b76875a99bb4da062",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "be1172c7d06363af4582cc50eca9146f254ea5770fe12e6b601a982876ab7eeb",
+      "implementation_revision": "aa088b03482c1c495aafdede1f4744176546681219951f00065c1bdc8fc6e33f",
       "level": "offline"
     },
     "wait_goals": [
@@ -5740,7 +10930,7 @@
     "verification": {
       "contract_revision": "9eca4fe32f5168bab34804b8abbac93647b7666365960ddba0c2b377f59bcc64",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "11e89d71f940649e762a1e47648f47b5f049b0951395306eb84903e0d781e067",
+      "implementation_revision": "4a54eec0ff5409f67c49eef7c09b33b76a3a91e8f226b2d57755129f0c395c15",
       "level": "offline"
     },
     "wait_goals": []
@@ -5799,7 +10989,7 @@
     "verification": {
       "contract_revision": "0ea8d6d942b315d84c287ae156ceff783c168ea5c19c0dd84e96ef4d2c9181f2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2832d95a805b3f844d87b12dca69c323eeb14046d182d4ea663695f41d750fc6",
+      "implementation_revision": "fca8edabda617d911199a2e4ab84d0c42fa80b38c342fcac06b4c09770842a65",
       "level": "offline"
     },
     "wait_goals": [
@@ -5860,7 +11050,7 @@
     "verification": {
       "contract_revision": "4e5adbda31b0bd74594b3f41cb361e9721ccc464e1e8d1ac3c7f97c9b12e53a6",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ebc0cad87f612046f37176d3acc771ba802d4b9cf75ef9db8fb7e922803928a4",
+      "implementation_revision": "0849c83d6e2cdff17e97a09652b0d8a479ab054758f4cd65f976cbc2dc6c7770",
       "level": "offline"
     },
     "wait_goals": [
@@ -5921,7 +11111,7 @@
     "verification": {
       "contract_revision": "f55898effe2aee33aac111c4026507b75d542f9f334d1f1c2dcd03bda216bb5f",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "998d7db207c1005786ac50a5f4dbd9ea271d6bff0298bb41b652396b92ecc3f3",
+      "implementation_revision": "40e53595d9952539858c9a8c218e5f42bd5a46761d7398f71cedd1a3bf58cb5c",
       "level": "offline"
     },
     "wait_goals": []
@@ -5978,7 +11168,7 @@
     "verification": {
       "contract_revision": "683eb5cbaa489b5d71e4f43921d0f0420231c1cfcbeee8a622f63f195e8afd21",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d52b57149796e73a5822289f564b7ddeeac547ec33d8f1410025d28d5046be81",
+      "implementation_revision": "a9915b7369a4c151ee631209c7474890a2891ec2844801f8d5f0818187f4cae6",
       "level": "offline"
     },
     "wait_goals": []
@@ -6035,7 +11225,7 @@
     "verification": {
       "contract_revision": "b687545d25ede2ff9913b9aa454b8b976d55d18152143642e25c8dcfe99026ef",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "034961e7b57b24b4a922308c544831debd20d756fb32db39a8bce72cfaec8b32",
+      "implementation_revision": "718e3855d9d7fa7716d51c934525fe52abd4ff7bbb2bec8b5c4c1deb641caa3a",
       "level": "offline"
     },
     "wait_goals": [
@@ -6096,7 +11286,7 @@
     "verification": {
       "contract_revision": "95717068dc50327988ed7f1e38d930c3068040cc089cbea308c2508180f14e96",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "0c630e75f4955cfa001404902668be4fb0ba1d0864d099ffc1397c03a923e3c1",
+      "implementation_revision": "f04114ce8eb231772e9d00c6a44248bc0292b600c04dbb78e4e97478bc354070",
       "level": "offline"
     },
     "wait_goals": [
@@ -6155,7 +11345,7 @@
     "verification": {
       "contract_revision": "f64330f374bfd130276766f6ee483b5ef8e05d7637e07765e3cda5a39e0efd0b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "205dc133c38369192d22c021b93b144d64fbef03e0015d7e26d24253bb377583",
+      "implementation_revision": "d8e9f764841443c6e073fb058332458581ed5ad55307793ca4d4a1082e83ccad",
       "level": "offline"
     },
     "wait_goals": []
@@ -6212,7 +11402,7 @@
     "verification": {
       "contract_revision": "08cf885a13f443301b91a17bf2ed98440f9908f210b89dc28bb0271264d119ad",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "bfe39e457753f0fe23ce2a049161880563ee19337b9a3600f0eae0b1d7f62f23",
+      "implementation_revision": "84d8cdda8fa465c723467845ae1f35b3c711c54e94bef8fd0df438098e004bfc",
       "level": "offline"
     },
     "wait_goals": [
@@ -6271,7 +11461,7 @@
     "verification": {
       "contract_revision": "400b153f3a7d7e274c4539b2bac0e9aba6f4cbb297e849cb02ae3feda82f6766",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e2edd2e4a61ffe2d2c8d75cbeafc661610cee5dd171711c3052861e8a023aa7c",
+      "implementation_revision": "5212305e213441c625ac3dc413f2f65114a17ce3763a63a9cd0a7ba8ad87cb81",
       "level": "offline"
     },
     "wait_goals": [
@@ -6330,7 +11520,7 @@
     "verification": {
       "contract_revision": "105ecb4e8039ce0d0d9dca6af2f669ad7d85b24d50918d0ed2442a05a93655ca",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "e1148240bc70af0060d9213282a290689e81aaad734b6d786bd9b120ec132e9c",
+      "implementation_revision": "2c1e5b1c961bfedc341c95b09ce6a81e9624f1df52d0c659424eed33c8afc084",
       "level": "offline"
     },
     "wait_goals": []
@@ -6387,7 +11577,7 @@
     "verification": {
       "contract_revision": "c9b4addacb1c1e4fc909b4e08b59d49641ae6437ca9cac2c7b5d272bc3b224af",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ef7c8552bff270d2c995bc89802c80898689988f830655406fb4331b8079d503",
+      "implementation_revision": "561a8e2722372d4eacb0da1166eedbbab54f92452152ae54f7add54a11b63643",
       "level": "offline"
     },
     "wait_goals": []
@@ -6444,7 +11634,7 @@
     "verification": {
       "contract_revision": "020c67bec1c5495aa8dc9392dbefa591e30d33ca28dfef2f0faf40e376996ce4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "d8ee106db140f4afea35bc1a663cf3294cb678997e4f01ab98ecb1de3e64c767",
+      "implementation_revision": "24cbeb0f4936d7d2a81f733325b1e5031e5ed585bf3a206f57ae3b6f5c4fccb7",
       "level": "offline"
     },
     "wait_goals": [
@@ -6503,7 +11693,7 @@
     "verification": {
       "contract_revision": "3967a6f3abeba67165013da7ae3fcc070c79fdbbfc58a2f644d0c9aba5b4106c",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "5eaf0da9d2d349fb9cf33cf08395f25ba7db60079ebc5a733c2663b08be3c163",
+      "implementation_revision": "ac9d586b339521ec72021ec4edc407318a6f61d837c2eae8dfba6c0d26822777",
       "level": "offline"
     },
     "wait_goals": []
@@ -6560,7 +11750,7 @@
     "verification": {
       "contract_revision": "2fafaf0220c619b21b86faf38590fdbcd1c867c3b4671f873dd5c922abb98db2",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2b195cf91a09c4506a3c64337a8f1021eacaa1ee5d7af0161be65dce2d3753bf",
+      "implementation_revision": "1849b0f694ad82d3ab56a7574e00b38b8b5b356bbfa08d7daccd16f933ff7e1d",
       "level": "offline"
     },
     "wait_goals": []
@@ -6617,7 +11807,7 @@
     "verification": {
       "contract_revision": "b21d70fbb4a1623e9d784bd0cf20fb0587fa83461522aac627f0844d40e3ae9b",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "7cf7c699d48a861eb19ab139e075284d24d3363c0f4be1de0c2f20bb3326b551",
+      "implementation_revision": "c6dd2f39d3abc8ee2ca4f5df81f846d0180a0449ac08e639e19f2ec547ef97f2",
       "level": "offline"
     },
     "wait_goals": []
@@ -6674,7 +11864,7 @@
     "verification": {
       "contract_revision": "20fdc862e0398cca399a2568291b85316912f9cfc63d8a19b73e61f09b1476f8",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "9005409bb26626950a1e6ad02efa1d3da706ec132aef65295791a6c59f6f0cfc",
+      "implementation_revision": "5a56657cb33ed343f8477d590cffeab7311ca2d076aeb14a237d8f2a8d264377",
       "level": "offline"
     },
     "wait_goals": []
@@ -6731,7 +11921,7 @@
     "verification": {
       "contract_revision": "f0c9ac7d6e59a7d503c60d2e5498e572d41600a4d736e6c8d9b0b6674b4a5cb1",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "2ed7a542b5f1f60b8ab50d3c480feaee88b18cd7384e1d51e969fc4cf0366201",
+      "implementation_revision": "10eaaa652d8a3d3ed5ca9d13617cf1bbc757c1787d42525a1971f022c05c122d",
       "level": "offline"
     },
     "wait_goals": []
@@ -6788,7 +11978,7 @@
     "verification": {
       "contract_revision": "1ef13121f745358ea22a59dd823a8b4ee3ba4e1f8d9bbf4cb5eb89ad385e3653",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cb59516e0d1bab3ad52eef8df270e04ff1486c492b109145f1e6db15e91e7ffe",
+      "implementation_revision": "6fb67e8be23ed0a9481e280523a411be7e8d477fe4030ec87b8b9a1f1955f52e",
       "level": "offline"
     },
     "wait_goals": [
@@ -6850,7 +12040,7 @@
     "verification": {
       "contract_revision": "08a71a6b82c629fc548b019daaea13a6174291c3ec215f3ac2aad14f45391b67",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "017b7e938656468c63bc79b09f65b0ba4db049a5872477d1295bb6058050e435",
+      "implementation_revision": "00125e2bebde968e59f2ce59f1c386e3559e8726146a177d847622ceb4348fc7",
       "level": "offline"
     },
     "wait_goals": [
@@ -6912,7 +12102,7 @@
     "verification": {
       "contract_revision": "c6ad79ca151e90c6624bd6884c001c70c6864543f6ccc8acca3f8843b50ec857",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "90d631e70e65c59dd2dda91b1bb9ebd0bcd43a0fb7438133dc1719ad52444182",
+      "implementation_revision": "27994b1af763cef04cd0ee1e4af734aaceac941257050563f3c51bdfb42c6929",
       "level": "offline"
     },
     "wait_goals": [
@@ -6973,7 +12163,7 @@
     "verification": {
       "contract_revision": "57e96c7971681b1fdc13990198139ef323eb24f9b5c7c8ee0913052fe738e251",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "cfd3e8b6c1171d0a0a1c52e6b82d8843ce23b1d7354e10006a63ef9a5f37e47d",
+      "implementation_revision": "b589441df9baa91e3ca05a3bd1e5cdebd1fb93fbffb0e48884279c0d1379f00f",
       "level": "offline"
     },
     "wait_goals": [
@@ -7034,7 +12224,7 @@
     "verification": {
       "contract_revision": "92651fefa3f8db1917f301c511760355cfb6229e52cacd408601f3b803b19557",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "c526613da5ae28908ea3af913f453f42d2815252aee38d1bda40b8bf23b7bbd1",
+      "implementation_revision": "07737a9b0a67ecd92e97c08b3d4541f770d8e3548acb40370980379e3ec1fe7a",
       "level": "offline"
     },
     "wait_goals": [
@@ -7093,7 +12283,7 @@
     "verification": {
       "contract_revision": "f379223a07c3b1efb1f05e58cc4bbaa54a99e22a09ca8cfcef415be703440cff",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "6c6eefe8f71f462ce573f322d3c04719737414a31fa1e3b69d0a35343097c3c3",
+      "implementation_revision": "4376f503dbac077db1e9a9575b0bc8afabe09884f6e309952c392ef8315c1fb5",
       "level": "offline"
     },
     "wait_goals": []
@@ -7150,7 +12340,7 @@
     "verification": {
       "contract_revision": "08d351a5ae957460e58b84e55caed5eab3eab068c056463b38b16343e29bc9f4",
       "evidence_ref": "mks_management_test.go",
-      "implementation_revision": "ee98b36dcca3db7c6e3e1822b6f30ae5cd58031ff8a83c2e34783fad3d037b48",
+      "implementation_revision": "9add11f217dc33e1bde4105d86173ff1f1b55c245e0661c0cba0dea5bf75b120",
       "level": "offline"
     },
     "wait_goals": []
@@ -7895,7 +13085,7 @@
     "verification": {
       "contract_revision": "b33c3ea03ee9d19118143bce7a268f601cb2b5b81d5ee4cb86066393befd1147",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "d9c50fc5c9be97c4af50863a679704a2a5c9c50b263a5d0118b83d681afe8e88",
+      "implementation_revision": "39616f3508fc320cae64e3e8205259786373ea235749e2ff093c55a4f55315c3",
       "level": "offline"
     },
     "wait_goals": []
@@ -7951,7 +13141,7 @@
     "verification": {
       "contract_revision": "1307893996bbb246c40126897da0ca3f995610fd08a32f2b826a01798d4bcf9a",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "3ca3e4c00bd977fea284a7bfc74f3bbc1545e1bcb07f04286748b0d833ec2a23",
+      "implementation_revision": "71f4afe26b08197188c9ae01078062babf6ed16ba62a58f39d4caacdfad7a06a",
       "level": "offline"
     },
     "wait_goals": []
@@ -8007,7 +13197,7 @@
     "verification": {
       "contract_revision": "ebf101215c48d766ed403c35b350aaef40b6129e1f180f5b386fa165d76d4e33",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "aa9c31127440c0df73b3f895964e67db7d006abf46f296135fc7c99c97080580",
+      "implementation_revision": "6bc007e7b6f251d09c374159892e0a5961cb9aee9867a19f02eefa96d9141bd8",
       "level": "offline"
     },
     "wait_goals": []
@@ -8063,7 +13253,7 @@
     "verification": {
       "contract_revision": "84215169b10f07a663ecbfcf3aa718f504a07a0a3b4995652059f6133a599b01",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "5cc1f570ed45119e43018c7ccb64159eb45f92c231760ceff4da3fb1163521c2",
+      "implementation_revision": "1b8b8bad2422970e22d0511ecbea0343b22b1cc7fbcb85f620ac4f78b6c9d873",
       "level": "offline"
     },
     "wait_goals": []
@@ -8119,7 +13309,7 @@
     "verification": {
       "contract_revision": "dc0812844f75b186eb6c9a428b790a0915cc02912ac2ecc8d9feb81e8c54bf00",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "03819ac0fbfa8783fa5d4fb2dc4037c87a3464c8e36fa792c79dcb2bcf7d860a",
+      "implementation_revision": "30b7439bfd07c33e4db9b30165e465c8963e5b092cb68994b8c5c48ae8c59de1",
       "level": "offline"
     },
     "wait_goals": []
@@ -8547,7 +13737,7 @@
     "verification": {
       "contract_revision": "36a481d18b1160f73a794b7f821678dfd188a3e036858c50caa8e15af9007c46",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "527ae0a6742b76f012070643e2051ce2bfd8456d6d595c5db7ada521c22f0926",
+      "implementation_revision": "eaad27dad2d7e9ac9be4c2cee8dea688c3a212df5ac7528d65a2a0ba8676abdb",
       "level": "offline"
     },
     "wait_goals": []
@@ -8604,7 +13794,7 @@
     "verification": {
       "contract_revision": "b4fccff1263521c56bd5844d46764fcca29287a2c293713c32588fb4f6ecd0f0",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "4cb83d86682e8b9e76e343007317c307820e24e75686a779d53ba3f807334da7",
+      "implementation_revision": "8a1ddfd5a20a66207ddd667d48aa870532be687349431884f97fec6815e69b8b",
       "level": "offline"
     },
     "wait_goals": []
@@ -8661,7 +13851,7 @@
     "verification": {
       "contract_revision": "23c5c44aa91b2ed8c4a531769cbe7192cbd55542991a36de70e5ad465e8bd0be",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "c4e23f9682048de34025dc16c23a1680facdfa94f86a85c3810f82270372dc94",
+      "implementation_revision": "be33422af0bb881d1f4d028e430dc781482748cb68d91d7ea8af6592332c0408",
       "level": "offline"
     },
     "wait_goals": []
@@ -8718,7 +13908,7 @@
     "verification": {
       "contract_revision": "6ee659207944373aeaf488477960ff37c389d78cfce45b2581469cb3cefa258f",
       "evidence_ref": "resource_management_test.go",
-      "implementation_revision": "04dda3a449f668fc0194a4a4cc245bdc103d81e232b72cff16595113ae9376f4",
+      "implementation_revision": "effb2f9a0d4c3914238cf3a74d0a77c9de56a7d3ed41f6e7fe0c1b2ff185aaf9",
       "level": "offline"
     },
     "wait_goals": []
@@ -9585,7 +14775,7 @@
     "verification": {
       "contract_revision": "494371f5e3065273d6a26f711dc9214fb731c6b998eece3a577d381ed19a2e2c",
       "evidence_ref": "inventory_reads_test.go",
-      "implementation_revision": "6acdb4b75e15d1046339911f104e1384b1eb7d4a7becd4980152eff21fa2b98c",
+      "implementation_revision": "97be380d75cdabde81b1946e5b096442d958f2290acc6107fe298266077b0031",
       "level": "offline"
     },
     "wait_goals": []
@@ -10184,7 +15374,7 @@
     "verification": {
       "contract_revision": "83d5e89d465dd644e3b926d7a905d911e7045d8cfea1ac6d220e220d17a8ff2d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "220ba47bda1d625047a1f0d60966f74435c247759e7194f3ced7b6ef309e678d",
+      "implementation_revision": "41a8e5fd9d2929f21f03f070d5c6c2b3e4826cd2cc9edb7465f1d8743bd946f5",
       "level": "offline"
     },
     "wait_goals": []
@@ -10241,7 +15431,7 @@
     "verification": {
       "contract_revision": "5a82e5e20630385933b66695f4e27a3fe8bacfd860543d013ce811ece901c0fa",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "6be97b65b173e887fbe1bf3ee22ff6346c4805f9ac6a077f5ecc112804dfb4d6",
+      "implementation_revision": "9cba90836303046aeb5facca602adbc1b807574b89f3e45fc739173182d6dec3",
       "level": "offline"
     },
     "wait_goals": []
@@ -10300,7 +15490,7 @@
     "verification": {
       "contract_revision": "84c972f129f38816db580a0ffd7656ee73bf2582de39fd83f69ee6024a9b092e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "8d163acc058da966eedca3c085b5279e23256ef7a29700726e4f6b49e22f7d39",
+      "implementation_revision": "b84ea13fb55512a48397a8a8c0810830dd1f1521a91081f903a72683db013e45",
       "level": "offline"
     },
     "wait_goals": []
@@ -10357,7 +15547,7 @@
     "verification": {
       "contract_revision": "884a0319b53a2c29911d131d17b4dd3c214de2d420f4fb35093b77f59a0d081c",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "e2d8de196665ac4cec22d26dab1e0da0a635c875daea8986701e28e7c28d30a9",
+      "implementation_revision": "91f5c53c170713ea5cce2aaf9e4b1c2da43d5d0836f7eac9f0d060ca28385764",
       "level": "offline"
     },
     "wait_goals": []
@@ -10414,7 +15604,7 @@
     "verification": {
       "contract_revision": "e6b19589f766e128a98fd8393f883b41c25f14b515dc2c111ca5ee9fbc864e5e",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "0f3c189323439c31557b25e8c86009fbd2684831a786aaf8eb2e178e250e5931",
+      "implementation_revision": "d61d70885107221fcdcd24f80d4d89c52374e212b00d4761968d8bac09ae700f",
       "level": "offline"
     },
     "wait_goals": []
@@ -10473,7 +15663,7 @@
     "verification": {
       "contract_revision": "e08c55b6c926ed2f5f7e9250021eace9415d371ebb14e7f72cff3dc410222fea",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "4ea6dddb8b79a8fa5cd3f3020bdd58182fd4ae8cc23248f1f336d6b1bc65160f",
+      "implementation_revision": "cca7b2d4708f642305967812feba2ce8bbaca131f23fe93ebeae47949ef30e9a",
       "level": "offline"
     },
     "wait_goals": []
@@ -10532,7 +15722,7 @@
     "verification": {
       "contract_revision": "a48553d78778b53f777bbf27f7c1febf74c5e50f3c0480004f2f8d6dcb2e322d",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "9636da9de5be5d98cd6a432c520a5f3cd7dcb605d1127b8b8693051b958d0527",
+      "implementation_revision": "b175742aea2a511193a1e4599b27c7af951104597e907d500f5b110b8eeaac6e",
       "level": "offline"
     },
     "wait_goals": []
@@ -10589,7 +15779,7 @@
     "verification": {
       "contract_revision": "9343638febf375e41f97a1c065bc05863b7b38fa023ad6dddc7961356a104aa6",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "58441bf999ebcf6bf43cca1b51dbd3520f9a9320b9aecbfda502db73f954118e",
+      "implementation_revision": "a7cf28b3a1e70903510ff79ea1a16376d343820769b9a8d2389a3d434255483b",
       "level": "offline"
     },
     "wait_goals": []
@@ -10646,7 +15836,7 @@
     "verification": {
       "contract_revision": "5ec20d70ebee10dd11c6fc66c621aaf0bce28abe769a9f6acda26700fca48415",
       "evidence_ref": "secrets/client_test.go",
-      "implementation_revision": "08afe820860b6fbd857347be686f35c504167ac87dad6c1623200aee565c972e",
+      "implementation_revision": "55d7bb992854d829a3f885f169fc30fdec84d36ddbe1e3daae71d895416bc342",
       "level": "offline"
     },
     "wait_goals": []

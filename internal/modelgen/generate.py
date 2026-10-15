@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+ "onec": ("1c-cloud", {"GetServiceEndpointsResponse": "GetServiceEndpointsResponse", "GetClusterResponse":"GetClusterResponse"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -49,6 +50,8 @@ for case, (family, initial, top_name) in CASES.items():
     definitions = doc.get("definitions", doc.get("components", {}).get("schemas", {}))
     roots = initial if isinstance(initial, dict) else {initial: top_name}
     resource_roots = set(roots)
+    if package == "onec":
+        resource_roots = {"Cluster", "Datastore", "ClusterProxy", "ClusterDomain", "ClusterVolume", "TechJournalLogPlan"}
     if package == "mks":
         resource_roots = {"Cluster", "ClusterDetailed", "Nodegroup", "NodegroupDetailed", "NodegroupListItem", "Node", "Task"}
     pending = dict(roots)
@@ -164,7 +167,7 @@ for case, (family, initial, top_name) in CASES.items():
                 if resolve(item).get("properties"):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or (package == "onec" and reference in resource_roots):
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'

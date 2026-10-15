@@ -1,0 +1,32 @@
+{
+  "operation_id": "cloud_1c.v2.service_endpoints.list",
+  "effect": "read",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "url": "https://api.selectel.ru/ones/paas/v2",
+    "selection": "Official bootstrap only; no region or returned host automatically selected",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "explicit account/project IAM scope",
+    "path": "/service/endpoints",
+    "query": {},
+    "body": null
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Generated typed ServiceEndpoint/Endpoint DTOs; endpoints array required, unknown fields ignored; no resource adoption",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError"
+  },
+  "retry": "bounded safe reads only",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}
