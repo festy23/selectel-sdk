@@ -4629,5 +4629,28 @@
     ],
     "evidence_ref": "onec_infrastructure_test.go",
     "verification": "offline"
+  },
+  "cloud_1c.v2.clusters.create": {
+    "go_method": "onec.Client.CreateCluster",
+    "input_type": "onec.CreateClusterRequest, types.CallOptions",
+    "output_type": "onec.CreateClusterResponse",
+    "contract_ref": "contracts/cloud_1c.v2.clusters.create.json",
+    "status": "implemented",
+    "files": [
+      "client.go",
+      "onec/client.go",
+      "onec/types_generated.go",
+      "internal/core/request.go",
+      "internal/core/auth.go",
+      "internal/modelgen/generate.py",
+      "catalog/sources/1c-cloud.json",
+      "onec/mutations.go"
+    ],
+    "evidence_files": [
+      "onec_infrastructure_test.go",
+      "catalog/evidence/onec-current-inventory.json"
+    ],
+    "evidence_ref": "onec_infrastructure_test.go",
+    "verification": "offline"
   }
 }

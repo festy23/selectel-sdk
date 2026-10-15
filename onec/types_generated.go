@@ -188,6 +188,83 @@ func (v *ClusterState) normalize() {
 	}
 }
 
+type CreateClusterRequest struct {
+	Spec *ClusterSpec `json:"spec,omitempty"`
+}
+
+func (v CreateClusterRequest) Validate() error {
+	if v.Spec == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	if v.Spec != nil {
+		if err := v.Spec.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *CreateClusterRequest) normalize() {
+	if v.Spec != nil {
+		v.Spec.normalize()
+	}
+}
+func (v *CreateClusterRequest) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire CreateClusterRequest
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = CreateClusterRequest(value)
+	v.normalize()
+	return nil
+}
+
+type CreateClusterResponse struct {
+	Cluster *Cluster `json:"cluster,omitempty"`
+}
+
+func (v CreateClusterResponse) Validate() error {
+	if v.Cluster != nil {
+		if err := v.Cluster.Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (v *CreateClusterResponse) normalize() {
+	if v.Cluster != nil {
+		v.Cluster.normalize()
+	}
+}
+func (v *CreateClusterResponse) UnmarshalJSON(raw []byte) error {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil || fields == nil {
+		return types.NewError(types.ProtocolError)
+	}
+	delete(fields, "ref")
+	clean, err := json.Marshal(fields)
+	if err != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	type wire CreateClusterResponse
+	var value wire
+	if json.Unmarshal(clean, &value) != nil {
+		return types.NewError(types.ProtocolError)
+	}
+	*v = CreateClusterResponse(value)
+	v.normalize()
+	return nil
+}
+
 type Endpoint struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 	Protocol *string `json:"protocol,omitempty"`

@@ -22,3 +22,11 @@ licenses, metrics API keys и usage — #67. Это перечисленный s
 ID и projectId ответа должны совпадать с caller scope/ref. Возвращаемое
 состояние является наблюдением провайдера; ACTIVE не доказывает готовность
 инфобаз, web publication или доступ приложений.
+
+`CreateCluster` подтверждает только принятие: receipt сохраняется при decode
+ошибке, trustworthy созданный ID извлекается до независимых полей. Неизвестный
+исход не повторяется. Локальная ошибка возвращает revision-bound NotSent receipt.
+Для этого узко переиспользована ранняя инициализация ContractRevision
+из reviewed PR #97 commit `379458e4f658b1216137fea4acce5dae6027d320`
+(delta от `82121d740a2788930ce7c4934d449c35b096966d`). Другие изменения
+volumes не переносились; `internal/core/request.go` — общая точка интеграции.

@@ -1,0 +1,33 @@
+{
+  "operation_id": "cloud_1c.v2.clusters.create",
+  "effect": "mutation",
+  "endpoint": {
+    "source_uri": "https://docs.selectel.ru/api/1c-cloud/",
+    "selection": "Exact explicit Config.EndpointOverrides (cloud_1c,v2,scope), selected after discovery; no guessed regional host; base includes /v2",
+    "scope": "exact account/project/region/pool",
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "explicit account/project/location IAM project",
+    "path": "/clusters",
+    "body": "CreateClusterRequest spec; all required nested fields checked; explicit false/empty preserved, no implicit defaults"
+  },
+  "response": {
+    "successful_statuses": [
+      200
+    ],
+    "mapping": "Generated CreateClusterResponse/Cluster/spec/state; trustworthy created ID extracted before independent field decode; foreign projectId rejected; accepted receipt retained on malformed response",
+    "sensitive_fields": []
+  },
+  "errors": {
+    "mapping": "Core bounded read status mapping; provider message excluded; malformed JSON ProtocolError",
+    "foreign_identity": "scope_mismatch; no foreign ref retained",
+    "lost_response": "unknown_outcome with one attempt; no inferred ID, no list/name adoption"
+  },
+  "retry": "no mutation replay on any unknown response",
+  "pagination": null,
+  "wait": {
+    "goals": []
+  },
+  "recovery": null
+}
