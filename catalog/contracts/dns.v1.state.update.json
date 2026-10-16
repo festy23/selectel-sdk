@@ -1,0 +1,158 @@
+{
+  "operation_id": "dns.v1.state.update",
+  "endpoint": {
+    "address": "https://api.selectel.ru/domains/v1",
+    "source_uri": "https://raw.githubusercontent.com/selectel/domains-go/6b87a8d9f7b4089a30a4a1dc361cf73117f1af61/pkg/v1/client.go",
+    "generation": "v1",
+    "override_key": [
+      "dns",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "account",
+    "auth": "Selectel Token X-Token; no IAM/v2 fallback",
+    "method": "PATCH",
+    "source_schema": "sources/dns-legacy.json#/paths/~1{domain}~1state/patch",
+    "source_operation": {
+      "tags": [
+        "Domains"
+      ],
+      "summary": "Изменить статус зоны на NS серверах Selectel",
+      "operationId": "change_zone_state__domain__state_patch",
+      "parameters": [
+        {
+          "required": true,
+          "schema": {
+            "title": "Domain",
+            "type": "string"
+          },
+          "name": "domain",
+          "in": "path"
+        },
+        {
+          "description": "Selectel token",
+          "required": false,
+          "schema": {
+            "title": "X-Token",
+            "type": "string",
+            "description": "Selectel token",
+            "default": ""
+          },
+          "name": "X-Token",
+          "in": "header"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ZoneStateForm"
+            }
+          }
+        },
+        "required": true
+      },
+      "responses": {
+        "204": {
+          "description": "Successful Response"
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Not Found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "Conflict",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Unprocessable Entity",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "dnslegacy/state.go",
+    "identity": "explicit caller selector/ref; named reads never recover unknown mutations"
+  },
+  "response": {
+    "dto_source": "dnslegacy/state.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "204 has no body; disabled required boolean preserves explicit false; SetStateByName is same operation, no inferred numeric ref or readiness",
+    "sensitive_fields": [],
+    "scope_checks": "ref targets exact account/generation/kind/endpoint; explicit name targets return no invented refs; no name-based unknown recovery"
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "conflict",
+    "422": "provider_error",
+    "500": "provider_error",
+    "malformed_body": "protocol_error",
+    "foreign_identity": "scope_mismatch",
+    "raw_body": "not retained or formatted"
+  },
+  "retry": "never automatically replay; Receipt retains accepted/unknown and independently trustworthy refs",
+  "wait_goals": []
+}

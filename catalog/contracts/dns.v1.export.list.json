@@ -1,0 +1,165 @@
+{
+  "operation_id": "dns.v1.export.list",
+  "endpoint": {
+    "address": "https://api.selectel.ru/domains/v1",
+    "source_uri": "https://raw.githubusercontent.com/selectel/domains-go/6b87a8d9f7b4089a30a4a1dc361cf73117f1af61/pkg/v1/client.go",
+    "generation": "v1",
+    "override_key": [
+      "dns",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "account",
+    "auth": "Selectel Token X-Token; no IAM/v2 fallback",
+    "method": "GET",
+    "source_schema": "sources/dns-legacy.json#/paths/~1{domain}~1export/get",
+    "source_operation": {
+      "tags": [
+        "Domains"
+      ],
+      "summary": "Получить файл зоны указанного домена в формате BIND (named)",
+      "description": "Получить файл зоны по идентификатору домена или его доменному имени,\nсодержащий в себе информацию о записях принадлежащих домену",
+      "operationId": "get_bind_zone__domain__export_get",
+      "parameters": [
+        {
+          "required": true,
+          "schema": {
+            "title": "Domain",
+            "type": "string"
+          },
+          "name": "domain",
+          "in": "path"
+        },
+        {
+          "description": "Selectel token",
+          "required": false,
+          "schema": {
+            "title": "X-Token",
+            "type": "string",
+            "description": "Selectel token",
+            "default": ""
+          },
+          "name": "X-Token",
+          "in": "header"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Not Found",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "Conflict",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Unprocessable Entity",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "dnslegacy/export.go",
+    "identity": "explicit caller selector/ref; named reads never recover unknown mutations"
+  },
+  "response": {
+    "dto_source": "dnslegacy/export.go#ExportProgress",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "text/plain BIND stream consumed synchronously into explicit caller writer; MaxBytes required; exact observed write progress retained on all stream errors; complete only on EOF/length/budget success; SDK owns response Close once, never closes writer",
+    "sensitive_fields": [
+      "BIND zone bytes",
+      "request.domain_name"
+    ],
+    "scope_checks": "explicit account v1 selector/exact endpoint; no hidden name lookup or adopted refs; no raw body in result/errors/observer"
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "conflict",
+    "422": "provider_error",
+    "500": "provider_error",
+    "malformed_body": "protocol_error",
+    "foreign_identity": "scope_mismatch",
+    "raw_body": "not retained or formatted"
+  },
+  "retry": "bounded safe read",
+  "wait_goals": [],
+  "stream": {
+    "core_seam_provenance": "8a07c839deabb098f81ac3ea016607736f23b24c (reviewed Swift PR96), narrow internal DoResponse + StructuredLimit; no Swift features or X-Trans-Id metadata change",
+    "limits": "TransferTimeout shared validation/auth/read/write budget; MaxBytes output; MIME/length metadata bounded; body cancelled by once-only Close",
+    "ownership": "response runtime owned; caller writer never closed; blocked arbitrary caller writer must cooperate with context outside SDK",
+    "replay": "no retry after writing any response bytes; decoder/read/write errors sanitized; no public raw executor"
+  }
+}

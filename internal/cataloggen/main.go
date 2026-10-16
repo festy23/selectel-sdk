@@ -166,6 +166,9 @@ func generate() error {
 				resource, action = idParts[2], idParts[3]
 				pointer := "sources/" + filepath.Base(file) + "#/paths/" + strings.ReplaceAll(strings.ReplaceAll(path, "~", "~0"), "/", "~1") + "/" + method
 				scope := []string{"account"}
+				if name == "dns-legacy" && strings.HasPrefix(path, "/{domain}/") {
+					scope = append(scope, "parent")
+				}
 				if f.Mode == "iam_project" {
 					scope = append(scope, "project")
 				}

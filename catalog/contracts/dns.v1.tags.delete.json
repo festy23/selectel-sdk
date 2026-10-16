@@ -136,7 +136,7 @@
     "generator_source": "internal/modelgen/generate.py",
     "field_mapping": "SDK-owned bounded protected acknowledgement; unknown JSON body shape retained, optional empty representation; 200 acceptance only, no completed-deletion proof",
     "sensitive_fields": [
-      "Representation"
+      "representation"
     ],
     "scope_checks": "only supplied exact caller ref retained; no result-body refs adopted"
   },

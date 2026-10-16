@@ -17,7 +17,8 @@
     76
   ],
   "shared_reuse": {
-    "early_receipt_revision": "379458e4f658b1216137fea4acce5dae6027d320"
+    "early_receipt_revision": "379458e4f658b1216137fea4acce5dae6027d320",
+    "stream_response_adapter": "8a07c839deabb098f81ac3ea016607736f23b24c"
   },
   "canonical_ids": {
     "GET /{domain}/export": "dns.v1.export.list",
@@ -39,5 +40,16 @@
     "GET /tags/{tag_id}": "dns.v1.tags.get",
     "PUT /tags/{tag_id}": "dns.v1.tags.replace",
     "PUT /version/v2": "dns.v1.version.replace"
-  }
+  },
+  "domain_requests_sha256": "d1d3002a6a5b1119b4f849a5d6150d79582e286414ae9e71e0737039b769b942",
+  "record_requests_sha256": "b5bf6dc7ea3c8280bb8c5cac2a23a657df768e08133c537625cfd3bc203c6b5e",
+  "implemented": 15,
+  "partial": {
+    "dns.v1.secrets.list": "Native offset/limit array has no terminal/cursor contract",
+    "dns.v1.records.list": "Native offset/limit array has no terminal/cursor contract",
+    "dns.v1.secrets.delete": "Success200 schema {} conflicts with rendered null sample",
+    "dns.v1.tags.delete": "Success200 schema {} conflicts with rendered null sample"
+  },
+  "domain_create_variant": "Official domain requests.go chooses bound-zone envelope only for nonempty bind_zone; otherwise direct DomainOut",
+  "required_record_content": "SRV/SSHFP/CAA require explicit content alongside structured fields; never synthesize"
 }

@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
- "dnslegacy": ("dns-legacy", {"TagSchema": "Tag", "TagBody": "TagUpdateSpec", "DomainOut": "Domain"}, None),
+ "dnslegacy": ("dns-legacy", {"TagSchema": "Tag", "TagBody": "TagUpdateSpec", "DomainOut": "Domain", "ZoneState": "ZoneState", "ZoneStateForm": "ZoneStateSpec", "DomainUpdateForm": "DomainUpdateSpec", "RecordResponseForm": "Record", "RecordCreateForm": "RecordCreateSpec", "RecordUpdateForm": "RecordUpdateSpec", "ZoneSetResponse": "ZoneSetResponse", "RecordBatchForm": "RecordBatchSpec", "RecordBatchUpdateForm": "RecordBatchUpdateSpec", "RecordDeleteForm": "RecordDeleteSpec", "DomainCreationForm": "DomainCreateSpec", "DomainBZOut": "DomainBindResult", "ZoneCopy": "MigrationSpec"}, None),
     "projects": ("cloud-projects-and-resources", {
         "_ListProjectsResponse": "Project",
         "_CreateProjectResponse": "CreatedProject",
@@ -59,6 +59,13 @@ for case, (family, initial, top_name) in CASES.items():
     imports = {"types": "github.com/festy23/selectel-sdk/types", "json": "encoding/json"}
 
     def resolve(schema):
+        if "allOf" in schema and package == "dnslegacy":
+            # The pinned DNS schema uses singleton primitive enum refs with defaults.
+            parts = schema["allOf"]
+            if len(parts) == 1 and "$ref" in parts[0]:
+                base = definitions[parts[0]["$ref"].split("/")[-1]]
+                if not base.get("properties"):
+                    return dict(base, **{k: v for k, v in schema.items() if k != "allOf"})
         if "allOf" in schema:
             merged = {"properties": dict(schema.get("properties", {})), "required": list(schema.get("required", []))}
             for part in schema["allOf"]:
@@ -75,7 +82,7 @@ for case, (family, initial, top_name) in CASES.items():
             if reference not in pending:
                 pending[reference] = name(reference)
             referenced = resolve(definitions[reference])
-            if referenced.get("properties"):
+            if referenced.get("properties") or (package == "dnslegacy" and referenced.get("anyOf")):
                 return pending[reference], False
             return field_type(referenced, pending[reference], field)
         schema = resolve(schema)
@@ -119,6 +126,46 @@ for case, (family, initial, top_name) in CASES.items():
         reference = todo[0]
         type_name = pending[reference]
         schema = resolve(definitions[reference])
+        if package == "dnslegacy" and schema.get("anyOf") and schema.get("discriminator"):
+            mapping = schema["discriminator"]["mapping"]
+            variants = []
+            for key, uri in sorted(mapping.items()):
+                child = uri.split("/")[-1]
+                pending.setdefault(child, name(child))
+                variants.append((key, pending[child]))
+            body = "type " + type_name + " struct {\n"
+            for key, child in variants:
+                body += f'\t{key} *{child} `json:"-"`\n'
+            if reference == "RecordResponseForm":
+                body += '\tRef *types.ResourceRef `json:"ref,omitempty"`\n'
+            body += "}\n"
+            body += f"func (v {type_name}) Validate() error {{\n\tcount := 0\n"
+            for key, _ in variants:
+                body += f"\tif v.{key} != nil {{ count++; if err := v.{key}.Validate(); err != nil {{ return err }} }}\n"
+            body += "\tif count != 1 { return types.NewError(types.ProtocolError) }; return nil\n}\n"
+            body += f"func (v {type_name}) wireVariant() (any, error) {{\n\tif err := v.Validate(); err != nil {{ return nil, err }}\n"
+            for key, _ in variants:
+                body += f"\tif v.{key} != nil {{ return v.{key}, nil }}\n"
+            body += "\treturn nil, types.NewError(types.ProtocolError)\n}\n"
+            if all("id" in resolve(definitions[uri.split("/")[-1]]).get("properties", {}) for uri in mapping.values()):
+                body += f"func (v {type_name}) RecordID() *types.Integer {{\n\tif v.Validate() != nil {{ return nil }}\n"
+                for key, _ in variants:
+                    body += f"\tif v.{key} != nil && v.{key}.ID != nil {{ value := *v.{key}.ID; return &value }}\n"
+                body += "\treturn nil\n}\n"
+            body += f"func (v {type_name}) MarshalJSON() ([]byte, error) {{\n\tvalue, err := v.wireVariant(); if err != nil {{ return nil, err }}; raw, err := json.Marshal(value); if err != nil {{ return nil, err }}\n"
+            if reference == "RecordResponseForm":
+                body += '\tif v.Ref != nil { var fields map[string]json.RawMessage; if err := json.Unmarshal(raw, &fields); err != nil { return nil, err }; fields["ref"], err = json.Marshal(v.Ref); if err != nil { return nil, err }; return json.Marshal(fields) }\n'
+            body += "\treturn raw, nil\n}\n"
+            body += f"func (v *{type_name}) normalize() {{\n"
+            for key, _ in variants:
+                body += f"\tif v.{key} != nil {{ v.{key}.normalize() }}\n"
+            body += "}\n"
+            body += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n\tvar selector struct {{ Type *string `json:\"type\"` }}; if json.Unmarshal(raw, &selector) != nil || selector.Type == nil {{ return types.NewError(types.ProtocolError) }}\n\tswitch *selector.Type {{\n"
+            for key, child in variants:
+                body += f"\tcase {json.dumps(key)}: var row {child}; if json.Unmarshal(raw, &row) != nil || row.Validate() != nil {{ return types.NewError(types.ProtocolError) }}; *v = {type_name}{{{key}: &row}}\n"
+            body += "\tdefault: return types.NewError(types.ProtocolError)\n\t}; v.normalize(); return nil\n}\n"
+            emitted[reference] = body
+            continue
         if not schema.get("properties"):
             emitted[reference] = ""
             continue
@@ -149,15 +196,44 @@ for case, (family, initial, top_name) in CASES.items():
                 imports["netip"] = "net/netip"
                 family_check = "Is4" if nested["format"] == "ipv4" else "Is6"
                 code += f"\tif v.{field_name} != nil {{ if ip, err := netip.ParseAddr(string(v.{field_name}.Reveal())); err != nil || !ip.{family_check}() {{ return types.NewError(types.ProtocolError) }} }}\n"
-            if package == "dnslegacy" and wire == "type" and nested.get("enum"):
-                checks = " && ".join(f"*v.{field_name} != {json.dumps(item)}" for item in nested["enum"])
+            if package == "dnslegacy" and nested.get("type") == "string" and wire != "type":
+                imports["utf8"] = "unicode/utf8"
+                code += f"\tif v.{field_name} != nil && !utf8.Valid(v.{field_name}.Reveal()) {{ return types.NewError(types.ProtocolError) }}\n"
+                if "minLength" in nested:
+                    code += f"\tif v.{field_name} != nil && utf8.RuneCount(v.{field_name}.Reveal()) < {nested['minLength']} {{ return types.NewError(types.ProtocolError) }}\n"
+                if "maxLength" in nested:
+                    code += f"\tif v.{field_name} != nil && utf8.RuneCount(v.{field_name}.Reveal()) > {nested['maxLength']} {{ return types.NewError(types.ProtocolError) }}\n"
+            if package == "dnslegacy" and nested.get("type") == "array":
+                if "maxItems" in nested:
+                    code += f"\tif len(v.{field_name}) > {nested['maxItems']} {{ return types.NewError(types.ProtocolError) }}\n"
+                item = nested.get("items", {})
+                if item.get("type") == "object" and not item.get("properties"):
+                    code += f"\tfor _, item := range v.{field_name} {{ var object map[string]json.RawMessage; if json.Unmarshal(item.Reveal(), &object) != nil || object == nil {{ return types.NewError(types.ProtocolError) }} }}\n"
+                if item.get("type") == "integer":
+                    code += f"\tfor _, item := range v.{field_name} {{ if _, err := types.ParseInteger(item.String()); err != nil {{ return types.NewError(types.ProtocolError) }} }}\n"
+            if package == "dnslegacy" and nested.get("type") == "integer" and any(k in nested for k in ["minimum", "maximum"]):
+                imports["big"] = "math/big"
+                for key, comparison in [("minimum", "<"), ("maximum", ">")]:
+                    if key in nested:
+                        code += f"\tif v.{field_name} != nil {{ number, ok := new(big.Int).SetString(v.{field_name}.String(), 10); if !ok || number.Cmp(big.NewInt({nested[key]})) {comparison} 0 {{ return types.NewError(types.ProtocolError) }} }}\n"
+            if package == "dnslegacy" and nested.get("type") == "integer":
+                code += f"\tif v.{field_name} != nil {{ if _, err := types.ParseInteger(v.{field_name}.String()); err != nil {{ return types.NewError(types.ProtocolError) }} }}\n"
+            if package == "dnslegacy" and nested.get("enum"):
+                if nested.get("type") == "integer":
+                    expression = f"v.{field_name}.String()"
+                    values = [str(item) for item in nested["enum"]]
+                else:
+                    expression = f"*v.{field_name}" if wire == "type" else f"string(v.{field_name}.Reveal())"
+                    values = nested["enum"]
+                checks = " && ".join(f"{expression} != {json.dumps(item)}" for item in values)
                 code += f"\tif v.{field_name} != nil && ({checks}) {{ return types.NewError(types.ProtocolError) }}\n"
-            if resolve(nested).get("properties"):
+
+            if resolve(nested).get("properties") or (package == "dnslegacy" and nested.get("anyOf")):
                 code += f"\tif v.{field_name} != nil {{ if err := v.{field_name}.Validate(); err != nil {{ return err }} }}\n"
             elif nested.get("type") == "array":
                 item = nested["items"]
                 item = definitions.get(item.get("$ref", "").split("/")[-1], item)
-                if resolve(item).get("properties"):
+                if resolve(item).get("properties") or (package == "dnslegacy" and item.get("anyOf")):
                     code += f"\tfor _, item := range v.{field_name} {{ if err := item.Validate(); err != nil {{ return err }} }}\n"
         code += "\treturn nil\n}\n"
         code += f"func (v *{type_name}) normalize() {{\n"
@@ -173,12 +249,18 @@ for case, (family, initial, top_name) in CASES.items():
             elif nested.get("type") == "array":
                 item = nested["items"]
                 item = definitions.get(item.get("$ref", "").split("/")[-1], item)
-                if resolve(item).get("properties"):
+                if resolve(item).get("properties") or (package == "dnslegacy" and item.get("anyOf")):
                     code += f"\tfor i := range v.{field_name} {{ v.{field_name}[i].normalize() }}\n"
         code += "}\n"
-        if reference in roots:
+        if reference in roots or package == "dnslegacy":
             code += f"func (v *{type_name}) UnmarshalJSON(raw []byte) error {{\n"
             code += "\tvar fields map[string]json.RawMessage\n\tif json.Unmarshal(raw, &fields) != nil || fields == nil { return types.NewError(types.ProtocolError) }\n"
+            if package == "dnslegacy":
+                imports["bytes"] = "bytes"
+                imports["utf8"] = "unicode/utf8"
+                code += '\tif !utf8.Valid(raw) { return types.NewError(types.ProtocolError) }\n'
+                for wire in sorted(properties):
+                    code += f'\tif value, ok := fields[{json.dumps(wire)}]; ok && bytes.Equal(bytes.TrimSpace(value), []byte("null")) {{ return types.NewError(types.ProtocolError) }}\n'
             code += '\tdelete(fields, "ref")\n\tclean, err := json.Marshal(fields); if err != nil { return types.NewError(types.ProtocolError) }\n'
             code += f"\ttype wire {type_name}; var value wire\n\tif json.Unmarshal(clean, &value) != nil {{ return types.NewError(types.ProtocolError) }}\n\t*v = {type_name}(value); v.normalize(); return nil\n}}\n"
         emitted[reference] = code

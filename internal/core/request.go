@@ -20,6 +20,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/festy23/selectel-sdk/credentials"
@@ -45,6 +46,9 @@ type Request struct {
 	Path               string
 	Query              url.Values
 	Body               []byte
+	BodyStream         io.Reader
+	BodySize           int64
+	Transfer           bool
 	Options            types.CallOptions
 	Refs               []types.ResourceRef
 	PinnedEndpoint     *types.EndpointBinding
@@ -59,9 +63,32 @@ type Decoded[T any] struct {
 }
 type Decoder[T any] func([]byte, types.EndpointBinding) (Decoded[T], error)
 
+// ResponseDecoder is a private service binding seam. It consumes the response
+// synchronously with the common budget context; response bodies never escape runtime.
+type ResponseDecoder[T any] func(context.Context, io.Reader, types.EndpointBinding, int, http.Header) (Decoded[T], error)
+
 // DoJSON applies one budget to validation, credentials, auth, requests and retries.
 // A positive acknowledgement is preserved even if decoding the body fails.
-func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode Decoder[T]) (out types.Result[T], err error) {
+func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode Decoder[T]) (types.Result[T], error) {
+	var adapter ResponseDecoder[T]
+	if decode != nil {
+		adapter = func(_ context.Context, body io.Reader, endpoint types.EndpointBinding, status int, _ http.Header) (Decoded[T], error) {
+			raw, e := readResponse(body, r.config.MaxJSONBytes)
+			if e != nil {
+				return Decoded[T]{}, e
+			}
+			if len(op.NoContentSuccess) > 0 && (len(bytes.TrimSpace(raw)) == 0) != containsStatus(op.NoContentSuccess, status) {
+				return Decoded[T]{}, types.NewError(types.ProtocolError)
+			}
+			return decode(raw, endpoint)
+		}
+	}
+	return DoResponse(r, ctx, op, in, adapter)
+}
+
+// DoResponse preserves the shared validation/auth/receipt execution algorithm for
+// typed header and streaming bindings. No public raw executor is exposed.
+func DoResponse[T any](r *Runtime, ctx context.Context, op Operation, in Request, decode ResponseDecoder[T]) (out types.Result[T], err error) {
 	started := time.Now().UTC()
 	out.Metadata = types.Metadata{Scope: in.Scope, APIGeneration: op.APIGeneration, RequestIDs: []string{}}
 	var attempt uint
@@ -121,7 +148,11 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 	if r == nil || ctx == nil || decode == nil {
 		return out, types.NewError(types.InvalidArgument)
 	}
-	call, cancel := context.WithTimeout(ctx, r.config.CallTimeout)
+	budget := r.config.CallTimeout
+	if in.Transfer {
+		budget = r.config.TransferTimeout
+	}
+	call, cancel := context.WithTimeout(ctx, budget)
 	defer cancel()
 	if call.Err() != nil {
 		return out, types.ContextError(call.Err())
@@ -141,6 +172,9 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 	if in.Options.IdempotencyKey != "" {
 		return out, types.NewError(types.InvalidArgument)
 	} // No undocumented replay/header injection.
+	if in.BodyStream != nil && (len(in.Body) > 0 || in.BodySize < 0 || op.Effect != "mutation" || op.Auth == types.S3SigV4) {
+		return out, types.NewError(types.InvalidArgument)
+	}
 	if in.Validate != nil {
 		if err := in.Validate(); err != nil {
 			return out, err
@@ -212,9 +246,16 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			return out, types.NewError(types.InvalidArgument)
 		}
 		u.RawQuery = in.Query.Encode()
-		req, requestErr := http.NewRequestWithContext(call, op.Method, u.String(), bytes.NewReader(in.Body))
+		var body io.Reader = bytes.NewReader(in.Body)
+		if in.BodyStream != nil {
+			body = io.NopCloser(in.BodyStream)
+		}
+		req, requestErr := http.NewRequestWithContext(call, op.Method, u.String(), body)
 		if requestErr != nil {
 			return out, types.NewError(types.InvalidArgument)
+		}
+		if in.BodyStream != nil {
+			req.ContentLength = in.BodySize
 		}
 		for k, values := range op.Headers {
 			if strings.EqualFold(k, "Authorization") || strings.EqualFold(k, "X-Auth-Token") || strings.EqualFold(k, "X-Token") || strings.EqualFold(k, "Host") {
@@ -261,18 +302,14 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 			if out.Receipt != nil {
 				out.Receipt.Outcome = types.Accepted
 			}
-			raw, readErr := readResponse(resp.Body, r.config.MaxJSONBytes)
-			resp.Body.Close()
-			if readErr != nil {
-				if call.Err() != nil {
-					return out, types.ContextError(call.Err())
-				}
-				return out, readErr
+			closeBody := sync.OnceFunc(func() { _ = resp.Body.Close() })
+			stopClose := context.AfterFunc(call, closeBody)
+			decoded, decodeErr := decode(call, resp.Body, endpoint, status, resp.Header.Clone())
+			stopClose()
+			closeBody()
+			if decodeErr != nil && call.Err() != nil {
+				decodeErr = types.ContextError(call.Err())
 			}
-			if len(op.NoContentSuccess) > 0 && (len(bytes.TrimSpace(raw)) == 0) != containsStatus(op.NoContentSuccess, status) {
-				return out, types.NewError(types.ProtocolError)
-			}
-			decoded, decodeErr := decode(raw, endpoint)
 			if out.Receipt != nil {
 				for _, ref := range decoded.Refs {
 					if ref.Validate() != nil || ref.Scope != in.Scope || ref.Service != op.Service || ref.APIGeneration != op.APIGeneration || ref.EndpointID != endpoint.ID || ref.EndpointURL != endpoint.URL {
@@ -298,7 +335,7 @@ func DoJSON[T any](r *Runtime, ctx context.Context, op Operation, in Request, de
 					out.Receipt.Recovery = "resource"
 				}
 				out.Data = decoded.Data
-			} else if decodeErr == nil || (decoded.PartialRead && types.ErrorCode(decodeErr) == types.ResponseLimit) {
+			} else if decodeErr == nil || (decoded.PartialRead && (types.ErrorCode(decodeErr) == types.ResponseLimit || in.Transfer)) {
 				out.Data = decoded.Data
 			}
 			if decodeErr != nil {

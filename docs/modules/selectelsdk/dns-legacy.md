@@ -1,8 +1,8 @@
 # Legacy DNS v1
 
 #117 owns the 19 current source operations; #71 retains family reconciliation and
-#74 the inventory/canonical naming debt. This branch implements a growing subset,
-not full legacy support. Current wire source:
+#74 the inventory/canonical naming debt. This branch binds all 19 enumerated operations: 15 implemented and four partial.
+This is not a complete legacy inventory or deployment availability claim. Current wire source:
 [DNS legacy JSON](https://docs.selectel.ru/api/dns-legacy.json), SHA-256
 `d8cba98138b3d1bc00de0cc4d84479ee7289f836b9f0359e15ea386455c60b39`.
 The source calls the service outdated and recommends migration; this is not
@@ -45,25 +45,45 @@ is added; a future #74 migration needs a separate agreed catalog migration.
 
 ## Current subset and safeguards
 
-Tag GET/PUT and domain GET have source-bound generated DTOs, exact integers,
-protected names/record contents, ignored server-injected refs and scoped exact
-v1 refs. Domain `user_id` is metadata, not the caller account identity. Domain
-lookup is explicit by numeric ID or protected name; name lookup never recovers
-an unknown mutation. PUT validates Unicode name length, domain array bound and
-explicit empty/absent fields; protected values reveal only in the wire encoder.
+All 19 enumerated operations have typed public methods. The four partial contracts
+remain owned by #117/#71/#74/#76: domain and record list arrays have no documented
+terminal/cursor rule; domain and tag DELETE200 declare schema `{}` but the rendered
+sample is null. Lists preserve bounded validated prefixes, always remain incomplete
+and never invent a cursor, including for empty arrays. DELETE preserves bounded
+protected optional JSON and accepted Receipt, without guessing completion fields.
 
-Tag DELETE remains partial: success200 declares an empty JSON schema, while the
-rendered page samples null. The result preserves a bounded protected optional
-JSON acknowledgement and accepted Receipt, without guessing fields or completed
-deletion/readiness. Missing body shape remains owned by #117/#71/#74/#76.
+Generated DTOs cover all eleven record response variants and source create/update
+unions. SRV, SSHFP and CAA require explicit content alongside structured fields;
+the caller supplies both independently. Exact integers, optional false/empty
+values and protected names/contents survive wire encoding. The closed union
+validates discriminator, source ranges, formats and required fields. Unknown raw
+objects remain protected. Server-injected refs are ignored.
 
-Every mutation uses core receipt finalization even on local validation errors;
-accepted malformed responses retain supplied trustworthy exact refs, unknown
-outcomes are never automatically replayed. Narrow early ContractRevision reuse
-comes from independently reviewed commit
-`379458e4f658b1216137fea4acce5dae6027d320` (PR97); no volumes feature is copied.
+Account().LegacyDNS() uses static X-Token and the explicit v1 endpoint. Domain
+user_id is metadata, never caller identity. Explicit name operations manufacture
+no numeric owner refs. Exact caller refs and protected name selectors are copied
+before I/O; scope, generation, endpoint and available parent identities are
+validated. Identity scanning retains independently trustworthy refs before later
+field errors. Unknown outcomes never trigger name adoption or automatic replay.
+ReplaceAll defaults to preview: proposed IDs are not adopted unless applied is
+explicitly true. Batch scans all returned identities, excludes foreign IDs and
+retains independently trustworthy effects. Domain creation selects direct versus
+bound-zone response using the official SDK's nonempty bind_zone branch. Migration
+uses account v1 static auth and returns no invented destination v2 refs or recovery.
 
-Tests use the public Client with synthetic credentials and only HTTP transport
-replacement. Generation is local/pinned; offline evidence is not wire/live proof.
-Inventory remains incomplete, coverage ratio null. Remaining 15 operations are
-not claimed implemented by this checkpoint.
+Export writes only to the caller writer, bounds bytes/time and records progress
+on failure. The SDK closes the response exactly once on cancellation/deadline;
+it never closes the caller writer or replays a transfer after writing. Completion
+means bounded EOF transfer, not DNS readiness or durable destination storage.
+Every mutation retains receipt finalization even on local validation errors.
+
+Narrow reviewed reuse: early ContractRevision binding from
+379458e4f658b1216137fea4acce5dae6027d320 (PR97), and DoResponse/StructuredLimit
+adapter from 8a07c839deabb098f81ac3ea016607736f23b24c (PR96). No feature packages
+are copied. The adapter preserves DoJSON orchestration and introduces the DNS
+export stream boundary. internal/core/request.go is a future integration overlap
+with independent numeric ErrorProtocol/optional-error-body changes.
+
+Public Client tests replace only HTTP transport, using synthetic credentials.
+Generation uses pinned local sources; offline tests establish no live/wire or
+Selectel deployment proof. Whole inventory remains unknown, coverage ratio null.

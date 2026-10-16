@@ -37,6 +37,13 @@ func (s DomainSelector) path() (string, error) {
 }
 
 func (c *Domains) Get(ctx context.Context, selector DomainSelector, showIPs *bool, o types.CallOptions) (types.Result[Domain], error) {
+	return c.get(ctx, selector, showIPs, nil, o)
+}
+func (c *Domains) GetRef(ctx context.Context, ref types.ResourceRef, showIPs *bool, o types.CallOptions) (types.Result[Domain], error) {
+	return c.get(ctx, DomainSelector{ID: ref.ID}, showIPs, &ref, o)
+}
+func (c *Domains) get(ctx context.Context, selector DomainSelector, showIPs *bool, expected *types.ResourceRef, o types.CallOptions) (types.Result[Domain], error) {
+	selector.Name = snapshotProtected(selector.Name)
 	op, bindErr := c.runtime.BindDocumented(core.Operation{ID: "dns.v1.secrets.get", Service: "dns", APIGeneration: "v1", Method: "GET", Effect: "read", Auth: types.StaticToken, Success: []int{200}}, c.scope)
 	path, selectorErr := selector.path()
 	q := url.Values{}
@@ -65,6 +72,12 @@ func (c *Domains) Get(ctx context.Context, selector DomainSelector, showIPs *boo
 	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: path, Query: q, Options: o, Validate: func() error {
 		if bindErr != nil {
 			return bindErr
+		}
+		if expected != nil {
+			_, _, e := (domainTarget{ref: expected}).request(c.scope, op)
+			if e != nil {
+				return e
+			}
 		}
 		return selectorErr
 	}}, decode)

@@ -1,0 +1,175 @@
+{
+  "operation_id": "dns.v1.records.replace_1158c7f1",
+  "endpoint": {
+    "address": "https://api.selectel.ru/domains/v1",
+    "source_uri": "https://raw.githubusercontent.com/selectel/domains-go/6b87a8d9f7b4089a30a4a1dc361cf73117f1af61/pkg/v1/client.go",
+    "generation": "v1",
+    "override_key": [
+      "dns",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "account",
+    "auth": "Selectel Token X-Token; no IAM/v2 fallback",
+    "method": "PUT",
+    "source_schema": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/put",
+    "source_operation": {
+      "tags": [
+        "Records"
+      ],
+      "summary": "Обновить ресурсную запись",
+      "description": "Обновить поля ресурсной записи для указанного идентификатора домена\nили доменного имени",
+      "operationId": "update_record__domain__records__record_id__put",
+      "parameters": [
+        {
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "integer"
+          },
+          "name": "record_id",
+          "in": "path"
+        },
+        {
+          "description": "Selectel token",
+          "required": false,
+          "schema": {
+            "title": "X-Token",
+            "type": "string",
+            "description": "Selectel token",
+            "default": ""
+          },
+          "name": "X-Token",
+          "in": "header"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RecordUpdateForm"
+            }
+          }
+        },
+        "required": true
+      },
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordResponseForm"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Not Found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "Conflict",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Unprocessable Entity",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "dnslegacy/record_mutations.go",
+    "identity": "explicit caller selector/ref; named reads never recover unknown mutations"
+  },
+  "response": {
+    "dto_source": "dnslegacy/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all11 typed update alternatives and response discriminators; enum/min/max/format validation follows pinned schema; protected recursive wire encoding; exact response record ID must equal caller target",
+    "sensitive_fields": [
+      "content",
+      "email",
+      "fingerprint",
+      "name",
+      "ns",
+      "tag",
+      "target",
+      "value"
+    ],
+    "scope_checks": "caller record and numeric parent exact identity retained; foreign response ID rejected with accepted receipt; named parent never fabricates numeric parent/ref"
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "conflict",
+    "422": "provider_error",
+    "500": "provider_error",
+    "malformed_body": "protocol_error",
+    "foreign_identity": "scope_mismatch",
+    "raw_body": "not retained or formatted"
+  },
+  "retry": "never automatically replay; Receipt retains accepted/unknown and independently trustworthy refs",
+  "wait_goals": []
+}

@@ -13,8 +13,11 @@ import (
 )
 
 type Client struct {
+	runtime *core.Runtime
+	scope   types.Scope
 	Tags    *Tags
 	Domains *Domains
+	Records *Records
 }
 type Tags struct {
 	runtime *core.Runtime
@@ -22,14 +25,31 @@ type Tags struct {
 }
 
 func Bind(r *core.Runtime, s types.Scope) *Client {
-	return &Client{Tags: &Tags{runtime: r, scope: s}, Domains: &Domains{runtime: r, scope: s}}
+	return &Client{runtime: r, scope: s, Tags: &Tags{runtime: r, scope: s}, Domains: &Domains{runtime: r, scope: s}, Records: &Records{runtime: r, scope: s}}
 }
 
 var decimalID = regexp.MustCompile(`^(0|[1-9][0-9]*)$`)
 
 func (c *Tags) Get(ctx context.Context, id string, o types.CallOptions) (types.Result[Tag], error) {
-	op := core.Operation{ID: "dns.v1.tags.get", Service: "dns", APIGeneration: "v1", Method: "GET", Effect: "read", Auth: types.StaticToken, EndpointID: "selectel-dns-legacy-v1", FixedEndpoint: "https://api.selectel.ru/domains/v1", Success: []int{200}}
+	return c.get(ctx, id, nil, o)
+}
+func (c *Tags) GetRef(ctx context.Context, ref types.ResourceRef, o types.CallOptions) (types.Result[Tag], error) {
+	return c.get(ctx, ref.ID, &ref, o)
+}
+func (c *Tags) get(ctx context.Context, id string, expected *types.ResourceRef, o types.CallOptions) (types.Result[Tag], error) {
+	op, bindErr := c.runtime.BindDocumented(core.Operation{ID: "dns.v1.tags.get", Service: "dns", APIGeneration: "v1", Method: "GET", Effect: "read", Auth: types.StaticToken, Success: []int{200}}, c.scope)
 	validate := func() error {
+		if bindErr != nil {
+			return bindErr
+		}
+		if expected != nil {
+			if expected.Validate() != nil {
+				return types.NewError(types.InvalidArgument)
+			}
+			if expected.Scope != c.scope || expected.Service != "dns" || expected.APIGeneration != "v1" || expected.Kind != "tag" || expected.Parent != nil || expected.EndpointID != op.EndpointID || expected.EndpointURL != op.FixedEndpoint {
+				return types.NewError(types.ScopeMismatch)
+			}
+		}
 		if !decimalID.MatchString(id) {
 			return types.NewError(types.InvalidArgument)
 		}

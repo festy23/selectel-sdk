@@ -32,7 +32,7 @@ Service ID является стабильным именем пакета и к
 | `dedicated` | [Dedicated servers](https://docs.selectel.ru/api/dedicated/) | dedicated-go/v2 / HTTP |
 | `vmware` | [VMware access](https://docs.selectel.ru/api/vmware/) | Документированный Cloud Director adapter |
 | `cloud_1c` | [Облако 1С](https://docs.selectel.ru/api/1c-cloud/) | HTTP |
-| `dns` | [Текущий DNS](https://docs.selectel.ru/api/dns-actual/), [legacy](https://docs.selectel.ru/api/dns-legacy/) | domains-go / HTTP |
+| `dns` | [Текущий DNS](https://docs.selectel.ru/api/dns-actual/), [legacy](https://docs.selectel.ru/api/dns-legacy/) | domains-go / HTTP; explicit account [LegacyDNS v1](dns-legacy.md), separate from current DNS v2 |
 | `cdn` | [CDN](https://docs.selectel.ru/api/cdn/) | HTTP |
 | `email` | [Почтовый сервис](https://docs.selectel.ru/api/email-service/) | HTTP / документированный почтовый протокол |
 | `global_router` | [Глобальный роутер](https://docs.selectel.ru/api/global-router/) | globalrouter-go / HTTP |
