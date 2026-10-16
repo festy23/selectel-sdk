@@ -1,0 +1,151 @@
+{
+  "operation_id": "dns.v1.version.replace",
+  "endpoint": {
+    "address": "https://api.selectel.ru/domains/v1",
+    "source_uri": "https://raw.githubusercontent.com/selectel/domains-go/6b87a8d9f7b4089a30a4a1dc361cf73117f1af61/pkg/v1/client.go",
+    "generation": "v1",
+    "override_key": [
+      "dns",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "account",
+    "auth": "Selectel Token X-Token; no IAM/v2 fallback",
+    "method": "PUT",
+    "source_schema": "sources/dns-legacy.json#/paths/~1version~1v2/put",
+    "source_operation": {
+      "tags": [
+        "Moving"
+      ],
+      "summary": "Скопировать все зоны в DNSv2",
+      "operationId": "copy_to_dns_v2_version_v2_put",
+      "parameters": [
+        {
+          "description": "Selectel token",
+          "required": false,
+          "schema": {
+            "title": "X-Token",
+            "type": "string",
+            "description": "Selectel token",
+            "default": ""
+          },
+          "name": "X-Token",
+          "in": "header"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ZoneCopy"
+            }
+          }
+        },
+        "required": true
+      },
+      "responses": {
+        "204": {
+          "description": "Successful Response"
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Not Found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "Conflict",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Unprocessable Entity",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "dnslegacy/migration.go",
+    "identity": "explicit caller selector/ref; named reads never recover unknown mutations"
+  },
+  "response": {
+    "dto_source": "dnslegacy/migration.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "explicit copy action only; protected destination project ID, nil vs empty domain selectors preserved; source204 bodyless acceptance; no created-v2 identity/readiness supplied, so recovery unavailable and no new v2 refs",
+    "sensitive_fields": [
+      "request.project_id"
+    ],
+    "scope_checks": "account v1 static token remains source scope; destination project is caller input, never a new IAM view/token; source selectors are not copied-target refs"
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "conflict",
+    "422": "provider_error",
+    "500": "provider_error",
+    "malformed_body": "protocol_error",
+    "foreign_identity": "scope_mismatch",
+    "raw_body": "not retained or formatted"
+  },
+  "retry": "never automatically replay; Receipt retains accepted/unknown and independently trustworthy refs",
+  "wait_goals": []
+}

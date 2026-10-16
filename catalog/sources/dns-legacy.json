@@ -1,0 +1,4754 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "DNS API",
+    "description": "Managing DNS hosting domains and resource records (legacy), tagging domains for grouping and filtering. The service is outdated, please transfer domains and resource records to the  DNS hosting (actual)",
+    "version": "v1.0.0"
+  },
+  "paths": {
+    "/tags/{tag_id}": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Получить информацию о заданном тэге",
+        "description": "Получить параметры указанного тэга",
+        "operationId": "show_tag_by_id_tags__tag_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag Id",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "name": "tag_id",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Обновить тэг",
+        "description": "Обновить указанный тэг",
+        "operationId": "change_tag_tags__tag_id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag Id",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "name": "tag_id",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TagBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Удалить тэг",
+        "description": "Удалить указанный тэг с аккаунта",
+        "operationId": "delete_tag_tags__tag_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Tag Id",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "name": "tag_id",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Получить список своих доменов",
+        "description": "По умолчанию максимальное количество записей в ответе равно 1000\n\nДля работы с большим количеством записей необходимо использовать\nпараметры limit и offset",
+        "operationId": "show_domains__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1,
+              "type": "integer",
+              "default": 1000
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string"
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Show Ips",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "show_ips",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Tags",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "name": "tags",
+            "in": "query"
+          },
+          {
+            "description": "Список строк в формате [column_name].[asc|desc]",
+            "required": false,
+            "schema": {
+              "title": "Сортировка",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Список строк в формате [column_name].[asc|desc]"
+            },
+            "name": "sort_by",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Change Date",
+              "type": "string"
+            },
+            "name": "change_date",
+            "in": "query"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Show Domains  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DomainOut"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Создать домен",
+        "description": "Создать домен для владельца токена",
+        "operationId": "create_domain__post",
+        "parameters": [
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DomainCreationForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{domain}": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Получить информацию о заданном домене",
+        "description": "Получить информацию о домене по его идентификатору или доменному имени",
+        "operationId": "get_domain__domain__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Show Ips",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "show_ips",
+            "in": "query"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainOut"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Удалить домен",
+        "description": "Удалить домен по его идентификатору или доменному имени",
+        "operationId": "delete_domain__domain__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Обновить домен",
+        "description": "Обновить домен по его идентификатору или доменному имени",
+        "operationId": "update_domain__domain__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DomainUpdateForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainOut"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{domain}/export": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Получить файл зоны указанного домена в формате BIND (named)",
+        "description": "Получить файл зоны по идентификатору домена или его доменному имени,\nсодержащий в себе информацию о записях принадлежащих домену",
+        "operationId": "get_bind_zone__domain__export_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{domain}/state": {
+      "get": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Получить статус зоны на NS серверах Selectel",
+        "operationId": "get_zone_state__domain__state_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoneState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Domains"
+        ],
+        "summary": "Изменить статус зоны на NS серверах Selectel",
+        "operationId": "change_zone_state__domain__state_patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZoneStateForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{domain}/records": {
+      "get": {
+        "tags": [
+          "Records"
+        ],
+        "summary": "Получить список записей, принадлежащих заданному домену",
+        "description": "По умолчанию максимальное количество записей в ответе равно 1000\n\nДля работы с большим количеством записей необходимо использовать\nпараметры limit и offset",
+        "operationId": "get_records_by_domain__domain__records_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1,
+              "type": "integer",
+              "default": 1000
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string"
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Content",
+              "type": "string"
+            },
+            "name": "content",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Record Types",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "name": "record_types",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          },
+          {
+            "description": "Список строк в формате [column_name].[asc|desc]",
+            "required": false,
+            "schema": {
+              "title": "Сортировка",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Список строк в формате [column_name].[asc|desc]"
+            },
+            "name": "sort_by",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Change Date",
+              "type": "string"
+            },
+            "name": "change_date",
+            "in": "query"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Records By Domain  Domain  Records Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecordResponseForm"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Records"
+        ],
+        "summary": "Установить в зоне перечисленные записи",
+        "description": "Установить в выбранном домене переданные записи.\n\nОтсуствующие в запросе записи будут удалены из домена.\n\nЗаписи в запросе, не имеющие дубликатов по имени + типу, буду созданы.\n\nЕсли у записей в запросе есть дубликаты по имени + типу, то из\nсуществующих дубликатов будут поочередно выбираться записи, содержимое\nкоторых будет почередно обновлено в соотвествии с переданными записями.\nЕсли дублирующих записей в запросе больше чем в домене, то существующие\nдубликаты будут обновлены, а остальные записи созданы.",
+        "operationId": "set_records__domain__records_put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Apply Changes",
+              "type": "boolean",
+              "default": false
+            },
+            "name": "apply_changes",
+            "in": "query"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Record Schemas",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RecordCreateForm"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoneSetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Records"
+        ],
+        "summary": "Создать ресурсную запись для заданного домена",
+        "description": "Создать ресурсную запись для указанного идентификатора домена или\nдоменного имени",
+        "operationId": "create_record__domain__records_post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordCreateForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordResponseForm"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{domain}/records/{record_id}": {
+      "get": {
+        "tags": [
+          "Records"
+        ],
+        "summary": "Получить параметры ресурсной записи",
+        "description": "Получить параметры ресурсной записи для указанного идентификатора домена\nили доменного имени",
+        "operationId": "get_record_by_id__domain__records__record_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Record Id",
+              "type": "integer"
+            },
+            "name": "record_id",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordResponseForm"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Records"
+        ],
+        "summary": "Обновить ресурсную запись",
+        "description": "Обновить поля ресурсной записи для указанного идентификатора домена\nили доменного имени",
+        "operationId": "update_record__domain__records__record_id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Record Id",
+              "type": "integer"
+            },
+            "name": "record_id",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordUpdateForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordResponseForm"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Records"
+        ],
+        "summary": "Удалить ресурсную запись",
+        "description": "Удалить ресурсную запись принадлежащую указанному идентификатору домена\nили доменному имени",
+        "operationId": "delete_record__domain__records__record_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Record Id",
+              "type": "integer"
+            },
+            "name": "record_id",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{domain}/records/batch_update": {
+      "patch": {
+        "tags": [
+          "Records"
+        ],
+        "summary": "Операции над несколькими записями, принадлежащими домену",
+        "description": "Позволяет создавать, обновлять и удалять сразу несколько записей,\nпринадлежащих домену\n\n\nВ процессе обработки запроса изменения в базе выполняются строго\nв следующем порядке:\n\n\n  - Удаление записей (массив delete)\n  - Создание записей (массив create)\n  - Обновление записей (массив update)\n\n\nЕсли во время обработки какой-либо записи будет выявлена ошибка\n(например, попытка создать SOA-запись), то все изменения откатываются\nи возвращается список ошибок. Во время выполнения запроса валидации\nподвергаются все записи, т.е. ошибок может быть несколько",
+        "operationId": "update_record_batch__domain__records_batch_update_patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "name": "domain",
+            "in": "path"
+          },
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordBatchForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Update Record Batch  Domain  Records Batch Update Patch",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecordResponseForm"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/version/v2": {
+      "put": {
+        "tags": [
+          "Moving"
+        ],
+        "summary": "Скопировать все зоны в DNSv2",
+        "operationId": "copy_to_dns_v2_version_v2_put",
+        "parameters": [
+          {
+            "description": "Selectel token",
+            "required": false,
+            "schema": {
+              "title": "X-Token",
+              "type": "string",
+              "description": "Selectel token",
+              "default": ""
+            },
+            "name": "X-Token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZoneCopy"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlgorithmOptionsForSSHFP": {
+        "title": "AlgorithmOptionsForSSHFP",
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "description": "An enumeration."
+      },
+      "ApiErrorResponse": {
+        "title": "ApiErrorResponse",
+        "required": [
+          "error"
+        ],
+        "type": "object",
+        "properties": {
+          "error": {
+            "title": "Error",
+            "type": "string"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          }
+        }
+      },
+      "DomainBZOut": {
+        "title": "DomainBZOut",
+        "type": "object",
+        "properties": {
+          "domain": {
+            "$ref": "#/components/schemas/DomainOut"
+          },
+          "records": {
+            "title": "Records",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordResponseForm"
+            }
+          },
+          "errors": {
+            "title": "Errors",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "DomainCreationForm": {
+        "title": "DomainCreationForm",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "bind_zone": {
+            "title": "Bind Zone",
+            "type": "string"
+          }
+        }
+      },
+      "DomainOut": {
+        "title": "DomainOut",
+        "required": [
+          "id",
+          "name",
+          "user_id",
+          "create_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "create_date": {
+            "title": "Create Date",
+            "type": "integer"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          },
+          "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "ips": {
+            "title": "Ips",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordARead"
+            }
+          }
+        }
+      },
+      "DomainResponse": {
+        "title": "DomainResponse",
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/DomainOut"
+          },
+          {
+            "$ref": "#/components/schemas/DomainBZOut"
+          }
+        ]
+      },
+      "DomainUpdateForm": {
+        "title": "DomainUpdateForm",
+        "required": [
+          "tags"
+        ],
+        "type": "object",
+        "properties": {
+          "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "FingerprintTypesForSSHFP": {
+        "title": "FingerprintTypesForSSHFP",
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "An enumeration."
+      },
+      "RecordAAAABatchUpdate": {
+        "title": "RecordAAAABatchUpdate",
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "AAAA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "format": "ipv6"
+          }
+        },
+        "description": "AAAA record batch update schema"
+      },
+      "RecordAAAACreate": {
+        "title": "RecordAAAACreate",
+        "required": [
+          "type",
+          "name",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "AAAA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "format": "ipv6"
+          }
+        },
+        "description": "AAAA record create schema"
+      },
+      "RecordAAAARead": {
+        "title": "RecordAAAARead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "content",
+          "change_date"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "AAAA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "format": "ipv6"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          }
+        },
+        "description": "AAAA record schema"
+      },
+      "RecordAAAAUpdate": {
+        "title": "RecordAAAAUpdate",
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "AAAA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "format": "ipv6"
+          }
+        },
+        "description": "AAAA record update schema"
+      },
+      "RecordABatchUpdate": {
+        "title": "RecordABatchUpdate",
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "A"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "format": "ipv4"
+          }
+        },
+        "description": "A record batch update schema"
+      },
+      "RecordACreate": {
+        "title": "RecordACreate",
+        "required": [
+          "type",
+          "name",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "A"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "format": "ipv4"
+          }
+        },
+        "description": "A record create schema"
+      },
+      "RecordALIASBatchUpdate": {
+        "title": "RecordALIASBatchUpdate",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "ALIAS"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "description": "ALIAS record batch update schema"
+      },
+      "RecordALIASCreate": {
+        "title": "RecordALIASCreate",
+        "required": [
+          "type",
+          "name",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "ALIAS"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "description": "ALIAS record create schema"
+      },
+      "RecordALIASRead": {
+        "title": "RecordALIASRead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "content",
+          "change_date"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "ALIAS"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          }
+        },
+        "description": "ALIAS record schema"
+      },
+      "RecordALIASUpdate": {
+        "title": "RecordALIASUpdate",
+        "required": [
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "ALIAS"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "description": "ALIAS record update schema"
+      },
+      "RecordARead": {
+        "title": "RecordARead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "change_date",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "A"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "format": "ipv4"
+          }
+        },
+        "description": "A record schema"
+      },
+      "RecordAUpdate": {
+        "title": "RecordAUpdate",
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "A"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string",
+            "format": "ipv4"
+          }
+        },
+        "description": "A record update schema"
+      },
+      "RecordBatchForm": {
+        "title": "RecordBatchForm",
+        "type": "object",
+        "properties": {
+          "create": {
+            "title": "Create",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordCreateForm"
+            }
+          },
+          "update": {
+            "title": "Update",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordBatchUpdateForm"
+            }
+          },
+          "delete": {
+            "title": "Delete",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordDeleteForm"
+            }
+          }
+        }
+      },
+      "RecordBatchUpdateForm": {
+        "title": "RecordBatchUpdateForm",
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/RecordABatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordAAAABatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordCNAMEBatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordMXBatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordNSBatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSOABatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSRVBatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordTXTBatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSSHFPBatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordALIASBatchUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordCAABatchUpdate"
+          }
+        ],
+        "description": "Record update schema for batch request",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "A": "#/components/schemas/RecordABatchUpdate",
+            "AAAA": "#/components/schemas/RecordAAAABatchUpdate",
+            "CNAME": "#/components/schemas/RecordCNAMEBatchUpdate",
+            "MX": "#/components/schemas/RecordMXBatchUpdate",
+            "NS": "#/components/schemas/RecordNSBatchUpdate",
+            "SOA": "#/components/schemas/RecordSOABatchUpdate",
+            "SRV": "#/components/schemas/RecordSRVBatchUpdate",
+            "TXT": "#/components/schemas/RecordTXTBatchUpdate",
+            "SSHFP": "#/components/schemas/RecordSSHFPBatchUpdate",
+            "ALIAS": "#/components/schemas/RecordALIASBatchUpdate",
+            "CAA": "#/components/schemas/RecordCAABatchUpdate"
+          }
+        }
+      },
+      "RecordCAABatchUpdate": {
+        "title": "RecordCAABatchUpdate",
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "CAA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "flag": {
+            "title": "Flag",
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "tag": {
+            "$ref": "#/components/schemas/TagOptionsForCAA"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "description": "A record batch update schema"
+      },
+      "RecordCAACreate": {
+        "title": "RecordCAACreate",
+        "required": [
+          "type",
+          "flag",
+          "tag",
+          "value",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "CAA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "flag": {
+            "title": "Flag",
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "tag": {
+            "$ref": "#/components/schemas/TagOptionsForCAA"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "CAA record create schema"
+      },
+      "RecordCAARead": {
+        "title": "RecordCAARead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "change_date",
+          "flag",
+          "tag",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "CAA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          },
+          "flag": {
+            "title": "Flag",
+            "type": "integer"
+          },
+          "tag": {
+            "$ref": "#/components/schemas/TagOptionsForCAA"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "description": "CAA record schema"
+      },
+      "RecordCAAUpdate": {
+        "title": "RecordCAAUpdate",
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "CAA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "flag": {
+            "title": "Flag",
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "tag": {
+            "$ref": "#/components/schemas/TagOptionsForCAA"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "description": "CAA record update schema"
+      },
+      "RecordCNAMEBatchUpdate": {
+        "title": "RecordCNAMEBatchUpdate",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "CNAME"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "description": "CNAME record batch update schema"
+      },
+      "RecordCNAMECreate": {
+        "title": "RecordCNAMECreate",
+        "required": [
+          "type",
+          "name",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "CNAME"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "description": "CNAME record create schema"
+      },
+      "RecordCNAMERead": {
+        "title": "RecordCNAMERead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "content",
+          "change_date"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "CNAME"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          }
+        },
+        "description": "CNAME record schema"
+      },
+      "RecordCNAMEUpdate": {
+        "title": "RecordCNAMEUpdate",
+        "required": [
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "CNAME"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "description": "CNAME record update schema"
+      },
+      "RecordCreateForm": {
+        "title": "RecordCreateForm",
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/RecordACreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordAAAACreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordCNAMECreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordMXCreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordNSCreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSRVCreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordTXTCreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSSHFPCreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordALIASCreate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordCAACreate"
+          }
+        ],
+        "description": "This Mixin class was made to ease work with\npydantic models containing tagged unions.",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "A": "#/components/schemas/RecordACreate",
+            "AAAA": "#/components/schemas/RecordAAAACreate",
+            "CNAME": "#/components/schemas/RecordCNAMECreate",
+            "MX": "#/components/schemas/RecordMXCreate",
+            "NS": "#/components/schemas/RecordNSCreate",
+            "SRV": "#/components/schemas/RecordSRVCreate",
+            "TXT": "#/components/schemas/RecordTXTCreate",
+            "SSHFP": "#/components/schemas/RecordSSHFPCreate",
+            "ALIAS": "#/components/schemas/RecordALIASCreate",
+            "CAA": "#/components/schemas/RecordCAACreate"
+          }
+        }
+      },
+      "RecordDeleteForm": {
+        "title": "RecordDeleteForm",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          }
+        }
+      },
+      "RecordMXBatchUpdate": {
+        "title": "RecordMXBatchUpdate",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "MX"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "priority": {
+            "title": "Priority",
+            "maximum": 65536,
+            "minimum": 0,
+            "type": "integer",
+            "default": 5
+          }
+        },
+        "description": "MX record batch update schema"
+      },
+      "RecordMXCreate": {
+        "title": "RecordMXCreate",
+        "required": [
+          "type",
+          "name",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "MX"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "priority": {
+            "title": "Priority",
+            "maximum": 65536,
+            "minimum": 0,
+            "type": "integer",
+            "default": 5
+          }
+        },
+        "description": "MX record create schema"
+      },
+      "RecordMXRead": {
+        "title": "RecordMXRead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "content",
+          "change_date"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "MX"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "integer"
+          }
+        },
+        "description": "MX record schema"
+      },
+      "RecordMXUpdate": {
+        "title": "RecordMXUpdate",
+        "required": [
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "MX"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "priority": {
+            "title": "Priority",
+            "maximum": 65536,
+            "minimum": 0,
+            "type": "integer",
+            "default": 5
+          }
+        },
+        "description": "MX record update schema"
+      },
+      "RecordNSBatchUpdate": {
+        "title": "RecordNSBatchUpdate",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "NS"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "NS record batch update schema"
+      },
+      "RecordNSCreate": {
+        "title": "RecordNSCreate",
+        "required": [
+          "type",
+          "name",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "NS"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 86400
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "NS record create schema"
+      },
+      "RecordNSRead": {
+        "title": "RecordNSRead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "content",
+          "change_date"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "NS"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          }
+        },
+        "description": "NS record schema"
+      },
+      "RecordNSUpdate": {
+        "title": "RecordNSUpdate",
+        "required": [
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "NS"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "NS record update schema"
+      },
+      "RecordResponseForm": {
+        "title": "RecordResponseForm",
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/RecordARead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordAAAARead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordCNAMERead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordMXRead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordNSRead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSOARead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSRVRead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordTXTRead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSSHFPRead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordALIASRead"
+          },
+          {
+            "$ref": "#/components/schemas/RecordCAARead"
+          }
+        ],
+        "description": "This Mixin class was made to ease work with\npydantic models containing tagged unions.",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "A": "#/components/schemas/RecordARead",
+            "AAAA": "#/components/schemas/RecordAAAARead",
+            "CNAME": "#/components/schemas/RecordCNAMERead",
+            "MX": "#/components/schemas/RecordMXRead",
+            "NS": "#/components/schemas/RecordNSRead",
+            "SOA": "#/components/schemas/RecordSOARead",
+            "SRV": "#/components/schemas/RecordSRVRead",
+            "TXT": "#/components/schemas/RecordTXTRead",
+            "SSHFP": "#/components/schemas/RecordSSHFPRead",
+            "ALIAS": "#/components/schemas/RecordALIASRead",
+            "CAA": "#/components/schemas/RecordCAARead"
+          }
+        }
+      },
+      "RecordSOABatchUpdate": {
+        "title": "RecordSOABatchUpdate",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SOA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ns": {
+            "title": "Ns",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "refresh": {
+            "title": "Refresh",
+            "maximum": 604800,
+            "minimum": 1,
+            "type": "integer",
+            "default": 10800
+          },
+          "retry": {
+            "title": "Retry",
+            "maximum": 604800,
+            "minimum": 1,
+            "type": "integer",
+            "default": 3600
+          },
+          "expire": {
+            "title": "Expire",
+            "maximum": 604800,
+            "minimum": 1,
+            "type": "integer",
+            "default": 604800
+          },
+          "minimum": {
+            "title": "Minimum",
+            "maximum": 604800,
+            "minimum": 1,
+            "type": "integer",
+            "default": 86400
+          }
+        },
+        "description": "SOA record batch update schema"
+      },
+      "RecordSOARead": {
+        "title": "RecordSOARead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "change_date",
+          "content",
+          "ns",
+          "email",
+          "serial",
+          "refresh",
+          "retry",
+          "expire",
+          "minimum"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SOA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "ns": {
+            "title": "Ns",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "serial": {
+            "title": "Serial",
+            "type": "integer"
+          },
+          "refresh": {
+            "title": "Refresh",
+            "type": "integer"
+          },
+          "retry": {
+            "title": "Retry",
+            "type": "integer"
+          },
+          "expire": {
+            "title": "Expire",
+            "type": "integer"
+          },
+          "minimum": {
+            "title": "Minimum",
+            "type": "integer"
+          }
+        },
+        "description": "SOA record schema"
+      },
+      "RecordSOAUpdate": {
+        "title": "RecordSOAUpdate",
+        "required": [
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SOA"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ns": {
+            "title": "Ns",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "refresh": {
+            "title": "Refresh",
+            "maximum": 604800,
+            "minimum": 1,
+            "type": "integer",
+            "default": 10800
+          },
+          "retry": {
+            "title": "Retry",
+            "maximum": 604800,
+            "minimum": 1,
+            "type": "integer",
+            "default": 3600
+          },
+          "expire": {
+            "title": "Expire",
+            "maximum": 604800,
+            "minimum": 1,
+            "type": "integer",
+            "default": 604800
+          },
+          "minimum": {
+            "title": "Minimum",
+            "maximum": 604800,
+            "minimum": 1,
+            "type": "integer",
+            "default": 86400
+          }
+        },
+        "description": "SOA record update schema"
+      },
+      "RecordSRVBatchUpdate": {
+        "title": "RecordSRVBatchUpdate",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SRV"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "integer"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "integer"
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "description": "SRV record batch update schema"
+      },
+      "RecordSRVCreate": {
+        "title": "RecordSRVCreate",
+        "required": [
+          "type",
+          "name",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SRV"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "integer"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "integer"
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "SRV record create schema"
+      },
+      "RecordSRVRead": {
+        "title": "RecordSRVRead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "change_date",
+          "weight",
+          "port",
+          "target"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SRV"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "integer"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "integer"
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "description": "SRV record schema"
+      },
+      "RecordSRVUpdate": {
+        "title": "RecordSRVUpdate",
+        "required": [
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SRV"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "integer"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "integer"
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "description": "SRV record update schema"
+      },
+      "RecordSSHFPBatchUpdate": {
+        "title": "RecordSSHFPBatchUpdate",
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SSHFP"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "algorithm": {
+            "$ref": "#/components/schemas/AlgorithmOptionsForSSHFP"
+          },
+          "fingerprint_type": {
+            "$ref": "#/components/schemas/FingerprintTypesForSSHFP"
+          },
+          "fingerprint": {
+            "title": "Fingerprint",
+            "type": "string"
+          }
+        },
+        "description": "A record batch update schema"
+      },
+      "RecordSSHFPCreate": {
+        "title": "RecordSSHFPCreate",
+        "required": [
+          "type",
+          "fingerprint",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SSHFP"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "algorithm": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AlgorithmOptionsForSSHFP"
+              }
+            ],
+            "default": 0
+          },
+          "fingerprint_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FingerprintTypesForSSHFP"
+              }
+            ],
+            "default": 0
+          },
+          "fingerprint": {
+            "title": "Fingerprint",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "SSHFP record create schema"
+      },
+      "RecordSSHFPRead": {
+        "title": "RecordSSHFPRead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "change_date",
+          "algorithm",
+          "fingerprint_type",
+          "fingerprint"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SSHFP"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          },
+          "algorithm": {
+            "$ref": "#/components/schemas/AlgorithmOptionsForSSHFP"
+          },
+          "fingerprint_type": {
+            "$ref": "#/components/schemas/FingerprintTypesForSSHFP"
+          },
+          "fingerprint": {
+            "title": "Fingerprint",
+            "type": "string"
+          }
+        },
+        "description": "SSHFP record schema"
+      },
+      "RecordSSHFPUpdate": {
+        "title": "RecordSSHFPUpdate",
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "SSHFP"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "algorithm": {
+            "$ref": "#/components/schemas/AlgorithmOptionsForSSHFP"
+          },
+          "fingerprint_type": {
+            "$ref": "#/components/schemas/FingerprintTypesForSSHFP"
+          },
+          "fingerprint": {
+            "title": "Fingerprint",
+            "type": "string"
+          }
+        },
+        "description": "SSHFP record update schema"
+      },
+      "RecordTXTBatchUpdate": {
+        "title": "RecordTXTBatchUpdate",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "TXT"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "TXT record batch update schema"
+      },
+      "RecordTXTCreate": {
+        "title": "RecordTXTCreate",
+        "required": [
+          "type",
+          "name",
+          "content"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "TXT"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer",
+            "default": 3600
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "TXT record create schema"
+      },
+      "RecordTXTRead": {
+        "title": "RecordTXTRead",
+        "required": [
+          "type",
+          "ttl",
+          "name",
+          "id",
+          "content",
+          "change_date"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "TXT"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "change_date": {
+            "title": "Change Date",
+            "type": "integer"
+          }
+        },
+        "description": "TXT record schema"
+      },
+      "RecordTXTUpdate": {
+        "title": "RecordTXTUpdate",
+        "required": [
+          "type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "enum": [
+              "TXT"
+            ],
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "description": "TXT record update schema"
+      },
+      "RecordUpdateForm": {
+        "title": "RecordUpdateForm",
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/RecordAUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordAAAAUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordCNAMEUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordMXUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordNSUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSOAUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSRVUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordTXTUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordSSHFPUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordALIASUpdate"
+          },
+          {
+            "$ref": "#/components/schemas/RecordCAAUpdate"
+          }
+        ],
+        "description": "Record update schema",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "A": "#/components/schemas/RecordAUpdate",
+            "AAAA": "#/components/schemas/RecordAAAAUpdate",
+            "CNAME": "#/components/schemas/RecordCNAMEUpdate",
+            "MX": "#/components/schemas/RecordMXUpdate",
+            "NS": "#/components/schemas/RecordNSUpdate",
+            "SOA": "#/components/schemas/RecordSOAUpdate",
+            "SRV": "#/components/schemas/RecordSRVUpdate",
+            "TXT": "#/components/schemas/RecordTXTUpdate",
+            "SSHFP": "#/components/schemas/RecordSSHFPUpdate",
+            "ALIAS": "#/components/schemas/RecordALIASUpdate",
+            "CAA": "#/components/schemas/RecordCAAUpdate"
+          }
+        }
+      },
+      "TagBody": {
+        "title": "TagBody",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          },
+          "domains": {
+            "title": "Domains",
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "default": []
+          }
+        }
+      },
+      "TagOptionsForCAA": {
+        "title": "TagOptionsForCAA",
+        "enum": [
+          "issue",
+          "issuewild",
+          "iodef",
+          "auth",
+          "path",
+          "policy"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "TagSchema": {
+        "title": "TagSchema",
+        "required": [
+          "id",
+          "name",
+          "domains"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "domains": {
+            "title": "Domains",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "ZoneChanges": {
+        "title": "ZoneChanges",
+        "required": [
+          "create",
+          "update",
+          "delete"
+        ],
+        "type": "object",
+        "properties": {
+          "create": {
+            "title": "Create",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordResponseForm"
+            }
+          },
+          "update": {
+            "title": "Update",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordResponseForm"
+            }
+          },
+          "delete": {
+            "title": "Delete",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordResponseForm"
+            }
+          }
+        }
+      },
+      "ZoneCopy": {
+        "title": "ZoneCopy",
+        "required": [
+          "project_id"
+        ],
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "domains": {
+            "title": "List of domains ID",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "ZoneSetResponse": {
+        "title": "ZoneSetResponse",
+        "required": [
+          "applied",
+          "changes"
+        ],
+        "type": "object",
+        "properties": {
+          "applied": {
+            "title": "Applied",
+            "type": "boolean"
+          },
+          "changes": {
+            "$ref": "#/components/schemas/ZoneChanges"
+          }
+        }
+      },
+      "ZoneState": {
+        "title": "ZoneState",
+        "required": [
+          "disabled"
+        ],
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+          }
+        }
+      },
+      "ZoneStateForm": {
+        "title": "ZoneStateForm",
+        "required": [
+          "disabled"
+        ],
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "title": "Disabled",
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

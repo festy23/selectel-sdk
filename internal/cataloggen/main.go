@@ -21,6 +21,7 @@ type family struct {
 }
 
 var families = map[string]family{
+	"dns-legacy":                   {"dns", "v1", "static_token", false},
 	"balance":                      {"billing", "v3", "iam_account", false},
 	"balance-statistics":           {"billing", "v1", "iam_account", false},
 	"cloud-projects-and-resources": {"projects", "v2", "iam_account", true},
@@ -165,6 +166,9 @@ func generate() error {
 				resource, action = idParts[2], idParts[3]
 				pointer := "sources/" + filepath.Base(file) + "#/paths/" + strings.ReplaceAll(strings.ReplaceAll(path, "~", "~0"), "/", "~1") + "/" + method
 				scope := []string{"account"}
+				if name == "dns-legacy" && strings.HasPrefix(path, "/{domain}/") {
+					scope = append(scope, "parent")
+				}
 				if f.Mode == "iam_project" {
 					scope = append(scope, "project")
 				}

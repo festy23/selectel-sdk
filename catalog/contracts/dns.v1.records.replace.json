@@ -1,0 +1,189 @@
+{
+  "operation_id": "dns.v1.records.replace",
+  "endpoint": {
+    "address": "https://api.selectel.ru/domains/v1",
+    "source_uri": "https://raw.githubusercontent.com/selectel/domains-go/6b87a8d9f7b4089a30a4a1dc361cf73117f1af61/pkg/v1/client.go",
+    "generation": "v1",
+    "override_key": [
+      "dns",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "account",
+    "auth": "Selectel Token X-Token; no IAM/v2 fallback",
+    "method": "PUT",
+    "source_schema": "sources/dns-legacy.json#/paths/~1{domain}~1records/put",
+    "source_operation": {
+      "tags": [
+        "Records"
+      ],
+      "summary": "Установить в зоне перечисленные записи",
+      "description": "Установить в выбранном домене переданные записи.\n\nОтсуствующие в запросе записи будут удалены из домена.\n\nЗаписи в запросе, не имеющие дубликатов по имени + типу, буду созданы.\n\nЕсли у записей в запросе есть дубликаты по имени + типу, то из\nсуществующих дубликатов будут поочередно выбираться записи, содержимое\nкоторых будет почередно обновлено в соотвествии с переданными записями.\nЕсли дублирующих записей в запросе больше чем в домене, то существующие\nдубликаты будут обновлены, а остальные записи созданы.",
+      "operationId": "set_records__domain__records_put",
+      "parameters": [
+        {
+          "required": true,
+          "schema": {
+            "title": "Domain",
+            "type": "string"
+          },
+          "name": "domain",
+          "in": "path"
+        },
+        {
+          "required": false,
+          "schema": {
+            "title": "Apply Changes",
+            "type": "boolean",
+            "default": false
+          },
+          "name": "apply_changes",
+          "in": "query"
+        },
+        {
+          "description": "Selectel token",
+          "required": false,
+          "schema": {
+            "title": "X-Token",
+            "type": "string",
+            "description": "Selectel token",
+            "default": ""
+          },
+          "name": "X-Token",
+          "in": "header"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "Record Schemas",
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RecordCreateForm"
+              }
+            }
+          }
+        },
+        "required": true
+      },
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZoneSetResponse"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Not Found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "Conflict",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Unprocessable Entity",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "dnslegacy/bulk.go",
+    "identity": "explicit caller selector/ref; named reads never recover unknown mutations"
+  },
+  "response": {
+    "dto_source": "dnslegacy/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all typed desired create variants; explicit empty array replaces with no records only when caller applies; native apply_changes omitted/false remains preview; required Applied flag gates trust of newly returned child refs; scan every independently trustworthy applied change ID before field decoding; preview IDs metadata only",
+    "sensitive_fields": [
+      "content",
+      "email",
+      "fingerprint",
+      "name",
+      "ns",
+      "tag",
+      "target",
+      "value"
+    ],
+    "scope_checks": "caller numeric parent retained exactly; named parent never manufactures parent/ref; proposed preview records are not adopted"
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "conflict",
+    "422": "provider_error",
+    "500": "provider_error",
+    "malformed_body": "protocol_error",
+    "foreign_identity": "scope_mismatch",
+    "raw_body": "not retained or formatted"
+  },
+  "retry": "never automatically replay; Receipt retains accepted/unknown and independently trustworthy refs",
+  "wait_goals": []
+}

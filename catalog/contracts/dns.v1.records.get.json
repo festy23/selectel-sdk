@@ -1,0 +1,166 @@
+{
+  "operation_id": "dns.v1.records.get",
+  "endpoint": {
+    "address": "https://api.selectel.ru/domains/v1",
+    "source_uri": "https://raw.githubusercontent.com/selectel/domains-go/6b87a8d9f7b4089a30a4a1dc361cf73117f1af61/pkg/v1/client.go",
+    "generation": "v1",
+    "override_key": [
+      "dns",
+      "v1",
+      "exact account scope"
+    ],
+    "redirects": "reject"
+  },
+  "request": {
+    "scope": "account",
+    "auth": "Selectel Token X-Token; no IAM/v2 fallback",
+    "method": "GET",
+    "source_schema": "sources/dns-legacy.json#/paths/~1{domain}~1records~1{record_id}/get",
+    "source_operation": {
+      "tags": [
+        "Records"
+      ],
+      "summary": "Получить параметры ресурсной записи",
+      "description": "Получить параметры ресурсной записи для указанного идентификатора домена\nили доменного имени",
+      "operationId": "get_record_by_id__domain__records__record_id__get",
+      "parameters": [
+        {
+          "required": true,
+          "schema": {
+            "title": "Record Id",
+            "type": "integer"
+          },
+          "name": "record_id",
+          "in": "path"
+        },
+        {
+          "description": "Selectel token",
+          "required": false,
+          "schema": {
+            "title": "X-Token",
+            "type": "string",
+            "description": "Selectel token",
+            "default": ""
+          },
+          "name": "X-Token",
+          "in": "header"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordResponseForm"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Not Found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "Conflict",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Unprocessable Entity",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping_source": "dnslegacy/records.go",
+    "identity": "explicit caller selector/ref; named reads never recover unknown mutations",
+    "variants": "GetByName is an explicit named parent wire variant, not a lookup/recovery fallback"
+  },
+  "response": {
+    "dto_source": "dnslegacy/types_generated.go",
+    "generator_source": "internal/modelgen/generate.py",
+    "field_mapping": "all11 discriminator-mapped source record response variants as typed alternatives; exact integer identity; protected names/content/fingerprints; caller supplied parent retained; no response parent invented",
+    "sensitive_fields": [
+      "content",
+      "email",
+      "fingerprint",
+      "name",
+      "ns",
+      "tag",
+      "target",
+      "value"
+    ],
+    "scope_checks": "exact caller parent ref preserved when provided; named parent route exposes typed record ID metadata without inventing numeric parent/ref; source-injected refs ignored"
+  },
+  "errors": {
+    "400": "invalid_argument",
+    "401": "unauthenticated",
+    "403": "permission_denied",
+    "404": "not_found",
+    "409": "conflict",
+    "422": "provider_error",
+    "500": "provider_error",
+    "malformed_body": "protocol_error",
+    "foreign_identity": "scope_mismatch",
+    "raw_body": "not retained or formatted"
+  },
+  "retry": "bounded safe read",
+  "wait_goals": []
+}
