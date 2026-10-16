@@ -360,7 +360,7 @@ func TestLegacyDNSRecordCreateUsesTypedWireUnionAndRetainsAcceptedID(t *testing.
 	parent := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "dns", APIGeneration: "v1", Kind: "domain", ID: "42", EndpointID: "selectel-dns-legacy-v1", EndpointURL: "https://api.selectel.ru/domains/v1"}
 	spec := dnslegacy.RecordCreateSpec{AAAA: &dnslegacy.RecordAAAACreate{Type: &kind, Name: &name, Content: &content}}
 	out, err := c.Account().LegacyDNS().Records.Create(context.Background(), parent, spec, types.CallOptions{})
-	if types.ErrorCode(err) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 1 || out.Receipt.ResourceRefs[0].ID != "7" || out.Receipt.ResourceRefs[0].Parent == nil || *out.Receipt.ResourceRefs[0].Parent != parent {
+	if types.ErrorCode(err) != types.ProtocolError || out.Receipt == nil || out.Receipt.Outcome != types.Accepted || len(out.Receipt.ResourceRefs) != 2 || out.Receipt.ResourceRefs[0] != parent || out.Receipt.ResourceRefs[1].ID != "7" || out.Receipt.ResourceRefs[1].Parent == nil || *out.Receipt.ResourceRefs[1].Parent != parent {
 		t.Fatalf("accepted child ID lost/inferred: %+v %v", out, err)
 	}
 	raw, _ := json.Marshal(spec)
@@ -847,5 +847,54 @@ func TestLegacyDNSNamedReadSnapshotsProtectedSelectorBeforeIO(t *testing.T) {
 	out, err := c.Account().LegacyDNS().Domains.Get(context.Background(), dnslegacy.DomainSelector{Name: &name}, nil, types.CallOptions{})
 	if err != nil || out.Data.Ref == nil || out.Data.Ref.ID != "42" {
 		t.Fatalf("selector changed after request: %+v %v", out, err)
+	}
+}
+
+func TestLegacyDNSRecordCreateRetainsOnlyKnownParentWithoutChildIdentity(t *testing.T) {
+	for _, named := range []bool{false, true} {
+		for _, lost := range []bool{false, true} {
+			t.Run(fmt.Sprintf("named=%t/transport_loss=%t", named, lost), func(t *testing.T) {
+				sends := 0
+				c, err := sdk.New(sdk.Config{AccountID: "test-account", Credentials: credentials.SourceFunc(func(context.Context, types.AuthRequest) (credentials.Material, error) {
+					return credentials.Material{Identity: "dns", Revision: "1", Binding: types.Scope{AccountID: "test-account"}, Audience: credentials.SelectelAudience, Scheme: credentials.StaticToken, Token: types.Protect([]byte("synthetic-token"))}, nil
+				}), Transport: transportFunc(func(r *http.Request) (*http.Response, error) {
+					sends++
+					if r.Method != "POST" {
+						t.Fatal("wrong mutation method")
+					}
+					if lost {
+						return nil, io.ErrUnexpectedEOF
+					}
+					return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(`{"type":"AAAA","id":null}`))}, nil
+				})})
+				if err != nil {
+					t.Fatal(err)
+				}
+				parent := types.ResourceRef{Scope: types.Scope{AccountID: "test-account"}, Service: "dns", APIGeneration: "v1", Kind: "domain", ID: "42", EndpointID: "selectel-dns-legacy-v1", EndpointURL: "https://api.selectel.ru/domains/v1"}
+				kind := "AAAA"
+				name, content := types.Protect([]byte("private.example")), types.Protect([]byte("2001:db8::1"))
+				spec := dnslegacy.RecordCreateSpec{AAAA: &dnslegacy.RecordAAAACreate{Type: &kind, Name: &name, Content: &content}}
+				var out types.Result[dnslegacy.Record]
+				if named {
+					out, err = c.Account().LegacyDNS().Records.CreateByName(context.Background(), name, spec, types.CallOptions{})
+				} else {
+					out, err = c.Account().LegacyDNS().Records.Create(context.Background(), parent, spec, types.CallOptions{})
+				}
+				wantCode, wantOutcome := types.ProtocolError, types.Accepted
+				if lost {
+					wantCode, wantOutcome = types.UnknownOutcome, types.Unknown
+				}
+				if types.ErrorCode(err) != wantCode || out.Receipt == nil || out.Receipt.Outcome != wantOutcome || sends != 1 {
+					t.Fatalf("receipt/outcome/replay: %+v %v sends=%d", out, err, sends)
+				}
+				wantRefs := []types.ResourceRef{parent}
+				if named {
+					wantRefs = nil
+				}
+				if len(out.Receipt.ResourceRefs) != len(wantRefs) || (!named && !reflect.DeepEqual(out.Receipt.ResourceRefs, wantRefs)) {
+					t.Fatalf("lost parent or invented child/name association: %+v", out.Receipt.ResourceRefs)
+				}
+			})
+		}
 	}
 }

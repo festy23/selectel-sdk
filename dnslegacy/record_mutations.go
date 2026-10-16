@@ -15,7 +15,7 @@ func (c *Records) CreateByName(ctx context.Context, name types.ProtectedValue, s
 }
 func (c *Records) create(ctx context.Context, target domainTarget, spec RecordCreateSpec, o types.CallOptions) (types.Result[Record], error) {
 	op, bindErr := c.runtime.BindDocumented(core.Operation{ID: "dns.v1.records.create", Service: "dns", APIGeneration: "v1", Method: "POST", Effect: "mutation", Auth: types.StaticToken, Success: []int{200}, Rejected: []int{400, 401, 403, 404, 409, 422}}, c.scope)
-	path, _, parentErr := target.request(c.scope, op)
+	path, refs, parentErr := target.request(c.scope, op)
 	body, bodyErr := wireBody(spec)
 	validate := func() error {
 		if bindErr != nil {
@@ -29,7 +29,7 @@ func (c *Records) create(ctx context.Context, target domainTarget, spec RecordCr
 		}
 		return bodyErr
 	}
-	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: path + "/records", Body: body, Options: o, Validate: validate}, decodeRecord(c.scope, target, ""))
+	return core.DoJSON(c.runtime, ctx, op, core.Request{Scope: c.scope, Path: path + "/records", Refs: refs, Body: body, Options: o, Validate: validate}, decodeRecord(c.scope, target, ""))
 }
 
 func (c *Records) Update(ctx context.Context, ref types.ResourceRef, spec RecordUpdateSpec, o types.CallOptions) (types.Result[Record], error) {

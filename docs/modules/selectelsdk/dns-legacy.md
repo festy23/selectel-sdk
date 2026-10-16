@@ -64,7 +64,10 @@ user_id is metadata, never caller identity. Explicit name operations manufacture
 no numeric owner refs. Exact caller refs and protected name selectors are copied
 before I/O; scope, generation, endpoint and available parent identities are
 validated. Identity scanning retains independently trustworthy refs before later
-field errors. Unknown outcomes never trigger name adoption or automatic replay.
+field errors. Record creation retains the validated caller domain anchor even when the child
+identity is unusable or transport outcome is unknown; that anchor does not prove
+child creation. CreateByName invents no numeric anchor. Unknown outcomes never
+trigger name adoption or automatic replay.
 ReplaceAll defaults to preview: proposed IDs are not adopted unless applied is
 explicitly true. Batch scans all returned identities, excludes foreign IDs and
 retains independently trustworthy effects. Domain creation selects direct versus
